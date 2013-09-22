@@ -1,0 +1,6 @@
+#ifndef BASIC_VTK_DEFINITIONS_H
+#define BASIC_VTK_DEFINITIONS_H
+
+#define VTK_DELETE_NULL(OBJ) if((OBJ != NULL)) { (OBJ)->Delete(); (OBJ) = NULL; }
+
+#endif BASIC_VTK_DEFINITIONS_H

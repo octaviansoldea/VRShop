@@ -1,0 +1,2 @@
+- Have a podium (octagonal prism) with four items located at the (N-S-E-W) sides that rotates on a vertical axis as per click by 45 degrees
+- Add banner: having adds rotating on a lateral axis every 2 seconds

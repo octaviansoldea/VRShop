@@ -1,0 +1,25 @@
+cmake_minimum_required(VERSION 2.6)
+
+PROJECT(libRenWin)
+
+SET(CMAKE_DEBUG_POSTFIX "D")
+
+# Find VTK.
+FIND_PACKAGE(VTK REQUIRED)
+INCLUDE(${VTK_USE_FILE})
+
+INCLUDE_DIRECTORIES(
+	${CMAKE_SOURCE_DIR}/ImagePrimitives/libImagePrimitives
+)
+
+SET(SRCS 
+	RenWin.cpp RenWin.h)
+
+ADD_LIBRARY(libRenWin ${SRCS})
+
+FILE(GLOB files "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
+INSTALL(FILES ${files} DESTINATION libRenWin/include)
+INSTALL(TARGETS libRenWin DESTINATION libRenWin/lib
+		LIBRARY DESTINATION libRenWin/lib)
+
+SET_PROPERTY(TARGET libRenWin PROPERTY FOLDER ImagePrimitives)

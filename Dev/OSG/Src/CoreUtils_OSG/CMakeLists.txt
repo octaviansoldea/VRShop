@@ -1,0 +1,12 @@
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+
+PROJECT(CoreUtils_OSG)
+
+SET(CMAKE_DEBUG_POSTFIX "D")
+
+SUBDIRS(
+	libCamera
+	libPicker
+	Test_libCamera
+	Test_libPicker
+)

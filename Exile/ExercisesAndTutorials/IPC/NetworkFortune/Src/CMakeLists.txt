@@ -1,0 +1,26 @@
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+
+PROJECT(NetworkFortune)
+
+SET(CMAKE_DEBUG_POSTFIX "D")
+
+
+FIND_PACKAGE(Qt5Core)
+IF(Qt5Core_FOUND)
+  SET(Qt5_FOUND TRUE)
+  MESSAGE("Qt5 found")
+  FIND_PACKAGE(Qt5Core)
+  FIND_PACKAGE(Qt5Gui)
+  FIND_PACKAGE(Qt5Widgets)
+  FIND_PACKAGE(Qt5Network)
+ELSE()
+	#Search for Qt packages 4 AND 5
+	FIND_PACKAGE(Qt4 REQUIRED)
+	SET(Qt4_FOUND TRUE)
+	MESSAGE("Qt4 found")
+ENDIF()
+
+SUBDIRS(
+	NetworkFortuneClient
+	NetworkFortuneServer
+)

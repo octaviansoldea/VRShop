@@ -243,7 +243,7 @@ void OSGCameraManipulator::_keyDown( const osgGA::GUIEventAdapter &ea, osgGA::GU
 		}
 		break;
 
-	case 'h': case 'H':
+	case ' ':
 		home(ea.getTime());
 		break;
 

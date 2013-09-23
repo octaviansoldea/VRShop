@@ -15,7 +15,7 @@ int main(int argc, char * argv[])	{
 	osgViewer::Viewer viewer;
 	viewer.setSceneData( root.get() );
 	viewer.setCameraManipulator(new VR::OSGCameraManipulator);
-	viewer.addEventHandler( new VR::PickHandler );
+	viewer.addEventHandler( new VR::PickAndDragHandler );
 
 	std::string axes = "C:/Programi/OSG/OpenSceneGraph-Data-3.0.0/axes.osgt";
 	osg::ref_ptr<osg::Node> pAxes = osgDB::readNodeFile(axes);

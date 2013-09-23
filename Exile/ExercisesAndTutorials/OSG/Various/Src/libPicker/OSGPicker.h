@@ -1,17 +1,16 @@
-#ifndef OSG_PICKER_H
-#define OSG_PICKER_H
+#ifndef OSG_PICKER_AND_DRAG_HANDLER_H
+#define OSG_PICKER_AND_DRAG_HANDLER_H
 
 #include <osg/MatrixTransform>
-#include <osgViewer/Viewer>
 #include <osg/Group>
-#include <osg/NodeCallback>
+#include <osgViewer/Viewer>
 
 #include <osgGA/GUIEventHandler>
 
 namespace VR	{
-	class PickHandler : public osgGA::GUIEventHandler	{
+	class PickAndDragHandler : public osgGA::GUIEventHandler	{
 	public:
-		PickHandler();
+		PickAndDragHandler();
 		virtual bool handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa );
 
 	private:
@@ -22,13 +21,16 @@ namespace VR	{
 		double m_dbMouseLastGetX;
 		double m_dbMouseLastGetY;
 
-		double m_dbMouseLastClickGetX;
-		double m_dbMouseLastClickGetY;
+		osg::Matrixd m_mtrxOriginalPosition;
 
-		double m_dbMouseLastReleaseGetX;
-		double m_dbMouseLastReleaseGetY;
-
-		osg::ref_ptr<osg::Node> createBoundingBox(osg::BoundingBox aBoundingBox);
+		//Bools
+		//Pressing "H": make lateral movement
+		//Pressing "V": make vertical movement
+		//Pressing "L": make longitudial movement
+		bool m_bLateralMove;
+		bool m_bLongitudinalMove;
+		bool m_bVerticalMove;
+		bool m_bRotate;
 	};
 }
-#endif //OSG_PICKER_H
+#endif //OSG_PICKER_AND_DRAG_HANDLER_H

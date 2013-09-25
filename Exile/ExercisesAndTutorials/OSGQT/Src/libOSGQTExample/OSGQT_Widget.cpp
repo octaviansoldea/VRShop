@@ -54,3 +54,9 @@ void OSGQT_Widget::setSceneData(osg::Node* apNode)	{
 void OSGQT_Widget::setCameraManipulator(osgGA::CameraManipulator* manipulator, bool resetPosition)	{
 	m_viewer.setCameraManipulator(manipulator, resetPosition);
 }
+
+//--------------------------------------------------------------------
+
+void OSGQT_Widget::addEventHandler(osgGA::GUIEventHandler *eventHandler)	{
+	m_viewer.addEventHandler(eventHandler);
+}

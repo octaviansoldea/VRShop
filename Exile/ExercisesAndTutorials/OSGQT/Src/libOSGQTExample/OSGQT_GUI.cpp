@@ -1,10 +1,12 @@
 #include "OSGQT_GUI.h"
 
 #include <osgGA/TrackballManipulator>
+
 #include <osgDB/ReadFile>
 
 #include "Model2D.h"
 #include "Model3D.h"
+
 
 using namespace osg;
 using namespace Ui;

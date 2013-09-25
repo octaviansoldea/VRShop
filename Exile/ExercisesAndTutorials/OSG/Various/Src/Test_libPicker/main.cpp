@@ -1,5 +1,4 @@
 #include "OSGPicker.h"
-
 #include "OSGCameraManipulator.h"
 
 #include <osgDB/readFile>
@@ -16,10 +15,6 @@ int main(int argc, char * argv[])	{
 	viewer.setSceneData( root.get() );
 	viewer.setCameraManipulator(new VR::OSGCameraManipulator);
 	viewer.addEventHandler( new VR::PickAndDragHandler );
-
-	std::string axes = "C:/Programi/OSG/OpenSceneGraph-Data-3.0.0/axes.osgt";
-	osg::ref_ptr<osg::Node> pAxes = osgDB::readNodeFile(axes);
-	root->addChild(pAxes);
 
 	return viewer.run();
 }

@@ -27,10 +27,16 @@ namespace VR	{
 		//Pressing "H": make lateral movement
 		//Pressing "V": make vertical movement
 		//Pressing "L": make longitudial movement
+		//Pressing "R": make rotation
+		//Pressing "S": make scalling
 		bool m_bLateralMove;
 		bool m_bLongitudinalMove;
 		bool m_bVerticalMove;
 		bool m_bRotate;
+		bool m_bScale;
+
+
+		osg::ref_ptr<osg::Node> createBoundingBox(osg::BoundingBox aBoundingBox);
 	};
 }
 #endif //OSG_PICKER_AND_DRAG_HANDLER_H

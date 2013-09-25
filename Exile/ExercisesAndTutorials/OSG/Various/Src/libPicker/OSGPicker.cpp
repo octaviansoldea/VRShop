@@ -1,4 +1,5 @@
 #include <osgUtil/PolytopeIntersector>
+#include <osg/PolygonMode>
 
 #include <iostream>
 
@@ -14,6 +15,7 @@ PickAndDragHandler::PickAndDragHandler()	{
 	m_bLongitudinalMove = false;
 	m_bVerticalMove = false;
 	m_bRotate = false;
+	m_bScale = false;
 }
 
 //------------------------------------------------------------------------------
@@ -32,20 +34,24 @@ bool PickAndDragHandler::handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 	case(osgGA::GUIEventAdapter::KEYDOWN):	{
 		switch(ea.getKey())
 		{
-		case 'h':
+		case 'h': case 'H':
 			m_bLateralMove = true;
 			break;
 
-		case 'v':
+		case 'v': case 'V':
 			m_bVerticalMove = true;
 			break;
 
-		case 'l':
+		case 'l': case 'L':
 			m_bLongitudinalMove = true;
 			break;
 
-		case 'r':
+		case 'r': case 'R':
 			m_bRotate = true;
+			break;
+
+		case 's': case 'S':
+			m_bScale = true;
 			break;
 
 		default:
@@ -85,6 +91,7 @@ bool PickAndDragHandler::handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 					pPickedObject->setMatrix(m_mtrxOriginalPosition);
 
 					pPickedObject->addChild(node);
+					pPickedObject->addChild(createBoundingBox(picker->getFirstIntersection().drawable->getBound()));
 
 					int nI;
 					for(nI = 0; nI < node->getNumParents();nI++)	{
@@ -97,6 +104,12 @@ bool PickAndDragHandler::handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 					break;
 				}
 			}
+			else	{
+				pPickedObject = new osg::MatrixTransform;
+				pPickedObject = NULL;
+				return false;
+				break;
+			}
 															}	//Case: Push_Left_Mouse_button
 		default :
 			return false;
@@ -106,7 +119,6 @@ bool PickAndDragHandler::handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 	
 	case(osgGA::GUIEventAdapter::DRAG):	{
 		if(pPickedObject==NULL)	{
-			std::cout << "Error Drag" << std::endl;
 			return true;
 			break;
 		}
@@ -145,6 +157,16 @@ bool PickAndDragHandler::handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 		if (m_bRotate)
 			mtrx = osg::Matrix::rotate(dPositionX*0.01, osg::Z_AXIS) * m_mtrxOriginalPosition;
 
+		if (m_bScale)	{
+			osg::Matrixd scale;
+			scale = osg::Matrix::scale(
+				(1.0 + 0.01*(dPositionX))>0 ? 1.0 + 0.01*(dPositionX) : 0.001,
+				(1.0 + 0.01*(dPositionX))>0 ? 1.0 + 0.01*(dPositionX) : 0.001,
+				(1.0 + 0.01*(dPositionX))>0 ? 1.0 + 0.01*(dPositionX) : 0.001);
+			mtrx = scale
+				* m_mtrxOriginalPosition;
+		}
+
 		pPickedObject->setMatrix(mtrx);
 		
 		viewer->setSceneData(pScene);
@@ -159,9 +181,14 @@ bool PickAndDragHandler::handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 		m_bLongitudinalMove = false;
 		m_bVerticalMove = false;
 		m_bRotate = false;
+		m_bScale = false;
+
+		//Remove bounding box - bounding box is put as a last child
+		if(pPickedObject!=NULL)
+			pPickedObject->removeChild(pPickedObject->getNumChildren()-1);
 
 		return false;
-		break;	
+		break;
 										}
 	}
 	return false;
@@ -169,3 +196,31 @@ bool PickAndDragHandler::handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 
 //---------------------------------------------------------------------------------------
 
+osg::ref_ptr<osg::Node> PickAndDragHandler::createBoundingBox(osg::BoundingBox aBoundingBox)	{
+
+	osg::ref_ptr<osg::Vec3Array> points = new osg::Vec3Array(10);
+	(*points)[0].set(aBoundingBox.xMin(), aBoundingBox.yMin(), aBoundingBox.zMin());
+	(*points)[1].set(aBoundingBox.xMin(), aBoundingBox.yMin(), aBoundingBox.zMax());
+	(*points)[2].set(aBoundingBox.xMax(), aBoundingBox.yMin(), aBoundingBox.zMin());
+	(*points)[3].set(aBoundingBox.xMax(), aBoundingBox.yMin(), aBoundingBox.zMax());
+	(*points)[4].set(aBoundingBox.xMax(), aBoundingBox.yMax(), aBoundingBox.zMin());
+	(*points)[5].set(aBoundingBox.xMax(), aBoundingBox.yMax(), aBoundingBox.zMax());
+	(*points)[6].set(aBoundingBox.xMin(), aBoundingBox.yMax(), aBoundingBox.zMin());
+	(*points)[7].set(aBoundingBox.xMin(), aBoundingBox.yMax(), aBoundingBox.zMax());
+	(*points)[8].set(aBoundingBox.xMin(), aBoundingBox.yMin(), aBoundingBox.zMin());
+	(*points)[9].set(aBoundingBox.xMin(), aBoundingBox.yMin(), aBoundingBox.zMax());
+
+	//Send points to the geometry
+	osg::ref_ptr<osg::Geometry> geom = new osg::Geometry;
+	geom->setVertexArray( points );
+	geom->addPrimitiveSet( new osg::DrawArrays(osg::PrimitiveSet::QUAD_STRIP, 0, 10));
+
+	//Send geometry to Geode and set StateSet
+	osg::ref_ptr<osg::Geode> bbGeode = new osg::Geode;
+	bbGeode->addDrawable( geom.get() );
+	osg::StateSet* ss = bbGeode->getOrCreateStateSet();
+	ss->setAttributeAndModes( new osg::PolygonMode(  osg::PolygonMode::FRONT_AND_BACK,  osg::PolygonMode::LINE ) );
+	ss->setMode( GL_LIGHTING, osg::StateAttribute::OFF );  
+
+	return bbGeode;
+}

@@ -30,6 +30,7 @@ Model2D::Model2D()	{
 	pN->push_back(Vec3(0.0, -1.0, 0.0));
 
 	m_pGeometry->addPrimitiveSet(new DrawArrays(PrimitiveSet::QUADS,0,4));
+	m_pGeometry->setUseDisplayList(false);
 
 	//Draw geometry
 	addDrawable(m_pGeometry);
@@ -84,5 +85,3 @@ void Model2D::setTexture(const char * apchFileName) {
     // turn off lighting 
     pState->setMode(GL_LIGHTING, StateAttribute::OFF);
 }
-
-//--------------------------------------------------------------

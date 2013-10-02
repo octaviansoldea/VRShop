@@ -37,6 +37,8 @@ INCLUDE_DIRECTORIES(
 	${CMAKE_SOURCE_DIR}/libOSGQTExample
 	${CMAKE_BINARY_DIR}/libOSGQTExample
 	${CMAKE_SOURCE_DIR}/libModel
+	${CMAKE_SOURCE_DIR}/libPicker
+	${CMAKE_SOURCE_DIR}/libCamera
 )
 
 
@@ -67,6 +69,8 @@ TARGET_LINK_LIBRARIES(Test_libOSGQTExample
 	${OPENTHREADS_LIBRARIES}
 	libOSGQTExample
 	libModel
+	libPicker
+	libCamera
 )
 
 SET_PROPERTY(TARGET Test_libOSGQTExample PROPERTY FOLDER Exercise)

@@ -9,6 +9,7 @@ INCLUDE_DIRECTORIES(
 
 #Define sources to be later added into the library
 SET(SRCS ${SRCS}
+	BaseModel.h BaseModel.cpp
 	Model2D.h Model2D.cpp
 	Model3D.h Model3D.cpp
 )

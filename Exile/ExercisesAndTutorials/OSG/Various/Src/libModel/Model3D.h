@@ -3,7 +3,9 @@
 
 #include <osg/Group>
 
-class Model3D : public osg::Group {
+#include "BaseModel.h"
+
+class Model3D : public BaseModel, public osg::Group {
 public:
 	Model3D();
 

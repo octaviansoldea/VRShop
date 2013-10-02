@@ -25,7 +25,7 @@ OSGCameraManipulator::OSGCameraManipulator():
 _t0(0.0),
 m_bCtrl(false)
 {
-	m_dbDefaultMoveSpeed	= 100;
+	m_dbDefaultMoveSpeed	= 10;
 	m_dbRotationFactor		= osg::PI*0.0005;
 
 	_directionRotationRate	= 0.0;

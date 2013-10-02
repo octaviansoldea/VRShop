@@ -1,5 +1,4 @@
 #include "OSGCameraManipulator.h"
-#include <osgGA/UFOManipulator>
 
 #include <osgViewer/Viewer>
 #include <osgDB/readFile>
@@ -17,7 +16,6 @@ int main(int argc, char * argv[])	{
 	osgViewer::Viewer viewer;
 	viewer.setSceneData(root.get());
 	viewer.setCameraManipulator(new VR::OSGCameraManipulator);
-//	viewer.setCameraManipulator(new osgGA::UFOManipulator);
 
 	return viewer.run();
 }

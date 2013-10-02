@@ -1,5 +1,5 @@
-#ifndef OSG_PICKER_AND_DRAG_HANDLER_H
-#define OSG_PICKER_AND_DRAG_HANDLER_H
+#ifndef OSG_PICK_AND_DRAG_HANDLER_H
+#define OSG_PICK_AND_DRAG_HANDLER_H
 
 #include <osg/MatrixTransform>
 #include <osg/Group>
@@ -17,25 +17,14 @@ namespace VR	{
 		osg::Group * pScene;
 
 		osg::MatrixTransform * pPickedObject;
+		osg::Matrixd m_mtrxOriginalPosition;
 
 		double m_dbMouseLastGetX;
 		double m_dbMouseLastGetY;
 
-		osg::Matrixd m_mtrxOriginalPosition;
-
-		//Bools
-		//Pressing "H": make lateral movement
-		//Pressing "V": make vertical movement
-		//Pressing "L": make longitudial movement
-		//Pressing "R": make rotation
-		//Pressing "S": make scalling
-		bool m_bLateralMove;
-		bool m_bLongitudinalMove;
-		bool m_bVerticalMove;
-		bool m_bRotate;
-		bool m_bScale;
+		int m_nTransformSelection;
 
 		osg::ref_ptr<osg::Node> createBoundingBox(osg::Node & aNode);
 	};
 }
-#endif //OSG_PICKER_AND_DRAG_HANDLER_H
+#endif //OSG_PICK_AND_DRAG_HANDLER_H

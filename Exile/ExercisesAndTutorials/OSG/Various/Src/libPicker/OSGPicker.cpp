@@ -1,3 +1,10 @@
+//Pressing "H": make lateral movement
+//Pressing "V": make vertical movement
+//Pressing "L": make longitudial movement
+//Pressing "R": make rotation
+//Pressing "S": make scalling
+
+
 #include <osgUtil/PolytopeIntersector>
 #include <osg/PolygonMode>
 #include <osg/ComputeBoundsVisitor>
@@ -14,11 +21,7 @@ PickAndDragHandler::PickAndDragHandler()	{
 	m_dbMouseLastGetX = 0;
 	m_dbMouseLastGetY = 0;
 
-	m_bLateralMove = false;
-	m_bLongitudinalMove = false;
-	m_bVerticalMove = false;
-	m_bRotate = false;
-	m_bScale = false;
+	m_nTransformSelection = 0;
 }
 
 //------------------------------------------------------------------------------
@@ -30,34 +33,37 @@ bool PickAndDragHandler::handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 		exit(-1);
 	}
 
-	pScene = dynamic_cast<osg::Group*>(viewer->getSceneData());
+	enum enumObjectTransform {Default = 0, LateralMove, VerticalMove, LongitudinalMove, Rotation, Scaling};
 
+	pScene = dynamic_cast<osg::Group*>(viewer->getSceneData());
+	
 	switch (ea.getEventType())
 	{
 	case(osgGA::GUIEventAdapter::KEYDOWN): {
 		switch(ea.getKey())
 		{
 		case 'h': case 'H':
-			m_bLateralMove = true;
+			m_nTransformSelection = enumObjectTransform(LateralMove);
 			break;
 
 		case 'v': case 'V':
-			m_bVerticalMove = true;
+			m_nTransformSelection = enumObjectTransform(VerticalMove);
 			break;
 
 		case 'l': case 'L':
-			m_bLongitudinalMove = true;
+			m_nTransformSelection = enumObjectTransform(LongitudinalMove);
 			break;
 
 		case 'r': case 'R':
-			m_bRotate = true;
+			m_nTransformSelection = enumObjectTransform(Rotation);
 			break;
 
 		case 's': case 'S':
-			m_bScale = true;
+			m_nTransformSelection = enumObjectTransform(Scaling);
 			break;
 
 		default:
+			m_nTransformSelection = enumObjectTransform(Default);
 			break;
 		}
 	}	//Case: Keydown
@@ -144,34 +150,34 @@ bool PickAndDragHandler::handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 			return false;
 
 		osg::Matrix mtrx;
-		if (!m_bLateralMove && !m_bLongitudinalMove && !m_bVerticalMove)
+		if(m_nTransformSelection == enumObjectTransform(Default))
 			mtrx = m_mtrxOriginalPosition * osg::Matrix::translate(
 				0.1*(dPositionX),
 				0.0,
 				0.1*(dPositionY));
 
-		if (m_bLateralMove)
+		if(m_nTransformSelection == enumObjectTransform(LateralMove))
 			mtrx = m_mtrxOriginalPosition * osg::Matrix::translate(
 				0.1*(dPositionX),
 				0.0,
 				0.0);
 
-		if (m_bVerticalMove)
+		if(m_nTransformSelection == enumObjectTransform(VerticalMove))
 			mtrx = m_mtrxOriginalPosition * osg::Matrix::translate(
 				0.0,
 				0.0,
 				0.1*(dPositionY));
 
-		if (m_bLongitudinalMove)
+		if(m_nTransformSelection == enumObjectTransform(LongitudinalMove))
 			mtrx = m_mtrxOriginalPosition * osg::Matrix::translate(
 				0.0,
 				0.1*(dPositionY),
 				0.0);
 
-		if (m_bRotate)
+		if(m_nTransformSelection == enumObjectTransform(Rotation))
 			mtrx = osg::Matrix::rotate(dPositionX*0.01, osg::Z_AXIS) * m_mtrxOriginalPosition;
 
-		if (m_bScale)	{
+		if(m_nTransformSelection == enumObjectTransform(Scaling))	{
 			osg::Matrixd scale;
 			scale = osg::Matrix::scale(
 				(1.0 + 0.01*(dPositionX))>0 ? 1.0 + 0.01*(dPositionX) : 0.001,
@@ -184,18 +190,13 @@ bool PickAndDragHandler::handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 		pPickedObject->setMatrix(mtrx);
 		
 		viewer->setSceneData(pScene);
-//		viewer->updateTraversal();
 
 		return false;
 		break;
 										}
 
 	case(osgGA::GUIEventAdapter::RELEASE):	{
-		m_bLateralMove = false;
-		m_bLongitudinalMove = false;
-		m_bVerticalMove = false;
-		m_bRotate = false;
-		m_bScale = false;
+		m_nTransformSelection = enumObjectTransform(Default);
 
 		//Remove bounding box - bounding box is put as a last child
 		if(pPickedObject!=NULL)

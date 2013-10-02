@@ -13,6 +13,7 @@ INCLUDE_DIRECTORIES(
 	${OPENSCENEGRAPH_INCLUDE_DIRS}
 	${CMAKE_SOURCE_DIR}/libPicker
 	${CMAKE_SOURCE_DIR}/libCamera
+	${CMAKE_SOURCE_DIR}/libModel
 )
 
 ADD_EXECUTABLE(Test_libPicker
@@ -27,6 +28,7 @@ TARGET_LINK_LIBRARIES(Test_libPicker
 	${OPENTHREADS_LIBRARIES}
 	libPicker
 	libCamera
+	libModel
 )
 
 SET_PROPERTY(TARGET Test_libPicker PROPERTY FOLDER Exercise)

@@ -64,7 +64,6 @@
            <property name="focusPolicy">
             <enum>Qt::StrongFocus</enum>
            </property>
-           <zorder>verticalLayoutWidget</zorder>
           </widget>
          </item>
         </layout>
@@ -79,7 +78,7 @@
           </property>
           <property name="icon">
            <iconset>
-            <normaloff>../../../../../../Users/Gregi_Laptop/Downloads/close-icon.png</normaloff>../../../../../../Users/Gregi_Laptop/Downloads/close-icon.png</iconset>
+            <normaloff>../../Resources/close-icon.png</normaloff>../../Resources/close-icon.png</iconset>
           </property>
           <property name="iconSize">
            <size>

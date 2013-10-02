@@ -35,8 +35,7 @@ namespace VR	{
 		bool m_bRotate;
 		bool m_bScale;
 
-
-		osg::ref_ptr<osg::Node> createBoundingBox(osg::BoundingBox aBoundingBox);
+		osg::ref_ptr<osg::Node> createBoundingBox(osg::Node & aNode);
 	};
 }
 #endif //OSG_PICKER_AND_DRAG_HANDLER_H

@@ -8,7 +8,7 @@ using namespace osg;
 
 Model3D::Model3D()	{
 	ref_ptr<Model2D> plate2D = new Model2D;
-
+	
 	ref_ptr<MatrixTransform> pMatrixTransform;
 	Matrix matrix;
 	{

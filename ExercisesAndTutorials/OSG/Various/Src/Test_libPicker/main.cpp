@@ -29,9 +29,14 @@ int main(int argc, char * argv[])	{
 	osg::ref_ptr<Model3D> pModel3D = new Model3D();
 	pModel3D->setColor(osg::Vec4(0.0, 1.0, 0.0, 1.0));
 	pModel3D->setIsTargetPick(true);
-	
+
+	osg::ref_ptr<Model2D> pModel2D = new Model2D();
+	pModel2D->setColor(osg::Vec4(1.0, 0.0, 0.0, 1.0));
+	pModel2D->setIsTargetPick(true);
+
 	osg::ref_ptr<osg::Group> root = new osg::Group;
 
+	root->addChild(pModel2D.get());
 	root->addChild(pModel3D.get());
 	root->addChild(axes);
 

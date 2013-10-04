@@ -3,7 +3,8 @@
 //Pressing "L": make longitudial movement
 //Pressing "R": make rotation
 //Pressing "S": make scalling
-
+//Pressing "1": make 45oC camera!! rotation
+//Pressing "SHIFT L or R": make movement Up/down-Left/right irrespective of axes
 
 #include <osgUtil/PolytopeIntersector>
 #include <osg/PolygonMode>
@@ -12,7 +13,6 @@
 #include <iostream>
 
 #include "BaseModel.h"
-
 #include "OSGPicker.h"
 
 using namespace VR;
@@ -33,7 +33,8 @@ bool PickAndDragHandler::handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 		exit(-1);
 	}
 
-	enum enumObjectTransform {Default = 0, LateralMove, VerticalMove, LongitudinalMove, Rotation, Scaling};
+	enum enumObjectTransform {Default = 0, LateralMove, VerticalMove, LongitudinalMove, Rotation, Scaling,
+								LateralVerticalToMonitor};
 
 	pScene = dynamic_cast<osg::Group*>(viewer->getSceneData());
 	
@@ -61,6 +62,12 @@ bool PickAndDragHandler::handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 		case 's': case 'S':
 			m_nTransformSelection = enumObjectTransform(Scaling);
 			break;
+
+		case osgGA::GUIEventAdapter::KEY_Shift_L:
+		case osgGA::GUIEventAdapter::KEY_Shift_R:
+			m_nTransformSelection = enumObjectTransform(LateralVerticalToMonitor);
+			break;
+
 
 		default:
 			m_nTransformSelection = enumObjectTransform(Default);
@@ -149,12 +156,18 @@ bool PickAndDragHandler::handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 		if(fabs(dPositionX)<0.01 && fabs(dPositionY)<0.01)
 			return false;
 
+		osg::Matrixd mat = viewer->getCameraManipulator()->getMatrix();
+
 		osg::Matrix mtrx;
+		//Does Up/down-left/right dragging respective to the axes
 		if(m_nTransformSelection == enumObjectTransform(Default))
 			mtrx = m_mtrxOriginalPosition * osg::Matrix::translate(
-				0.1*(dPositionX),
-				0.0,
-				0.1*(dPositionY));
+				0.1*(dPositionX), 0.0, 0.1*(dPositionY));
+
+		//Does Up/down-left/right dragging irrespective of the axes
+		if(m_nTransformSelection == enumObjectTransform(LateralVerticalToMonitor))
+			mtrx = m_mtrxOriginalPosition * osg::Matrix::translate(
+				0.1*(dPositionX)*mat(0,0), 0.1*(dPositionX)*mat(0,1), 0.1*(dPositionY));
 
 		if(m_nTransformSelection == enumObjectTransform(LateralMove))
 			mtrx = m_mtrxOriginalPosition * osg::Matrix::translate(

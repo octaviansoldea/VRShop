@@ -68,6 +68,8 @@ namespace VR {
 			void _keyDown(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &);
 			void _keyUp(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter &);
 			void _frame(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter &);
+
+			void setCameraPosition();
 	};
 }
 #endif //OSG_CAMERA_MANIPULATOR_H

@@ -25,8 +25,8 @@ OSGCameraManipulator::OSGCameraManipulator():
 _t0(0.0),
 m_bCtrl(false)
 {
-	m_dbDefaultMoveSpeed	= 10;
-	m_dbRotationFactor		= osg::PI*0.0005;
+	m_dbDefaultMoveSpeed	= 100;
+	m_dbRotationFactor		= osg::PI*0.01;
 
 	_directionRotationRate	= 0.0;
 	_pitchOffsetRate		= 0.0;
@@ -98,12 +98,10 @@ osg::Matrixd OSGCameraManipulator::getInverseMatrix() const	{
 }
 
 void OSGCameraManipulator::computeHomePosition()	{
-	if(getNode()) {
-        const osg::BoundingSphere& bs = getNode()->getBound();
-        _homeCenter = osg::Vec3(bs._center.x(), bs._center.y(), bs._center.z());
-		_homeEye = osg::Vec3(bs._center.x(), bs._center.y() + 3.5*bs.radius(), bs._center.z());
-		setHomePosition(-_homeEye, _homeCenter, _homeUp);
-	}
+	_homeCenter = osg::Vec3(0.0, 0.0, 0.0);
+	_homeEye = osg::Vec3(0.0, 3.0, 0.0);
+
+	setHomePosition(-_homeEye, _homeCenter, _homeUp);
 }
 
 void OSGCameraManipulator::init(const GUIEventAdapter&, GUIActionAdapter&)	{
@@ -134,6 +132,23 @@ void OSGCameraManipulator::home(double)	{
 	_pitchOffsetRate = 0.0;
 	_yawOffsetRate = 0.0;
 }
+
+//----------------------------------------------------------------------------------------
+
+void OSGCameraManipulator::setCameraPosition()	{
+	_homeEye = _position * osg::Matrix::rotate(osg::DegreesToRadians(45.0),osg::Z_AXIS);
+
+	_position = _homeEye;
+	_direction = _homeCenter - _homeEye;
+	_direction.normalize();
+	_inverseMatrix.makeLookAt( _homeEye, _homeCenter, _homeUp );
+	_matrix.invert( _inverseMatrix );
+
+	_offset.makeIdentity();
+
+}
+
+//----------------------------------------------------------------------------------------
 
 bool OSGCameraManipulator::handle(const osgGA::GUIEventAdapter& ea,osgGA::GUIActionAdapter &aa)	{
 	switch(ea.getEventType())	
@@ -247,6 +262,10 @@ void OSGCameraManipulator::_keyDown( const osgGA::GUIEventAdapter &ea, osgGA::GU
 		home(ea.getTime());
 		break;
 
+	case '1':
+		setCameraPosition();
+		break;
+
 	default:
 		break;
 	}
@@ -267,7 +286,9 @@ void OSGCameraManipulator::_frame( const osgGA::GUIEventAdapter &ea, osgGA::GUIA
 	osg::CoordinateFrame cf( getCoordinateFrame(_position) );
 	osg::Vec3d upVec( getUpVector(cf) );
 
-	_direction = _direction * osg::Matrix::rotate( _directionRotationRate, upVec);
+	 osg::Matrix mtrxRotate = osg::Matrix::rotate( _directionRotationRate, upVec);
+
+	_direction = _direction * mtrxRotate;
 
 	_position += (_direction * m_dbForwardFactor ) * dt;
 

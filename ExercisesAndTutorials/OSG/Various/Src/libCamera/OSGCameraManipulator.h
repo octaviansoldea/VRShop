@@ -48,7 +48,7 @@ namespace VR {
 			osg::Matrixd _offset;
 
 			double		m_dbForwardFactor;
-			double		m_dbDefaultMoveSpeed;
+			const double m_cdbDefaultMoveSpeed;
 
 			double		_directionRotationRate;
 
@@ -56,7 +56,7 @@ namespace VR {
 			double		_pitchOffset;
 			double		_yawOffsetRate;
 			double		_yawOffset;
-			double		m_dbRotationFactor;
+			const double m_cdbRotationFactor;
 
 			double		_t0;
 			osg::Vec3d	_direction;

@@ -23,10 +23,11 @@ using namespace VR;
 
 OSGCameraManipulator::OSGCameraManipulator():
 _t0(0.0),
-m_bCtrl(false)
+m_bCtrl(false),
+m_cdbDefaultMoveSpeed(100),
+m_cdbRotationFactor(osg::PI*0.01)
 {
-	m_dbDefaultMoveSpeed	= 100;
-	m_dbRotationFactor		= osg::PI*0.01;
+	
 
 	_directionRotationRate	= 0.0;
 	_pitchOffsetRate		= 0.0;
@@ -223,38 +224,38 @@ void OSGCameraManipulator::_keyDown( const osgGA::GUIEventAdapter &ea, osgGA::GU
 		break;
 
 	case osgGA::GUIEventAdapter::KEY_Up :
-		if(m_bCtrl)	{		//Rotate view (but not direction of travel) up.
-			_yawOffsetRate = -m_dbRotationFactor*m_dbDefaultMoveSpeed;
+		if(m_bCtrl)	{		
+			m_dbForwardFactor = m_cdbDefaultMoveSpeed;
 		}
-		else	{
-			m_dbForwardFactor = m_dbDefaultMoveSpeed;
+		else	{ //Rotate view (but not direction of travel) up.
+			_yawOffsetRate = -m_cdbRotationFactor*m_cdbDefaultMoveSpeed;
 		}
 		break;
 
 	case osgGA::GUIEventAdapter::KEY_Down:
-		if(m_bCtrl)	{	//Rotate view (but not direction of travel) down.
-			_yawOffsetRate = m_dbRotationFactor*m_dbDefaultMoveSpeed;
+		if(m_bCtrl)	{	
+			m_dbForwardFactor = -m_cdbDefaultMoveSpeed;
 		}
-		else	{
-			m_dbForwardFactor = -m_dbDefaultMoveSpeed;
+		else	{ //Rotate view (but not direction of travel) down.
+			_yawOffsetRate = m_cdbRotationFactor*m_cdbDefaultMoveSpeed;
 		}
 		break;
 
 	case osgGA::GUIEventAdapter::KEY_Right:
 		if(m_bCtrl)	{	//Rotate view (but not direction of travel) right.
-			_pitchOffsetRate = m_dbRotationFactor*m_dbDefaultMoveSpeed;
+			_pitchOffsetRate = m_cdbRotationFactor*m_cdbDefaultMoveSpeed;
 		}
 		else	{
-			_directionRotationRate = - m_dbRotationFactor;
+			_directionRotationRate = - m_cdbRotationFactor;
 		}
 		break;
 
 	case osgGA::GUIEventAdapter::KEY_Left:
 		if(m_bCtrl)	{	//Rotate view (but not direction of travel) left.
-			_pitchOffsetRate = -m_dbRotationFactor*m_dbDefaultMoveSpeed;
+			_pitchOffsetRate = -m_cdbRotationFactor*m_cdbDefaultMoveSpeed;
 		}
 		else	{
-			_directionRotationRate = m_dbRotationFactor;
+			_directionRotationRate = m_cdbRotationFactor;
 		}
 		break;
 

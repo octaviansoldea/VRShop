@@ -45,6 +45,7 @@ bool PickAndDragHandler::handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 		{
 		case 'h': case 'H':
 			m_nTransformSelection = enumObjectTransform(LateralMove);
+			std::cout << "H" << std::endl;
 			break;
 
 		case 'v': case 'V':

@@ -46,7 +46,7 @@ OSGQT_GUI::OSGQT_GUI() {
 
 	//Send scene to the Widget
 	m_pOSGQT_Widget->setSceneData(pScene);
-	m_pOSGQT_Widget->setCameraManipulator(new VR::OSGCameraManipulator);
+//	m_pOSGQT_Widget->setCameraManipulator(new VR::OSGCameraManipulator);
 	m_pOSGQT_Widget->addEventHandler(new VR::PickAndDragHandler);
 	//m_pOSGQT_Widget->setCameraManipulator(new osgGA::TrackballManipulator);
 

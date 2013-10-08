@@ -1,9 +1,8 @@
 #include "OSGCameraManipulator.h"
+#include <osgGA/TrackballManipulator>
 
 #include <osgViewer/Viewer>
 #include <osgDB/readFile>
-#include <osgGA/UFOManipulator>
-#include <osgGA/CameraManipulator>
 
 using namespace VR;
 
@@ -22,6 +21,7 @@ int main(int argc, char * argv[])	{
 	viewer.setUpViewInWindow(200, 200, 1000, 800);
 	viewer.setSceneData(root.get());
 	viewer.setCameraManipulator(new VR::OSGCameraManipulator);
+//	viewer.setCameraManipulator(new osgGA::TrackballManipulator);
 
 	return viewer.run();
 }

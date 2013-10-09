@@ -76,8 +76,6 @@ namespace VR {
 		osg::observer_ptr<osg::Node> m_pNode;
 
 
-
-
 		typedef StandardManipulator inherited;
 
 	public:
@@ -115,8 +113,12 @@ namespace VR {
 		virtual osgUtil::SceneView::FusionDistanceMode getFusionDistanceMode() const;
 		virtual float getFusionDistanceValue() const;
 
-	protected:
 
+	protected:
+//============================================================================================
+        //virtual bool handleKeyDown( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& us );
+        //virtual bool handleKeyUp( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& us );
+//============================================================================================
 		virtual bool handleMouseWheel( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& us );
 
 		virtual bool performMovementLeftMouseButton( const double eventTimeDelta, const double dx, const double dy );
@@ -144,6 +146,31 @@ namespace VR {
 
 		double _minimumDistance;
 		static int _minimumDistanceFlagIndex;
+
+//============================================================================================
+		//osg::Matrixd m_mtrxdbOffset;		//Corrects view-matrix for rotations on Z
+		//osg::Matrixd m_mtrxdbMatrix;		//View matrix
+		//osg::Matrixd m_mtrxdbInverseMatrix;	//Current position with the inverse matrix
+
+		//double		m_dbForwardFactor;		//Forward move value
+		//double		m_dbDefaultMoveSpeed;	//Speed for a move in any direction
+
+		//double		m_dbDirectionRotationRate;	//Side rotation angle
+
+		//double		m_dbPitchOffsetRate;	//Angle of rotation on Z 
+		//double		m_dbPitchOffset;		//Accumulates angle of rotation on Z
+		//double		m_dbLateralRotationRate;		//Angle of rotation on X
+		//double m_cdbRotationFactor;	//Angle in radians
+
+		//osg::Vec3d	m_vecdbPosition;		//Eye (position of the camera)
+		//osg::Vec3d	m_vecdbDirection;		//Center (center of objects) - Eye
+
+		//bool m_bCtrl;
+		//bool m_bShift;
+
+		//void updateMatrices();
+//============================================================================================
+
 
 		class OrbitAnimationData : public osgGA::StandardManipulator::AnimationData {
 		public:

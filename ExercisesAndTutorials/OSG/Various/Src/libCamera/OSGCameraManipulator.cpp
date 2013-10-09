@@ -925,3 +925,134 @@ double OSGCameraManipulator::getMinimumDistance( bool *relativeToModelSize ) con
 
     return _minimumDistance;
 }
+
+
+//====================================================================================
+//bool OSGCameraManipulator::handleKeyUp( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& us )	{
+//	switch( ea.getKey() )
+//	{
+//	case osgGA::GUIEventAdapter::KEY_Control_L:
+//	case osgGA::GUIEventAdapter::KEY_Control_R:
+//		m_bCtrl = false;
+//		return true;
+//		break;
+//
+//	case osgGA::GUIEventAdapter::KEY_Shift_L:
+//	case osgGA::GUIEventAdapter::KEY_Shift_R:
+//		m_bShift = false;
+////		m_dbDefaultMoveSpeed = 1;
+//		return true;
+//		break;
+//
+//	case osgGA::GUIEventAdapter::KEY_Up:
+//	case osgGA::GUIEventAdapter::KEY_Down:
+//		m_dbForwardFactor = 0.0;
+//		m_dbLateralRotationRate = 0.0;
+//		m_dbDefaultMoveSpeed = 1;
+//		return true;
+//		break;
+//
+//	case osgGA::GUIEventAdapter::KEY_Left:
+//	case osgGA::GUIEventAdapter::KEY_Right:
+//		m_dbDirectionRotationRate = 0.0;
+//		m_dbPitchOffsetRate = 0.0;
+//		m_dbDefaultMoveSpeed = 1;
+//		return true;
+//		break;
+//
+//	default:
+//		return true;
+//		break;
+//	}
+//}
+//
+//bool OSGCameraManipulator::handleKeyDown( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& us )	{
+//	switch( ea.getKey() )
+//	{
+//	case osgGA::GUIEventAdapter::KEY_Control_L:
+//	case osgGA::GUIEventAdapter::KEY_Control_R:
+//		m_bCtrl = true;
+//		return true;
+//		break;
+//
+//	case osgGA::GUIEventAdapter::KEY_Shift_L:
+//	case osgGA::GUIEventAdapter::KEY_Shift_R:
+//		m_bShift = true;
+//		return true;
+//		break;
+//
+//	case osgGA::GUIEventAdapter::KEY_Up :
+//		if(m_bCtrl)	{		
+//			m_dbForwardFactor = m_bShift ? (m_dbDefaultMoveSpeed*=1.1) : m_dbDefaultMoveSpeed;
+//		}
+//		else	{ //Rotate view (but not direction of travel) up.
+//			m_dbLateralRotationRate = m_cdbRotationFactor * (m_bShift ? (m_dbDefaultMoveSpeed*=1.1) : m_dbDefaultMoveSpeed);
+//		}
+//		updateMatrices();
+//		return true;
+//		break;
+//
+//	case osgGA::GUIEventAdapter::KEY_Down:
+//		if(m_bCtrl)	{	
+//			m_dbForwardFactor = m_bShift ? -(m_dbDefaultMoveSpeed*=1.1) : -m_dbDefaultMoveSpeed;
+//		}
+//		else	{ //Rotate view (but not direction of travel) down.
+//			m_dbLateralRotationRate = -m_cdbRotationFactor * (m_bShift ? (m_dbDefaultMoveSpeed*=1.1) : m_dbDefaultMoveSpeed);
+//		}
+//		updateMatrices();
+//		return true;
+//		break;
+//
+//	case osgGA::GUIEventAdapter::KEY_Right:
+//		if(m_bCtrl)	{
+//			m_dbPitchOffsetRate = m_cdbRotationFactor * (m_bShift ? (m_dbDefaultMoveSpeed*=1.1) : m_dbDefaultMoveSpeed);
+//		}
+//		else	{	//Rotate view (but not direction of travel) right.
+//			m_dbDirectionRotationRate = - m_cdbRotationFactor * (m_bShift ? (m_dbDefaultMoveSpeed*=1.1) : m_dbDefaultMoveSpeed);
+//		}
+//		updateMatrices();
+//		return true;
+//		break;
+//
+//	case osgGA::GUIEventAdapter::KEY_Left:
+//		if(m_bCtrl)	{
+//			m_dbPitchOffsetRate = -m_cdbRotationFactor * (m_bShift ? (m_dbDefaultMoveSpeed*=1.1) : m_dbDefaultMoveSpeed);
+//		}
+//		else	{	//Rotate view (but not direction of travel) left.
+//			m_dbDirectionRotationRate = m_cdbRotationFactor * (m_bShift ? (m_dbDefaultMoveSpeed*=1.1) : m_dbDefaultMoveSpeed);
+//		}
+//		updateMatrices();
+//		return true;
+//		break;
+//
+//	default:
+//		return true;
+//		break;
+//	}
+//}
+//
+//void OSGCameraManipulator::updateMatrices()	{
+//	osg::CoordinateFrame cf(getCoordinateFrame(m_vecdbPosition));
+//	osg::Vec3d upVec(getUpVector(cf));
+//
+//	osg::Matrix mtrxRotate = osg::Matrix::rotate(
+//						m_dbLateralRotationRate,	getSideVector(cf),
+//						0.0,						getFrontVector(cf),
+//						m_dbDirectionRotationRate,	upVec);
+//
+//	m_vecdbDirection = m_vecdbDirection * mtrxRotate;
+//
+//	m_vecdbPosition += (m_vecdbDirection * m_dbForwardFactor);
+//
+//	m_dbPitchOffset += m_dbPitchOffsetRate;
+//	if(m_dbPitchOffset >= osg::PI || m_dbPitchOffset < -osg::PI)
+//		m_dbPitchOffset *= -1;
+//
+//	m_mtrxdbOffset = osg::Matrix::rotate(
+//						0.0,			getSideVector(cf),
+//						m_dbPitchOffset,getFrontVector(cf),
+//						0.0,			upVec);
+//
+////	setTransformation(m_vecdbPosition, m_vecdbDirection, upVec);
+////	setByInverseMatrix(m_mtrxdbInverseMatrix);
+//}

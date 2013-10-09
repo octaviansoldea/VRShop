@@ -22,66 +22,88 @@ using namespace osgGA;
 namespace VR {
 
 	class OSGCameraManipulator : public osgGA::StandardManipulator	{
+		bool m_bUFO;
 	public:
-//		OSGCameraManipulator();
+		OSGCameraManipulator( int flags = DEFAULT_SETTINGS );
+		OSGCameraManipulator( const OSGCameraManipulator& om,
+			const osg::CopyOp& copyOp = osg::CopyOp::SHALLOW_COPY );
 
 		virtual const char* className() const;
+
 		virtual void setByMatrix(const osg::Matrixd &matrix);
 		virtual void setByInverseMatrix(const osg::Matrixd &invmat);
 		virtual osg::Matrixd getMatrix() const;
-		virtual osg::Matrixd getInverseMatrix() const ;
+		virtual osg::Matrixd getInverseMatrix() const;
+
+		virtual bool handle(const osgGA::GUIEventAdapter& ea,osgGA::GUIActionAdapter &us);
+
+		//begin UFO
+
+
+		
+		virtual void setByMatrixUFO( const osg::Matrixd &matrix ) ;
+		virtual void setByInverseMatrixUFO( const osg::Matrixd &invmat);
+		virtual osg::Matrixd getMatrixUFO() const;
+		virtual osg::Matrixd getInverseMatrixUFO() const ;
 		virtual void setNode(osg::Node* node);
 		virtual const osg::Node* getNode() const;
 		virtual osg::Node* getNode();
-/*		virtual void computeHomePosition();
-		virtual void home(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter&aa) ;
+		virtual void computeHomePosition();
+		virtual void home(const osgGA::GUIEventAdapter&, osgGA::GUIActionAdapter&) ;
 		void home(double);
 
-		virtual void init(const osgGA::GUIEventAdapter&ea, osgGA::GUIActionAdapter&aa);
-
-		virtual bool handle(const osgGA::GUIEventAdapter& ea,osgGA::GUIActionAdapter &aa);
+		virtual void init(const osgGA::GUIEventAdapter&, osgGA::GUIActionAdapter&);
 
 	protected:
 
-//		virtual ~OSGCameraManipulator();
+		osg::observer_ptr<osg::Node> _node;
+		osg::Matrixd _matrix;
+		osg::Matrixd _inverseMatrix;
+		osg::Matrixd _offset;
 
-		osg::Matrixd m_mtrxdbMatrix;		//View matrix
-		osg::Matrixd m_mtrxdbInverseMatrix;	//Current position with the inverse matrix
-		osg::Matrixd m_mtrxdbOffset;		//Corrects view-matrix for rotations on Z
+		double		m_dbForwardFactor;
+		double		m_dbDefaultMoveSpeed;
 
-		double		m_dbForwardFactor;		//Forward move value
-		double		m_dbDefaultMoveSpeed;	//Speed for a move in any direction
+		double		_directionRotationRate;
 
-		double		m_dbDirectionRotationRate;	//Side rotation angle
+		double		_pitchOffsetRate;
+		double		_pitchOffset;
+		double		_yawOffsetRate;
+		double		_yawOffset;
+		double		m_dbRotationFactor;
 
-		double		m_dbPitchOffsetRate;	//Angle of rotation on Z 
-		double		m_dbPitchOffset;		//Accumulates angle of rotation on Z
-		double		m_dbLateralRotationRate;		//Angle of rotation on X
-		double m_cdbRotationFactor;	//Angle in radians
-
-		osg::Vec3d	m_vecdbPosition;		//Eye (position of the camera)
-		osg::Vec3d	m_vecdbDirection;		//Center (center of objects) - Eye
+		double		_t0;
+		osg::Vec3d	_direction;
+		osg::Vec3d	_position;
 
 		bool m_bCtrl;
-		bool m_bShift;
 
-		bool keyDown(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa);
-		bool keyUp(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter &aa);
+		void _stop();
+		bool _keyDown(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &);
+		bool _keyUp(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter &);
+		void _frame(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter &);
 
-		void updateMatrices();
 		void setCameraPosition();
 
-*/
 
+		//end UFO
+
+		//begin Trackball
+		
+		virtual void setByMatrixTrackball(const osg::Matrixd &matrix);
+		virtual void setByInverseMatrixTrackball(const osg::Matrixd &invmat);
+		virtual osg::Matrixd getMatrixTrackball() const;
+		virtual osg::Matrixd getInverseMatrixTrackball() const ;
+		virtual void setNodeTrackball(osg::Node* node);
+		virtual const osg::Node* getNodeTrackball() const;
+		virtual osg::Node* getNodeTrackball();
 		osg::observer_ptr<osg::Node> m_pNode;
 
 
 		typedef StandardManipulator inherited;
 
 	public:
-		OSGCameraManipulator( int flags = DEFAULT_SETTINGS );
-		OSGCameraManipulator( const OSGCameraManipulator& om,
-			const osg::CopyOp& copyOp = osg::CopyOp::SHALLOW_COPY );
+
 
 //		META_Object( OSGCameraManipulator, OSGCameraManipulator );
 
@@ -147,30 +169,6 @@ namespace VR {
 		double _minimumDistance;
 		static int _minimumDistanceFlagIndex;
 
-//============================================================================================
-		//osg::Matrixd m_mtrxdbOffset;		//Corrects view-matrix for rotations on Z
-		//osg::Matrixd m_mtrxdbMatrix;		//View matrix
-		//osg::Matrixd m_mtrxdbInverseMatrix;	//Current position with the inverse matrix
-
-		//double		m_dbForwardFactor;		//Forward move value
-		//double		m_dbDefaultMoveSpeed;	//Speed for a move in any direction
-
-		//double		m_dbDirectionRotationRate;	//Side rotation angle
-
-		//double		m_dbPitchOffsetRate;	//Angle of rotation on Z 
-		//double		m_dbPitchOffset;		//Accumulates angle of rotation on Z
-		//double		m_dbLateralRotationRate;		//Angle of rotation on X
-		//double m_cdbRotationFactor;	//Angle in radians
-
-		//osg::Vec3d	m_vecdbPosition;		//Eye (position of the camera)
-		//osg::Vec3d	m_vecdbDirection;		//Center (center of objects) - Eye
-
-		//bool m_bCtrl;
-		//bool m_bShift;
-
-		//void updateMatrices();
-//============================================================================================
-
 
 		class OrbitAnimationData : public osgGA::StandardManipulator::AnimationData {
 		public:
@@ -179,6 +177,7 @@ namespace VR {
 		};
 		virtual void allocAnimationData() { _animationData = new OrbitAnimationData(); }
 
+		//end Trackball
 	};
 
 	//

@@ -323,6 +323,8 @@ OSGCameraManipulator::OSGCameraManipulator( int flags )
      _distance( 1. ),
      _trackballSize( 0.8 )
 {
+	    setVerticalAxisFixed( false );
+
     setMinimumDistance( 0.05, true );
     setWheelZoomFactor( 0.1 );
     if( _flags & SET_CENTER_ON_WHEEL_FORWARD_MOVEMENT )

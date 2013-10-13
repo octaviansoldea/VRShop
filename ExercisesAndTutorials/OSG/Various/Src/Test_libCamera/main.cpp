@@ -11,7 +11,6 @@ int main(int argc, char * argv[])	{
 	osg::ref_ptr<osg::Node> model2 = osgDB::readNodeFile("../../Resources//cow.osg");
 	osg::ref_ptr<osg::Node> axes = osgDB::readNodeFile("../../Resources/axes.osgt");
 
-
 	osg::ref_ptr<osg::Group> root = new osg::Group;
 	root->addChild(model1.get());
 	root->addChild(model2.get());

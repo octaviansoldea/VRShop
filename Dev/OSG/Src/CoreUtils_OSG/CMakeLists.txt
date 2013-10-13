@@ -6,6 +6,7 @@ SET(CMAKE_DEBUG_POSTFIX "D")
 
 SUBDIRS(
 	libCamera
+	libCommon_OSG
 	libPicker
 	Test_libCamera
 	Test_libPicker

@@ -37,6 +37,9 @@ namespace VR {
 
 		virtual bool handle(const osgGA::GUIEventAdapter& ea,osgGA::GUIActionAdapter &us);
 
+		void updateUFOTrackball();
+		void updateTrackballUFO();
+
 		//begin UFO
 
 
@@ -56,34 +59,31 @@ namespace VR {
 
 	protected:
 
-		osg::observer_ptr<osg::Node> _node;
-		osg::Matrixd _matrix;
-		osg::Matrixd _inverseMatrix;
-		osg::Matrixd _offset;
+		osg::observer_ptr<osg::Node> m_pNode;
+		osg::Matrixd m_mtrxdbMatrix;		//View matrix
+		osg::Matrixd m_mtrxdbInverseMatrix;	//Current position with the inverse matrix
+		osg::Matrixd m_mtrxdbOffset;		//Corrects view-matrix for rotations on Z
 
-		double		m_dbForwardFactor;
-		double		m_dbDefaultMoveSpeed;
+		double		m_dbForwardFactor;		//Forward move value
+		double		m_dbDefaultMoveSpeed;	//Speed for a move in any direction
 
-		double		_directionRotationRate;
+		double		m_dbDirectionRotationRate;	//Side rotation angle
 
-		double		_pitchOffsetRate;
-		double		_pitchOffset;
-		double		_yawOffsetRate;
-		double		_yawOffset;
-		double		m_dbRotationFactor;
+		double		m_dbPitchOffsetRate;	//Angle of rotation on Z 
+		double		m_dbPitchOffset;		//Accumulates angle of rotation on Z
+		double		m_dbLateralRotationRate;		//Angle of rotation on X
+		const double m_cdbRotationFactor;	//Angle in radians
 
-		double		_t0;
-		osg::Vec3d	_direction;
-		osg::Vec3d	_position;
+		osg::Vec3d	m_vecdbPosition;		//Eye (position of the camera)
+		osg::Vec3d	m_vecdbDirection;		//Center (center of objects) - Eye
 
 		bool m_bCtrl;
+		bool m_bShift;
 
-		void _stop();
-		bool _keyDown(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &);
-		bool _keyUp(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter &);
-		void _frame(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter &);
+		bool keyDown(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa);
+		bool keyUp(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter &aa);
 
-		void setCameraPosition();
+		void updateMatrices();
 
 
 		//end UFO
@@ -97,7 +97,6 @@ namespace VR {
 		virtual void setNodeTrackball(osg::Node* node);
 		virtual const osg::Node* getNodeTrackball() const;
 		virtual osg::Node* getNodeTrackball();
-		osg::observer_ptr<osg::Node> m_pNode;
 
 
 		typedef StandardManipulator inherited;
@@ -159,6 +158,7 @@ namespace VR {
 		float tb_project_to_sphere( float r, float x, float y );
 		virtual bool startAnimationByMousePointerIntersection( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& us );
 
+		osg::Matrixd _matrix;	//Matej
 		osg::Vec3d _center;
 		osg::Quat  _rotation;
 		double     _distance;

@@ -16,6 +16,12 @@ namespace VR {
 
 		virtual std::string getSQLCommand() const;
 		virtual void initFromSQLData(const std::string & astrSQLData);
+
+		virtual void setIsTargetPick(bool abIsTargetPick);
+		virtual bool getIsTargetPick() const;
+
+	private:
+		bool m_bIsTargetPick;
 	};
 }
 #endif //VR_ABSTRACT_GEOM_SHAPE_H

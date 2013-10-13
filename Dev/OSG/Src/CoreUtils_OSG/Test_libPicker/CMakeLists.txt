@@ -11,8 +11,11 @@ SET(src
 
 INCLUDE_DIRECTORIES(
 	${OPENSCENEGRAPH_INCLUDE_DIRS}
+	${CMAKE_SOURCE_DIR}/Props/Equipment/GeometricShapes/libGeometricShapes
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libPicker
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCamera
+	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_OSG
+	${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
 )
 
 ADD_EXECUTABLE(Test_libPicker
@@ -25,8 +28,11 @@ TARGET_LINK_LIBRARIES(Test_libPicker
 	${OSGUTIL_LIBRARIES}
 	${OSGVIEWER_LIBRARIES}
 	${OPENTHREADS_LIBRARIES}
+	libGeometricShapes
 	libPicker
 	libCamera
+	libCommon_OSG
+	libCommon
 )
 
 SET_PROPERTY(TARGET Test_libPicker PROPERTY FOLDER Utils)

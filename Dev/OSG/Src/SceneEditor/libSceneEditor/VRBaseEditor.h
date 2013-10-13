@@ -1,8 +1,6 @@
 #ifndef VR_BASE_OBJECT_H
 #define VR_BASE_OBJECT_H
 
-#include <iostream>
-
 #include "VRQOSGWidget.h"
 
 #include "VRDatabaseMgr.h"

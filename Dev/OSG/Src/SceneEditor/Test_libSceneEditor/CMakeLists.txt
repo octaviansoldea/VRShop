@@ -43,6 +43,7 @@ SET(LIBS_COMMON
 	${OSGVIEWER_LIBRARIES}
 	${OPENTHREADS_LIBRARIES}
 	libDatabaseMgr
+	libGeometricShapes
 	libSceneEditor
 	libCommon
 	libCamera

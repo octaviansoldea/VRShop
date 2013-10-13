@@ -28,8 +28,8 @@ m_flRadius(1.0), m_nResPhi(25), m_nResTheta(25), m_pchFileName("") {
 //-----------------------------------------------------------------------
 
 UntransformedSphere::UntransformedSphere()	{
-	//const SphereParams sphereParams;
-	//init(sphereParams);
+	const SphereParams sphereParams;
+	init(sphereParams);
 }
 
 //-----------------------------------------------------------------------

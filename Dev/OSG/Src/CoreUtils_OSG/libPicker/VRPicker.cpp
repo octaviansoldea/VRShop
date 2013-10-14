@@ -39,7 +39,7 @@ bool PickAndDragHandler::handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 								LateralVerticalToMonitor};
 
 	pScene = dynamic_cast<Group*>(viewer->getSceneData());
-	
+
 	switch (ea.getEventType())
 	{
 	case(osgGA::GUIEventAdapter::KEYDOWN): {

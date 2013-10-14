@@ -23,8 +23,6 @@ namespace VR	{
 		double m_dbMouseLastGetY;
 
 		int m_nTransformSelection;
-
-		osg::ref_ptr<osg::Node> createBoundingBox(osg::Node & aNode);
 	};
 }
 #endif //OSG_PICK_AND_DRAG_HANDLER_H

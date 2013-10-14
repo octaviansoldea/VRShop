@@ -3,6 +3,8 @@
 #include "VRUntransformedSphere.h"
 
 #include "VRPicker.h"
+#include "VRGrid.h"
+
 #include "OSGCameraManipulator.h"
 #include <osgGA/TrackballManipulator>
 
@@ -51,6 +53,7 @@ int main(int argc, char * argv[])	{
 
 	osg::ref_ptr<osg::Node> axes = osgDB::readNodeFile( "../../Resources/axes.osgt");
 	root->addChild(axes);
+	root->addChild(new VR::Grid);
 	
 	main_Plate3D(root);
 	main_Cylinder(root);
@@ -60,9 +63,8 @@ int main(int argc, char * argv[])	{
 	osgViewer::Viewer viewer;
 	viewer.setSceneData( root.get() );
 //	viewer.setUpViewInWindow(0, 0, 1000, 800);
-	viewer.setCameraManipulator(new VR::OSGCameraManipulator);
-//	viewer.setCameraManipulator(new osgGA::TrackballManipulator,false);
-	viewer.addEventHandler( new VR::PickAndDragHandler );
+//	viewer.setCameraManipulator(new VR::OSGCameraManipulator);
+//	viewer.addEventHandler( new VR::PickAndDragHandler );
 
 	return viewer.run();
 }

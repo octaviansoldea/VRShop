@@ -1,6 +1,4 @@
-#include "OSGPicker.h"
-#include "OSGCameraManipulator.h"
-#include <osgGA/TrackballManipulator>
+#include <osgViewer/Viewer>
 
 #include "Model2D.h"
 #include "Model3D.h"
@@ -39,15 +37,12 @@ int main(int argc, char * argv[])	{
 
 	osg::ref_ptr<osg::Group> root = new osg::Group;
 
-	root->addChild(pModel2D.get());
-	root->addChild(pModel3D.get());
-	root->addChild(axes);
 	root->addChild(new VR::Grid);
+//	root->addChild(pModel3D.get());
+	root->addChild(axes);
 
 	osgViewer::Viewer viewer;
 	viewer.setSceneData( root.get() );
-	viewer.setCameraManipulator(new VR::OSGCameraManipulator);
-	viewer.addEventHandler( new VR::PickAndDragHandler );
 
 	return viewer.run();
 }

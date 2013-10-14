@@ -1,4 +1,4 @@
-project(Test_libPicker)
+project(Test_libCommon_OSG)
 cmake_minimum_required( VERSION 2.8 )
 
 SET(CMAKE_DEBUG_POSTFIX "D")
@@ -11,16 +11,14 @@ SET(src
 
 INCLUDE_DIRECTORIES(
 	${OPENSCENEGRAPH_INCLUDE_DIRS}
-	${CMAKE_SOURCE_DIR}/libPicker
-	${CMAKE_SOURCE_DIR}/libCamera
-	${CMAKE_SOURCE_DIR}/libModel
 	${CMAKE_SOURCE_DIR}/libCommon_OSG
+	${CMAKE_SOURCE_DIR}/libModel
 )
 
-ADD_EXECUTABLE(Test_libPicker
+ADD_EXECUTABLE(Test_libCommon_OSG
 	main.cpp)
 
-TARGET_LINK_LIBRARIES(Test_libPicker
+TARGET_LINK_LIBRARIES(Test_libCommon_OSG
 	${OSG_LIBRARIES}
 	${OSGDB_LIBRARIES}
 	${OSGGA_LIBRARIES}
@@ -28,9 +26,7 @@ TARGET_LINK_LIBRARIES(Test_libPicker
 	${OSGVIEWER_LIBRARIES}
 	${OPENTHREADS_LIBRARIES}
 	libCommon_OSG
-	libPicker
-	libCamera
 	libModel
 )
 
-SET_PROPERTY(TARGET Test_libPicker PROPERTY FOLDER Exercise)
+SET_PROPERTY(TARGET Test_libCommon_OSG PROPERTY FOLDER Utils)

@@ -25,7 +25,7 @@ QOSGWidget::QOSGWidget(QWidget * apQWidget, Qt::WindowFlags f) : QWidget(apQWidg
 	
 	osg::Camera* m_pCamera = m_viewer.getCamera();
 	m_pCamera->setGraphicsContext(m_pGraphicsWindow);
-	m_pCamera->setProjectionResizePolicy(osg::Camera::FIXED); //To preserve the shape of elements
+	//m_pCamera->setProjectionResizePolicy(osg::Camera::FIXED); //To preserve the shape of elements
 	m_pCamera->setReferenceFrame(osg::Transform::ABSOLUTE_RF);
 	m_pCamera->setViewMatrix(osg::Matrix::identity());
 	m_pCamera->setViewport(new osg::Viewport(0, 0, width(), height()));

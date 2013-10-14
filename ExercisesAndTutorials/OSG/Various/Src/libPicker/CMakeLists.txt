@@ -8,6 +8,7 @@ SET(CMAKE_DEBUG_POSTFIX "D")
 INCLUDE_DIRECTORIES(
 	${OPENSCENEGRAPH_INCLUDE_DIRS}
 	${CMAKE_SOURCE_DIR}/libModel
+	${CMAKE_SOURCE_DIR}/libCommon_OSG
 )
 
 #Define sources to be later added into the library

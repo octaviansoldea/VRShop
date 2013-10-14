@@ -27,7 +27,9 @@ SUBDIRS(
   libModel
   libOSGQTExample
   libCamera
+  libCommon_OSG
   libPicker
+  Test_libCommon_OSG
   Test_libPicker
   Test_libCamera
   Test_libOSGQTExample  

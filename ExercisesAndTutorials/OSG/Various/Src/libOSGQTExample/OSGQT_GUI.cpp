@@ -4,6 +4,7 @@
 #include <osgGA/TrackballManipulator>
 
 #include "OSGPicker.h"
+#include "VRGrid.h"
 
 #include <osgDB/ReadFile>
 
@@ -46,7 +47,7 @@ OSGQT_GUI::OSGQT_GUI() {
 
 	//Send scene to the Widget
 	m_pOSGQT_Widget->setSceneData(pScene);
-	m_pOSGQT_Widget->setCameraManipulator(new VR::OSGCameraManipulator);
+//	m_pOSGQT_Widget->setCameraManipulator(new VR::OSGCameraManipulator);
 	m_pOSGQT_Widget->addEventHandler(new VR::PickAndDragHandler);
 //	m_pOSGQT_Widget->setCameraManipulator(new osgGA::TrackballManipulator);
 
@@ -77,6 +78,7 @@ void OSGQT_GUI::addToScene()	{
 
 	osg::ref_ptr<osg::Node> axes = osgDB::readNodeFile("../../Resources/axes.osgt");
 	pScene->addChild(axes);
+	pScene->addChild(new VR::Grid);
 }
 
 //=========================================================================================

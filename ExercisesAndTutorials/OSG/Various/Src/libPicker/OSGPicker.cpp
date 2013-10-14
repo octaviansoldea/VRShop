@@ -12,6 +12,8 @@
 
 #include <iostream>
 
+#include "VRBoundingBox.h"
+
 #include "BaseModel.h"
 #include "OSGPicker.h"
 
@@ -110,7 +112,7 @@ bool PickAndDragHandler::handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 					pPickedObject->setMatrix(m_mtrxOriginalPosition);
 
 					pPickedObject->addChild(node);
-					pPickedObject->addChild(createBoundingBox(*node));
+					pPickedObject->addChild(new VR::BoundingBox(node));
 
 					int nI;
 					for(nI = 0; nI < node->getNumParents();nI++)	{
@@ -225,41 +227,3 @@ bool PickAndDragHandler::handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 
 //---------------------------------------------------------------------------------------
 
-osg::ref_ptr<osg::Node> PickAndDragHandler::createBoundingBox(osg::Node & aNode)	{
-
-	osg::ref_ptr<osg::ComputeBoundsVisitor> cbv = new osg::ComputeBoundsVisitor();
-	aNode.accept(*cbv);
-
-	osg::BoundingBox boundingBox = cbv->getBoundingBox();
-
-	osg::ref_ptr<osg::Vec3Array> points = new osg::Vec3Array(10);
-	(*points)[0].set(boundingBox.xMin(), boundingBox.yMin(), boundingBox.zMin());
-	(*points)[1].set(boundingBox.xMin(), boundingBox.yMin(), boundingBox.zMax());
-	(*points)[2].set(boundingBox.xMax(), boundingBox.yMin(), boundingBox.zMin());
-	(*points)[3].set(boundingBox.xMax(), boundingBox.yMin(), boundingBox.zMax());
-	(*points)[4].set(boundingBox.xMax(), boundingBox.yMax(), boundingBox.zMin());
-	(*points)[5].set(boundingBox.xMax(), boundingBox.yMax(), boundingBox.zMax());
-	(*points)[6].set(boundingBox.xMin(), boundingBox.yMax(), boundingBox.zMin());
-	(*points)[7].set(boundingBox.xMin(), boundingBox.yMax(), boundingBox.zMax());
-	(*points)[8].set(boundingBox.xMin(), boundingBox.yMin(), boundingBox.zMin());
-	(*points)[9].set(boundingBox.xMin(), boundingBox.yMin(), boundingBox.zMax());
-
-	//Set color of the bounding box
-	osg::ref_ptr<osg::Vec4Array> color = new osg::Vec4Array;
-	color->push_back(osg::Vec4(1,1,1,1));
-
-	//Send points to the geometry
-	osg::ref_ptr<osg::Geometry> geom = new osg::Geometry;
-	geom->setVertexArray(points);
-	geom->setColorArray(color.get());
-	geom->setColorBinding(osg::Geometry::BIND_OVERALL);
-	geom->addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::QUAD_STRIP, 0, 10));	
-
-	//Send geometry to Geode and set StateSet
-	osg::ref_ptr<osg::Geode> bbGeode = new osg::Geode;
-	bbGeode->addDrawable(geom.get());
-	osg::StateSet* ss = bbGeode->getOrCreateStateSet();
-	ss->setAttributeAndModes(new osg::PolygonMode(osg::PolygonMode::FRONT_AND_BACK, osg::PolygonMode::LINE));
-
-	return bbGeode;
-}

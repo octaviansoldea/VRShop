@@ -30,7 +30,16 @@
     <string notr="true">border-color: qlineargradient(spread:pad, x1:0.181818, y1:0.267, x2:1, y2:0, stop:0 rgba(234, 133, 0, 255), stop:1 rgba(255, 255, 255, 255));</string>
    </property>
    <layout class="QGridLayout" name="gridLayout">
-    <property name="margin">
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
      <number>0</number>
     </property>
     <item row="0" column="0">
@@ -71,6 +80,20 @@
       </item>
       <item>
        <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="QComboBox" name="comboBox">
+          <item>
+           <property name="text">
+            <string>New Item</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Matej</string>
+           </property>
+          </item>
+         </widget>
+        </item>
         <item>
          <widget class="QToolButton" name="toolButton">
           <property name="text">
@@ -118,7 +141,7 @@
   <customwidget>
    <class>OSGQT_Widget</class>
    <extends>QWidget</extends>
-   <header>OSGQT_Widget.h</header>
+   <header location="global">OSGQT_Widget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

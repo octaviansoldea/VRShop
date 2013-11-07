@@ -26,6 +26,7 @@ ENDIF(Qt5Core_FOUND)
 SUBDIRS(
   libModel
   libOSGQTExample
+  libGUIExample
   libCamera
   libCommon_OSG
   libPicker
@@ -33,4 +34,5 @@ SUBDIRS(
   Test_libPicker
   Test_libCamera
   Test_libOSGQTExample  
+  Test_libGUIExample
 )

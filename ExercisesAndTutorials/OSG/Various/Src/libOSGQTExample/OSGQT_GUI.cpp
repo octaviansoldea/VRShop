@@ -56,8 +56,8 @@ OSGQT_GUI::OSGQT_GUI() {
 	m_pOSGQT_Widget->setWindowTitle("Qt widget window");
 
 	//To get a widget without a "TitleBar"
-	setWindowFlags(Qt::FramelessWindowHint | Qt::WindowMinMaxButtonsHint | Qt::WindowSystemMenuHint);
-
+//	setWindowFlags(Qt::FramelessWindowHint | Qt::WindowMinMaxButtonsHint | Qt::WindowSystemMenuHint);
+	
 	m_pOSGQT_Widget->show();
 
 	//SIGNAL/SLOT CONNECTIONS

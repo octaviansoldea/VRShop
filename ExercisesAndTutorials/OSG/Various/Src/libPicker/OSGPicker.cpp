@@ -14,10 +14,10 @@
 
 #include "VRBoundingBox.h"
 
-#include "BaseModel.h"
 #include "OSGPicker.h"
 
 using namespace VR;
+using namespace osg;
 
 PickAndDragHandler::PickAndDragHandler()	{
 	m_dbMouseLastGetX = 0;
@@ -119,7 +119,6 @@ bool PickAndDragHandler::handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 						pScene->removeChild(node->getParent(nI));
 					}
 					pScene->removeChild(node);
-
 					pScene->addChild(pPickedObject);
 
 					return false;
@@ -227,3 +226,8 @@ bool PickAndDragHandler::handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 
 //---------------------------------------------------------------------------------------
 
+
+Group PickAndDragHandler::mergeSelection(const BaseModel * alstNodeList)	{
+	osg::Group * grp = new Group;
+	return *grp;
+}

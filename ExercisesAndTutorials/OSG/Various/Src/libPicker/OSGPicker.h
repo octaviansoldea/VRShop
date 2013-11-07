@@ -7,11 +7,17 @@
 
 #include <osgGA/GUIEventHandler>
 
+#include "BaseModel.h"
+
+#include <vector>
+
 namespace VR	{
 	class PickAndDragHandler : public osgGA::GUIEventHandler	{
 	public:
 		PickAndDragHandler();
 		virtual bool handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa );
+
+		osg::Group mergeSelection(const BaseModel * alstNodeList);
 
 	private:
 		osg::Group * pScene;

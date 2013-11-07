@@ -7,7 +7,7 @@
 
 //--------------------------------------------------------------------
 
-OSGQT_Widget::OSGQT_Widget(QWidget * apQWidget, Qt::WindowFlags f) : QWidget(apQWidget, f | Qt::MSWindowsOwnDC) {
+OSGQT_Widget::OSGQT_Widget(QWidget * apQWidget, Qt::WindowFlags f) : QWidget(apQWidget, f /*| Qt::MSWindowsOwnDC*/) {
  	osg::ref_ptr<osg::GraphicsContext::Traits> m_pTraits = new osg::GraphicsContext::Traits(osg::DisplaySettings::instance().get());
 	m_pTraits->width = width();
 	m_pTraits->height = height();

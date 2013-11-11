@@ -303,7 +303,7 @@ QLineEdit {
               </property>
               <property name="icon">
                <iconset>
-                <normaloff>../../Resources/close-icon.png</normaloff>../../Resources/close-icon.png</iconset>
+                <normaloff>../../../Resources/Icons/close-icon.png</normaloff>../../../Resources/Icons/close-icon.png</iconset>
               </property>
               <property name="iconSize">
                <size>
@@ -1390,7 +1390,7 @@ QLineEdit {
               </property>
               <property name="icon">
                <iconset>
-                <normaloff>../../Resources/close-icon.png</normaloff>../../Resources/close-icon.png</iconset>
+                <normaloff>../../../Resources/Icons/close-icon.png</normaloff>../../../Resources/Icons/close-icon.png</iconset>
               </property>
               <property name="iconSize">
                <size>
@@ -2319,7 +2319,7 @@ QToolButton:!checked {
              </property>
              <property name="icon">
               <iconset>
-               <normaloff>../../Resources/Zoom.png</normaloff>../../Resources/Zoom.png</iconset>
+               <normaloff>../../../Resources/Icons/Zoom.png</normaloff>../../../Resources/Icons/Zoom.png</iconset>
              </property>
              <property name="checkable">
               <bool>true</bool>
@@ -2447,7 +2447,7 @@ QToolButton:!checked {
              </property>
              <property name="icon">
               <iconset>
-               <normaloff>../../Resources/cursor_hand.png</normaloff>../../Resources/cursor_hand.png</iconset>
+               <normaloff>../../../Resources/Icons/cursor_hand.png</normaloff>../../../Resources/Icons/cursor_hand.png</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -2497,7 +2497,7 @@ QToolButton:!checked {
              </property>
              <property name="icon">
               <iconset>
-               <normaloff>../../Resources/grid.png</normaloff>../../Resources/grid.png</iconset>
+               <normaloff>../../../Resources/Icons/grid.png</normaloff>../../../Resources/Icons/grid.png</iconset>
              </property>
              <property name="checkable">
               <bool>true</bool>
@@ -2756,7 +2756,7 @@ QToolButton:!checked {
                  </property>
                  <property name="icon">
                   <iconset>
-                   <normaloff>../../Resources/close-icon.png</normaloff>../../Resources/close-icon.png</iconset>
+                   <normaloff>../../../Resources/Icons/close-icon.png</normaloff>../../../Resources/Icons/close-icon.png</iconset>
                  </property>
                  <property name="iconSize">
                   <size>
@@ -3020,7 +3020,7 @@ background-color-pressed:darkgray;</string>
                     </property>
                     <property name="icon">
                      <iconset>
-                      <normaloff>../../Resources/close-icon.png</normaloff>../../Resources/close-icon.png</iconset>
+                      <normaloff>../../../Resources/Icons/close-icon.png</normaloff>../../../Resources/Icons/close-icon.png</iconset>
                     </property>
                     <property name="iconSize">
                      <size>
@@ -3302,7 +3302,7 @@ QTreeView::item:hover,QTreeView::item:selected {
               </property>
               <property name="icon">
                <iconset>
-                <normaloff>../../Resources/close-icon.png</normaloff>../../Resources/close-icon.png</iconset>
+                <normaloff>../../../Resources/Icons/close-icon.png</normaloff>../../../Resources/Icons/close-icon.png</iconset>
               </property>
               <property name="iconSize">
                <size>
@@ -3578,7 +3578,7 @@ QTreeView::item:hover,QTreeView::item:selected {
               </property>
               <property name="icon">
                <iconset>
-                <normaloff>../../Resources/close-icon.png</normaloff>../../Resources/close-icon.png</iconset>
+                <normaloff>../../../Resources/Icons/close-icon.png</normaloff>../../../Resources/Icons/close-icon.png</iconset>
               </property>
               <property name="iconSize">
                <size>

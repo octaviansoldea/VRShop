@@ -43,21 +43,18 @@ INCLUDE_DIRECTORIES(
 
 #MOC according to the Qt version
 IF(Qt5_FOUND)
-  QT5_WRAP_UI(UI_SRCS VRShopEditorDlg.ui)
-  QT5_WRAP_CPP(MOC_SRCS VRShopEditorDlg.h VRQOSGWidget.h)
+  QT5_WRAP_UI(UI_SRCS VRShopBuilder.ui)
+  QT5_WRAP_CPP(MOC_SRCS OSGQT_Widget.h VRShopBuilder.h)
 ELSE()
-  QT4_WRAP_UI(UI_SRCS VRShopEditorDlg.ui)
-  QT4_WRAP_CPP(MOC_SRCS VRShopEditorDlg.h VRQOSGWidget.h)
+  QT4_WRAP_UI(UI_SRCS VRShopBuilder.ui)
+  QT4_WRAP_CPP(MOC_SRCS OSGQT_Widget.h VRShopBuilder.h)
 ENDIF()
 
 
 #Define sources to be later added into the library
 SET(SRCS ${SRCS} ${MOC_SRCS} ${UI_SRCS}
-  VRQOSGWidget.h VRQOSGWidget.cpp
-  VRSceneEditor.cpp VRSceneEditor.h
-  VRObjectEditor.cpp VRObjectEditor.h
-  VRShopEditorDlg.cpp VRShopEditorDlg.h
-  VRBaseEditor.cpp VRBaseEditor.h
+	OSGQT_Widget.h OSGQT_Widget.cpp
+	VRShopBuilder.h VRShopBuilder.cpp
 )
 
 #Library to be later used in the main

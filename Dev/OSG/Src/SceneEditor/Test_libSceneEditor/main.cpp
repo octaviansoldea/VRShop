@@ -1,14 +1,14 @@
 #include <QApplication>
 #include <QMessageBox>
 
-#include "VRShopEditorDlg.h"
+#include "VRShopBuilder.h"
 
 using namespace VR;
 
 int main(int argc, char *argv[])	{
 	QApplication app(argc, argv);
 
-	VRShopEditorDlg widget;
+	ShopBuilder widget;
 
 	widget.show();
 

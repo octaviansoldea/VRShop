@@ -14,7 +14,7 @@
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
@@ -23,11 +23,17 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QPushButton {
+   <string notr="true">QWidget {
+	background-color: rgb(191,193,194);
+}
+
+/*	Push button*/
+QPushButton {
+	min-height: 20px;
 	border: 1px solid gray;
 	border-radius: 3px;
 	background-color: lightgray;
-	min-height: 20px;
+	selection-background-color: gray;
 }
 
 QPushButton:hover {
@@ -35,10 +41,7 @@ QPushButton:hover {
 	border-radius: 3px;
 }
 
-QAbstractButton:flat {
-	background-color: transparent;
-}
-
+/*Menu bar*/
 QMenuBar {
 	background-color:rgb(105,105,105);
 	spacing: 0px;
@@ -53,63 +56,63 @@ QMenu {
 	border: 1px solid black;
 }
 
-QComboBox::down-arrow {
-	image: url(C:/Projekti/arrow_down.png);
-    width: 10px;
-    height: 10px;
-}
-
-
+/*Combo box*/
 QComboBox {
-	min-height: 20px;
-	max-height: 20px;
+	min-height: 19px;
 	background-color: lightgray;
 	selection-background-color: gray;
 	padding-left: 4px;
 	border: 1px solid gray;
 }
 
-
-QMenuBar::item:selected, QMenu::item:selected,QTreeWidget::item:selected, QListWidget::item:selected, QComboBox:hover
-{
-	background-color: gray;
-}
-
-
-QComboBox:on { /* shift the text when the popup opens */
-	padding-top: 3px;
-	padding-left: 4px;
+QComboBox::down-arrow {
+	image: url(C:/Projekti/arrow_down.png);
+    width: 10px;
+    height: 10px;
 }
 
 QComboBox::drop-down {
 	border: 0px;
-	border-radius: 3px;
-}
-
-QComboBox::down-arrow:on { /* shift the arrow when popup is open*/
-	top: 1px;
-	left: 1px;
+    subcontrol-position: top right;
+    width: 15px;
 }
 
 QComboBox QAbstractItemView {
+	border: 1px solid black;
 	background-color: lightgray;
 	selection-background-color: gray;
 }
 
 
-/*TOOL BUTTON*/
+QMenuBar::item:selected, QMenu::item:selected,QListWidget::item:selected, QComboBox:hover
+{
+	background-color: gray;
+}
+
+
+/*Tool button*/
 QToolButton {
 	max-width: 20px;
 	max-height: 20px;
+	border: 0px solid gray;
 }
 
-</string>
+/*Line edit*/
+QLineEdit {
+    border: 1px solid gray;
+	border-radius: 3px;
+    background-color: lightgray;
+    selection-background-color: darkgray;
+}</string>
+  </property>
+  <property name="animated">
+   <bool>false</bool>
   </property>
   <property name="documentMode">
    <bool>false</bool>
   </property>
   <property name="dockOptions">
-   <set>QMainWindow::AllowNestedDocks|QMainWindow::AllowTabbedDocks|QMainWindow::AnimatedDocks</set>
+   <set>QMainWindow::AllowNestedDocks|QMainWindow::AllowTabbedDocks</set>
   </property>
   <property name="unifiedTitleAndToolBarOnMac">
    <bool>true</bool>
@@ -156,14 +159,20 @@ QToolButton {
       <property name="lineWidth">
        <number>0</number>
       </property>
+      <property name="midLineWidth">
+       <number>0</number>
+      </property>
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="opaqueResize">
+       <bool>true</bool>
       </property>
       <property name="handleWidth">
        <number>0</number>
       </property>
       <property name="childrenCollapsible">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <widget class="QSplitter" name="splitter">
        <property name="orientation">
@@ -282,8 +291,8 @@ QToolButton {
               </property>
               <property name="maximumSize">
                <size>
-                <width>22</width>
-                <height>22</height>
+                <width>20</width>
+                <height>20</height>
                </size>
               </property>
               <property name="layoutDirection">
@@ -318,6 +327,9 @@ QToolButton {
            <property name="frameShape">
             <enum>QFrame::NoFrame</enum>
            </property>
+           <property name="lineWidth">
+            <number>0</number>
+           </property>
            <property name="verticalScrollBarPolicy">
             <enum>Qt::ScrollBarAsNeeded</enum>
            </property>
@@ -332,8 +344,8 @@ QToolButton {
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>240</width>
-              <height>574</height>
+              <width>261</width>
+              <height>563</height>
              </rect>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_8">
@@ -354,6 +366,12 @@ QToolButton {
              </property>
              <item>
               <widget class="QFrame" name="verticalFrame">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
                <property name="styleSheet">
                 <string notr="true">background-color:rgb(191,193,194)</string>
                </property>
@@ -387,7 +405,7 @@ QToolButton {
                   <property name="minimumSize">
                    <size>
                     <width>0</width>
-                    <height>22</height>
+                    <height>20</height>
                    </size>
                   </property>
                   <property name="maximumSize">
@@ -410,8 +428,9 @@ QToolButton {
                   </property>
                   <property name="styleSheet">
                    <string notr="true">QPushButton {
-    background-color: transparent;
-	border: 1px solid rgba( 35, 35, 35, 0% );
+	background-color: gray;
+	border: 0px;
+	border-radius: 0px;
 	text-align: left;
 	padding-left: 5px;
 }
@@ -485,16 +504,6 @@ QToolButton {
                  <widget class="QLabel" name="label_28">
                   <property name="text">
                    <string>Y:</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="1">
-                 <widget class="QLineEdit" name="lineEdit_24">
-                  <property name="maximumSize">
-                   <size>
-                    <width>1000</width>
-                    <height>18</height>
-                   </size>
                   </property>
                  </widget>
                 </item>
@@ -644,6 +653,16 @@ QToolButton {
                   </item>
                  </layout>
                 </item>
+                <item row="1" column="1">
+                 <widget class="QLineEdit" name="lineEdit_24">
+                  <property name="maximumSize">
+                   <size>
+                    <width>1000</width>
+                    <height>18</height>
+                   </size>
+                  </property>
+                 </widget>
+                </item>
                </layout>
               </widget>
              </item>
@@ -682,7 +701,7 @@ QToolButton {
                   <property name="minimumSize">
                    <size>
                     <width>0</width>
-                    <height>22</height>
+                    <height>20</height>
                    </size>
                   </property>
                   <property name="maximumSize">
@@ -699,8 +718,9 @@ QToolButton {
                   </property>
                   <property name="styleSheet">
                    <string notr="true">QPushButton {
-    background-color:transparent;
-	border: 1px solid rgba( 35, 35, 35, 0% );
+    background-color:gray;
+	border: 0px;
+	border-radius: 0px;
 	text-align: left;
 	padding-left: 5px;
 }
@@ -903,7 +923,7 @@ QToolButton {
                   <property name="minimumSize">
                    <size>
                     <width>0</width>
-                    <height>22</height>
+                    <height>20</height>
                    </size>
                   </property>
                   <property name="maximumSize">
@@ -920,8 +940,9 @@ QToolButton {
                   </property>
                   <property name="styleSheet">
                    <string notr="true">QPushButton {
-    background-color: transparent;
-	border: 1px solid rgba( 35, 35, 35, 0% );
+    background-color: gray;
+	border: 0px;
+	border-radius: 0px;
 	text-align: left;
 	padding-left: 5px;
 }
@@ -1081,7 +1102,7 @@ QToolButton {
                   <property name="minimumSize">
                    <size>
                     <width>0</width>
-                    <height>22</height>
+                    <height>20</height>
                    </size>
                   </property>
                   <property name="maximumSize">
@@ -1098,8 +1119,9 @@ QToolButton {
                   </property>
                   <property name="styleSheet">
                    <string notr="true">QPushButton {
-	border: 1px solid rgba( 35, 35, 35, 0% );
-	background-color:transparent;
+	border: 0px;
+	border-radius: 0px;
+	background-color:gray;
 	text-align: left;
 	padding-left: 5px;
 }
@@ -1356,8 +1378,8 @@ QToolButton {
               </property>
               <property name="maximumSize">
                <size>
-                <width>22</width>
-                <height>22</height>
+                <width>20</width>
+                <height>20</height>
                </size>
               </property>
               <property name="layoutDirection">
@@ -1412,7 +1434,7 @@ QToolButton {
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>251</width>
+              <width>275</width>
               <height>443</height>
              </rect>
             </property>
@@ -1457,7 +1479,7 @@ QToolButton {
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>251</width>
+                  <width>275</width>
                   <height>443</height>
                  </rect>
                 </property>
@@ -1512,7 +1534,7 @@ QToolButton {
                       <property name="minimumSize">
                        <size>
                         <width>0</width>
-                        <height>22</height>
+                        <height>20</height>
                        </size>
                       </property>
                       <property name="maximumSize">
@@ -1535,8 +1557,9 @@ QToolButton {
                       </property>
                       <property name="styleSheet">
                        <string notr="true">QPushButton {
-    background-color: transparent;
-	border: 1px solid rgba( 35, 35, 35, 0% );
+    background-color: gray;
+	border: 0px;
+	border-radius: 0px;
 	text-align: left;
 	padding-left: 5px;
 }
@@ -1663,7 +1686,7 @@ QToolButton {
                       <property name="minimumSize">
                        <size>
                         <width>0</width>
-                        <height>22</height>
+                        <height>20</height>
                        </size>
                       </property>
                       <property name="maximumSize">
@@ -1680,8 +1703,9 @@ QToolButton {
                       </property>
                       <property name="styleSheet">
                        <string notr="true">QPushButton {
-    background-color:transparent;
-	border: 1px solid rgba( 35, 35, 35, 0% );
+    background-color:gray;
+	border: 0px;
+	border-radius: 0px;
 	text-align: left;
 	padding-left: 5px;
 }
@@ -1889,7 +1913,7 @@ QToolButton {
                       <property name="minimumSize">
                        <size>
                         <width>0</width>
-                        <height>22</height>
+                        <height>20</height>
                        </size>
                       </property>
                       <property name="maximumSize">
@@ -1906,8 +1930,9 @@ QToolButton {
                       </property>
                       <property name="styleSheet">
                        <string notr="true">QPushButton {
-    background-color: transparent;
-	border: 1px solid rgba( 35, 35, 35, 0% );
+    background-color: gray;
+	border: 0px;
+	border-radius: 0px;
 	text-align: left;
 	padding-left: 5px;
 }
@@ -2126,8 +2151,17 @@ QToolButton {
         </property>
         <item>
          <widget class="QWidget" name="verticalWidget" native="true">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="styleSheet">
-           <string notr="true">background-color:rgb(137,137,137);</string>
+           <string notr="true">background-color:rgb(137,137,137);
+margin: 0px 0px;
+border: 0px;
+padding: 0px;</string>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_16">
            <property name="spacing">
@@ -2147,6 +2181,12 @@ QToolButton {
            </property>
            <item>
             <widget class="OSGQT_Widget" name="m_pOSGQTWidget" native="true">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="styleSheet">
               <string notr="true">background-color:rgb(137,137,137);</string>
              </property>
@@ -2158,7 +2198,7 @@ QToolButton {
         <item>
          <widget class="QFrame" name="frame_5">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -2166,11 +2206,12 @@ QToolButton {
           <property name="maximumSize">
            <size>
             <width>16777215</width>
-            <height>20</height>
+            <height>21</height>
            </size>
           </property>
           <property name="styleSheet">
-           <string notr="true">background-color: rgb(191, 193, 194);</string>
+           <string notr="true">background-color: rgb(191, 193, 194);
+border: 1px solid darkgray;</string>
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout">
            <property name="spacing">
@@ -2193,16 +2234,22 @@ QToolButton {
            </property>
            <item>
             <widget class="QComboBox" name="comboBox_2">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="minimumSize">
               <size>
                <width>0</width>
-               <height>22</height>
+               <height>21</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
                <width>71</width>
-               <height>22</height>
+               <height>16777215</height>
               </size>
              </property>
              <property name="mouseTracking">
@@ -2256,13 +2303,15 @@ QToolButton {
              </property>
              <property name="styleSheet">
               <string notr="true">QToolButton:checked {
-	border: 1px solid gray;
 	background-color: rgb(191,193,194);
+	padding: 0px 0px;
+	margin: 0px 0px;
 }
 
 QToolButton:!checked {
-	border: 1px solid gray;
 	background-color: lightgray;
+	padding: 0px 0px;
+	margin: 0px 0px;
 }</string>
              </property>
              <property name="text">
@@ -2297,13 +2346,13 @@ QToolButton:!checked {
              <property name="minimumSize">
               <size>
                <width>0</width>
-               <height>22</height>
+               <height>21</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
                <width>45</width>
-               <height>22</height>
+               <height>16777215</height>
               </size>
              </property>
              <property name="mouseTracking">
@@ -2386,12 +2435,10 @@ QToolButton:!checked {
              </property>
              <property name="styleSheet">
               <string notr="true">QToolButton:checked {
-	border: 1px solid gray;
 	background-color: rgb(191,193,194);
 }
 
 QToolButton:!checked {
-	border: 1px solid gray;
 	background-color: lightgray;
 }</string>
              </property>
@@ -2438,12 +2485,10 @@ QToolButton:!checked {
              </property>
              <property name="styleSheet">
               <string notr="true">QToolButton:checked {
-	border: 1px solid gray;
 	background-color: rgb(191,193,194);
 }
 
 QToolButton:!checked {
-	border: 1px solid gray;
 	background-color: lightgray;
 }</string>
              </property>
@@ -2467,13 +2512,13 @@ QToolButton:!checked {
              <property name="minimumSize">
               <size>
                <width>0</width>
-               <height>22</height>
+               <height>21</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
                <width>81</width>
-               <height>22</height>
+               <height>16777215</height>
               </size>
              </property>
              <property name="toolTip">
@@ -2486,7 +2531,7 @@ QToolButton:!checked {
               <string notr="true"/>
              </property>
              <property name="insertPolicy">
-              <enum>QComboBox::NoInsert</enum>
+              <enum>QComboBox::InsertAtTop</enum>
              </property>
              <property name="frame">
               <bool>false</bool>
@@ -2524,7 +2569,7 @@ QToolButton:!checked {
              <property name="minimumSize">
               <size>
                <width>0</width>
-               <height>20</height>
+               <height>19</height>
               </size>
              </property>
              <property name="maximumSize">
@@ -2562,7 +2607,7 @@ QToolButton:!checked {
        <property name="handleWidth">
         <number>0</number>
        </property>
-       <widget class="QWidget" name="widget_8" native="true">
+       <widget class="QWidget" name="m_pWidget2Scene" native="true">
         <property name="minimumSize">
          <size>
           <width>0</width>
@@ -2592,12 +2637,15 @@ QToolButton:!checked {
           <number>0</number>
          </property>
          <item>
-          <widget class="QWidget" name="widget_9" native="true">
+          <widget class="QWidget" name="m_pWidgetSceneObjects" native="true">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color:rgb(191,193,194);</string>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_7">
             <property name="spacing">
@@ -2687,7 +2735,7 @@ QToolButton:!checked {
                 </spacer>
                </item>
                <item>
-                <widget class="QToolButton" name="toolButton_9">
+                <widget class="QToolButton" name="m_pToolButtonSceneObject">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                    <horstretch>0</horstretch>
@@ -2696,8 +2744,8 @@ QToolButton:!checked {
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>22</width>
-                   <height>22</height>
+                   <width>20</width>
+                   <height>20</height>
                   </size>
                  </property>
                  <property name="layoutDirection">
@@ -2722,7 +2770,7 @@ QToolButton:!checked {
              </widget>
             </item>
             <item>
-             <widget class="QFrame" name="frame">
+             <widget class="QWidget" name="widget" native="true">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                 <horstretch>0</horstretch>
@@ -2743,12 +2791,6 @@ QToolButton:!checked {
               </property>
               <property name="styleSheet">
                <string notr="true">background-color:white;</string>
-              </property>
-              <property name="frameShape">
-               <enum>QFrame::NoFrame</enum>
-              </property>
-              <property name="lineWidth">
-               <number>1</number>
               </property>
               <layout class="QHBoxLayout" name="horizontalLayout_25">
                <property name="spacing">
@@ -2791,7 +2833,9 @@ QToolButton:!checked {
                  </property>
                  <property name="styleSheet">
                   <string notr="true">color:rgb(105,105,105);
-background-color:transparent;</string>
+background-color:transparent;
+border-radius: 0px;
+border:0px;</string>
                  </property>
                  <property name="frame">
                   <bool>false</bool>
@@ -2814,15 +2858,16 @@ background-color:transparent;</string>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>22</width>
-                   <height>22</height>
+                   <width>20</width>
+                   <height>20</height>
                   </size>
                  </property>
                  <property name="autoFillBackground">
                   <bool>false</bool>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true">background-color:transparent;</string>
+                  <string notr="true">background-color:transparent;
+border: 0px;</string>
                  </property>
                  <property name="text">
                   <string>...</string>
@@ -2842,7 +2887,7 @@ background-color:transparent;</string>
             <item>
              <widget class="QWidget" name="m_pSearchListWidget" native="true">
               <property name="styleSheet">
-               <string notr="true">background-color:rgb(105,105,105);</string>
+               <string notr="true">background-color:rgb(191,193,194);</string>
               </property>
               <layout class="QHBoxLayout" name="horizontalLayout_4">
                <property name="leftMargin">
@@ -2863,9 +2908,11 @@ background-color:transparent;</string>
                   <bool>true</bool>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true">QListWidget{background-color:rgb(105,105,105)}
-QListWidget{selection-background-color: rgb(132, 132, 132)}
-QListWidget{color:rgb(255,255,255)}
+                  <string notr="true">QListWidget {
+	background-color:rgb(191,193,194);
+	selection-background-color: rgb(132, 132, 132);
+	color:rgb(255,255,255);
+}
 
 QListWidget::item:hover{background-color: rgb(132, 132, 132)}
 </string>
@@ -2958,13 +3005,15 @@ QListWidget::item:hover{background-color: rgb(132, 132, 132)}
                    <widget class="QToolButton" name="m_pSearchListWidgetButton">
                     <property name="maximumSize">
                      <size>
-                      <width>22</width>
-                      <height>22</height>
+                      <width>24</width>
+                      <height>24</height>
                      </size>
                     </property>
                     <property name="styleSheet">
-                     <string notr="true">background-color:rgb(105,105,105);
-alignment: center top;</string>
+                     <string notr="true">background-color:transparent;
+alignment: center top;
+margin: 2px;
+background-color-pressed:darkgray;</string>
                     </property>
                     <property name="text">
                      <string>...</string>
@@ -3018,11 +3067,22 @@ alignment: center top;</string>
                <bool>false</bool>
               </property>
               <property name="styleSheet">
-               <string notr="true">QTreeWidget::item:hover{background-color: rgb(132, 132, 132)}
+               <string notr="true">QHeaderView::section {
+	background-color: black;
+	color: white;
+	padding-left: 2px;
+	height: 21px;
+}
 
-QTreeWidget{selection-background-color: rgb(132, 132, 132)}
-QTreeWidget{color:rgb(0,0,0)}
-QTreeWidget{selection-color: rgb(255, 255, 255)}
+QTreeView {
+	background: rgb(191,193,194);
+	selection-background-color: rgb(132, 132, 132);
+	color:rgb(255,255,255);
+}
+
+QTreeView::item:hover,QTreeView::item:selected {
+	background-color: rgb(132,132,132);
+}
 </string>
               </property>
               <property name="frameShape">
@@ -3060,7 +3120,7 @@ QTreeWidget{selection-color: rgb(255, 255, 255)}
                 <string>Scene</string>
                </property>
                <property name="background">
-                <color>
+                <color alpha="0">
                  <red>0</red>
                  <green>0</green>
                  <blue>0</blue>
@@ -3069,9 +3129,9 @@ QTreeWidget{selection-color: rgb(255, 255, 255)}
                <property name="foreground">
                 <brush brushstyle="SolidPattern">
                  <color alpha="255">
-                  <red>255</red>
-                  <green>255</green>
-                  <blue>255</blue>
+                  <red>0</red>
+                  <green>0</green>
+                  <blue>0</blue>
                  </color>
                 </brush>
                </property>
@@ -3103,12 +3163,25 @@ QTreeWidget{selection-color: rgb(255, 255, 255)}
               </item>
              </widget>
             </item>
+            <item>
+             <spacer name="verticalSpacer_2">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
            </layout>
           </widget>
          </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="widget_7" native="true">
+       <widget class="QWidget" name="m_pWidgetModifyScene" native="true">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
           <horstretch>0</horstretch>
@@ -3209,7 +3282,7 @@ QTreeWidget{selection-color: rgb(255, 255, 255)}
              </spacer>
             </item>
             <item>
-             <widget class="QToolButton" name="toolButton_8">
+             <widget class="QToolButton" name="m_pToolButtonModifyScene">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -3218,8 +3291,8 @@ QTreeWidget{selection-color: rgb(255, 255, 255)}
               </property>
               <property name="maximumSize">
                <size>
-                <width>22</width>
-                <height>22</height>
+                <width>20</width>
+                <height>20</height>
                </size>
               </property>
               <property name="layoutDirection">
@@ -3245,6 +3318,9 @@ QTreeWidget{selection-color: rgb(255, 255, 255)}
          </item>
          <item>
           <widget class="QWidget" name="widget_6" native="true">
+           <property name="styleSheet">
+            <string notr="true"/>
+           </property>
            <layout class="QGridLayout" name="gridLayout">
             <property name="leftMargin">
              <number>10</number>
@@ -3363,25 +3439,25 @@ QTreeWidget{selection-color: rgb(255, 255, 255)}
               </property>
              </widget>
             </item>
-            <item row="3" column="0" colspan="2">
-             <spacer name="verticalSpacer_4">
-              <property name="orientation">
-               <enum>Qt::Vertical</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>20</width>
-                <height>40</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
            </layout>
           </widget>
          </item>
+         <item>
+          <spacer name="verticalSpacer_5">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
         </layout>
        </widget>
-       <widget class="QWidget" name="widget_12" native="true">
+       <widget class="QWidget" name="m_pWidgetProdSettings" native="true">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
           <horstretch>0</horstretch>
@@ -3482,7 +3558,7 @@ QTreeWidget{selection-color: rgb(255, 255, 255)}
              </spacer>
             </item>
             <item>
-             <widget class="QToolButton" name="toolButton_10">
+             <widget class="QToolButton" name="m_pToolButtonProdSettings">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -3491,8 +3567,8 @@ QTreeWidget{selection-color: rgb(255, 255, 255)}
               </property>
               <property name="maximumSize">
                <size>
-                <width>22</width>
-                <height>22</height>
+                <width>20</width>
+                <height>20</height>
                </size>
               </property>
               <property name="layoutDirection">
@@ -3541,8 +3617,8 @@ QTreeWidget{selection-color: rgb(255, 255, 255)}
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>374</width>
-              <height>277</height>
+              <width>481</width>
+              <height>268</height>
              </rect>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_14">
@@ -3559,7 +3635,7 @@ QTreeWidget{selection-color: rgb(255, 255, 255)}
               <number>0</number>
              </property>
              <property name="bottomMargin">
-              <number>0</number>
+              <number>7</number>
              </property>
              <item>
               <widget class="QFrame" name="verticalFrame_2">
@@ -3599,7 +3675,7 @@ QTreeWidget{selection-color: rgb(255, 255, 255)}
                   <property name="minimumSize">
                    <size>
                     <width>0</width>
-                    <height>22</height>
+                    <height>20</height>
                    </size>
                   </property>
                   <property name="maximumSize">
@@ -3622,8 +3698,9 @@ QTreeWidget{selection-color: rgb(255, 255, 255)}
                   </property>
                   <property name="styleSheet">
                    <string notr="true">QPushButton {
-    background-color: transparent;
-	border: 1px solid rgba( 35, 35, 35, 0% );
+    background-color: gray;
+	border: 0px;
+	border-radius: 0px;
 	text-align: left;
 	padding-left: 5px;
 }
@@ -3733,6 +3810,9 @@ QTreeWidget{selection-color: rgb(255, 255, 255)}
                 <enum>QFrame::StyledPanel</enum>
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_24">
+                <property name="spacing">
+                 <number>0</number>
+                </property>
                 <property name="leftMargin">
                  <number>0</number>
                 </property>
@@ -3759,7 +3839,7 @@ QTreeWidget{selection-color: rgb(255, 255, 255)}
                   <property name="minimumSize">
                    <size>
                     <width>0</width>
-                    <height>22</height>
+                    <height>20</height>
                    </size>
                   </property>
                   <property name="maximumSize">
@@ -3776,8 +3856,9 @@ QTreeWidget{selection-color: rgb(255, 255, 255)}
                   </property>
                   <property name="styleSheet">
                    <string notr="true">QPushButton {
-    background-color:transparent;
-	border: 1px solid rgba( 35, 35, 35, 0% );
+    background-color: gray;
+	border: 0px;
+	border-radius: 0px;
 	text-align: left;
 	padding-left: 5px;
 }
@@ -3835,7 +3916,11 @@ QTreeWidget{selection-color: rgb(255, 255, 255)}
                  <widget class="QComboBox" name="comboBox_3"/>
                 </item>
                 <item row="1" column="1">
-                 <widget class="QLineEdit" name="lineEdit"/>
+                 <widget class="QLineEdit" name="lineEdit">
+                  <property name="styleSheet">
+                   <string notr="true"/>
+                  </property>
+                 </widget>
                 </item>
                 <item row="1" column="0">
                  <widget class="QLabel" name="label_6">
@@ -3937,7 +4022,7 @@ QTreeWidget{selection-color: rgb(255, 255, 255)}
                     <property name="styleSheet">
                      <string notr="true">color: rgb(132, 132, 130);
 border: 0px;
-selection-background-color: gray;</string>
+background-color: rgb(191,193,194);</string>
                     </property>
                     <property name="text">
                      <string>More Settings</string>
@@ -3953,7 +4038,7 @@ selection-background-color: gray;</string>
               </widget>
              </item>
              <item>
-              <spacer name="verticalSpacer_6">
+              <spacer name="verticalSpacer_4">
                <property name="orientation">
                 <enum>Qt::Vertical</enum>
                </property>
@@ -4003,10 +4088,10 @@ selection-background-color: gray;</string>
    <widget class="QMenu" name="menuFile">
     <property name="geometry">
      <rect>
-      <x>185</x>
-      <y>129</y>
+      <x>237</x>
+      <y>127</y>
       <width>138</width>
-      <height>94</height>
+      <height>144</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -4020,6 +4105,10 @@ selection-background-color: gray;</string>
     </property>
     <addaction name="actionNew"/>
     <addaction name="actionOpen"/>
+    <addaction name="separator"/>
+    <addaction name="actionSave"/>
+    <addaction name="separator"/>
+    <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuScene">
     <property name="title">
@@ -4031,6 +4120,22 @@ selection-background-color: gray;</string>
     <property name="title">
      <string>     Tools     </string>
     </property>
+    <widget class="QMenu" name="menuWindows">
+     <property name="title">
+      <string>Windows</string>
+     </property>
+     <addaction name="actionAdd_properties"/>
+     <addaction name="actionCamera_Settings"/>
+     <addaction name="actionScene_Objects"/>
+     <addaction name="actionModify_Scene"/>
+     <addaction name="actionProduct_Settings"/>
+    </widget>
+    <addaction name="actionAdd_Properties"/>
+    <addaction name="actionAdd_Camera_Settings"/>
+    <addaction name="actionAdd_Scene_Objects"/>
+    <addaction name="actionAdd_Modify_Scene"/>
+    <addaction name="actionAdd_Product_Settings"/>
+    <addaction name="menuWindows"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuScene"/>
@@ -4051,6 +4156,102 @@ selection-background-color: gray;</string>
     <string>Add Scene</string>
    </property>
   </action>
+  <action name="actionExit">
+   <property name="text">
+    <string>Exit</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="text">
+    <string>Save</string>
+   </property>
+  </action>
+  <action name="actionAdd_Properties">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Add Properties</string>
+   </property>
+  </action>
+  <action name="actionAdd_Camera_Settings">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Add Camera Settings</string>
+   </property>
+  </action>
+  <action name="actionAdd_Scene_Objects">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Add Scene Objects</string>
+   </property>
+  </action>
+  <action name="actionAdd_Modify_Scene">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Add Modify Scene</string>
+   </property>
+  </action>
+  <action name="actionAdd_Product_Settings">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Add Product Settings</string>
+   </property>
+  </action>
+  <action name="actionAdd_properties">
+   <property name="text">
+    <string>Properties</string>
+   </property>
+  </action>
+  <action name="actionCamera_Settings">
+   <property name="text">
+    <string>Camera Settings</string>
+   </property>
+  </action>
+  <action name="actionScene_Objects">
+   <property name="text">
+    <string>Scene Objects</string>
+   </property>
+  </action>
+  <action name="actionModify_Scene">
+   <property name="text">
+    <string>Modify Scene</string>
+   </property>
+  </action>
+  <action name="actionProduct_Settings">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Product Settings</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -4062,7 +4263,6 @@ selection-background-color: gray;</string>
  </customwidgets>
  <tabstops>
   <tabstop>lineEdit_23</tabstop>
-  <tabstop>lineEdit_24</tabstop>
   <tabstop>lineEdit_25</tabstop>
   <tabstop>lineEdit_38</tabstop>
   <tabstop>lineEdit_39</tabstop>
@@ -4077,12 +4277,12 @@ selection-background-color: gray;</string>
   <tabstop>toolButton_3</tabstop>
   <tabstop>comboBox</tabstop>
   <tabstop>toolButton</tabstop>
-  <tabstop>toolButton_9</tabstop>
+  <tabstop>m_pToolButtonSceneObject</tabstop>
   <tabstop>lineEdit_4</tabstop>
   <tabstop>m_pToolButtonProps</tabstop>
   <tabstop>toolButton_26</tabstop>
   <tabstop>treeWidget_3</tabstop>
-  <tabstop>toolButton_8</tabstop>
+  <tabstop>m_pToolButtonModifyScene</tabstop>
   <tabstop>pushButton_4</tabstop>
   <tabstop>pushButton_6</tabstop>
   <tabstop>pushButton_7</tabstop>
@@ -4091,10 +4291,106 @@ selection-background-color: gray;</string>
  <resources/>
  <connections>
   <connection>
+   <sender>m_pSearchListWidgetButton</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>m_pSearchListWidget</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1124</x>
+     <y>73</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>947</x>
+     <y>164</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_pToolButtonProdSettings</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>m_pWidgetProdSettings</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1128</x>
+     <y>660</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>947</x>
+     <y>799</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_pPushButtonProductAdd</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>m_pProductAddWidget</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>995</x>
+     <y>652</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>995</x>
+     <y>685</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_pPushButtonProductChange</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>m_pProductChangeWidget</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>995</x>
+     <y>717</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>995</x>
+     <y>796</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_pToolButtonSceneObject</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>m_pWidget2Scene</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1128</x>
+     <y>30</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>947</x>
+     <y>244</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_pToolButtonModifyScene</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>m_pWidgetModifyScene</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1128</x>
+     <y>477</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>947</x>
+     <y>559</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
    <sender>m_pToolButtonProps</sender>
    <signal>clicked(bool)</signal>
    <receiver>m_pWidgetProps</receiver>
-   <slot>close()</slot>
+   <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>253</x>
@@ -4110,7 +4406,7 @@ selection-background-color: gray;</string>
    <sender>m_pToolButtonCamSettings</sender>
    <signal>clicked(bool)</signal>
    <receiver>m_pWidgetCamSettings</receiver>
-   <slot>close()</slot>
+   <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>253</x>
@@ -4235,34 +4531,18 @@ selection-background-color: gray;</string>
    </hints>
   </connection>
   <connection>
-   <sender>m_pPushButtonProductAdd</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>m_pProductAddWidget</receiver>
-   <slot>setVisible(bool)</slot>
+   <sender>actionExit</sender>
+   <signal>triggered(bool)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>995</x>
-     <y>652</y>
+     <x>-1</x>
+     <y>-1</y>
     </hint>
     <hint type="destinationlabel">
-     <x>995</x>
-     <y>685</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>m_pPushButtonProductChange</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>m_pProductChangeWidget</receiver>
-   <slot>setVisible(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>995</x>
-     <y>717</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>995</x>
-     <y>796</y>
+     <x>567</x>
+     <y>474</y>
     </hint>
    </hints>
   </connection>

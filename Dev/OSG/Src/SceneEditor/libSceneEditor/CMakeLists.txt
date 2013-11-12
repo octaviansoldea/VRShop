@@ -34,6 +34,7 @@ INCLUDE_DIRECTORIES(
   ${OPENSCENEGRAPH_INCLUDE_DIRS}
   ${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCamera
+  ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_OSG
   ${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor
   ${CMAKE_BINARY_DIR}/SceneEditor/libSceneEditor
   ${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabaseMgr
@@ -43,11 +44,11 @@ INCLUDE_DIRECTORIES(
 
 #MOC according to the Qt version
 IF(Qt5_FOUND)
-  QT5_WRAP_UI(UI_SRCS VRShopBuilder.ui)
-  QT5_WRAP_CPP(MOC_SRCS OSGQT_Widget.h VRShopBuilder.h)
+  QT5_WRAP_UI(UI_SRCS VRShopBuilder_GUI.ui)
+  QT5_WRAP_CPP(MOC_SRCS OSGQT_Widget.h VRShopBuilder_GUI.h)
 ELSE()
-  QT4_WRAP_UI(UI_SRCS VRShopBuilder.ui)
-  QT4_WRAP_CPP(MOC_SRCS OSGQT_Widget.h VRShopBuilder.h)
+  QT4_WRAP_UI(UI_SRCS VRShopBuilder_GUI.ui)
+  QT4_WRAP_CPP(MOC_SRCS OSGQT_Widget.h VRShopBuilder_GUI.h)
 ENDIF()
 
 
@@ -55,6 +56,7 @@ ENDIF()
 SET(SRCS ${SRCS} ${MOC_SRCS} ${UI_SRCS}
 	OSGQT_Widget.h OSGQT_Widget.cpp
 	VRShopBuilder.h VRShopBuilder.cpp
+	VRShopBuilder_GUI.h VRShopBuilder_GUI.cpp
 )
 
 #Library to be later used in the main

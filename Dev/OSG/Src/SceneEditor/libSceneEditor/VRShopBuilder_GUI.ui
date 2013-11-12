@@ -1843,6 +1843,12 @@ QLineEdit {
                           <verstretch>0</verstretch>
                          </sizepolicy>
                         </property>
+                        <property name="minimumSize">
+                         <size>
+                          <width>0</width>
+                          <height>21</height>
+                         </size>
+                        </property>
                         <property name="maximumSize">
                          <size>
                           <width>1000</width>
@@ -1861,6 +1867,12 @@ QLineEdit {
                           <horstretch>0</horstretch>
                           <verstretch>0</verstretch>
                          </sizepolicy>
+                        </property>
+                        <property name="minimumSize">
+                         <size>
+                          <width>0</width>
+                          <height>21</height>
+                         </size>
                         </property>
                         <property name="maximumSize">
                          <size>
@@ -2067,6 +2079,12 @@ QLineEdit {
                           <verstretch>0</verstretch>
                          </sizepolicy>
                         </property>
+                        <property name="minimumSize">
+                         <size>
+                          <width>0</width>
+                          <height>21</height>
+                         </size>
+                        </property>
                         <property name="maximumSize">
                          <size>
                           <width>200</width>
@@ -2085,6 +2103,12 @@ QLineEdit {
                           <horstretch>0</horstretch>
                           <verstretch>0</verstretch>
                          </sizepolicy>
+                        </property>
+                        <property name="minimumSize">
+                         <size>
+                          <width>0</width>
+                          <height>21</height>
+                         </size>
                         </property>
                         <property name="maximumSize">
                          <size>
@@ -2874,7 +2898,7 @@ border: 0px;</string>
                  </property>
                  <property name="icon">
                   <iconset>
-                   <normaloff>../../Resources/toolbar_find.png</normaloff>../../Resources/toolbar_find.png</iconset>
+                   <normaloff>../../../Resources/Icons/toolbar_find.png</normaloff>../../../Resources/Icons/toolbar_find.png</iconset>
                  </property>
                  <property name="autoRaise">
                   <bool>true</bool>
@@ -3082,7 +3106,8 @@ QTreeView {
 
 QTreeView::item:hover,QTreeView::item:selected {
 	background-color: rgb(132,132,132);
-}</string>
+}
+</string>
               </property>
               <property name="frameShape">
                <enum>QFrame::NoFrame</enum>
@@ -3338,9 +3363,15 @@ QTreeView::item:hover,QTreeView::item:selected {
             </property>
             <item row="0" column="1">
              <widget class="QPushButton" name="pushButton_4">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>21</height>
+               </size>
+              </property>
               <property name="maximumSize">
                <size>
-                <width>200</width>
+                <width>16777215</width>
                 <height>21</height>
                </size>
               </property>
@@ -3360,12 +3391,12 @@ QTreeView::item:hover,QTreeView::item:selected {
               <property name="minimumSize">
                <size>
                 <width>0</width>
-                <height>22</height>
+                <height>21</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>200</width>
+                <width>16777215</width>
                 <height>21</height>
                </size>
               </property>
@@ -3391,12 +3422,12 @@ QTreeView::item:hover,QTreeView::item:selected {
               <property name="minimumSize">
                <size>
                 <width>0</width>
-                <height>22</height>
+                <height>21</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>200</width>
+                <width>16777215</width>
                 <height>21</height>
                </size>
               </property>
@@ -3413,9 +3444,15 @@ QTreeView::item:hover,QTreeView::item:selected {
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>21</height>
+               </size>
+              </property>
               <property name="maximumSize">
                <size>
-                <width>200</width>
+                <width>16777215</width>
                 <height>21</height>
                </size>
               </property>
@@ -3426,6 +3463,12 @@ QTreeView::item:hover,QTreeView::item:selected {
             </item>
             <item row="2" column="0">
              <widget class="QPushButton" name="pushButton_11">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>21</height>
+               </size>
+              </property>
               <property name="text">
                <string>Duplicate Selection</string>
               </property>
@@ -3433,6 +3476,12 @@ QTreeView::item:hover,QTreeView::item:selected {
             </item>
             <item row="2" column="1">
              <widget class="QPushButton" name="pushButton_12">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>21</height>
+               </size>
+              </property>
               <property name="text">
                <string>Delete Selection</string>
               </property>
@@ -3634,7 +3683,7 @@ QTreeView::item:hover,QTreeView::item:selected {
               <number>0</number>
              </property>
              <property name="bottomMargin">
-              <number>7</number>
+              <number>0</number>
              </property>
              <item>
               <widget class="QFrame" name="verticalFrame_2">
@@ -3768,6 +3817,12 @@ QTreeView::item:hover,QTreeView::item:selected {
                   </property>
                   <item>
                    <widget class="QPushButton" name="pushButton_15">
+                    <property name="minimumSize">
+                     <size>
+                      <width>0</width>
+                      <height>21</height>
+                     </size>
+                    </property>
                     <property name="autoFillBackground">
                      <bool>false</bool>
                     </property>
@@ -3790,6 +3845,12 @@ QTreeView::item:hover,QTreeView::item:selected {
                   </item>
                   <item>
                    <widget class="QPushButton" name="pushButton_16">
+                    <property name="minimumSize">
+                     <size>
+                      <width>0</width>
+                      <height>21</height>
+                     </size>
+                    </property>
                     <property name="text">
                      <string>Remove Product</string>
                     </property>
@@ -3977,13 +4038,13 @@ QTreeView::item:hover,QTreeView::item:selected {
                     <property name="minimumSize">
                      <size>
                       <width>0</width>
-                      <height>22</height>
+                      <height>21</height>
                      </size>
                     </property>
                     <property name="maximumSize">
                      <size>
                       <width>16777215</width>
-                      <height>22</height>
+                      <height>21</height>
                      </size>
                     </property>
                     <property name="text">
@@ -3993,10 +4054,16 @@ QTreeView::item:hover,QTreeView::item:selected {
                   </item>
                   <item>
                    <widget class="QPushButton" name="pushButton_30">
+                    <property name="minimumSize">
+                     <size>
+                      <width>0</width>
+                      <height>21</height>
+                     </size>
+                    </property>
                     <property name="maximumSize">
                      <size>
                       <width>16777215</width>
-                      <height>22</height>
+                      <height>21</height>
                      </size>
                     </property>
                     <property name="text">
@@ -4006,10 +4073,16 @@ QTreeView::item:hover,QTreeView::item:selected {
                   </item>
                   <item>
                    <widget class="QPushButton" name="pushButton_31">
+                    <property name="minimumSize">
+                     <size>
+                      <width>0</width>
+                      <height>21</height>
+                     </size>
+                    </property>
                     <property name="maximumSize">
                      <size>
                       <width>16777215</width>
-                      <height>22</height>
+                      <height>21</height>
                      </size>
                     </property>
                     <property name="layoutDirection">

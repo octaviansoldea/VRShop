@@ -1,5 +1,5 @@
-#ifndef CUPBOARD_H
-#define CUPBOARD_H
+#ifndef VR_CUPBOARD_H
+#define VR_CUPBOARD_H
 
 #include <osg/MatrixTransform>
 
@@ -25,4 +25,4 @@ namespace VR	{
 		void initFromSQLData(const std::string & astrSQLData);
 	};
 }
-#endif //CUPBOARD_H
+#endif //VR_CUPBOARD_H

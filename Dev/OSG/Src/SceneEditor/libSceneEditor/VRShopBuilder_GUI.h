@@ -2,7 +2,6 @@
 #define VR_SHOP_BUILDER_GUI_H
 
 #include <QMainWindow>
-#include <osg/Group>
 #include "VRShopBuilder.h"
 #include "ui_VRShopBuilder_GUI.h"
 

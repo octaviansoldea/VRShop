@@ -96,7 +96,7 @@ void main_InsertIntoDatabase_Parallelepiped()	{
 int main(int argc, char *argv[])	{
 	QApplication app(argc,argv);
 
-	int nSelection = 5;
+	int nSelection = 7;
 	switch (nSelection)	{
 	case 1: createTable();
 		break;

@@ -6,7 +6,6 @@
 #include <osgDB/ReadFile>
 #include <osg/TextureRectangle>
 #include <osg/TexMat>
-#include <osg/ArgumentParser>
 
 #include "VRDatabaseMgr.h"
 
@@ -208,39 +207,39 @@ void main_Plate3D_DB(ref_ptr<Group> pScene)	{
 
 int main(int argc, char * argv[])	{
 	QApplication app(argc,argv);
-	if(argc<3)	{
-		printError("Error Message: Using too few arguments.");
-		exit(-1);
-	}
 
 	ref_ptr<Group> pScene = new Group;
 	if(argc>1)	{
-		ref_ptr<Node> pAxes = osgDB::readNodeFile(argv[1]);
+		ref_ptr<Node> pAxes = osgDB::readNodeFile("../../../../Resources/Models3D/axes.osgt");
 		pScene->addChild(pAxes);
 	}
 
-	ArgumentParser arguments(&argc, argv);
-	while (arguments.read("--Test_1")) main_UntransformedPlate2D_Color(pScene);
-	while (arguments.read("--Test_2")) main_UntransformedPlate2D_Texture(pScene);
-	while (arguments.read("--Test_3")) main_UntransformedPlate3D(pScene);
-	while (arguments.read("--Test_4")) main_UntransformedPlate3D_Color(pScene);
-	while (arguments.read("--Test_5")) main_UntransformedPlate3D_Texture(pScene);
-	while (arguments.read("--Test_6")) main_Plate3D(pScene);
-	while (arguments.read("--Test_7")) main_Plate3D_DB(pScene);
-	while (arguments.read("--Test_8")) main_UntransformedPolygon2D(pScene);
-	while (arguments.read("--Test_9")) main_UntransformedPolygon2D_Color(pScene);
-	while (arguments.read("--Test_10")) main_UntransformedPolygon3D_Color(pScene);
-	while (arguments.read("--Test_11")) main_UntransformedPolygon3D_Texture(pScene);
-	while (arguments.read("--Test_12")) main_Cylinder(pScene);
-	while (arguments.read("--Test_13")) main_UntransformedSphere_Color(pScene);
-	while (arguments.read("--Test_14")) main_UntransformedSphere_Texture(pScene);
+	int nSelection = 15;
+	switch (nSelection)	{
+	case 1: main_UntransformedPlate2D_Color(pScene); break;
+	case 2: main_UntransformedPlate2D_Texture(pScene); break;
+	case 3: main_UntransformedPlate3D(pScene); break;
+	case 4: main_UntransformedPlate3D_Color(pScene); break;
+	case 5: main_UntransformedPlate3D_Texture(pScene); break;
+	case 6: main_Plate3D(pScene); break;
+	case 7: main_Plate3D_DB(pScene); break;
+	case 8: main_UntransformedPolygon2D(pScene); break;
+	case 9: main_UntransformedPolygon2D_Color(pScene); break;
+	case 10: main_UntransformedPolygon3D_Color(pScene); break;
+	case 11: main_UntransformedPolygon3D_Texture(pScene); break;
+	case 12: main_Cylinder(pScene); break;
+	case 13: main_UntransformedSphere_Color(pScene); break;
+	case 14: main_UntransformedSphere_Texture(pScene); break;
 
-	while (arguments.read("--Test_15")) main_SelectFromDatabase_Sphere(pScene);
-
+	case 15: main_SelectFromDatabase_Sphere(pScene); break;
 	
+	default:	{
+		printError("Error Message: Wrong test number set.");
+		exit(-1);
+				}
+	}
 	osgViewer::Viewer viewer;
 	viewer.setSceneData(pScene);
 
 	return viewer.run();
 }
-// argv{1} = ../../../../Resources/Models3D/axes.osgt

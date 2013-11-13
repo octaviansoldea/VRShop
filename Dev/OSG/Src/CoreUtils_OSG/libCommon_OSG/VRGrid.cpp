@@ -9,9 +9,9 @@ using namespace VR;
 
 GridParams::GridParams() :
 m_nResLat(20),
-m_nResLong(30),
-m_flSpacing(0.5),
-m_dbStartCenter(0,0,0)	{
+	m_nResLong(30),
+	m_flSpacing(0.5),
+	m_dbStartCenter(0,0,0)	{
 };
 
 //-----------------------------------------------------------

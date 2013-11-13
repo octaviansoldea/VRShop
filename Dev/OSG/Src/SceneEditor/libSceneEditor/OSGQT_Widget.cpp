@@ -9,28 +9,28 @@
 //--------------------------------------------------------------------
 
 OSGQT_Widget::OSGQT_Widget(QWidget * apQWidget, Qt::WindowFlags f) : QWidget(apQWidget, f | Qt::MSWindowsOwnDC) {
- 	osg::ref_ptr<osg::GraphicsContext::Traits> m_pTraits = new osg::GraphicsContext::Traits(osg::DisplaySettings::instance().get());
-	m_pTraits->width = width();
-	m_pTraits->height = height();
-	m_pTraits->doubleBuffer = true;
+ 	osg::ref_ptr<osg::GraphicsContext::Traits> pTraits = new osg::GraphicsContext::Traits(osg::DisplaySettings::instance().get());
+	pTraits->width = width();
+	pTraits->height = height();
+	pTraits->doubleBuffer = true;
 	
-	osgQt::GraphicsWindowQt* m_pGraphicsWindow = new osgQt::GraphicsWindowQt(m_pTraits.get());
+	osgQt::GraphicsWindowQt* pGraphicsWindow = new osgQt::GraphicsWindowQt(pTraits.get());
 
-	QGridLayout* m_pGrid = new QGridLayout;
-	m_pGrid->setMargin(0);
-	m_pGrid->addWidget(m_pGraphicsWindow->getGraphWidget(), 0, 0);
-	setLayout(m_pGrid);
+	QGridLayout* pGrid = new QGridLayout;
+	pGrid->setMargin(0);
+	pGrid->addWidget(pGraphicsWindow->getGraphWidget(), 0, 0);
+	setLayout(pGrid);
 	
 	m_viewer.setThreadingModel(osgViewer::Viewer::SingleThreaded);
 	m_viewer.getCamera()->setClearColor(osg::Vec4(0.53725,0.53725,0.53725,1));
 
-	osg::Camera* m_pCamera = m_viewer.getCamera();
+	osg::Camera* pCamera = m_viewer.getCamera();
 	
-	m_pCamera->setGraphicsContext(m_pGraphicsWindow);
-	m_pCamera->setProjectionResizePolicy(osg::Camera::FIXED); //To preserve the shape of elements
-	m_pCamera->setReferenceFrame(osg::Transform::ABSOLUTE_RF);
-	m_pCamera->setViewMatrix(osg::Matrix::identity());
-	m_pCamera->setViewport(new osg::Viewport(0, 0, width(), height()));
+	pCamera->setGraphicsContext(pGraphicsWindow);
+	pCamera->setProjectionResizePolicy(osg::Camera::FIXED); //To preserve the shape of elements
+	pCamera->setReferenceFrame(osg::Transform::ABSOLUTE_RF);
+	pCamera->setViewMatrix(osg::Matrix::identity());
+	pCamera->setViewport(new osg::Viewport(0, 0, width(), height()));
 	
 	startTimer(10);
 }

@@ -13,6 +13,13 @@ namespace VR	{
 		ShopBuilder m_ShopBuilder;
 	private:
 		void buildConnections();
+
+		QString openDialog(const char * apchDBName);
+		QString saveDialog(const char * apchDBName);
+	
+	public slots:
+		void slotOpenDB();
+		void slotSaveDB();
 	};
 }
 #endif //VR_SHOP_BUILDER_GUI_H

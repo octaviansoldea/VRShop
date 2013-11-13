@@ -23,17 +23,15 @@ using namespace std;
 using namespace VR;
 
 
-void createTable() {
-	std::string strDatabase = "../../Databases/Products.db";
-	DatabaseMgr & database = DatabaseMgr::Create(strDatabase.c_str(), DatabaseMgr::QSQLITE);
+void createTable(const string & astrDBName) {
+	DatabaseMgr & database = DatabaseMgr::Create(astrDBName.c_str(), DatabaseMgr::QSQLITE);
 	database.createTable();
 }
 
 //--------------------------------------------------------------
 
-void populateTable()	{
-	std::string strDatabase = "../../Databases/Products.db";
-	DatabaseMgr & database = DatabaseMgr::Create(strDatabase.c_str(), DatabaseMgr::QSQLITE);
+void populateTable(const string & astrDBName)	{
+	DatabaseMgr & database = DatabaseMgr::Create(astrDBName.c_str(), DatabaseMgr::QSQLITE);
 
 	DatabaseMgrParams dMgrP;
 	dMgrP.m_arrflParams.resize(0);
@@ -54,9 +52,8 @@ void populateTable()	{
 
 //--------------------------------------------------------------
 
-void main_InsertIntoDatabase_Sphere()	{
-	std::string strDatabase = "../../Databases/Products.db";
-	DatabaseMgr & database = DatabaseMgr::Create(strDatabase.c_str(), DatabaseMgr::QSQLITE);
+void insertIntoDatabase_Sphere(const string & astrDBName)	{
+	DatabaseMgr & database = DatabaseMgr::Create(astrDBName.c_str(), DatabaseMgr::QSQLITE);
 
 	ref_ptr < UntransformedSphere > pSphere =  new UntransformedSphere;
 	string strCommand = pSphere->getSQLCommand();
@@ -66,9 +63,8 @@ void main_InsertIntoDatabase_Sphere()	{
 
 //--------------------------------------------------------------
 
-void main_InsertIntoDatabase_Cylinder()	{
-	std::string strDatabase = "../../Databases/Products.db";
-	DatabaseMgr & database = DatabaseMgr::Create(strDatabase.c_str(), DatabaseMgr::QSQLITE);
+void insertIntoDatabase_Cylinder(const string & astrDBName)	{
+	DatabaseMgr & database = DatabaseMgr::Create(astrDBName.c_str(), DatabaseMgr::QSQLITE);
 
 	ref_ptr < VR::Cylinder > pCylinder =  new VR::Cylinder;
 	string strCommand = pCylinder->getSQLCommand();
@@ -78,9 +74,8 @@ void main_InsertIntoDatabase_Cylinder()	{
 
 //--------------------------------------------------------------
 
-void main_InsertIntoDatabase_Parallelepiped()	{
-	std::string strDatabase = "../../Databases/Products.db";
-	DatabaseMgr & database = DatabaseMgr::Create(strDatabase.c_str(), DatabaseMgr::QSQLITE);
+void insertIntoDatabase_Parallelepiped(const string & astrDBName)	{
+	DatabaseMgr & database = DatabaseMgr::Create(astrDBName.c_str(), DatabaseMgr::QSQLITE);
 
 	ref_ptr < Plate3D > pPlate3D =  new Plate3D;
 	string strCommand = pPlate3D->getSQLCommand();
@@ -96,22 +91,22 @@ void main_InsertIntoDatabase_Parallelepiped()	{
 int main(int argc, char *argv[])	{
 	QApplication app(argc,argv);
 
-	int nSelection = 7;
-	switch (nSelection)	{
-	case 1: createTable();
-		break;
-	case 2: populateTable();
-		break;
-	case 3: main_InsertIntoDatabase_Sphere();
-		break;
-	case 4: main_InsertIntoDatabase_Cylinder();;
-		break;
-	case 5: main_InsertIntoDatabase_Parallelepiped();
-		break;
-	default:	{
-		printError("Error Message: Wrong test number set.");
-		exit(-1);
-				}
-	}
+	string strDBName;
+	
+	strDBName = "../../Databases/ProductsSphere.db";
+	createTable(strDBName);
+	populateTable(strDBName);
+	insertIntoDatabase_Sphere(strDBName);
+
+	strDBName = "../../Databases/ProductsCylinder.db";
+	createTable(strDBName);
+	populateTable(strDBName);
+	insertIntoDatabase_Sphere(strDBName);
+
+	strDBName = "../../Databases/ProductsParallelipiped.db";
+	createTable(strDBName);
+	populateTable(strDBName);
+	insertIntoDatabase_Parallelepiped(strDBName);
+
 	return(0);
 }

@@ -343,8 +343,8 @@ QLineEdit {
             <property name="geometry">
              <rect>
               <x>0</x>
-              <y>0</y>
-              <width>258</width>
+              <y>-101</y>
+              <width>261</width>
               <height>563</height>
              </rect>
             </property>
@@ -627,7 +627,7 @@ QLineEdit {
                      </size>
                     </property>
                     <property name="text">
-                     <string>Translate relative to:</string>
+                     <string>Translate Relative to:</string>
                     </property>
                     <property name="buddy">
                      <cstring>m_pTranslationWidget</cstring>
@@ -867,7 +867,7 @@ QLineEdit {
                    </widget>
                   </item>
                   <item>
-                   <widget class="QComboBox" name="comboBox_4">
+                   <widget class="QComboBox" name="m_p_ComboBox_CenterOfRotation">
                     <property name="frame">
                      <bool>false</bool>
                     </property>
@@ -1629,13 +1629,13 @@ QLineEdit {
                         </widget>
                        </item>
                        <item>
-                        <widget class="QComboBox" name="m_pComboBox_PredefinedViewport">
+                        <widget class="QComboBox" name="m_p_ComboBox_PredefinedViewport">
                          <property name="frame">
                           <bool>false</bool>
                          </property>
                          <item>
                           <property name="text">
-                           <string>User's View</string>
+                           <string>User View</string>
                           </property>
                          </item>
                          <item>
@@ -1769,7 +1769,7 @@ QLineEdit {
                      </widget>
                     </item>
                     <item row="0" column="1">
-                     <widget class="QLineEdit" name="m_p_LineEdit_CameraPositionX">
+                     <widget class="QLineEdit" name="m_p_LineEdit_PositionX">
                       <property name="maximumSize">
                        <size>
                         <width>1000</width>
@@ -1786,7 +1786,7 @@ QLineEdit {
                      </widget>
                     </item>
                     <item row="1" column="1">
-                     <widget class="QLineEdit" name="m_p_LineEdit_CameraPositionY">
+                     <widget class="QLineEdit" name="m_p_LineEdit_PositionY">
                       <property name="maximumSize">
                        <size>
                         <width>1000</width>
@@ -1803,7 +1803,7 @@ QLineEdit {
                      </widget>
                     </item>
                     <item row="2" column="1">
-                     <widget class="QLineEdit" name="m_p_LineEdit_CameraPositionZ">
+                     <widget class="QLineEdit" name="m_p_LineEdit_PositionZ">
                       <property name="maximumSize">
                        <size>
                         <width>1000</width>
@@ -2360,7 +2360,7 @@ QToolButton:!checked {
             </widget>
            </item>
            <item>
-            <widget class="QComboBox" name="m_p_ComboBox_DragAxis">
+            <widget class="QComboBox" name="m_p_ComboBox_DefineDragAxis">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
                <horstretch>0</horstretch>
@@ -2435,7 +2435,7 @@ QToolButton:!checked {
             </widget>
            </item>
            <item>
-            <widget class="QToolButton" name="m_p_ToolButton_CameraManipulator">
+            <widget class="QToolButton" name="m_p_ToolButton_CameraManipulatorOnOff">
              <property name="maximumSize">
               <size>
                <width>22</width>
@@ -2527,7 +2527,7 @@ QToolButton:!checked {
               <bool>true</bool>
              </property>
              <property name="checked">
-              <bool>true</bool>
+              <bool>false</bool>
              </property>
             </widget>
            </item>
@@ -3614,7 +3614,7 @@ QTreeView::item:hover,QTreeView::item:selected {
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>483</width>
+              <width>547</width>
               <height>264</height>
              </rect>
             </property>
@@ -3922,12 +3922,29 @@ QTreeView::item:hover,QTreeView::item:selected {
                  </widget>
                 </item>
                 <item row="0" column="1" colspan="3">
-                 <widget class="QComboBox" name="m_p_ComboBox_ProductSettings_ProductName"/>
+                 <widget class="QComboBox" name="m_p_ComboBox_ProductSettings_ProductName">
+                  <property name="currentText">
+                   <string>New Item</string>
+                  </property>
+                  <item>
+                   <property name="text">
+                    <string>New Item</string>
+                   </property>
+                  </item>
+                  <item>
+                   <property name="text">
+                    <string>New Item1</string>
+                   </property>
+                  </item>
+                 </widget>
                 </item>
                 <item row="1" column="1">
                  <widget class="QLineEdit" name="m_p_LineEdit_ProductSettings_Price">
                   <property name="styleSheet">
                    <string notr="true"/>
+                  </property>
+                  <property name="readOnly">
+                   <bool>true</bool>
                   </property>
                  </widget>
                 </item>
@@ -3939,10 +3956,18 @@ QTreeView::item:hover,QTreeView::item:selected {
                  </widget>
                 </item>
                 <item row="2" column="1">
-                 <widget class="QLineEdit" name="m_p_LineEdit_ProductSettings_Quantity"/>
+                 <widget class="QLineEdit" name="m_p_LineEdit_ProductSettings_Quantity">
+                  <property name="readOnly">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
                 </item>
                 <item row="1" column="3">
-                 <widget class="QLineEdit" name="m_p_LineEdit_ProductSettings_NewPrice"/>
+                 <widget class="QLineEdit" name="m_p_LineEdit_ProductSettings_NewPrice">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
+                 </widget>
                 </item>
                 <item row="2" column="0">
                  <widget class="QLabel" name="label_8">
@@ -3966,7 +3991,11 @@ QTreeView::item:hover,QTreeView::item:selected {
                  </widget>
                 </item>
                 <item row="2" column="3">
-                 <widget class="QLineEdit" name="m_p_LineEdit_ProductSettings_NewQuantity"/>
+                 <widget class="QLineEdit" name="m_p_LineEdit_ProductSettings_NewQuantity">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
+                 </widget>
                 </item>
                 <item row="3" column="0" colspan="4">
                  <layout class="QHBoxLayout" name="horizontalLayout_9">
@@ -4111,8 +4140,8 @@ background-color: rgb(191,193,194);</string>
      <rect>
       <x>187</x>
       <y>171</y>
-      <width>130</width>
-      <height>196</height>
+      <width>138</width>
+      <height>190</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -4325,8 +4354,8 @@ background-color: rgb(191,193,194);</string>
   <tabstop>m_pToolButtonCamSettings</tabstop>
   <tabstop>m_pComboBox_PercentageZoom</tabstop>
   <tabstop>m_p_ToolButton_RefinedZoom</tabstop>
-  <tabstop>m_p_ComboBox_DragAxis</tabstop>
-  <tabstop>m_p_ToolButton_CameraManipulator</tabstop>
+  <tabstop>m_p_ComboBox_DefineDragAxis</tabstop>
+  <tabstop>m_p_ToolButton_CameraManipulatorOnOff</tabstop>
   <tabstop>m_pToolButtonSceneObject</tabstop>
   <tabstop>m_p_LineEdit_Search</tabstop>
   <tabstop>m_pToolButtonProps</tabstop>
@@ -4593,6 +4622,38 @@ background-color: rgb(191,193,194);</string>
     <hint type="destinationlabel">
      <x>567</x>
      <y>474</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_p_ToolButton_Search</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>m_pSearchListWidget</receiver>
+   <slot>show()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1124</x>
+     <y>51</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>861</x>
+     <y>158</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_p_LineEdit_Search</sender>
+   <signal>editingFinished()</signal>
+   <receiver>m_pSearchListWidget</receiver>
+   <slot>show()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>850</x>
+     <y>52</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>861</x>
+     <y>158</y>
     </hint>
    </hints>
   </connection>

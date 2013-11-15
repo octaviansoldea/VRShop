@@ -15,5 +15,5 @@ ShopBuilder::ShopBuilder() {
 
 	ref_ptr<Node> pAxes = osgDB::readNodeFile("../../../Resources/Models3D/axes.osgt");
 	m_pScene->addChild(pAxes);
-	m_pScene->addChild(new Grid);
+//	m_pScene->addChild(new Grid);
 }

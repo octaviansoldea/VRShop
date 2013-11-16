@@ -51,29 +51,29 @@ void ShopBuilder_GUI::buildConnections() {
 
 	connect(m_p_ComboBox_DefineDragAxis, SIGNAL(currentTextChanged(const QString &)),this,SLOT(slotDefineDragAxis(const QString &)));
 
-	connect(m_p_LineEdit_TranslateX,SIGNAL(textChanged(const QString &)),this,SLOT(slotSetTranslation()));
-	connect(m_p_LineEdit_TranslateY,SIGNAL(textChanged(const QString &)),this,SLOT(slotSetTranslation()));
-	connect(m_p_LineEdit_TranslateZ,SIGNAL(textChanged(const QString &)),this,SLOT(slotSetTranslation()));
+	connect(m_p_DoubleSpinBox_TranslationX,SIGNAL(valueChanged(double)),this,SLOT(slotSetTranslation()));
+	connect(m_p_DoubleSpinBox_TranslationY,SIGNAL(valueChanged(double)),this,SLOT(slotSetTranslation()));
+	connect(m_p_DoubleSpinBox_TranslationZ,SIGNAL(valueChanged(double)),this,SLOT(slotSetTranslation()));
 
-	connect(m_p_LineEdit_RotationX,SIGNAL(textChanged(const QString &)),this,SLOT(slotSetRotation()));
-	connect(m_p_LineEdit_RotationY,SIGNAL(textChanged(const QString &)),this,SLOT(slotSetRotation()));
-	connect(m_p_LineEdit_RotationZ,SIGNAL(textChanged(const QString &)),this,SLOT(slotSetRotation()));
+	connect(m_p_DoubleSpinBox_RotationX,SIGNAL(valueChanged(double)),this,SLOT(slotSetRotation()));
+	connect(m_p_DoubleSpinBox_RotationY,SIGNAL(valueChanged(double)),this,SLOT(slotSetRotation()));
+	connect(m_p_DoubleSpinBox_RotationZ,SIGNAL(valueChanged(double)),this,SLOT(slotSetRotation()));
 
-	connect(m_p_LineEdit_ScalingX,SIGNAL(textChanged(const QString &)),this,SLOT(slotSetScaling()));
-	connect(m_p_LineEdit_ScalingY,SIGNAL(textChanged(const QString &)),this,SLOT(slotSetScaling()));
-	connect(m_p_LineEdit_ScalingZ,SIGNAL(textChanged(const QString &)),this,SLOT(slotSetScaling()));
+	connect(m_p_DoubleSpinBox_ScalingX,SIGNAL(valueChanged(double)),this,SLOT(slotSetScaling()));
+	connect(m_p_DoubleSpinBox_ScalingY,SIGNAL(valueChanged(double)),this,SLOT(slotSetScaling()));
+	connect(m_p_DoubleSpinBox_ScalingZ,SIGNAL(valueChanged(double)),this,SLOT(slotSetScaling()));
 
-	connect(m_p_LineEdit_ShearingX,SIGNAL(textChanged(const QString &)),this,SLOT(slotSetShearing()));
-	connect(m_p_LineEdit_ShearingY,SIGNAL(textChanged(const QString &)),this,SLOT(slotSetShearing()));
-	connect(m_p_LineEdit_ShearingZ,SIGNAL(textChanged(const QString &)),this,SLOT(slotSetShearing()));
+	connect(m_p_DoubleSpinBox_ShearingX,SIGNAL(valueChanged(double)),this,SLOT(slotSetShearing()));
+	connect(m_p_DoubleSpinBox_ShearingY,SIGNAL(valueChanged(double)),this,SLOT(slotSetShearing()));
+	connect(m_p_DoubleSpinBox_ShearingZ,SIGNAL(valueChanged(double)),this,SLOT(slotSetShearing()));
 
-	connect(m_p_LineEdit_PositionX,SIGNAL(textChanged(const QString &)),this,SLOT(slotSetPosition()));
-	connect(m_p_LineEdit_PositionY,SIGNAL(textChanged(const QString &)),this,SLOT(slotSetPosition()));
-	connect(m_p_LineEdit_PositionZ,SIGNAL(textChanged(const QString &)),this,SLOT(slotSetPosition()));
+	connect(m_p_DoubleSpinBox_CameraPositionX,SIGNAL(valueChanged(double)),this,SLOT(slotSetPosition()));
+	connect(m_p_DoubleSpinBox_CameraPositionY,SIGNAL(valueChanged(double)),this,SLOT(slotSetPosition()));
+	connect(m_p_DoubleSpinBox_CameraPositionZ,SIGNAL(valueChanged(double)),this,SLOT(slotSetPosition()));
 
-	connect(m_p_LineEdit_DirectionX,SIGNAL(textChanged(const QString &)),this,SLOT(slotSetDirection()));
-	connect(m_p_LineEdit_DirectionY,SIGNAL(textChanged(const QString &)),this,SLOT(slotSetDirection()));
-	connect(m_p_LineEdit_DirectionZ,SIGNAL(textChanged(const QString &)),this,SLOT(slotSetDirection()));
+	connect(m_p_DoubleSpinBox_CameraDirectionX,SIGNAL(valueChanged(double)),this,SLOT(slotSetDirection()));
+	connect(m_p_DoubleSpinBox_CameraDirectionY,SIGNAL(valueChanged(double)),this,SLOT(slotSetDirection()));
+	connect(m_p_DoubleSpinBox_CameraDirectionZ,SIGNAL(valueChanged(double)),this,SLOT(slotSetDirection()));
 
 	connect(m_p_ComboBox_DirectionOfTranslation,SIGNAL(currentTextChanged(const QString &)),this,SLOT(slotSetDirectionOfTranslation(const QString &)));
 	connect(m_p_ComboBox_TranslateRelativeTo,SIGNAL(currentTextChanged(const QString &)),this,SLOT(slotSetTranslateRelativeTo(const QString &)));
@@ -220,12 +220,7 @@ void ShopBuilder_GUI::slotDefineDragAxis(const QString & astrAxis)	{
 //---------------------------------------------------------------------------------------
 
 void ShopBuilder_GUI::slotSetTranslation()	{
-	QLineEdit * pLineEdit = dynamic_cast<QLineEdit*>(sender());
-	if (pLineEdit == m_p_LineEdit_TranslateX || m_p_LineEdit_TranslateY || m_p_LineEdit_TranslateZ)	{
-		double X = m_p_LineEdit_TranslateX->text().toDouble();
-		double Y = m_p_LineEdit_TranslateY->text().toDouble();
-		double Z = m_p_LineEdit_TranslateZ->text().toDouble();
-	}
+	QDoubleSpinBox * pQDoubleSpinBox = dynamic_cast<QDoubleSpinBox*>(sender());
 }
 
 //---------------------------------------------------------------------------------------
@@ -248,12 +243,8 @@ void ShopBuilder_GUI::slotSetCenterOfRotation(const QString & astrText)	{
 
 //---------------------------------------------------------------------------------------
 void ShopBuilder_GUI::slotSetRotation()	{
-	QLineEdit * pLineEdit = dynamic_cast<QLineEdit*>(sender());
-	if (pLineEdit == m_p_LineEdit_RotationX || m_p_LineEdit_RotationY || m_p_LineEdit_RotationZ)	{
-		double X = m_p_LineEdit_RotationX->text().toDouble();
-		double Y = m_p_LineEdit_RotationY->text().toDouble();
-		double Z = m_p_LineEdit_RotationZ->text().toDouble();
-	}
+	QDoubleSpinBox * pQDoubleSpinBox = dynamic_cast<QDoubleSpinBox*>(sender());
+	
 }
 
 //---------------------------------------------------------------------------------------
@@ -265,45 +256,25 @@ void ShopBuilder_GUI::slotSetPredefinedViewport(const QString & astrText)	{
 //---------------------------------------------------------------------------------------
 
 void ShopBuilder_GUI::slotSetScaling() {
-	QLineEdit * pLineEdit = dynamic_cast<QLineEdit*>(sender());
-	if (pLineEdit == m_p_LineEdit_ScalingX || m_p_LineEdit_ScalingY || m_p_LineEdit_ScalingZ)	{
-		double X = m_p_LineEdit_ScalingX->text().toDouble();
-		double Y = m_p_LineEdit_ScalingY->text().toDouble();
-		double Z = m_p_LineEdit_ScalingZ->text().toDouble();
-	}
+	QDoubleSpinBox * pQDoubleSpinBox = dynamic_cast<QDoubleSpinBox*>(sender());
 }
 
 //---------------------------------------------------------------------------------------
 
 void ShopBuilder_GUI::slotSetShearing()	{
-	QLineEdit * pLineEdit = dynamic_cast<QLineEdit*>(sender());
-	if (pLineEdit == m_p_LineEdit_ShearingX || m_p_LineEdit_ShearingY || m_p_LineEdit_ShearingZ)	{
-		double X = m_p_LineEdit_ShearingX->text().toDouble();
-		double Y = m_p_LineEdit_ShearingY->text().toDouble();
-		double Z = m_p_LineEdit_ShearingZ->text().toDouble();
-	}
+	QDoubleSpinBox * pQDoubleSpinBox = dynamic_cast<QDoubleSpinBox*>(sender());
 }
 
 //---------------------------------------------------------------------------------------
 
 void ShopBuilder_GUI::slotSetPosition() {
-	QLineEdit * pLineEdit = dynamic_cast<QLineEdit*>(sender());
-	if (pLineEdit == m_p_LineEdit_PositionX || m_p_LineEdit_PositionY || m_p_LineEdit_PositionZ)	{
-		double X = m_p_LineEdit_PositionX->text().toDouble();
-		double Y = m_p_LineEdit_PositionY->text().toDouble();
-		double Z = m_p_LineEdit_PositionZ->text().toDouble();
-	}
+	QDoubleSpinBox * pQDoubleSpinBox = dynamic_cast<QDoubleSpinBox*>(sender());
 }
 
 //---------------------------------------------------------------------------------------
 
 void ShopBuilder_GUI::slotSetDirection() {
-	QLineEdit * pLineEdit = dynamic_cast<QLineEdit*>(sender());
-	if (pLineEdit == m_p_LineEdit_DirectionX || m_p_LineEdit_DirectionY || m_p_LineEdit_DirectionZ)	{
-		double X = m_p_LineEdit_DirectionX->text().toDouble();
-		double Y = m_p_LineEdit_DirectionY->text().toDouble();
-		double Z = m_p_LineEdit_DirectionZ->text().toDouble();
-	}
+	QDoubleSpinBox * pQDoubleSpinBox = dynamic_cast<QDoubleSpinBox*>(sender());
 }
 
 //---------------------------------------------------------------------------------------

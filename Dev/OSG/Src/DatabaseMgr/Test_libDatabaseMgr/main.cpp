@@ -93,20 +93,15 @@ int main(int argc, char *argv[])	{
 
 	string strDBName;
 	
-	strDBName = "../../Databases/ProductsSphere.db";
+	strDBName = "../../Databases/Furniture.db";
 	createTable(strDBName);
 	populateTable(strDBName);
 	insertIntoDatabase_Sphere(strDBName);
-
-	strDBName = "../../Databases/ProductsCylinder.db";
-	createTable(strDBName);
-	populateTable(strDBName);
-	insertIntoDatabase_Sphere(strDBName);
-
-	strDBName = "../../Databases/ProductsParallelipiped.db";
-	createTable(strDBName);
-	populateTable(strDBName);
+	insertIntoDatabase_Cylinder(strDBName);
 	insertIntoDatabase_Parallelepiped(strDBName);
+	//insertIntoDatabase_Furniture(strDBName);
+
+
 
 	return(0);
 }

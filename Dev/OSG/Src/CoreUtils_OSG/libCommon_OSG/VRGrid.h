@@ -9,7 +9,7 @@ namespace VR {
 		int m_nResLat;
 		int m_nResLong;
 		float m_flSpacing;
-		osg::Vec3d m_dbStartCenter;
+		osg::Vec3d m_vec3dStartCenter;
 
 		GridParams();
 	};

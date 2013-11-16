@@ -55,4 +55,4 @@ ADD_LIBRARY(libProductInterface
   ${SRCS}
 )
 
-SET_PROPERTY(TARGET libProductInterface PROPERTY FOLDER GUI)
+SET_PROPERTY(TARGET libProductInterface PROPERTY FOLDER PopUpGUIs)

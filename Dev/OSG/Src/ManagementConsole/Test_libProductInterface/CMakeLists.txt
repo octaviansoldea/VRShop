@@ -65,4 +65,4 @@ TARGET_LINK_LIBRARIES(Test_libProductInterface
 	libProductInterface
 )
 
-SET_PROPERTY(TARGET Test_libProductInterface PROPERTY FOLDER GUI)
+SET_PROPERTY(TARGET Test_libProductInterface PROPERTY FOLDER PopUpGUIs)

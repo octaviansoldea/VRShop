@@ -10,12 +10,14 @@
 
 #include "VRAbstractGeomShape.h"
 
+
 #include "VRUntransformedPlate2D.h"
 #include "VRUntransformedPlate3D.h"
 #include "VRUntransformedPolygon2D.h"
 #include "VRUntransformedPolygon3D.h"
 #include "VRPlate3D.h"
 #include "VRCylinder.h"
+#include "VRCupboard.h"
 #include "VRUntransformedSphere.h"
 
 using namespace osg;
@@ -126,6 +128,64 @@ void insertIntoDatabase_Parallelepiped(const string & astrDBName)	{
 //--------------------------------------------------------------
 
 
+void insertIntoDatabase_Furniture(const string & astrDBName)	{
+	DatabaseMgr & database = DatabaseMgr::Create(astrDBName.c_str(), DatabaseMgr::QSQLITE);
+
+	Cupboard cupboard;
+
+	//Set the cupboard
+
+
+	ref_ptr < Plate3D > pPlate3D =  new Plate3D;
+	Plate3DParams * aPlate3DParams = new Plate3DParams;
+	//Bottom plate
+	aPlate3DParams->m_flLenX = 1.0;
+	aPlate3DParams->m_flLenY = 1.0;
+	aPlate3DParams->m_flLenZ = 0.05;
+	string strCommand = pPlate3D->getSQLCommand(*aPlate3DParams);
+	database.fillPrimitiveTable(strCommand);
+
+	//Left plate
+	aPlate3DParams = new Plate3DParams;
+	aPlate3DParams->m_flLenX = 0.05;
+	aPlate3DParams->m_flLenY = 1.0;
+	aPlate3DParams->m_flLenZ = 1.0;
+	strCommand = pPlate3D->getSQLCommand(*aPlate3DParams);
+	database.fillPrimitiveTable(strCommand);
+
+	//Right plate
+	aPlate3DParams = new Plate3DParams;
+	aPlate3DParams->m_flLenX = 0.05;
+	aPlate3DParams->m_flLenY = 1.0;
+	aPlate3DParams->m_flLenZ = 1.0;
+	strCommand = pPlate3D->getSQLCommand(*aPlate3DParams);
+	database.fillPrimitiveTable(strCommand);
+
+	//Front plate
+	aPlate3DParams = new Plate3DParams;
+	aPlate3DParams->m_flLenX = 1.0;
+	aPlate3DParams->m_flLenY = 0.05;
+	aPlate3DParams->m_flLenZ = 1.0;
+	strCommand = pPlate3D->getSQLCommand(*aPlate3DParams);
+	database.fillPrimitiveTable(strCommand);
+
+	//Back plate
+	aPlate3DParams = new Plate3DParams;
+	aPlate3DParams->m_flLenX = 1.0;
+	aPlate3DParams->m_flLenY = 0.05;
+	aPlate3DParams->m_flLenZ = 1.0;
+	strCommand = pPlate3D->getSQLCommand(*aPlate3DParams);
+	database.fillPrimitiveTable(strCommand);
+
+	//A line in the SQL database of furniture will be as follows:
+	// PrimitiveID1 transformMatrix1 PrimitiveID2 transformMatrix2 ... GeneralTransformMatrix
+	
+	QString qstrCommand = cupboard.getSQLPrintCommand().c_str();
+	QSqlQuery qry(qstrCommand);
+
+	delete aPlate3DParams;
+}
+
 //====================================================
 
 int main(int argc, char *argv[])	{
@@ -139,7 +199,7 @@ int main(int argc, char *argv[])	{
 	//insertIntoDatabase_Sphere(strDBName);
 	//insertIntoDatabase_Cylinder(strDBName);
 	insertIntoDatabase_Parallelepiped(strDBName);
-	//insertIntoDatabase_Furniture(strDBName);
+	insertIntoDatabase_Furniture(strDBName);
 
 
 

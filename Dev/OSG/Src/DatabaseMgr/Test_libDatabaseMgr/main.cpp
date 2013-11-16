@@ -56,8 +56,9 @@ void insertIntoDatabase_Sphere(const string & astrDBName)	{
 	DatabaseMgr & database = DatabaseMgr::Create(astrDBName.c_str(), DatabaseMgr::QSQLITE);
 
 	ref_ptr < UntransformedSphere > pSphere =  new UntransformedSphere;
-	string strCommand = pSphere->getSQLCommand();
+	SphereParams aSphereParams;
 
+	string strCommand = pSphere->getSQLCommand(aSphereParams);
 	database.fillPrimitiveTable(strCommand);
 }
 
@@ -67,8 +68,9 @@ void insertIntoDatabase_Cylinder(const string & astrDBName)	{
 	DatabaseMgr & database = DatabaseMgr::Create(astrDBName.c_str(), DatabaseMgr::QSQLITE);
 
 	ref_ptr < VR::Cylinder > pCylinder =  new VR::Cylinder;
-	string strCommand = pCylinder->getSQLCommand();
+	CylinderParams aCylinderParams;
 
+	string strCommand = pCylinder->getSQLCommand(aCylinderParams);
 	database.fillPrimitiveTable(strCommand);
 }
 
@@ -78,9 +80,47 @@ void insertIntoDatabase_Parallelepiped(const string & astrDBName)	{
 	DatabaseMgr & database = DatabaseMgr::Create(astrDBName.c_str(), DatabaseMgr::QSQLITE);
 
 	ref_ptr < Plate3D > pPlate3D =  new Plate3D;
-	string strCommand = pPlate3D->getSQLCommand();
-
+	Plate3DParams * aPlate3DParams = new Plate3DParams;
+	//Bottom plate
+	aPlate3DParams->m_flLenX = 1.0;
+	aPlate3DParams->m_flLenY = 1.0;
+	aPlate3DParams->m_flLenZ = 0.05;
+	string strCommand = pPlate3D->getSQLCommand(*aPlate3DParams);
 	database.fillPrimitiveTable(strCommand);
+
+	//Left plate
+	aPlate3DParams = new Plate3DParams;
+	aPlate3DParams->m_flLenX = 0.05;
+	aPlate3DParams->m_flLenY = 1.0;
+	aPlate3DParams->m_flLenZ = 1.0;
+	strCommand = pPlate3D->getSQLCommand(*aPlate3DParams);
+	database.fillPrimitiveTable(strCommand);
+
+	//Right plate
+	aPlate3DParams = new Plate3DParams;
+	aPlate3DParams->m_flLenX = 0.05;
+	aPlate3DParams->m_flLenY = 1.0;
+	aPlate3DParams->m_flLenZ = 1.0;
+	strCommand = pPlate3D->getSQLCommand(*aPlate3DParams);
+	database.fillPrimitiveTable(strCommand);
+
+	//Front plate
+	aPlate3DParams = new Plate3DParams;
+	aPlate3DParams->m_flLenX = 1.0;
+	aPlate3DParams->m_flLenY = 0.05;
+	aPlate3DParams->m_flLenZ = 1.0;
+	strCommand = pPlate3D->getSQLCommand(*aPlate3DParams);
+	database.fillPrimitiveTable(strCommand);
+
+	//Back plate
+	aPlate3DParams = new Plate3DParams;
+	aPlate3DParams->m_flLenX = 1.0;
+	aPlate3DParams->m_flLenY = 0.05;
+	aPlate3DParams->m_flLenZ = 1.0;
+	strCommand = pPlate3D->getSQLCommand(*aPlate3DParams);
+	database.fillPrimitiveTable(strCommand);
+
+	delete aPlate3DParams;
 }
 
 //--------------------------------------------------------------
@@ -96,8 +136,8 @@ int main(int argc, char *argv[])	{
 	strDBName = "../../Databases/Furniture.db";
 	createTable(strDBName);
 	populateTable(strDBName);
-	insertIntoDatabase_Sphere(strDBName);
-	insertIntoDatabase_Cylinder(strDBName);
+	//insertIntoDatabase_Sphere(strDBName);
+	//insertIntoDatabase_Cylinder(strDBName);
 	insertIntoDatabase_Parallelepiped(strDBName);
 	//insertIntoDatabase_Furniture(strDBName);
 

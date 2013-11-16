@@ -170,10 +170,12 @@ void UntransformedSphere::setTexture(const char * apchFileName) {
 
 //--------------------------------------------------------------
 
-string UntransformedSphere::getSQLCommand() const	{
+string UntransformedSphere::getSQLCommand(const AbstractGeomShapeParams & aAbstractGeomShapeParams) const	{
+	const SphereParams & aSphereParams = static_cast<const SphereParams&>(aAbstractGeomShapeParams);
+
 	string strSQLCommand = "INSERT INTO Sphere (SphereRes, SphereRadius, PrimitiveID) VALUES("
-		+ to_string((_Longlong)30) + ","
-		+ to_string((_Longlong)1.0) + ","
+		+ to_string((_Longlong)aSphereParams.m_nResPhi) + ","
+		+ to_string((long double)aSphereParams.m_flRadius) + ","
 		+ to_string((_Longlong)4) + ")";
 	return(strSQLCommand);
 }

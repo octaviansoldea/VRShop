@@ -30,7 +30,7 @@ namespace VR	{
 	public:
 		Plate3D();
 
-		virtual std::string getSQLCommand() const;
+		virtual std::string getSQLCommand(const AbstractGeomShapeParams & aAbstractGeomShapeParams) const;
 		virtual void initFromSQLData(const std::string & astrSQLData);
 		virtual void init(const AbstractGeomShapeParams & aAbstractGeomShapeParams);
 

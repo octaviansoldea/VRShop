@@ -57,11 +57,13 @@ void Plate3D::setTexture(const char * apchFileName)	{
 
 //----------------------------------------------------------------------
 
-std::string Plate3D::getSQLCommand() const	{
+std::string Plate3D::getSQLCommand(const AbstractGeomShapeParams & aAbstractGeomShapeParams) const	{
+	const Plate3DParams & aPlate3DParams = static_cast<const Plate3DParams&>(aAbstractGeomShapeParams);
+
 	string strSQLCommand = "INSERT INTO Parallelepiped (ParallelepipedWidth, ParallelepipedDepth, ParallelepipedHeight, PrimitiveID) VALUES("
-		+ to_string((_Longlong)1.0) + ","
-		+ to_string((_Longlong)1.0) + ","
-		+ to_string((_Longlong)3.0) + ","
+		+ to_string((long double)aPlate3DParams.m_flLenX) + ","
+		+ to_string((long double)aPlate3DParams.m_flLenY) + ","
+		+ to_string((long double)aPlate3DParams.m_flLenZ) + ","
 		+ to_string((_Longlong)2) + ")";
 	return(strSQLCommand);
 }

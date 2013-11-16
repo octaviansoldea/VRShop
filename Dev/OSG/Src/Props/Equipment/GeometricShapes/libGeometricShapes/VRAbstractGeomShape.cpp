@@ -13,12 +13,6 @@ AbstractGeomShape::AbstractGeomShape() : m_bIsTargetPick(false) {
 
 //--------------------------------------------------------------
 
-string AbstractGeomShape::getSQLCommand() const	{
-	return("");
-}
-
-//--------------------------------------------------------------
-
 void AbstractGeomShape::initFromSQLData(const std::string & astrSQLData)	{
 }
 

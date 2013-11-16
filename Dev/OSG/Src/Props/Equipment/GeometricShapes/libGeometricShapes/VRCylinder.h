@@ -12,6 +12,8 @@ namespace VR {
 	public:
 		Cylinder();
 		Cylinder(const CylinderParams & aCylinderParams);
+
+		virtual std::string getSQLCommand(const AbstractGeomShapeParams & aAbstractGeomShapeParams) const;
 	};
 }
 #endif //VR_CYLINDER_H

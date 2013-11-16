@@ -1,6 +1,7 @@
 #include "VRCylinder.h"
 
 using namespace VR;
+using namespace std;
 
 CylinderParams::CylinderParams() {
 	m_flRadius = 1.0; m_flHeight = 1.0; m_nRes = 20;
@@ -25,3 +26,14 @@ VR::Cylinder::Cylinder(const CylinderParams & aCylinderParams) : Prism(aCylinder
 }
 
 //----------------------------------------------------------
+
+string VR::Cylinder::getSQLCommand(const AbstractGeomShapeParams & aAbstractGeomShapeParams) const {
+	const CylinderParams & aCylinderParams = static_cast<const CylinderParams&>(aAbstractGeomShapeParams);
+
+	string strSQLCommand = "INSERT INTO Cylinder (CylinderRes, CylinderRadius, CylinderHeight, PrimitiveID) VALUES("
+		+ to_string((_Longlong)aCylinderParams.m_nRes) + ","
+		+ to_string((long double)aCylinderParams.m_flRadius) + ","
+		+ to_string((long double)aCylinderParams.m_flHeight) + ","
+		+ to_string((_Longlong)1) + ")";
+	return(strSQLCommand);
+}

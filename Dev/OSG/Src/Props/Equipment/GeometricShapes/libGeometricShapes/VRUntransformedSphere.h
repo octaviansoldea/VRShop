@@ -30,7 +30,7 @@ namespace VR {
 		void setResolution(int anResPhi, int anResTheta);
 		void setRadius(float aflRadius);
 
-		virtual std::string getSQLCommand() const;
+		virtual std::string getSQLCommand(const AbstractGeomShapeParams & aAbstractGeomShapeParams) const;
 		virtual void init(const AbstractGeomShapeParams & aAbstractGeomShapeParams);
 
 		virtual void initFromSQLData(const std::string & astrSQLData);

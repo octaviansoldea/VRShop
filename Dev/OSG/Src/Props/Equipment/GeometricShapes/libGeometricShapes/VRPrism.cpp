@@ -70,11 +70,13 @@ void Prism::setTexture(const char * apchFileName) {
 
 //----------------------------------------------------------------------
 
-string Prism::getSQLCommand() const {
+string Prism::getSQLCommand(const AbstractGeomShapeParams & aAbstractGeomShapeParams) const {
+	const PrismParams & aPrismParams = static_cast<const PrismParams&>(aAbstractGeomShapeParams);
+
 	string strSQLCommand = "INSERT INTO Prism (PrismSides, PrismRadius, PrismHeight, PrimitiveID) VALUES("
-		+ to_string((_Longlong)5) + ","
-		+ to_string((_Longlong)1.0) + ","
-		+ to_string((_Longlong)3.0) + ","
+		+ to_string((_Longlong)aPrismParams.m_nRes) + ","
+		+ to_string((long double)aPrismParams.m_flRadius) + ","
+		+ to_string((long double)aPrismParams.m_flHeight) + ","
 		+ to_string((_Longlong)3) + ")";
 	return(strSQLCommand);
 }

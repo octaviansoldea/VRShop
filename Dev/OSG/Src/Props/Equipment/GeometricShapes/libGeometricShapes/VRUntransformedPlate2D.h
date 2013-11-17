@@ -9,8 +9,8 @@ namespace VR {
 	public:
 		UntransformedPlate2D();
 
-		void setColor(const float aarrflColor[4]);
-		void setTexture(const char * apchFileName);
+		void setColor(const std::vector < float > & aarrflColor);
+		void setTexture(const std::string & astrFileName);
 	private:
 		osg::ref_ptr<osg::Geometry> m_pGeometry;
 	};

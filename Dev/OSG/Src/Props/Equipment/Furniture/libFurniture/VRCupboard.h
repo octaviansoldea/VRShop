@@ -2,6 +2,7 @@
 #define VR_CUPBOARD_H
 
 #include <osg/MatrixTransform>
+#include <QString>
 
 namespace VR	{
 	struct CupboardParams {
@@ -21,7 +22,7 @@ namespace VR	{
 		void addPart(osg::ref_ptr < osg::Node > apNode);
 		//void removePart(osg::Object * apObject);
 
-		std::string getSQLPrintCommand() const;
+		QString getSQLPrintCommand()	;
 		void initFromSQLData(const std::string & astrSQLData);
 	};
 }

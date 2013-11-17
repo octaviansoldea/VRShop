@@ -9,11 +9,12 @@ namespace VR {
 	};
 
 	class Cylinder : public Prism {
+		CylinderParams m_CylinderParams;
 	public:
 		Cylinder();
 		Cylinder(const CylinderParams & aCylinderParams);
 
-		virtual std::string getSQLCommand(const AbstractGeomShapeParams & aAbstractGeomShapeParams) const;
+		virtual std::string getSQLCommand() const;
 	};
 }
 #endif //VR_CYLINDER_H

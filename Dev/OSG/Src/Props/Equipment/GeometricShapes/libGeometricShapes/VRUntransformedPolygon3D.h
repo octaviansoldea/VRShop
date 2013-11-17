@@ -11,8 +11,9 @@ namespace VR {
 	public:
 		UntransformedPolygon3D();
 
-		void setColor(const float aarrflColor[4]);
-		void setTexture(const char * apchFileName);
+		void setColor(const std::vector < float > & aarrflColor);
+		void setTexture(const std::string & astrFileName);
+
 		void setResolution(int anSidesNr);
 	};
 }

@@ -9,6 +9,7 @@
 
 using namespace osg;
 using namespace VR;
+using namespace std;
 
 UntransformedPolygon2D::UntransformedPolygon2D(int anNumSides)	{
 	ref_ptr<Vec3Array> m_pPoints = new Vec3Array(anNumSides);
@@ -42,7 +43,7 @@ UntransformedPolygon2D::UntransformedPolygon2D(int anNumSides)	{
 
 //--------------------------------------------------------------
 
-void UntransformedPolygon2D::setColor(const float aarrflColor[4]) {
+void UntransformedPolygon2D::setColor(const vector < float > & aarrflColor) {
 	ref_ptr<Vec4Array> pColors = new Vec4Array;
 	m_pGeometry->setColorArray(pColors.get());
 	m_pGeometry->setColorBinding(Geometry::BIND_OVERALL);

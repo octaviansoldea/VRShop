@@ -41,7 +41,11 @@ void main_SelectFromDatabase_Sphere(ref_ptr<Group> pScene)	{
 
 void main_UntransformedPlate2D_Color(ref_ptr<Group> pScene)	{
 	ref_ptr<UntransformedPlate2D> pUntransformedPlate2D = new UntransformedPlate2D();
-	float arrflColor[4] = {1.0, 0.0, 0.0, 1.0};
+	vector < float > arrflColor;
+	arrflColor.push_back(1.0);
+	arrflColor.push_back(0.0);
+	arrflColor.push_back(0.0);
+	arrflColor.push_back(1.0);
 	pUntransformedPlate2D->setColor(arrflColor);
 	pScene->addChild(pUntransformedPlate2D);
 }
@@ -94,7 +98,11 @@ void main_UntransformedPlate2D_Texture(ref_ptr<Group> pScene)
 void main_UntransformedPlate3D_Color(ref_ptr<Group> pScene)
 {
 	ref_ptr<UntransformedPlate3D> pUntransformedPlate3D = new UntransformedPlate3D();
-	const float arrflColor[4] = {0.0, 1.0, 0.0, 1.0};
+	vector < float > arrflColor;
+	arrflColor.push_back(1.0);
+	arrflColor.push_back(0.0);
+	arrflColor.push_back(0.0);
+	arrflColor.push_back(1.0);
 	pUntransformedPlate3D->setColor(arrflColor);
 
 	pScene->addChild(pUntransformedPlate3D);
@@ -116,7 +124,11 @@ void main_UntransformedPlate3D_Texture(ref_ptr<Group> pScene)
 void main_UntransformedPolygon2D_Color(ref_ptr<Group> pScene)
 {
 	ref_ptr<UntransformedPolygon2D> pUntransformedPolygon2D = new UntransformedPolygon2D(10);
-	const float arrflColor[4] = {0.0, 1.0, 1.0, 1.0};
+	vector < float > arrflColor;
+	arrflColor.push_back(1.0);
+	arrflColor.push_back(0.0);
+	arrflColor.push_back(0.0);
+	arrflColor.push_back(1.0);
 	pUntransformedPolygon2D->setColor(arrflColor);
 
 	pScene->addChild(pUntransformedPolygon2D);
@@ -127,7 +139,11 @@ void main_UntransformedPolygon2D_Color(ref_ptr<Group> pScene)
 void main_UntransformedPolygon3D_Color(ref_ptr<Group> pScene)	{
 	ref_ptr<UntransformedPolygon3D> pUntransformedPolygon3D = new UntransformedPolygon3D();
 	pUntransformedPolygon3D->setResolution(10);
-	float arrflColor[4] = {0.0, 1.0, 0.0, 1.0};
+	vector < float > arrflColor;
+	arrflColor.push_back(1.0);
+	arrflColor.push_back(0.0);
+	arrflColor.push_back(0.0);
+	arrflColor.push_back(1.0);
 	pUntransformedPolygon3D->setColor(arrflColor);
 	pScene->addChild(pUntransformedPolygon3D);
 }
@@ -167,7 +183,11 @@ void main_Cylinder(ref_ptr<Group> pScene)	{
 void main_UntransformedSphere_Color(ref_ptr<Group> pScene)	{
 	SphereParams sP;
 	ref_ptr<UntransformedSphere> pUntransformedSphere = new UntransformedSphere;
-	float arrflColor[4] = {0.0, 1.0, 0.0, 1.0};
+	vector < float > arrflColor;
+	arrflColor.push_back(1.0);
+	arrflColor.push_back(0.0);
+	arrflColor.push_back(0.0);
+	arrflColor.push_back(1.0);
 	pUntransformedSphere->setColor(arrflColor);
 	sP.m_nResPhi = sP.m_nResTheta = 50;
 	pUntransformedSphere = new UntransformedSphere(sP);
@@ -209,12 +229,10 @@ int main(int argc, char * argv[])	{
 	QApplication app(argc,argv);
 
 	ref_ptr<Group> pScene = new Group;
-	if(argc>1)	{
-		ref_ptr<Node> pAxes = osgDB::readNodeFile("../../../../Resources/Models3D/axes.osgt");
-		pScene->addChild(pAxes);
-	}
+	ref_ptr<Node> pAxes = osgDB::readNodeFile("../../../../Resources/Models3D/axes.osgt");
+	pScene->addChild(pAxes);
 
-	int nSelection = 15;
+	int nSelection = 3;
 	switch (nSelection)	{
 	case 1: main_UntransformedPlate2D_Color(pScene); break;
 	case 2: main_UntransformedPlate2D_Texture(pScene); break;

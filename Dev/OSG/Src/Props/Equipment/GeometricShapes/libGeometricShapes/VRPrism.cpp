@@ -11,11 +11,11 @@ using namespace VR;
 PrismParams::PrismParams() :
 m_flRadius(1.0), m_flHeight(1.0), m_nRes(5),
 m_flPosX(0.0), m_flPosY(0.0), m_flPosZ(0.0),
-m_pchFileName("")	{
-	m_arrflRGBA[0] = 1.0;
-	m_arrflRGBA[1] = 0.0;
-	m_arrflRGBA[2] = 0.0;
-	m_arrflRGBA[3] = 1.0;
+m_strFileNameTexture("")	{
+	m_arrflRGBA.push_back(1.0);
+	m_arrflRGBA.push_back(0.0);
+	m_arrflRGBA.push_back(0.0);
+	m_arrflRGBA.push_back(1.0);
 }
 
 //-----------------------------------------------------------------------
@@ -53,19 +53,19 @@ void Prism::init(const AbstractGeomShapeParams & aAbstractGeomShapeParams) {
 			   0,						0,						aPrismParams.m_flRadius,0,
 			   aPrismParams.m_flPosX,	aPrismParams.m_flPosY,	aPrismParams.m_flPosZ,  1);
 	setMatrix(matrix);
-	setColor(aPrismParams.m_arrflRGBA);
+	m_PrismParams = aPrismParams;
 }
 
 //----------------------------------------------------------------------
 
-void Prism::setColor(const float aarrflColor[4]) {
+void Prism::setColor(const vector < float > & aarrflColor) {
 	m_pUntransformedPolygon3D->setColor(aarrflColor);
 }
 
 //----------------------------------------------------------------------
 
-void Prism::setTexture(const char * apchFileName) {
-	m_pUntransformedPolygon3D->setTexture(apchFileName);
+void Prism::setTexture(const string & astrFileName) {
+	m_pUntransformedPolygon3D->setTexture(astrFileName);
 }
 
 //----------------------------------------------------------------------

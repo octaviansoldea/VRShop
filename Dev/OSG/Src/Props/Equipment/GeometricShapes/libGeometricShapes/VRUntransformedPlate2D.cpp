@@ -11,6 +11,7 @@
 
 using namespace osg;
 using namespace VR;
+using namespace std;
 
 UntransformedPlate2D::UntransformedPlate2D()	{
 	ref_ptr<Vec3Array> pPoints = new Vec3Array(4);
@@ -35,7 +36,7 @@ UntransformedPlate2D::UntransformedPlate2D()	{
 
 //--------------------------------------------------------------
 
-void UntransformedPlate2D::setColor(const float aarrflColor[4]) {
+void UntransformedPlate2D::setColor(const vector < float > & aarrflColor) {
 	Vec4 vec4(aarrflColor[0], aarrflColor[1], aarrflColor[2], aarrflColor[3]);
 	ref_ptr<Vec4Array> pColors = new Vec4Array;
 	m_pGeometry->setColorArray(pColors.get());
@@ -48,7 +49,7 @@ void UntransformedPlate2D::setColor(const float aarrflColor[4]) {
 
 //--------------------------------------------------------------
 
-void UntransformedPlate2D::setTexture(const char * apchFileName) {
+void UntransformedPlate2D::setTexture(const string & astrFileName) {
     ref_ptr<Vec2Array> pTexCoords = new Vec2Array(4);
     (*pTexCoords)[0].set(0.0, 0.0);
     (*pTexCoords)[1].set(1.0, 0.0);
@@ -63,7 +64,7 @@ void UntransformedPlate2D::setTexture(const char * apchFileName) {
 
     m_pGeometry->setUseDisplayList(false);
 
-	ref_ptr<Image> pImage = osgDB::readImageFile(apchFileName);
+	ref_ptr<Image> pImage = osgDB::readImageFile(astrFileName);
 
     ref_ptr<TextureRectangle> pTexture = new TextureRectangle(pImage);
 

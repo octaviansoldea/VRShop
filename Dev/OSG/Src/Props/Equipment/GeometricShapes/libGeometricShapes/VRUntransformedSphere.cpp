@@ -18,11 +18,11 @@ using namespace osg;
 using namespace VR;
 
 SphereParams::SphereParams() : 
-m_flRadius(1.0), m_nResPhi(25), m_nResTheta(25), m_pchFileName("") {
-	m_arrflRGBA[0] = 1.0;
-	m_arrflRGBA[1] = 0.0;
-	m_arrflRGBA[2] = 0.0;
-	m_arrflRGBA[3] = 1.0;
+m_flRadius(1.0), m_nResPhi(25), m_nResTheta(25), m_strFileName("") {
+	m_arrflRGBA.push_back(1.0);
+	m_arrflRGBA.push_back(0.0);
+	m_arrflRGBA.push_back(0.0);
+	m_arrflRGBA.push_back(1.0);
 }
 
 //-----------------------------------------------------------------------
@@ -43,21 +43,20 @@ UntransformedSphere::UntransformedSphere(const SphereParams & aSphereParams)	{
 void UntransformedSphere::init(const AbstractGeomShapeParams & aAbstractGeomShapeParams)	{
 	const SphereParams & aSphereParams = static_cast<const SphereParams&>(aAbstractGeomShapeParams);
 
-	m_nResPhi = aSphereParams.m_nResPhi;
-	m_nResTheta = aSphereParams.m_nResTheta;
+	m_SphereParams = aSphereParams;
 
-	float flResPhiStep = (2 * PI) / m_nResPhi;
-	float flResThetaStep = (2 * PI) / m_nResTheta;
+	float flResPhiStep = (2 * PI) / m_SphereParams.m_nResPhi;
+	float flResThetaStep = (2 * PI) / m_SphereParams.m_nResTheta;
 	
 	int nIndxPhi, nIndxTheta;
-	for(nIndxPhi = 0; nIndxPhi < m_nResPhi; nIndxPhi++) {
+	for(nIndxPhi = 0; nIndxPhi < m_SphereParams.m_nResPhi; nIndxPhi++) {
 		float flPhi = flResPhiStep * nIndxPhi;
 		float flPhiP1 = flPhi + flResPhiStep;
 		float flCosPhi = cos(flPhi);
 		float flCosPhiP1 = cos(flPhiP1);
 		float flSinPhi = sin(flPhi);
 		float flSinPhiP1 = sin(flPhiP1);
-		for(nIndxTheta = 0; nIndxTheta < m_nResTheta; nIndxTheta++) {
+		for(nIndxTheta = 0; nIndxTheta < m_SphereParams.m_nResTheta; nIndxTheta++) {
 			float flTheta = flResThetaStep * nIndxTheta;
 			float flThetaP1 = flTheta + flResThetaStep;
 			float flCosTheta = cos(flTheta);
@@ -94,7 +93,7 @@ void UntransformedSphere::init(const AbstractGeomShapeParams & aAbstractGeomShap
 
 //--------------------------------------------------------------
 
-void UntransformedSphere::setColor(const float aarrflColor[4]) {	
+void UntransformedSphere::setColor(const vector < float > & aarrflColor) {	
 	int nDrawablesNr = this->getNumDrawables();
 	for(int nI = 0; nI < nDrawablesNr; nI++) {
 		ref_ptr<Geometry> pGeometry = dynamic_cast<Geometry *>(getDrawable(nI));
@@ -115,27 +114,27 @@ void UntransformedSphere::setColor(const float aarrflColor[4]) {
 
 //--------------------------------------------------------------
 
-void UntransformedSphere::setTexture(const char * apchFileName) {
+void UntransformedSphere::setTexture(const std::string astrFileName) {
 
 	int nDrawablesNr = this->getNumDrawables();
 
-	assert(nDrawablesNr == m_nResPhi * m_nResTheta);
+	assert(nDrawablesNr == m_SphereParams.m_nResPhi * m_SphereParams.m_nResTheta);
 
-	ref_ptr<Image> pImage = osgDB::readImageFile(apchFileName);
+	ref_ptr<Image> pImage = osgDB::readImageFile(astrFileName);
 	ref_ptr<TextureRectangle> pTexture = new TextureRectangle(pImage);
 	ref_ptr<TexMat> pTexMat = new TexMat;
 	pTexMat->setScaleByTextureRectangleSize(true);
 	
 
-	float flTexPhiStep = 1.0 / m_nResPhi;
-	float flTexThetaStep = 1.0 / m_nResTheta;
+	float flTexPhiStep = 1.0 / m_SphereParams.m_nResPhi;
+	float flTexThetaStep = 1.0 / m_SphereParams.m_nResTheta;
 	
 	int nIndxDrawable = 0;
 	int nIndxPhi, nIndxTheta;
-	for(nIndxPhi = 0; nIndxPhi < m_nResPhi; nIndxPhi++) {
+	for(nIndxPhi = 0; nIndxPhi < m_SphereParams.m_nResPhi; nIndxPhi++) {
 		float flPhi = flTexPhiStep * nIndxPhi;
 		float flPhiP1 = flPhi + flTexPhiStep;
-		for(nIndxTheta = 0; nIndxTheta < m_nResTheta; nIndxTheta++) {
+		for(nIndxTheta = 0; nIndxTheta < m_SphereParams.m_nResTheta; nIndxTheta++) {
 			float flTheta = flTexThetaStep * nIndxTheta;
 			float flThetaP1 = flTheta + flTexThetaStep;
 
@@ -170,12 +169,10 @@ void UntransformedSphere::setTexture(const char * apchFileName) {
 
 //--------------------------------------------------------------
 
-string UntransformedSphere::getSQLCommand(const AbstractGeomShapeParams & aAbstractGeomShapeParams) const	{
-	const SphereParams & aSphereParams = static_cast<const SphereParams&>(aAbstractGeomShapeParams);
-
+string UntransformedSphere::getSQLCommand() const	{
 	string strSQLCommand = "INSERT INTO Sphere (SphereRes, SphereRadius, PrimitiveID) VALUES("
-		+ to_string((_Longlong)aSphereParams.m_nResPhi) + ","
-		+ to_string((long double)aSphereParams.m_flRadius) + ","
+		+ to_string((_Longlong)m_SphereParams.m_nResPhi) + ","
+		+ to_string((long double)m_SphereParams.m_flRadius) + ","
 		+ to_string((_Longlong)4) + ")";
 	return(strSQLCommand);
 }

@@ -12,14 +12,19 @@
 #include <osgDB/readFile>
 
 using namespace VR;
-
+using namespace std;
 
 //----------------------------------------------------------------------
 
 void main_Plate3D(osg::ref_ptr<osg::Group> pScene)	{
 	osg::ref_ptr<Plate3D> pPlate3D = new Plate3D();
-	const float color[4] = {0,1,0,1};
-	pPlate3D->setColor(color);
+	vector < float > arrflColor;
+	arrflColor[0] = 0.0;
+	arrflColor[1] = 1.0;
+	arrflColor[2] = 0.0;
+	arrflColor[3] = 1.0;
+
+	pPlate3D->setColor(arrflColor);
 	pPlate3D->setIsTargetPick(true);
 	pScene->addChild(pPlate3D.get());
 }
@@ -28,9 +33,14 @@ void main_Plate3D(osg::ref_ptr<osg::Group> pScene)	{
 
 void main_Cylinder(osg::ref_ptr<osg::Group> pScene)	{
 	osg::ref_ptr<Cylinder> pCylinder = new Cylinder();
-	const float color[4] = {1,1,0,1};
+	vector < float > arrflColor;
+	arrflColor[0] = 0.0;
+	arrflColor[1] = 1.0;
+	arrflColor[2] = 0.0;
+	arrflColor[3] = 1.0;
+
+	pCylinder->setColor(arrflColor);
 	pCylinder->setResolution(20);
-	pCylinder->setColor(color);
 	pCylinder->setIsTargetPick(true);
 	pScene->addChild(pCylinder);
 }
@@ -39,9 +49,14 @@ void main_Cylinder(osg::ref_ptr<osg::Group> pScene)	{
 
 void main_VRUntransformedSphere(osg::ref_ptr<osg::Group> pScene)	{
 	osg::ref_ptr<UntransformedSphere> pSphere = new UntransformedSphere();
-	const float color[4] = {1,0,0,1};
+	vector < float > arrflColor;
+	arrflColor[0] = 0.0;
+	arrflColor[1] = 1.0;
+	arrflColor[2] = 0.0;
+	arrflColor[3] = 1.0;
+
+	pSphere->setColor(arrflColor);
 	pSphere->setResolution(20,20);
-	pSphere->setColor(color);
 	pSphere->setIsTargetPick(true);
 	pScene->addChild(pSphere);
 }

@@ -13,13 +13,14 @@
 
 using namespace osg;
 using namespace VR;
+using namespace std;
 
 UntransformedPolygon3D::UntransformedPolygon3D()	{
 }
 
 //--------------------------------------------------------------------------
 
-void UntransformedPolygon3D::setColor(const float aarrflColor[4])	{
+void UntransformedPolygon3D::setColor(const vector < float > & aarrflColor)	{
 	Vec4 vec4(aarrflColor[0], aarrflColor[1], aarrflColor[2], aarrflColor[3]);
 	int nI;
 	int nGeodesNr = this->getNumChildren();
@@ -41,8 +42,8 @@ void UntransformedPolygon3D::setColor(const float aarrflColor[4])	{
 }
 
 //-----------------------------------------------------------------------------
-void UntransformedPolygon3D::setTexture(const char * apchFileName) {
-	ref_ptr<Image> pImage = osgDB::readImageFile(apchFileName);
+void UntransformedPolygon3D::setTexture(const std::string & astrFileName) {
+	ref_ptr<Image> pImage = osgDB::readImageFile(astrFileName);
 	ref_ptr<TextureRectangle> pTexture = new TextureRectangle(pImage);
 	ref_ptr<TexMat> pTexMat = new TexMat;
 	pTexMat->setScaleByTextureRectangleSize(true);

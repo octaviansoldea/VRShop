@@ -103,7 +103,51 @@ QLineEdit {
 	border-radius: 3px;
     background-color: lightgray;
     selection-background-color: darkgray;
-}</string>
+}
+
+/*Double spin box
+QDoubleSpinBox {
+    border: 1px solid gray;
+	border-radius: 3px;
+    background-color: lightgray;
+    selection-background-color: darkgray;
+    padding-right: 15px;
+	min-height: 19px;
+	max-height: 19px;
+}
+
+*/
+QSpinBox {
+	border: 1px solid gray;
+	border-radius: 3px;
+}
+
+QSpinBox::up-button, QSpinBox::down-button {
+	width: 70px;
+	height: 70px;
+	border: 1px solid gray;
+	border-radius: 3px; 
+/*	background-color: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop: 0 #ffe670, stop: 1 #ffde40);
+*/
+}
+
+QSpinBox::up-arrow, QSpinBox::down-arrow {
+/*	border-left: 17px solid none;
+	border-right: 17px solid none;
+	border-bottom: 17px solid black;
+	width: 0px;
+	height: 0px;
+*/
+}
+
+QSpinBox::up-button:off, QSpinBox::down-button:off {
+	background-color: lightgrey;
+	color: #eeeeee;
+}
+
+QSpinBox::up-arrow:off {border-left: 17px solid none; border-right: 17px solid none; border-bottom: 17px solid #eeeeee; background-color:lightgrey}
+
+QSpinBox::down-arrow:off {border-left: 17px solid none; border-right: 17px solid none; border-top: 17px solid #eeeeee; background-color: lightgrey}</string>
   </property>
   <property name="animated">
    <bool>false</bool>
@@ -344,8 +388,8 @@ QLineEdit {
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>258</width>
-              <height>587</height>
+              <width>261</width>
+              <height>623</height>
              </rect>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_8">
@@ -3416,7 +3460,7 @@ QTreeView::item:hover,QTreeView::item:selected {
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>549</width>
+              <width>547</width>
               <height>264</height>
              </rect>
             </property>
@@ -3942,8 +3986,8 @@ background-color: rgb(191,193,194);</string>
      <rect>
       <x>187</x>
       <y>171</y>
-      <width>130</width>
-      <height>196</height>
+      <width>138</width>
+      <height>190</height>
      </rect>
     </property>
     <property name="styleSheet">

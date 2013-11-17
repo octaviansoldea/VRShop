@@ -15,9 +15,9 @@ namespace VR	{
 		float m_flPosY;
 		float m_flPosZ;
 
-		float m_flRGBA[4];
+		std::vector < float > m_arrflRGBA;
 
-		const char * m_pchFileName;
+		std::string m_strFileNameTexture;
 
 		Plate3DParams();
 	};
@@ -30,13 +30,14 @@ namespace VR	{
 	public:
 		Plate3D();
 
-		virtual std::string getSQLCommand(const AbstractGeomShapeParams & aAbstractGeomShapeParams) const;
+		virtual std::string getSQLCommand() const;
 		virtual void initFromSQLData(const std::string & astrSQLData);
 		virtual void init(const AbstractGeomShapeParams & aAbstractGeomShapeParams);
 
-		void setColor(const float aarrflColor[4]);
-		void setTexture(const char * apchFileName);
-
+		void setColor(const std::vector < float > & aarrflColor);
+		void setTexture(const std::string & astrFileName);
+	protected:
+		Plate3DParams m_Plate3DParams;
 	};
 }
 #endif //VR_PLATE_3D_H

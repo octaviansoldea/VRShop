@@ -1,6 +1,8 @@
 #include <QApplication>
 #include <QMessageBox>
 
+#include <osgViewer/Viewer>
+
 #include <iostream>
 #include <string>
 
@@ -59,8 +61,9 @@ void insertIntoDatabase_Sphere(const string & astrDBName)	{
 
 	ref_ptr < UntransformedSphere > pSphere =  new UntransformedSphere;
 	SphereParams aSphereParams;
+	pSphere->init(aSphereParams);
 
-	string strCommand = pSphere->getSQLCommand(aSphereParams);
+	string strCommand = pSphere->getSQLCommand();
 	database.fillPrimitiveTable(strCommand);
 }
 
@@ -71,8 +74,9 @@ void insertIntoDatabase_Cylinder(const string & astrDBName)	{
 
 	ref_ptr < VR::Cylinder > pCylinder =  new VR::Cylinder;
 	CylinderParams aCylinderParams;
+	pCylinder->init(aCylinderParams);
 
-	string strCommand = pCylinder->getSQLCommand(aCylinderParams);
+	string strCommand = pCylinder->getSQLCommand();
 	database.fillPrimitiveTable(strCommand);
 }
 
@@ -87,7 +91,8 @@ void insertIntoDatabase_Parallelepiped(const string & astrDBName)	{
 	aPlate3DParams->m_flLenX = 1.0;
 	aPlate3DParams->m_flLenY = 1.0;
 	aPlate3DParams->m_flLenZ = 0.05;
-	string strCommand = pPlate3D->getSQLCommand(*aPlate3DParams);
+	pPlate3D->init(*aPlate3DParams);
+	string strCommand = pPlate3D->getSQLCommand();
 	database.fillPrimitiveTable(strCommand);
 
 	//Left plate
@@ -95,7 +100,8 @@ void insertIntoDatabase_Parallelepiped(const string & astrDBName)	{
 	aPlate3DParams->m_flLenX = 0.05;
 	aPlate3DParams->m_flLenY = 1.0;
 	aPlate3DParams->m_flLenZ = 1.0;
-	strCommand = pPlate3D->getSQLCommand(*aPlate3DParams);
+	pPlate3D->init(*aPlate3DParams);
+	strCommand = pPlate3D->getSQLCommand();
 	database.fillPrimitiveTable(strCommand);
 
 	//Right plate
@@ -103,7 +109,8 @@ void insertIntoDatabase_Parallelepiped(const string & astrDBName)	{
 	aPlate3DParams->m_flLenX = 0.05;
 	aPlate3DParams->m_flLenY = 1.0;
 	aPlate3DParams->m_flLenZ = 1.0;
-	strCommand = pPlate3D->getSQLCommand(*aPlate3DParams);
+	pPlate3D->init(*aPlate3DParams);
+	strCommand = pPlate3D->getSQLCommand();
 	database.fillPrimitiveTable(strCommand);
 
 	//Front plate
@@ -111,7 +118,8 @@ void insertIntoDatabase_Parallelepiped(const string & astrDBName)	{
 	aPlate3DParams->m_flLenX = 1.0;
 	aPlate3DParams->m_flLenY = 0.05;
 	aPlate3DParams->m_flLenZ = 1.0;
-	strCommand = pPlate3D->getSQLCommand(*aPlate3DParams);
+	pPlate3D->init(*aPlate3DParams);
+	strCommand = pPlate3D->getSQLCommand();
 	database.fillPrimitiveTable(strCommand);
 
 	//Back plate
@@ -119,7 +127,8 @@ void insertIntoDatabase_Parallelepiped(const string & astrDBName)	{
 	aPlate3DParams->m_flLenX = 1.0;
 	aPlate3DParams->m_flLenY = 0.05;
 	aPlate3DParams->m_flLenZ = 1.0;
-	strCommand = pPlate3D->getSQLCommand(*aPlate3DParams);
+	pPlate3D->init(*aPlate3DParams);
+	strCommand = pPlate3D->getSQLCommand();
 	database.fillPrimitiveTable(strCommand);
 
 	delete aPlate3DParams;
@@ -131,10 +140,8 @@ void insertIntoDatabase_Parallelepiped(const string & astrDBName)	{
 void insertIntoDatabase_Furniture(const string & astrDBName)	{
 	DatabaseMgr & database = DatabaseMgr::Create(astrDBName.c_str(), DatabaseMgr::QSQLITE);
 
-	Cupboard cupboard;
-
 	//Set the cupboard
-
+	Cupboard cupboard;
 
 	ref_ptr < Plate3D > pPlate3D =  new Plate3D;
 	Plate3DParams * aPlate3DParams = new Plate3DParams;
@@ -142,46 +149,54 @@ void insertIntoDatabase_Furniture(const string & astrDBName)	{
 	aPlate3DParams->m_flLenX = 1.0;
 	aPlate3DParams->m_flLenY = 1.0;
 	aPlate3DParams->m_flLenZ = 0.05;
-	string strCommand = pPlate3D->getSQLCommand(*aPlate3DParams);
-	database.fillPrimitiveTable(strCommand);
+	//string strCommand = pPlate3D->getSQLCommand(*aPlate3DParams);
+	//database.fillPrimitiveTable(strCommand);
+	pPlate3D->init(*aPlate3DParams);
+	cupboard.addPart(pPlate3D);
+	
 
 	//Left plate
 	aPlate3DParams = new Plate3DParams;
 	aPlate3DParams->m_flLenX = 0.05;
 	aPlate3DParams->m_flLenY = 1.0;
 	aPlate3DParams->m_flLenZ = 1.0;
-	strCommand = pPlate3D->getSQLCommand(*aPlate3DParams);
-	database.fillPrimitiveTable(strCommand);
+	//strCommand = pPlate3D->getSQLCommand(*aPlate3DParams);
+	//database.fillPrimitiveTable(strCommand);
+	pPlate3D->init(*aPlate3DParams);
+	cupboard.addPart(pPlate3D);
 
 	//Right plate
 	aPlate3DParams = new Plate3DParams;
 	aPlate3DParams->m_flLenX = 0.05;
 	aPlate3DParams->m_flLenY = 1.0;
 	aPlate3DParams->m_flLenZ = 1.0;
-	strCommand = pPlate3D->getSQLCommand(*aPlate3DParams);
-	database.fillPrimitiveTable(strCommand);
+	//strCommand = pPlate3D->getSQLCommand(*aPlate3DParams);
+	//database.fillPrimitiveTable(strCommand);
+	pPlate3D->init(*aPlate3DParams);
+	cupboard.addPart(pPlate3D);
 
 	//Front plate
 	aPlate3DParams = new Plate3DParams;
 	aPlate3DParams->m_flLenX = 1.0;
 	aPlate3DParams->m_flLenY = 0.05;
 	aPlate3DParams->m_flLenZ = 1.0;
-	strCommand = pPlate3D->getSQLCommand(*aPlate3DParams);
-	database.fillPrimitiveTable(strCommand);
+	//strCommand = pPlate3D->getSQLCommand(*aPlate3DParams);
+	//database.fillPrimitiveTable(strCommand);
+	pPlate3D->init(*aPlate3DParams);
+	cupboard.addPart(pPlate3D);
 
 	//Back plate
 	aPlate3DParams = new Plate3DParams;
 	aPlate3DParams->m_flLenX = 1.0;
 	aPlate3DParams->m_flLenY = 0.05;
 	aPlate3DParams->m_flLenZ = 1.0;
-	strCommand = pPlate3D->getSQLCommand(*aPlate3DParams);
-	database.fillPrimitiveTable(strCommand);
+	//strCommand = pPlate3D->getSQLCommand(*aPlate3DParams);
+	//database.fillPrimitiveTable(strCommand);
+	pPlate3D->init(*aPlate3DParams);
+	cupboard.addPart(pPlate3D);
 
-	//A line in the SQL database of furniture will be as follows:
-	// PrimitiveID1 transformMatrix1 PrimitiveID2 transformMatrix2 ... GeneralTransformMatrix
-	
-	QString qstrCommand = cupboard.getSQLPrintCommand().c_str();
-	QSqlQuery qry(qstrCommand);
+	QString qstrCommand = cupboard.getSQLPrintCommand();
+//	QSqlQuery qry(qstrCommand);
 
 	delete aPlate3DParams;
 }
@@ -196,12 +211,11 @@ int main(int argc, char *argv[])	{
 	strDBName = "../../Databases/Furniture.db";
 	createTable(strDBName);
 	populateTable(strDBName);
-	//insertIntoDatabase_Sphere(strDBName);
-	//insertIntoDatabase_Cylinder(strDBName);
+	insertIntoDatabase_Sphere(strDBName);
+	insertIntoDatabase_Cylinder(strDBName);
 	insertIntoDatabase_Parallelepiped(strDBName);
 	insertIntoDatabase_Furniture(strDBName);
 
 
-
-	return(0);
+	return 0;
 }

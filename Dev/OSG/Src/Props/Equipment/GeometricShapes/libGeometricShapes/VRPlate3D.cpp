@@ -13,11 +13,11 @@ using namespace VR;
 Plate3DParams::Plate3DParams() : 
 m_flLenX(1.0), m_flLenY(1.0), m_flLenZ(1.0),
 m_flPosX(0.0), m_flPosY(0.0), m_flPosZ(0.0),
-m_pchFileName("")	{
-	m_flRGBA[0] = 1.0;
-	m_flRGBA[1] = 0.0;
-	m_flRGBA[2] = 0.0;
-	m_flRGBA[3] = 1.0;
+m_strFileNameTexture("")	{
+	m_arrflRGBA.push_back(1.0);
+	m_arrflRGBA.push_back(0.0);
+	m_arrflRGBA.push_back(0.0);
+	m_arrflRGBA.push_back(1.0);
 }
 
 //-----------------------------------------------------------------------
@@ -39,31 +39,28 @@ void Plate3D::init(const AbstractGeomShapeParams & aAbstractGeomShapeParams)	{
 			   aPlate3DParams.m_flPosX, aPlate3DParams.m_flPosY, aPlate3DParams.m_flPosZ, 1);
 	setMatrix(matrix);
 
-	setColor(aPlate3DParams.m_flRGBA);
-	setTexture(aPlate3DParams.m_pchFileName);
+	m_Plate3DParams = aPlate3DParams;
 }
 
 //----------------------------------------------------------------------
-
-void Plate3D::setColor(const float aarrflColor[4])	{
+void Plate3D::setColor(const std::vector < float > & aarrflColor)	{
 	m_pUntransformedPlate3D->setColor(aarrflColor);
 }
 
 //----------------------------------------------------------------------
 
-void Plate3D::setTexture(const char * apchFileName)	{
-	m_pUntransformedPlate3D->setTexture(apchFileName);
+void Plate3D::setTexture(const std::string & astrFileName) {
+	m_pUntransformedPlate3D->setTexture(astrFileName);
 }
 
 //----------------------------------------------------------------------
 
-std::string Plate3D::getSQLCommand(const AbstractGeomShapeParams & aAbstractGeomShapeParams) const	{
-	const Plate3DParams & aPlate3DParams = static_cast<const Plate3DParams&>(aAbstractGeomShapeParams);
-
+std::string Plate3D::getSQLCommand() const	{
+	
 	string strSQLCommand = "INSERT INTO Parallelepiped (ParallelepipedWidth, ParallelepipedDepth, ParallelepipedHeight, PrimitiveID) VALUES("
-		+ to_string((long double)aPlate3DParams.m_flLenX) + ","
-		+ to_string((long double)aPlate3DParams.m_flLenY) + ","
-		+ to_string((long double)aPlate3DParams.m_flLenZ) + ","
+		+ to_string((long double)m_Plate3DParams.m_flLenX) + ","
+		+ to_string((long double)m_Plate3DParams.m_flLenY) + ","
+		+ to_string((long double)m_Plate3DParams.m_flLenZ) + ","
 		+ to_string((_Longlong)2) + ")";
 	return(strSQLCommand);
 }

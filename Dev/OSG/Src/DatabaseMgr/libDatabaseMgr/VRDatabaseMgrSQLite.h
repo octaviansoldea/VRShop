@@ -28,6 +28,8 @@ namespace VR {
 
 		virtual void insertIntoDatabase(const DatabaseMgrParams & aDatabaseMgrParams);
 		virtual std::vector<float> selectFromDatabase(const int & anElementID);
+
+
 	};
 }
 #endif //VR_DATABASE_MGR_SQLITE_H

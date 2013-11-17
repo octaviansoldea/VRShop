@@ -5,6 +5,7 @@
 
 using namespace osg;
 using namespace VR;
+using namespace std;
 
 UntransformedPlate3D::UntransformedPlate3D()	{
 	ref_ptr<UntransformedPlate2D> plate2D = new UntransformedPlate2D;
@@ -93,7 +94,7 @@ UntransformedPlate3D::UntransformedPlate3D()	{
 
 //--------------------------------------------------------------------------
 
-void UntransformedPlate3D::setColor(const float aarrflColor[4])	{
+void UntransformedPlate3D::setColor(const vector < float > & aarrflColor) {
 	int nI;
 	int nNumChildren = this->getNumChildren();
 	for(nI = 0; nI < nNumChildren; nI++) {
@@ -112,7 +113,7 @@ void UntransformedPlate3D::setColor(const float aarrflColor[4])	{
 
 //--------------------------------------------------------------------------
 
-void UntransformedPlate3D::setTexture(const char * apchFileName)	{
+void UntransformedPlate3D::setTexture(const std::string & astrFileName)	{
 	int nI;
 	int nNumChildren = this->getNumChildren();
 	for(nI = 0; nI < nNumChildren; nI++) {
@@ -125,6 +126,6 @@ void UntransformedPlate3D::setTexture(const char * apchFileName)	{
 		UntransformedPlate2D * pUntransformedPlate2D =
 			dynamic_cast< UntransformedPlate2D * > (pMatrixTransform->getChild(0));
 
-		pUntransformedPlate2D->setTexture(apchFileName);
+		pUntransformedPlate2D->setTexture(astrFileName);
 	}
 }

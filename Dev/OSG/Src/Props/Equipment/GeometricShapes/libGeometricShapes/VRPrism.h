@@ -17,8 +17,8 @@ namespace VR {
 		float m_flPosY;
 		float m_flPosZ;
 
-		float m_arrflRGBA[4];
-		const char * m_pchFileName;
+		std::vector < float > m_arrflRGBA;
+		std::string m_strFileNameTexture;
 			
 		PrismParams();
 	};
@@ -30,14 +30,16 @@ namespace VR {
 
 		virtual void init(const AbstractGeomShapeParams & aAbstractGeomShapeParams);
 
-		void setColor(const float aarrflColor[4]);
+		void setColor(const std::vector < float > & aarrflColor);
+		void setTexture(const std::string & astrFileName);
 		void setResolution(int anRes);
-		void setTexture(const char * apchFileName);
 
 		virtual std::string getSQLCommand(const AbstractGeomShapeParams & aAbstractGeomShapeParams) const;
 		virtual void initFromSQLData(const std::string & astrSQLData);
 
 		osg::ref_ptr <UntransformedPolygon3D> m_pUntransformedPolygon3D;
+	protected: 
+		PrismParams m_PrismParams;
 	};
 }
 

@@ -12,25 +12,24 @@ namespace VR {
 		int m_nResPhi;
 		int m_nResTheta;
 
-		float m_arrflRGBA[4];
-		const char * m_pchFileName;
+		std::vector < float > m_arrflRGBA;
+		std::string m_strFileName;
 
 		SphereParams();
 	};
 
 	class UntransformedSphere : public AbstractGeomShape, public osg::Geode {
-		int m_nResPhi;
-		int m_nResTheta;
+		SphereParams m_SphereParams;
 	public:
 		UntransformedSphere();
 		UntransformedSphere(const SphereParams & aSphereParams);
 
-		void setColor(const float aarrflColor[4]);
-		void setTexture(const char * apchFileName);
+		void setColor(const std::vector < float > & aarrflColor);
+		void setTexture(const std::string astrFileName);
 		void setResolution(int anResPhi, int anResTheta);
 		void setRadius(float aflRadius);
 
-		virtual std::string getSQLCommand(const AbstractGeomShapeParams & aAbstractGeomShapeParams) const;
+		virtual std::string getSQLCommand() const;
 		virtual void init(const AbstractGeomShapeParams & aAbstractGeomShapeParams);
 
 		virtual void initFromSQLData(const std::string & astrSQLData);

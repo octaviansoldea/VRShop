@@ -1,4 +1,8 @@
 #include <string>
+#include <iostream>
+
+#include "VRAbstractGeomShape.h"
+
 #include "VRCupboard.h"
 
 using namespace std;
@@ -41,6 +45,19 @@ void Cupboard::addPart(ref_ptr < Node > apNode) {
 
 //-----------------------------------------------------------------------
 
-string Cupboard::getSQLPrintCommand() const {
-	return(string(""));
+QString Cupboard::getSQLPrintCommand() {
+	QString strSQLCommand;
+
+	int nNumChildren = getNumChildren();
+	std::cout << nNumChildren << std::endl;
+
+	int nI;
+	for (nI=0;nI<nNumChildren;nI++)	{
+		AbstractGeomShape * pAbstractGeomShape = dynamic_cast<AbstractGeomShape*>(this->getChild(nI));
+		strSQLCommand += QString(pAbstractGeomShape->getSQLCommand().c_str());
+	}
+
+
+
+	return(strSQLCommand);
 }

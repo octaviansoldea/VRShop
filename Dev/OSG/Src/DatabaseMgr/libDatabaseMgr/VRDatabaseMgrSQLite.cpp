@@ -44,17 +44,18 @@ bool DatabaseMgrSQLite::createTable() {
 		qry = "CREATE TABLE IF NOT EXISTS Cylinder "
 			"(CylinderID INTEGER PRIMARY KEY AUTOINCREMENT,"
 			"CylinderRes INTEGER,"
-			"CylinderRadius INTEGER,"
-			"CylinderHeight INTEGER,"
+			"CylinderMatrix TEXT,"
+			"CylinderColor TEXT,"
+			"CylinderTexture TEXT, "
 			"PrimitiveID INTEGER, "
 			"FOREIGN KEY (PrimitiveID) REFERENCES Primitive(PrimitiveID))";
 		query.exec(qry);
 
-		qry = "CREATE TABLE IF NOT EXISTS Parallelepiped "
-			"(ParallelepipedID INTEGER PRIMARY KEY AUTOINCREMENT,"
-			"ParallelepipedWidth INTEGER,"
-			"ParallelepipedDepth INTEGER,"
-			"ParallelepipedHeight INTEGER,"
+		qry = "CREATE TABLE IF NOT EXISTS Plate3D "
+			"(Plate3DID INTEGER PRIMARY KEY AUTOINCREMENT,"
+			"Plate3DMatrix TEXT,"
+			"Plate3DColor TEXT,"
+			"Plate3DTexture TEXT,"
 			"PrimitiveID INTEGER, "
 			"FOREIGN KEY (PrimitiveID) REFERENCES Primitive(PrimitiveID))";
 		query.exec(qry);
@@ -62,8 +63,9 @@ bool DatabaseMgrSQLite::createTable() {
 		qry = "CREATE TABLE IF NOT EXISTS Prism "
 			"(PrismID INTEGER PRIMARY KEY AUTOINCREMENT,"
 			"PrismSides INTEGER,"
-			"PrismRadius INTEGER,"
-			"PrismHeight INTEGER,"
+			"PrismMatrix TEXT,"
+			"PrismColor TEXT,"
+			"PrismTexture TEXT, "
 			"PrimitiveID INTEGER, "
 			"FOREIGN KEY (PrimitiveID) REFERENCES Primitive(PrimitiveID))";
 		query.exec(qry);
@@ -72,6 +74,8 @@ bool DatabaseMgrSQLite::createTable() {
 			"(SphereID INTEGER PRIMARY KEY AUTOINCREMENT,"
 			"SphereRes INTEGER,"
 			"SphereRadius INTEGER,"
+			"SphereColor TEXT,"
+			"SphereTexture TEXT, "
 			"PrimitiveID INTEGER, "
 			"FOREIGN KEY (PrimitiveID) REFERENCES Primitive(PrimitiveID))";
 		query.exec(qry);
@@ -80,6 +84,7 @@ bool DatabaseMgrSQLite::createTable() {
 			"(PrimitiveItemListID INTEGER PRIMARY KEY AUTOINCREMENT,"
 			"PrimitiveID INTEGER, "
 			"ItemID INTEGER, "
+			"EquipmentItemID INTEGER, "
 			"FOREIGN KEY (PrimitiveID) REFERENCES Primitive(PrimitiveID))";
 		query.exec(qry);
 
@@ -93,9 +98,10 @@ bool DatabaseMgrSQLite::createTable() {
 			"EquipmentName TEXT)";
 		query.exec(qry);
 
-		qry = "CREATE TABLE IF NOT EXISTS Furniture "
-			"(FurnitureID INTEGER PRIMARY KEY AUTOINCREMENT,"
-			"EquipmentID INTEGER, "
+		qry = "CREATE TABLE IF NOT EXISTS EquipmentItem "
+			"(EquipmentItemID INTEGER PRIMARY KEY AUTOINCREMENT,"
+			"EquipmentItemName TEXT, "
+			"EquipmentID INTEGER,"
 			"FOREIGN KEY (EquipmentID) REFERENCES Equipment(EquipmentID))";
 		query.exec(qry);
 
@@ -118,36 +124,50 @@ bool DatabaseMgrSQLite::createTable() {
 
 void DatabaseMgrSQLite::fillPrimitiveTable(string & astrCommand)	{
 	if(m_QSqlDatabase.open())	{
-		QString qstrCommand = QString(astrCommand.c_str());
-		QSqlQuery qry(qstrCommand);
+		vector <string> arrstrSQLCommands = splitString(astrCommand,"_");
+		QSqlQuery query(arrstrSQLCommands[0].c_str());
 
-		//Number of the inserted item
-		int nID = qry.lastInsertId().toInt();
-		if (nID)	{
-			//Number of Primitive
-			int nPrimitive;
-			vector<string> vecstrQuery = splitString(astrCommand," ");
-			string strPrimitive = vecstrQuery.at(2);
+		int nEquipmentItemID = query.lastInsertId().toInt();
 
-			QString qstrQuery = QString("SELECT PrimitiveID FROM Primitive WHERE PrimitiveName = '%1'").arg(strPrimitive.c_str());
-			QSqlQuery tqry(qstrQuery);
+		//First query relates to the "Equipment"
+		vector<string> vecstrEquipment = splitString(arrstrSQLCommands[0]," ");
+		QString qstrEquipmentName = vecstrEquipment[5].c_str();
 
-			while (tqry.next())	{
-				nPrimitive = tqry.value(0).toInt();
+
+		int nI;
+		for (nI=1;nI<arrstrSQLCommands.size();nI++)	{
+			QSqlQuery qry(arrstrSQLCommands[nI].c_str());
+
+			//Number of the inserted item
+			int nID = qry.lastInsertId().toInt();
+			if (nID)	{
+				//Number of Primitive
+				int nPrimitive;
+				vector<string> vecstrQuery = splitString(arrstrSQLCommands[nI]," ");
+				string strPrimitive = vecstrQuery.at(2);
+
+				QString qstrQuery = QString("SELECT PrimitiveID FROM Primitive WHERE PrimitiveName = '%1'").arg(strPrimitive.c_str());
+				QSqlQuery tqry(qstrQuery);
+
+				while (tqry.next())	{
+					nPrimitive = tqry.value(0).toInt();
+				}
+
+				//Everything is set, fill the PrimitiveItemList with proper data
+				QString qstrPIL = QString("INSERT INTO PrimitiveItemList (PrimitiveID, ItemID, EquipmentItemID) "
+					"VALUES(%1, %2, %3)")
+					.arg(nPrimitive).arg(nID).arg(nEquipmentItemID);
+
+				QSqlQuery tempQuery;
+				tempQuery.exec(qstrPIL);
 			}
-
-			//Everything is set, fill the PrimitiveItemList with proper data
-			QString qstrPIL = QString("INSERT INTO PrimitiveItemList (PrimitiveID, ItemID) VALUES(%1, %2)")
-				.arg(nPrimitive).arg(nID);
-			QSqlQuery tempQuery;
-			tempQuery.exec(qstrPIL);
+			else	{
+				string strError = "Item not selected.";
+				printError(strError.c_str());
+				exit(-1);
+			}
 		}
-		else	{
-			string strError = "Item not selected.";
-			printError(strError.c_str());
-			exit(-1);
-		}
-	}
+	}	
 	else	{
 		string strMessage = "Error opening: " + string(lastError().text().toStdString());
 		printWarning(strMessage.c_str());

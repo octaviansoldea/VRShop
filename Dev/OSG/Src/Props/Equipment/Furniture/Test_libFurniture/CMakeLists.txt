@@ -26,8 +26,10 @@ ENDIF(Qt5_FOUND)
 
 INCLUDE_DIRECTORIES(
 	${OPENSCENEGRAPH_INCLUDE_DIRS}
-	${CMAKE_SOURCE_DIR}/Props/Equipment/GeometricShapes/libGeometricShapes
+    ${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
 	${CMAKE_SOURCE_DIR}/Props/Equipment/Furniture/libFurniture
+	${CMAKE_SOURCE_DIR}/Props/Equipment/GeometricShapes/libGeometricShapes
+	${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabaseMgr
 )
 
 SET(SRCS
@@ -36,30 +38,33 @@ SET(SRCS
 
 ADD_EXECUTABLE(Test_libFurniture ${SRCS})
 
-SET(COMMON_LIBS
+SET(LIBS_COMMON
 	${OSG_LIBRARIES}
 	${OSGDB_LIBRARIES}
 	${OSGGA_LIBRARIES}
 	${OSGQT_LIBRARIES}
 	${OSGVIEWER_LIBRARIES}
 	${OPENTHREADS_LIBRARIES}
-	libGeometricShapes
 	libFurniture
+	libGeometricShapes
+	libDatabaseMgr
+	libCommon
 )
 
 IF(Qt5_FOUND)
   TARGET_LINK_LIBRARIES(Test_libFurniture
-    ${Qt5Core_LIBRARIES}
+	${Qt5Core_LIBRARIES}
     ${Qt5Gui_LIBRARIES}
     ${Qt5Widgets_LIBRARIES}
-    ${Qt5OpenGL_LIBRARIES}
-	${COMMON_LIBS}
+    ${Qt5Sql_LIBRARIES}
+	${LIBS_COMMON}
   )
 ELSEIF(NOT Qt5_FOUND AND Qt4_FOUND)
   TARGET_LINK_LIBRARIES(Test_libFurniture
-    ${QT_LIBRARIES}
-	${COMMON_LIBS}  
+  	${QT_LIBRARIES}
+    ${QT_QTSQL_LIBRARY}
+	${LIBS_COMMON}
   )
-ENDIF()
+ENDIF(Qt5_FOUND)
 
 SET_PROPERTY(TARGET Test_libFurniture PROPERTY FOLDER Props)

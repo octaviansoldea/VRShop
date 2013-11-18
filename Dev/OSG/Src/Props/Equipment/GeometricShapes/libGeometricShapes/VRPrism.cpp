@@ -70,14 +70,31 @@ void Prism::setTexture(const string & astrFileName) {
 
 //----------------------------------------------------------------------
 
-string Prism::getSQLCommand(const AbstractGeomShapeParams & aAbstractGeomShapeParams) const {
-	const PrismParams & aPrismParams = static_cast<const PrismParams&>(aAbstractGeomShapeParams);
+string Prism::getSQLCommand() const {
+	Matrixd prismMatrix = getMatrix();
+	string strMatrix4X4 = "'";
+	int nI, nJ;
 
-	string strSQLCommand = "INSERT INTO Prism (PrismSides, PrismRadius, PrismHeight, PrimitiveID) VALUES("
-		+ to_string((_Longlong)aPrismParams.m_nRes) + ","
-		+ to_string((long double)aPrismParams.m_flRadius) + ","
-		+ to_string((long double)aPrismParams.m_flHeight) + ","
-		+ to_string((_Longlong)3) + ")";
+	for (nI=0;nI<4;nI++)	{
+		for (nJ=0;nJ<4;nJ++)	{
+			strMatrix4X4 += to_string((long double)prismMatrix(nI,nJ)) + ";";
+		}
+	}
+	strMatrix4X4 += "'";
+
+	string strColor = "'";
+	for (nI=0;nI<4;nI++)	{
+		strColor += to_string((long double)m_PrismParams.m_arrflRGBA[nI]) + ";";
+	}
+	strColor += "'";
+
+	string strSQLCommand = "INSERT INTO Prism (PrismSides, PrismMatrix, PrismColor, PrismTexture, PrimitiveID) VALUES("
+		+ to_string((_Longlong)m_PrismParams.m_nRes) + ","
+		+ strMatrix4X4 + ","
+		+ strColor + ",'"
+		+ m_PrismParams.m_strFileNameTexture + "',"
+		+ "(SELECT PrimitiveID FROM Primitive WHERE PrimitiveName = 'Prism'))";
+
 	return(strSQLCommand);
 }
 

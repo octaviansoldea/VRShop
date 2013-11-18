@@ -18,7 +18,7 @@ using namespace osg;
 using namespace VR;
 
 SphereParams::SphereParams() : 
-m_flRadius(1.0), m_nResPhi(25), m_nResTheta(25), m_strFileName("") {
+m_flRadius(1.0), m_nResPhi(25), m_nResTheta(25), m_strFileNameTexture(" ") {
 	m_arrflRGBA.push_back(1.0);
 	m_arrflRGBA.push_back(0.0);
 	m_arrflRGBA.push_back(0.0);
@@ -170,10 +170,20 @@ void UntransformedSphere::setTexture(const std::string astrFileName) {
 //--------------------------------------------------------------
 
 string UntransformedSphere::getSQLCommand() const	{
-	string strSQLCommand = "INSERT INTO Sphere (SphereRes, SphereRadius, PrimitiveID) VALUES("
+	string strColor = "'";
+	int nI;
+	for (nI=0;nI<4;nI++)	{
+		strColor += to_string((long double)m_SphereParams.m_arrflRGBA[nI]) + ";";
+	}
+	strColor += "'";
+
+	string strSQLCommand = "INSERT INTO Sphere (SphereRes, SphereRadius, SphereColor, SphereTexture, PrimitiveID) VALUES("
 		+ to_string((_Longlong)m_SphereParams.m_nResPhi) + ","
-		+ to_string((long double)m_SphereParams.m_flRadius) + ","
-		+ to_string((_Longlong)4) + ")";
+		+ to_string((_Longlong)m_SphereParams.m_flRadius) + ","
+		+ strColor + ",'"
+		+ m_SphereParams.m_strFileNameTexture + "',"
+		+ "(SELECT PrimitiveID FROM Primitive WHERE PrimitiveName = 'Sphere'))";
+
 	return(strSQLCommand);
 }
 

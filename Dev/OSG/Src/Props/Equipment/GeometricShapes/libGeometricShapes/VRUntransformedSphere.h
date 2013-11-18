@@ -13,7 +13,7 @@ namespace VR {
 		int m_nResTheta;
 
 		std::vector < float > m_arrflRGBA;
-		std::string m_strFileName;
+		std::string m_strFileNameTexture;
 
 		SphereParams();
 	};

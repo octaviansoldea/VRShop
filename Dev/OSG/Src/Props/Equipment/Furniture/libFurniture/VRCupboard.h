@@ -4,6 +4,8 @@
 #include <osg/MatrixTransform>
 #include <QString>
 
+#include "VRAbstractGeomShape.h"
+
 namespace VR	{
 	struct CupboardParams {
 		float m_flPosX;
@@ -17,13 +19,16 @@ namespace VR	{
 	public:
 		Cupboard();
 
-		void setPos(const CupboardParams & aCupboardParams);
-
 		void addPart(osg::ref_ptr < osg::Node > apNode);
-		//void removePart(osg::Object * apObject);
+		void removePart(osg::ref_ptr < osg::Node > apNode);
 
-		QString getSQLPrintCommand()	;
+		void init(const CupboardParams & aCupboardParams);
+
+		std::string getSQLPrintCommand();
 		void initFromSQLData(const std::string & astrSQLData);
+
+	private:
+		std::vector < std::string > m_arrSQLCommandLines;
 	};
 }
 #endif //VR_CUPBOARD_H

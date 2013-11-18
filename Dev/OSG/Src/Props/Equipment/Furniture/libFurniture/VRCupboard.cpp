@@ -20,7 +20,7 @@ Cupboard::Cupboard()	{
 
 //-----------------------------------------------------------------------
 
-void Cupboard::setPos(const CupboardParams & aCupboardParams) {
+void Cupboard::init(const CupboardParams & aCupboardParams)	{
 
 	Matrix matrix;
 	matrix.set(1,							0,							0,							0,
@@ -36,28 +36,31 @@ void Cupboard::setPos(const CupboardParams & aCupboardParams) {
 
 void Cupboard::addPart(ref_ptr < Node > apNode) {
 	addChild(apNode);
+
+	AbstractGeomShape * aAbstractGeomShape = dynamic_cast<AbstractGeomShape*>(apNode.get());
+	string strCommand = aAbstractGeomShape->getSQLCommand();
+
+	m_arrSQLCommandLines.push_back(strCommand);
 }
 
 //-----------------------------------------------------------------------
 
-//void Cupboard::removePart(osg::Object * apObject) {
-//}
+void Cupboard::removePart(ref_ptr < Node > apNode) {
+	removeChild(apNode);
+}
 
 //-----------------------------------------------------------------------
 
-QString Cupboard::getSQLPrintCommand() {
-	QString strSQLCommand;
-
-	int nNumChildren = getNumChildren();
-	std::cout << nNumChildren << std::endl;
+string Cupboard::getSQLPrintCommand() {
+	string strSQLCommand = "INSERT INTO EquipmentItem (EquipmentItemName, EquipmentID) "
+		"VALUES ('Cupboard', (SELECT EquipmentID FROM Equipment WHERE EquipmentName = 'Furniture'))_";
+	int nNumParts = m_arrSQLCommandLines.size();
 
 	int nI;
-	for (nI=0;nI<nNumChildren;nI++)	{
-		AbstractGeomShape * pAbstractGeomShape = dynamic_cast<AbstractGeomShape*>(this->getChild(nI));
-		strSQLCommand += QString(pAbstractGeomShape->getSQLCommand().c_str());
+	for (nI=0;nI<nNumParts-1;nI++)	{
+		strSQLCommand += m_arrSQLCommandLines[nI] + "_";
 	}
-
-
+	strSQLCommand += m_arrSQLCommandLines[nNumParts-1];
 
 	return(strSQLCommand);
 }

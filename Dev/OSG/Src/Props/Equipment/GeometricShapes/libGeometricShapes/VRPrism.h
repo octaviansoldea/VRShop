@@ -34,7 +34,7 @@ namespace VR {
 		void setTexture(const std::string & astrFileName);
 		void setResolution(int anRes);
 
-		virtual std::string getSQLCommand(const AbstractGeomShapeParams & aAbstractGeomShapeParams) const;
+		virtual std::string getSQLCommand() const;
 		virtual void initFromSQLData(const std::string & astrSQLData);
 
 		osg::ref_ptr <UntransformedPolygon3D> m_pUntransformedPolygon3D;

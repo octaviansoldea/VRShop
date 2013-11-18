@@ -13,7 +13,7 @@ using namespace VR;
 Plate3DParams::Plate3DParams() : 
 m_flLenX(1.0), m_flLenY(1.0), m_flLenZ(1.0),
 m_flPosX(0.0), m_flPosY(0.0), m_flPosZ(0.0),
-m_strFileNameTexture("")	{
+m_strFileNameTexture(" ")	{
 	m_arrflRGBA.push_back(1.0);
 	m_arrflRGBA.push_back(0.0);
 	m_arrflRGBA.push_back(0.0);
@@ -56,12 +56,30 @@ void Plate3D::setTexture(const std::string & astrFileName) {
 //----------------------------------------------------------------------
 
 std::string Plate3D::getSQLCommand() const	{
-	
-	string strSQLCommand = "INSERT INTO Parallelepiped (ParallelepipedWidth, ParallelepipedDepth, ParallelepipedHeight, PrimitiveID) VALUES("
-		+ to_string((long double)m_Plate3DParams.m_flLenX) + ","
-		+ to_string((long double)m_Plate3DParams.m_flLenY) + ","
-		+ to_string((long double)m_Plate3DParams.m_flLenZ) + ","
-		+ to_string((_Longlong)2) + ")";
+
+	Matrixd plate3DMatrix = getMatrix();
+	string strMatrix4X4 = "'";
+	int nI, nJ;
+
+	for (nI=0;nI<4;nI++)	{
+		for (nJ=0;nJ<4;nJ++)	{
+			strMatrix4X4 += to_string((long double)plate3DMatrix(nI,nJ)) + ";";
+		}
+	}
+	strMatrix4X4 += "'";
+
+	string strColor = "'";
+	for (nI=0;nI<4;nI++)	{
+		strColor += to_string((long double)m_Plate3DParams.m_arrflRGBA[nI]) + ";";
+	}
+	strColor += "'";
+
+	string strSQLCommand = "INSERT INTO Plate3D (Plate3DMatrix, Plate3DColor, Plate3DTexture, PrimitiveID) VALUES("
+		+ strMatrix4X4 + ","
+		+ strColor + ",'"
+		+ m_Plate3DParams.m_strFileNameTexture + "',"
+		+ "(SELECT PrimitiveID FROM Primitive WHERE PrimitiveName = 'Plate3D'))";
+
 	return(strSQLCommand);
 }
 

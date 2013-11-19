@@ -1,10 +1,7 @@
-#include <osgGA/TrackballManipulator>
 #include <osgDB/ReadFile>
 
 #include <QFileDialog>
 #include <QMessageBox>
-
-#include "VRGrid.h"
 
 #include "VRShopBuilder_GUI.h"
 
@@ -17,23 +14,14 @@ using namespace VR;
 ShopBuilder_GUI::ShopBuilder_GUI() {	
 	setupUi(this);
 
-	//Send scene to the Widget
-	m_pOSGQTWidget->setSceneData(m_ShopBuilder.m_pScene);
-	m_pOSGQTWidget->setCameraManipulator(new osgGA::TrackballManipulator);
-
 	setWindowTitle("VR Shop Server Dialog");
 
-	m_pGridlines = new Grid;
-	if(m_p_ToolButton_GridOnOff->isChecked())	{
-		m_ShopBuilder.m_pScene->addChild(m_pGridlines);
-	}
+	m_ShopBuilder.init(m_pOSGQTWidget);
 
 
 	m_pOSGQTWidget->show();
 
-	//SIGNAL/SLOT CONNECTIONS
 	buildConnections();
-	slotSetTranslation();
 }
 
 
@@ -153,27 +141,7 @@ void ShopBuilder_GUI::slotSaveDB() {
 //---------------------------------------------------------------------------------------
 
 void ShopBuilder_GUI::slotGridOnOff(bool abIndicator)	{
-	int nRes = m_ShopBuilder.m_pScene->getChildIndex(m_pGridlines);
-	int nSize = m_ShopBuilder.m_pScene->getNumChildren();
-
-	//ToolButton checked && Grid not already a child
-	if (abIndicator && nRes == nSize) {
-		m_pGridlines = new Grid;
-		m_ShopBuilder.m_pScene->addChild(m_pGridlines);
-	}
-	else	{
-		if(nRes < nSize)	{
-			int nI;
-			for(nI = 0; nI < m_pGridlines->getNumParents();nI++)	{
-				m_ShopBuilder.m_pScene->removeChild(m_pGridlines->getParent(nI));
-			}
-			m_ShopBuilder.m_pScene->removeChild(m_pGridlines);
-		}
-		else	{
-			return;
-			//If here, do nothing (the grid not part of the scene)
-		}
-	}
+	m_ShopBuilder.gridOnOff(abIndicator);
 }
 
 //---------------------------------------------------------------------------------------

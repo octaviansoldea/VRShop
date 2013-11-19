@@ -14,7 +14,10 @@ namespace VR {
 		Cylinder();
 		Cylinder(const CylinderParams & aCylinderParams);
 
+		virtual std::string getSQLFormat() const;
 		virtual std::string getSQLCommand() const;
+	private:
+		static std::string m_strSQLFormat;
 	};
 }
 #endif //VR_CYLINDER_H

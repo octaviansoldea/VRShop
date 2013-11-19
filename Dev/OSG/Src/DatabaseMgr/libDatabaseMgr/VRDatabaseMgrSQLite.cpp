@@ -9,6 +9,7 @@
 #include <QSqlResult>
 #include <QImageWriter>
 
+#include "VRCylinder.h"
 #include "VRDatabaseMgrSQLite.h"
 
 using namespace VR;
@@ -41,14 +42,9 @@ bool DatabaseMgrSQLite::createTable() {
 			"PrimitiveName TEXT UNIQUE)";
 		query.exec(qry);
 
-		qry = "CREATE TABLE IF NOT EXISTS Cylinder "
-			"(CylinderID INTEGER PRIMARY KEY AUTOINCREMENT,"
-			"CylinderRes INTEGER,"
-			"CylinderMatrix TEXT,"
-			"CylinderColor TEXT,"
-			"CylinderTexture TEXT, "
-			"PrimitiveID INTEGER, "
-			"FOREIGN KEY (PrimitiveID) REFERENCES Primitive(PrimitiveID))";
+		Cylinder cylinder;
+		string strSQLFormat = cylinder.getSQLFormat();
+		qry = QString(strSQLFormat.c_str());
 		query.exec(qry);
 
 		qry = "CREATE TABLE IF NOT EXISTS Plate3D "
@@ -135,7 +131,7 @@ void DatabaseMgrSQLite::fillPrimitiveTable(string & astrCommand)	{
 
 
 		int nI;
-		for (nI=1;nI<arrstrSQLCommands.size();nI++)	{
+		for (nI=1; nI<arrstrSQLCommands.size(); nI++)	{
 			QSqlQuery qry(arrstrSQLCommands[nI].c_str());
 
 			//Number of the inserted item
@@ -144,7 +140,7 @@ void DatabaseMgrSQLite::fillPrimitiveTable(string & astrCommand)	{
 				//Number of Primitive
 				int nPrimitive;
 				vector<string> vecstrQuery = splitString(arrstrSQLCommands[nI]," ");
-				string strPrimitive = vecstrQuery.at(2);
+				string strPrimitive = vecstrQuery[2];
 
 				QString qstrQuery = QString("SELECT PrimitiveID FROM Primitive WHERE PrimitiveName = '%1'").arg(strPrimitive.c_str());
 				QSqlQuery tqry(qstrQuery);
@@ -216,7 +212,7 @@ string DatabaseMgrSQLite::getSQLData(const int & anElement)	{
 			while (qry.next())	{
 				string strGetSQLData;
 				int nI;
-				for(nI=1;nI<nColumnNames-1;nI++)	{
+				for(nI=1; nI<nColumnNames-1; nI++)	{
 					strGetSQLData += qry.value(nI).toString().toStdString() + " ";
 				}
 				strGetSQLData += qry.value(nColumnNames).toString().toStdString();
@@ -274,7 +270,7 @@ void DatabaseMgrSQLite::insertIntoDatabase(const DatabaseMgrParams & aDatabaseMg
 			//Check if the table depends on any foreign key and prepare the query
 			QString qstrFKey;
 			QString qstrFKeyValue;
-			for (nI=1;nI<nColumnNames;nI++)	{
+			for (nI=1; nI<nColumnNames; nI++)	{
 				string strFKey = vecColumnNames.at(nI).toStdString();
 				if(isAtEndOfString(strFKey,"ID"))	{
 					string strFKeyRef = strFKey.erase(strFKey.size()-2,2);
@@ -320,7 +316,8 @@ void DatabaseMgrSQLite::insertIntoDatabase(const DatabaseMgrParams & aDatabaseMg
 
 //-----------------------------------------------------------------------------------------
 
-vector<float> DatabaseMgrSQLite::selectFromDatabase(const int & anElementID)	{
+vector<float> DatabaseMgrSQLite::selectFromDatabase(//VR::VeryAbstractObject
+													const int & anElementID)	{
 	if(m_QSqlDatabase.open())	{
 
 		QSqlQuery qSqlFindItem;

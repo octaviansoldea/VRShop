@@ -18,7 +18,6 @@ namespace VR	{
 
 		QString openDialog(const char * apchDBName);
 		QString saveDialog(const char * apchDBName);
-		Grid * m_pGridlines;
 
 	public slots:
 		void slotOpenDB();

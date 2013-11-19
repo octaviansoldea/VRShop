@@ -14,6 +14,8 @@ namespace VR {
 
 		virtual void init(const AbstractGeomShapeParams & aAbstractGeomShapeParams) = 0;
 
+		virtual std::string getSQLFormat() const// = 0
+			;
 		virtual std::string getSQLCommand() const = 0;
 		virtual void initFromSQLData(const std::string & astrSQLData);
 
@@ -22,6 +24,7 @@ namespace VR {
 
 	private:
 		bool m_bIsTargetPick;
+		static std::string m_strSQLFormat;
 	};
 }
 #endif //VR_ABSTRACT_GEOM_SHAPE_H

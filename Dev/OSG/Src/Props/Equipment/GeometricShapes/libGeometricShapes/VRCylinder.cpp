@@ -4,6 +4,16 @@ using namespace VR;
 using namespace std;
 using namespace osg;
 
+string VR::Cylinder::m_strSQLFormat = 
+	"CREATE TABLE IF NOT EXISTS Cylinder "
+	"(CylinderID INTEGER PRIMARY KEY AUTOINCREMENT,"
+	"CylinderRes INTEGER,"
+	"CylinderMatrix TEXT,"
+	"CylinderColor TEXT,"
+	"CylinderTexture TEXT, "
+	"PrimitiveID INTEGER, "
+	"FOREIGN KEY (PrimitiveID) REFERENCES Primitive(PrimitiveID))";
+
 CylinderParams::CylinderParams() {
 	m_nRes = 20;
 }
@@ -17,6 +27,10 @@ VR::Cylinder::Cylinder()	{
 
 VR::Cylinder::Cylinder(const CylinderParams & aCylinderParams) : Prism(aCylinderParams)	{
 	m_CylinderParams = aCylinderParams;
+}
+
+string VR::Cylinder::getSQLFormat() const {
+	return(m_strSQLFormat);
 }
 
 //----------------------------------------------------------

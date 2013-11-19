@@ -388,8 +388,8 @@ QSpinBox::down-arrow:off {border-left: 17px solid none; border-right: 17px solid
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>261</width>
-              <height>623</height>
+              <width>258</width>
+              <height>587</height>
              </rect>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_8">
@@ -2373,7 +2373,7 @@ QToolButton:!checked {
               <bool>true</bool>
              </property>
              <property name="checked">
-              <bool>false</bool>
+              <bool>true</bool>
              </property>
             </widget>
            </item>
@@ -3460,7 +3460,7 @@ QTreeView::item:hover,QTreeView::item:selected {
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>547</width>
+              <width>549</width>
               <height>264</height>
              </rect>
             </property>
@@ -3986,8 +3986,8 @@ background-color: rgb(191,193,194);</string>
      <rect>
       <x>187</x>
       <y>171</y>
-      <width>138</width>
-      <height>190</height>
+      <width>130</width>
+      <height>196</height>
      </rect>
     </property>
     <property name="styleSheet">

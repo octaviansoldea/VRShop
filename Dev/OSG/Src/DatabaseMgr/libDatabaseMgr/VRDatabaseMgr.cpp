@@ -9,8 +9,9 @@ using namespace VR;
 
 
 DatabaseMgrParams::DatabaseMgrParams() :
-m_qstrObjectType(""),m_qstrObjectName(""),
-m_arrflParams(1)	{
+	m_qstrObjectType(""),
+	m_qstrObjectName(""),
+	m_arrflParams(1) {
 }
 
 //===========================================================================

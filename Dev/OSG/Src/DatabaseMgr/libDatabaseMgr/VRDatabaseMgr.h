@@ -45,10 +45,12 @@ namespace VR {
 		virtual bool createTable() = 0;
 
 		virtual void fillPrimitiveTable(std::string & astrCommand) = 0;
-		virtual std::string getSQLData(const int & anElement) = 0;
+		virtual std::string readFromDB(std::string & astrCommand) const;
+
 
 		virtual void insertIntoDatabase(const DatabaseMgrParams & aDatabaseMgrParams) = 0;
 		virtual std::vector<float> selectFromDatabase(const int & anElementID) = 0;
+
 
 
 	protected:

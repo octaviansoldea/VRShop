@@ -23,8 +23,8 @@ namespace VR {
 		virtual bool createTable();
 
 		virtual void fillPrimitiveTable(std::string & astrCommand);
-		virtual std::string getSQLData(const int & anElement);
-		
+		virtual std::string readFromDB(std::string & astrCommand) const;
+
 
 		virtual void insertIntoDatabase(const DatabaseMgrParams & aDatabaseMgrParams);
 		virtual std::vector<float> selectFromDatabase(const int & anElementID);

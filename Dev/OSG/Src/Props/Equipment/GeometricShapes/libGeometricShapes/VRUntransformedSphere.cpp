@@ -17,6 +17,17 @@ using namespace std;
 using namespace osg;
 using namespace VR;
 
+string UntransformedSphere::m_strSQLFormat =
+	"CREATE TABLE IF NOT EXISTS Sphere "
+	"(SphereID INTEGER PRIMARY KEY AUTOINCREMENT,"
+	"SphereRes INTEGER,"
+	"SphereRadius INTEGER,"
+	"SphereColor TEXT,"
+	"SphereTexture TEXT, "
+	"PrimitiveID INTEGER, "
+	"FOREIGN KEY (PrimitiveID) REFERENCES Primitive(PrimitiveID))";
+
+
 SphereParams::SphereParams() : 
 m_flRadius(1.0), m_nResPhi(25), m_nResTheta(25), m_strFileNameTexture(" ") {
 	m_arrflRGBA.push_back(1.0);
@@ -169,6 +180,12 @@ void UntransformedSphere::setTexture(const std::string astrFileName) {
 
 //--------------------------------------------------------------
 
+string UntransformedSphere::getSQLFormat() const {
+	return(m_strSQLFormat);
+}
+
+//----------------------------------------------------------------------
+
 string UntransformedSphere::getSQLCommand() const	{
 	string strColor = "'";
 	int nI;
@@ -191,17 +208,28 @@ string UntransformedSphere::getSQLCommand() const	{
 
 void UntransformedSphere::initFromSQLData(const string & astrSQLData)	{
 	string strSQLData = astrSQLData;
-	
-	vector <string> vecstrSphereParams = splitString(strSQLData," ");
-
 	SphereParams sP;
-	sP.m_nResPhi = sP.m_nResTheta = stof(vecstrSphereParams.at(0));
-	sP.m_flRadius = stof(vecstrSphereParams.at(1));
-	sP.m_arrflRGBA[0] = 0.85;
-	sP.m_arrflRGBA[1] = 0.85;
-	sP.m_arrflRGBA[2] = 0.85;
-	sP.m_arrflRGBA[3] = 1.0;
+	
+	vector <string> arrstrSphereParams = splitString(strSQLData,"_");
+	vector <string> arrstrMatrix = splitString(arrstrSphereParams[1],";");
+	vector <string> arrstrColor = splitString(arrstrSphereParams[3],";");
 
+	sP.m_nResPhi = sP.m_nResTheta = stof(arrstrSphereParams[1]);
+	sP.m_flRadius = stof(arrstrSphereParams[2]);
+
+	if (arrstrColor.size()!=0)	{
+		int nI;
+		vector < float > arrflColor;
+		for (nI=0;nI<4;nI++)	{
+			sP.m_arrflRGBA.push_back(stof(arrstrColor[nI]));
+		}
+		setColor(sP.m_arrflRGBA);
+	}
+
+	if(arrstrSphereParams[4] != " ")	{
+		sP.m_strFileNameTexture = arrstrSphereParams[4];
+		setTexture(sP.m_strFileNameTexture);
+	}
 	init(sP);
 }
 

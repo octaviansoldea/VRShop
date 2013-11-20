@@ -24,13 +24,17 @@ namespace VR	{
 
 
 	class Plate3D : public AbstractGeomShape, public osg::MatrixTransform {
+	private:
+		static std::string m_strSQLFormat;
 
 		osg::ref_ptr <UntransformedPlate3D> m_pUntransformedPlate3D;
 
 	public:
 		Plate3D();
 
+		virtual std::string getSQLFormat() const;
 		virtual std::string getSQLCommand() const;
+
 		virtual void initFromSQLData(const std::string & astrSQLData);
 		virtual void init(const AbstractGeomShapeParams & aAbstractGeomShapeParams);
 

@@ -10,6 +10,17 @@ using namespace std;
 using namespace osg;
 using namespace VR;
 
+string Plate3D::m_strSQLFormat =
+	"CREATE TABLE IF NOT EXISTS Plate3D "
+	"(Plate3DID INTEGER PRIMARY KEY AUTOINCREMENT,"
+	"Plate3DMatrix TEXT,"
+	"Plate3DColor TEXT,"
+	"Plate3DTexture TEXT,"
+	"PrimitiveID INTEGER, "
+	"FOREIGN KEY (PrimitiveID) REFERENCES Primitive(PrimitiveID))";
+
+//-----------------------------------------------------------------------
+
 Plate3DParams::Plate3DParams() : 
 m_flLenX(1.0), m_flLenY(1.0), m_flLenZ(1.0),
 m_flPosX(0.0), m_flPosY(0.0), m_flPosZ(0.0),
@@ -53,6 +64,12 @@ void Plate3D::setTexture(const std::string & astrFileName) {
 	m_pUntransformedPlate3D->setTexture(astrFileName);
 }
 
+//----------------------------------------------------------
+
+string Plate3D::getSQLFormat() const {
+	return(m_strSQLFormat);
+}
+
 //----------------------------------------------------------------------
 
 std::string Plate3D::getSQLCommand() const	{
@@ -87,13 +104,37 @@ std::string Plate3D::getSQLCommand() const	{
 
 void Plate3D::initFromSQLData(const string & astrSQLData)	{
 	string strSQLData = astrSQLData;
-	
-	vector <string> vecstrSphereParams = splitString(strSQLData," ");
-
 	Plate3DParams p3DP;
-	p3DP.m_flLenX = stof(vecstrSphereParams.at(0));
-	p3DP.m_flLenY = stof(vecstrSphereParams.at(1));
-	p3DP.m_flLenZ = stof(vecstrSphereParams.at(2));
 
+	vector <string> arrstrPlateParams = splitString(strSQLData,"_");
+	vector <string> arrstrMatrix = splitString(arrstrPlateParams[1],";");
+	vector <string> arrstrColor = splitString(arrstrPlateParams[2],";");
+
+	int nI;
+	vector < float > arrflMatrix;
+	for (nI=0;nI<16;nI++)	{
+		arrflMatrix.push_back(stof(arrstrMatrix[nI]));
+	}
+
+	if (arrstrColor.size()!=0)	{
+		vector < float > arrflColor;
+		for (nI=0;nI<4;nI++)	{
+			p3DP.m_arrflRGBA.push_back(stof(arrstrColor[nI]));
+		}
+		setColor(p3DP.m_arrflRGBA);
+	}
+
+	p3DP.m_flLenX = arrflMatrix[0];
+	p3DP.m_flLenY = arrflMatrix[5];
+	p3DP.m_flLenZ = arrflMatrix[10];
+
+	p3DP.m_flPosY = arrflMatrix[12];
+	p3DP.m_flPosY = arrflMatrix[13];
+	p3DP.m_flPosY = arrflMatrix[14];
+
+	if(arrstrPlateParams[3] != " ")	{
+		p3DP.m_strFileNameTexture = arrstrPlateParams[3];
+		setTexture(p3DP.m_strFileNameTexture);
+	}
 	init(p3DP);
 }

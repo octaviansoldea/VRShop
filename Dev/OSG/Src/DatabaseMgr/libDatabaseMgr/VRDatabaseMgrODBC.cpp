@@ -47,12 +47,6 @@ void DatabaseMgrODBC::fillPrimitiveTable(string & astrCommand)	{
 
 //-----------------------------------------------------------------------------------------
 
-string DatabaseMgrODBC::getSQLData(const int & anElement)	{
-	return("");
-}
-
-//-----------------------------------------------------------------------------------------
-
 void DatabaseMgrODBC::insertIntoDatabase(const DatabaseMgrParams & aDatabaseMgrParams)	{
 }
 
@@ -60,4 +54,10 @@ void DatabaseMgrODBC::insertIntoDatabase(const DatabaseMgrParams & aDatabaseMgrP
 
 vector<float> DatabaseMgrODBC::selectFromDatabase(const int & anElementID)	{
 	return std::vector<float>(0);
+}
+
+//-----------------------------------------------------------------------------------------
+
+string DatabaseMgrODBC::readFromDB(std::string & astrCommand) const	{
+	return ("");
 }

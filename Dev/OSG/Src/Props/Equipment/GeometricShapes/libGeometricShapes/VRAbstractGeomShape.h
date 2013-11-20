@@ -3,19 +3,19 @@
 
 #include <string>
 
+#include "VRAbstractObject.h"
+
 namespace VR {
 	struct AbstractGeomShapeParams	{
 		AbstractGeomShapeParams();
 	};
 
-	class AbstractGeomShape	{
+	class AbstractGeomShape	: public AbstractObject	{
 	public:
 		AbstractGeomShape();
 
 		virtual void init(const AbstractGeomShapeParams & aAbstractGeomShapeParams) = 0;
 
-		virtual std::string getSQLFormat() const// = 0
-			;
 		virtual std::string getSQLCommand() const = 0;
 		virtual void initFromSQLData(const std::string & astrSQLData);
 

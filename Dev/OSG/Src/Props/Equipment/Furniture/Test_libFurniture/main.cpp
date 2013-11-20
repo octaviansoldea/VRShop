@@ -10,6 +10,7 @@
 
 #include "VRDatabaseMgr.h"
 
+#include "VRAbstractObject.h"
 #include "VRAbstractGeomShape.h"
 
 
@@ -182,6 +183,24 @@ void insertIntoDatabase_Furniture(const string & astrDBName)	{
 	cupboard.addPart(pPlate3D);
 
 	string strCommand = cupboard.getSQLPrintCommand();
+}
+
+
+//--------------------------------------------------------------
+
+void initFromDB_Cupboard(ref_ptr<Group> pScene)	{
+	string strDatabase = "../../../../Databases/Equipment.db";
+	DatabaseMgr & database = DatabaseMgr::Create(strDatabase.c_str(), DatabaseMgr::QSQLITE);
+
+	ref_ptr < Cupboard > pCupboard = new Cupboard();
+	string strSQLQuery = "SELECT * FROM EquipmentItem WHERE EquipmentItemID = 1";
+
+	string strSQLData = database.readFromDB(strSQLQuery);
+	//pPlate3D = new Plate3D();
+	//pPlate3D->initFromSQLData(strSQLData);
+
+//	pScene->addChild(pPlate3D);
+
 }
 
 //====================================================

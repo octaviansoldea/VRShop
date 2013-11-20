@@ -3,7 +3,6 @@
 
 #include "OSGQT_Widget.h"
 
-#include "VRGrid.h"
 #include "VRShopBuilder.h"
 
 using namespace osg;
@@ -33,6 +32,8 @@ void ShopBuilder::init(OSGQT_Widget * apOSGQTWidget) {
 
 	m_pScene->addChild(m_pGridlines);
 }
+
+//----------------------------------------------------------------------
 
 void ShopBuilder::gridOnOff(bool abIndicator) {
 	//ToolButton checked && Grid not already a child

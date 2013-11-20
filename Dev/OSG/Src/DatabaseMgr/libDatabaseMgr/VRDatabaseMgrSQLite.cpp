@@ -10,6 +10,10 @@
 #include <QImageWriter>
 
 #include "VRCylinder.h"
+#include "VRPlate3D.h"
+#include "VRPrism.h"
+#include "VRUntransformedSphere.h"
+
 #include "VRDatabaseMgrSQLite.h"
 
 using namespace VR;
@@ -44,36 +48,22 @@ bool DatabaseMgrSQLite::createTable() {
 
 		Cylinder cylinder;
 		string strSQLFormat = cylinder.getSQLFormat();
-		qry = QString(strSQLFormat.c_str());
+		qry = strSQLFormat.c_str();
 		query.exec(qry);
 
-		qry = "CREATE TABLE IF NOT EXISTS Plate3D "
-			"(Plate3DID INTEGER PRIMARY KEY AUTOINCREMENT,"
-			"Plate3DMatrix TEXT,"
-			"Plate3DColor TEXT,"
-			"Plate3DTexture TEXT,"
-			"PrimitiveID INTEGER, "
-			"FOREIGN KEY (PrimitiveID) REFERENCES Primitive(PrimitiveID))";
+		Plate3D plate3D;
+		strSQLFormat = plate3D.getSQLFormat();
+		qry = strSQLFormat.c_str();
 		query.exec(qry);
 
-		qry = "CREATE TABLE IF NOT EXISTS Prism "
-			"(PrismID INTEGER PRIMARY KEY AUTOINCREMENT,"
-			"PrismSides INTEGER,"
-			"PrismMatrix TEXT,"
-			"PrismColor TEXT,"
-			"PrismTexture TEXT, "
-			"PrimitiveID INTEGER, "
-			"FOREIGN KEY (PrimitiveID) REFERENCES Primitive(PrimitiveID))";
+		Prism prism;
+		strSQLFormat = prism.getSQLFormat();
+		qry = strSQLFormat.c_str();
 		query.exec(qry);
 
-		qry = "CREATE TABLE IF NOT EXISTS Sphere "
-			"(SphereID INTEGER PRIMARY KEY AUTOINCREMENT,"
-			"SphereRes INTEGER,"
-			"SphereRadius INTEGER,"
-			"SphereColor TEXT,"
-			"SphereTexture TEXT, "
-			"PrimitiveID INTEGER, "
-			"FOREIGN KEY (PrimitiveID) REFERENCES Primitive(PrimitiveID))";
+		UntransformedSphere sphere;
+		strSQLFormat = sphere.getSQLFormat();
+		qry = strSQLFormat.c_str();
 		query.exec(qry);
 
 		qry = "CREATE TABLE IF NOT EXISTS PrimitiveItemList "
@@ -120,6 +110,7 @@ bool DatabaseMgrSQLite::createTable() {
 
 void DatabaseMgrSQLite::fillPrimitiveTable(string & astrCommand)	{
 	if(m_QSqlDatabase.open())	{
+		//Command is string of SQL commands that are delimited with "_"
 		vector <string> arrstrSQLCommands = splitString(astrCommand,"_");
 		QSqlQuery query(arrstrSQLCommands[0].c_str());
 
@@ -151,8 +142,7 @@ void DatabaseMgrSQLite::fillPrimitiveTable(string & astrCommand)	{
 
 				//Everything is set, fill the PrimitiveItemList with proper data
 				QString qstrPIL = QString("INSERT INTO PrimitiveItemList (PrimitiveID, ItemID, EquipmentItemID) "
-					"VALUES(%1, %2, %3)")
-					.arg(nPrimitive).arg(nID).arg(nEquipmentItemID);
+					"VALUES(%1, %2, %3)").arg(nPrimitive).arg(nID).arg(nEquipmentItemID);
 
 				QSqlQuery tempQuery;
 				tempQuery.exec(qstrPIL);
@@ -172,67 +162,41 @@ void DatabaseMgrSQLite::fillPrimitiveTable(string & astrCommand)	{
 
 //-----------------------------------------------------------------------------------------
 
-string DatabaseMgrSQLite::getSQLData(const int & anElement)	{
-	if(m_QSqlDatabase.open())	{
+string DatabaseMgrSQLite::readFromDB(string & astrCommand) const	{
+	if(m_QSqlDatabase.isOpen())	{
+		QSqlQuery sqlQuery(astrCommand.c_str());
 
-		QSqlQuery qSqlFindItem;
-		QString qstrFindItem = QString("SELECT PrimitiveID, ItemID FROM PrimitiveItemList WHERE PrimitiveItemListID = %1")
-			.arg(anElement);
+		//Get the name of the Table to read from
+		string strTable = splitString(astrCommand," ")[3];
 
-		qSqlFindItem.exec(qstrFindItem);
-		int PrimitiveID;
-		int ItemID;
-
-		while(qSqlFindItem.next())	{
-			PrimitiveID = qSqlFindItem.value(0).toInt();
-			ItemID = qSqlFindItem.value(1).toInt();
+		//get names of columns of the given table
+		QString qstrColumnNames = QString("PRAGMA table_info(%1)").arg(strTable.c_str());
+		QSqlQuery tblColsQry(qstrColumnNames);
+		vector<QString> vecColumnNames;
+		while (tblColsQry.next())	{
+			vecColumnNames.push_back(tblColsQry.value(1).toString());
 		}
+		int nColumnNames = vecColumnNames.size();
 
-		if(PrimitiveID)	{
-			QSqlQuery qSqlFindPrimitive;
-			QString qstrSqlFindPrimitive = QString("SELECT PrimitiveName FROM Primitive WHERE PrimitiveID = %1").arg(PrimitiveID);
-			qSqlFindPrimitive.exec(qstrSqlFindPrimitive);
-			QString qstrObjectName;
-			while (qSqlFindPrimitive.next())	{
-				qstrObjectName = qSqlFindPrimitive.value(0).toString();
+		//Prepare the desired string
+		string strQuery;
+		while (sqlQuery.next())	{
+			int nI;
+			for (nI=0; nI<nColumnNames-1; nI++)	{
+				strQuery += sqlQuery.value(nI).toString().toStdString() + "_";
 			}
-
-			QString qstrQuery = QString("SELECT * FROM %1 WHERE %1ID = %2").arg(qstrObjectName).arg(ItemID);
-			QSqlQuery qry(qstrQuery);
-
-			//get names of columns of a given table
-			QString qstrColumnNames = QString("PRAGMA table_info(%1)").arg(qstrObjectName);
-			QSqlQuery tblColsQry(qstrColumnNames);
-			vector<QString> vecColumnNames;
-			while (tblColsQry.next())	{
-				vecColumnNames.push_back(tblColsQry.value(1).toString());
-			}
-			int nColumnNames = vecColumnNames.size();
-
-			while (qry.next())	{
-				string strGetSQLData;
-				int nI;
-				for(nI=1; nI<nColumnNames-1; nI++)	{
-					strGetSQLData += qry.value(nI).toString().toStdString() + " ";
-				}
-				strGetSQLData += qry.value(nColumnNames).toString().toStdString();
-				return (strGetSQLData);
-			}
+			strQuery += sqlQuery.value(nColumnNames-1).toString().toStdString();
 		}
+		return strQuery;
 	}
+
 	else	{
 		string strMessage = "Error opening: " + string(lastError().text().toStdString());
 		printWarning(strMessage.c_str());
 
 		exit(-1);
 	}
-	exit(-1);
 }
-
-
-
-
-
 
 
 

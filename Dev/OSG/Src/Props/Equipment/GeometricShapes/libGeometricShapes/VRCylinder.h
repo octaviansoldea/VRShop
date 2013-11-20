@@ -9,6 +9,8 @@ namespace VR {
 	};
 
 	class Cylinder : public Prism {
+	private:
+		static std::string m_strSQLFormat;
 		CylinderParams m_CylinderParams;
 	public:
 		Cylinder();
@@ -16,8 +18,6 @@ namespace VR {
 
 		virtual std::string getSQLFormat() const;
 		virtual std::string getSQLCommand() const;
-	private:
-		static std::string m_strSQLFormat;
 	};
 }
 #endif //VR_CYLINDER_H

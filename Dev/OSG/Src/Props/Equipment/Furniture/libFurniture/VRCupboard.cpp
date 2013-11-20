@@ -51,6 +51,12 @@ void Cupboard::removePart(ref_ptr < Node > apNode) {
 
 //-----------------------------------------------------------------------
 
+string Cupboard::getSQLFormat() const	{
+	return ("");
+}
+
+//-----------------------------------------------------------------------
+
 string Cupboard::getSQLPrintCommand() {
 	string strSQLCommand = "INSERT INTO EquipmentItem (EquipmentItemName, EquipmentID) "
 		"VALUES ('Cupboard', (SELECT EquipmentID FROM Equipment WHERE EquipmentName = 'Furniture'))_";
@@ -63,4 +69,10 @@ string Cupboard::getSQLPrintCommand() {
 	strSQLCommand += m_arrSQLCommandLines[nNumParts-1];
 
 	return(strSQLCommand);
+}
+
+//-----------------------------------------------------------------------
+
+void Cupboard::initFromSQLData(const std::string & astrSQLData)	{
+
 }

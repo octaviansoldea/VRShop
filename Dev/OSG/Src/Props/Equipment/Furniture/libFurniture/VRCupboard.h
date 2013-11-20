@@ -4,6 +4,7 @@
 #include <osg/MatrixTransform>
 #include <QString>
 
+#include "VRAbstractObject.h"
 #include "VRAbstractGeomShape.h"
 
 namespace VR	{
@@ -15,7 +16,7 @@ namespace VR	{
 		CupboardParams();
 	};
 
-	class Cupboard : public osg::MatrixTransform	{
+	class Cupboard : public AbstractObject, public osg::MatrixTransform	{
 	public:
 		Cupboard();
 
@@ -23,6 +24,8 @@ namespace VR	{
 		void removePart(osg::ref_ptr < osg::Node > apNode);
 
 		void init(const CupboardParams & aCupboardParams);
+
+		virtual std::string getSQLFormat() const;
 
 		std::string getSQLPrintCommand();
 		void initFromSQLData(const std::string & astrSQLData);

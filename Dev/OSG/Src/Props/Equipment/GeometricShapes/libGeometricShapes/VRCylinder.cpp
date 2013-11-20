@@ -29,6 +29,8 @@ VR::Cylinder::Cylinder(const CylinderParams & aCylinderParams) : Prism(aCylinder
 	m_CylinderParams = aCylinderParams;
 }
 
+//----------------------------------------------------------
+
 string VR::Cylinder::getSQLFormat() const {
 	return(m_strSQLFormat);
 }

@@ -19,6 +19,8 @@ namespace VR {
 	};
 
 	class UntransformedSphere : public AbstractGeomShape, public osg::Geode {
+	private:
+		static std::string m_strSQLFormat;
 		SphereParams m_SphereParams;
 	public:
 		UntransformedSphere();
@@ -29,7 +31,9 @@ namespace VR {
 		void setResolution(int anResPhi, int anResTheta);
 		void setRadius(float aflRadius);
 
+		virtual std::string getSQLFormat() const;
 		virtual std::string getSQLCommand() const;
+
 		virtual void init(const AbstractGeomShapeParams & aAbstractGeomShapeParams);
 
 		virtual void initFromSQLData(const std::string & astrSQLData);

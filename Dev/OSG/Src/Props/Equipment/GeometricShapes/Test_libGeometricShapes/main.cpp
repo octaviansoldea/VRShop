@@ -23,20 +23,6 @@ using namespace VR;
 using namespace std;
 
 
-//--------------------------------------------------------------
-
-void main_SelectFromDatabase_Sphere(ref_ptr<Group> pScene)	{
-	string strDatabase = "../../../../Databases/Products.db";
-	DatabaseMgr & database = DatabaseMgr::Create(strDatabase.c_str(), DatabaseMgr::QSQLITE);
-
-	string strSQLString = database.getSQLData(1);
-	ref_ptr < UntransformedSphere > pSphere =  new UntransformedSphere();
-	pSphere->initFromSQLData(strSQLString);
-
-	pScene->addChild(pSphere);
-}
-
-
 //----------------------------------------------------------------------
 
 void main_UntransformedPlate2D_Color(ref_ptr<Group> pScene)	{
@@ -222,6 +208,67 @@ void main_Plate3D_DB(ref_ptr<Group> pScene)	{
 	pScene->addChild(pPlate3D);
 }
 
+//--------------------------------------------------------------
+
+void initFromDB_Plate(ref_ptr<Group> pScene)	{
+	string strDatabase = "../../../../Databases/Equipment.db";
+	DatabaseMgr & database = DatabaseMgr::Create(strDatabase.c_str(), DatabaseMgr::QSQLITE);
+
+	ref_ptr < Plate3D > pPlate3D;
+	string strSQLQuery = "SELECT * FROM Plate3D WHERE Plate3DID = 1";
+	string strSQLData = database.readFromDB(strSQLQuery);
+	pPlate3D = new Plate3D();
+	pPlate3D->initFromSQLData(strSQLData);
+
+	pScene->addChild(pPlate3D);
+}
+
+//--------------------------------------------------------------
+
+void initFromDB_Sphere(ref_ptr<Group> pScene)	{
+	string strDatabase = "../../../../Databases/Equipment.db";
+	DatabaseMgr & database = DatabaseMgr::Create(strDatabase.c_str(), DatabaseMgr::QSQLITE);
+
+	ref_ptr < UntransformedSphere > pSphere;
+	string strSQLQuery = "SELECT * FROM Sphere WHERE SphereID = 1";
+	string strSQLData = database.readFromDB(strSQLQuery);
+	pSphere = new UntransformedSphere();
+	pSphere->initFromSQLData(strSQLData);
+
+	pScene->addChild(pSphere);
+}
+
+//--------------------------------------------------------------
+
+void initFromDB_Prism(ref_ptr<Group> pScene)	{
+	string strDatabase = "../../../../Databases/Equipment.db";
+	DatabaseMgr & database = DatabaseMgr::Create(strDatabase.c_str(), DatabaseMgr::QSQLITE);
+
+	ref_ptr < Prism > pPrism;
+	string strSQLQuery = "SELECT * FROM Prism WHERE PrismID = 1";
+	string strSQLData = database.readFromDB(strSQLQuery);
+	pPrism = new Prism();
+	pPrism->initFromSQLData(strSQLData);
+
+	pScene->addChild(pPrism);
+}
+
+//--------------------------------------------------------------
+
+void initFromDB_Cylinder(ref_ptr<Group> pScene)	{
+	string strDatabase = "../../../../Databases/Equipment.db";
+	DatabaseMgr & database = DatabaseMgr::Create(strDatabase.c_str(), DatabaseMgr::QSQLITE);
+
+	ref_ptr < VR::Cylinder > pCylinder;
+	string strSQLQuery = "SELECT * FROM Cylinder WHERE CylinderID = 1";
+	string strSQLData = database.readFromDB(strSQLQuery);
+	pCylinder = new VR::Cylinder();
+	pCylinder->initFromSQLData(strSQLData);
+
+	pScene->addChild(pCylinder);
+}
+
+
 //====================================================================
 
 
@@ -232,7 +279,7 @@ int main(int argc, char * argv[])	{
 	ref_ptr<Node> pAxes = osgDB::readNodeFile("../../../../Resources/Models3D/axes.osgt");
 	pScene->addChild(pAxes);
 
-	int nSelection = 3;
+	int nSelection = 18;
 	switch (nSelection)	{
 	case 1: main_UntransformedPlate2D_Color(pScene); break;
 	case 2: main_UntransformedPlate2D_Texture(pScene); break;
@@ -249,7 +296,10 @@ int main(int argc, char * argv[])	{
 	case 13: main_UntransformedSphere_Color(pScene); break;
 	case 14: main_UntransformedSphere_Texture(pScene); break;
 
-	case 15: main_SelectFromDatabase_Sphere(pScene); break;
+	case 15: initFromDB_Plate(pScene); break;
+	case 16: initFromDB_Sphere(pScene); break;
+	case 17: initFromDB_Prism(pScene); break;
+	case 18: initFromDB_Cylinder(pScene); break;
 	
 	default:	{
 		printError("Error Message: Wrong test number set.");

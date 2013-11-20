@@ -16,10 +16,10 @@ OSGQT_Widget::OSGQT_Widget(QWidget * apQWidget, Qt::WindowFlags f) : QWidget(apQ
 	
 	osgQt::GraphicsWindowQt* pGraphicsWindow = new osgQt::GraphicsWindowQt(pTraits.get());
 
-	QGridLayout* pGrid = new QGridLayout;
-	pGrid->setMargin(0);
-	pGrid->addWidget(pGraphicsWindow->getGraphWidget(), 0, 0);
-	setLayout(pGrid);
+	QGridLayout* pLayout = new QGridLayout;
+	pLayout->setMargin(0);
+	pLayout->addWidget(pGraphicsWindow->getGraphWidget(), 0, 0);
+	setLayout(pLayout);
 	
 	m_viewer.setThreadingModel(osgViewer::Viewer::SingleThreaded);
 	m_viewer.getCamera()->setClearColor(osg::Vec4(0.53725,0.53725,0.53725,1));
@@ -28,7 +28,7 @@ OSGQT_Widget::OSGQT_Widget(QWidget * apQWidget, Qt::WindowFlags f) : QWidget(apQ
 	
 	pCamera->setGraphicsContext(pGraphicsWindow);
 	pCamera->setProjectionResizePolicy(osg::Camera::FIXED); //To preserve the shape of elements
-	pCamera->setReferenceFrame(osg::Transform::ABSOLUTE_RF);
+	pCamera->setReferenceFrame(osg::Transform::ReferenceFrame::RELATIVE_RF);//:ABSOLUTE_RF);
 	pCamera->setViewMatrix(osg::Matrix::identity());
 	pCamera->setViewport(new osg::Viewport(0, 0, width(), height()));
 	

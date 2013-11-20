@@ -115,8 +115,6 @@ DatabaseMgr::DatabaseMgr(const QString & aqstrDBPathName) : m_qstrDBPathName(aqs
 
 //-----------------------------------------------------------------------------------
 
-string DatabaseMgr::getSQLData(const int & anElement)	{
-	return("");
+string DatabaseMgr::readFromDB(std::string & astrCommand) const	{
+	return ("");
 }
-
-//=================================================================================================

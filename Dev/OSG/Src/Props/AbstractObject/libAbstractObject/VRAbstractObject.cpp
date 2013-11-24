@@ -7,10 +7,11 @@ string AbstractObject::m_strSQLFormat = "";
 
 //==============================================================
 
-AbstractObject::~AbstractObject() {
+AbstractObjectParams::AbstractObjectParams()	{
 }
 
-string AbstractObject::getSQLFormat() const {
+//==============================================================
+
+string VR::AbstractObject::getSQLFormat() const {
 	return(m_strSQLFormat);
 }
-

@@ -8,12 +8,14 @@
 #include <QSqlQuery>
 #include <QSqlError>
 
+#include "VRAbstractObject.h"
+
 namespace VR {
 
 	struct DatabaseMgrParams	{
 		QString m_qstrObjectType;
 		QString m_qstrObjectName;
-		std::vector < float > m_arrflParams;
+		std::vector < std::string > m_arrstrParams;
 
 		DatabaseMgrParams();
 	};
@@ -36,21 +38,13 @@ namespace VR {
 
 		QSqlError lastError() const;
 
-		virtual void deleteItem(const QString &aqstrSceneObjectID) = 0;
-		virtual void saveScene(const QString &aqstrOldSceneName, const QString &aqstrNewSceneName) = 0;
-		virtual void loadScene(const QString &aqstrSceneName) = 0;
-		virtual void newScene() = 0;
-
-
 		virtual bool createTable() = 0;
 
-		virtual void fillPrimitiveTable(std::string & astrCommand) = 0;
-		virtual std::string readFromDB(std::string & astrCommand) const;
+		virtual void fillPrimitiveTable(const AbstractObject & aAbstractObject) = 0;
+		virtual std::string readFromDB(std::string & astrCommand) = 0;
 
 
 		virtual void insertIntoDatabase(const DatabaseMgrParams & aDatabaseMgrParams) = 0;
-		virtual std::vector<float> selectFromDatabase(const int & anElementID) = 0;
-
 
 
 	protected:

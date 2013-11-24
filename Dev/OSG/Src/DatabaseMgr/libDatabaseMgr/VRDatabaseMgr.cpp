@@ -1,8 +1,9 @@
 #include <QMessageBox>
 
-#include "VRDatabaseMgr.h"
 #include "VRDatabaseMgrSQLite.h"
 #include "VRDatabaseMgrODBC.h"
+
+#include "VRDatabaseMgr.h"
 
 using namespace std;
 using namespace VR;
@@ -11,7 +12,7 @@ using namespace VR;
 DatabaseMgrParams::DatabaseMgrParams() :
 	m_qstrObjectType(""),
 	m_qstrObjectName(""),
-	m_arrflParams(1) {
+	m_arrstrParams(1) {
 }
 
 //===========================================================================
@@ -63,7 +64,7 @@ DatabaseMgr * DatabaseMgr::CreateODBC(const QString & aqstrDBPathName) {
 	if (!QSqlDatabase::drivers().contains("QODBC")) {
 			printError("Given driver QODBC not supported.");
 			return(0);
-	}	
+	}
 	DatabaseMgrODBC * pDatabaseMgrODBC = new DatabaseMgrODBC(aqstrDBPathName);
 	return(pDatabaseMgrODBC);
 }
@@ -94,18 +95,7 @@ bool DatabaseMgr::connect2SQLDatabase() {
 
 //-----------------------------------------------------------------------------------------
 
-void DatabaseMgr::fillPrimitiveTable(string & astrCommand)	{
-}
-
-//-----------------------------------------------------------------------------------------
-
 void DatabaseMgr::insertIntoDatabase(const DatabaseMgrParams & aDatabaseMgrParams)	{
-}
-
-//-----------------------------------------------------------------------------------------
-
-vector<float> DatabaseMgr::selectFromDatabase(const int & anElementID)	{
-	return std::vector<float>(0);
 }
 
 //=========================================================================================
@@ -114,7 +104,3 @@ DatabaseMgr::DatabaseMgr(const QString & aqstrDBPathName) : m_qstrDBPathName(aqs
 }
 
 //-----------------------------------------------------------------------------------
-
-string DatabaseMgr::readFromDB(std::string & astrCommand) const	{
-	return ("");
-}

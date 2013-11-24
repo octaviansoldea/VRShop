@@ -146,12 +146,12 @@ void Prism::initFromSQLData(const std::string & astrSQLData)	{
 	if (arrstrColor.size()!=0)	{
 		vector < float > arrflColor;
 		for (nI=0;nI<4;nI++)	{
-			arrflColor.push_back(stof(arrstrColor[nI]));
+			arrflColor[nI] = (stof(arrstrColor[nI]));
 		}
 		setColor(arrflColor);
 	}
 
-	if(arrstrPrismParams[4] != "")	{
+	if((arrstrPrismParams[4] != " ") && (arrstrPrismParams[4] != ""))	{
 		pP.m_strFileNameTexture = arrstrPrismParams[4];
 		setTexture(pP.m_strFileNameTexture);
 	}

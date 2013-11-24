@@ -12,19 +12,14 @@ namespace VR {
 
 		DatabaseMgrODBC(const QString & astrDBPathName);
 
-		virtual void deleteItem(const QString &astrSceneObjectID);
-		virtual void saveScene(const QString &astrOldSceneName, const QString &astrNewSceneName);
-		virtual void loadScene(const QString &astrSceneName);
-		virtual void newScene();
-
 		virtual bool createTable();
 
-		virtual void fillPrimitiveTable(std::string & astrCommand);
-		virtual std::string readFromDB(std::string & astrCommand) const;
+		virtual void fillPrimitiveTable(const AbstractObject & aAbstractObject);
+		virtual std::string readFromDB(std::string & astrCommand);
 
 
 		virtual void insertIntoDatabase(const DatabaseMgrParams & aDatabaseMgrParams);
-		virtual std::vector<float> selectFromDatabase(const int & anElementID);
+
 	};
 }
 #endif //VR_DATABASE_MGR_ODBC_H

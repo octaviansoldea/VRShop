@@ -28,6 +28,7 @@ INCLUDE_DIRECTORIES(
 	${OPENSCENEGRAPH_INCLUDE_DIRS}
 	${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
 	${CMAKE_SOURCE_DIR}/Props/Equipment/GeometricShapes/libGeometricShapes
+    ${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
 )
 
 SET(SRCS

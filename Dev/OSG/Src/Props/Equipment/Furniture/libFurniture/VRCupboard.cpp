@@ -2,6 +2,9 @@
 #include <iostream>
 
 #include "VRAbstractGeomShape.h"
+#include "VRPlate3D.h"
+
+#include "StringManipulation.h"
 
 #include "VRCupboard.h"
 
@@ -57,7 +60,7 @@ string Cupboard::getSQLFormat() const	{
 
 //-----------------------------------------------------------------------
 
-string Cupboard::getSQLPrintCommand() {
+string Cupboard::getSQLCommand() const {
 	string strSQLCommand = "INSERT INTO EquipmentItem (EquipmentItemName, EquipmentID) "
 		"VALUES ('Cupboard', (SELECT EquipmentID FROM Equipment WHERE EquipmentName = 'Furniture'))_";
 	int nNumParts = m_arrSQLCommandLines.size();
@@ -73,6 +76,31 @@ string Cupboard::getSQLPrintCommand() {
 
 //-----------------------------------------------------------------------
 
-void Cupboard::initFromSQLData(const std::string & astrSQLData)	{
+string Cupboard::setSQLCommand(const string & astrCommand)	{
+	string strSetSQLCommand = astrCommand;
 
+	string strPrimitiveItemIDs = "SELECT PrimitiveID, ItemID FROM PrimitiveItemList "
+		"WHERE EquipmentItemID = 1";
+
+	return strSetSQLCommand;
+}
+
+//-----------------------------------------------------------------------
+
+void Cupboard::initFromSQLData(const string & astrSQLData)	{
+	string strSQLData = astrSQLData;
+	string strDelimiter = "?";
+	
+	vector < string > arrstrSQLData = splitString(strSQLData,strDelimiter);
+
+	int nI;
+	int nNumParts = arrstrSQLData.size()-1;
+
+	ref_ptr < Plate3D > pPlate;
+	m_Cupboard = new Cupboard;
+	for (nI=0;nI<nNumParts;nI++)	{
+		pPlate = new Plate3D;
+		pPlate->initFromSQLData(arrstrSQLData[nI]);
+		m_Cupboard->addChild(pPlate);
+	}
 }

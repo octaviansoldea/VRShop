@@ -18,22 +18,6 @@ DatabaseMgr(astrDBPathName) {
 	}
 }
 
-//NOT YET FINISHED
-void DatabaseMgrODBC::deleteItem(const QString &astrSceneObjectID) {
-}
-
-//NOT YET FINISHED
-void DatabaseMgrODBC::saveScene(const QString &astrOldSceneName, const QString &astrNewSceneName) {
-}
-
-//NOT YET FINISHED
-void DatabaseMgrODBC::loadScene(const QString &astrSceneName) {
-}
-
-//NOT YET FINISHED
-void DatabaseMgrODBC::newScene() {
-}
-
 //-----------------------------------------------------------------------------------------
 
 bool DatabaseMgrODBC::createTable()	{
@@ -42,7 +26,7 @@ bool DatabaseMgrODBC::createTable()	{
 
 //-----------------------------------------------------------------------------------------
 
-void DatabaseMgrODBC::fillPrimitiveTable(string & astrCommand)	{
+void DatabaseMgrODBC::fillPrimitiveTable(const AbstractObject & aAbstractObject)	{
 }
 
 //-----------------------------------------------------------------------------------------
@@ -52,12 +36,6 @@ void DatabaseMgrODBC::insertIntoDatabase(const DatabaseMgrParams & aDatabaseMgrP
 
 //-----------------------------------------------------------------------------------------
 
-vector<float> DatabaseMgrODBC::selectFromDatabase(const int & anElementID)	{
-	return std::vector<float>(0);
-}
-
-//-----------------------------------------------------------------------------------------
-
-string DatabaseMgrODBC::readFromDB(std::string & astrCommand) const	{
+string DatabaseMgrODBC::readFromDB(string & astrCommand)	{
 	return ("");
 }

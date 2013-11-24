@@ -5,7 +5,6 @@
 #include <QString>
 
 #include "VRAbstractObject.h"
-#include "VRAbstractGeomShape.h"
 
 namespace VR	{
 	struct CupboardParams {
@@ -27,8 +26,12 @@ namespace VR	{
 
 		virtual std::string getSQLFormat() const;
 
-		std::string getSQLPrintCommand();
-		void initFromSQLData(const std::string & astrSQLData);
+		std::string setSQLCommand(const std::string & astrCommand);
+
+		virtual std::string getSQLCommand() const;
+		virtual void initFromSQLData(const std::string & astrSQLData);
+
+		osg::ref_ptr <VR::Cupboard> m_Cupboard;
 
 	private:
 		std::vector < std::string > m_arrSQLCommandLines;

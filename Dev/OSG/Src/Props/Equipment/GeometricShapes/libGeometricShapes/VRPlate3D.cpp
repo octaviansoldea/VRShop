@@ -1,3 +1,5 @@
+//#include "VRDatabaseMgr.h"
+
 #include "VRUntransformedPlate3D.h"
 #include "VRPlate3D.h"
 
@@ -107,6 +109,7 @@ void Plate3D::initFromSQLData(const string & astrSQLData)	{
 	Plate3DParams p3DP;
 
 	vector <string> arrstrPlateParams = splitString(strSQLData,"_");
+
 	vector <string> arrstrMatrix = splitString(arrstrPlateParams[1],";");
 	vector <string> arrstrColor = splitString(arrstrPlateParams[2],";");
 
@@ -119,7 +122,7 @@ void Plate3D::initFromSQLData(const string & astrSQLData)	{
 	if (arrstrColor.size()!=0)	{
 		vector < float > arrflColor;
 		for (nI=0;nI<4;nI++)	{
-			p3DP.m_arrflRGBA.push_back(stof(arrstrColor[nI]));
+			p3DP.m_arrflRGBA[nI] = (stof(arrstrColor[nI]));
 		}
 		setColor(p3DP.m_arrflRGBA);
 	}
@@ -132,7 +135,7 @@ void Plate3D::initFromSQLData(const string & astrSQLData)	{
 	p3DP.m_flPosY = arrflMatrix[13];
 	p3DP.m_flPosY = arrflMatrix[14];
 
-	if(arrstrPlateParams[3] != " ")	{
+	if((arrstrPlateParams[3] != " ") && (arrstrPlateParams[3] != ""))	{
 		p3DP.m_strFileNameTexture = arrstrPlateParams[3];
 		setTexture(p3DP.m_strFileNameTexture);
 	}

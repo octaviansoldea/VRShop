@@ -14,11 +14,6 @@ AbstractGeomShapeParams::AbstractGeomShapeParams()	{
 AbstractGeomShape::AbstractGeomShape() : m_bIsTargetPick(false) {
 }
 
-//--------------------------------------------------------------
-
-void AbstractGeomShape::initFromSQLData(const std::string & astrSQLData)	{
-}
-
 //--------------------------------------------------------------------------
 
 void AbstractGeomShape::setIsTargetPick(bool abIsTargetPick)	{

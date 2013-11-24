@@ -4,11 +4,17 @@
 #include <string>
 
 namespace VR	{
+	struct AbstractObjectParams	{
+		AbstractObjectParams();
+	};
+
 	class AbstractObject {
 	public:
 		virtual std::string getSQLFormat() const;
 
-		virtual ~AbstractObject() = 0;
+		virtual std::string getSQLCommand() const = 0;
+		virtual void initFromSQLData(const std::string & astrSQLData) = 0;
+
 	private:
 		static std::string m_strSQLFormat;
 	};

@@ -16,9 +16,6 @@ namespace VR {
 
 		virtual void init(const AbstractGeomShapeParams & aAbstractGeomShapeParams) = 0;
 
-		virtual std::string getSQLCommand() const = 0;
-		virtual void initFromSQLData(const std::string & astrSQLData);
-
 		virtual void setIsTargetPick(bool abIsTargetPick);
 		virtual bool getIsTargetPick() const;
 

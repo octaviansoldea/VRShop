@@ -46,10 +46,10 @@ SET(LIBS_COMMON
 	${OSGQT_LIBRARIES}
 	${OSGVIEWER_LIBRARIES}
 	${OPENTHREADS_LIBRARIES}
-	libAbstractObject
 	libGeometricShapes
 	libDatabaseMgr
 	libCommon
+	libAbstractObject
 )
 
 IF(Qt5_FOUND)

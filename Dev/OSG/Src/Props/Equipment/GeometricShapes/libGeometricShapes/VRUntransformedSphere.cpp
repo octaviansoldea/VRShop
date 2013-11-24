@@ -221,12 +221,12 @@ void UntransformedSphere::initFromSQLData(const string & astrSQLData)	{
 		int nI;
 		vector < float > arrflColor;
 		for (nI=0;nI<4;nI++)	{
-			sP.m_arrflRGBA.push_back(stof(arrstrColor[nI]));
+			sP.m_arrflRGBA[nI] = (stof(arrstrColor[nI]));
 		}
 		setColor(sP.m_arrflRGBA);
 	}
 
-	if(arrstrSphereParams[4] != " ")	{
+	if((arrstrSphereParams[4] != " ") && (arrstrSphereParams[4] != ""))	{
 		sP.m_strFileNameTexture = arrstrSphereParams[4];
 		setTexture(sP.m_strFileNameTexture);
 	}

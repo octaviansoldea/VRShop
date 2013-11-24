@@ -2,6 +2,7 @@
 #include <QMessageBox>
 
 #include <osgViewer/Viewer>
+#include <osgDB/ReadFile>
 
 #include <iostream>
 #include <string>
@@ -39,7 +40,7 @@ void populateTable(const string & astrDBName)	{
 	DatabaseMgr & database = DatabaseMgr::Create(astrDBName.c_str(), DatabaseMgr::QSQLITE);
 
 	DatabaseMgrParams dMgrP;
-	dMgrP.m_arrflParams.resize(0);
+	dMgrP.m_arrstrParams.resize(0);
 
 	dMgrP.m_qstrObjectType = "Primitive";
 	dMgrP.m_qstrObjectName = "Cylinder";
@@ -64,8 +65,7 @@ void insertIntoDatabase_Sphere(const string & astrDBName)	{
 	SphereParams aSphereParams;
 	pSphere->init(aSphereParams);
 
-	string strCommand = pSphere->getSQLCommand();
-	database.fillPrimitiveTable(strCommand);
+	database.fillPrimitiveTable(*pSphere);
 }
 
 //--------------------------------------------------------------
@@ -77,8 +77,7 @@ void insertIntoDatabase_Cylinder(const string & astrDBName)	{
 	CylinderParams aCylinderParams;
 	pCylinder->init(aCylinderParams);
 
-	string strCommand = pCylinder->getSQLCommand();
-	database.fillPrimitiveTable(strCommand);
+	database.fillPrimitiveTable(*pCylinder);
 }
 
 //--------------------------------------------------------------
@@ -93,8 +92,7 @@ void insertIntoDatabase_Plate3D(const string & astrDBName)	{
 	aPlate3DParams->m_flLenY = 1.0;
 	aPlate3DParams->m_flLenZ = 0.05;
 	pPlate3D->init(*aPlate3DParams);
-	string strCommand = pPlate3D->getSQLCommand();
-	database.fillPrimitiveTable(strCommand);
+	database.fillPrimitiveTable(*pPlate3D);
 
 	//Left plate
 	aPlate3DParams = new Plate3DParams;
@@ -102,8 +100,7 @@ void insertIntoDatabase_Plate3D(const string & astrDBName)	{
 	aPlate3DParams->m_flLenY = 1.0;
 	aPlate3DParams->m_flLenZ = 1.0;
 	pPlate3D->init(*aPlate3DParams);
-	strCommand = pPlate3D->getSQLCommand();
-	database.fillPrimitiveTable(strCommand);
+	database.fillPrimitiveTable(*pPlate3D);
 
 	//Right plate
 	aPlate3DParams = new Plate3DParams;
@@ -111,8 +108,7 @@ void insertIntoDatabase_Plate3D(const string & astrDBName)	{
 	aPlate3DParams->m_flLenY = 1.0;
 	aPlate3DParams->m_flLenZ = 1.0;
 	pPlate3D->init(*aPlate3DParams);
-	strCommand = pPlate3D->getSQLCommand();
-	database.fillPrimitiveTable(strCommand);
+	database.fillPrimitiveTable(*pPlate3D);
 
 	//Front plate
 	aPlate3DParams = new Plate3DParams;
@@ -120,8 +116,7 @@ void insertIntoDatabase_Plate3D(const string & astrDBName)	{
 	aPlate3DParams->m_flLenY = 0.05;
 	aPlate3DParams->m_flLenZ = 1.0;
 	pPlate3D->init(*aPlate3DParams);
-	strCommand = pPlate3D->getSQLCommand();
-	database.fillPrimitiveTable(strCommand);
+	database.fillPrimitiveTable(*pPlate3D);
 
 	//Back plate
 	aPlate3DParams = new Plate3DParams;
@@ -129,8 +124,7 @@ void insertIntoDatabase_Plate3D(const string & astrDBName)	{
 	aPlate3DParams->m_flLenY = 0.05;
 	aPlate3DParams->m_flLenZ = 1.0;
 	pPlate3D->init(*aPlate3DParams);
-	strCommand = pPlate3D->getSQLCommand();
-	database.fillPrimitiveTable(strCommand);
+	database.fillPrimitiveTable(*pPlate3D);
 
 	delete aPlate3DParams;
 }
@@ -150,6 +144,10 @@ void insertIntoDatabase_Furniture(const string & astrDBName)	{
 	aPlate3DParams.m_flLenX = 1.0;
 	aPlate3DParams.m_flLenY = 1.0;
 	aPlate3DParams.m_flLenZ = 0.05;
+	aPlate3DParams.m_arrflRGBA[0] = 0;
+	aPlate3DParams.m_arrflRGBA[1] = 1;
+	aPlate3DParams.m_arrflRGBA[2] = 0;
+	aPlate3DParams.m_arrflRGBA[3] = 1;
 	pPlate3D->init(aPlate3DParams);
 	cupboard.addPart(pPlate3D);
 	
@@ -182,7 +180,7 @@ void insertIntoDatabase_Furniture(const string & astrDBName)	{
 	pPlate3D->init(aPlate3DParams);
 	cupboard.addPart(pPlate3D);
 
-	string strCommand = cupboard.getSQLPrintCommand();
+	database.fillPrimitiveTable(cupboard);
 }
 
 
@@ -192,15 +190,38 @@ void initFromDB_Cupboard(ref_ptr<Group> pScene)	{
 	string strDatabase = "../../../../Databases/Equipment.db";
 	DatabaseMgr & database = DatabaseMgr::Create(strDatabase.c_str(), DatabaseMgr::QSQLITE);
 
-	ref_ptr < Cupboard > pCupboard = new Cupboard();
+	ref_ptr <Cupboard> cupboard = new Cupboard;
+
 	string strSQLQuery = "SELECT * FROM EquipmentItem WHERE EquipmentItemID = 1";
-
 	string strSQLData = database.readFromDB(strSQLQuery);
-	//pPlate3D = new Plate3D();
-	//pPlate3D->initFromSQLData(strSQLData);
+	cupboard->initFromSQLData(strSQLData);
 
-//	pScene->addChild(pPlate3D);
+	pScene->addChild(cupboard);
 
+}
+
+void loadAllCupboards(ref_ptr<Group> pScene) {
+	string strDatabase = "../../../../Databases/Equipment.db";
+	DatabaseMgr & database = DatabaseMgr::Create(strDatabase.c_str(), DatabaseMgr::QSQLITE);
+
+	// get the number of cupboards
+	QString qstrCupboardsNr = "SELECT COUNT(EquipmentItemID) FROM EquipmentItem";
+	QSqlQuery qQuery(qstrCupboardsNr);
+
+	int nCupboardsNr;
+	while (qQuery.next())	{
+		nCupboardsNr = qQuery.value(0).toInt();
+	}
+
+	for(int nI = 2; nI <= nCupboardsNr; nI++) {
+		ref_ptr <Cupboard> cupboard = new Cupboard;
+
+		QString strSQLQuery = QString("SELECT * FROM EquipmentItem WHERE EquipmentItemID = %1").arg(nI);
+		string strSQLData = database.readFromDB(strSQLQuery.toStdString());
+		cupboard->initFromSQLData(strSQLData);
+
+		pScene->addChild(cupboard->m_Cupboard);
+	}
 }
 
 //====================================================
@@ -208,16 +229,25 @@ void initFromDB_Cupboard(ref_ptr<Group> pScene)	{
 int main(int argc, char *argv[])	{
 	QApplication app(argc,argv);
 
+	ref_ptr<Group> pScene = new Group;
+	ref_ptr<Node> pAxes = osgDB::readNodeFile("../../../../Resources/Models3D/axes.osgt");
+	pScene->addChild(pAxes);
+
 	string strDBName;
 	
-	strDBName = "../../Databases/Furniture.db";
+	strDBName = "../../../../Databases/Equipment.db";
 	//createTable(strDBName);
 	//populateTable(strDBName);
-	insertIntoDatabase_Sphere(strDBName);
-	insertIntoDatabase_Cylinder(strDBName);
-	insertIntoDatabase_Plate3D(strDBName);
-	//insertIntoDatabase_Furniture(strDBName);
+	//insertIntoDatabase_Sphere(strDBName);
+	//insertIntoDatabase_Cylinder(strDBName);
+//	insertIntoDatabase_Plate3D(strDBName);
+//	insertIntoDatabase_Furniture(strDBName);
+	//initFromDB_Cupboard(pScene);
 
+	loadAllCupboards(pScene);
 
-	return 0;
+	osgViewer::Viewer viewer;
+	viewer.setSceneData(pScene);
+
+	return viewer.run();
 }

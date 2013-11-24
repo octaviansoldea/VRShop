@@ -190,32 +190,15 @@ void main_UntransformedSphere_Texture(ref_ptr<Group> pScene)	{
 
 //====================================================================
 
-void main_Plate3D_DB(ref_ptr<Group> pScene)	{
-	string strDatabase = "../../../../Databases/Products.db";
-	DatabaseMgr & database = DatabaseMgr::Create(strDatabase.c_str(), DatabaseMgr::QSQLITE);
-
-	vector < float > arrdbParameters = database.selectFromDatabase(2);
-
-	ref_ptr<Plate3D> pPlate3D = new Plate3D();
-
-	Plate3DParams p3DP;
-	p3DP.m_flLenX = arrdbParameters[0];
-	p3DP.m_flLenY = arrdbParameters[1];
-	p3DP.m_flLenZ = arrdbParameters[2];
-
-	pPlate3D->init(p3DP);
-
-	pScene->addChild(pPlate3D);
-}
-
-//--------------------------------------------------------------
-
 void initFromDB_Plate(ref_ptr<Group> pScene)	{
 	string strDatabase = "../../../../Databases/Equipment.db";
 	DatabaseMgr & database = DatabaseMgr::Create(strDatabase.c_str(), DatabaseMgr::QSQLITE);
 
+	DatabaseMgrParams aDatabaseMgrParams;
+//	aDatabaseMgrParams.m_arrstrParams
+
 	ref_ptr < Plate3D > pPlate3D;
-	string strSQLQuery = "SELECT * FROM Plate3D WHERE Plate3DID = 1";
+	string strSQLQuery = "SELECT * FROM Plate3D WHERE Plate3DID = 3";
 	string strSQLData = database.readFromDB(strSQLQuery);
 	pPlate3D = new Plate3D();
 	pPlate3D->initFromSQLData(strSQLData);
@@ -244,10 +227,10 @@ void initFromDB_Prism(ref_ptr<Group> pScene)	{
 	string strDatabase = "../../../../Databases/Equipment.db";
 	DatabaseMgr & database = DatabaseMgr::Create(strDatabase.c_str(), DatabaseMgr::QSQLITE);
 
-	ref_ptr < Prism > pPrism;
-	string strSQLQuery = "SELECT * FROM Prism WHERE PrismID = 1";
-	string strSQLData = database.readFromDB(strSQLQuery);
-	pPrism = new Prism();
+	ref_ptr < Prism > pPrism = new Prism();
+
+	string strCommand = "SELECT * FROM Prism WHERE PrismID = 1";
+	string strSQLData = database.readFromDB(strCommand);
 	pPrism->initFromSQLData(strSQLData);
 
 	pScene->addChild(pPrism);
@@ -279,7 +262,7 @@ int main(int argc, char * argv[])	{
 	ref_ptr<Node> pAxes = osgDB::readNodeFile("../../../../Resources/Models3D/axes.osgt");
 	pScene->addChild(pAxes);
 
-	int nSelection = 18;
+	int nSelection = 14;
 	switch (nSelection)	{
 	case 1: main_UntransformedPlate2D_Color(pScene); break;
 	case 2: main_UntransformedPlate2D_Texture(pScene); break;
@@ -287,19 +270,18 @@ int main(int argc, char * argv[])	{
 	case 4: main_UntransformedPlate3D_Color(pScene); break;
 	case 5: main_UntransformedPlate3D_Texture(pScene); break;
 	case 6: main_Plate3D(pScene); break;
-	case 7: main_Plate3D_DB(pScene); break;
-	case 8: main_UntransformedPolygon2D(pScene); break;
-	case 9: main_UntransformedPolygon2D_Color(pScene); break;
-	case 10: main_UntransformedPolygon3D_Color(pScene); break;
-	case 11: main_UntransformedPolygon3D_Texture(pScene); break;
-	case 12: main_Cylinder(pScene); break;
-	case 13: main_UntransformedSphere_Color(pScene); break;
-	case 14: main_UntransformedSphere_Texture(pScene); break;
+	case 7: main_UntransformedPolygon2D(pScene); break;
+	case 8: main_UntransformedPolygon2D_Color(pScene); break;
+	case 9: main_UntransformedPolygon3D_Color(pScene); break;
+	case 10: main_UntransformedPolygon3D_Texture(pScene); break;
+	case 11: main_Cylinder(pScene); break;
+	case 12: main_UntransformedSphere_Color(pScene); break;
+	case 13: main_UntransformedSphere_Texture(pScene); break;
 
-	case 15: initFromDB_Plate(pScene); break;
-	case 16: initFromDB_Sphere(pScene); break;
-	case 17: initFromDB_Prism(pScene); break;
-	case 18: initFromDB_Cylinder(pScene); break;
+	case 14: initFromDB_Plate(pScene); break;
+	case 15: initFromDB_Sphere(pScene); break;
+	case 16: initFromDB_Prism(pScene); break;
+	case 17: initFromDB_Cylinder(pScene); break;
 	
 	default:	{
 		printError("Error Message: Wrong test number set.");

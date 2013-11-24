@@ -50,6 +50,7 @@ void Plate3D::init(const AbstractGeomShapeParams & aAbstractGeomShapeParams)	{
 			   0,						aPlate3DParams.m_flLenY, 0,						  0,
 			   0,						0,						 aPlate3DParams.m_flLenZ, 0,
 			   aPlate3DParams.m_flPosX, aPlate3DParams.m_flPosY, aPlate3DParams.m_flPosZ, 1);
+
 	setMatrix(matrix);
 
 	m_Plate3DParams = aPlate3DParams;
@@ -131,9 +132,9 @@ void Plate3D::initFromSQLData(const string & astrSQLData)	{
 	p3DP.m_flLenY = arrflMatrix[5];
 	p3DP.m_flLenZ = arrflMatrix[10];
 
-	p3DP.m_flPosY = arrflMatrix[12];
+	p3DP.m_flPosX = arrflMatrix[12];
 	p3DP.m_flPosY = arrflMatrix[13];
-	p3DP.m_flPosY = arrflMatrix[14];
+	p3DP.m_flPosZ = arrflMatrix[14];
 
 	if((arrstrPlateParams[3] != " ") && (arrstrPlateParams[3] != ""))	{
 		p3DP.m_strFileNameTexture = arrstrPlateParams[3];

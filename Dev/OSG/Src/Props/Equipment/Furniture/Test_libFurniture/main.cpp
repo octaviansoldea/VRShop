@@ -213,7 +213,7 @@ void loadAllCupboards(ref_ptr<Group> pScene) {
 		nCupboardsNr = qQuery.value(0).toInt();
 	}
 
-	for(int nI = 2; nI <= nCupboardsNr; nI++) {
+	for(int nI = 1; nI <= nCupboardsNr; nI++) {
 		ref_ptr <Cupboard> cupboard = new Cupboard;
 
 		QString strSQLQuery = QString("SELECT * FROM EquipmentItem WHERE EquipmentItemID = %1").arg(nI);

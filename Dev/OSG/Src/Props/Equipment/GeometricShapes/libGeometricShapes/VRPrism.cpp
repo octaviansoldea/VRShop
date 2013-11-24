@@ -137,9 +137,9 @@ void Prism::initFromSQLData(const std::string & astrSQLData)	{
 	}
 
 
-	pP.m_flPosY = arrflMatrix[12];
+	pP.m_flPosX = arrflMatrix[12];
 	pP.m_flPosY = arrflMatrix[13];
-	pP.m_flPosY = arrflMatrix[14];
+	pP.m_flPosZ = arrflMatrix[14];
 
 	init(pP);
 

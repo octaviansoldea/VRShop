@@ -1,5 +1,7 @@
 #include <QApplication>
 #include <QMessageBox>
+#include <QFile>
+#include <QTextStream>
 
 #include <osgViewer/Viewer>
 #include <osgDB/ReadFile>
@@ -30,6 +32,11 @@ using namespace VR;
 
 
 void createTable(const string & astrDBName) {
+	QFile file(astrDBName.c_str());
+    if (file.open(QIODevice::ReadWrite)) {
+		file.remove();
+    }
+	file.close();
 	DatabaseMgr & database = DatabaseMgr::Create(astrDBName.c_str(), DatabaseMgr::QSQLITE);
 	database.createTable();
 }
@@ -236,12 +243,12 @@ int main(int argc, char *argv[])	{
 	string strDBName;
 	
 	strDBName = "../../../../Databases/Equipment.db";
-	//createTable(strDBName);
-	//populateTable(strDBName);
+	createTable(strDBName);
+	populateTable(strDBName);
 	//insertIntoDatabase_Sphere(strDBName);
 	//insertIntoDatabase_Cylinder(strDBName);
 //	insertIntoDatabase_Plate3D(strDBName);
-//	insertIntoDatabase_Furniture(strDBName);
+	insertIntoDatabase_Furniture(strDBName);
 	//initFromDB_Cupboard(pScene);
 
 	loadAllCupboards(pScene);

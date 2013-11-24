@@ -53,8 +53,8 @@ DatabaseMgr & DatabaseMgr::Create(const QString & aqstrDBPathName, DRIVER_NAME a
 
 DatabaseMgr * DatabaseMgr::CreateSQLite(const QString & aqstrDBPathName) {
 	if (!QSqlDatabase::drivers().contains("QSQLITE")) {
-			printError("Given driver QSQLITE not supported.");
-			exit(-1);
+		printError("Given driver QSQLITE not supported.");
+		exit(-1);
 	}	
 	DatabaseMgrSQLite * pDatabaseMgrSQLite = new DatabaseMgrSQLite(aqstrDBPathName);
 	return(pDatabaseMgrSQLite);
@@ -62,8 +62,8 @@ DatabaseMgr * DatabaseMgr::CreateSQLite(const QString & aqstrDBPathName) {
 
 DatabaseMgr * DatabaseMgr::CreateODBC(const QString & aqstrDBPathName) {
 	if (!QSqlDatabase::drivers().contains("QODBC")) {
-			printError("Given driver QODBC not supported.");
-			return(0);
+		printError("Given driver QODBC not supported.");
+		return(0);
 	}
 	DatabaseMgrODBC * pDatabaseMgrODBC = new DatabaseMgrODBC(aqstrDBPathName);
 	return(pDatabaseMgrODBC);

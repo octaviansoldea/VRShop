@@ -12,6 +12,14 @@ namespace VR	{
 		float m_flPosY;
 		float m_flPosZ;
 
+		float m_flScaleX;
+		float m_flScaleY;
+		float m_flScaleZ;
+
+		float m_flAngleXY;
+		float m_flAngleXZ;
+		float m_flAngleYZ;
+
 		CupboardParams();
 	};
 
@@ -33,8 +41,13 @@ namespace VR	{
 
 		osg::ref_ptr <VR::Cupboard> m_Cupboard;
 
+		void setRotation(const CupboardParams & aCupboardParams);
+		void setPosition(const CupboardParams & aCupboardParams);
+		void setScaling(const CupboardParams & aCupboardParams);
+
 	private:
 		std::vector < std::string > m_arrSQLCommandLines;
+		CupboardParams m_CupboardParams;
 	};
 }
 #endif //VR_CUPBOARD_H

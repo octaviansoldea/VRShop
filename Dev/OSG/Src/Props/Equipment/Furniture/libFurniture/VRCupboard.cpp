@@ -1,4 +1,5 @@
 #include <string>
+#include <vector>
 #include <iostream>
 
 #include "VRAbstractGeomShape.h"
@@ -13,7 +14,9 @@ using namespace osg;
 using namespace VR;
 
 CupboardParams::CupboardParams() :
-m_flPosX(0.0), m_flPosY(0.0), m_flPosZ(0.0) {
+m_flPosX(0.0), m_flPosY(0.0), m_flPosZ(0.0),
+m_flScaleX(1.0), m_flScaleY(1.0), m_flScaleZ(1.0),
+m_flAngleXY(0.0),m_flAngleXZ(0.0),m_flAngleYZ(0.0)	{
 }
 
 //-----------------------------------------------------------------------
@@ -24,15 +27,30 @@ Cupboard::Cupboard()	{
 //-----------------------------------------------------------------------
 
 void Cupboard::init(const CupboardParams & aCupboardParams)	{
+	setScaling(aCupboardParams);
+	setRotation(aCupboardParams);
+	setPosition(aCupboardParams);
 
 	Matrix matrix;
-	matrix.set(1,							0,							0,							0,
-			   0,							1,							0,							0,
-			   0,							0,							1,							0,
-			   aCupboardParams.m_flPosX,	aCupboardParams.m_flPosY,	aCupboardParams.m_flPosZ,	1);
+	matrix.set(1, 0, 0, 0,
+			   0, 1, 0, 0,
+			   0, 0, 1, 0,
+			   0, 0, 0,	1);
 
-	setMatrix(matrix);
+	osg::Matrix cupboardMatrix = 
+		matrix.translate(m_CupboardParams.m_flPosX, m_CupboardParams.m_flPosY, m_CupboardParams.m_flPosZ)
+		*
+		matrix.scale(m_CupboardParams.m_flScaleX, m_CupboardParams.m_flScaleY, m_CupboardParams.m_flScaleZ)
+		*
+		matrix.rotate(
+			m_CupboardParams.m_flAngleYZ, osg::X_AXIS,
+			m_CupboardParams.m_flAngleXZ, osg::Y_AXIS,
+			m_CupboardParams.m_flAngleXY, osg::Z_AXIS)
+		//*
+		//matrix.translate(m_CupboardParams.m_flPosX, m_CupboardParams.m_flPosY, m_CupboardParams.m_flPosZ)
+		;
 
+	setMatrix(cupboardMatrix);
 }
 
 //-----------------------------------------------------------------------
@@ -93,14 +111,43 @@ void Cupboard::initFromSQLData(const string & astrSQLData)	{
 	
 	vector < string > arrstrSQLData = splitString(strSQLData,strDelimiter);
 
-	int nI;
-	int nNumParts = arrstrSQLData.size()-1;
-
-	ref_ptr < Plate3D > pPlate;
 	m_Cupboard = new Cupboard;
-	for (nI=0;nI<nNumParts;nI++)	{
-		pPlate = new Plate3D;
-		pPlate->initFromSQLData(arrstrSQLData[nI]);
+	CupboardParams cupboardParams;
+	cupboardParams.m_flPosX = 0.5;
+	cupboardParams.m_flPosY = 0.5;
+	cupboardParams.m_flPosZ = 0.5;
+	cupboardParams.m_flAngleXY = 90.0;
+	cupboardParams.m_flScaleX = 1.5;
+
+	for (vector<string>::iterator it = arrstrSQLData.begin(); it != arrstrSQLData.end()-1; it++)	{
+		ref_ptr < Plate3D > pPlate = new Plate3D;
+		pPlate->initFromSQLData(*it);
 		m_Cupboard->addChild(pPlate);
 	}
+	m_Cupboard->init(cupboardParams);
+}
+
+//-----------------------------------------------------------------------
+
+void Cupboard::setRotation(const CupboardParams & aCupboardParams)	{
+	//Rotation goes counter-clockwise
+	m_CupboardParams.m_flAngleXY = DegreesToRadians(aCupboardParams.m_flAngleXY);
+	m_CupboardParams.m_flAngleXZ = DegreesToRadians(aCupboardParams.m_flAngleXZ);
+	m_CupboardParams.m_flAngleYZ = DegreesToRadians(aCupboardParams.m_flAngleYZ);
+}
+
+//-----------------------------------------------------------------------
+
+void Cupboard::setPosition(const CupboardParams & aCupboardParams)	{
+	m_CupboardParams.m_flPosX = aCupboardParams.m_flPosX;
+	m_CupboardParams.m_flPosY = aCupboardParams.m_flPosY;
+	m_CupboardParams.m_flPosZ = aCupboardParams.m_flPosZ;
+}
+
+//-----------------------------------------------------------------------
+
+void Cupboard::setScaling(const CupboardParams & aCupboardParams)	{
+	m_CupboardParams.m_flScaleX = aCupboardParams.m_flScaleX;
+	m_CupboardParams.m_flScaleY = aCupboardParams.m_flScaleY;
+	m_CupboardParams.m_flScaleZ = aCupboardParams.m_flScaleZ;
 }

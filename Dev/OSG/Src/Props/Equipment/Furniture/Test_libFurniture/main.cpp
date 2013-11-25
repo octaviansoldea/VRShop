@@ -9,8 +9,6 @@
 #include <iostream>
 #include <string>
 
-#include <BasicStringDefinitions.h>
-
 #include "VRDatabaseMgr.h"
 
 #include "VRAbstractObject.h"
@@ -60,6 +58,16 @@ void populateTable(const string & astrDBName)	{
 	database.insertIntoDatabase(dMgrP);
 
 	dMgrP.m_qstrObjectName = "Sphere";
+	database.insertIntoDatabase(dMgrP);
+
+	dMgrP.m_qstrObjectType = "Equipment";
+	dMgrP.m_qstrObjectName = "Furniture";
+	database.insertIntoDatabase(dMgrP);
+
+	dMgrP.m_qstrObjectName = "Decoration";
+	database.insertIntoDatabase(dMgrP);
+
+	dMgrP.m_qstrObjectName = "CollectingTools";
 	database.insertIntoDatabase(dMgrP);
 }
 
@@ -139,7 +147,7 @@ void insertIntoDatabase_Plate3D(const string & astrDBName)	{
 //--------------------------------------------------------------
 
 
-void insertIntoDatabase_Furniture(const string & astrDBName)	{
+void insertIntoDatabase_Container(const string & astrDBName)	{
 	DatabaseMgr & database = DatabaseMgr::Create(astrDBName.c_str(), DatabaseMgr::QSQLITE);
 
 	//Set the cupboard
@@ -151,9 +159,13 @@ void insertIntoDatabase_Furniture(const string & astrDBName)	{
 	aPlate3DParams.m_flLenX = 1.0;
 	aPlate3DParams.m_flLenY = 1.0;
 	aPlate3DParams.m_flLenZ = 0.05;
-	aPlate3DParams.m_arrflRGBA[0] = 0;
-	aPlate3DParams.m_arrflRGBA[1] = 1;
-	aPlate3DParams.m_arrflRGBA[2] = 0;
+
+	aPlate3DParams.m_flPosX = 0;
+	aPlate3DParams.m_flPosY = 0;
+	aPlate3DParams.m_flPosZ = -0.475;
+	aPlate3DParams.m_arrflRGBA[0] = 0.1;
+	aPlate3DParams.m_arrflRGBA[1] = 0.81;
+	aPlate3DParams.m_arrflRGBA[2] = 0.1;
 	aPlate3DParams.m_arrflRGBA[3] = 1;
 	pPlate3D->init(aPlate3DParams);
 	cupboard.addPart(pPlate3D);
@@ -163,6 +175,13 @@ void insertIntoDatabase_Furniture(const string & astrDBName)	{
 	aPlate3DParams.m_flLenX = 0.05;
 	aPlate3DParams.m_flLenY = 1.0;
 	aPlate3DParams.m_flLenZ = 1.0;
+	aPlate3DParams.m_flPosX = -0.475;
+	aPlate3DParams.m_flPosY = 0;
+	aPlate3DParams.m_flPosZ = 0;
+	aPlate3DParams.m_arrflRGBA[0] = 1;
+	aPlate3DParams.m_arrflRGBA[1] = 1;
+	aPlate3DParams.m_arrflRGBA[2] = 0;
+	aPlate3DParams.m_arrflRGBA[3] = 1;
 	pPlate3D->init(aPlate3DParams);
 	cupboard.addPart(pPlate3D);
 
@@ -170,6 +189,13 @@ void insertIntoDatabase_Furniture(const string & astrDBName)	{
 	aPlate3DParams.m_flLenX = 0.05;
 	aPlate3DParams.m_flLenY = 1.0;
 	aPlate3DParams.m_flLenZ = 1.0;
+	aPlate3DParams.m_flPosX = 0.475;
+	aPlate3DParams.m_flPosY = 0;
+	aPlate3DParams.m_flPosZ = 0;
+	aPlate3DParams.m_arrflRGBA[0] = 0;
+	aPlate3DParams.m_arrflRGBA[1] = 1;
+	aPlate3DParams.m_arrflRGBA[2] = 1;
+	aPlate3DParams.m_arrflRGBA[3] = 1;
 	pPlate3D->init(aPlate3DParams);
 	cupboard.addPart(pPlate3D);
 
@@ -177,6 +203,13 @@ void insertIntoDatabase_Furniture(const string & astrDBName)	{
 	aPlate3DParams.m_flLenX = 1.0;
 	aPlate3DParams.m_flLenY = 0.05;
 	aPlate3DParams.m_flLenZ = 1.0;
+	aPlate3DParams.m_flPosX = 0;
+	aPlate3DParams.m_flPosY = -0.475;
+	aPlate3DParams.m_flPosZ = 0;
+	aPlate3DParams.m_arrflRGBA[0] = 1;
+	aPlate3DParams.m_arrflRGBA[1] = 0;
+	aPlate3DParams.m_arrflRGBA[2] = 1;
+	aPlate3DParams.m_arrflRGBA[3] = 1;
 	pPlate3D->init(aPlate3DParams);
 	cupboard.addPart(pPlate3D);
 
@@ -184,34 +217,136 @@ void insertIntoDatabase_Furniture(const string & astrDBName)	{
 	aPlate3DParams.m_flLenX = 1.0;
 	aPlate3DParams.m_flLenY = 0.05;
 	aPlate3DParams.m_flLenZ = 1.0;
+	aPlate3DParams.m_flPosX = 0;
+	aPlate3DParams.m_flPosY = 0.475;
+	aPlate3DParams.m_flPosZ = 0;
+	aPlate3DParams.m_strFileNameTexture = "../../../../Resources/Textures/lz.rgb";
+
 	pPlate3D->init(aPlate3DParams);
 	cupboard.addPart(pPlate3D);
 
 	database.fillPrimitiveTable(cupboard);
 }
 
+//--------------------------------------------------------------
+
+void insertIntoDatabase_Cupboard(const string & astrDBName)	{
+	DatabaseMgr & database = DatabaseMgr::Create(astrDBName.c_str(), DatabaseMgr::QSQLITE);
+
+	//Set the cupboard
+	Cupboard cupboard;
+
+	ref_ptr < Plate3D > pPlate3D =  new Plate3D;
+	Plate3DParams aPlate3DParams;
+	//Bottom plate
+	aPlate3DParams.m_flLenX = 5.0;
+	aPlate3DParams.m_flLenY = 1.0;
+	aPlate3DParams.m_flLenZ = 0.05;
+
+	aPlate3DParams.m_flPosX = 0;
+	aPlate3DParams.m_flPosY = 0;
+	aPlate3DParams.m_flPosZ = -1.0;
+	aPlate3DParams.m_arrflRGBA[0] = 1;
+	aPlate3DParams.m_arrflRGBA[1] = 1;
+	aPlate3DParams.m_arrflRGBA[2] = 0;
+	aPlate3DParams.m_arrflRGBA[3] = 1;
+	aPlate3DParams.m_strFileNameTexture = "../../../../Resources/Textures/lz.rgb";
+	pPlate3D->init(aPlate3DParams);
+	cupboard.addPart(pPlate3D);
+	
+
+	//Left side
+	aPlate3DParams.m_flLenX = 0.05;
+	aPlate3DParams.m_flLenY = 1.0;
+	aPlate3DParams.m_flLenZ = 2.0;
+	aPlate3DParams.m_flPosX = -2.475;
+	aPlate3DParams.m_flPosY = 0;
+	aPlate3DParams.m_flPosZ = 0;
+	aPlate3DParams.m_arrflRGBA[0] = 1;
+	aPlate3DParams.m_arrflRGBA[1] = 1;
+	aPlate3DParams.m_arrflRGBA[2] = 0;
+	aPlate3DParams.m_arrflRGBA[3] = 1;
+	aPlate3DParams.m_strFileNameTexture = "../../../../Resources/Textures/lz.rgb";
+	pPlate3D->init(aPlate3DParams);
+	cupboard.addPart(pPlate3D);
+
+	//Right side
+	aPlate3DParams.m_flLenX = 0.05;
+	aPlate3DParams.m_flLenY = 1.0;
+	aPlate3DParams.m_flLenZ = 2.0;
+	aPlate3DParams.m_flPosX = 2.475;
+	aPlate3DParams.m_flPosY = 0;
+	aPlate3DParams.m_flPosZ = 0;
+	aPlate3DParams.m_arrflRGBA[0] = 0;
+	aPlate3DParams.m_arrflRGBA[1] = 1;
+	aPlate3DParams.m_arrflRGBA[2] = 1;
+	aPlate3DParams.m_arrflRGBA[3] = 1;
+	aPlate3DParams.m_strFileNameTexture = "../../../../Resources/Textures/lz.rgb";
+	pPlate3D->init(aPlate3DParams);
+	cupboard.addPart(pPlate3D);
+
+	//Back side
+	aPlate3DParams.m_flLenX = 5.0;
+	aPlate3DParams.m_flLenY = 0.05;
+	aPlate3DParams.m_flLenZ = 2.0;
+	aPlate3DParams.m_flPosX = 0;
+	aPlate3DParams.m_flPosY = 0.475;
+	aPlate3DParams.m_flPosZ = 0;
+	aPlate3DParams.m_arrflRGBA[0] = 1;
+	aPlate3DParams.m_arrflRGBA[1] = 0;
+	aPlate3DParams.m_arrflRGBA[2] = 1;
+	aPlate3DParams.m_arrflRGBA[3] = 1;
+	aPlate3DParams.m_strFileNameTexture = "../../../../Resources/Textures/lz.rgb";
+	pPlate3D->init(aPlate3DParams);
+	cupboard.addPart(pPlate3D);
+
+	//shelf 1
+	aPlate3DParams.m_flLenX = 5.0;
+	aPlate3DParams.m_flLenY = 1.0;
+	aPlate3DParams.m_flLenZ = 0.05;
+
+	aPlate3DParams.m_flPosX = 0;
+	aPlate3DParams.m_flPosY = 0;
+	aPlate3DParams.m_flPosZ = -0.375;
+	aPlate3DParams.m_strFileNameTexture = "../../../../Resources/Textures/lz.rgb";
+	pPlate3D->init(aPlate3DParams);
+	cupboard.addPart(pPlate3D);
+
+
+	//shelf 2
+	aPlate3DParams.m_flLenX = 5.0;
+	aPlate3DParams.m_flLenY = 1.0;
+	aPlate3DParams.m_flLenZ = 0.05;
+
+	aPlate3DParams.m_flPosX = 0;
+	aPlate3DParams.m_flPosY = 0;
+	aPlate3DParams.m_flPosZ = 0.375;
+	aPlate3DParams.m_strFileNameTexture = "../../../../Resources/Textures/lz.rgb";
+	pPlate3D->init(aPlate3DParams);
+	cupboard.addPart(pPlate3D);
+
+	//shelf 3
+	aPlate3DParams.m_flLenX = 5.0;
+	aPlate3DParams.m_flLenY = 1.0;
+	aPlate3DParams.m_flLenZ = 0.05;
+
+	aPlate3DParams.m_flPosX = 0;
+	aPlate3DParams.m_flPosY = 0;
+	aPlate3DParams.m_flPosZ = 1;
+	aPlate3DParams.m_strFileNameTexture = "../../../../Resources/Textures/lz.rgb";
+	pPlate3D->init(aPlate3DParams);
+	cupboard.addPart(pPlate3D);
+
+	database.fillPrimitiveTable(cupboard);
+}
 
 //--------------------------------------------------------------
 
-void initFromDB_Cupboard(ref_ptr<Group> pScene)	{
+void loadAllFurniture(ref_ptr<Group> pScene) {
 	string strDatabase = "../../../../Databases/Equipment.db";
 	DatabaseMgr & database = DatabaseMgr::Create(strDatabase.c_str(), DatabaseMgr::QSQLITE);
 
-	ref_ptr <Cupboard> cupboard = new Cupboard;
-
-	string strSQLQuery = "SELECT * FROM EquipmentItem WHERE EquipmentItemID = 1";
-	string strSQLData = database.readFromDB(strSQLQuery);
-	cupboard->initFromSQLData(strSQLData);
-
-	pScene->addChild(cupboard);
-
-}
-
-void loadAllCupboards(ref_ptr<Group> pScene) {
-	string strDatabase = "../../../../Databases/Equipment.db";
-	DatabaseMgr & database = DatabaseMgr::Create(strDatabase.c_str(), DatabaseMgr::QSQLITE);
-
-	// get the number of cupboards
+	// get the number of equipment to be added to the scene
 	QString qstrCupboardsNr = "SELECT COUNT(EquipmentItemID) FROM EquipmentItem";
 	QSqlQuery qQuery(qstrCupboardsNr);
 
@@ -245,13 +380,14 @@ int main(int argc, char *argv[])	{
 	strDBName = "../../../../Databases/Equipment.db";
 	createTable(strDBName);
 	populateTable(strDBName);
+
 	//insertIntoDatabase_Sphere(strDBName);
 	//insertIntoDatabase_Cylinder(strDBName);
-//	insertIntoDatabase_Plate3D(strDBName);
-	insertIntoDatabase_Furniture(strDBName);
-	//initFromDB_Cupboard(pScene);
+	//insertIntoDatabase_Plate3D(strDBName);
 
-	loadAllCupboards(pScene);
+	insertIntoDatabase_Container(strDBName);
+//	insertIntoDatabase_Cupboard(strDBName);
+	loadAllFurniture(pScene);
 
 	osgViewer::Viewer viewer;
 	viewer.setSceneData(pScene);

@@ -37,14 +37,14 @@ UntransformedPlate2D::UntransformedPlate2D()	{
 //--------------------------------------------------------------
 
 void UntransformedPlate2D::setColor(const vector < float > & aarrflColor) {
-	Vec4 vec4(aarrflColor[0], aarrflColor[1], aarrflColor[2], aarrflColor[3]);
+	Vec4d vec4(aarrflColor[0], aarrflColor[1], aarrflColor[2], aarrflColor[3]);
 	ref_ptr<Vec4Array> pColors = new Vec4Array;
+	pColors->push_back(vec4);
+	pColors->push_back(vec4);
+	pColors->push_back(vec4);
+	pColors->push_back(vec4);
 	m_pGeometry->setColorArray(pColors.get());
 	m_pGeometry->setColorBinding(Geometry::BIND_PER_VERTEX);
-	pColors->push_back(vec4);
-	pColors->push_back(vec4);
-	pColors->push_back(vec4);
-	pColors->push_back(vec4);
 }
 
 //--------------------------------------------------------------

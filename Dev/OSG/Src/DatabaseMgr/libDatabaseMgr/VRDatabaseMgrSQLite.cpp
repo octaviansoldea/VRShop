@@ -133,21 +133,13 @@ void DatabaseMgrSQLite::fillPrimitiveTable(const AbstractObject & aAbstractObjec
 			//Number of the inserted item
 			int nID = qry.lastInsertId().toInt();
 			if (nID)	{
-				//Number of Primitive
-				int nPrimitive;
 				vector<string> vecstrQuery = splitString(arrstrSQLCommands[nI]," ");
 				string strPrimitive = vecstrQuery[2];
 
-				QString qstrQuery = QString("SELECT PrimitiveID FROM Primitive WHERE PrimitiveName = '%1'").arg(strPrimitive.c_str());
-				QSqlQuery tqry(qstrQuery);
-
-				while (tqry.next())	{
-					nPrimitive = tqry.value(0).toInt();
-				}
-
 				//Everything is set, fill the PrimitiveItemList with proper data
 				QString qstrPIL = QString("INSERT INTO PrimitiveItemList (PrimitiveID, ItemID, EquipmentItemID) "
-					"VALUES(%1, %2, %3)").arg(nPrimitive).arg(nID).arg(nEquipmentItemID);
+					"VALUES((SELECT PrimitiveID FROM Primitive WHERE PrimitiveName = '%1'), %2, %3)")
+					.arg(strPrimitive.c_str()).arg(nID).arg(nEquipmentItemID);
 
 				QSqlQuery tempQuery;
 				tempQuery.exec(qstrPIL);

@@ -37,19 +37,17 @@ void Cupboard::init(const CupboardParams & aCupboardParams)	{
 			   0, 0, 1, 0,
 			   0, 0, 0,	1);
 
-	osg::Matrix cupboardMatrix = 
-		matrix.translate(m_CupboardParams.m_flPosX, m_CupboardParams.m_flPosY, m_CupboardParams.m_flPosZ)
-		*
+	osg::Matrix cupboardMatrix =
 		matrix.scale(m_CupboardParams.m_flScaleX, m_CupboardParams.m_flScaleY, m_CupboardParams.m_flScaleZ)
 		*
 		matrix.rotate(
 			m_CupboardParams.m_flAngleYZ, osg::X_AXIS,
 			m_CupboardParams.m_flAngleXZ, osg::Y_AXIS,
 			m_CupboardParams.m_flAngleXY, osg::Z_AXIS)
-		//*
-		//matrix.translate(m_CupboardParams.m_flPosX, m_CupboardParams.m_flPosY, m_CupboardParams.m_flPosZ)
-		;
-
+		*
+		matrix.translate(m_CupboardParams.m_flPosX, m_CupboardParams.m_flPosY, m_CupboardParams.m_flPosZ)
+	;
+	
 	setMatrix(cupboardMatrix);
 }
 
@@ -111,10 +109,10 @@ void Cupboard::initFromSQLData(const string & astrSQLData)	{
 	
 	vector < string > arrstrSQLData = splitString(strSQLData,strDelimiter);
 
-	m_Cupboard = new Cupboard;
+	m_pCupboard = new Cupboard;
 	CupboardParams cupboardParams;
 	cupboardParams.m_flPosX = 0.5;
-	cupboardParams.m_flPosY = 0.5;
+	cupboardParams.m_flPosY = 0.5 * 1.5;
 	cupboardParams.m_flPosZ = 0.5;
 	cupboardParams.m_flAngleXY = 90.0;
 	cupboardParams.m_flScaleX = 1.5;
@@ -122,9 +120,9 @@ void Cupboard::initFromSQLData(const string & astrSQLData)	{
 	for (vector<string>::iterator it = arrstrSQLData.begin(); it != arrstrSQLData.end()-1; it++)	{
 		ref_ptr < Plate3D > pPlate = new Plate3D;
 		pPlate->initFromSQLData(*it);
-		m_Cupboard->addChild(pPlate);
+		m_pCupboard->addChild(pPlate);
 	}
-	m_Cupboard->init(cupboardParams);
+	m_pCupboard->init(cupboardParams);
 }
 
 //-----------------------------------------------------------------------

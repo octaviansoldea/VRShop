@@ -116,13 +116,15 @@ QString ShopBuilder_GUI::saveDialog(const char * apchDBName) {
 
 void ShopBuilder_GUI::slotOpenDB() {
 	QString qstrFileName = openDialog("*.db");
-	if(qstrFileName != "") {
+	if(qstrFileName == "") {
 		QMessageBox msgBox;
-		msgBox.setText(qstrFileName + "Write");
+		msgBox.setText(qstrFileName + "Could not open file");
 		msgBox.setStandardButtons(QMessageBox::Ok);
 		msgBox.setWindowTitle("Error window");
 		int nRes = msgBox.exec();
+		return;
 	}
+	m_ShopBuilder.readDB(qstrFileName.toStdString());
 }
 
 //=========================================================================================

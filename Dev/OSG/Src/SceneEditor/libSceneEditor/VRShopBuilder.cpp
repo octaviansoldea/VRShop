@@ -45,3 +45,10 @@ void ShopBuilder::gridOnOff(bool abIndicator) {
 		m_pScene->removeChild(m_pGridlines);
 	}
 }
+
+//----------------------------------------------------------------------
+
+void ShopBuilder::readDB(const std::string & astrDBFileName)
+{
+
+}

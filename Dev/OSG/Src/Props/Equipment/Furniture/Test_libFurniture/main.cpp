@@ -342,7 +342,7 @@ void insertIntoDatabase_Cupboard(const string & astrDBName)	{
 
 //--------------------------------------------------------------
 
-void loadAllFurniture(ref_ptr<Group> pScene) {
+void loadAllFurnitures(ref_ptr<Group> pScene) {
 	string strDatabase = "../../../../Databases/Equipment.db";
 	DatabaseMgr & database = DatabaseMgr::Create(strDatabase.c_str(), DatabaseMgr::QSQLITE);
 
@@ -362,7 +362,7 @@ void loadAllFurniture(ref_ptr<Group> pScene) {
 		string strSQLData = database.readFromDB(strSQLQuery.toStdString());
 		cupboard->initFromSQLData(strSQLData);
 
-		pScene->addChild(cupboard->m_Cupboard);
+		pScene->addChild(cupboard->m_pCupboard);
 	}
 }
 
@@ -387,7 +387,7 @@ int main(int argc, char *argv[])	{
 
 	insertIntoDatabase_Container(strDBName);
 //	insertIntoDatabase_Cupboard(strDBName);
-	loadAllFurniture(pScene);
+	loadAllFurnitures(pScene);
 
 	osgViewer::Viewer viewer;
 	viewer.setSceneData(pScene);

@@ -16,6 +16,8 @@ namespace VR	{
 		osg::ref_ptr<osg::Group> m_pScene;
 
 		void gridOnOff(bool abIndicator);
+
+		void readDB(const std::string & astrDBFileName);
 	private:
 		OSGQT_Widget * m_pOSGQTWidget;
 		osg::ref_ptr<Grid> m_pGridlines;

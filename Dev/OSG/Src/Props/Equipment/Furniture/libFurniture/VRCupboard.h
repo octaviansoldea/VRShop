@@ -39,7 +39,7 @@ namespace VR	{
 		virtual std::string getSQLCommand() const;
 		virtual void initFromSQLData(const std::string & astrSQLData);
 
-		osg::ref_ptr <VR::Cupboard> m_Cupboard;
+		osg::ref_ptr <VR::Cupboard> m_pCupboard;
 
 		void setRotation(const CupboardParams & aCupboardParams);
 		void setPosition(const CupboardParams & aCupboardParams);

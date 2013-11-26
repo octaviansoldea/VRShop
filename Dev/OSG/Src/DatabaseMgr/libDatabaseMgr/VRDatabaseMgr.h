@@ -8,8 +8,6 @@
 #include <QSqlQuery>
 #include <QSqlError>
 
-#include "VRAbstractObject.h"
-
 namespace VR {
 
 	struct DatabaseMgrParams	{
@@ -38,9 +36,9 @@ namespace VR {
 
 		QSqlError lastError() const;
 
-		virtual bool createTable() = 0;
+		virtual bool createTable(const std::string & astrSQLCommand) = 0;
 
-		virtual void fillPrimitiveTable(const AbstractObject & aAbstractObject) = 0;
+		virtual void fillPrimitiveTable(std::string & astrCommand) = 0;
 		virtual std::string readFromDB(std::string & astrCommand) = 0;
 
 
@@ -58,3 +56,4 @@ namespace VR {
 	};
 }
 #endif //VR_DATABASE_MGR_H
+

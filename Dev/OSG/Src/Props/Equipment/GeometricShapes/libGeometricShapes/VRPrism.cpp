@@ -16,7 +16,7 @@ string Prism::m_strSQLFormat =
 	"PrismColor TEXT,"
 	"PrismTexture TEXT, "
 	"PrimitiveID INTEGER, "
-	"FOREIGN KEY (PrimitiveID) REFERENCES Primitive(PrimitiveID))";
+	"FOREIGN KEY (PrimitiveID) REFERENCES Primitive(PrimitiveID));";
 
 
 PrismParams::PrismParams() :
@@ -127,7 +127,7 @@ void Prism::initFromSQLData(const std::string & astrSQLData)	{
 
 	pP.m_nRes = stof(arrstrPrismParams[1]);
 	pP.m_flRadius = stof(arrstrMatrix[0]);
-	pP.m_flHeight = stof(arrstrPrismParams[5]);
+	pP.m_flHeight = stof(arrstrMatrix[5]);
 
 
 	int nI;
@@ -144,11 +144,10 @@ void Prism::initFromSQLData(const std::string & astrSQLData)	{
 	init(pP);
 
 	if (arrstrColor.size()!=0)	{
-		vector < float > arrflColor;
 		for (nI=0;nI<4;nI++)	{
-			arrflColor[nI] = (stof(arrstrColor[nI]));
+			pP.m_arrflRGBA[nI] = (stof(arrstrColor[nI]));
 		}
-		setColor(arrflColor);
+		setColor(pP.m_arrflRGBA);
 	}
 
 	if((arrstrPrismParams[4] != " ") && (arrstrPrismParams[4] != ""))	{

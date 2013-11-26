@@ -1,3 +1,5 @@
+#include "StringManipulation.h"
+
 #include <osgDB/ReadFile>
 
 #include <QFileDialog>
@@ -98,8 +100,6 @@ QString ShopBuilder_GUI::openDialog(const char * apchDBName) {
 		tr("Open File"),
 		tr("."), apchDBName);
 
-	std::cout << qstrFileName.toStdString() << std::endl;
-
 	return(qstrFileName);
 }
 
@@ -116,9 +116,10 @@ QString ShopBuilder_GUI::saveDialog(const char * apchDBName) {
 
 void ShopBuilder_GUI::slotOpenDB() {
 	QString qstrFileName = openDialog("*.db");
-	if(qstrFileName == "") {
+
+	if(isAtEndOfString(qstrFileName.toStdString(), ".db") == false)	{
 		QMessageBox msgBox;
-		msgBox.setText(qstrFileName + "Could not open file");
+		msgBox.setText(qstrFileName + " Could not open file");
 		msgBox.setStandardButtons(QMessageBox::Ok);
 		msgBox.setWindowTitle("Error window");
 		int nRes = msgBox.exec();

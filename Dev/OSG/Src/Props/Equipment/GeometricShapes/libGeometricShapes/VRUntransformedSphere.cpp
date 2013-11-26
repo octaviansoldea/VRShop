@@ -25,7 +25,7 @@ string UntransformedSphere::m_strSQLFormat =
 	"SphereColor TEXT,"
 	"SphereTexture TEXT, "
 	"PrimitiveID INTEGER, "
-	"FOREIGN KEY (PrimitiveID) REFERENCES Primitive(PrimitiveID))";
+	"FOREIGN KEY (PrimitiveID) REFERENCES Primitive(PrimitiveID));";
 
 
 SphereParams::SphereParams() : 

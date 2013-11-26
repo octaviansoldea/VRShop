@@ -1,7 +1,6 @@
 #include <QApplication>
 #include <QMessageBox>
-
-#include <osgViewer/Viewer>
+#include <QFile>
 
 #include <iostream>
 #include <string>
@@ -28,8 +27,55 @@ using namespace VR;
 
 
 void createTable(const string & astrDBName) {
+	QFile file(astrDBName.c_str());
+    if (file.open(QIODevice::ReadWrite)) {
+		file.remove();
+    }
+	file.close();
 	DatabaseMgr & database = DatabaseMgr::Create(astrDBName.c_str(), DatabaseMgr::QSQLITE);
-	database.createTable();
+
+	string strCreateTable = "CREATE TABLE IF NOT EXISTS Primitive "
+			"(PrimitiveID INTEGER PRIMARY KEY AUTOINCREMENT,"
+			"PrimitiveName TEXT UNIQUE);";
+
+	VR::Cylinder cylinder;
+	strCreateTable += cylinder.getSQLFormat();
+
+	Plate3D plate3D;
+	strCreateTable += plate3D.getSQLFormat();
+
+	Prism prism;
+	strCreateTable += prism.getSQLFormat();
+
+	UntransformedSphere sphere;
+	strCreateTable += sphere.getSQLFormat();
+
+	strCreateTable += "CREATE TABLE IF NOT EXISTS PrimitiveItemList "
+			"(PrimitiveItemListID INTEGER PRIMARY KEY AUTOINCREMENT,"
+			"PrimitiveID INTEGER, "
+			"ItemID INTEGER, "
+			"EquipmentItemID INTEGER, "
+			"FOREIGN KEY (PrimitiveID) REFERENCES Primitive(PrimitiveID));";
+
+	strCreateTable += "CREATE TABLE IF NOT EXISTS Texture "
+			"(TextureID INTEGER PRIMARY KEY AUTOINCREMENT,"
+			"TextureFile TEXT);";
+
+	strCreateTable += "CREATE TABLE IF NOT EXISTS Equipment "
+			"(EquipmentID INTEGER PRIMARY KEY AUTOINCREMENT,"
+			"EquipmentName TEXT);";
+
+	strCreateTable += "CREATE TABLE IF NOT EXISTS EquipmentItem "
+			"(EquipmentItemID INTEGER PRIMARY KEY AUTOINCREMENT,"
+			"EquipmentItemName TEXT, "
+			"EquipmentID INTEGER,"
+			"FOREIGN KEY (EquipmentID) REFERENCES Equipment(EquipmentID));";
+
+	strCreateTable += "CREATE TABLE IF NOT EXISTS Scene "
+			"(SceneID INTEGER PRIMARY KEY AUTOINCREMENT,"
+			"SceneName TEXT);";
+
+	database.createTable(strCreateTable);
 }
 
 //--------------------------------------------------------------
@@ -72,8 +118,9 @@ void insertIntoDatabase_Sphere(const string & astrDBName)	{
 	ref_ptr < UntransformedSphere > pSphere =  new UntransformedSphere;
 	SphereParams aSphereParams;
 	pSphere->init(aSphereParams);
+	string strSQLCommand = pSphere->getSQLCommand();
 
-	database.fillPrimitiveTable(*pSphere);
+	database.fillPrimitiveTable(strSQLCommand);
 }
 
 //--------------------------------------------------------------
@@ -84,8 +131,9 @@ void insertIntoDatabase_Cylinder(const string & astrDBName)	{
 	ref_ptr < VR::Cylinder > pCylinder =  new VR::Cylinder;
 	CylinderParams aCylinderParams;
 	pCylinder->init(aCylinderParams);
+	string strSQLCommand = pCylinder->getSQLCommand();
 
-	database.fillPrimitiveTable(*pCylinder);
+	database.fillPrimitiveTable(strSQLCommand);
 }
 
 //--------------------------------------------------------------
@@ -100,35 +148,40 @@ void insertIntoDatabase_Plate3D(const string & astrDBName)	{
 	aPlate3DParams.m_flLenY = 1.0;
 	aPlate3DParams.m_flLenZ = 0.05;
 	plate3D.init(aPlate3DParams);
-	database.fillPrimitiveTable(plate3D);
+	string strSQLCommand = plate3D.getSQLCommand();
+	database.fillPrimitiveTable(strSQLCommand);
 
 	//Left plate
 	aPlate3DParams.m_flLenX = 0.05;
 	aPlate3DParams.m_flLenY = 1.0;
 	aPlate3DParams.m_flLenZ = 1.0;
 	plate3D.init(aPlate3DParams);
-	database.fillPrimitiveTable(plate3D);
+	strSQLCommand = plate3D.getSQLCommand();
+	database.fillPrimitiveTable(strSQLCommand);
 
 	//Right plate
 	aPlate3DParams.m_flLenX = 0.05;
 	aPlate3DParams.m_flLenY = 1.0;
 	aPlate3DParams.m_flLenZ = 1.0;
 	plate3D.init(aPlate3DParams);
-	database.fillPrimitiveTable(plate3D);
+	strSQLCommand = plate3D.getSQLCommand();
+	database.fillPrimitiveTable(strSQLCommand);
 
 	//Front plate
 	aPlate3DParams.m_flLenX = 1.0;
 	aPlate3DParams.m_flLenY = 0.05;
 	aPlate3DParams.m_flLenZ = 1.0;
 	plate3D.init(aPlate3DParams);
-	database.fillPrimitiveTable(plate3D);
+	strSQLCommand = plate3D.getSQLCommand();
+	database.fillPrimitiveTable(strSQLCommand);
 
 	//Back plate
 	aPlate3DParams.m_flLenX = 1.0;
 	aPlate3DParams.m_flLenY = 0.05;
 	aPlate3DParams.m_flLenZ = 1.0;
 	plate3D.init(aPlate3DParams);
-	database.fillPrimitiveTable(plate3D);
+	strSQLCommand = plate3D.getSQLCommand();
+	database.fillPrimitiveTable(strSQLCommand);
 }
 
 //--------------------------------------------------------------
@@ -177,7 +230,8 @@ void insertIntoDatabase_Furniture(const string & astrDBName)	{
 	pPlate3D->init(aPlate3DParams);
 	cupboard.addPart(pPlate3D);
 
-	database.fillPrimitiveTable(cupboard);
+	string strSQLCommand = cupboard.getSQLCommand();
+	database.fillPrimitiveTable(strSQLCommand);
 }
 
 //====================================================

@@ -12,9 +12,9 @@ namespace VR {
 
 		DatabaseMgrODBC(const QString & astrDBPathName);
 
-		virtual bool createTable();
+		virtual bool createTable(const std::string & astrSQLCommand);
 
-		virtual void fillPrimitiveTable(const AbstractObject & aAbstractObject);
+		virtual void fillPrimitiveTable(std::string & astrCommand);
 		virtual std::string readFromDB(std::string & astrCommand);
 
 

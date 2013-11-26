@@ -1,6 +1,7 @@
 PROJECT(libAbstractObject)
 
 INCLUDE_DIRECTORIES(
+    ${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
 )
 
 SET(SRCS

@@ -4,6 +4,9 @@
 
 #include "VRAbstractGeomShape.h"
 #include "VRPlate3D.h"
+#include "VRCylinder.h"
+#include "VRPrism.h"
+#include "VRUntransformedSphere.h"
 
 #include "StringManipulation.h"
 
@@ -27,6 +30,7 @@ Cupboard::Cupboard()	{
 //-----------------------------------------------------------------------
 
 void Cupboard::init(const CupboardParams & aCupboardParams)	{
+
 	setScaling(aCupboardParams);
 	setRotation(aCupboardParams);
 	setPosition(aCupboardParams);
@@ -112,15 +116,33 @@ void Cupboard::initFromSQLData(const string & astrSQLData)	{
 	m_pCupboard = new Cupboard;
 	CupboardParams cupboardParams;
 	cupboardParams.m_flPosX = 0.5;
-	cupboardParams.m_flPosY = 0.5 * 1.5;
+	cupboardParams.m_flPosY = 0.5;
 	cupboardParams.m_flPosZ = 0.5;
-	cupboardParams.m_flAngleXY = 90.0;
-	cupboardParams.m_flScaleX = 1.5;
+	cupboardParams.m_flAngleXY = 45.0;
+	cupboardParams.m_flScaleX = 1;
 
-	for (vector<string>::iterator it = arrstrSQLData.begin(); it != arrstrSQLData.end()-1; it++)	{
-		ref_ptr < Plate3D > pPlate = new Plate3D;
-		pPlate->initFromSQLData(*it);
-		m_pCupboard->addChild(pPlate);
+	for (auto it = arrstrSQLData.begin(); it != arrstrSQLData.end()-1; it++)	{
+		if(isAtEndOfString(*it, "Plate3D"))	{
+			ref_ptr < Plate3D > pPlate = new Plate3D;
+			pPlate->initFromSQLData(*it);
+			m_pCupboard->addChild(pPlate);
+		}
+		else if(isAtEndOfString(*it, "Cylinder"))	{
+			ref_ptr < Cylinder > pCylinder = new Cylinder;
+			pCylinder->initFromSQLData(*it);
+			m_pCupboard->addChild(pCylinder);
+		}
+		else if(isAtEndOfString(*it, "Prism"))	{
+			ref_ptr < Prism > pPrism = new Prism;
+			pPrism->initFromSQLData(*it);
+			m_pCupboard->addChild(pPrism);
+		}
+		else if(isAtEndOfString(*it, "Sphere"))	{
+			ref_ptr < UntransformedSphere > pSphere = new UntransformedSphere;
+			pSphere->initFromSQLData(*it);
+			m_pCupboard->addChild(pSphere);
+		}
+
 	}
 	m_pCupboard->init(cupboardParams);
 }

@@ -9,6 +9,8 @@ using namespace std;
 using namespace VR;
 
 
+//===========================================================================
+
 DatabaseMgrParams::DatabaseMgrParams() :
 	m_qstrObjectType(""),
 	m_qstrObjectName(""),

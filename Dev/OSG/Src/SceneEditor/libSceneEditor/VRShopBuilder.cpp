@@ -1,12 +1,17 @@
+#include <QVariant>
+
 #include <osgDB/ReadFile>
 #include <osgGA/TrackballManipulator>
 
 #include "OSGQT_Widget.h"
+#include "VRDatabaseMgr.h"
+#include "VRCupboard.h"
 
 #include "VRShopBuilder.h"
 
 using namespace osg;
 using namespace VR;
+using namespace std;
 
 //----------------------------------------------------------------------
 
@@ -48,7 +53,26 @@ void ShopBuilder::gridOnOff(bool abIndicator) {
 
 //----------------------------------------------------------------------
 
-void ShopBuilder::readDB(const std::string & astrDBFileName)
-{
+void ShopBuilder::readDB(const std::string & astrDBFileName)	{
+	DatabaseMgr & database = DatabaseMgr::Create(astrDBFileName.c_str(), DatabaseMgr::QSQLITE);
+
+	// get the number of equipment to be added to the scene
+	QString qstrCupboardsNr = "SELECT COUNT(EquipmentItemID) FROM EquipmentItem";
+	QSqlQuery qQuery(qstrCupboardsNr);
+
+	int nCupboardsNr;
+	while (qQuery.next())	{
+		nCupboardsNr = qQuery.value(0).toInt();
+	}
+
+	for(int nI = 1; nI <= nCupboardsNr; nI++) {
+		ref_ptr <Cupboard> cupboard = new Cupboard;
+
+		QString strSQLQuery = QString("SELECT * FROM EquipmentItem WHERE EquipmentItemID = %1").arg(nI);
+		string strSQLData = database.readFromDB(strSQLQuery.toStdString());
+		cupboard->initFromSQLData(strSQLData);
+
+		m_pScene->addChild(cupboard->m_pCupboard);
+	}
 
 }

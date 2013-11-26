@@ -9,12 +9,6 @@
 #include <QSqlResult>
 #include <QImageWriter>
 
-#include "VRAbstractObject.h"
-#include "VRCylinder.h"
-#include "VRPlate3D.h"
-#include "VRPrism.h"
-#include "VRUntransformedSphere.h"
-
 #include "VRDatabaseMgrSQLite.h"
 
 
@@ -39,65 +33,15 @@ DatabaseMgr(aqstrDBPathName) {
 
 //-----------------------------------------------------------------------------------------
 
-bool DatabaseMgrSQLite::createTable() {
+bool DatabaseMgrSQLite::createTable(const string & astrSQLCommand) {
 	if (m_QSqlDatabase.open())	{
+		string strSQLCommand = astrSQLCommand;
+		vector <string> arrstrCommands = splitString(strSQLCommand,";");
 
 		QSqlQuery query;
-		QString qry = "CREATE TABLE IF NOT EXISTS Primitive "
-			"(PrimitiveID INTEGER PRIMARY KEY AUTOINCREMENT,"
-			"PrimitiveName TEXT UNIQUE)";
-		query.exec(qry);
-
-		Cylinder cylinder;
-		string strSQLFormat = cylinder.getSQLFormat();
-		qry = strSQLFormat.c_str();
-		query.exec(qry);
-
-		Plate3D plate3D;
-		strSQLFormat = plate3D.getSQLFormat();
-		qry = strSQLFormat.c_str();
-		query.exec(qry);
-
-		Prism prism;
-		strSQLFormat = prism.getSQLFormat();
-		qry = strSQLFormat.c_str();
-		query.exec(qry);
-
-		UntransformedSphere sphere;
-		strSQLFormat = sphere.getSQLFormat();
-		qry = strSQLFormat.c_str();
-		query.exec(qry);
-
-		qry = "CREATE TABLE IF NOT EXISTS PrimitiveItemList "
-			"(PrimitiveItemListID INTEGER PRIMARY KEY AUTOINCREMENT,"
-			"PrimitiveID INTEGER, "
-			"ItemID INTEGER, "
-			"EquipmentItemID INTEGER, "
-			"FOREIGN KEY (PrimitiveID) REFERENCES Primitive(PrimitiveID))";
-		query.exec(qry);
-
-		qry = "CREATE TABLE IF NOT EXISTS Texture "
-			"(TextureID INTEGER PRIMARY KEY AUTOINCREMENT,"
-			"TextureFile TEXT)";
-		query.exec(qry);
-
-		qry = "CREATE TABLE IF NOT EXISTS Equipment "
-			"(EquipmentID INTEGER PRIMARY KEY AUTOINCREMENT,"
-			"EquipmentName TEXT)";
-		query.exec(qry);
-
-		qry = "CREATE TABLE IF NOT EXISTS EquipmentItem "
-			"(EquipmentItemID INTEGER PRIMARY KEY AUTOINCREMENT,"
-			"EquipmentItemName TEXT, "
-			"EquipmentID INTEGER,"
-			"FOREIGN KEY (EquipmentID) REFERENCES Equipment(EquipmentID))";
-		query.exec(qry);
-
-		qry = "CREATE TABLE IF NOT EXISTS Scene "
-			"(SceneID INTEGER PRIMARY KEY AUTOINCREMENT,"
-			"SceneName TEXT)";
-		query.exec(qry);
-
+		for (auto it = arrstrCommands.begin(); it != arrstrCommands.end(); it++)	{
+			query.exec(it->c_str());
+		}
 		m_QSqlDatabase.close();
 		return true;
 	}
@@ -110,10 +54,8 @@ bool DatabaseMgrSQLite::createTable() {
 
 //-----------------------------------------------------------------------------------------
 
-void DatabaseMgrSQLite::fillPrimitiveTable(const AbstractObject & aAbstractObject)	{
+void DatabaseMgrSQLite::fillPrimitiveTable(string & astrCommand)	{
 	if(m_QSqlDatabase.open())	{
-
-		string astrCommand = aAbstractObject.getSQLCommand();
 
 		//Command is string of SQL commands that are delimited with "_"
 		vector <string> arrstrSQLCommands = splitString(astrCommand,"_");
@@ -125,15 +67,13 @@ void DatabaseMgrSQLite::fillPrimitiveTable(const AbstractObject & aAbstractObjec
 		vector<string> vecstrEquipment = splitString(arrstrSQLCommands[0]," ");
 		QString qstrEquipmentName = vecstrEquipment[5].c_str();
 
-
-		int nI;
-		for (nI=1; nI<arrstrSQLCommands.size(); nI++)	{
-			QSqlQuery qry(arrstrSQLCommands[nI].c_str());
+		for (auto it = arrstrSQLCommands.begin()+1; it != arrstrSQLCommands.end(); it++)	{
+			QSqlQuery qry(it->c_str());
 
 			//Number of the inserted item
 			int nID = qry.lastInsertId().toInt();
 			if (nID)	{
-				vector<string> vecstrQuery = splitString(arrstrSQLCommands[nI]," ");
+				vector<string> vecstrQuery = splitString(*it," ");
 				string strPrimitive = vecstrQuery[2];
 
 				//Everything is set, fill the PrimitiveItemList with proper data
@@ -183,10 +123,10 @@ void DatabaseMgrSQLite::insertIntoDatabase(const DatabaseMgrParams & aDatabaseMg
 		//Check if the entry is already in the DB
 		QSqlQuery tempQuery;
 		QString tqry = QString("SELECT %1 FROM %2 WHERE %3 = '%4'")
-			.arg(vecColumnNames.at(0)).arg(qstrObjectType).arg(vecColumnNames.at(1)).arg(qstrObjectName);
+			.arg(vecColumnNames[0]).arg(qstrObjectType).arg(vecColumnNames[1]).arg(qstrObjectName);
 		int nI;
 		for (nI=0;nI<nNoColumns;nI++)	{
-			tqry += QString(" AND %1 = '%2'").arg(vecColumnNames.at(nI+2)).arg(aDatabaseMgrParams.m_arrstrParams[nI].c_str());
+			tqry += QString(" AND %1 = '%2'").arg(vecColumnNames[nI+2]).arg(aDatabaseMgrParams.m_arrstrParams[nI].c_str());
 		}
 		tempQuery.exec(tqry);
 
@@ -197,21 +137,21 @@ void DatabaseMgrSQLite::insertIntoDatabase(const DatabaseMgrParams & aDatabaseMg
 			QString qstrFKey;
 			QString qstrFKeyValue;
 			for (nI=1; nI<nColumnNames; nI++)	{
-				string strFKey = vecColumnNames.at(nI).toStdString();
+				string strFKey = vecColumnNames[nI].toStdString();
 				if(isAtEndOfString(strFKey,"ID"))	{
 					string strFKeyRef = strFKey.erase(strFKey.size()-2,2);
-					qstrFKey += QString(", %1").arg(vecColumnNames.at(nI));
+					qstrFKey += QString(", %1").arg(vecColumnNames[nI]);
 					qstrFKeyValue += QString(",(SELECT %1 FROM %2 WHERE %3 = '%4')")
-						.arg(vecColumnNames.at(nI)).arg(strFKeyRef.c_str()).arg((strFKeyRef+string("Name")).c_str()).arg(qstrObjectName);
+						.arg(vecColumnNames[nI]).arg(strFKeyRef.c_str()).arg((strFKeyRef+string("Name")).c_str()).arg(qstrObjectName);
 				}
 			}
 			
 			//Insert entry into the DB
-			QString qry1 = QString("INSERT INTO %1(%2").arg(qstrObjectType).arg(vecColumnNames.at(1));
+			QString qry1 = QString("INSERT INTO %1(%2").arg(qstrObjectType).arg(vecColumnNames[1]);
 			QString qry2 = QString(")VALUES ('%1'").arg(qstrObjectName);
 
 			for (nI=0;nI<nNoColumns;nI++)	{
-				qry1 += QString(", %1 ").arg(vecColumnNames.at(nI+2));
+				qry1 += QString(", %1 ").arg(vecColumnNames[nI+2]);
 				qry2 += QString(",%1 ").arg(aDatabaseMgrParams.m_arrstrParams[nI].c_str());
 			}
 			qry1 = qry1 + qstrFKey + qry2 + qstrFKeyValue + ")";
@@ -268,8 +208,8 @@ string DatabaseMgrSQLite::readFromDB(string & astrCommand)	{
 
 		//get names of columns of the given table
 		vector <int> nColumns;
-		for (int i=0;i<arrstrPrimitiveName.size();i++)	{
-			QString qstrColumnNames = QString("PRAGMA table_info(%1)").arg(arrstrPrimitiveName[i].c_str());
+		for (auto it = arrstrPrimitiveName.begin(); it != arrstrPrimitiveName.end(); it++)	{
+			QString qstrColumnNames = QString("PRAGMA table_info(%1)").arg(it->c_str());
 			QSqlQuery tblColsQry(qstrColumnNames);
 			vector<QString> vecColumnNames;
 			while (tblColsQry.next())	{
@@ -280,9 +220,11 @@ string DatabaseMgrSQLite::readFromDB(string & astrCommand)	{
 
 		string strResult;
 		QString strQueryData;
-		for (int nI=0;nI<arrnItemID.size();nI++)	{
-			strQueryData = QString("SELECT * FROM %1 "
-				"WHERE %1ID = %2").arg(arrstrPrimitiveName[nI].c_str()).arg(arrnItemID[nI]);
+		int nI;
+		for (auto it = arrnItemID.begin(); it != arrnItemID.end(); it++)	{
+			nI = it - arrnItemID.begin();
+			strQueryData = QString("SELECT * FROM %1 WHERE %1ID = %2")
+				.arg(arrstrPrimitiveName[nI].c_str()).arg(*it);
 
 			sqlQuery.exec(strQueryData);
 			while(sqlQuery.next())	{

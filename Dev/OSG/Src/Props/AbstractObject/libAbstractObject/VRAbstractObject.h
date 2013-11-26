@@ -5,7 +5,6 @@
 
 namespace VR	{
 	struct AbstractObjectParams	{
-		AbstractObjectParams();
 	};
 
 	class AbstractObject {

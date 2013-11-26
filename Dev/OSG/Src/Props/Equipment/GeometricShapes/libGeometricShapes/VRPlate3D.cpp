@@ -19,7 +19,7 @@ string Plate3D::m_strSQLFormat =
 	"Plate3DColor TEXT,"
 	"Plate3DTexture TEXT,"
 	"PrimitiveID INTEGER, "
-	"FOREIGN KEY (PrimitiveID) REFERENCES Primitive(PrimitiveID))";
+	"FOREIGN KEY (PrimitiveID) REFERENCES Primitive(PrimitiveID));";
 
 //-----------------------------------------------------------------------
 

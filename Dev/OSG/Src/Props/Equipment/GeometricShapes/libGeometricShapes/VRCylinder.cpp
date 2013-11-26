@@ -12,7 +12,7 @@ string VR::Cylinder::m_strSQLFormat =
 	"CylinderColor TEXT,"
 	"CylinderTexture TEXT, "
 	"PrimitiveID INTEGER, "
-	"FOREIGN KEY (PrimitiveID) REFERENCES Primitive(PrimitiveID))";
+	"FOREIGN KEY (PrimitiveID) REFERENCES Primitive(PrimitiveID));";
 
 CylinderParams::CylinderParams() {
 	m_nRes = 20;

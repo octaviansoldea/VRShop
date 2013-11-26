@@ -7,7 +7,7 @@
 #include "VRAbstractObject.h"
 
 namespace VR	{
-	struct CupboardParams {
+	struct CupboardParams : AbstractObjectParams	{
 		float m_flPosX;
 		float m_flPosY;
 		float m_flPosZ;
@@ -39,11 +39,11 @@ namespace VR	{
 		virtual std::string getSQLCommand() const;
 		virtual void initFromSQLData(const std::string & astrSQLData);
 
-		osg::ref_ptr <VR::Cupboard> m_pCupboard;
-
 		void setRotation(const CupboardParams & aCupboardParams);
 		void setPosition(const CupboardParams & aCupboardParams);
 		void setScaling(const CupboardParams & aCupboardParams);
+
+		osg::ref_ptr <VR::Cupboard> m_pCupboard;
 
 	private:
 		std::vector < std::string > m_arrSQLCommandLines;

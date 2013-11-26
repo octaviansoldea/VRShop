@@ -9,6 +9,7 @@ IF(Qt5_FOUND)
     ${Qt5Gui_INCLUDE_DIRS}
     ${Qt5Widgets_INCLUDE_DIRS}
     ${Qt5OpenGL_INCLUDE_DIRS}
+	${Qt5Sql_INCLUDE_DIRS}
   )
 ELSE(Qt5_FOUND)
   IF(QT_USE_FILE)
@@ -27,11 +28,13 @@ ENDIF(Qt5_FOUND)
 INCLUDE_DIRECTORIES(
 	${OPENSCENEGRAPH_INCLUDE_DIRS}
 	${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
+	${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabaseMgr
 	${CMAKE_SOURCE_DIR}/Props/Equipment/GeometricShapes/libGeometricShapes
     ${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
 )
 
 SET(SRCS
+  VRFurniture.h VRFurniture.cpp
   VRCupboard.h VRCupboard.cpp
 )
 

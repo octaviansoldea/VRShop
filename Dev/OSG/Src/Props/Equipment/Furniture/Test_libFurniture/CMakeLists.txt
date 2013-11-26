@@ -46,10 +46,10 @@ SET(LIBS_COMMON
 	${OSGQT_LIBRARIES}
 	${OSGVIEWER_LIBRARIES}
 	${OPENTHREADS_LIBRARIES}
+	libDatabaseMgr
 	libFurniture
 	libGeometricShapes
 	libAbstractObject
-	libDatabaseMgr
 	libCommon
 )
 

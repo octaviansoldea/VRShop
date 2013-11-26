@@ -21,6 +21,7 @@
 #include "VRUntransformedPolygon3D.h"
 #include "VRPlate3D.h"
 #include "VRCylinder.h"
+#include "VRFurniture.h"
 #include "VRCupboard.h"
 #include "VRUntransformedSphere.h"
 
@@ -398,32 +399,6 @@ void insertIntoDatabase_Cupboard(const string & astrDBName)	{
 	database.fillPrimitiveTable(strSQLCommand);
 }
 
-//--------------------------------------------------------------
-
-void loadAllFurnitures(ref_ptr<Group> pScene) {
-	string strDatabase = "../../../../Databases/Equipment.db";
-	DatabaseMgr & database = DatabaseMgr::Create(strDatabase.c_str(), DatabaseMgr::QSQLITE);
-
-	// get the number of equipment to be added to the scene
-	QString qstrCupboardsNr = "SELECT COUNT(EquipmentItemID) FROM EquipmentItem";
-	QSqlQuery qQuery(qstrCupboardsNr);
-
-	int nCupboardsNr;
-	while (qQuery.next())	{
-		nCupboardsNr = qQuery.value(0).toInt();
-	}
-
-	for(int nI = 1; nI <= nCupboardsNr; nI++) {
-		ref_ptr <Cupboard> cupboard = new Cupboard;
-
-		QString strSQLQuery = QString("SELECT * FROM EquipmentItem WHERE EquipmentItemID = %1").arg(nI);
-		string strSQLData = database.readFromDB(strSQLQuery.toStdString());
-		cupboard->initFromSQLData(strSQLData);
-
-		pScene->addChild(cupboard->m_pCupboard);
-	}
-}
-
 //====================================================
 
 int main(int argc, char *argv[])	{
@@ -445,7 +420,7 @@ int main(int argc, char *argv[])	{
 
 //	insertIntoDatabase_Container(strDBName);
 	insertIntoDatabase_Cupboard(strDBName);
-	loadAllFurnitures(pScene);
+	loadAllFurnitures(pScene, strDBName);
 
 	osgViewer::Viewer viewer;
 	viewer.setSceneData(pScene);

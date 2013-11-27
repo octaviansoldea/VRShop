@@ -19,7 +19,11 @@ void SWAP(T & aA, T & aB) {T T_TmpVar = (aA); (aA) = (aB); (aB) = T_TmpVar;}
 #define EPS 0.000000001
 #define PI 3.1415926535897932384626433832795
 
-inline float degrees2Radians(float & aflDegrees)	{return (PI / 180) * aflDegrees;}
+inline float degrees2Radians(float & aflDegrees)	{return ((float)PI / 180.0) * aflDegrees;}
+inline double degrees2Radians(double & aflDegrees)	{return ((double)PI / 180.0) * aflDegrees;}
+
+inline float radians2degrees(float & aflRadians)	{return aflRadians * 180.0 / (float)PI;}
+inline double radians2degrees(double & aflRadians)	{return aflRadians * 180.0 / (double)PI;}
 
 //#define MAX_STR_LEN 256
 

@@ -10,33 +10,33 @@
 
 #include "StringManipulation.h"
 
-#include "VRCupboard.h"
+#include "VRContainer.h"
 
 using namespace std;
 using namespace osg;
 using namespace VR;
 
-CupboardParams::CupboardParams()	{
+ContainerParams::ContainerParams()	{
 }
 
 //=======================================================================
 
-Cupboard::Cupboard()	{
+Container::Container()	{
 }
 
 //-----------------------------------------------------------------------
 
-Cupboard::Cupboard(const CupboardParams & aCupboardParams) : Furniture(aCupboardParams)	{
-	m_CupboardParams = aCupboardParams;
+Container::Container(const ContainerParams & aContainerParams) : Furniture(aContainerParams)	{
+	m_ContainerParams = aContainerParams;
 }
 
 //-----------------------------------------------------------------------
 
-void Cupboard::init(const CupboardParams & aCupboardParams)	{
+void Container::init(const ContainerParams & aContainerParams)	{
 
-	setScaling(aCupboardParams);
-	setRotation(aCupboardParams);
-	setPosition(aCupboardParams);
+	setScaling(aContainerParams);
+	setRotation(aContainerParams);
+	setPosition(aContainerParams);
 
 	Matrix matrix;
 	matrix.set(1, 0, 0, 0,
@@ -44,7 +44,7 @@ void Cupboard::init(const CupboardParams & aCupboardParams)	{
 			   0, 0, 1, 0,
 			   0, 0, 0,	1);
 
-	osg::Matrix cupboardMatrix =
+	osg::Matrix containerMatrix =
 		matrix.scale(m_AbstractObjectParams.m_flScaleX, m_AbstractObjectParams.m_flScaleY, m_AbstractObjectParams.m_flScaleZ)
 		*
 		matrix.rotate(
@@ -55,12 +55,12 @@ void Cupboard::init(const CupboardParams & aCupboardParams)	{
 		matrix.translate(m_AbstractObjectParams.m_flPosX, m_AbstractObjectParams.m_flPosY, m_AbstractObjectParams.m_flPosZ)
 	;
 	
-	setMatrix(cupboardMatrix);
+	setMatrix(containerMatrix);
 }
 
 //-----------------------------------------------------------------------
 
-string Cupboard::setSQLCommand(const string & astrCommand)	{
+string Container::setSQLCommand(const string & astrCommand)	{
 	string strSetSQLCommand = astrCommand;
 
 	string strPrimitiveItemIDs = "SELECT PrimitiveID, ItemID FROM PrimitiveItemList "
@@ -71,58 +71,40 @@ string Cupboard::setSQLCommand(const string & astrCommand)	{
 
 //-----------------------------------------------------------------------
 
-string Cupboard::getSQLCommand() const {
+string Container::getSQLCommand() const {
 	string strSQLCommand = "INSERT INTO EquipmentItem (EquipmentItemName, EquipmentID) "
-		"VALUES ('Cupboard', (SELECT EquipmentID FROM Equipment WHERE EquipmentName = 'Furniture'))_";
+		"VALUES ('Container', (SELECT EquipmentID FROM Equipment WHERE EquipmentName = 'Furniture'))_";
 	int nNumParts = m_arrSQLCommandLines.size();
 
 	for (auto it = m_arrSQLCommandLines.begin(); it != m_arrSQLCommandLines.end()-1; it++)	{
 		strSQLCommand += *it + "_";
 	}
 	strSQLCommand += m_arrSQLCommandLines[nNumParts-1];
-
+	
 	return(strSQLCommand);
 }
 
 //-----------------------------------------------------------------------
 
-void Cupboard::initFromSQLData(const string & astrSQLData)	{
+void Container::initFromSQLData(const string & astrSQLData)	{
 	string strSQLData = astrSQLData;
 	string strDelimiter = "?";
 	
 	vector < string > arrstrSQLData = splitString(strSQLData,strDelimiter);
 
-	CupboardParams cupboardParams;
-	cupboardParams.m_flPosX = 0.5;
-	cupboardParams.m_flPosY = 0.5;
-	cupboardParams.m_flPosZ = 0.5;
-	cupboardParams.m_flAngleXY = 45.0;
-	cupboardParams.m_flScaleX = 1;
+	ContainerParams containerParams;
+	containerParams.m_flPosX = 0.5;
+	containerParams.m_flPosY = 0.5;
+	containerParams.m_flPosZ = 0.5;
+	containerParams.m_flAngleXY = 45.0;
+	containerParams.m_flScaleX = 1;
 
 	for (auto it = arrstrSQLData.begin(); it != arrstrSQLData.end()-1; it++)	{
-		if(isAtEndOfString(*it, "Plate3D"))	{
-			ref_ptr < Plate3D > pPlate = new Plate3D;
-			pPlate->initFromSQLData(*it);
-			addChild(pPlate);
-		}
-		else if(isAtEndOfString(*it, "Cylinder"))	{
-			ref_ptr < Cylinder > pCylinder = new Cylinder;
-			pCylinder->initFromSQLData(*it);
-			addChild(pCylinder);
-		}
-		else if(isAtEndOfString(*it, "Prism"))	{
-			ref_ptr < Prism > pPrism = new Prism;
-			pPrism->initFromSQLData(*it);
-			addChild(pPrism);
-		}
-		else if(isAtEndOfString(*it, "Sphere"))	{
-			ref_ptr < UntransformedSphere > pSphere = new UntransformedSphere;
-			pSphere->initFromSQLData(*it);
-			addChild(pSphere);
-		}
-
+		ref_ptr < Plate3D > pPlate = new Plate3D;
+		pPlate->initFromSQLData(*it);
+		addChild(pPlate);
 	}
-	init(cupboardParams);
+	init(containerParams);
 }
 
 //-----------------------------------------------------------------------

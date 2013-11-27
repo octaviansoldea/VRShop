@@ -12,7 +12,7 @@ SET(src
 INCLUDE_DIRECTORIES(
 	${OPENSCENEGRAPH_INCLUDE_DIRS}
 	${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
-	${CMAKE_SOURCE_DIR}/Props/Equipment/GeometricShapes/libGeometricShapes
+	${CMAKE_SOURCE_DIR}/Props/GeometricShapes/libGeometricShapes
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libPicker
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCamera
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_OSG

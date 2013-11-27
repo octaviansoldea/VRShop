@@ -72,7 +72,7 @@ void ShopBuilder::readDB(const std::string & astrDBFileName)	{
 		string strSQLData = database.readFromDB(strSQLQuery.toStdString());
 		cupboard->initFromSQLData(strSQLData);
 
-		m_pScene->addChild(cupboard->m_pCupboard);
+		m_pScene->addChild(cupboard);
 	}
 
 }

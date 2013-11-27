@@ -1,17 +1,58 @@
 #include <QString>
 #include <QVariant>
 
+#include "VRAbstractGeomShape.h"
+#include "VRPlate3D.h"
+#include "VRCylinder.h"
+#include "VRPrism.h"
+#include "VRUntransformedSphere.h"
+
+
 #include "VRDatabaseMgr.h"
 #include "VRCupboard.h"
-#include "VRFurniture.h"
 
+#include "VRFurniture.h"
 
 
 using namespace osg;
 using namespace std;
 using namespace VR;
 
-void loadAllFurnitures(ref_ptr<Group> apScene, const string & astrDatabase) {
+
+FurnitureParams::FurnitureParams() : AbstractObjectParams()	{
+};
+
+//=======================================================================
+
+Furniture::Furniture()	{
+}
+
+//-----------------------------------------------------------------------
+
+Furniture::Furniture(const FurnitureParams & aFurnitureParams) : AbstractObject(aFurnitureParams)	{
+	m_FurnitureParams = aFurnitureParams;
+}
+
+//-----------------------------------------------------------------------
+
+void Furniture::addPart(ref_ptr < Node > apNode) {
+	addChild(apNode);
+
+	AbstractGeomShape * aAbstractGeomShape = dynamic_cast<AbstractGeomShape*>(apNode.get());
+	string strCommand = aAbstractGeomShape->getSQLCommand();
+
+	m_arrSQLCommandLines.push_back(strCommand);
+}
+
+//-----------------------------------------------------------------------
+
+void Furniture::removePart(ref_ptr < Node > apNode) {
+	removeChild(apNode);
+}
+
+//-----------------------------------------------------------------------
+
+void Furniture::loadAllFurnitures(ref_ptr<Group> apScene, const string & astrDatabase) {
 	DatabaseMgr & database = DatabaseMgr::Create(astrDatabase.c_str(), DatabaseMgr::QSQLITE);
 
 	// get the number of equipment to be added to the scene
@@ -33,3 +74,5 @@ void loadAllFurnitures(ref_ptr<Group> apScene, const string & astrDatabase) {
 		apScene->addChild(cupboard);
 	}
 }
+
+//-----------------------------------------------------------------------

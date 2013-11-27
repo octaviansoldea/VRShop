@@ -21,9 +21,11 @@
 #include "VRUntransformedPolygon3D.h"
 #include "VRPlate3D.h"
 #include "VRCylinder.h"
+#include "VRUntransformedSphere.h"
+
 #include "VRFurniture.h"
 #include "VRCupboard.h"
-#include "VRUntransformedSphere.h"
+#include "VRContainer.h"
 
 using namespace osg;
 using namespace std;
@@ -201,7 +203,7 @@ void insertIntoDatabase_Container(const string & astrDBName)	{
 	DatabaseMgr & database = DatabaseMgr::Create(astrDBName.c_str(), DatabaseMgr::QSQLITE);
 
 	//Set the cupboard
-	Cupboard cupboard;
+	Container container;
 
 	ref_ptr < Plate3D > pPlate3D =  new Plate3D;
 	Plate3DParams aPlate3DParams;
@@ -218,7 +220,7 @@ void insertIntoDatabase_Container(const string & astrDBName)	{
 	aPlate3DParams.m_arrflRGBA[2] = 0.1;
 	aPlate3DParams.m_arrflRGBA[3] = 1;
 	pPlate3D->init(aPlate3DParams);
-	cupboard.addPart(pPlate3D);
+	container.addPart(pPlate3D);
 	
 
 	//Left plate
@@ -233,7 +235,7 @@ void insertIntoDatabase_Container(const string & astrDBName)	{
 	aPlate3DParams.m_arrflRGBA[2] = 0;
 	aPlate3DParams.m_arrflRGBA[3] = 1;
 	pPlate3D->init(aPlate3DParams);
-	cupboard.addPart(pPlate3D);
+	container.addPart(pPlate3D);
 
 	//Right plate
 	aPlate3DParams.m_flLenX = 0.05;
@@ -247,7 +249,7 @@ void insertIntoDatabase_Container(const string & astrDBName)	{
 	aPlate3DParams.m_arrflRGBA[2] = 1;
 	aPlate3DParams.m_arrflRGBA[3] = 1;
 	pPlate3D->init(aPlate3DParams);
-	cupboard.addPart(pPlate3D);
+	container.addPart(pPlate3D);
 
 	//Front plate
 	aPlate3DParams.m_flLenX = 1.0;
@@ -261,7 +263,7 @@ void insertIntoDatabase_Container(const string & astrDBName)	{
 	aPlate3DParams.m_arrflRGBA[2] = 1;
 	aPlate3DParams.m_arrflRGBA[3] = 1;
 	pPlate3D->init(aPlate3DParams);
-	cupboard.addPart(pPlate3D);
+	container.addPart(pPlate3D);
 
 	//Back plate
 	aPlate3DParams.m_flLenX = 1.0;
@@ -272,16 +274,9 @@ void insertIntoDatabase_Container(const string & astrDBName)	{
 	aPlate3DParams.m_flPosZ = 0;
 	aPlate3DParams.m_strFileNameTexture = "../../../../Resources/Textures/lz.rgb";
 	pPlate3D->init(aPlate3DParams);
-	cupboard.addPart(pPlate3D);
+	container.addPart(pPlate3D);
 
-	ref_ptr <VR::Cylinder> pCylinder = new VR::Cylinder;
-	CylinderParams aCylinderParams;
-	aCylinderParams.m_flHeight = 0.05;
-	aCylinderParams.m_flPosZ = -0.4;
-	pCylinder->init(aCylinderParams);
-	cupboard.addPart(pCylinder);
-
-	string strSQLCommand = cupboard.getSQLCommand();
+	string strSQLCommand = container.getSQLCommand();
 
 	database.fillPrimitiveTable(strSQLCommand);
 }
@@ -418,9 +413,10 @@ int main(int argc, char *argv[])	{
 	//insertIntoDatabase_Cylinder(strDBName);
 	//insertIntoDatabase_Plate3D(strDBName);
 
-//	insertIntoDatabase_Container(strDBName);
+	insertIntoDatabase_Container(strDBName);
 	insertIntoDatabase_Cupboard(strDBName);
-	loadAllFurnitures(pScene, strDBName);
+
+	Furniture::loadAllFurnitures(pScene, strDBName);
 
 	osgViewer::Viewer viewer;
 	viewer.setSceneData(pScene);

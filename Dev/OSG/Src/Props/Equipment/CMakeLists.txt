@@ -4,5 +4,4 @@ SET(CMAKE_DEBUG_POSTFIX "D")
 
 SUBDIRS(
   Furniture
-  GeometricShapes
 )

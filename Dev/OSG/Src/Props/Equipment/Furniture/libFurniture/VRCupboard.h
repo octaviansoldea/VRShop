@@ -6,7 +6,7 @@
 #include "VRFurniture.h"
 
 namespace VR	{
-	struct CupboardParams : FurnitureParams	{
+	struct CupboardParams : public FurnitureParams	{
 		CupboardParams();
 	};
 

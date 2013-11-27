@@ -64,3 +64,9 @@ void OSGQT_Widget::setCameraManipulator(osgGA::CameraManipulator* manipulator, b
 void OSGQT_Widget::addEventHandler(osgGA::GUIEventHandler *eventHandler)	{
 	m_viewer.addEventHandler(eventHandler);
 }
+
+//--------------------------------------------------------------------
+//
+//int OSGQT_Widget::heightForWidth(int w) const {
+//	 return w;
+//}

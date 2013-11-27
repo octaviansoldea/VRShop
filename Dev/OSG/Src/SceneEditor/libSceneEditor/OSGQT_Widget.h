@@ -18,6 +18,8 @@ public:
 	void setCameraManipulator(osgGA::CameraManipulator* manipulator, bool resetPosition = true);
 	void addEventHandler(osgGA::GUIEventHandler *eventHandler);
 
+	//int heightForWidth(int w) const;
+
 private:
 	osgViewer::Viewer m_viewer;
 };

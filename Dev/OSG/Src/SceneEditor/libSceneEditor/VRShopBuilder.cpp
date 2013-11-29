@@ -34,6 +34,7 @@ void ShopBuilder::init(OSGQT_Widget * apOSGQTWidget) {
 		//Send scene to the Widget
 	m_pOSGQTWidget->setSceneData(m_pScene);
 	m_pOSGQTWidget->setCameraManipulator(new osgGA::TrackballManipulator);
+	
 
 	m_pScene->addChild(m_pGridlines);
 }

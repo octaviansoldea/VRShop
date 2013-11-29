@@ -6,6 +6,8 @@
 #include <osgViewer/Viewer>
 #include <osgDB/ReadFile>
 
+#include <osg/DisplaySettings>
+
 #include <iostream>
 #include <string>
 

@@ -8,8 +8,8 @@ using namespace osg;
 using namespace VR;
 
 GridParams::GridParams() :
-	m_nResLat(41),
-	m_nResLong(41),
+	m_nResLat(5),
+	m_nResLong(5),
 	m_flSpacing(0.5),
 	m_vec3dStartCenter(0,0,0)	{
 };

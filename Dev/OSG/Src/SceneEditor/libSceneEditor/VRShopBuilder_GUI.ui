@@ -388,8 +388,8 @@ QSpinBox::down-arrow:off {border-left: 17px solid none; border-right: 17px solid
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>258</width>
-              <height>587</height>
+              <width>261</width>
+              <height>623</height>
              </rect>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_8">
@@ -2020,49 +2020,34 @@ QSpinBox::down-arrow:off {border-left: 17px solid none; border-right: 17px solid
          <number>0</number>
         </property>
         <item>
-         <widget class="QWidget" name="verticalWidget" native="true">
+         <widget class="OSGQT_Widget" name="m_pOSGQTWidget" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <property name="styleSheet">
-           <string notr="true">background-color:rgb(137,137,137);
-margin: 0px 0px;
-border: 0px;
-padding: 0px;</string>
+          <property name="minimumSize">
+           <size>
+            <width>300</width>
+            <height>0</height>
+           </size>
           </property>
-          <layout class="QVBoxLayout" name="verticalLayout_16">
-           <property name="spacing">
-            <number>0</number>
-           </property>
-           <property name="leftMargin">
-            <number>0</number>
-           </property>
-           <property name="topMargin">
-            <number>0</number>
-           </property>
-           <property name="rightMargin">
-            <number>0</number>
-           </property>
-           <property name="bottomMargin">
-            <number>0</number>
-           </property>
-           <item>
-            <widget class="OSGQT_Widget" name="m_pOSGQTWidget" native="true">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color:rgb(137,137,137);</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
+          <property name="sizeIncrement">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>800</width>
+            <height>600</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color:rgb(137,137,137);</string>
+          </property>
          </widget>
         </item>
         <item>
@@ -3460,7 +3445,7 @@ QTreeView::item:hover,QTreeView::item:selected {
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>549</width>
+              <width>547</width>
               <height>264</height>
              </rect>
             </property>
@@ -3986,8 +3971,8 @@ background-color: rgb(191,193,194);</string>
      <rect>
       <x>187</x>
       <y>171</y>
-      <width>130</width>
-      <height>196</height>
+      <width>138</width>
+      <height>190</height>
      </rect>
     </property>
     <property name="styleSheet">

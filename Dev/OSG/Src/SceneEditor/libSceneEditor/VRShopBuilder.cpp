@@ -1,7 +1,7 @@
 #include <QVariant>
-
 #include <osgDB/ReadFile>
 #include <osgGA/TrackballManipulator>
+#include <QTreeWidget>
 
 #include "OSGQT_Widget.h"
 #include "VRDatabaseMgr.h"
@@ -24,17 +24,20 @@ ShopBuilder::ShopBuilder() {
 	m_pScene->addChild(pAxes);
 
 	m_pGridlines = new Grid;
+
 }
 
 //----------------------------------------------------------------------
 
-void ShopBuilder::init(OSGQT_Widget * apOSGQTWidget) {
+void ShopBuilder::init(OSGQT_Widget * apOSGQTWidget,
+					   QTreeWidget * apTreeWidget) {
 	m_pOSGQTWidget = apOSGQTWidget;
 
-		//Send scene to the Widget
+	//Send scene to the Widget
 	m_pOSGQTWidget->setSceneData(m_pScene);
 	m_pOSGQTWidget->setCameraManipulator(new osgGA::TrackballManipulator);
-	
+	m_pTreeWidget = apTreeWidget;
+	updateQTreeWidget();
 
 	m_pScene->addChild(m_pGridlines);
 }
@@ -75,5 +78,14 @@ void ShopBuilder::readDB(const std::string & astrDBFileName)	{
 
 		m_pScene->addChild(cupboard);
 	}
+
+	updateQTreeWidget();
+}
+
+void ShopBuilder::updateQTreeWidget()
+{
+	m_pTreeWidget->clear();
+
+	m_pScene->getNumChildren();
 
 }

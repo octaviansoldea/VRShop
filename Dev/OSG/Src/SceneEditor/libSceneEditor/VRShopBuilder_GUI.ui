@@ -388,8 +388,8 @@ QSpinBox::down-arrow:off {border-left: 17px solid none; border-right: 17px solid
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>258</width>
-              <height>587</height>
+              <width>261</width>
+              <height>623</height>
              </rect>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_8">
@@ -2857,7 +2857,7 @@ background-color-pressed:darkgray;</string>
              </widget>
             </item>
             <item>
-             <widget class="QTreeWidget" name="m_pTreeWidget">
+             <widget class="QTreeView" name="m_pTreeView">
               <property name="enabled">
                <bool>true</bool>
               </property>
@@ -2910,61 +2910,15 @@ QTreeView::item:hover,QTreeView::item:selected {
               <property name="headerHidden">
                <bool>false</bool>
               </property>
-              <attribute name="headerVisible">
-               <bool>true</bool>
-              </attribute>
-              <attribute name="headerCascadingSectionResizes">
-               <bool>true</bool>
+              <attribute name="headerDefaultSectionSize">
+               <number>1</number>
               </attribute>
               <attribute name="headerHighlightSections">
+               <bool>true</bool>
+              </attribute>
+              <attribute name="headerShowSortIndicator" stdset="0">
                <bool>false</bool>
               </attribute>
-              <column>
-               <property name="text">
-                <string>Scene</string>
-               </property>
-               <property name="background">
-                <color alpha="0">
-                 <red>0</red>
-                 <green>0</green>
-                 <blue>0</blue>
-                </color>
-               </property>
-               <property name="foreground">
-                <brush brushstyle="SolidPattern">
-                 <color alpha="255">
-                  <red>0</red>
-                  <green>0</green>
-                  <blue>0</blue>
-                 </color>
-                </brush>
-               </property>
-              </column>
-              <item>
-               <property name="text">
-                <string>New Item</string>
-               </property>
-               <item>
-                <property name="text">
-                 <string>New Subitem</string>
-                </property>
-                <item>
-                 <property name="text">
-                  <string>New Subitem</string>
-                 </property>
-                </item>
-               </item>
-              </item>
-              <item>
-               <property name="text">
-                <string>New Item</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>New Item</string>
-               </property>
-              </item>
              </widget>
             </item>
             <item>
@@ -3971,8 +3925,8 @@ background-color: rgb(191,193,194);</string>
      <rect>
       <x>187</x>
       <y>171</y>
-      <width>130</width>
-      <height>196</height>
+      <width>138</width>
+      <height>190</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -4167,7 +4121,7 @@ background-color: rgb(191,193,194);</string>
   <customwidget>
    <class>OSGQT_Widget</class>
    <extends>QWidget</extends>
-   <header location="global">OSGQT_Widget.h</header>
+   <header location="global">osgqt_widget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
@@ -4183,7 +4137,7 @@ background-color: rgb(191,193,194);</string>
   <tabstop>m_p_LineEdit_Search</tabstop>
   <tabstop>m_pToolButtonProps</tabstop>
   <tabstop>m_p_ToolButton_Search</tabstop>
-  <tabstop>m_pTreeWidget</tabstop>
+  <tabstop>m_pTreeView</tabstop>
   <tabstop>m_pToolButtonModifyScene</tabstop>
   <tabstop>m_p_PushButton_ModifyScene_EditItem</tabstop>
   <tabstop>m_p_PushButton_ModifyScene_GroupItems</tabstop>

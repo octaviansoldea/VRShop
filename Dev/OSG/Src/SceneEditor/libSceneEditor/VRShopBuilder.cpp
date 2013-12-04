@@ -1,11 +1,16 @@
+#include <string>
+
+#include <QString>
 #include <QVariant>
+
 #include <osgDB/ReadFile>
 #include <osgGA/TrackballManipulator>
-#include <QTreeWidget>
 
 #include "OSGQT_Widget.h"
 #include "VRDatabaseMgr.h"
 #include "VRCupboard.h"
+
+#include "VRSceneStructureModel.h"
 
 #include "VRShopBuilder.h"
 
@@ -30,16 +35,16 @@ ShopBuilder::ShopBuilder() {
 //----------------------------------------------------------------------
 
 void ShopBuilder::init(OSGQT_Widget * apOSGQTWidget,
-					   QTreeWidget * apTreeWidget) {
+					   QTreeView * apTreeView) {
 	m_pOSGQTWidget = apOSGQTWidget;
 
 	//Send scene to the Widget
 	m_pOSGQTWidget->setSceneData(m_pScene);
 	m_pOSGQTWidget->setCameraManipulator(new osgGA::TrackballManipulator);
-	m_pTreeWidget = apTreeWidget;
-	updateQTreeWidget();
+	m_pTreeView = apTreeView;
+	updateQTreeView();
 
-	m_pScene->addChild(m_pGridlines);
+ 	m_pScene->addChild(m_pGridlines);
 }
 
 //----------------------------------------------------------------------
@@ -79,13 +84,23 @@ void ShopBuilder::readDB(const std::string & astrDBFileName)	{
 		m_pScene->addChild(cupboard);
 	}
 
-	updateQTreeWidget();
+	updateQTreeView();
 }
 
-void ShopBuilder::updateQTreeWidget()
-{
-	m_pTreeWidget->clear();
+//----------------------------------------------------------------------
 
-	m_pScene->getNumChildren();
+void ShopBuilder::updateQTreeView()	{
+	QList <QString> data;
+	data.push_back("Tavi;Soldea");
+	data.push_back("  Matej;Steinbacher");
+	data.push_back("  Matjaz;Steinbacher");
+	data.push_back("  Mitja;Steinbacher");
+	data.push_back("Diana;Soldea");
 
+	SceneStructureModel * pModel = new SceneStructureModel(data);
+	m_pTreeView->setModel(pModel);
+
+	m_pTreeView->show();
+
+//	m_pScene->getNumChildren();
 }

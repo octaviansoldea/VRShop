@@ -18,7 +18,7 @@ ShopBuilder_GUI::ShopBuilder_GUI() {
 
 	setWindowTitle("VR Shop Server Dialog");
 
-	m_ShopBuilder.init(m_pOSGQTWidget, m_pTreeWidget);
+	m_ShopBuilder.init(m_pOSGQTWidget, m_pTreeView);
 
 	m_pOSGQTWidget->show();
 

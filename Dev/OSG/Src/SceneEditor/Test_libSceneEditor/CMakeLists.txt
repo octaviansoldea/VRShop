@@ -33,11 +33,12 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCamera
   ${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor
   ${CMAKE_BINARY_DIR}/SceneEditor/libSceneEditor
+  ${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/View
+  ${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/Model
   ${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabaseMgr
-
-	${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
-	${CMAKE_SOURCE_DIR}/Props/Equipment/GeometricShapes/libGeometricShapes
-	${CMAKE_SOURCE_DIR}/Props/Equipment/Furniture/libFurniture
+  ${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
+  ${CMAKE_SOURCE_DIR}/Props/Equipment/GeometricShapes/libGeometricShapes
+  ${CMAKE_SOURCE_DIR}/Props/Equipment/Furniture/libFurniture
 )
 
 SET(LIBS_COMMON 

@@ -36,11 +36,13 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCamera
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_OSG
   ${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor
+  ${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/View
+  ${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/Model
   ${CMAKE_BINARY_DIR}/SceneEditor/libSceneEditor
   ${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabaseMgr
-	${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
-	${CMAKE_SOURCE_DIR}/Props/Equipment/GeometricShapes/libGeometricShapes
-	${CMAKE_SOURCE_DIR}/Props/Equipment/Furniture/libFurniture
+  ${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
+  ${CMAKE_SOURCE_DIR}/Props/Equipment/GeometricShapes/libGeometricShapes
+  ${CMAKE_SOURCE_DIR}/Props/Equipment/Furniture/libFurniture
 )
 
 
@@ -48,16 +50,22 @@ INCLUDE_DIRECTORIES(
 #MOC according to the Qt version
 IF(Qt5_FOUND)
   QT5_WRAP_UI(UI_SRCS VRShopBuilder_GUI.ui)
-  QT5_WRAP_CPP(MOC_SRCS OSGQT_Widget.h VRShopBuilder_GUI.h)
+  QT5_WRAP_CPP(MOC_SRCS ${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/View/OSGQT_Widget.h 
+						${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/Model/VRSceneStructureModel.h
+						VRShopBuilder_GUI.h)
 ELSE()
   QT4_WRAP_UI(UI_SRCS VRShopBuilder_GUI.ui)
-  QT4_WRAP_CPP(MOC_SRCS OSGQT_Widget.h VRShopBuilder_GUI.h)
+  QT4_WRAP_CPP(MOC_SRCS ${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/View/OSGQT_Widget.h 
+						${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/Model/VRSceneStructureModel.h
+						VRShopBuilder_GUI.h)
 ENDIF()
 
 
 #Define sources to be later added into the library
 SET(SRCS ${SRCS} ${MOC_SRCS} ${UI_SRCS}
-	OSGQT_Widget.h OSGQT_Widget.cpp
+	${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/View/OSGQT_Widget.h ${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/View/OSGQT_Widget.cpp
+	${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/Model/VRSceneStructureItem.h ${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/Model/VRSceneStructureItem.cpp
+	${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/Model/VRSceneStructureModel.h ${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/Model/VRSceneStructureModel.cpp
 	VRShopBuilder.h VRShopBuilder.cpp
 	VRShopBuilder_GUI.h VRShopBuilder_GUI.cpp
 )

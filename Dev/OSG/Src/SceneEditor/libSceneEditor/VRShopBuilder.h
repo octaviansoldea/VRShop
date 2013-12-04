@@ -1,7 +1,7 @@
 #ifndef VR_SHOP_BUILDER_H
 #define VR_SHOP_BUILDER_H
 
-#include <QTreeWidget>
+#include <QTreeView>
 
 #include <osg/Group>
 
@@ -14,7 +14,7 @@ namespace VR	{
 		ShopBuilder();
 
 		void init(OSGQT_Widget * apOSGQTWidget,
-				  QTreeWidget * apTreeWidget);
+				  QTreeView * apTreeView);
 
 		osg::ref_ptr<osg::Group> m_pScene;
 
@@ -23,8 +23,8 @@ namespace VR	{
 		void readDB(const std::string & astrDBFileName);
 	private:
 		OSGQT_Widget * m_pOSGQTWidget;
-		QTreeWidget * m_pTreeWidget;
-		void updateQTreeWidget();
+		QTreeView * m_pTreeView;
+		void updateQTreeView();
 
 		osg::ref_ptr<Grid> m_pGridlines;
 	};

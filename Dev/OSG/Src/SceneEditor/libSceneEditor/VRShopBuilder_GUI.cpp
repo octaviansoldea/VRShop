@@ -4,6 +4,10 @@
 
 #include <QFileDialog>
 #include <QMessageBox>
+#include "VRInsertNewItem_GUI.h"
+#include "VRProductSettings_GUI.h"
+#include "VRRemoveProduct_GUI.h"
+#include "VRNewProject_GUI.h"
 
 #include "VRShopBuilder_GUI.h"
 
@@ -29,6 +33,7 @@ ShopBuilder_GUI::ShopBuilder_GUI() {
 //=========================================================================================
 
 void ShopBuilder_GUI::buildConnections() {
+	connect(actionNew, SIGNAL(triggered()), this, SLOT(slotNewProject()));
 	connect(actionOpen, SIGNAL(triggered()), this, SLOT(slotOpenDB()));
 	connect(actionSave, SIGNAL(triggered()), this, SLOT(slotSaveDB()));
 
@@ -112,6 +117,17 @@ QString ShopBuilder_GUI::saveDialog(const char * apchDBName) {
 }
 
 //=========================================================================================
+
+void ShopBuilder_GUI::slotNewProject()	{
+	NewProject_GUI newProject;
+		
+	//To get a widget without a "TitleBar"
+	newProject.setWindowFlags(Qt::FramelessWindowHint);
+	newProject.exec();
+	return;
+}
+
+//---------------------------------------------------------------------------------------
 
 void ShopBuilder_GUI::slotOpenDB() {
 	QString qstrFileName = openDialog("*.db");
@@ -277,8 +293,11 @@ void ShopBuilder_GUI::slotSetHomeDirection()	{
 void ShopBuilder_GUI::slotModifySceneActions()	{
 	QPushButton * pPushButton = dynamic_cast<QPushButton*>(sender());
 	if(pPushButton == m_p_PushButton_ModifyScene_AddNewItem)	{
-		std::cout << "Add new item" << std::endl;
-		// void addNewSceneWidget();
+		InsertNewItem_GUI insertNewItem_GUI;
+		
+		//To get a widget without a "TitleBar"
+		insertNewItem_GUI.setWindowFlags(Qt::FramelessWindowHint);
+		insertNewItem_GUI.exec();
 		return;
 	}
 	if	(pPushButton == m_p_PushButton_ModifyScene_EditItem)	{
@@ -316,13 +335,19 @@ void ShopBuilder_GUI::slotModifySceneActions()	{
 void ShopBuilder_GUI::slotModifyProductSettings()	{
 	QPushButton * pPushButton = dynamic_cast<QPushButton*>(sender());
 	if(pPushButton == m_p_PushButton_ProductSettings_AddNewProduct)	{
-		std::cout << "Add new product" << std::endl;
-		// void addNewProductWidget();
+		ProductSettings_GUI productSettings;
+		
+		//To get a widget without a "TitleBar"
+		productSettings.setWindowFlags(Qt::FramelessWindowHint);
+		productSettings.exec();
 		return;
 	}
 	if	(pPushButton == m_p_PushButton_ProductSettings_RemoveProduct)	{
-		std::cout << "Remove product" << std::endl;
-		// void removeProductWidget();
+		RemoveProduct_GUI rProduct;
+		
+		//To get a widget without a "TitleBar"
+		rProduct.setWindowFlags(Qt::FramelessWindowHint);
+		rProduct.exec();
 		return;
 	}
 	else	{
@@ -367,11 +392,14 @@ void ShopBuilder_GUI::slotModifyProductButtons()	{
 	}
 
 	if(pPushButton == m_p_PushButton_ProductSettings_Cancel)	{
-		std::cout << "Cancel button clicked" << std::endl;
-		// void applyProductSettingstWidget();
+		m_p_LineEdit_ProductSettings_NewPrice->clear();
+		m_p_LineEdit_ProductSettings_NewQuantity->clear();
+		m_p_ComboBox_ProductSettings_ProductName->clearEditText();
+		m_p_LineEdit_ProductSettings_Price->clear();
+		m_p_LineEdit_ProductSettings_Quantity->clear();
+
 		return;
 	}
-
 	if(pPushButton == m_p_PushButton_ProductSettings_MoreSettings)	{
 		std::cout << "More settings button clicked" << std::endl;
 		// void applyProductSettingstWidget();

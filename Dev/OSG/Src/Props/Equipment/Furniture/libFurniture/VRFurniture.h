@@ -2,7 +2,6 @@
 #define VR_FURNITURE_H
 
 #include <string>
-#include <osg/Group>
 #include <osg/MatrixTransform>
 
 #include "VRAbstractObject.h"
@@ -16,6 +15,8 @@ namespace VR	{
 	public:
 		Furniture();
 		Furniture(const FurnitureParams & aFurnitureParams);
+
+		static osg::ref_ptr<Furniture> getInstance(const std::string & astrClassName);
 
 		virtual void addPart(osg::ref_ptr < osg::Node > apNode);
 		virtual void removePart(osg::ref_ptr < osg::Node > apNode);

@@ -1,6 +1,7 @@
 #include <osg/Geometry>
 #include <osg/PolygonMode>
 #include <osg/ComputeBoundsVisitor>
+#include <osg/LineWidth>
 
 #include "VRBoundingBox.h"
 
@@ -25,7 +26,7 @@ VR::BoundingBox::BoundingBox(ref_ptr<Node> aNode)	{
 	(*points)[8].set(boundingBox.xMin(), boundingBox.yMin(), boundingBox.zMin());
 	(*points)[9].set(boundingBox.xMin(), boundingBox.yMin(), boundingBox.zMax());
 
-	//Set color of the bounding box
+	//Set color of the bounding bo10
 	osg::ref_ptr<osg::Vec4Array> color = new osg::Vec4Array;
 	color->push_back(osg::Vec4(1,1,1,1));
 
@@ -38,5 +39,10 @@ VR::BoundingBox::BoundingBox(ref_ptr<Node> aNode)	{
 
 	addDrawable(geom.get());
 	osg::StateSet* ss = this->getOrCreateStateSet();
-	ss->setAttributeAndModes(new osg::PolygonMode(osg::PolygonMode::FRONT_AND_BACK, osg::PolygonMode::LINE));
+	osg::ref_ptr<osg::PolygonMode> pPoly = new osg::PolygonMode(osg::PolygonMode::FRONT_AND_BACK, osg::PolygonMode::LINE);
+	
+	osg::LineWidth* linewidth = new osg::LineWidth(5.0);
+	ss->setAttributeAndModes(linewidth);
+
+	ss->setAttributeAndModes(pPoly);
 }

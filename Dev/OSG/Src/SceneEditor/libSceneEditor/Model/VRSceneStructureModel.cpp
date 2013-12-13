@@ -1,5 +1,4 @@
 #include <iostream>
-#include "StringManipulation.h"
 
 #include "VRSceneStructureModel.h"
 
@@ -11,15 +10,20 @@ using namespace std;
 SceneStructureModel::SceneStructureModel(const QList <QString> &data, QObject *parent)
 	: QAbstractItemModel(parent)	{
 
-		QList <QVariant> arrqRootHeader; 
-		arrqRootHeader.push_back("Scene");
+		QVariant arrqRootHeader;
+		arrqRootHeader = "Scene";
+
 		m_pRootItem = new SceneStructureItem(arrqRootHeader);
-		setupDataElements(data,m_pRootItem);
+
+		setupDataElements(data, m_pRootItem);
 }
 
 //--------------------------------------------------------------------
 
 QModelIndex SceneStructureModel::index(int row, int column, const QModelIndex &parent) const	{
+	if(!m_pRootItem || row < 0 || column < 0)
+		return QModelIndex();
+
 	SceneStructureItem *parentItem;
 
 	if (parent == QModelIndex::QModelIndex())	//The root
@@ -29,7 +33,7 @@ QModelIndex SceneStructureModel::index(int row, int column, const QModelIndex &p
 
 	SceneStructureItem *childItem = parentItem->child(row);
 	if (childItem)
-		return createIndex(row, column, childItem);
+		return createIndex(row, 0, childItem);
 	else
 		return QModelIndex();
 }
@@ -52,10 +56,10 @@ QModelIndex SceneStructureModel::parent(const QModelIndex &index) const	{
 //--------------------------------------------------------------------
 
 QVariant SceneStructureModel::headerData(int section, Qt::Orientation orientation, int role) const	{
-    if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
-		return QVariant(m_pRootItem->data(section));
-
-    return QVariant();
+	if (orientation == Qt::Horizontal && role == Qt::DisplayRole)	{
+		return m_pRootItem->data();
+	}
+	return QVariant();
 }
 
 //--------------------------------------------------------------------
@@ -75,16 +79,7 @@ int SceneStructureModel::rowCount(const QModelIndex &parent) const	{
 //--------------------------------------------------------------------
 
 int SceneStructureModel::columnCount(const QModelIndex &parent) const	{
-	if (parent != QModelIndex::QModelIndex())	{
-		//From the index number initialize an item
-		SceneStructureItem *item = static_cast<SceneStructureItem*>(parent.internalPointer());
-
-		//See the content behind the item
-		return item->columnCount();
-	}
-	else	{
-		return m_pRootItem->columnCount();
-	}
+	return 1;
 }
 
 //--------------------------------------------------------------------
@@ -93,14 +88,11 @@ QVariant SceneStructureModel::data(const QModelIndex &index, int role) const	{
     if (role != Qt::DisplayRole)
         return QVariant();
 
-    if (role != Qt::DisplayRole && role != Qt::EditRole)
-        return QVariant();
-
 	//From the index number initialize an item
 	SceneStructureItem *item = static_cast<SceneStructureItem*>(index.internalPointer());
 
 	//See the content behind the item
-	return item->data(index.column());
+	return item->data();
 }
 
 //--------------------------------------------------------------------
@@ -117,14 +109,8 @@ void SceneStructureModel::setupDataElements(const QList <QString> & aarrstrScene
 		strElementDataLine = it->toStdString();
 
 		//Find the position of the first character & clear empty spaces
-		strElementDataLine = (nPos = strElementDataLine.find_first_not_of(" ")) 
-			? strElementDataLine.substr(nPos) : strElementDataLine;
-
-		vector <string> strData = splitString(strElementDataLine,";");
-		QList<QVariant> columnData;
-		for (auto itt = strData.begin(); itt != strData.end(); itt++)	{
-			columnData.push_back(itt->c_str());
-		}
+		nPos = strElementDataLine.find_first_not_of(" ");
+		strElementDataLine.erase(0,nPos);
 
 		//Layer determines Parent/Child relations
 		//If it's a parent, put it into the list of parents
@@ -142,11 +128,10 @@ void SceneStructureModel::setupDataElements(const QList <QString> & aarrstrScene
 		}
 
 		// new item is in any case a child
-		int size = parents.size();
-		SceneStructureItem * item = new SceneStructureItem(columnData, parents[size-1]);
+		int size =  parents.size();
+		SceneStructureItem * item = new SceneStructureItem(strElementDataLine.c_str(), parents[size-1]);
 		parents[size-1]->insertChild(item);
 
-		for (int column = 0; column < columnData.size(); column++)
-			parents[size-1]->child(parents[size-1]->childCount() - 1)->setData(column, columnData[column]);
+		parents[size-1]->child(parents[size-1]->childCount() - 1)->setData(strElementDataLine.c_str());
 	}
 }

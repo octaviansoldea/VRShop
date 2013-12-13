@@ -36,7 +36,6 @@ OSGQT_Widget::OSGQT_Widget(QWidget * apQWidget, Qt::WindowFlags f) : QWidget(apQ
 		1.0, 10000.0 );
 
 	startTimer(10);
-	
 }
 
 //--------------------------------------------------------------------

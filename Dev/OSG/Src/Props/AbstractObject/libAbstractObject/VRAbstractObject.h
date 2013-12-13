@@ -20,15 +20,15 @@ namespace VR	{
 		AbstractObjectParams();
 	};
 
-	class AbstractObject {
+	class AbstractObject	{
 	public:
 		AbstractObject();
 		AbstractObject(const AbstractObjectParams & aAbstractObjectParams);
 
 		virtual std::string getSQLFormat() const;
 
-		virtual std::string getSQLCommand() const = 0;
-		virtual void initFromSQLData(const std::string & astrSQLData) = 0;
+		virtual std::string getSQLCommand() const {return "";};
+		virtual void initFromSQLData(const std::string & astrSQLData) {};
 
 		virtual void setRotation(const AbstractObjectParams & aAbstractObjectParams);
 		virtual void setPosition(const AbstractObjectParams & aAbstractObjectParams);
@@ -40,8 +40,12 @@ namespace VR	{
 	private:
 		bool m_bIsTargetPick;
 		static std::string m_strSQLFormat;
+		std::string m_strParentName;
 
 	protected:
+		virtual void setParentName(std::string astrParentName);
+		virtual std::string getParentName() const;
+
 		AbstractObjectParams m_AbstractObjectParams;
 	};
 }

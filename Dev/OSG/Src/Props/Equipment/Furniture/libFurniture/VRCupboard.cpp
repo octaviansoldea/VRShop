@@ -56,6 +56,7 @@ void Cupboard::init(const CupboardParams & aCupboardParams)	{
 	;
 	
 	setMatrix(cupboardMatrix);
+	setName(Furniture::getParentName() + ":Cupboard");
 }
 
 //-----------------------------------------------------------------------
@@ -120,7 +121,6 @@ void Cupboard::initFromSQLData(const string & astrSQLData)	{
 			pSphere->initFromSQLData(*it);
 			addChild(pSphere);
 		}
-
 	}
 	init(cupboardParams);
 }

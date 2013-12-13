@@ -19,12 +19,14 @@ GridParams::GridParams() :
 VR::Grid::Grid()	{
 	const GridParams gridParams;
 	init(gridParams);
+	setName("Grid");
 }
 
 //-----------------------------------------------------------
 
 VR::Grid::Grid(const GridParams & aGridParams)	{
 	init(aGridParams);
+	setName("Grid");
 }
 
 //-----------------------------------------------------------

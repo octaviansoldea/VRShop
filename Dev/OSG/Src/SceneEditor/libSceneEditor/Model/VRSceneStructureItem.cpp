@@ -7,11 +7,9 @@ using namespace std;
 
 //--------------------------------------------------------------------
 
-SceneStructureItem::SceneStructureItem(const QList <QVariant> &aarrData, SceneStructureItem *parent)	{
+SceneStructureItem::SceneStructureItem(const QVariant & aarrData, SceneStructureItem *parent)	{
 	m_pParent = parent;
-	for (auto it = aarrData.begin(); it != aarrData.end(); it++)	{
-		m_parrItemData.push_back(*it);
-	}
+	m_parrItemData = aarrData;
 }
 
 //--------------------------------------------------------------------
@@ -34,28 +32,23 @@ SceneStructureItem *SceneStructureItem::parent()	{
 
 //--------------------------------------------------------------------
 
-QVariant SceneStructureItem::data(int column) const	{
-	return m_parrItemData[column];
+QVariant SceneStructureItem::data() const	{
+	
+	return m_parrItemData;
 }
 
 //--------------------------------------------------------------------
 
-bool SceneStructureItem::setData(int column, const QVariant &value)	{
-	m_parrItemData[column] = value;
+bool SceneStructureItem::setData(const QVariant &value)	{
+	m_parrItemData = value;
 
-    return true;
+	return true;
 }
 
 //--------------------------------------------------------------------
 
 int SceneStructureItem::childCount() const	{
-	return m_arrChildren.count();
-}
-
-//--------------------------------------------------------------------
-
-int SceneStructureItem::columnCount() const	{
-	return m_parrItemData.size();
+	return m_arrChildren.size();
 }
 
 //--------------------------------------------------------------------

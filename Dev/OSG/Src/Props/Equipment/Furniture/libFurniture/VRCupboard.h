@@ -22,6 +22,7 @@ namespace VR	{
 
 		virtual void initFromSQLData(const std::string & astrSQLData);
 
+
 	private:
 		CupboardParams m_CupboardParams;
 	};

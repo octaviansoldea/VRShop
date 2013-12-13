@@ -71,3 +71,14 @@ bool AbstractObject::getIsTargetPick() const	{
 	return m_bIsTargetPick;
 }
 
+//--------------------------------------------------------------------------
+
+void AbstractObject::setParentName(std::string astrParentName)	{
+	m_strParentName = astrParentName;
+}
+
+//--------------------------------------------------------------------------
+
+string AbstractObject::getParentName() const	{
+	return m_strParentName;
+}

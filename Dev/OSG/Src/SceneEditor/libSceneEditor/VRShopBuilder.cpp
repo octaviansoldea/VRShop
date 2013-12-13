@@ -2,6 +2,7 @@
 
 #include <QString>
 #include <QVariant>
+#include <QVBoxLayout>
 
 #include <osgDB/ReadFile>
 #include <osgGA/TrackballManipulator>
@@ -9,8 +10,10 @@
 #include "OSGQT_Widget.h"
 #include "VRDatabaseMgr.h"
 #include "VRCupboard.h"
+#include "VRContainer.h"
 
 #include "VRSceneStructureModel.h"
+#include "VRSceneHierarchy.h"
 
 #include "VRShopBuilder.h"
 
@@ -34,8 +37,7 @@ ShopBuilder::ShopBuilder() {
 
 //----------------------------------------------------------------------
 
-void ShopBuilder::init(OSGQT_Widget * apOSGQTWidget,
-					   QTreeView * apTreeView) {
+void ShopBuilder::init(OSGQT_Widget * apOSGQTWidget, QTreeView * apTreeView) {
 	m_pOSGQTWidget = apOSGQTWidget;
 
 	//Send scene to the Widget
@@ -65,42 +67,33 @@ void ShopBuilder::gridOnOff(bool abIndicator) {
 void ShopBuilder::readDB(const std::string & astrDBFileName)	{
 	DatabaseMgr & database = DatabaseMgr::Create(astrDBFileName.c_str(), DatabaseMgr::QSQLITE);
 
-	// get the number of equipment to be added to the scene
-	QString qstrCupboardsNr = "SELECT COUNT(EquipmentItemID) FROM EquipmentItem";
+	QString qstrCupboardsNr = "SELECT EquipmentItemName FROM EquipmentItem";
 	QSqlQuery qQuery(qstrCupboardsNr);
 
-	int nCupboardsNr;
+	vector < string > strEquipment;
 	while (qQuery.next())	{
-		nCupboardsNr = qQuery.value(0).toInt();
+		strEquipment.push_back(qQuery.value(0).toString().toStdString());
 	}
 
-	for(int nI = 1; nI <= nCupboardsNr; nI++) {
-		ref_ptr <Cupboard> cupboard = new Cupboard;
-
-		QString strSQLQuery = QString("SELECT * FROM EquipmentItem WHERE EquipmentItemID = %1").arg(nI);
+	for (auto it = strEquipment.begin(); it != strEquipment.end(); it++)	{
+		QString strSQLQuery = QString("SELECT * FROM EquipmentItem WHERE EquipmentItemName = '%1'").arg(it->c_str());
 		string strSQLData = database.readFromDB(strSQLQuery.toStdString());
-		cupboard->initFromSQLData(strSQLData);
 
-		m_pScene->addChild(cupboard);
+		ref_ptr < Furniture > pFurniture = Furniture::getInstance(*it);
+		pFurniture->initFromSQLData(strSQLData);
+
+		m_pScene->addChild(pFurniture);
 	}
-
 	updateQTreeView();
 }
 
 //----------------------------------------------------------------------
 
 void ShopBuilder::updateQTreeView()	{
-	QList <QString> data;
-	data.push_back("Tavi;Soldea");
-	data.push_back("  Matej;Steinbacher");
-	data.push_back("  Matjaz;Steinbacher");
-	data.push_back("  Mitja;Steinbacher");
-	data.push_back("Diana;Soldea");
+	SceneHierarchy * pSceneHierarchy = new SceneHierarchy(m_pScene);
+	QList<QString> lststrSceneData = pSceneHierarchy->getSceneHierarchy();
 
-	SceneStructureModel * pModel = new SceneStructureModel(data);
+	SceneStructureModel * pModel = new SceneStructureModel(lststrSceneData);
 	m_pTreeView->setModel(pModel);
-
 	m_pTreeView->show();
-
-//	m_pScene->getNumChildren();
 }

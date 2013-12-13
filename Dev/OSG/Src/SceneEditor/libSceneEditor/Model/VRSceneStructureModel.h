@@ -22,7 +22,7 @@ namespace VR	{
 		virtual QModelIndex parent(const QModelIndex &index) const;
 
 		QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-
+		
 		virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
 		virtual int columnCount(const QModelIndex &parent = QModelIndex()) const;
 

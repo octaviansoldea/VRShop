@@ -56,6 +56,7 @@ void Container::init(const ContainerParams & aContainerParams)	{
 	;
 	
 	setMatrix(containerMatrix);
+	setName(Furniture::getParentName() + ":Container");
 }
 
 //-----------------------------------------------------------------------

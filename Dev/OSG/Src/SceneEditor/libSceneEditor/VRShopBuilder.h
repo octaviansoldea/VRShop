@@ -13,14 +13,15 @@ namespace VR	{
 	struct ShopBuilder {
 		ShopBuilder();
 
-		void init(OSGQT_Widget * apOSGQTWidget,
-				  QTreeView * apTreeView);
+		void init(OSGQT_Widget * apOSGQTWidget, QTreeView * apTreeView);
+
 
 		osg::ref_ptr<osg::Group> m_pScene;
 
 		void gridOnOff(bool abIndicator);
 
 		void readDB(const std::string & astrDBFileName);
+		
 	private:
 		OSGQT_Widget * m_pOSGQTWidget;
 		QTreeView * m_pTreeView;

@@ -20,6 +20,7 @@ namespace VR	{
 		QString saveDialog(const char * apchDBName);
 
 	public slots:
+		void slotNewProject();
 		void slotOpenDB();
 		void slotSaveDB();
 		void slotGridOnOff(bool abIndicator);

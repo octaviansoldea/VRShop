@@ -38,6 +38,7 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor
   ${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/View
   ${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/Model
+  ${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/PopUpGUIs
   ${CMAKE_BINARY_DIR}/SceneEditor/libSceneEditor
   ${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabaseMgr
   ${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
@@ -49,15 +50,36 @@ INCLUDE_DIRECTORIES(
 
 #MOC according to the Qt version
 IF(Qt5_FOUND)
-  QT5_WRAP_UI(UI_SRCS VRShopBuilder_GUI.ui)
+  QT5_WRAP_UI(UI_SRCS	VRShopBuilder_GUI.ui 
+						${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/PopUpGUIs/VRInsertNewItem_GUI.ui
+						${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/PopUpGUIs/VRProductSettings_GUI.ui
+						${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/PopUpGUIs/VRRemoveProduct_GUI.ui
+						${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/PopUpGUIs/VRNewProject_GUI.ui
+						)
   QT5_WRAP_CPP(MOC_SRCS ${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/View/OSGQT_Widget.h 
 						${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/Model/VRSceneStructureModel.h
-						VRShopBuilder_GUI.h)
+						VRShopBuilder_GUI.h
+						${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/PopUpGUIs/VRInsertNewItem_GUI.h
+						${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/PopUpGUIs/VRProductSettings_GUI.h
+						${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/PopUpGUIs/VRRemoveProduct_GUI.h
+						${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/PopUpGUIs/VRNewProject_GUI.h
+						)
+
 ELSE()
-  QT4_WRAP_UI(UI_SRCS VRShopBuilder_GUI.ui)
+  QT4_WRAP_UI(UI_SRCS	VRShopBuilder_GUI.ui
+						${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/PopUpGUIs/VRInsertNewItem_GUI.ui
+						${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/PopUpGUIs/VRProductSettings_GUI.ui
+						${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/PopUpGUIs/VRRemoveProduct_GUI.ui
+						${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/PopUpGUIs/VRNewProject_GUI.ui
+						)
   QT4_WRAP_CPP(MOC_SRCS ${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/View/OSGQT_Widget.h 
 						${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/Model/VRSceneStructureModel.h
-						VRShopBuilder_GUI.h)
+						VRShopBuilder_GUI.h
+						${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/PopUpGUIs/VRInsertNewItem_GUI.h
+						${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/PopUpGUIs/VRProductSettings_GUI.h
+						${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/PopUpGUIs/VRRemoveProduct_GUI.h
+						${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/PopUpGUIs/VRNewProject_GUI.h
+						)
 ENDIF()
 
 
@@ -66,8 +88,13 @@ SET(SRCS ${SRCS} ${MOC_SRCS} ${UI_SRCS}
 	${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/View/OSGQT_Widget.h ${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/View/OSGQT_Widget.cpp
 	${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/Model/VRSceneStructureItem.h ${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/Model/VRSceneStructureItem.cpp
 	${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/Model/VRSceneStructureModel.h ${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/Model/VRSceneStructureModel.cpp
+	${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/Model/VRSceneHierarchy.h ${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/Model/VRSceneHierarchy.cpp
 	VRShopBuilder.h VRShopBuilder.cpp
 	VRShopBuilder_GUI.h VRShopBuilder_GUI.cpp
+	${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/PopUpGUIs/VRInsertNewItem_GUI.h ${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/PopUpGUIs/VRInsertNewItem_GUI.cpp
+	${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/PopUpGUIs/VRProductSettings_GUI.h ${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/PopUpGUIs/VRProductSettings_GUI.cpp
+	${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/PopUpGUIs/VRRemoveProduct_GUI.h ${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/PopUpGUIs/VRRemoveProduct_GUI.cpp
+	${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/PopUpGUIs/VRNewProject_GUI.h ${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/PopUpGUIs/VRNewProject_GUI.cpp
 )
 
 #Library to be later used in the main

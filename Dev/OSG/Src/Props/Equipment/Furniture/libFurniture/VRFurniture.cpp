@@ -10,6 +10,7 @@
 
 #include "VRDatabaseMgr.h"
 #include "VRCupboard.h"
+#include "VRContainer.h"
 
 #include "VRFurniture.h"
 
@@ -18,19 +19,32 @@ using namespace osg;
 using namespace std;
 using namespace VR;
 
+//=======================================================================
+
+ref_ptr<Furniture> Furniture::getInstance(const std::string & astrClassName)	{
+	Furniture * pFurniture;
+	if (astrClassName == "Cupboard")
+		return (new Cupboard);
+	if (astrClassName == "Container")
+		return (new Container);
+}
+
+//=======================================================================
 
 FurnitureParams::FurnitureParams() : AbstractObjectParams()	{
-};
+}
 
 //=======================================================================
 
 Furniture::Furniture()	{
+	setParentName("Furniture");
 }
 
 //-----------------------------------------------------------------------
 
 Furniture::Furniture(const FurnitureParams & aFurnitureParams) : AbstractObject(aFurnitureParams)	{
 	m_FurnitureParams = aFurnitureParams;
+	setParentName("Furniture");
 }
 
 //-----------------------------------------------------------------------
@@ -66,7 +80,7 @@ void Furniture::loadAllFurnitures(ref_ptr<Group> apScene, const string & astrDat
 
 	for(int nI = 1; nI <= nCupboardsNr; nI++) {
 		ref_ptr <Cupboard> cupboard = new Cupboard;
-
+		
 		QString strSQLQuery = QString("SELECT * FROM EquipmentItem WHERE EquipmentItemID = %1").arg(nI);
 		string strSQLData = database.readFromDB(strSQLQuery.toStdString());
 		cupboard->initFromSQLData(strSQLData);
@@ -76,3 +90,4 @@ void Furniture::loadAllFurnitures(ref_ptr<Group> apScene, const string & astrDat
 }
 
 //-----------------------------------------------------------------------
+

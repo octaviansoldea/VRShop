@@ -387,7 +387,7 @@ QSpinBox::down-arrow:off {border-left: 17px solid none; border-right: 17px solid
             <property name="geometry">
              <rect>
               <x>0</x>
-              <y>0</y>
+              <y>-180</y>
               <width>261</width>
               <height>623</height>
              </rect>
@@ -2678,7 +2678,7 @@ border: 0px;</string>
                  </property>
                  <property name="icon">
                   <iconset>
-                   <normaloff>../../../Resources/Icons/toolbar_find.png</normaloff>../../../Resources/Icons/toolbar_find.png</iconset>
+                   <normaloff>../../../2013/Resources/Icons/toolbar_find.png</normaloff>../../../2013/Resources/Icons/toolbar_find.png</iconset>
                  </property>
                  <property name="autoRaise">
                   <bool>true</bool>
@@ -3955,7 +3955,7 @@ background-color: rgb(191,193,194);</string>
      <property name="title">
       <string>Windows</string>
      </property>
-     <addaction name="actionAdd_properties"/>
+     <addaction name="actionProperties"/>
      <addaction name="actionCamera_Settings"/>
      <addaction name="actionScene_Objects"/>
      <addaction name="actionModify_Scene"/>
@@ -3976,11 +3976,6 @@ background-color: rgb(191,193,194);</string>
     <string>Open</string>
    </property>
   </action>
-  <action name="actionAdd_Scene">
-   <property name="text">
-    <string>Add Scene</string>
-   </property>
-  </action>
   <action name="actionExit">
    <property name="text">
     <string>Exit</string>
@@ -3991,62 +3986,7 @@ background-color: rgb(191,193,194);</string>
     <string>Save</string>
    </property>
   </action>
-  <action name="actionAdd_Properties">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="checked">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Add Properties</string>
-   </property>
-  </action>
-  <action name="actionAdd_Camera_Settings">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="checked">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Add Camera Settings</string>
-   </property>
-  </action>
-  <action name="actionAdd_Scene_Objects">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="checked">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Add Scene Objects</string>
-   </property>
-  </action>
-  <action name="actionAdd_Modify_Scene">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="checked">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Add Modify Scene</string>
-   </property>
-  </action>
-  <action name="actionAdd_Product_Settings">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="checked">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Add Product Settings</string>
-   </property>
-  </action>
-  <action name="actionAdd_properties">
+  <action name="actionProperties">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -4109,11 +4049,6 @@ background-color: rgb(191,193,194);</string>
   <action name="actionSave_As">
    <property name="text">
     <string>Save As</string>
-   </property>
-  </action>
-  <action name="actionAdd_Item">
-   <property name="text">
-    <string>Add Item</string>
    </property>
   </action>
  </widget>
@@ -4431,6 +4366,166 @@ background-color: rgb(191,193,194);</string>
     <hint type="destinationlabel">
      <x>861</x>
      <y>158</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionCamera_Settings</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>m_pWidgetCamSettings</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>137</x>
+     <y>716</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_pToolButtonCamSettings</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>actionCamera_Settings</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>268</x>
+     <y>494</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionProperties</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>m_pWidgetProps</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>137</x>
+     <y>252</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_pToolButtonProps</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>actionProperties</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>268</x>
+     <y>30</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionScene_Objects</sender>
+   <signal>triggered(bool)</signal>
+   <receiver>m_pWidget2Scene</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>898</x>
+     <y>257</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_pToolButtonSceneObject</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>actionScene_Objects</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1128</x>
+     <y>30</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionModify_Scene</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>m_pWidgetModifyScene</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>898</x>
+     <y>579</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_pToolButtonModifyScene</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>actionModify_Scene</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1128</x>
+     <y>504</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionProduct_Settings</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>m_pWidgetProdSettings</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>898</x>
+     <y>806</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_pToolButtonProdSettings</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>actionProduct_Settings</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1128</x>
+     <y>673</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
     </hint>
    </hints>
   </connection>

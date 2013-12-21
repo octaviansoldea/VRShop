@@ -122,6 +122,7 @@ void ShopBuilder::addNewItem(const std::string & astrObjectName, const std::stri
 void ShopBuilder::updateQTreeView()	{
 	if(m_pSceneHierarchy)
 		delete m_pSceneHierarchy;
+	
 	m_pSceneHierarchy = new SceneHierarchy(m_pScene);
 	QList<QString> lststrSceneData = m_pSceneHierarchy->getSceneHierarchy();
 

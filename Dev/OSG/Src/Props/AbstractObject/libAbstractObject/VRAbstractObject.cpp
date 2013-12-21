@@ -1,5 +1,13 @@
 #include "BasicDefinitions.h"
 
+#include "VRContainer.h"
+#include "VRCupboard.h"
+
+#include "VRCylinder.h"
+#include "VRPlate3D.h"
+#include "VRPrism.h"
+#include "VRUntransformedSphere.h"
+
 #include "VRAbstractObject.h"
 
 using namespace VR;
@@ -20,7 +28,24 @@ AbstractObjectParams::AbstractObjectParams() :
 AbstractObject::AbstractObject() : m_bIsTargetPick(false)	{
 }
 
-//--------------------------------------------------------------
+//=======================================================================
+
+osg::ref_ptr<AbstractObject> AbstractObject::createInstance(const std::string & astrClassName)	{
+	if (astrClassName == "Cupboard")
+		return (new Cupboard);
+	if (astrClassName == "Container")
+		return (new Container);
+	if (astrClassName == "Plate3D")
+		return (new Plate3D);
+	if (astrClassName == "Cylinder")
+		return (new Cylinder);
+	if (astrClassName == "Prism")
+		return (new Prism);
+	if (astrClassName == "Sphere")
+		return (new UntransformedSphere);
+}
+
+//=======================================================================
 
 AbstractObject::AbstractObject(const AbstractObjectParams & aAbstractObjectParams)	{
 	m_AbstractObjectParams = aAbstractObjectParams;
@@ -69,16 +94,4 @@ void AbstractObject::setIsTargetPick(bool abIsTargetPick)	{
 
 bool AbstractObject::getIsTargetPick() const	{
 	return m_bIsTargetPick;
-}
-
-//--------------------------------------------------------------------------
-
-void AbstractObject::setParentName(std::string astrParentName)	{
-	m_strParentName = astrParentName;
-}
-
-//--------------------------------------------------------------------------
-
-string AbstractObject::getParentName() const	{
-	return m_strParentName;
 }

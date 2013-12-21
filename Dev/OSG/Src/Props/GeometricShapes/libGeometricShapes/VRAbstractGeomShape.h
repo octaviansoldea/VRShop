@@ -1,8 +1,6 @@
 #ifndef VR_ABSTRACT_GEOM_SHAPE_H
 #define VR_ABSTRACT_GEOM_SHAPE_H
 
-#include <string>
-
 #include "VRAbstractObject.h"
 
 namespace VR {
@@ -15,9 +13,6 @@ namespace VR {
 		AbstractGeomShape();
 
 		virtual void init(const AbstractGeomShapeParams & aAbstractGeomShapeParams) = 0;
-
-	private:
-		static std::string m_strSQLFormat;
 	};
 }
 #endif //VR_ABSTRACT_GEOM_SHAPE_H

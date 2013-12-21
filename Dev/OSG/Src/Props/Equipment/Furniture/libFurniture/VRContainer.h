@@ -1,13 +1,16 @@
 #ifndef VR_CONTAINER_H
 #define VR_CONTAINER_H
 
-#include <QString>
-
 #include "VRFurniture.h"
 
 namespace VR	{
 	struct ContainerParams : public FurnitureParams	{
 		ContainerParams();
+
+		float m_flWidth;
+		float m_flHeight;
+		float m_flDepth;
+		float m_flThickness;
 	};
 
 	class Container : public Furniture	{
@@ -16,6 +19,7 @@ namespace VR	{
 		Container(const ContainerParams & aContainerParams);
 
 		void init(const ContainerParams & aContainerParams);
+		virtual void predefinedObject();
 
 		std::string setSQLCommand(const std::string & astrCommand);
 		virtual std::string getSQLCommand() const;

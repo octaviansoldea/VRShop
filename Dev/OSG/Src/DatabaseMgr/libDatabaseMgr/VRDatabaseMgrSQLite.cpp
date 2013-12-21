@@ -87,7 +87,7 @@ void DatabaseMgrSQLite::fillPrimitiveTable(string & astrCommand)	{
 			else	{
 				string strError = "Item not selected.";
 				printError(strError.c_str());
-				exit(-1);
+				return;
 			}
 		}
 	}	

@@ -23,12 +23,13 @@ namespace VR {
 		PrismParams();
 	};
 
-	class Prism : public AbstractGeomShape, public osg::MatrixTransform {
+	class Prism : public AbstractGeomShape	{
 	public:
 		Prism();
 		Prism(const PrismParams & aPrismParams);
 
 		virtual void init(const AbstractGeomShapeParams & aAbstractGeomShapeParams);
+		virtual void predefinedObject() {};
 
 		void setColor(const std::vector < float > & aarrflColor);
 		void setTexture(const std::string & astrFileName);

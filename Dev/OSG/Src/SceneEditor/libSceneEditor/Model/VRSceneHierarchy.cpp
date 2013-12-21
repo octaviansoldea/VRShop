@@ -50,7 +50,6 @@ SceneHierarchy::SceneHierarchy(const ref_ptr<Group> apScene) : m_strIndent(strin
 	m_lstqstrSceneHierarchy.push_back("Agents");
 	m_lstqstrSceneHierarchy.push_back("Furniture");
 	m_lstqstrSceneHierarchy.push_back("Products");
-	m_lstqstrSceneHierarchy.push_back("Predefined Tools");
 
 	m_pSceneHierarchyItem = new SceneHierarchyItem(apScene);
 	setSceneHierarchy(m_pSceneHierarchyItem->getChildren());

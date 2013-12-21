@@ -9,6 +9,8 @@
 #include <osg/TexMat>
 #include <osgDB/ReadFile>
 
+#include <osg/Geode>
+
 #include "StringManipulation.h"
 
 #include "VRUntransformedSphere.h"
@@ -55,6 +57,7 @@ void UntransformedSphere::init(const AbstractGeomShapeParams & aAbstractGeomShap
 	const SphereParams & aSphereParams = static_cast<const SphereParams&>(aAbstractGeomShapeParams);
 
 	m_SphereParams = aSphereParams;
+	m_pGeode = new Geode;
 
 	float flResPhiStep = (2 * PI) / m_SphereParams.m_nResPhi;
 	float flResThetaStep = (2 * PI) / m_SphereParams.m_nResTheta;
@@ -96,18 +99,19 @@ void UntransformedSphere::init(const AbstractGeomShapeParams & aAbstractGeomShap
 			normal += (*pPoints)[3];
 			normal.normalize();
 			pN->push_back(normal);
-			addDrawable(pGeometry);
+			m_pGeode->addDrawable(pGeometry);
 		}
 	}
+	addChild(m_pGeode);
 	setColor(aSphereParams.m_arrflRGBA);
 }
 
 //--------------------------------------------------------------
 
 void UntransformedSphere::setColor(const vector < float > & aarrflColor) {	
-	int nDrawablesNr = this->getNumDrawables();
+	int nDrawablesNr = m_pGeode->getNumDrawables();
 	for(int nI = 0; nI < nDrawablesNr; nI++) {
-		ref_ptr<Geometry> pGeometry = dynamic_cast<Geometry *>(getDrawable(nI));
+		ref_ptr<Geometry> pGeometry = dynamic_cast<Geometry *>(m_pGeode->getDrawable(nI));
 		if(pGeometry == 0) {
 			continue;
 		}
@@ -127,7 +131,7 @@ void UntransformedSphere::setColor(const vector < float > & aarrflColor) {
 
 void UntransformedSphere::setTexture(const std::string astrFileName) {
 
-	int nDrawablesNr = this->getNumDrawables();
+	int nDrawablesNr = m_pGeode->getNumDrawables();
 
 	assert(nDrawablesNr == m_SphereParams.m_nResPhi * m_SphereParams.m_nResTheta);
 
@@ -149,7 +153,7 @@ void UntransformedSphere::setTexture(const std::string astrFileName) {
 			float flTheta = flTexThetaStep * nIndxTheta;
 			float flThetaP1 = flTheta + flTexThetaStep;
 
-			ref_ptr<Geometry> pGeometry = dynamic_cast<Geometry *>(getDrawable(nIndxDrawable));
+			ref_ptr<Geometry> pGeometry = dynamic_cast<Geometry *>(m_pGeode->getDrawable(nIndxDrawable));
 			if(pGeometry == 0) {
 				continue;
 			}

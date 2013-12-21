@@ -1,10 +1,11 @@
+#include <string>
 #include <fstream>
 
 #include <QString>
 #include <QFileDialog>
 #include <QMessageBox>
 
-#include "VRNewProject_GUI.h"
+#include "VRSaveAs_GUI.h"
 
 using namespace osg;
 using namespace Ui;
@@ -12,7 +13,7 @@ using namespace VR;
 
 //----------------------------------------------------------------------
 
-NewProject_GUI::NewProject_GUI()	{
+SaveAs_GUI::SaveAs_GUI()	{
 	setupUi(this);
 
 	connect(m_pPushButtonBrowseDir, SIGNAL(clicked(bool)), this, SLOT(slotBrowseDirectory()));
@@ -23,17 +24,32 @@ NewProject_GUI::NewProject_GUI()	{
 
 //----------------------------------------------------------------------
 
-void NewProject_GUI::slotBrowseDirectory()	{
+QString SaveAs_GUI::saveAsDialog() {
 	QString qstrDirectoryName = QFileDialog::getExistingDirectory(this);
+
+	return(qstrDirectoryName);
+}
+
+//----------------------------------------------------------------------
+
+void SaveAs_GUI::slotBrowseDirectory()	{
+	QString qstrDirectoryName = saveAsDialog();
 	m_pLineEditDirectory->setText(qstrDirectoryName);
 }
 
 //----------------------------------------------------------------------
 
-void NewProject_GUI::slotApplyChanges()	{
-	if((m_pLineEditFileName->text() == "") || (!QFile::exists(m_pLineEditDirectory->text())))	{
-		QString qstrWarningText = "New project not opened.\nFile name not given or directory doesn't exist.";
+void SaveAs_GUI::slotApplyChanges()	{
+	QString qstrWarningText;
 
+	if((m_pLineEditFileName->text() == "") && (!QFile::exists(m_pLineEditDirectory->text())))
+		qstrWarningText = "File name not given.\nDirectory doesn't exist.";
+	else if(m_pLineEditFileName->text() == "")
+		qstrWarningText = "File name not given.";
+	else if(!QFile::exists(m_pLineEditDirectory->text()))
+		qstrWarningText = "Directory doesn't exist.";
+
+	if(!qstrWarningText.isNull())	{
 		QMessageBox msgBox;
 		msgBox.setText(qstrWarningText);
 		msgBox.setStandardButtons(QMessageBox::Ok);
@@ -41,5 +57,10 @@ void NewProject_GUI::slotApplyChanges()	{
 		int nRes = msgBox.exec();
 		return;
 	}
-	done(1);
+
+	QString qstrPathName = m_pLineEditDirectory->text() + "/" + m_pLineEditFileName->text() + ".db";
+
+	std::ofstream myfile(qstrPathName.toStdString());
+	myfile.close();
+	close();
 }

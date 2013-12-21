@@ -2,7 +2,6 @@
 #define VR_FURNITURE_H
 
 #include <string>
-#include <osg/MatrixTransform>
 
 #include "VRAbstractObject.h"
 
@@ -11,15 +10,14 @@ namespace VR	{
 		FurnitureParams();
 	};
 
-	class Furniture : public osg::MatrixTransform, public AbstractObject	{
+	class Furniture : public AbstractObject	{
 	public:
 		Furniture();
 		Furniture(const FurnitureParams & aFurnitureParams);
 
-		static osg::ref_ptr<Furniture> getInstance(const std::string & astrClassName);
-
 		virtual void addPart(osg::ref_ptr < osg::Node > apNode);
 		virtual void removePart(osg::ref_ptr < osg::Node > apNode);
+
 
 		static void loadAllFurnitures(osg::ref_ptr<osg::Group> pScene, const std::string & astrDatabase);
 

@@ -1,11 +1,6 @@
-#include <QString>
 #include <QVariant>
 
 #include "VRAbstractGeomShape.h"
-#include "VRPlate3D.h"
-#include "VRCylinder.h"
-#include "VRPrism.h"
-#include "VRUntransformedSphere.h"
 
 
 #include "VRDatabaseMgr.h"
@@ -19,32 +14,20 @@ using namespace osg;
 using namespace std;
 using namespace VR;
 
-//=======================================================================
-
-ref_ptr<Furniture> Furniture::getInstance(const std::string & astrClassName)	{
-	Furniture * pFurniture;
-	if (astrClassName == "Cupboard")
-		return (new Cupboard);
-	if (astrClassName == "Container")
-		return (new Container);
-}
-
-//=======================================================================
-
 FurnitureParams::FurnitureParams() : AbstractObjectParams()	{
 }
 
 //=======================================================================
 
 Furniture::Furniture()	{
-	setParentName("Furniture");
+	setName("Furniture");
 }
 
 //-----------------------------------------------------------------------
 
 Furniture::Furniture(const FurnitureParams & aFurnitureParams) : AbstractObject(aFurnitureParams)	{
 	m_FurnitureParams = aFurnitureParams;
-	setParentName("Furniture");
+	setName("Furniture");
 }
 
 //-----------------------------------------------------------------------
@@ -90,4 +73,3 @@ void Furniture::loadAllFurnitures(ref_ptr<Group> apScene, const string & astrDat
 }
 
 //-----------------------------------------------------------------------
-

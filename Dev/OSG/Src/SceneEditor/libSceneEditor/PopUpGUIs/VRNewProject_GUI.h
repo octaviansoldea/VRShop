@@ -13,9 +13,6 @@ namespace VR	{
 	public:
 		NewProject_GUI();
 
-	private:
-		QString newProjectDialog();
-
 	public slots:
 		void slotBrowseDirectory();
 		void slotApplyChanges();

@@ -262,7 +262,7 @@ int main(int argc, char * argv[])	{
 	ref_ptr<Node> pAxes = osgDB::readNodeFile("../../../../Resources/Models3D/axes.osgt");
 	pScene->addChild(pAxes);
 
-	int nSelection = 14;
+	int nSelection = 13;
 	switch (nSelection)	{
 	case 1: main_UntransformedPlate2D_Color(pScene); break;
 	case 2: main_UntransformedPlate2D_Texture(pScene); break;

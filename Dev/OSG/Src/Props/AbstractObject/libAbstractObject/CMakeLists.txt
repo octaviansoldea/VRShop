@@ -1,7 +1,10 @@
 PROJECT(libAbstractObject)
 
 INCLUDE_DIRECTORIES(
-    ${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
+	${OPENSCENEGRAPH_INCLUDE_DIRS}
+	${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
+	${CMAKE_SOURCE_DIR}/Props/GeometricShapes/libGeometricShapes
+	${CMAKE_SOURCE_DIR}/Props/Equipment/Furniture/libFurniture
 )
 
 SET(SRCS

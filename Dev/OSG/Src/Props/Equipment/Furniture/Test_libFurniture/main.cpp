@@ -204,19 +204,25 @@ void insertIntoDatabase_Plate3D(const string & astrDBName)	{
 void insertIntoDatabase_Container(const string & astrDBName)	{
 	DatabaseMgr & database = DatabaseMgr::Create(astrDBName.c_str(), DatabaseMgr::QSQLITE);
 
+	float m_flWidth(3.0),
+	m_flHeight(3.0),
+	m_flDepth(2.5),
+	m_flThickness(0.01);
+
 	//Set the cupboard
 	Container container;
 
 	ref_ptr < Plate3D > pPlate3D =  new Plate3D;
 	Plate3DParams aPlate3DParams;
 	//Bottom plate
-	aPlate3DParams.m_flLenX = 1.0;
-	aPlate3DParams.m_flLenY = 1.0;
-	aPlate3DParams.m_flLenZ = 0.05;
+	aPlate3DParams.m_flLenX = m_flWidth;
+	aPlate3DParams.m_flLenY = m_flDepth;
+	aPlate3DParams.m_flLenZ = m_flThickness;
 
 	aPlate3DParams.m_flPosX = 0;
 	aPlate3DParams.m_flPosY = 0;
-	aPlate3DParams.m_flPosZ = -0.475;
+	aPlate3DParams.m_flPosZ = - 0.5 + m_flThickness/2;
+
 	aPlate3DParams.m_arrflRGBA[0] = 0.1;
 	aPlate3DParams.m_arrflRGBA[1] = 0.81;
 	aPlate3DParams.m_arrflRGBA[2] = 0.1;
@@ -226,12 +232,13 @@ void insertIntoDatabase_Container(const string & astrDBName)	{
 	
 
 	//Left plate
-	aPlate3DParams.m_flLenX = 0.05;
-	aPlate3DParams.m_flLenY = 1.0;
-	aPlate3DParams.m_flLenZ = 1.0;
-	aPlate3DParams.m_flPosX = -0.475;
+	aPlate3DParams.m_flLenX = m_flThickness;
+	aPlate3DParams.m_flLenY = m_flDepth;
+	aPlate3DParams.m_flLenZ = m_flHeight;
+	aPlate3DParams.m_flPosX = (-m_flWidth+m_flThickness)/2;
 	aPlate3DParams.m_flPosY = 0;
-	aPlate3DParams.m_flPosZ = 0;
+	aPlate3DParams.m_flPosZ = - 0.5 + m_flHeight/2;
+
 	aPlate3DParams.m_arrflRGBA[0] = 1;
 	aPlate3DParams.m_arrflRGBA[1] = 1;
 	aPlate3DParams.m_arrflRGBA[2] = 0;
@@ -240,12 +247,13 @@ void insertIntoDatabase_Container(const string & astrDBName)	{
 	container.addPart(pPlate3D);
 
 	//Right plate
-	aPlate3DParams.m_flLenX = 0.05;
-	aPlate3DParams.m_flLenY = 1.0;
-	aPlate3DParams.m_flLenZ = 1.0;
-	aPlate3DParams.m_flPosX = 0.475;
+	aPlate3DParams.m_flLenX = m_flThickness;
+	aPlate3DParams.m_flLenY = m_flDepth;
+	aPlate3DParams.m_flLenZ = m_flHeight;
+	aPlate3DParams.m_flPosX = (m_flWidth-m_flThickness)/2;
 	aPlate3DParams.m_flPosY = 0;
-	aPlate3DParams.m_flPosZ = 0;
+	aPlate3DParams.m_flPosZ = - 0.5 + m_flHeight/2;
+
 	aPlate3DParams.m_arrflRGBA[0] = 0;
 	aPlate3DParams.m_arrflRGBA[1] = 1;
 	aPlate3DParams.m_arrflRGBA[2] = 1;
@@ -254,12 +262,13 @@ void insertIntoDatabase_Container(const string & astrDBName)	{
 	container.addPart(pPlate3D);
 
 	//Front plate
-	aPlate3DParams.m_flLenX = 1.0;
-	aPlate3DParams.m_flLenY = 0.05;
-	aPlate3DParams.m_flLenZ = 1.0;
+	aPlate3DParams.m_flLenX = m_flWidth;
+	aPlate3DParams.m_flLenY = m_flThickness;
+	aPlate3DParams.m_flLenZ = m_flHeight;
 	aPlate3DParams.m_flPosX = 0;
-	aPlate3DParams.m_flPosY = -0.475;
-	aPlate3DParams.m_flPosZ = 0;
+	aPlate3DParams.m_flPosY = (-m_flDepth+m_flThickness)/2;
+	aPlate3DParams.m_flPosZ = - 0.5 + m_flHeight/2;
+
 	aPlate3DParams.m_arrflRGBA[0] = 1;
 	aPlate3DParams.m_arrflRGBA[1] = 0;
 	aPlate3DParams.m_arrflRGBA[2] = 1;
@@ -268,12 +277,13 @@ void insertIntoDatabase_Container(const string & astrDBName)	{
 	container.addPart(pPlate3D);
 
 	//Back plate
-	aPlate3DParams.m_flLenX = 1.0;
-	aPlate3DParams.m_flLenY = 0.05;
-	aPlate3DParams.m_flLenZ = 1.0;
+	aPlate3DParams.m_flLenX = m_flWidth;
+	aPlate3DParams.m_flLenY = m_flThickness;
+	aPlate3DParams.m_flLenZ = m_flHeight;
 	aPlate3DParams.m_flPosX = 0;
-	aPlate3DParams.m_flPosY = 0.475;
-	aPlate3DParams.m_flPosZ = 0;
+	aPlate3DParams.m_flPosY = (m_flDepth-m_flThickness)/2;
+	aPlate3DParams.m_flPosZ = - 0.5 + m_flHeight/2;
+
 	aPlate3DParams.m_strFileNameTexture = "../../../../Resources/Textures/lz.rgb";
 	pPlate3D->init(aPlate3DParams);
 	container.addPart(pPlate3D);
@@ -415,10 +425,10 @@ int main(int argc, char *argv[])	{
 	//insertIntoDatabase_Cylinder(strDBName);
 	//insertIntoDatabase_Plate3D(strDBName);
 
-	insertIntoDatabase_Container(strDBName);
-	insertIntoDatabase_Cupboard(strDBName);
+//	insertIntoDatabase_Container(strDBName);
+	//insertIntoDatabase_Cupboard(strDBName);
 
-	Furniture::loadAllFurnitures(pScene, strDBName);
+	//Furniture::loadAllFurnitures(pScene, strDBName);
 
 	osgViewer::Viewer viewer;
 	viewer.setSceneData(pScene);

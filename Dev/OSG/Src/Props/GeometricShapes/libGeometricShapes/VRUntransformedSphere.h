@@ -1,8 +1,9 @@
 #ifndef UNTRANSFORMED_SPHERE_H
 #define UNTRANSFORMED_SPHERE_H
 
-#include <osg/Geode>
 #include <osg/Geometry>
+#include <osg/Geode>
+#include <osg/MatrixTransform>
 
 #include "VRAbstractGeomShape.h"
 
@@ -18,10 +19,12 @@ namespace VR {
 		SphereParams();
 	};
 
-	class UntransformedSphere : public AbstractGeomShape, public osg::Geode {
+	class UntransformedSphere : public AbstractGeomShape	{
 	private:
 		static std::string m_strSQLFormat;
 		SphereParams m_SphereParams;
+		osg::ref_ptr<osg::Geode> m_pGeode;
+
 	public:
 		UntransformedSphere();
 		UntransformedSphere(const SphereParams & aSphereParams);
@@ -35,8 +38,8 @@ namespace VR {
 		virtual std::string getSQLCommand() const;
 
 		virtual void init(const AbstractGeomShapeParams & aAbstractGeomShapeParams);
-
 		virtual void initFromSQLData(const std::string & astrSQLData);
+		virtual void predefinedObject() {};
 	};
 }
 #endif //UNTRANSFORMED_SPHERE_H

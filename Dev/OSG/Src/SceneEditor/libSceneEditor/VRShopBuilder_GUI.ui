@@ -387,7 +387,7 @@ QSpinBox::down-arrow:off {border-left: 17px solid none; border-right: 17px solid
             <property name="geometry">
              <rect>
               <x>0</x>
-              <y>-180</y>
+              <y>0</y>
               <width>261</width>
               <height>623</height>
              </rect>
@@ -2900,6 +2900,21 @@ QTreeView::item:hover,QTreeView::item:selected {
               </property>
               <property name="editTriggers">
                <set>QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed|QAbstractItemView::SelectedClicked</set>
+              </property>
+              <property name="dragEnabled">
+               <bool>true</bool>
+              </property>
+              <property name="dragDropOverwriteMode">
+               <bool>true</bool>
+              </property>
+              <property name="dragDropMode">
+               <enum>QAbstractItemView::DragDrop</enum>
+              </property>
+              <property name="defaultDropAction">
+               <enum>Qt::CopyAction</enum>
+              </property>
+              <property name="selectionMode">
+               <enum>QAbstractItemView::SingleSelection</enum>
               </property>
               <property name="rootIsDecorated">
                <bool>true</bool>

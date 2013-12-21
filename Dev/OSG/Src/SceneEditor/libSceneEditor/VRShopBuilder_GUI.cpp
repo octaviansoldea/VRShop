@@ -4,10 +4,15 @@
 
 #include <QFileDialog>
 #include <QMessageBox>
-#include "VRInsertNewItem_GUI.h"
+
 #include "VRProductSettings_GUI.h"
 #include "VRRemoveProduct_GUI.h"
+#include "VRRemoveSelection_GUI.h"
+
 #include "VRNewProject_GUI.h"
+#include "VRInsertNewItem_GUI.h"
+#include "VRDuplicateItem_GUI.h"
+#include "VRSaveAs_GUI.h"
 
 #include "VRShopBuilder_GUI.h"
 
@@ -17,7 +22,7 @@ using namespace VR;
 
 //----------------------------------------------------------------------
 
-ShopBuilder_GUI::ShopBuilder_GUI() {	
+ShopBuilder_GUI::ShopBuilder_GUI()	{	
 	setupUi(this);
 
 	setWindowTitle("VR Shop Server Dialog");
@@ -36,6 +41,8 @@ void ShopBuilder_GUI::buildConnections() {
 	connect(actionNew, SIGNAL(triggered()), this, SLOT(slotNewProject()));
 	connect(actionOpen, SIGNAL(triggered()), this, SLOT(slotOpenDB()));
 	connect(actionSave, SIGNAL(triggered()), this, SLOT(slotSaveDB()));
+	connect(actionSave_As, SIGNAL(triggered()), this, SLOT(slotSaveAsDB()));
+	connect(actionClose, SIGNAL(triggered()), this, SLOT(slotCloseDB()));
 
 	connect(m_p_ToolButton_GridOnOff, SIGNAL(toggled(bool)),this,SLOT(slotGridOnOff(bool)));
 	connect(m_p_ToolButton_CameraManipulatorOnOff, SIGNAL(toggled(bool)),this,SLOT(slotCameraManipulatorOnOff(bool)));
@@ -124,6 +131,12 @@ void ShopBuilder_GUI::slotNewProject()	{
 	//To get a widget without a "TitleBar"
 	newProject.setWindowFlags(Qt::FramelessWindowHint);
 	newProject.exec();
+
+	//Result == 1 indicates that path+name are valid
+	if (newProject.result() == 1)	{
+		m_qstrFileName = newProject.m_pLineEditDirectory->text() + "/" + newProject.m_pLineEditFileName->text() + ".db";
+		m_ShopBuilder.newDB(m_qstrFileName.toStdString());
+	}
 	return;
 }
 
@@ -140,7 +153,8 @@ void ShopBuilder_GUI::slotOpenDB() {
 		int nRes = msgBox.exec();
 		return;
 	}
-	m_ShopBuilder.readDB(qstrFileName.toStdString());
+	m_qstrFileName = qstrFileName;
+	m_ShopBuilder.readDB(m_qstrFileName.toStdString());
 }
 
 //=========================================================================================
@@ -154,6 +168,30 @@ void ShopBuilder_GUI::slotSaveDB() {
 		msgBox.setWindowTitle("Error window");
 		int nRes = msgBox.exec();
 	}
+}
+
+//---------------------------------------------------------------------------------------
+
+void ShopBuilder_GUI::slotSaveAsDB()	{
+	SaveAs_GUI saveAsGUI;
+
+	//To get a widget without a "TitleBar"
+	saveAsGUI.setWindowFlags(Qt::FramelessWindowHint);
+	saveAsGUI.exec();
+	return;
+}
+
+//---------------------------------------------------------------------------------------
+
+void ShopBuilder_GUI::slotCloseDB()	{
+	/* Close if no unsaved changes are done to the project
+	If the project has been modified, then write a warning message admonishing to the changes
+	done which will be lost if not saved.
+	If YES pressed, open Save As dialog
+	*/
+
+	std::cout << "slot Close entered" << std::endl;
+	return;
 }
 
 //---------------------------------------------------------------------------------------
@@ -293,11 +331,15 @@ void ShopBuilder_GUI::slotSetHomeDirection()	{
 void ShopBuilder_GUI::slotModifySceneActions()	{
 	QPushButton * pPushButton = dynamic_cast<QPushButton*>(sender());
 	if(pPushButton == m_p_PushButton_ModifyScene_AddNewItem)	{
-		InsertNewItem_GUI insertNewItem_GUI;
-		
+		InsertNewItem_GUI * pInsertNewItem_GUI = new InsertNewItem_GUI;
+		connect(pInsertNewItem_GUI, SIGNAL(signalNewItemRequested(const QString &)),
+				this, SLOT(slotAddNewItem(const QString & )));
+
 		//To get a widget without a "TitleBar"
-		insertNewItem_GUI.setWindowFlags(Qt::FramelessWindowHint);
-		insertNewItem_GUI.exec();
+		pInsertNewItem_GUI->setWindowFlags(Qt::FramelessWindowHint);
+		pInsertNewItem_GUI->exec();
+
+		delete pInsertNewItem_GUI;
 		return;
 	}
 	if	(pPushButton == m_p_PushButton_ModifyScene_EditItem)	{
@@ -316,13 +358,23 @@ void ShopBuilder_GUI::slotModifySceneActions()	{
 		return;
 	}
 	if	(pPushButton == m_p_PushButton_ModifyScene_DuplicateSelection)	{
-		std::cout << "Duplicate selection" << std::endl;
-		// void duplicateSelectionWidget();
+		DuplicateItem_GUI * pDuplicateItem_GUI = new DuplicateItem_GUI;
+
+		//To get a widget without a "TitleBar"
+		pDuplicateItem_GUI->setWindowFlags(Qt::FramelessWindowHint);
+		pDuplicateItem_GUI->exec();
+
+		delete pDuplicateItem_GUI;
 		return;
 	}
 	if	(pPushButton == m_p_PushButton_ModifyScene_DeleteSelection)	{
-		std::cout << "delete selection" << std::endl;
-		// void deleteSelectionWidget();
+		RemoveSelection_GUI * pRemoveSelection_GUI = new RemoveSelection_GUI;
+
+		//To get a widget without a "TitleBar"
+		pRemoveSelection_GUI->setWindowFlags(Qt::FramelessWindowHint);
+		pRemoveSelection_GUI->exec();
+
+		delete pRemoveSelection_GUI;
 		return;
 	}
 	else	{
@@ -405,4 +457,14 @@ void ShopBuilder_GUI::slotModifyProductButtons()	{
 		// void applyProductSettingstWidget();
 		return;
 	}
+}
+
+//---------------------------------------------------------------------------------------
+
+void ShopBuilder_GUI::slotAddNewItem(const QString & aqstrItemName)	{
+	if (m_qstrFileName == "")
+		m_qstrFileName = "../../Databases/Equipment.db";
+
+	m_ShopBuilder.addNewItem(aqstrItemName.toStdString(),m_qstrFileName.toStdString());
+	m_ShopBuilder.readDB(m_qstrFileName.toStdString());
 }

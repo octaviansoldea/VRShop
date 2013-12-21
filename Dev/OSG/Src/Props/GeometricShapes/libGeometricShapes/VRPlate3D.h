@@ -23,7 +23,7 @@ namespace VR	{
 	};
 
 
-	class Plate3D : public AbstractGeomShape, public osg::MatrixTransform {
+	class Plate3D : public AbstractGeomShape	{
 	private:
 		static std::string m_strSQLFormat;
 
@@ -37,6 +37,8 @@ namespace VR	{
 
 		virtual void initFromSQLData(const std::string & astrSQLData);
 		virtual void init(const AbstractGeomShapeParams & aAbstractGeomShapeParams);
+
+		virtual void predefinedObject();
 
 		void setColor(const std::vector < float > & aarrflColor);
 		void setTexture(const std::string & astrFileName);

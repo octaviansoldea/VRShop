@@ -1,8 +1,6 @@
 #ifndef VR_CUPBOARD_H
 #define VR_CUPBOARD_H
 
-#include <QString>
-
 #include "VRFurniture.h"
 
 namespace VR	{
@@ -16,6 +14,7 @@ namespace VR	{
 		Cupboard(const CupboardParams & aCupboardParams);
 
 		void init(const CupboardParams & aCupboardParams);
+		virtual void predefinedObject();
 
 		std::string setSQLCommand(const std::string & astrCommand);
 		virtual std::string getSQLCommand() const;

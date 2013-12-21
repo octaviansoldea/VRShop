@@ -30,6 +30,7 @@ INCLUDE_DIRECTORIES(
     ${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
 	${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
 	${CMAKE_SOURCE_DIR}/Props/GeometricShapes/libGeometricShapes
+	${CMAKE_SOURCE_DIR}/Props/Equipment/Furniture/libFurniture
 	${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabaseMgr
 )
 
@@ -46,10 +47,11 @@ SET(LIBS_COMMON
 	${OSGQT_LIBRARIES}
 	${OSGVIEWER_LIBRARIES}
 	${OPENTHREADS_LIBRARIES}
-	libGeometricShapes
 	libDatabaseMgr
-	libCommon
+	libFurniture
+	libGeometricShapes
 	libAbstractObject
+	libCommon
 )
 
 IF(Qt5_FOUND)

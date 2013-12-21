@@ -1,5 +1,3 @@
-//#include "VRDatabaseMgr.h"
-
 #include "VRUntransformedPlate3D.h"
 #include "VRPlate3D.h"
 
@@ -141,4 +139,10 @@ void Plate3D::initFromSQLData(const string & astrSQLData)	{
 		setTexture(p3DP.m_strFileNameTexture);
 	}
 	init(p3DP);
+}
+
+//----------------------------------------------------------------------
+
+void Plate3D::predefinedObject()	{
+	init(m_Plate3DParams);
 }

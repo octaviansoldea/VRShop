@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "VRShopBuilder.h"
+
 #include "ui_VRShopBuilder_GUI.h"
 
 class Grid;
@@ -13,16 +14,22 @@ namespace VR	{
 	public:
 		ShopBuilder_GUI();
 		ShopBuilder m_ShopBuilder;
+
 	private:
 		void buildConnections();
 
 		QString openDialog(const char * apchDBName);
 		QString saveDialog(const char * apchDBName);
 
+		QString m_qstrFileName;
+
 	public slots:
 		void slotNewProject();
 		void slotOpenDB();
 		void slotSaveDB();
+		void slotSaveAsDB();
+		void slotCloseDB();
+
 		void slotGridOnOff(bool abIndicator);
 		void slotCameraManipulatorOnOff(bool abIndicator);
 
@@ -51,6 +58,8 @@ namespace VR	{
 		void slotSetProductSettings(const QString & astrSelectedProduct);
 		void slotSetNewPriceQuantity();
 		void slotModifyProductButtons();
+
+		void slotAddNewItem(const QString & aqstrItemName);
 	};
 }
 #endif //VR_SHOP_BUILDER_GUI_H

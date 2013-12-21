@@ -1,7 +1,3 @@
-#include <string>
-#include <vector>
-#include <iostream>
-
 #include "VRAbstractGeomShape.h"
 #include "VRPlate3D.h"
 #include "VRCylinder.h"
@@ -56,7 +52,7 @@ void Cupboard::init(const CupboardParams & aCupboardParams)	{
 	;
 	
 	setMatrix(cupboardMatrix);
-	setName(Furniture::getParentName() + ":Cupboard");
+	setName(Furniture::getName() + ":Cupboard");
 }
 
 //-----------------------------------------------------------------------
@@ -94,35 +90,112 @@ void Cupboard::initFromSQLData(const string & astrSQLData)	{
 	vector < string > arrstrSQLData = splitString(strSQLData,strDelimiter);
 
 	CupboardParams cupboardParams;
-	cupboardParams.m_flPosX = 0.5;
-	cupboardParams.m_flPosY = 0.5;
-	cupboardParams.m_flPosZ = 0.5;
-	cupboardParams.m_flAngleXY = 45.0;
+	cupboardParams.m_flPosX = 0.0;
+	cupboardParams.m_flPosY = 0.0;
+	cupboardParams.m_flPosZ = 0.0;
+	cupboardParams.m_flAngleXY = 90.0;
 	cupboardParams.m_flScaleX = 1;
 
+	ref_ptr < AbstractGeomShape > pAbstractGeomShape;
 	for (auto it = arrstrSQLData.begin(); it != arrstrSQLData.end()-1; it++)	{
-		if(isAtEndOfString(*it, "Plate3D"))	{
-			ref_ptr < Plate3D > pPlate = new Plate3D;
-			pPlate->initFromSQLData(*it);
-			addChild(pPlate);
-		}
-		else if(isAtEndOfString(*it, "Cylinder"))	{
-			ref_ptr < Cylinder > pCylinder = new Cylinder;
-			pCylinder->initFromSQLData(*it);
-			addChild(pCylinder);
-		}
-		else if(isAtEndOfString(*it, "Prism"))	{
-			ref_ptr < Prism > pPrism = new Prism;
-			pPrism->initFromSQLData(*it);
-			addChild(pPrism);
-		}
-		else if(isAtEndOfString(*it, "Sphere"))	{
-			ref_ptr < UntransformedSphere > pSphere = new UntransformedSphere;
-			pSphere->initFromSQLData(*it);
-			addChild(pSphere);
-		}
+		if(isAtEndOfString(*it, "Plate3D"))
+			pAbstractGeomShape = new Plate3D;
+		else if(isAtEndOfString(*it, "Cylinder"))
+			pAbstractGeomShape = new Cylinder;
+		else if(isAtEndOfString(*it, "Prism"))
+			pAbstractGeomShape = new Prism;
+		else if(isAtEndOfString(*it, "Sphere"))
+			pAbstractGeomShape = new UntransformedSphere;
+
+		pAbstractGeomShape->initFromSQLData(*it);
+		addChild(pAbstractGeomShape);
 	}
 	init(cupboardParams);
 }
 
 //-----------------------------------------------------------------------
+
+void Cupboard::predefinedObject()	{
+	ref_ptr < Plate3D > pPlate3D = new Plate3D;
+	Plate3DParams aPlate3DParams;
+	//Bottom plate
+	aPlate3DParams.m_flLenX = 5.0;
+	aPlate3DParams.m_flLenY = 1.0;
+	aPlate3DParams.m_flLenZ = 0.05;
+
+	aPlate3DParams.m_flPosX = 0.0;
+	aPlate3DParams.m_flPosY = 0.0;
+	aPlate3DParams.m_flPosZ = 0.0;
+	aPlate3DParams.m_arrflRGBA[0] = 1;
+	aPlate3DParams.m_arrflRGBA[1] = 1;
+	aPlate3DParams.m_arrflRGBA[2] = 0;
+	aPlate3DParams.m_arrflRGBA[3] = 1;
+	aPlate3DParams.m_strFileNameTexture = "../../../Resources/Textures/lz.rgb";
+	pPlate3D->init(aPlate3DParams);
+	addPart(pPlate3D);
+	
+
+	//Left side
+	aPlate3DParams.m_flLenX = 0.05;
+	aPlate3DParams.m_flLenY = 1.0;
+	aPlate3DParams.m_flLenZ = 2.0;
+	aPlate3DParams.m_flPosX = -2.475;
+	aPlate3DParams.m_flPosY = 0;
+	aPlate3DParams.m_flPosZ = 1.0;
+	pPlate3D->init(aPlate3DParams);
+	addPart(pPlate3D);
+
+	//Right side
+	aPlate3DParams.m_flLenX = 0.05;
+	aPlate3DParams.m_flLenY = 1.0;
+	aPlate3DParams.m_flLenZ = 2.0;
+	aPlate3DParams.m_flPosX = 2.475;
+	aPlate3DParams.m_flPosY = 0;
+	aPlate3DParams.m_flPosZ = 1.0;
+	pPlate3D->init(aPlate3DParams);
+	addPart(pPlate3D);
+
+	//Back side
+	aPlate3DParams.m_flLenX = 5.0;
+	aPlate3DParams.m_flLenY = 0.05;
+	aPlate3DParams.m_flLenZ = 2.0;
+	aPlate3DParams.m_flPosX = 0;
+	aPlate3DParams.m_flPosY = 0.475;
+	aPlate3DParams.m_flPosZ = 1.0;
+	pPlate3D->init(aPlate3DParams);
+	addPart(pPlate3D);
+
+	//shelf 1
+	aPlate3DParams.m_flLenX = 5.0;
+	aPlate3DParams.m_flLenY = 1.0;
+	aPlate3DParams.m_flLenZ = 0.05;
+
+	aPlate3DParams.m_flPosX = 0;
+	aPlate3DParams.m_flPosY = 0;
+	aPlate3DParams.m_flPosZ = 0.675;
+	pPlate3D->init(aPlate3DParams);
+	addPart(pPlate3D);
+
+
+	//shelf 2
+	aPlate3DParams.m_flLenX = 5.0;
+	aPlate3DParams.m_flLenY = 1.0;
+	aPlate3DParams.m_flLenZ = 0.05;
+
+	aPlate3DParams.m_flPosX = 0;
+	aPlate3DParams.m_flPosY = 0;
+	aPlate3DParams.m_flPosZ = 1.375;
+	pPlate3D->init(aPlate3DParams);
+	addPart(pPlate3D);
+
+	//shelf 3
+	aPlate3DParams.m_flLenX = 5.0;
+	aPlate3DParams.m_flLenY = 1.0;
+	aPlate3DParams.m_flLenZ = 0.05;
+
+	aPlate3DParams.m_flPosX = 0;
+	aPlate3DParams.m_flPosY = 0;
+	aPlate3DParams.m_flPosZ = 2;
+	pPlate3D->init(aPlate3DParams);
+	addPart(pPlate3D);
+}

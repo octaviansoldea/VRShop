@@ -46,7 +46,7 @@ namespace VR	{
 		QList < QString > m_lstqstrSceneHierarchy;
 		SceneHierarchyItem * m_pSceneHierarchyItem;
 
-		std::string & m_strIndent;
+		std::string m_strIndent;
 		void setIndent(int anLevel);
 		std::string getIndent() const;	
 	};

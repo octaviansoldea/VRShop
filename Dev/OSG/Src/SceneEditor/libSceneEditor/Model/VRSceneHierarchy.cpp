@@ -45,7 +45,7 @@ int SceneHierarchyItem::sizeParent() const	{
 
 //====================================================================
 
-SceneHierarchy::SceneHierarchy(const ref_ptr<Group> apScene) : m_strIndent(string(""))	{
+SceneHierarchy::SceneHierarchy(const ref_ptr<Group> apScene) : m_strIndent("")	{
 
 	m_lstqstrSceneHierarchy.push_back("Agents");
 	m_lstqstrSceneHierarchy.push_back("Furniture");

@@ -21,6 +21,7 @@
 #include <osgUtil/LineSegmentIntersector>
 #include <osg/BoundsChecking>
 
+using namespace std;
 using namespace osg;
 using namespace osgGA;
 
@@ -131,7 +132,9 @@ bool OSGCameraManipulator::handle(const osgGA::GUIEventAdapter& ea,osgGA::GUIAct
 	{
 	case(osgGA::GUIEventAdapter::FRAME):
 		_frame(ea,aa);
-		return false;
+		return handleFrame( ea, aa );
+	case GUIEventAdapter::RESIZE:
+        return handleResize( ea, aa );
 	default:
 		break;
 	}
@@ -140,37 +143,62 @@ bool OSGCameraManipulator::handle(const osgGA::GUIEventAdapter& ea,osgGA::GUIAct
 
 	switch(eventType)
 	{
-	case GUIEventAdapter::MOVE:
-		return handleMouseMove( ea, aa );
+	/*case GUIEventAdapter::MOVE:
+		if(m_bUFO == true) {
+			updateUFOOrbit();
+		}
+		m_bUFO = false;
+		return handleMouseMove( ea, aa );*/
 
 	case GUIEventAdapter::DRAG:
+		if(m_bUFO == true) {
+			updateUFOOrbit();
+		}
+		m_bUFO = false;
 		return handleMouseDrag( ea, aa );
 
 	case GUIEventAdapter::PUSH:
+		if(m_bUFO == true) {
+			updateUFOOrbit();
+		}
+		m_bUFO = false;
 		return handleMousePush( ea, aa );
 
 	case GUIEventAdapter::RELEASE:
+		if(m_bUFO == true) {
+			updateUFOOrbit();
+		}
+		m_bUFO = false;
 		return handleMouseRelease( ea, aa );
 
 	case GUIEventAdapter::SCROLL:
+		if(m_bUFO == true) {
+			updateUFOOrbit();
+		}
+		m_bUFO = false;
 		if( _flags & PROCESS_MOUSE_WHEEL )
 			return handleMouseWheel( ea, aa );
 		else
 			return false;
 
 	case(osgGA::GUIEventAdapter::KEYUP):
+		if(m_bUFO == false) {
+			updateOrbitUFO();
+		}
 		_keyUp( ea, aa );
+		m_bUFO = true;
 		return false;
+		//return handleKeyUp( ea, us );
 		break;
 
 	case(osgGA::GUIEventAdapter::KEYDOWN):
+		if(m_bUFO == false) {
+			updateOrbitUFO();
+		}
 		_keyDown(ea, aa);
+		m_bUFO = true;
 		return false;
-		break;
-
-	case(osgGA::GUIEventAdapter::FRAME):
-		_frame(ea,aa);
-		return false;
+		//return handleKeyDown( ea, us );
 		break;
 
 	default:
@@ -178,6 +206,18 @@ bool OSGCameraManipulator::handle(const osgGA::GUIEventAdapter& ea,osgGA::GUIAct
 	}
 }
 
+void OSGCameraManipulator::updateUFOOrbit() {
+	cout << "updateUFOOrbit" << endl;
+	//setTransformation(_homeEye, _center, _homeUp);
+	setByMatrixOrbit(getMatrixUFO());
+	//setByInverseMatrixTrackball(getInverseMatrixUFO());
+}
+
+void OSGCameraManipulator::updateOrbitUFO() {
+	cout << "updateOrbitUFO" << endl;
+	setByMatrixUFO(getMatrixOrbit());
+	// setByInverseMatrixUFO(getInverseMatrixTrackball());
+}
 
 bool OSGCameraManipulator::intersect(const osg::Vec3d& start, const osg::Vec3d& end, osg::Vec3d& intersection) const
 {

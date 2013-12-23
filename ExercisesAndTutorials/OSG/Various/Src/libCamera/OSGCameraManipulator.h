@@ -41,6 +41,9 @@ namespace VR {
 		/** Handles incoming osgGA events */
         bool handle(const osgGA::GUIEventAdapter& ea,osgGA::GUIActionAdapter &aa);
 
+		void updateUFOOrbit();
+		void updateOrbitUFO();
+
 		//Begin UFOManipulator 
 		public:
 

@@ -38,7 +38,8 @@
 
 /*	Push button*/
 QPushButton {
-	min-height: 20px;
+	min-height: 19px;
+	max-height: 19px;
 	border: 1px solid gray;
 	border-radius: 3px;
 	background-color: lightgray;
@@ -50,38 +51,6 @@ QPushButton:hover {
 	border-radius: 3px;
 }
 
-
-/*Combo box*/
-QComboBox {
-	min-height: 19px;
-	background-color: lightgray;
-	selection-background-color: gray;
-	padding-left: 4px;
-	border: 1px solid gray;
-}
-
-QComboBox::down-arrow {
-	image: url(C:/Projekti/arrow_down.png);
-    width: 10px;
-    height: 10px;
-}
-
-QComboBox::drop-down {
-	border: 0px;
-    subcontrol-position: top right;
-    width: 15px;
-}
-
-QComboBox QAbstractItemView {
-	border: 1px solid black;
-	background-color: lightgray;
-	selection-background-color: gray;
-}
-
-
-QComboBox:hover {
-	background-color: gray;
-}
 
 
 /*Tool button*/
@@ -239,13 +208,13 @@ QLineEdit {
          <property name="minimumSize">
           <size>
            <width>50</width>
-           <height>19</height>
+           <height>21</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
            <width>16777215</width>
-           <height>19</height>
+           <height>21</height>
           </size>
          </property>
          <property name="font">
@@ -284,7 +253,7 @@ QLineEdit {
          <property name="minimumSize">
           <size>
            <width>60</width>
-           <height>22</height>
+           <height>21</height>
           </size>
          </property>
          <property name="maximumSize">
@@ -309,7 +278,7 @@ QLineEdit {
          <property name="minimumSize">
           <size>
            <width>60</width>
-           <height>22</height>
+           <height>21</height>
           </size>
          </property>
          <property name="maximumSize">

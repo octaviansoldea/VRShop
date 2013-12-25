@@ -41,7 +41,7 @@ QString DatabaseMgr::getDriverName() const {
 
 DatabaseMgr & DatabaseMgr::Create(const QString & aqstrDBPathName, DRIVER_NAME aDriverName) {
 	DatabaseMgr * pDatabaseMgr;
-
+	
 	if(aDriverName == DRIVER_NAME::QODBC) {
 		pDatabaseMgr = CreateODBC(aqstrDBPathName);
 		if(pDatabaseMgr)

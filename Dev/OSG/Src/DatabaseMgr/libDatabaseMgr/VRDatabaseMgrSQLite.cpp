@@ -34,7 +34,10 @@ DatabaseMgr(aqstrDBPathName) {
 //-----------------------------------------------------------------------------------------
 
 bool DatabaseMgrSQLite::createTable(const string & astrSQLCommand) {
-	if (m_QSqlDatabase.open())	{
+	if (!m_QSqlDatabase.isOpen())
+		m_QSqlDatabase.open();
+
+	if (m_QSqlDatabase.isOpen())	{
 		string strSQLCommand = astrSQLCommand;
 		vector <string> arrstrCommands = splitString(strSQLCommand,";");
 
@@ -55,7 +58,10 @@ bool DatabaseMgrSQLite::createTable(const string & astrSQLCommand) {
 //-----------------------------------------------------------------------------------------
 
 void DatabaseMgrSQLite::fillPrimitiveTable(string & astrCommand)	{
-	if(m_QSqlDatabase.open())	{
+	if (!m_QSqlDatabase.isOpen())
+		m_QSqlDatabase.open();
+
+	if (m_QSqlDatabase.isOpen())	{
 
 		//Command is string of SQL commands that are delimited with "_"
 		vector <string> arrstrSQLCommands = splitString(astrCommand,"_");
@@ -100,7 +106,10 @@ void DatabaseMgrSQLite::fillPrimitiveTable(string & astrCommand)	{
 //=============================================================================================
 
 void DatabaseMgrSQLite::insertIntoDatabase(const DatabaseMgrParams & aDatabaseMgrParams)	{
-	if(m_QSqlDatabase.open())	{
+	if (!m_QSqlDatabase.isOpen())
+		m_QSqlDatabase.open();
+
+	if (m_QSqlDatabase.isOpen())	{
 		QString qstrObjectType = aDatabaseMgrParams.m_qstrObjectType;
 		QString qstrObjectName = aDatabaseMgrParams.m_qstrObjectName;
 
@@ -184,7 +193,10 @@ void DatabaseMgrSQLite::insertIntoDatabase(const DatabaseMgrParams & aDatabaseMg
 //-----------------------------------------------------------------------------------------
 
 string DatabaseMgrSQLite::readFromDB(string & astrCommand)	{
-	if(m_QSqlDatabase.open())	{
+	if (!m_QSqlDatabase.isOpen())
+		m_QSqlDatabase.open();
+
+	if (m_QSqlDatabase.isOpen())	{
 		QSqlQuery sqlQuery;
 		sqlQuery.exec(astrCommand.c_str());
 		vector <string> arrstrEquipmentItem;

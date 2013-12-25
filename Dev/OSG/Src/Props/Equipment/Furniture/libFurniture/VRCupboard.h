@@ -13,7 +13,7 @@ namespace VR	{
 		Cupboard();
 		Cupboard(const CupboardParams & aCupboardParams);
 
-		void init(const CupboardParams & aCupboardParams);
+		virtual void init(const FurnitureParams & aFurnitureParams);
 		virtual void predefinedObject();
 
 		std::string setSQLCommand(const std::string & astrCommand);

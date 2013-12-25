@@ -37,7 +37,7 @@ UntransformedPlate2D::UntransformedPlate2D()	{
 //--------------------------------------------------------------
 
 void UntransformedPlate2D::setColor(const vector < float > & aarrflColor) {
-	Vec4d vec4(aarrflColor[0], aarrflColor[1], aarrflColor[2], aarrflColor[3]);
+	Vec4f vec4(aarrflColor[0], aarrflColor[1], aarrflColor[2], aarrflColor[3]);
 	ref_ptr<Vec4Array> pColors = new Vec4Array;
 	pColors->push_back(vec4);
 	pColors->push_back(vec4);

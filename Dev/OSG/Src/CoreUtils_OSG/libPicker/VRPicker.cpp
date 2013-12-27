@@ -11,6 +11,7 @@
 
 #include "VRBoundingBox.h"
 #include "VRAbstractGeomShape.h"
+#include "VRAbstractObject.h"
 #include "VRPicker.h"
 
 using namespace VR;
@@ -110,8 +111,8 @@ bool PickAndDragHandler::handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 
 				int idx;
 				for(idx=nodePath.size()-1; idx>=0; idx--) {
-					AbstractGeomShape *pShape = dynamic_cast<AbstractGeomShape*>(nodePath[idx]);
-					if(pShape != NULL && pShape->getIsTargetPick() != false) {
+					AbstractObject *pAbstractObject = dynamic_cast<AbstractObject*>(nodePath[idx]);
+					if(pAbstractObject != NULL && pAbstractObject->getIsTargetPick() != false) {
 						break;
 					}
 				}
@@ -178,12 +179,14 @@ bool PickAndDragHandler::handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 	    osg::Vec3d eyeVector(mat(3,0),mat(3,1),mat(3,2));
 		double moveFactor = 0.3 * (lookVector - eyeVector).length();
 
-		osg::Matrix mtrx;
+		osg::Matrix mtrx = osg::Matrix::identity();
 		//Does Up/down-left/right dragging respective to the axes
 		if(m_nTransformSelection == enumObjectTransform(Default))
 //		if(ea.getModKeyMask()&osgGA::GUIEventAdapter::MODKEY_ALT && m_nTransformSelection == enumObjectTransform(Default))
-			mtrx = m_mtrxOriginalPosition * osg::Matrix::translate(
+/*			mtrx = m_mtrxOriginalPosition * osg::Matrix::translate(
 				moveFactor*(dPositionX), 0.0, moveFactor*(dPositionY));
+*/
+				mtrx.postMult(m_mtrxOriginalPosition.translate(osg::Vec3d(moveFactor*(dPositionX), 0.0, moveFactor*(dPositionY))));
 
 		//Does Up/down-left/right dragging irrespective of the axes
 //		if(ea.getModKeyMask()&osgGA::GUIEventAdapter::MODKEY_ALT && m_nTransformSelection == enumObjectTransform(LateralVerticalToMonitor))

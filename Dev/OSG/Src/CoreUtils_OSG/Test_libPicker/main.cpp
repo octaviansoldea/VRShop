@@ -19,10 +19,10 @@ using namespace std;
 void main_Plate3D(osg::ref_ptr<osg::Group> pScene)	{
 	osg::ref_ptr<Plate3D> pPlate3D = new Plate3D();
 	vector < float > arrflColor;
-	arrflColor[0] = 0.0;
-	arrflColor[1] = 1.0;
-	arrflColor[2] = 0.0;
-	arrflColor[3] = 1.0;
+	arrflColor.push_back(0.0);
+	arrflColor.push_back(0.0);
+	arrflColor.push_back(1.0);
+	arrflColor.push_back(1.0);
 
 	pPlate3D->setColor(arrflColor);
 	pPlate3D->setIsTargetPick(true);
@@ -34,10 +34,10 @@ void main_Plate3D(osg::ref_ptr<osg::Group> pScene)	{
 void main_Cylinder(osg::ref_ptr<osg::Group> pScene)	{
 	osg::ref_ptr<Cylinder> pCylinder = new Cylinder();
 	vector < float > arrflColor;
-	arrflColor[0] = 0.0;
-	arrflColor[1] = 1.0;
-	arrflColor[2] = 0.0;
-	arrflColor[3] = 1.0;
+	arrflColor.push_back(0.0);
+	arrflColor.push_back(0.0);
+	arrflColor.push_back(1.0);
+	arrflColor.push_back(1.0);
 
 	pCylinder->setColor(arrflColor);
 	pCylinder->setResolution(20);
@@ -50,10 +50,10 @@ void main_Cylinder(osg::ref_ptr<osg::Group> pScene)	{
 void main_VRUntransformedSphere(osg::ref_ptr<osg::Group> pScene)	{
 	osg::ref_ptr<UntransformedSphere> pSphere = new UntransformedSphere();
 	vector < float > arrflColor;
-	arrflColor[0] = 0.0;
-	arrflColor[1] = 1.0;
-	arrflColor[2] = 0.0;
-	arrflColor[3] = 1.0;
+	arrflColor.push_back(0.0);
+	arrflColor.push_back(0.0);
+	arrflColor.push_back(1.0);
+	arrflColor.push_back(1.0);
 
 	pSphere->setColor(arrflColor);
 	pSphere->setResolution(20,20);
@@ -78,8 +78,8 @@ int main(int argc, char * argv[])	{
 	osgViewer::Viewer viewer;
 	viewer.setSceneData( root.get() );
 //	viewer.setUpViewInWindow(0, 0, 1000, 800);
-//	viewer.setCameraManipulator(new VR::OSGCameraManipulator);
-//	viewer.addEventHandler( new VR::PickAndDragHandler );
+	viewer.setCameraManipulator(new VR::OSGCameraManipulator);
+	viewer.addEventHandler( new VR::PickAndDragHandler );
 
 	return viewer.run();
 }

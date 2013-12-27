@@ -13,6 +13,9 @@
 #include <osgDB/ReadFile>
 #include <osgGA/TrackballManipulator>
 
+#include "OSGCameraManipulator.h"
+#include "VRPicker.h"
+
 #include "OSGQT_Widget.h"
 #include "VRDatabaseMgr.h"
 
@@ -53,7 +56,10 @@ void ShopBuilder::init(OSGQT_Widget * apOSGQTWidget, QTreeView * apTreeView) {
 
 	//Send scene to the Widget
 	m_pOSGQTWidget->setSceneData(m_pScene);
-	m_pOSGQTWidget->setCameraManipulator(new osgGA::TrackballManipulator);
+//	m_pOSGQTWidget->setCameraManipulator(new osgGA::TrackballManipulator);
+	m_pOSGQTWidget->setCameraManipulator(new VR::OSGCameraManipulator);
+	m_pOSGQTWidget->addEventHandler(new VR::PickAndDragHandler);
+
 	m_pTreeView = apTreeView;
 	updateQTreeView();
 
@@ -166,6 +172,7 @@ void ShopBuilder::readDB(const string & astrDBFileName)	{
 		pAbstractObject = static_cast<AbstractObject*>(AbstractObject::createInstance(*it));
 
 		pAbstractObject->initFromSQLData(strSQLData);
+		pAbstractObject->setIsTargetPick(true);
 
 		m_pObjects->addChild(pAbstractObject);
 	}
@@ -184,12 +191,15 @@ void ShopBuilder::addNewItem(const string & astrObjectName)	{
 	ref_ptr < AbstractObject > pAbstractObject = static_cast<AbstractObject*>(AbstractObject::createInstance(astrObjectName).get());
 
 	pAbstractObject->predefinedObject();
+
 	DatabaseMgr & database = DatabaseMgr::Create(m_qstrFileName, DatabaseMgr::QSQLITE);
 
 	string strSQLCommand = pAbstractObject->getSQLCommand();
 	database.fillPrimitiveTable(strSQLCommand);
 
 	m_pObjects->addChild(pAbstractObject);
+	pAbstractObject->setIsTargetPick(true);
+
 	m_pScene->addChild(m_pObjects);
 
 	updateQTreeView();

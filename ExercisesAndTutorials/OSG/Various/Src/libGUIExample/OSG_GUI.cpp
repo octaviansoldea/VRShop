@@ -2,6 +2,8 @@
 
 #include <osgGA/TrackballManipulator>
 
+#include "OSGCameraManipulator.h"
+
 #include <osgDB/ReadFile>
 
 
@@ -28,7 +30,8 @@ OSGQT_GUI::OSGQT_GUI() {
 
 	//Send scene to the Widget
 	m_pOSGQTWidget->setSceneData(pScene);
-	m_pOSGQTWidget->setCameraManipulator(new osgGA::TrackballManipulator);
+//	m_pOSGQTWidget->setCameraManipulator(new osgGA::TrackballManipulator);
+	m_pOSGQTWidget->setCameraManipulator(new VR::OSGCameraManipulator);
 
 	//Get geometry from the GUI for compatibility
 	m_pOSGQTWidget->setGeometry(this->x(), this->y(), this->width(), this->height());

@@ -18,7 +18,7 @@ namespace VR	{
 		Container();
 		Container(const ContainerParams & aContainerParams);
 
-		virtual void init(const FurnitureParams & aFurnitureParams);
+		void init(const ContainerParams & aContainerParams);
 		virtual void predefinedObject();
 
 		std::string setSQLCommand(const std::string & astrCommand);

@@ -134,9 +134,8 @@ void ShopBuilder_GUI::slotNewProject()	{
 
 	//Result == 1 indicates that path+name are valid
 	if (newProject.result() == 1)	{
-		QString qstrFileName;
-		qstrFileName = newProject.m_pLineEditDirectory->text() + "/" + newProject.m_pLineEditFileName->text() + ".db";
-		m_ShopBuilder.newDB(qstrFileName.toStdString());
+		m_qstrFileName = newProject.m_pLineEditDirectory->text() + "/" + newProject.m_pLineEditFileName->text() + ".db";
+		m_ShopBuilder.newDB(m_qstrFileName.toStdString());
 	}
 	return;
 }
@@ -154,7 +153,8 @@ void ShopBuilder_GUI::slotOpenDB() {
 		int nRes = msgBox.exec();
 		return;
 	}
-	m_ShopBuilder.readDB(qstrFileName.toStdString());
+	m_qstrFileName = qstrFileName;
+	m_ShopBuilder.readDB(m_qstrFileName.toStdString());
 }
 
 //=========================================================================================
@@ -167,9 +167,7 @@ void ShopBuilder_GUI::slotSaveDB() {
 		msgBox.setStandardButtons(QMessageBox::Ok);
 		msgBox.setWindowTitle("Error window");
 		int nRes = msgBox.exec();
-		return;
 	}
-	m_ShopBuilder.saveDB(qstrFileName.toStdString());
 }
 
 //---------------------------------------------------------------------------------------
@@ -464,5 +462,9 @@ void ShopBuilder_GUI::slotModifyProductButtons()	{
 //---------------------------------------------------------------------------------------
 
 void ShopBuilder_GUI::slotAddNewItem(const QString & aqstrItemName)	{
-	m_ShopBuilder.addNewItem(aqstrItemName.toStdString());
+	if (m_qstrFileName == "")
+		m_qstrFileName = "../../Databases/Equipment.db";
+
+	m_ShopBuilder.addNewItem(aqstrItemName.toStdString(),m_qstrFileName.toStdString());
+	m_ShopBuilder.readDB(m_qstrFileName.toStdString());
 }

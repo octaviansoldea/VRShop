@@ -12,8 +12,8 @@ bool isInString(const std::string & astrName, const std::string & astrField) {
 
 bool isAtEndOfString(const std::string & astrName, const std::string & astrField)	{
 	bool bRes = false;
-	int nStrSize = astrName.length();
-	int indexCh = astrName.find ( astrField ,  astrField.length());
+	int nStrSize = sizeof(astrName);
+	int indexCh = astrName.find ( astrField ,  nStrSize - (nStrSize-sizeof(astrField)));
 	if (indexCh != std::string::npos )
 		bRes = true;
 	return bRes;

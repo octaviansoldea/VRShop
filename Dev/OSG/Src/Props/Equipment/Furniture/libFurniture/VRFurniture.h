@@ -15,10 +15,9 @@ namespace VR	{
 		Furniture();
 		Furniture(const FurnitureParams & aFurnitureParams);
 
-		virtual void init(const FurnitureParams & aFurnitureParams) = 0;
-
 		virtual void addPart(osg::ref_ptr < osg::Node > apNode);
 		virtual void removePart(osg::ref_ptr < osg::Node > apNode);
+
 
 		static void loadAllFurnitures(osg::ref_ptr<osg::Group> pScene, const std::string & astrDatabase);
 

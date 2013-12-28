@@ -52,7 +52,6 @@ void Plate3D::init(const AbstractGeomShapeParams & aAbstractGeomShapeParams)	{
 	setMatrix(matrix);
 
 	m_Plate3DParams = aPlate3DParams;
-	setColor(m_Plate3DParams.m_arrflRGBA);
 }
 
 //----------------------------------------------------------------------

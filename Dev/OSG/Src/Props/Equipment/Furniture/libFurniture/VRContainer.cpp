@@ -1,3 +1,4 @@
+#include "VRAbstractGeomShape.h"
 #include "VRPlate3D.h"
 
 #include "StringManipulation.h"
@@ -12,13 +13,12 @@ ContainerParams::ContainerParams() :
 	m_flWidth(2.0),
 	m_flHeight(3.0),
 	m_flDepth(1.5),
-	m_flThickness(0.01)	{
+	m_flThickness(0.1)	{
 }
 
 //=======================================================================
 
 Container::Container()	{
-	const ContainerParams aContainerParams;
 }
 
 //-----------------------------------------------------------------------
@@ -29,8 +29,7 @@ Container::Container(const ContainerParams & aContainerParams) : Furniture(aCont
 
 //-----------------------------------------------------------------------
 
-void Container::init(const FurnitureParams & aFurnitureParams)	{
-	const ContainerParams & aContainerParams = static_cast<const ContainerParams&>(aFurnitureParams);
+void Container::init(const ContainerParams & aContainerParams)	{
 
 	setScaling(aContainerParams);
 	setRotation(aContainerParams);
@@ -115,20 +114,20 @@ void Container::predefinedObject()	{
 	aPlate3DParams.m_flLenX = m_ContainerParams.m_flWidth;
 	aPlate3DParams.m_flLenY = m_ContainerParams.m_flDepth;
 	aPlate3DParams.m_flLenZ = m_ContainerParams.m_flThickness;
-				  
+
 	aPlate3DParams.m_flPosX = 0;
 	aPlate3DParams.m_flPosY = 0;
 	aPlate3DParams.m_flPosZ = m_ContainerParams.m_flThickness/2;
-				  
-	aPlate3DParams.m_arrflRGBA[0] = (float)0.15;
-	aPlate3DParams.m_arrflRGBA[1] = (float)0.85;
-	aPlate3DParams.m_arrflRGBA[2] = (float)0.45;
+
+	aPlate3DParams.m_arrflRGBA[0] = 0.0;
+	aPlate3DParams.m_arrflRGBA[1] = 0.0;
+	aPlate3DParams.m_arrflRGBA[2] = 1.0;
 	aPlate3DParams.m_arrflRGBA[3] = 1;
 	pPlate3D->init(aPlate3DParams);
 	addPart(pPlate3D);
+	
 
 	//Left plate
-	pPlate3D =  new Plate3D;
 	aPlate3DParams.m_flLenX = m_ContainerParams.m_flThickness;
 	aPlate3DParams.m_flLenY = m_ContainerParams.m_flDepth;
 	aPlate3DParams.m_flLenZ = m_ContainerParams.m_flHeight;
@@ -136,16 +135,10 @@ void Container::predefinedObject()	{
 	aPlate3DParams.m_flPosY = 0;
 	aPlate3DParams.m_flPosZ = m_ContainerParams.m_flHeight/2;
 
-	aPlate3DParams.m_arrflRGBA[0] = 0.0;
-	aPlate3DParams.m_arrflRGBA[1] = 1.0;
-	aPlate3DParams.m_arrflRGBA[2] = 0.0;
-	aPlate3DParams.m_arrflRGBA[3] = 1;
-
 	pPlate3D->init(aPlate3DParams);
 	addPart(pPlate3D);
 
 	//Right plate
-	pPlate3D =  new Plate3D;
 	aPlate3DParams.m_flLenX = m_ContainerParams.m_flThickness;
 	aPlate3DParams.m_flLenY = m_ContainerParams.m_flDepth;
 	aPlate3DParams.m_flLenZ = m_ContainerParams.m_flHeight;
@@ -157,7 +150,6 @@ void Container::predefinedObject()	{
 	addPart(pPlate3D);
 
 	//Front plate
-	pPlate3D =  new Plate3D;
 	aPlate3DParams.m_flLenX = m_ContainerParams.m_flWidth;
 	aPlate3DParams.m_flLenY = m_ContainerParams.m_flThickness;
 	aPlate3DParams.m_flLenZ = m_ContainerParams.m_flHeight;
@@ -169,17 +161,14 @@ void Container::predefinedObject()	{
 	addPart(pPlate3D);
 
 	//Back plate
-	pPlate3D =  new Plate3D;
 	aPlate3DParams.m_flLenX = m_ContainerParams.m_flWidth;
 	aPlate3DParams.m_flLenY = m_ContainerParams.m_flThickness;
 	aPlate3DParams.m_flLenZ = m_ContainerParams.m_flHeight;
 	aPlate3DParams.m_flPosX = 0;
 	aPlate3DParams.m_flPosY = (m_ContainerParams.m_flDepth-m_ContainerParams.m_flThickness)/2;
 	aPlate3DParams.m_flPosZ = m_ContainerParams.m_flHeight/2;
-				  
+
 	aPlate3DParams.m_strFileNameTexture = "../../Resources/Textures/lz.rgb";
 	pPlate3D->init(aPlate3DParams);
 	addPart(pPlate3D);
-
-	init(m_FurnitureParams);
 }

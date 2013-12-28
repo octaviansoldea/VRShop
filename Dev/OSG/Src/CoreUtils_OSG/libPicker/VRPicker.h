@@ -5,6 +5,8 @@
 #include <osg/Group>
 #include <osgViewer/Viewer>
 
+#include <osgUtil/PolytopeIntersector>
+
 #include <osgGA/GUIEventHandler>
 
 namespace VR	{

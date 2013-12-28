@@ -31,6 +31,7 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_OSG
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCamera
+  ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libPicker
   ${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor
   ${CMAKE_BINARY_DIR}/SceneEditor/libSceneEditor
   ${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/View
@@ -47,6 +48,7 @@ SET(LIBS_COMMON
 	${OSGDB_LIBRARIES}
 	${OSGGA_LIBRARIES}
 	${OSGQT_LIBRARIES}
+	${OSGUTIL_LIBRARIES}
 	${OSGVIEWER_LIBRARIES}
 	${OPENTHREADS_LIBRARIES}
 	libDatabaseMgr
@@ -56,6 +58,7 @@ SET(LIBS_COMMON
 	libCommon
 	libCommon_OSG
 	libCamera
+	libPicker
 	libFurniture
 )
 

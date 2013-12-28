@@ -52,7 +52,8 @@ void Container::init(const ContainerParams & aContainerParams)	{
 		matrix.translate(m_AbstractObjectParams.m_flPosX, m_AbstractObjectParams.m_flPosY, m_AbstractObjectParams.m_flPosZ)
 	;
 	
-	setMatrix(containerMatrix);
+//	setMatrix(containerMatrix);
+	setMatrix(matrix);
 	setName(Furniture::getName() + ":Container");
 }
 

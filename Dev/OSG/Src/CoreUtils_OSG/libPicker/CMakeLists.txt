@@ -9,6 +9,7 @@ INCLUDE_DIRECTORIES(
 	${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
 	${CMAKE_SOURCE_DIR}/Props/GeometricShapes/libGeometricShapes
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_OSG
+    ${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
 )
 
 #Define sources to be later added into the library

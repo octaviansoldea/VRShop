@@ -10,9 +10,10 @@ namespace VR	{
 	class PickAndDragHandler : public osgGA::GUIEventHandler	{
 	public:
 		PickAndDragHandler();
-		virtual bool handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa );
 
 	private:
+		virtual bool handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa );
+
 		osg::ref_ptr<osg::Group> m_pScene;
 		osg::ref_ptr<AbstractObject> m_pPickedObject;
 

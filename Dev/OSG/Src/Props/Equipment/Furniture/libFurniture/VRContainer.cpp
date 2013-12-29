@@ -121,10 +121,10 @@ void Container::predefinedObject()	{
 	aPlate3DParams.m_flPosY = 0;
 	aPlate3DParams.m_flPosZ = m_ContainerParams.m_flThickness/2;
 				  
-	aPlate3DParams.m_arrflRGBA[0] = (float)0.15;
-	aPlate3DParams.m_arrflRGBA[1] = (float)0.85;
-	aPlate3DParams.m_arrflRGBA[2] = (float)0.45;
-	aPlate3DParams.m_arrflRGBA[3] = 1;
+	aPlate3DParams.m_arrflRGBA.push_back((float)1.0);
+	aPlate3DParams.m_arrflRGBA.push_back((float)0.0);
+	aPlate3DParams.m_arrflRGBA.push_back((float)0.0);
+	aPlate3DParams.m_arrflRGBA.push_back((float)1.0);
 	pPlate3D->init(aPlate3DParams);
 	addPart(pPlate3D);
 
@@ -137,10 +137,10 @@ void Container::predefinedObject()	{
 	aPlate3DParams.m_flPosY = 0;
 	aPlate3DParams.m_flPosZ = m_ContainerParams.m_flHeight/2;
 
-	aPlate3DParams.m_arrflRGBA[0] = 0.0;
-	aPlate3DParams.m_arrflRGBA[1] = 1.0;
-	aPlate3DParams.m_arrflRGBA[2] = 0.0;
-	aPlate3DParams.m_arrflRGBA[3] = 1;
+	aPlate3DParams.m_arrflRGBA.push_back((float)1.0);
+	aPlate3DParams.m_arrflRGBA.push_back((float)0.0);
+	aPlate3DParams.m_arrflRGBA.push_back((float)0.0);
+	aPlate3DParams.m_arrflRGBA.push_back((float)1.0);
 
 	pPlate3D->init(aPlate3DParams);
 	addPart(pPlate3D);

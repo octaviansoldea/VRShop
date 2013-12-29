@@ -28,11 +28,11 @@ Cupboard::Cupboard(const CupboardParams & aCupboardParams) : Furniture(aCupboard
 
 //-----------------------------------------------------------------------
 
-void Cupboard::init(const CupboardParams & aCupboardParams)	{
+void Cupboard::init(const FurnitureParams & aFurnitureParams)	{
 
-	setScaling(aCupboardParams);
-	setRotation(aCupboardParams);
-	setPosition(aCupboardParams);
+	setScaling(aFurnitureParams);
+	setRotation(aFurnitureParams);
+	setPosition(aFurnitureParams);
 
 	Matrix matrix;
 	matrix.set(1, 0, 0, 0,
@@ -126,16 +126,17 @@ void Cupboard::predefinedObject()	{
 	aPlate3DParams.m_flPosX = 0.0;
 	aPlate3DParams.m_flPosY = 0.0;
 	aPlate3DParams.m_flPosZ = 0.0;
-	aPlate3DParams.m_arrflRGBA[0] = 1;
-	aPlate3DParams.m_arrflRGBA[1] = 1;
-	aPlate3DParams.m_arrflRGBA[2] = 0;
+	aPlate3DParams.m_arrflRGBA[0] = 0.15;
+	aPlate3DParams.m_arrflRGBA[1] = 0.85;
+	aPlate3DParams.m_arrflRGBA[2] = 0.45;
 	aPlate3DParams.m_arrflRGBA[3] = 1;
-	aPlate3DParams.m_strFileNameTexture = "../../../Resources/Textures/lz.rgb";
+//	aPlate3DParams.m_strFileNameTexture = "../../../Resources/Textures/lz.rgb";
 	pPlate3D->init(aPlate3DParams);
 	addPart(pPlate3D);
 	
 
 	//Left side
+	pPlate3D = new Plate3D;
 	aPlate3DParams.m_flLenX = 0.05;
 	aPlate3DParams.m_flLenY = 1.0;
 	aPlate3DParams.m_flLenZ = 2.0;
@@ -146,6 +147,7 @@ void Cupboard::predefinedObject()	{
 	addPart(pPlate3D);
 
 	//Right side
+	pPlate3D = new Plate3D;
 	aPlate3DParams.m_flLenX = 0.05;
 	aPlate3DParams.m_flLenY = 1.0;
 	aPlate3DParams.m_flLenZ = 2.0;
@@ -156,6 +158,7 @@ void Cupboard::predefinedObject()	{
 	addPart(pPlate3D);
 
 	//Back side
+	pPlate3D = new Plate3D;
 	aPlate3DParams.m_flLenX = 5.0;
 	aPlate3DParams.m_flLenY = 0.05;
 	aPlate3DParams.m_flLenZ = 2.0;
@@ -166,6 +169,7 @@ void Cupboard::predefinedObject()	{
 	addPart(pPlate3D);
 
 	//shelf 1
+	pPlate3D = new Plate3D;
 	aPlate3DParams.m_flLenX = 5.0;
 	aPlate3DParams.m_flLenY = 1.0;
 	aPlate3DParams.m_flLenZ = 0.05;
@@ -178,6 +182,7 @@ void Cupboard::predefinedObject()	{
 
 
 	//shelf 2
+	pPlate3D = new Plate3D;
 	aPlate3DParams.m_flLenX = 5.0;
 	aPlate3DParams.m_flLenY = 1.0;
 	aPlate3DParams.m_flLenZ = 0.05;
@@ -189,6 +194,7 @@ void Cupboard::predefinedObject()	{
 	addPart(pPlate3D);
 
 	//shelf 3
+	pPlate3D = new Plate3D;
 	aPlate3DParams.m_flLenX = 5.0;
 	aPlate3DParams.m_flLenY = 1.0;
 	aPlate3DParams.m_flLenZ = 0.05;
@@ -198,4 +204,6 @@ void Cupboard::predefinedObject()	{
 	aPlate3DParams.m_flPosZ = 2;
 	pPlate3D->init(aPlate3DParams);
 	addPart(pPlate3D);
+
+	init(m_FurnitureParams);
 }

@@ -418,8 +418,8 @@ int main(int argc, char *argv[])	{
 	string strDBName;
 	
 	strDBName = "../../../../Databases/Equipment.db";
-	createTable(strDBName);
-	populateTable(strDBName);
+	//createTable(strDBName);
+	//populateTable(strDBName);
 
 	//insertIntoDatabase_Sphere(strDBName);
 	//insertIntoDatabase_Cylinder(strDBName);
@@ -429,6 +429,10 @@ int main(int argc, char *argv[])	{
 	//insertIntoDatabase_Cupboard(strDBName);
 
 	//Furniture::loadAllFurnitures(pScene, strDBName);
+
+	ref_ptr < Container > pContainer = new Container;
+	pContainer->predefinedObject();
+	pScene->addChild(pContainer);
 
 	osgViewer::Viewer viewer;
 	viewer.setSceneData(pScene);

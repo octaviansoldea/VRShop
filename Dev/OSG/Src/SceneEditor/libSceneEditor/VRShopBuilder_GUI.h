@@ -21,8 +21,6 @@ namespace VR	{
 		QString openDialog(const char * apchDBName);
 		QString saveDialog(const char * apchDBName);
 
-		QString m_qstrFileName;
-
 	public slots:
 		void slotNewProject();
 		void slotOpenDB();

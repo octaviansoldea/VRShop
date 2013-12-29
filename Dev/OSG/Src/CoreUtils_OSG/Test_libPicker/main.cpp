@@ -2,12 +2,15 @@
 #include "VRCylinder.h"
 #include "VRUntransformedSphere.h"
 
+#include "VRContainer.h"
+
 #include "VRPicker.h"
 #include "VRGrid.h"
 
 #include "OSGCameraManipulator.h"
 #include <osgGA/TrackballManipulator>
 
+#include <osgViewer/Viewer>
 
 #include <osgDB/readFile>
 
@@ -70,10 +73,13 @@ int main(int argc, char * argv[])	{
 	root->addChild(axes);
 	root->addChild(new VR::Grid);
 	
-	main_Plate3D(root);
+//	main_Plate3D(root);
 	main_Cylinder(root);
-	main_VRUntransformedSphere(root);
+//	main_VRUntransformedSphere(root);
 
+	osg::ref_ptr < Container > pContainer = new Container;
+	pContainer->predefinedObject();
+	root->addChild(pContainer);
 
 	osgViewer::Viewer viewer;
 	viewer.setSceneData( root.get() );

@@ -203,17 +203,30 @@ bool PickAndDragHandler::handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 
 			//Angles should be in radians
 			double flRXAngle = 
-				dPositionY;
-				//degrees2Radians(0.0);				
+				dPositionY
+				//degrees2Radians(0.0)
+				;
+			double flRYAngle = 
+				dPositionX
+				//degrees2Radians(0.0)
+				;
 			double flRZAngle = 
-				dPositionX;
-				//degrees2Radians(45.0);
+				//dPositionX
+				degrees2Radians(0.0)
+				;
 				
 			osg::Matrixd mtrxRotationOnX(
 				1,	0,				0,					0,
 				0,	cos(flRXAngle),	-sin(flRXAngle),	0,
 				0,	sin(flRXAngle),	cos(flRXAngle),		0,
 				0,	0,				0,					1
+			);
+
+			osg::Matrixd mtrxRotationOnY(
+				cos(flRYAngle),	0,	-sin(flRYAngle),	0,
+				0,				1,	0,					0,
+				sin(flRYAngle),	0,	cos(flRYAngle),		0,
+				0,				0,	0,					1
 			);
 
 			osg::Matrixd mtrxRotationOnZ(
@@ -223,7 +236,7 @@ bool PickAndDragHandler::handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 				0,					0,				0,	1
 			);
 
-			mtrx = mtrxRotationOnX * mtrxRotationOnZ;
+			mtrx = mtrxRotationOnZ * mtrxRotationOnY * mtrxRotationOnX;
 
 //			mtrx = m_mtrxOriginalPosition * mtrx;	//ROTATES AROUND THE SCENE'S ORIGIN	(PRE-MULTIPLY)
 			mtrx *= m_mtrxOriginalPosition;			//ROTATES AROUND THE OBJECT'S ORIGIN (POST-MULTIPLY)
@@ -237,9 +250,9 @@ bool PickAndDragHandler::handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 			scale = osg::Matrix::scale(
 				(1.0 + moveFactor*(dPositionX))>0 ? 1.0 + moveFactor*(dPositionX) : 0.001,
 				(1.0 + moveFactor*(dPositionX))>0 ? 1.0 + moveFactor*(dPositionX) : 0.001,
-				(1.0 + moveFactor*(dPositionX))>0 ? 1.0 + moveFactor*(dPositionX) : 0.001);
-			mtrx = scale
-				* m_mtrxOriginalPosition;
+				(1.0 + moveFactor*(dPositionX))>0 ? 1.0 + moveFactor*(dPositionX) : 0.001
+			);
+			mtrx = scale * m_mtrxOriginalPosition;
 		}
 
 		m_pPickedObject->setMatrix(mtrx);

@@ -6,11 +6,15 @@
 //Pressing "SHIFT L or R": make movement Up/down-Left/right irrespective of axes
 
 #include <osgUtil/PolytopeIntersector>
+#include <osgViewer/Viewer>
+#include <osg/Group>
+
+#include <osg/MatrixTransform>
 
 #include <iostream>
 
 #include "VRBoundingBox.h"
-#include "VRAbstractGeomShape.h"
+
 #include "VRPicker.h"
 
 using namespace VR;
@@ -38,7 +42,7 @@ bool PickAndDragHandler::handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 	enum enumObjectTransform {Default = 0, LateralMove, VerticalMove, LongitudinalMove, Rotation, Scaling,
 								LateralVerticalToMonitor};
 
-	pScene = dynamic_cast<Group*>(viewer->getSceneData());
+	m_pScene = dynamic_cast<Group*>(viewer->getSceneData());
 
 	switch (ea.getEventType())
 	{
@@ -110,51 +114,30 @@ bool PickAndDragHandler::handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 
 				int idx;
 				for(idx=nodePath.size()-1; idx>=0; idx--) {
-					AbstractGeomShape *pShape = dynamic_cast<AbstractGeomShape*>(nodePath[idx]);
-					if(pShape != NULL && pShape->getIsTargetPick() != false) {
+					m_pPickedObject = dynamic_cast<osg::MatrixTransform*>(nodePath[idx]);
+					if(m_pPickedObject != NULL /*&& m_pPickedObject->getIsTargetPick() != false*/) {
 						break;
 					}
 				}
 
-				if(idx >= 0)	{
-					Node * node = dynamic_cast<osg::Node*>(nodePath[idx]);
-					
-					m_mtrxOriginalPosition = osg::computeLocalToWorld(nodePath);
-					pPickedObject = new osg::MatrixTransform;
-					pPickedObject->setMatrix(m_mtrxOriginalPosition);
+				if(idx >= 0)
+					m_mtrxOriginalPosition = m_pPickedObject->getMatrix();
+				else
+					m_pPickedObject = NULL;
 
-					pPickedObject->addChild(node);
-					pPickedObject->addChild(new BoundingBox(node));
-
-					int nI;
-					for(nI = 0; nI < node->getNumParents();nI++)	{
-						pScene->removeChild(node->getParent(nI));
-					}
-					pScene->removeChild(node);
-
-					pScene->addChild(pPickedObject);
-
-					return false;
-					break;
-				}
-				else	{
-					pPickedObject = new osg::MatrixTransform;
-					pPickedObject = NULL;
-					return false;
-					break;
-				}
+				return false;
+				break;
 			}
 			else	{
-				pPickedObject = new osg::MatrixTransform;
-				pPickedObject = NULL;
+				m_pPickedObject = NULL;
+
 				return false;
 				break;
 			}
 			break;
 		}	//Case: Push_Left_Mouse_button
 		else {
-			pPickedObject = new osg::MatrixTransform;
-			pPickedObject = NULL;
+			m_pPickedObject = NULL;
 
 			return false;
 		}
@@ -162,7 +145,7 @@ bool PickAndDragHandler::handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 
 	
 	case(osgGA::GUIEventAdapter::DRAG):	{
-		if(pPickedObject==NULL)	{
+		if(m_pPickedObject==NULL)	{
 			return false;
 			break;
 		}
@@ -182,8 +165,8 @@ bool PickAndDragHandler::handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 		//Does Up/down-left/right dragging respective to the axes
 		if(m_nTransformSelection == enumObjectTransform(Default))
 //		if(ea.getModKeyMask()&osgGA::GUIEventAdapter::MODKEY_ALT && m_nTransformSelection == enumObjectTransform(Default))
-			mtrx = m_mtrxOriginalPosition * osg::Matrix::translate(
-				moveFactor*(dPositionX), 0.0, moveFactor*(dPositionY));
+		mtrx = m_mtrxOriginalPosition * osg::Matrix::translate(
+			moveFactor*(dPositionX), 0.0, moveFactor*(dPositionY));
 
 		//Does Up/down-left/right dragging irrespective of the axes
 //		if(ea.getModKeyMask()&osgGA::GUIEventAdapter::MODKEY_ALT && m_nTransformSelection == enumObjectTransform(LateralVerticalToMonitor))
@@ -227,9 +210,9 @@ bool PickAndDragHandler::handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 				* m_mtrxOriginalPosition;
 		}
 
-		pPickedObject->setMatrix(mtrx);
+		m_pPickedObject->setMatrix(mtrx);
 		
-		viewer->setSceneData(pScene);
+		viewer->setSceneData(m_pScene);
 
 		return false;
 		break;
@@ -239,8 +222,8 @@ bool PickAndDragHandler::handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 		m_nTransformSelection = enumObjectTransform(Default);
 
 		//Remove bounding box - bounding box is put as a last child
-		if(pPickedObject!=NULL)
-			pPickedObject->removeChild(pPickedObject->getNumChildren()-1);
+		//if(m_pPickedObject!=NULL)
+		//	m_pPickedObject->removeChild(m_pPickedObject->getNumChildren()-1);
 
 		return false;
 		break;

@@ -1,6 +1,8 @@
-#include "OSGPicker.h"
+#include "VRPicker.h"
 #include "OSGCameraManipulator.h"
 #include <osgGA/TrackballManipulator>
+
+#include <osgViewer/Viewer>
 
 #include "Model2D.h"
 #include "Model3D.h"

@@ -3,7 +3,7 @@
 #include "OSGCameraManipulator.h"
 #include <osgGA/TrackballManipulator>
 
-#include "OSGPicker.h"
+#include "VRPicker.h"
 #include "VRGrid.h"
 
 #include <osgDB/ReadFile>
@@ -47,9 +47,9 @@ OSGQT_GUI::OSGQT_GUI() {
 
 	//Send scene to the Widget
 	m_pOSGQT_Widget->setSceneData(pScene);
-	m_pOSGQT_Widget->setCameraManipulator(new VR::OSGCameraManipulator);
+//	m_pOSGQT_Widget->setCameraManipulator(new VR::OSGCameraManipulator);
 	m_pOSGQT_Widget->addEventHandler(new VR::PickAndDragHandler);
-//	m_pOSGQT_Widget->setCameraManipulator(new osgGA::TrackballManipulator, false);
+//	m_pOSGQT_Widget->setCameraManipulator(new osgGA::TrackballManipulator);
 
 	//Get geometry from the GUI for compatibility
 	m_pOSGQT_Widget->setGeometry(this->x(), this->y(), this->width(), this->height());

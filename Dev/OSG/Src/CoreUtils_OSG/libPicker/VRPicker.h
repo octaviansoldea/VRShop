@@ -1,13 +1,10 @@
 #ifndef OSG_PICK_AND_DRAG_HANDLER_H
 #define OSG_PICK_AND_DRAG_HANDLER_H
 
-#include <osg/MatrixTransform>
-#include <osg/Group>
-#include <osgViewer/Viewer>
-
-#include <osgUtil/PolytopeIntersector>
-
 #include <osgGA/GUIEventHandler>
+
+class osg::Group;
+class AbstractObject;
 
 namespace VR	{
 	class PickAndDragHandler : public osgGA::GUIEventHandler	{
@@ -16,8 +13,8 @@ namespace VR	{
 		virtual bool handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa );
 
 	private:
-		osg::ref_ptr<osg::Group> pScene;
-		osg::ref_ptr<osg::MatrixTransform> pPickedObject;
+		osg::ref_ptr<osg::Group> m_pScene;
+		osg::ref_ptr<AbstractObject> m_pPickedObject;
 
 		osg::Matrixd m_mtrxOriginalPosition;
 		osg::Matrixd m_mtrxMatrix;

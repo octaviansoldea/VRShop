@@ -206,4 +206,5 @@ void Cupboard::predefinedObject()	{
 	addPart(pPlate3D);
 
 	init(m_FurnitureParams);
+	setIsTargetPick(true);
 }

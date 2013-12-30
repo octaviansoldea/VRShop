@@ -15,6 +15,7 @@
 #include "VRAbstractObject.h"
 
 #include "BasicDefinitions.h"
+#include "VRObjectTransformation.h"
 
 #include "VRPicker.h"
 
@@ -151,8 +152,8 @@ bool PickAndDragHandler::handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 			break;
 		}
 
-		double dPositionX =	ea.getXnormalized() - m_dbMouseLastGetXNormalized; 
-		double dPositionY =	ea.getYnormalized() - m_dbMouseLastGetYNormalized;
+		float dPositionX =	ea.getXnormalized() - m_dbMouseLastGetXNormalized; 
+		float dPositionY =	ea.getYnormalized() - m_dbMouseLastGetYNormalized;
 
 		if(fabs(dPositionX)<0.001 && fabs(dPositionY)<0.001)
 			return false;
@@ -160,47 +161,60 @@ bool PickAndDragHandler::handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 		osg::Matrixd mat = viewer->getCameraManipulator()->getMatrix();
 		osg::Vec3d lookVector(mat(2,0),mat(2,1),mat(2,2));
 	    osg::Vec3d eyeVector(mat(3,0),mat(3,1),mat(3,2));
-		double moveFactor = 0.3 * (lookVector - eyeVector).length();
+		float moveFactor = 0.3 * (lookVector - eyeVector).length();
 
+		ObjectTransformation * pObjectTransformation;
 		osg::Matrix mtrx;
+
 		//Does Up/down-left/right dragging respective to the axes
-		if(m_nTransformSelection == enumObjectTransform(Default))
+		if(m_nTransformSelection == enumObjectTransform(Default))	{
 //		if(ea.getModKeyMask()&osgGA::GUIEventAdapter::MODKEY_ALT && m_nTransformSelection == enumObjectTransform(Default))
-		mtrx = m_mtrxOriginalPosition * osg::Matrix::translate(
-			moveFactor*(dPositionX), 0.0, moveFactor*(dPositionY));
+			pObjectTransformation = new ObjectTransformation();
+			mtrx = m_mtrxOriginalPosition *
+				pObjectTransformation->translation(moveFactor*(dPositionX), 0.0, moveFactor*(dPositionY));
+
+			delete pObjectTransformation;
+		}
 
 		//Does Up/down-left/right dragging irrespective of the axes
 //		if(ea.getModKeyMask()&osgGA::GUIEventAdapter::MODKEY_ALT && m_nTransformSelection == enumObjectTransform(LateralVerticalToMonitor))
-		if(m_nTransformSelection == enumObjectTransform(LateralVerticalToMonitor))
-			mtrx = m_mtrxOriginalPosition * osg::Matrix::translate(
-				moveFactor*(dPositionX)*mat(0,0), moveFactor*(dPositionX)*mat(0,1), moveFactor*(dPositionY));
+		if(m_nTransformSelection == enumObjectTransform(LateralVerticalToMonitor))	{
+			pObjectTransformation = new ObjectTransformation();
+			mtrx = m_mtrxOriginalPosition *
+				pObjectTransformation->translation(	moveFactor*(dPositionX)*mat(0,0), 
+													moveFactor*(dPositionX)*mat(0,1), 
+													moveFactor*(dPositionY)
+			);
+			delete pObjectTransformation;
+		}
 
 //		if(ea.getModKeyMask()&osgGA::GUIEventAdapter::MODKEY_ALT && m_nTransformSelection == enumObjectTransform(LateralMove))
-		if(m_nTransformSelection == enumObjectTransform(LateralMove))
-			mtrx = m_mtrxOriginalPosition * osg::Matrix::translate(
-				moveFactor*(dPositionX),
-				0.0,
-				0.0);
+		if(m_nTransformSelection == enumObjectTransform(LateralMove))	{
+			pObjectTransformation = new ObjectTransformation();
+			mtrx = m_mtrxOriginalPosition *
+				pObjectTransformation->translation(moveFactor*(dPositionX), 0.0, 0.0);
+			delete pObjectTransformation;
+		}
 
 //		if(ea.getModKeyMask()&osgGA::GUIEventAdapter::MODKEY_ALT && m_nTransformSelection == enumObjectTransform(VerticalMove))
-		if(m_nTransformSelection == enumObjectTransform(VerticalMove))
-			mtrx = m_mtrxOriginalPosition * osg::Matrix::translate(
-				0.0,
-				0.0,
-				moveFactor*(dPositionY));
+		if(m_nTransformSelection == enumObjectTransform(VerticalMove))	{
+			pObjectTransformation = new ObjectTransformation();
+			mtrx = m_mtrxOriginalPosition *
+				pObjectTransformation->translation(0.0, 0.0, moveFactor*(dPositionY));
+			delete pObjectTransformation;
+		}
 
 //		if(ea.getModKeyMask()&osgGA::GUIEventAdapter::MODKEY_ALT && m_nTransformSelection == enumObjectTransform(LongitudinalMove))
-		if(m_nTransformSelection == enumObjectTransform(LongitudinalMove))
-			mtrx = m_mtrxOriginalPosition * osg::Matrix::translate(
-				0.0,
-				moveFactor*(dPositionY),
-				0.0);
+		if(m_nTransformSelection == enumObjectTransform(LongitudinalMove))	{
+			pObjectTransformation = new ObjectTransformation();
+			mtrx = m_mtrxOriginalPosition *
+				pObjectTransformation->translation(0.0, moveFactor*(dPositionY), 0.0);
+			delete pObjectTransformation;
+		}
 
-		//ROTATION
 
 //		if(ea.getModKeyMask()&osgGA::GUIEventAdapter::MODKEY_ALT && m_nTransformSelection == enumObjectTransform(Rotation))
 		if(m_nTransformSelection == enumObjectTransform(Rotation))	{
-
 			//Angles should be in radians
 			double flRXAngle = 
 				dPositionY
@@ -214,45 +228,26 @@ bool PickAndDragHandler::handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 				//dPositionX
 				degrees2Radians(0.0)
 				;
-				
-			osg::Matrixd mtrxRotationOnX(
-				1,	0,				0,					0,
-				0,	cos(flRXAngle),	-sin(flRXAngle),	0,
-				0,	sin(flRXAngle),	cos(flRXAngle),		0,
-				0,	0,				0,					1
-			);
 
-			osg::Matrixd mtrxRotationOnY(
-				cos(flRYAngle),	0,	-sin(flRYAngle),	0,
-				0,				1,	0,					0,
-				sin(flRYAngle),	0,	cos(flRYAngle),		0,
-				0,				0,	0,					1
-			);
+			pObjectTransformation = new ObjectTransformation();
+			mtrx = pObjectTransformation->rotation(flRZAngle,ObjectTransformationParams::enumRotation::RotationOnZ)
+				* pObjectTransformation->rotation(flRYAngle,ObjectTransformationParams::enumRotation::RotationOnY)
+				* pObjectTransformation->rotation(flRXAngle,ObjectTransformationParams::enumRotation::RotationOnX)
+				* m_mtrxOriginalPosition;
 
-			osg::Matrixd mtrxRotationOnZ(
-				cos(flRZAngle),		sin(flRZAngle),	0,	0,
-				-sin(flRZAngle),	cos(flRZAngle),	0,	0,
-				0,					0,				1,	0,
-				0,					0,				0,	1
-			);
+			delete pObjectTransformation;
 
-			mtrx = mtrxRotationOnZ * mtrxRotationOnY * mtrxRotationOnX;
-
-//			mtrx = m_mtrxOriginalPosition * mtrx;	//ROTATES AROUND THE SCENE'S ORIGIN	(PRE-MULTIPLY)
-			mtrx *= m_mtrxOriginalPosition;			//ROTATES AROUND THE OBJECT'S ORIGIN (POST-MULTIPLY)
+			//mtrx = m_mtrxOriginalPosition * X;	ROTATES AROUND THE SCENE'S ORIGIN (PRE-MULTIPLY)
+			//mtrx = X * m_mtrxOriginalPosition;	ROTATES AROUND THE OBJECT'S ORIGIN (POST-MULTIPLY)
 		}
-
-		//END OF ROTATION
 
 //		if(ea.getModKeyMask()&osgGA::GUIEventAdapter::MODKEY_ALT && m_nTransformSelection == enumObjectTransform(Scaling))	{
 		if(m_nTransformSelection == enumObjectTransform(Scaling))	{
-			osg::Matrixd scale;
-			scale = osg::Matrix::scale(
-				(1.0 + moveFactor*(dPositionX))>0 ? 1.0 + moveFactor*(dPositionX) : 0.001,
-				(1.0 + moveFactor*(dPositionX))>0 ? 1.0 + moveFactor*(dPositionX) : 0.001,
-				(1.0 + moveFactor*(dPositionX))>0 ? 1.0 + moveFactor*(dPositionX) : 0.001
-			);
-			mtrx = scale * m_mtrxOriginalPosition;
+			pObjectTransformation = new ObjectTransformation();
+
+			mtrx = pObjectTransformation->scaling(moveFactor*(dPositionX), moveFactor*(dPositionX), moveFactor*(dPositionX)) 
+				* m_mtrxOriginalPosition;
+			delete pObjectTransformation;
 		}
 
 		m_pPickedObject->setMatrix(mtrx);

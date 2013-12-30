@@ -9,6 +9,8 @@
 #include "VRCylinder.h"
 #include "VRUntransformedSphere.h"
 
+#include "VRPicker.h"
+#include "OSGCameraManipulator.h"
 
 #include <osgDB/ReadFile>
 #include <osgGA/TrackballManipulator>
@@ -54,6 +56,9 @@ void ShopBuilder::init(OSGQT_Widget * apOSGQTWidget, QTreeView * apTreeView) {
 	//Send scene to the Widget
 	m_pOSGQTWidget->setSceneData(m_pScene);
 	m_pOSGQTWidget->setCameraManipulator(new osgGA::TrackballManipulator);
+	//m_pOSGQTWidget->setCameraManipulator(new VR::OSGCameraManipulator);
+	//m_pOSGQTWidget->addEventHandler(new VR::PickAndDragHandler);
+	
 	m_pTreeView = apTreeView;
 	updateQTreeView();
 

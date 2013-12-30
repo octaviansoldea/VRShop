@@ -10,6 +10,7 @@ INCLUDE_DIRECTORIES(
 SET(SRCS
 	VRBoundingBox.h VRBoundingBox.cpp
 	VRGrid.h VRGrid.cpp
+	VRObjectTransformation.h VRObjectTransformation.cpp
 )
 
 ADD_LIBRARY(libCommon_OSG

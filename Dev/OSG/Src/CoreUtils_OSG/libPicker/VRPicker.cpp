@@ -172,8 +172,6 @@ bool PickAndDragHandler::handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 			pObjectTransformation = new ObjectTransformation();
 			mtrx = m_mtrxOriginalPosition *
 				pObjectTransformation->translation(moveFactor*(dPositionX), 0.0, moveFactor*(dPositionY));
-
-			delete pObjectTransformation;
 		}
 
 		//Does Up/down-left/right dragging irrespective of the axes
@@ -185,7 +183,6 @@ bool PickAndDragHandler::handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 													moveFactor*(dPositionX)*mat(0,1), 
 													moveFactor*(dPositionY)
 			);
-			delete pObjectTransformation;
 		}
 
 //		if(ea.getModKeyMask()&osgGA::GUIEventAdapter::MODKEY_ALT && m_nTransformSelection == enumObjectTransform(LateralMove))
@@ -193,7 +190,6 @@ bool PickAndDragHandler::handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 			pObjectTransformation = new ObjectTransformation();
 			mtrx = m_mtrxOriginalPosition *
 				pObjectTransformation->translation(moveFactor*(dPositionX), 0.0, 0.0);
-			delete pObjectTransformation;
 		}
 
 //		if(ea.getModKeyMask()&osgGA::GUIEventAdapter::MODKEY_ALT && m_nTransformSelection == enumObjectTransform(VerticalMove))
@@ -201,7 +197,6 @@ bool PickAndDragHandler::handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 			pObjectTransformation = new ObjectTransformation();
 			mtrx = m_mtrxOriginalPosition *
 				pObjectTransformation->translation(0.0, 0.0, moveFactor*(dPositionY));
-			delete pObjectTransformation;
 		}
 
 //		if(ea.getModKeyMask()&osgGA::GUIEventAdapter::MODKEY_ALT && m_nTransformSelection == enumObjectTransform(LongitudinalMove))
@@ -209,7 +204,6 @@ bool PickAndDragHandler::handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 			pObjectTransformation = new ObjectTransformation();
 			mtrx = m_mtrxOriginalPosition *
 				pObjectTransformation->translation(0.0, moveFactor*(dPositionY), 0.0);
-			delete pObjectTransformation;
 		}
 
 
@@ -225,17 +219,15 @@ bool PickAndDragHandler::handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 				//degrees2Radians(0.0)
 				;
 			double flRZAngle = 
-				//dPositionX
-				degrees2Radians(0.0)
+				dPositionX
+				//degrees2Radians(0.0)
 				;
 
 			pObjectTransformation = new ObjectTransformation();
 			mtrx = pObjectTransformation->rotation(flRZAngle,ObjectTransformationParams::enumRotation::RotationOnZ)
-				* pObjectTransformation->rotation(flRYAngle,ObjectTransformationParams::enumRotation::RotationOnY)
-				* pObjectTransformation->rotation(flRXAngle,ObjectTransformationParams::enumRotation::RotationOnX)
+				//* pObjectTransformation->rotation(flRYAngle,ObjectTransformationParams::enumRotation::RotationOnY)
+				//* pObjectTransformation->rotation(flRXAngle,ObjectTransformationParams::enumRotation::RotationOnX)
 				* m_mtrxOriginalPosition;
-
-			delete pObjectTransformation;
 
 			//mtrx = m_mtrxOriginalPosition * X;	ROTATES AROUND THE SCENE'S ORIGIN (PRE-MULTIPLY)
 			//mtrx = X * m_mtrxOriginalPosition;	ROTATES AROUND THE OBJECT'S ORIGIN (POST-MULTIPLY)
@@ -247,8 +239,9 @@ bool PickAndDragHandler::handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 
 			mtrx = pObjectTransformation->scaling(moveFactor*(dPositionX), moveFactor*(dPositionX), moveFactor*(dPositionX)) 
 				* m_mtrxOriginalPosition;
-			delete pObjectTransformation;
 		}
+
+		delete pObjectTransformation;
 
 		m_pPickedObject->setMatrix(mtrx);
 		

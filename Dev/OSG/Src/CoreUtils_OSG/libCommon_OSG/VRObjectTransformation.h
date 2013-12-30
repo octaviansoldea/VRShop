@@ -20,15 +20,13 @@ namespace VR {
 			ObjectTransformation();
 			ObjectTransformation(const ObjectTransformationParams & aObjectTransformationParams);
 
-			osg::Matrix getMatrix() const;
-
 			osg::Matrix translation(float aflTranslateX, float aflTranslateY, float aflTranslateZ);
-			osg::Matrix rotation(float aflAngle, ObjectTransformationParams::enumRotation aenumRotationm =
-				ObjectTransformationParams::enumRotation::RotationOnZ);
+			osg::Matrix rotation(float aflAngle, ObjectTransformationParams::enumRotation aenumRotationm);
 			osg::Matrix scaling(float aflScaleX, float aflScaleY, float aflScaleZ);
 
 		private:
 			void init(const ObjectTransformationParams & aObjectTransformationParams);
+			osg::Matrix getMatrix() const;
 
 			ObjectTransformationParams m_ObjectTransformationParams;
 	};

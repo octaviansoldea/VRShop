@@ -1,9 +1,7 @@
-#include <vector>
-#include <iostream>
-
 #include "VRObjectTransformation.h"
 
 using namespace VR;
+using namespace osg;
 
 ObjectTransformationParams::ObjectTransformationParams() :
 m_flMatrix00(1.0), m_flMatrix01(0.0), m_flMatrix02(0.0), m_flMatrix03(0.0),
@@ -33,7 +31,7 @@ void ObjectTransformation::init(const ObjectTransformationParams & aObjectTransf
 
 //-----------------------------------------------------------
 
-osg::Matrix ObjectTransformation::translation(float aflTranslateX, float aflTranslateY, float aflTranslateZ)	{
+Matrix ObjectTransformation::translation(float aflTranslateX, float aflTranslateY, float aflTranslateZ)	{
 	ObjectTransformationParams * pObjectTransformationParams = new ObjectTransformationParams();
 
 	pObjectTransformationParams->m_flMatrix30 = aflTranslateX;
@@ -48,7 +46,7 @@ osg::Matrix ObjectTransformation::translation(float aflTranslateX, float aflTran
 
 //-----------------------------------------------------------
 
-osg::Matrix ObjectTransformation::rotation(float aflAngle, ObjectTransformationParams::enumRotation aenumRotation)	{
+Matrix ObjectTransformation::rotation(float aflAngle, ObjectTransformationParams::enumRotation aenumRotation)	{
 	ObjectTransformationParams * pObjectTransformationParams = new ObjectTransformationParams();
 
 	int nSelection = aenumRotation;
@@ -60,21 +58,21 @@ osg::Matrix ObjectTransformation::rotation(float aflAngle, ObjectTransformationP
 		pObjectTransformationParams->m_flMatrix22 = cos(aflAngle);
 	}
 
-	if (nSelection == ObjectTransformationParams::enumRotation::RotationOnY)	{
+	else if (nSelection == ObjectTransformationParams::enumRotation::RotationOnY)	{
 		pObjectTransformationParams->m_flMatrix00 = cos(aflAngle);
 		pObjectTransformationParams->m_flMatrix02 = -sin(aflAngle);
 		pObjectTransformationParams->m_flMatrix20 = sin(aflAngle);
 		pObjectTransformationParams->m_flMatrix22 = cos(aflAngle);
 	}
 
-	if (nSelection == ObjectTransformationParams::enumRotation::RotationOnZ)	{
+	else if (nSelection == ObjectTransformationParams::enumRotation::RotationOnZ)	{
 		pObjectTransformationParams->m_flMatrix00 = cos(aflAngle);
 		pObjectTransformationParams->m_flMatrix01 = sin(aflAngle);
 		pObjectTransformationParams->m_flMatrix10 = -sin(aflAngle);
 		pObjectTransformationParams->m_flMatrix11 = cos(aflAngle);
 	}
 
-	if (nSelection == ObjectTransformationParams::enumRotation::Default)	{
+	else if (nSelection == ObjectTransformationParams::enumRotation::Default)	{
 	}
 
 	init(*pObjectTransformationParams);
@@ -85,7 +83,7 @@ osg::Matrix ObjectTransformation::rotation(float aflAngle, ObjectTransformationP
 
 //-----------------------------------------------------------
 
-osg::Matrix ObjectTransformation::scaling(float aflScaleX, float aflScaleY, float aflScaleZ)	{
+Matrix ObjectTransformation::scaling(float aflScaleX, float aflScaleY, float aflScaleZ)	{
 	ObjectTransformationParams * pObjectTransformationParams = new ObjectTransformationParams();
 
 	aflScaleX = (1+aflScaleX)>0 ? 1.0 + aflScaleX : 0.001;
@@ -104,12 +102,13 @@ osg::Matrix ObjectTransformation::scaling(float aflScaleX, float aflScaleY, floa
 
 //-----------------------------------------------------------
 
-osg::Matrix ObjectTransformation::getMatrix() const	{
-	osg::Matrix mtrx(
-		m_ObjectTransformationParams.m_flMatrix00, m_ObjectTransformationParams.m_flMatrix01,m_ObjectTransformationParams.m_flMatrix02,m_ObjectTransformationParams.m_flMatrix03,
-		m_ObjectTransformationParams.m_flMatrix10, m_ObjectTransformationParams.m_flMatrix11,m_ObjectTransformationParams.m_flMatrix12,m_ObjectTransformationParams.m_flMatrix13,
-		m_ObjectTransformationParams.m_flMatrix20, m_ObjectTransformationParams.m_flMatrix21,m_ObjectTransformationParams.m_flMatrix22,m_ObjectTransformationParams.m_flMatrix23,
-		m_ObjectTransformationParams.m_flMatrix30, m_ObjectTransformationParams.m_flMatrix31,m_ObjectTransformationParams.m_flMatrix32,m_ObjectTransformationParams.m_flMatrix33
+Matrix ObjectTransformation::getMatrix() const	{
+	const ObjectTransformationParams &params = m_ObjectTransformationParams;
+	Matrix mtrx(
+		params.m_flMatrix00, params.m_flMatrix01, params.m_flMatrix02, params.m_flMatrix03,
+		params.m_flMatrix10, params.m_flMatrix11, params.m_flMatrix12, params.m_flMatrix13,
+		params.m_flMatrix20, params.m_flMatrix21, params.m_flMatrix22, params.m_flMatrix23,
+		params.m_flMatrix30, params.m_flMatrix31, params.m_flMatrix32, params.m_flMatrix33
 	);
 
 	return mtrx;

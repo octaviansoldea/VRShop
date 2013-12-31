@@ -21,6 +21,7 @@
 
 using namespace VR;
 using namespace osg;
+using namespace osgGA;
 
 PickAndDragHandler::PickAndDragHandler()	{
 	m_dbMouseLastGetXNormalized = 0;
@@ -34,65 +35,65 @@ PickAndDragHandler::PickAndDragHandler()	{
 
 //------------------------------------------------------------------------------
 
-bool PickAndDragHandler::handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa )	{
+bool PickAndDragHandler::handle( const GUIEventAdapter& ea, GUIActionAdapter& aa )	{
 	osgViewer::Viewer * viewer = dynamic_cast<osgViewer::Viewer*>(&aa);
 	if(!viewer)	{
 		std::cout << "Error Viewer" << std::endl;
 		exit(-1);
 	}
 
-	enum enumObjectTransform {Default = 0, LateralMove, VerticalMove, LongitudinalMove, Rotation, Scaling,
-								LateralVerticalToMonitor};
+	enum enumObjectTransform {DEFAULT = 0, LATERAL_MOVE, VERTICAL_MOVE, LONGITUDINAL_MOVE, ROTATION, SCALING,
+								LATERAL_VERTICAL_TO_MONITOR};
 
 	m_pScene = dynamic_cast<Group*>(viewer->getSceneData());
 
 	switch (ea.getEventType())
 	{
-	case(osgGA::GUIEventAdapter::KEYDOWN): {
+	case(GUIEventAdapter::KEYDOWN): {
 		switch(ea.getKey())
 		{
 		case 'h': case 'H':
-			m_nTransformSelection = enumObjectTransform(LateralMove);
+			m_nTransformSelection = enumObjectTransform(LATERAL_MOVE);
 			return false;
 			break;
 
 		case 'v': case 'V':
-			m_nTransformSelection = enumObjectTransform(VerticalMove);
+			m_nTransformSelection = enumObjectTransform(VERTICAL_MOVE);
 			return false;
 			break;
 
 		case 'l': case 'L':
-			m_nTransformSelection = enumObjectTransform(LongitudinalMove);
+			m_nTransformSelection = enumObjectTransform(LONGITUDINAL_MOVE);
 			return false;
 			break;
 
 		case 'r': case 'R':
-			m_nTransformSelection = enumObjectTransform(Rotation);
+			m_nTransformSelection = enumObjectTransform(ROTATION);
 			return false;
 			break;
 
 		case 's': case 'S':
-			m_nTransformSelection = enumObjectTransform(Scaling);
+			m_nTransformSelection = enumObjectTransform(SCALING);
 			return false;
 			break;
 
-		case osgGA::GUIEventAdapter::KEY_Shift_L:
-		case osgGA::GUIEventAdapter::KEY_Shift_R:
-			m_nTransformSelection = enumObjectTransform(LateralVerticalToMonitor);
+		case GUIEventAdapter::KEY_Shift_L:
+		case GUIEventAdapter::KEY_Shift_R:
+			m_nTransformSelection = enumObjectTransform(LATERAL_VERTICAL_TO_MONITOR);
 			return false;
 			break;
 
 		default:
-			m_nTransformSelection = enumObjectTransform(Default);
+			m_nTransformSelection = enumObjectTransform(DEFAULT);
 			return false;
 			break;
 		}
 	}	//Case: Keydown
 
-	case(osgGA::GUIEventAdapter::PUSH):	{
+	case(GUIEventAdapter::PUSH):	{
 		int nButton = ea.getButton();
-		if(nButton == osgGA::GUIEventAdapter::LEFT_MOUSE_BUTTON) {
-//		if(nButton == osgGA::GUIEventAdapter::LEFT_MOUSE_BUTTON && ea.getModKeyMask()&osgGA::GUIEventAdapter::MODKEY_ALT)	{
+		if(nButton == GUIEventAdapter::LEFT_MOUSE_BUTTON) {
+//		if(nButton == GUIEventAdapter::LEFT_MOUSE_BUTTON && ea.getModKeyMask()&GUIEventAdapter::MODKEY_ALT)	{
 			double margin = 0.01;
 
 			osgUtil::PolytopeIntersector* picker = new osgUtil::PolytopeIntersector( 
@@ -146,7 +147,7 @@ bool PickAndDragHandler::handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 	}	//Case: Push
 
 	
-	case(osgGA::GUIEventAdapter::DRAG):	{
+	case(GUIEventAdapter::DRAG):	{
 		if(m_pPickedObject==NULL)	{
 			return false;
 			break;
@@ -158,26 +159,24 @@ bool PickAndDragHandler::handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 		if(fabs(dPositionX)<0.001 && fabs(dPositionY)<0.001)
 			return false;
 
-		osg::Matrixd mat = viewer->getCameraManipulator()->getMatrix();
-		osg::Vec3d lookVector(mat(2,0),mat(2,1),mat(2,2));
-	    osg::Vec3d eyeVector(mat(3,0),mat(3,1),mat(3,2));
+		Matrixd mat = viewer->getCameraManipulator()->getMatrix();
+		Vec3d lookVector(mat(2,0),mat(2,1),mat(2,2));
+	    Vec3d eyeVector(mat(3,0),mat(3,1),mat(3,2));
 		float moveFactor = 0.3 * (lookVector - eyeVector).length();
 
-		ObjectTransformation * pObjectTransformation;
-		osg::Matrix mtrx;
+		ObjectTransformation * pObjectTransformation = new ObjectTransformation();
+		Matrix mtrx;
 
 		//Does Up/down-left/right dragging respective to the axes
-		if(m_nTransformSelection == enumObjectTransform(Default))	{
-//		if(ea.getModKeyMask()&osgGA::GUIEventAdapter::MODKEY_ALT && m_nTransformSelection == enumObjectTransform(Default))
-			pObjectTransformation = new ObjectTransformation();
+		if(m_nTransformSelection == enumObjectTransform(DEFAULT))	{
+//		if(ea.getModKeyMask()&GUIEventAdapter::MODKEY_ALT && m_nTransformSelection == enumObjectTransform(DEFAULT))
 			mtrx = m_mtrxOriginalPosition *
 				pObjectTransformation->translation(moveFactor*(dPositionX), 0.0, moveFactor*(dPositionY));
 		}
 
 		//Does Up/down-left/right dragging irrespective of the axes
-//		if(ea.getModKeyMask()&osgGA::GUIEventAdapter::MODKEY_ALT && m_nTransformSelection == enumObjectTransform(LateralVerticalToMonitor))
-		if(m_nTransformSelection == enumObjectTransform(LateralVerticalToMonitor))	{
-			pObjectTransformation = new ObjectTransformation();
+//		if(ea.getModKeyMask()&GUIEventAdapter::MODKEY_ALT && m_nTransformSelection == enumObjectTransform(LATERAL_VERTICAL_TO_MONITOR))
+		if(m_nTransformSelection == enumObjectTransform(LATERAL_VERTICAL_TO_MONITOR))	{
 			mtrx = m_mtrxOriginalPosition *
 				pObjectTransformation->translation(	moveFactor*(dPositionX)*mat(0,0), 
 													moveFactor*(dPositionX)*mat(0,1), 
@@ -185,30 +184,27 @@ bool PickAndDragHandler::handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 			);
 		}
 
-//		if(ea.getModKeyMask()&osgGA::GUIEventAdapter::MODKEY_ALT && m_nTransformSelection == enumObjectTransform(LateralMove))
-		if(m_nTransformSelection == enumObjectTransform(LateralMove))	{
-			pObjectTransformation = new ObjectTransformation();
+//		if(ea.getModKeyMask()&GUIEventAdapter::MODKEY_ALT && m_nTransformSelection == enumObjectTransform(LATERAL_MOVE))
+		if(m_nTransformSelection == enumObjectTransform(LATERAL_MOVE))	{
 			mtrx = m_mtrxOriginalPosition *
 				pObjectTransformation->translation(moveFactor*(dPositionX), 0.0, 0.0);
 		}
 
-//		if(ea.getModKeyMask()&osgGA::GUIEventAdapter::MODKEY_ALT && m_nTransformSelection == enumObjectTransform(VerticalMove))
-		if(m_nTransformSelection == enumObjectTransform(VerticalMove))	{
-			pObjectTransformation = new ObjectTransformation();
+//		if(ea.getModKeyMask()&GUIEventAdapter::MODKEY_ALT && m_nTransformSelection == enumObjectTransform(VERTICAL_MOVE))
+		if(m_nTransformSelection == enumObjectTransform(VERTICAL_MOVE))	{
 			mtrx = m_mtrxOriginalPosition *
 				pObjectTransformation->translation(0.0, 0.0, moveFactor*(dPositionY));
 		}
 
-//		if(ea.getModKeyMask()&osgGA::GUIEventAdapter::MODKEY_ALT && m_nTransformSelection == enumObjectTransform(LongitudinalMove))
-		if(m_nTransformSelection == enumObjectTransform(LongitudinalMove))	{
-			pObjectTransformation = new ObjectTransformation();
+//		if(ea.getModKeyMask()&GUIEventAdapter::MODKEY_ALT && m_nTransformSelection == enumObjectTransform(LONGITUDINAL_MOVE))
+		if(m_nTransformSelection == enumObjectTransform(LONGITUDINAL_MOVE))	{
 			mtrx = m_mtrxOriginalPosition *
 				pObjectTransformation->translation(0.0, moveFactor*(dPositionY), 0.0);
 		}
 
 
-//		if(ea.getModKeyMask()&osgGA::GUIEventAdapter::MODKEY_ALT && m_nTransformSelection == enumObjectTransform(Rotation))
-		if(m_nTransformSelection == enumObjectTransform(Rotation))	{
+//		if(ea.getModKeyMask()&GUIEventAdapter::MODKEY_ALT && m_nTransformSelection == enumObjectTransform(ROTATION))
+		if(m_nTransformSelection == enumObjectTransform(ROTATION))	{
 			//Angles should be in radians
 			double flRXAngle = 
 				dPositionY
@@ -223,20 +219,17 @@ bool PickAndDragHandler::handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 				//degrees2Radians(0.0)
 				;
 
-			pObjectTransformation = new ObjectTransformation();
-			mtrx = pObjectTransformation->rotation(flRZAngle,ObjectTransformationParams::enumRotation::RotationOnZ)
-				//* pObjectTransformation->rotation(flRYAngle,ObjectTransformationParams::enumRotation::RotationOnY)
-				//* pObjectTransformation->rotation(flRXAngle,ObjectTransformationParams::enumRotation::RotationOnX)
+			mtrx = pObjectTransformation->rotation(flRZAngle,ObjectTransformationParams::m_enumRotation::ROTATION_ON_Z)
+				//* pObjectTransformation->rotation(flRYAngle,ObjectTransformationParams::m_enumRotation::ROTATION_ON_Y)
+				//* pObjectTransformation->rotation(flRXAngle,ObjectTransformationParams::m_enumRotation::ROTATION_ON_X)
 				* m_mtrxOriginalPosition;
 
 			//mtrx = m_mtrxOriginalPosition * X;	ROTATES AROUND THE SCENE'S ORIGIN (PRE-MULTIPLY)
 			//mtrx = X * m_mtrxOriginalPosition;	ROTATES AROUND THE OBJECT'S ORIGIN (POST-MULTIPLY)
 		}
 
-//		if(ea.getModKeyMask()&osgGA::GUIEventAdapter::MODKEY_ALT && m_nTransformSelection == enumObjectTransform(Scaling))	{
-		if(m_nTransformSelection == enumObjectTransform(Scaling))	{
-			pObjectTransformation = new ObjectTransformation();
-
+//		if(ea.getModKeyMask()&GUIEventAdapter::MODKEY_ALT && m_nTransformSelection == enumObjectTransform(SCALING))	{
+		if(m_nTransformSelection == enumObjectTransform(SCALING))	{
 			mtrx = pObjectTransformation->scaling(moveFactor*(dPositionX), moveFactor*(dPositionX), moveFactor*(dPositionX)) 
 				* m_mtrxOriginalPosition;
 		}
@@ -251,8 +244,8 @@ bool PickAndDragHandler::handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIAct
 		break;
 										}
 
-	case(osgGA::GUIEventAdapter::RELEASE):	{
-		m_nTransformSelection = enumObjectTransform(Default);
+	case(GUIEventAdapter::RELEASE):	{
+		m_nTransformSelection = enumObjectTransform(DEFAULT);
 
 		//Remove bounding box - bounding box is put as a last child
 		//if(m_pPickedObject!=NULL)

@@ -46,33 +46,33 @@ Matrix ObjectTransformation::translation(float aflTranslateX, float aflTranslate
 
 //-----------------------------------------------------------
 
-Matrix ObjectTransformation::rotation(float aflAngle, ObjectTransformationParams::enumRotation aenumRotation)	{
+Matrix ObjectTransformation::rotation(float aflAngle, ObjectTransformationParams::m_enumRotation aenumRotation)	{
 	ObjectTransformationParams * pObjectTransformationParams = new ObjectTransformationParams();
 
 	int nSelection = aenumRotation;
 
-	if (nSelection == ObjectTransformationParams::enumRotation::RotationOnX)	{
+	if (nSelection == ObjectTransformationParams::m_enumRotation::ROTATION_ON_X)	{
 		pObjectTransformationParams->m_flMatrix11 = cos(aflAngle);
 		pObjectTransformationParams->m_flMatrix12 = -sin(aflAngle);
 		pObjectTransformationParams->m_flMatrix21 = sin(aflAngle);
 		pObjectTransformationParams->m_flMatrix22 = cos(aflAngle);
 	}
 
-	else if (nSelection == ObjectTransformationParams::enumRotation::RotationOnY)	{
+	else if (nSelection == ObjectTransformationParams::m_enumRotation::ROTATION_ON_Y)	{
 		pObjectTransformationParams->m_flMatrix00 = cos(aflAngle);
 		pObjectTransformationParams->m_flMatrix02 = -sin(aflAngle);
 		pObjectTransformationParams->m_flMatrix20 = sin(aflAngle);
 		pObjectTransformationParams->m_flMatrix22 = cos(aflAngle);
 	}
 
-	else if (nSelection == ObjectTransformationParams::enumRotation::RotationOnZ)	{
+	else if (nSelection == ObjectTransformationParams::m_enumRotation::ROTATION_ON_Z)	{
 		pObjectTransformationParams->m_flMatrix00 = cos(aflAngle);
 		pObjectTransformationParams->m_flMatrix01 = sin(aflAngle);
 		pObjectTransformationParams->m_flMatrix10 = -sin(aflAngle);
 		pObjectTransformationParams->m_flMatrix11 = cos(aflAngle);
 	}
 
-	else if (nSelection == ObjectTransformationParams::enumRotation::Default)	{
+	else if (nSelection == ObjectTransformationParams::m_enumRotation::DEFAULT)	{
 	}
 
 	init(*pObjectTransformationParams);
@@ -113,3 +113,5 @@ Matrix ObjectTransformation::getMatrix() const	{
 
 	return mtrx;
 }
+
+//-----------------------------------------------------------

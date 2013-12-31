@@ -10,7 +10,7 @@ namespace VR {
 				m_flMatrix20, m_flMatrix21, m_flMatrix22, m_flMatrix23,
 				m_flMatrix30, m_flMatrix31, m_flMatrix32, m_flMatrix33;
 
-		enum enumRotation {Default = 0, RotationOnX, RotationOnY, RotationOnZ};
+		enum m_enumRotation {DEFAULT = 0, ROTATION_ON_X, ROTATION_ON_Y, ROTATION_ON_Z};
 
 		ObjectTransformationParams();
 	};
@@ -21,7 +21,7 @@ namespace VR {
 			ObjectTransformation(const ObjectTransformationParams & aObjectTransformationParams);
 
 			osg::Matrix translation(float aflTranslateX, float aflTranslateY, float aflTranslateZ);
-			osg::Matrix rotation(float aflAngle, ObjectTransformationParams::enumRotation aenumRotationm);
+			osg::Matrix rotation(float aflAngle, ObjectTransformationParams::m_enumRotation aenumRotationm);
 			osg::Matrix scaling(float aflScaleX, float aflScaleY, float aflScaleZ);
 
 		private:

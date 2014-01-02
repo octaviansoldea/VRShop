@@ -14,7 +14,7 @@ INCLUDE_DIRECTORIES(
 
 #Define sources to be later added into the library
 SET(SRCS
-	VRPicker.h VRPicker.cpp
+	VRPickAndDragHandler.h VRPickAndDragHandler.cpp
 )
 
 #Library to be later used in the main

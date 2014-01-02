@@ -31,7 +31,7 @@ void ObjectTransformation::init(const ObjectTransformationParams & aObjectTransf
 
 //-----------------------------------------------------------
 
-Matrix ObjectTransformation::translation(float aflTranslateX, float aflTranslateY, float aflTranslateZ)	{
+Matrix ObjectTransformation::setGetTranslation(float aflTranslateX, float aflTranslateY, float aflTranslateZ)	{
 	ObjectTransformationParams * pObjectTransformationParams = new ObjectTransformationParams();
 
 	pObjectTransformationParams->m_flMatrix30 = aflTranslateX;
@@ -46,33 +46,33 @@ Matrix ObjectTransformation::translation(float aflTranslateX, float aflTranslate
 
 //-----------------------------------------------------------
 
-Matrix ObjectTransformation::rotation(float aflAngle, ObjectTransformationParams::m_enumRotation aenumRotation)	{
+Matrix ObjectTransformation::setGetRotation(float aflAngle, ROTATION_TYPE aenumRotation)	{
 	ObjectTransformationParams * pObjectTransformationParams = new ObjectTransformationParams();
 
 	int nSelection = aenumRotation;
 
-	if (nSelection == ObjectTransformationParams::m_enumRotation::ROTATION_ON_X)	{
+	if (nSelection == ROTATION_ON_X)	{
 		pObjectTransformationParams->m_flMatrix11 = cos(aflAngle);
 		pObjectTransformationParams->m_flMatrix12 = -sin(aflAngle);
 		pObjectTransformationParams->m_flMatrix21 = sin(aflAngle);
 		pObjectTransformationParams->m_flMatrix22 = cos(aflAngle);
 	}
 
-	else if (nSelection == ObjectTransformationParams::m_enumRotation::ROTATION_ON_Y)	{
+	else if (nSelection == ROTATION_ON_Y)	{
 		pObjectTransformationParams->m_flMatrix00 = cos(aflAngle);
 		pObjectTransformationParams->m_flMatrix02 = -sin(aflAngle);
 		pObjectTransformationParams->m_flMatrix20 = sin(aflAngle);
 		pObjectTransformationParams->m_flMatrix22 = cos(aflAngle);
 	}
 
-	else if (nSelection == ObjectTransformationParams::m_enumRotation::ROTATION_ON_Z)	{
+	else if (nSelection == ROTATION_ON_Z)	{
 		pObjectTransformationParams->m_flMatrix00 = cos(aflAngle);
 		pObjectTransformationParams->m_flMatrix01 = sin(aflAngle);
 		pObjectTransformationParams->m_flMatrix10 = -sin(aflAngle);
 		pObjectTransformationParams->m_flMatrix11 = cos(aflAngle);
 	}
 
-	else if (nSelection == ObjectTransformationParams::m_enumRotation::DEFAULT)	{
+	else if (nSelection == ROTATION_ON_XYZ)	{
 	}
 
 	init(*pObjectTransformationParams);
@@ -83,7 +83,7 @@ Matrix ObjectTransformation::rotation(float aflAngle, ObjectTransformationParams
 
 //-----------------------------------------------------------
 
-Matrix ObjectTransformation::scaling(float aflScaleX, float aflScaleY, float aflScaleZ)	{
+Matrix ObjectTransformation::setGetScaling(float aflScaleX, float aflScaleY, float aflScaleZ)	{
 	ObjectTransformationParams * pObjectTransformationParams = new ObjectTransformationParams();
 
 	aflScaleX = (1+aflScaleX)>0 ? 1.0 + aflScaleX : 0.001;

@@ -17,10 +17,18 @@ namespace VR	{
 		osg::ref_ptr<osg::Group> m_pScene;
 		osg::ref_ptr<AbstractObject> m_pPickedObject;
 
-		osg::Matrixd m_mtrxOriginalPosition;
-		osg::Matrixd m_mtrxMatrix;
+		osg::Matrixd m_mtrxPickedObject;
 
-		int m_nTransformSelection;
+		typedef enum  {
+			MOVE_ON_XZ = 0,
+			LATERAL_MOVE,
+			VERTICAL_MOVE,
+			LONGITUDINAL_MOVE,
+			ROTATION,
+			SCALING,
+			LATERAL_VERTICAL_TO_MONITOR} ENUM_OBJECT_TRANSFORM;
+
+		ENUM_OBJECT_TRANSFORM m_nTransformSelection;
 
 		double m_dbMouseLastGetXNormalized;
 		double m_dbMouseLastGetYNormalized;

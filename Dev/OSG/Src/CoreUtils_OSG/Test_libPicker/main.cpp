@@ -4,7 +4,7 @@
 
 #include "VRContainer.h"
 
-#include "VRPicker.h"
+#include "VRPickAndDragHandler.h"
 #include "VRGrid.h"
 
 #include "OSGCameraManipulator.h"

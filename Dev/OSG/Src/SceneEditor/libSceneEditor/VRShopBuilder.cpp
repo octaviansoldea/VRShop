@@ -9,7 +9,7 @@
 #include "VRCylinder.h"
 #include "VRUntransformedSphere.h"
 
-#include "VRPicker.h"
+#include "VRPickAndDragHandler.h"
 #include "OSGCameraManipulator.h"
 
 #include <osgDB/ReadFile>

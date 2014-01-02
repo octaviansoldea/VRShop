@@ -42,96 +42,95 @@ bool PickAndDragHandler::handle( const GUIEventAdapter& ea, GUIActionAdapter& aa
 
 	m_pScene = dynamic_cast<Group*>(viewer->getSceneData());
 
-	switch (ea.getEventType()) {
+	switch (ea.getEventType())	{
 		//Keydown sets the type of the transformation to be performed
-		case(GUIEventAdapter::KEYDOWN): {
-			int nKey = ea.getKey();
-			if((nKey == 't') || (nKey == 'T'))
-				m_nCurrentBasicTransform = TRANSLATE;
-			else if((nKey == 'r') || (nKey == 'R'))
-				m_nCurrentBasicTransform = ROTATE;
-			else if((nKey == 's') || (nKey == 'S'))
-				m_nCurrentBasicTransform = SCALE;
-			else if((nKey == 'p') || (nKey == 'P')) {
-				if(m_nCurrentBasicTransform == TRANSLATE) {
-					m_nCurrentModalityTransform = DISPLAY_PLANE;
-				} else {
-					return(false);
-				}
-			} else if((nKey == 'c') || (nKey == 'C')) {
-				if((m_nCurrentBasicTransform == TRANSLATE) || (m_nCurrentBasicTransform == ROTATE)) {
-					m_nCurrentModalityTransform = VIEW_DIRECTION;
-				}  else {
-					return(false);
-				}
-			} else if((nKey == 'x') || (nKey == 'X')) {
-				m_nCurrentModalityTransform = X_AXIS;
-			} else if((nKey == 'y') || (nKey == 'Y')) {
-				m_nCurrentModalityTransform = Y_AXIS;
-			} else if((nKey == 'z') || (nKey == 'Z')) {
-				m_nCurrentModalityTransform = Z_AXIS;
+	case(GUIEventAdapter::KEYDOWN):	{
+		int nKey = ea.getKey();
+		if((nKey == 't') || (nKey == 'T'))
+			m_nCurrentBasicTransform = TRANSLATE;
+		else if((nKey == 'r') || (nKey == 'R'))
+			m_nCurrentBasicTransform = ROTATE;
+		else if((nKey == 's') || (nKey == 'S'))
+			m_nCurrentBasicTransform = SCALE;
+		else if((nKey == 'p') || (nKey == 'P')) {
+			if(m_nCurrentBasicTransform == TRANSLATE) {
+				m_nCurrentModalityTransform = DISPLAY_PLANE;
 			} else {
 				return(false);
 			}
-		}	//Case: Keydown
+		} else if((nKey == 'c') || (nKey == 'C')) {
+			if((m_nCurrentBasicTransform == TRANSLATE) || (m_nCurrentBasicTransform == ROTATE)) {
+				m_nCurrentModalityTransform = VIEW_DIRECTION;
+			}  else {
+				return(false);
+			}
+		} else if((nKey == 'x') || (nKey == 'X')) {
+			m_nCurrentModalityTransform = X_AXIS;
+		} else if((nKey == 'y') || (nKey == 'Y')) {
+			m_nCurrentModalityTransform = Y_AXIS;
+		} else if((nKey == 'z') || (nKey == 'Z')) {
+			m_nCurrentModalityTransform = Z_AXIS;
+		} else {
+			return(false);
+		}
+									}	//Case: Keydown
 
-		case(GUIEventAdapter::PUSH): {
-			int nButton = ea.getButton();
-			if(nButton == GUIEventAdapter::LEFT_MOUSE_BUTTON) {
-				double dbMargin = 0.01;
+	case(GUIEventAdapter::PUSH):	{
+		int nButton = ea.getButton();
+		if(nButton == GUIEventAdapter::LEFT_MOUSE_BUTTON) {
+			double dbMargin = 0.01;
 
-				//Do the polytope intersections with the scene graph.
-				osgUtil::PolytopeIntersector* picker = new osgUtil::PolytopeIntersector( 
-					osgUtil::Intersector::PROJECTION,
-					ea.getXnormalized()-dbMargin,
-					ea.getYnormalized()-dbMargin,
-					ea.getXnormalized()+dbMargin,
-					ea.getYnormalized()+dbMargin);
+			//Do the polytope intersections with the scene graph.
+			osgUtil::PolytopeIntersector* picker = new osgUtil::PolytopeIntersector( 
+				osgUtil::Intersector::PROJECTION,
+				ea.getXnormalized()-dbMargin,
+				ea.getYnormalized()-dbMargin,
+				ea.getXnormalized()+dbMargin,
+				ea.getYnormalized()+dbMargin);
 
-				//InteresectionVisitor is used to testing for intersections with the scene
-				osgUtil::IntersectionVisitor iv(picker);
-				viewer->getCamera()->accept(iv);
+			//InteresectionVisitor is used to testing for intersections with the scene
+			osgUtil::IntersectionVisitor iv(picker);
+			viewer->getCamera()->accept(iv);
 
-				//Check if any part of the scene was picked
-				if (picker->containsIntersections()) {
-					m_dbMouseLastGetX = ea.getX();
-					m_dbMouseLastGetY = ea.getY();
+			//Check if any part of the scene was picked
+			if (picker->containsIntersections()) {
+				m_dbMouseLastGetX = ea.getX();
+				m_dbMouseLastGetY = ea.getY();
 
-					m_dbMouseLastGetXNormalized = ea.getXnormalized();
-					m_dbMouseLastGetYNormalized = ea.getYnormalized();
+				m_dbMouseLastGetXNormalized = ea.getXnormalized();
+				m_dbMouseLastGetYNormalized = ea.getYnormalized();
 
-					//A vector of Nodes from a root node to a descendant
-					NodePath& nodePath = picker->getFirstIntersection().nodePath;
+				//A vector of Nodes from a root node to a descendant
+				NodePath& nodePath = picker->getFirstIntersection().nodePath;
 
-					//Navigate through nodes and pick the "right" one
-					int idx;
-					for(idx=nodePath.size()-1; idx>=0; idx--) {
-						m_pPickedObject = dynamic_cast<AbstractObject*>(nodePath[idx]);
-						if(m_pPickedObject != NULL && m_pPickedObject->getIsTargetPick() != false) {
-							break;
-						}
+				//Navigate through nodes and pick the "right" one
+				int idx;
+				for(idx=nodePath.size()-1; idx>=0; idx--) {
+					m_pPickedObject = dynamic_cast<AbstractObject*>(nodePath[idx]);
+					if(m_pPickedObject != NULL && m_pPickedObject->getIsTargetPick() != false) {
+						break;
 					}
+				}
 
-					//Get the matrix of the picked object and pass it to the drag
-					if(idx >= 0)
-						m_mtrxPickedObject = m_pPickedObject->getMatrix();
-					else
-						m_pPickedObject = NULL;
-				}
-				else	{
+				//Get the matrix of the picked object and pass it to the drag
+				if(idx >= 0)
+					m_mtrxPickedObject = m_pPickedObject->getMatrix();
+				else
 					m_pPickedObject = NULL;
-				}
-				break;
-			}	//Case: Push_Left_Mouse_button
-			else {
+			}
+			else	{
 				m_pPickedObject = NULL;
 			}
-		}	//Case: Push
-
+			break;
+		}	//Case: Push_Left_Mouse_button
+		else {
+			m_pPickedObject = NULL;
+		}
+									}	//Case: Push
 
 	case(GUIEventAdapter::DRAG): {
 		if(m_pPickedObject==NULL) {
-			return false;
+			return(false);
 		}
 
 		//A mouse move 
@@ -193,6 +192,7 @@ bool PickAndDragHandler::handle( const GUIEventAdapter& ea, GUIActionAdapter& aa
 					pObjectTransformation->setGetRotation(flRYAngle, ROTATION_ON_Y)	*
 					pObjectTransformation->setGetRotation(flRXAngle, ROTATION_ON_X)	*
 					m_mtrxPickedObject;
+
 			} else if(m_nCurrentModalityTransform == X_AXIS) {
 
 			} else if(m_nCurrentModalityTransform == Y_AXIS) {
@@ -213,29 +213,29 @@ bool PickAndDragHandler::handle( const GUIEventAdapter& ea, GUIActionAdapter& aa
 					delete pObjectTransformation;
 					return(false);
 				}
-
-				delete pObjectTransformation;
-
-				m_pPickedObject->setMatrix(mtrx);
-
-				viewer->setSceneData(m_pScene);
-
-				return true;
 			}
 		}
+
+		delete pObjectTransformation;
+
+		m_pPickedObject->setMatrix(mtrx);
+
+		viewer->setSceneData(m_pScene);
+
+		return(true);
 								 }
-		case(GUIEventAdapter::RELEASE): {
-			//m_nTransformSelection = MOVE_ON_XZ;
 
-			//Remove bounding box - bounding box is put as a last child
-			//if(m_pPickedObject!=NULL)
-			//	m_pPickedObject->removeChild(m_pPickedObject->getNumChildren()-1);
+	case(GUIEventAdapter::RELEASE): {
+		//m_nTransformSelection = MOVE_ON_XZ;
 
-			return true;
-		}
+		//Remove bounding box - bounding box is put as a last child
+		//if(m_pPickedObject!=NULL)
+		//	m_pPickedObject->removeChild(m_pPickedObject->getNumChildren()-1);
 
+		return(true);
+									}
 	}
-	return false;
+	return(false);
 }
 	
 //---------------------------------------------------------------------------------------

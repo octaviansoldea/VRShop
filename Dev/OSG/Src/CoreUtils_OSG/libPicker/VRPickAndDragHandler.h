@@ -19,16 +19,23 @@ namespace VR	{
 
 		osg::Matrixd m_mtrxPickedObject;
 
-		typedef enum  {
-			MOVE_ON_XZ = 0,
-			LATERAL_MOVE,
-			VERTICAL_MOVE,
-			LONGITUDINAL_MOVE,
-			ROTATION,
-			SCALING,
-			LATERAL_VERTICAL_TO_MONITOR} ENUM_OBJECT_TRANSFORM;
+		typedef enum {
+			TRANSLATE = 0, //t
+			ROTATE, //r
+			SCALE //s
+		} BASIC_TRANSFORM;
+		BASIC_TRANSFORM m_nCurrentBasicTransform;
 
-		ENUM_OBJECT_TRANSFORM m_nTransformSelection;
+		typedef enum {
+			DISPLAY_PLANE = 0,
+			VIEW_DIRECTION, 
+			X_AXIS, //x
+			Y_AXIS, //y
+			Z_AXIS  //z
+		} MODALITY_TRANSFORM;
+		MODALITY_TRANSFORM m_nCurrentModalityTransform;
+
+		//ENUM_OBJECT_TRANSFORM m_nTransformSelection;
 
 		double m_dbMouseLastGetXNormalized;
 		double m_dbMouseLastGetYNormalized;

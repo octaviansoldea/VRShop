@@ -22,20 +22,18 @@
 using namespace osg;
 using namespace osgGA;
 using namespace VR;
+using namespace std;
 
-PickAndDragHandler::PickAndDragHandler() {
-	m_dbMouseLastGetXNormalized = 0;
-	m_dbMouseLastGetYNormalized = 0;
+PickAndDragHandler::PickAndDragHandler() :
+	m_dbMouseLastGetXNormalized(0), m_dbMouseLastGetYNormalized(0),
+	m_dbMouseLastGetX(0), m_dbMouseLastGetY(0),
+	m_nCurrentBasicTransform(TRANSLATE), m_nCurrentModalityTransform(DISPLAY_PLANE) {
 
-	m_dbMouseLastGetX = 0;
-	m_dbMouseLastGetY = 0;
-
-	m_nTransformSelection = MOVE_ON_XZ;
 }
 
 //------------------------------------------------------------------------------
 
-bool PickAndDragHandler::handle( const GUIEventAdapter& ea, GUIActionAdapter& aa )	{
+bool PickAndDragHandler::handle( const GUIEventAdapter& ea, GUIActionAdapter& aa ) {
 	osgViewer::Viewer * viewer = dynamic_cast<osgViewer::Viewer*>(&aa);
 	if(!viewer)	{
 		std::cout << "Error Viewer" << std::endl;
@@ -43,82 +41,94 @@ bool PickAndDragHandler::handle( const GUIEventAdapter& ea, GUIActionAdapter& aa
 	}
 
 	m_pScene = dynamic_cast<Group*>(viewer->getSceneData());
-	
-	switch (ea.getEventType())
-	{
-	//Keydown sets the type of the transformation to be performed
-	case(GUIEventAdapter::KEYDOWN): {
-		int nKey = ea.getKey();
-		if (nKey == 'h' || nKey == 'H')
-			m_nTransformSelection = LATERAL_MOVE;
-		else if (nKey == 'v' || nKey == 'V')
-			m_nTransformSelection = VERTICAL_MOVE;
-		else if (nKey == 'l' || nKey == 'L')
-			m_nTransformSelection = LONGITUDINAL_MOVE;
-		else if (nKey == 'r' || nKey == 'R')
-			m_nTransformSelection = ROTATION;
-		else if (nKey == 's' || nKey == 'S')
-			m_nTransformSelection = SCALING;
-		else if (nKey == GUIEventAdapter::KEY_Shift_L || nKey == GUIEventAdapter::KEY_Shift_R)
-			m_nTransformSelection = LATERAL_VERTICAL_TO_MONITOR;
-		else 
-			m_nTransformSelection = MOVE_ON_XZ;
-	}	//Case: Keydown
 
-	case(GUIEventAdapter::PUSH):	{
-		int nButton = ea.getButton();
-		if(nButton == GUIEventAdapter::LEFT_MOUSE_BUTTON) {
-			double dbMargin = 0.01;
-
-			//Do the polytope intersections with the scene graph.
-			osgUtil::PolytopeIntersector* picker = new osgUtil::PolytopeIntersector( 
-				osgUtil::Intersector::PROJECTION,
-				ea.getXnormalized()-dbMargin,
-				ea.getYnormalized()-dbMargin,
-				ea.getXnormalized()+dbMargin,
-				ea.getYnormalized()+dbMargin);
-
-			//InteresectionVisitor is used to testing for intersections with the scene
-			osgUtil::IntersectionVisitor iv(picker);
-			viewer->getCamera()->accept(iv);
-
-			//Check if any part of the scene was picked
-			if (picker->containsIntersections())	{
-				m_dbMouseLastGetX = ea.getX();
-				m_dbMouseLastGetY = ea.getY();
-
-				m_dbMouseLastGetXNormalized = ea.getXnormalized();
-				m_dbMouseLastGetYNormalized = ea.getYnormalized();
-
-				//A vector of Nodes from a root node to a descendant
-				NodePath& nodePath = picker->getFirstIntersection().nodePath;
-
-				//Navigate through nodes and pick the "right" one
-				int idx;
-				for(idx=nodePath.size()-1; idx>=0; idx--) {
-					m_pPickedObject = dynamic_cast<AbstractObject*>(nodePath[idx]);
-					if(m_pPickedObject != NULL && m_pPickedObject->getIsTargetPick() != false) {
-						break;
-					}
+	switch (ea.getEventType()) {
+		//Keydown sets the type of the transformation to be performed
+		case(GUIEventAdapter::KEYDOWN): {
+			int nKey = ea.getKey();
+			if((nKey == 't') || (nKey == 'T'))
+				m_nCurrentBasicTransform = TRANSLATE;
+			else if((nKey == 'r') || (nKey == 'R'))
+				m_nCurrentBasicTransform = ROTATE;
+			else if((nKey == 's') || (nKey == 'S'))
+				m_nCurrentBasicTransform = SCALE;
+			else if((nKey == 'p') || (nKey == 'P')) {
+				if(m_nCurrentBasicTransform == TRANSLATE) {
+					m_nCurrentModalityTransform = DISPLAY_PLANE;
+				} else {
+					return(false);
 				}
-
-				//Get the matrix of the picked object and pass it to the drag
-				if(idx >= 0)
-					m_mtrxPickedObject = m_pPickedObject->getMatrix();
-				else
-					m_pPickedObject = NULL;
+			} else if((nKey == 'c') || (nKey == 'C')) {
+				if((m_nCurrentBasicTransform == TRANSLATE) || (m_nCurrentBasicTransform == ROTATE)) {
+					m_nCurrentModalityTransform = VIEW_DIRECTION;
+				}  else {
+					return(false);
+				}
+			} else if((nKey == 'x') || (nKey == 'X')) {
+				m_nCurrentModalityTransform = X_AXIS;
+			} else if((nKey == 'y') || (nKey == 'Y')) {
+				m_nCurrentModalityTransform = Y_AXIS;
+			} else if((nKey == 'z') || (nKey == 'Z')) {
+				m_nCurrentModalityTransform = Z_AXIS;
+			} else {
+				return(false);
 			}
-			else	{
+		}	//Case: Keydown
+
+		case(GUIEventAdapter::PUSH): {
+			int nButton = ea.getButton();
+			if(nButton == GUIEventAdapter::LEFT_MOUSE_BUTTON) {
+				double dbMargin = 0.01;
+
+				//Do the polytope intersections with the scene graph.
+				osgUtil::PolytopeIntersector* picker = new osgUtil::PolytopeIntersector( 
+					osgUtil::Intersector::PROJECTION,
+					ea.getXnormalized()-dbMargin,
+					ea.getYnormalized()-dbMargin,
+					ea.getXnormalized()+dbMargin,
+					ea.getYnormalized()+dbMargin);
+
+				//InteresectionVisitor is used to testing for intersections with the scene
+				osgUtil::IntersectionVisitor iv(picker);
+				viewer->getCamera()->accept(iv);
+
+				//Check if any part of the scene was picked
+				if (picker->containsIntersections()) {
+					m_dbMouseLastGetX = ea.getX();
+					m_dbMouseLastGetY = ea.getY();
+
+					m_dbMouseLastGetXNormalized = ea.getXnormalized();
+					m_dbMouseLastGetYNormalized = ea.getYnormalized();
+
+					//A vector of Nodes from a root node to a descendant
+					NodePath& nodePath = picker->getFirstIntersection().nodePath;
+
+					//Navigate through nodes and pick the "right" one
+					int idx;
+					for(idx=nodePath.size()-1; idx>=0; idx--) {
+						m_pPickedObject = dynamic_cast<AbstractObject*>(nodePath[idx]);
+						if(m_pPickedObject != NULL && m_pPickedObject->getIsTargetPick() != false) {
+							break;
+						}
+					}
+
+					//Get the matrix of the picked object and pass it to the drag
+					if(idx >= 0)
+						m_mtrxPickedObject = m_pPickedObject->getMatrix();
+					else
+						m_pPickedObject = NULL;
+				}
+				else	{
+					m_pPickedObject = NULL;
+				}
+				break;
+			}	//Case: Push_Left_Mouse_button
+			else {
 				m_pPickedObject = NULL;
 			}
-			break;
-		}	//Case: Push_Left_Mouse_button
-		else {
-			m_pPickedObject = NULL;
-		}
-	}	//Case: Push
+		}	//Case: Push
 
-	
+
 	case(GUIEventAdapter::DRAG): {
 		if(m_pPickedObject==NULL) {
 			return false;
@@ -141,115 +151,91 @@ bool PickAndDragHandler::handle( const GUIEventAdapter& ea, GUIActionAdapter& aa
 
 		ObjectTransformation * pObjectTransformation = new ObjectTransformation();
 		Matrix mtrx;
-		Matrix mtrx1;
 
 		//Does Up/down-left/right dragging respective to the axes
-		if(m_nTransformSelection == MOVE_ON_XZ)	{
-			mtrx = m_mtrxPickedObject *
-				pObjectTransformation->setGetTranslation(moveFactor*(flDiffPosX), 0.0, moveFactor*(flDiffPosY));
+		if(m_nCurrentBasicTransform == TRANSLATE) {
+			if(m_nCurrentModalityTransform == DISPLAY_PLANE) {
+				mtrx = m_mtrxPickedObject *
+					pObjectTransformation->setGetTranslation(moveFactor*(flDiffPosX), 0.0, moveFactor*(flDiffPosY));
+			} else if(m_nCurrentModalityTransform == VIEW_DIRECTION) {
+				mtrx = m_mtrxPickedObject *
+					pObjectTransformation->setGetTranslation(
+					moveFactor*(flDiffPosX)*mat(0,0), 
+					moveFactor*(flDiffPosX)*mat(0,1), 
+					moveFactor*(flDiffPosY)
+					);
+			} else if(m_nCurrentModalityTransform == X_AXIS) {
+				mtrx = m_mtrxPickedObject *
+					pObjectTransformation->setGetTranslation(moveFactor*(flDiffPosX), 0.0, 0.0);
+			} else if(m_nCurrentModalityTransform == Y_AXIS) {
+				mtrx = m_mtrxPickedObject *
+					pObjectTransformation->setGetTranslation(0.0, 0.0, moveFactor*(flDiffPosY));
+			} else if(m_nCurrentModalityTransform == Z_AXIS) {
+				mtrx = m_mtrxPickedObject *
+					pObjectTransformation->setGetTranslation(0.0, moveFactor*(flDiffPosY), 0.0);
+			}
+		} else if(m_nCurrentBasicTransform == ROTATE) {
+			if(m_nCurrentModalityTransform == DISPLAY_PLANE) {
+				//Angles should be in radians
+				double flRXAngle = 
+					flDiffPosY
+					//				degrees2Radians(1.0)
+					;
+				double flRYAngle = 
+					flDiffPosX
+					//				degrees2Radians(1.0)
+					;
+				double flRZAngle = 
+					flDiffPosX
+					//				degrees2Radians(1.0)
+					;
+				mtrx = pObjectTransformation->setGetRotation(flRZAngle, ROTATION_ON_Z)	*
+					pObjectTransformation->setGetRotation(flRYAngle, ROTATION_ON_Y)	*
+					pObjectTransformation->setGetRotation(flRXAngle, ROTATION_ON_X)	*
+					m_mtrxPickedObject;
+			} else if(m_nCurrentModalityTransform == X_AXIS) {
+
+			} else if(m_nCurrentModalityTransform == Y_AXIS) {
+
+			} else if(m_nCurrentModalityTransform == Z_AXIS) {
+
+			} else if(m_nCurrentBasicTransform == SCALE) {
+				if(m_nCurrentModalityTransform == X_AXIS) {
+					mtrx = pObjectTransformation->setGetScaling(moveFactor*(flDiffPosX), moveFactor*(flDiffPosX), moveFactor*(flDiffPosX)) 
+						* m_mtrxPickedObject;
+				} else if(m_nCurrentModalityTransform == Y_AXIS)	{
+					mtrx = pObjectTransformation->setGetScaling(moveFactor*(flDiffPosX), moveFactor*(flDiffPosX), moveFactor*(flDiffPosX)) 
+						* m_mtrxPickedObject;
+				} else if(m_nCurrentModalityTransform == Z_AXIS)	{
+					mtrx = pObjectTransformation->setGetScaling(moveFactor*(flDiffPosX), moveFactor*(flDiffPosX), moveFactor*(flDiffPosX)) 
+						* m_mtrxPickedObject;
+				} else {
+					delete pObjectTransformation;
+					return(false);
+				}
+
+				delete pObjectTransformation;
+
+				m_pPickedObject->setMatrix(mtrx);
+
+				viewer->setSceneData(m_pScene);
+
+				return true;
+			}
 		}
-
-		//Does Up/down-left/right dragging irrespective of the axes
-		if(m_nTransformSelection == LATERAL_VERTICAL_TO_MONITOR) {
-			mtrx = m_mtrxPickedObject *
-				pObjectTransformation->setGetTranslation(
-				moveFactor*(flDiffPosX)*mat(0,0), 
-				moveFactor*(flDiffPosX)*mat(0,1), 
-				moveFactor*(flDiffPosY)
-			);
-		}
-
-		if(m_nTransformSelection == LATERAL_MOVE)	{
-			mtrx = m_mtrxPickedObject *
-				pObjectTransformation->setGetTranslation(moveFactor*(flDiffPosX), 0.0, 0.0);
-		}
-
-		if(m_nTransformSelection == VERTICAL_MOVE)	{
-			mtrx = m_mtrxPickedObject *
-				pObjectTransformation->setGetTranslation(0.0, 0.0, moveFactor*(flDiffPosY));
-		}
-
-		if(m_nTransformSelection == LONGITUDINAL_MOVE)	{
-			mtrx = m_mtrxPickedObject *
-				pObjectTransformation->setGetTranslation(0.0, moveFactor*(flDiffPosY), 0.0);
-		}
-
-		if(m_nTransformSelection == ROTATION)	{
-			//Angles should be in radians
-			double flRXAngle = 
-				flDiffPosY
-//				degrees2Radians(1.0)
-				;
-			double flRYAngle = 
-				flDiffPosX
-//				degrees2Radians(1.0)
-				;
-			double flRZAngle = 
-				flDiffPosX
-//				degrees2Radians(1.0)
-				;
-
-			mtrx = pObjectTransformation->setGetRotation(flRZAngle, ROTATION_ON_Z)	*
-				 pObjectTransformation->setGetRotation(flRYAngle, ROTATION_ON_Y)	*
-				 pObjectTransformation->setGetRotation(flRXAngle, ROTATION_ON_X)	*
-				 m_mtrxPickedObject;
-			
-			//Vec3f flvecObjectCenter(m_pPickedObject->getBound().center());
-			//Vec3f flvecRotationDirection(mat(2,0),mat(2,1),mat(2,2));
-
-			//float U(flvecObjectCenter.x());
-			//float V(flvecObjectCenter.y());
-			//float W(flvecObjectCenter.z());
-
-			//float dist = (flvecRotationDirection-flvecObjectCenter).length();
-
-
-			//mtrx = Matrix::inverse(pObjectTransformation->setGetTranslation(-U,-V,-W)) *
-			//	 pObjectTransformation->setGetRotation(flRYAngle, ROTATION_ON_Y)	*
-			//	 pObjectTransformation->setGetRotation(flRXAngle, ROTATION_ON_X)	*
-			//	 pObjectTransformation->setGetTranslation(-U,-V,-W) *
-			//	 m_mtrxPickedObject;
-
-//			mtrx =
-//				Matrix::inverse(pObjectTransformation->setGetTranslation(-flvecObjectCenter.x(),-flvecObjectCenter.y(),-flvecObjectCenter.z())) *
-//				pObjectTransformation->setGetRotation(flRZAngle, ROTATION_ON_Z) *
-				//pObjectTransformation->setGetRotation(flRYAngle, ROTATION_ON_Y) *
-				//pObjectTransformation->setGetRotation(flRXAngle, ROTATION_ON_X) *
-//				pObjectTransformation->setGetTranslation(-flvecObjectCenter.x(),-flvecObjectCenter.y(),-flvecObjectCenter.z()) *
-//				m_mtrxPickedObject
-//				;
-
-				
-			//mtrx = m_mtrxPickedObject * X;	ROTATES AROUND THE SCENE'S ORIGIN (PRE-MULTIPLY)
-			//mtrx = X * m_mtrxPickedObject;	ROTATES AROUND THE OBJECT'S ORIGIN (POST-MULTIPLY)
-		}
-
-		if(m_nTransformSelection == SCALING)	{
-			mtrx = pObjectTransformation->setGetScaling(moveFactor*(flDiffPosX), moveFactor*(flDiffPosX), moveFactor*(flDiffPosX)) 
-				* m_mtrxPickedObject;
-		}
-
-		delete pObjectTransformation;
-
-		m_pPickedObject->setMatrix(mtrx);
-
-		viewer->setSceneData(m_pScene);
-
-		return false;
 								 }
+		case(GUIEventAdapter::RELEASE): {
+			//m_nTransformSelection = MOVE_ON_XZ;
 
-	case(GUIEventAdapter::RELEASE):	{
-		m_nTransformSelection = MOVE_ON_XZ;
+			//Remove bounding box - bounding box is put as a last child
+			//if(m_pPickedObject!=NULL)
+			//	m_pPickedObject->removeChild(m_pPickedObject->getNumChildren()-1);
 
-		//Remove bounding box - bounding box is put as a last child
-		//if(m_pPickedObject!=NULL)
-		//	m_pPickedObject->removeChild(m_pPickedObject->getNumChildren()-1);
+			return true;
+		}
 
-		return false;
-		break;
-										}
 	}
 	return false;
 }
-
+	
 //---------------------------------------------------------------------------------------

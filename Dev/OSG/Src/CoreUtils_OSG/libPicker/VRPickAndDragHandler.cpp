@@ -41,10 +41,10 @@ bool PickAndDragHandler::handle( const GUIEventAdapter& ea, GUIActionAdapter& aa
 	}
 
 	m_pScene = dynamic_cast<Group*>(viewer->getSceneData());
+//	Matrix mtrxPickedObject;
 
-	switch (ea.getEventType())	{
-		//Keydown sets the type of the transformation to be performed
-	case(GUIEventAdapter::KEYDOWN):	{
+	int nResEvent = ea.getEventType();
+	if(nResEvent == GUIEventAdapter::KEYDOWN)	{
 		int nKey = ea.getKey();
 		if((nKey == 't') || (nKey == 'T'))
 			m_nCurrentBasicTransform = TRANSLATE;
@@ -73,9 +73,9 @@ bool PickAndDragHandler::handle( const GUIEventAdapter& ea, GUIActionAdapter& aa
 		} else {
 			return(false);
 		}
-									}	//Case: Keydown
+	}	//IF: Keydown
 
-	case(GUIEventAdapter::PUSH):	{
+	else if (nResEvent == GUIEventAdapter::PUSH)	{
 		int nButton = ea.getButton();
 		if(nButton == GUIEventAdapter::LEFT_MOUSE_BUTTON) {
 			double dbMargin = 0.01;
@@ -113,25 +113,31 @@ bool PickAndDragHandler::handle( const GUIEventAdapter& ea, GUIActionAdapter& aa
 				}
 
 				//Get the matrix of the picked object and pass it to the drag
-				if(idx >= 0)
-					m_mtrxPickedObject = m_pPickedObject->getMatrix();
+				if(idx >= 0) {
+					mtrxPickedObject = m_pPickedObject->getMatrix();
+					PrintMatrix(mtrxPickedObject, "Picked object matrix");
+				}	
 				else
 					m_pPickedObject = NULL;
 			}
 			else	{
 				m_pPickedObject = NULL;
 			}
-			break;
 		}	//Case: Push_Left_Mouse_button
 		else {
 			m_pPickedObject = NULL;
 		}
-									}	//Case: Push
+	}	//Case: Push
 
-	case(GUIEventAdapter::DRAG): {
+
+	else if (nResEvent == GUIEventAdapter::DRAG)	{
 		if(m_pPickedObject==NULL) {
 			return(false);
 		}
+			
+//		mtrxPickedObject = m_pPickedObject->getMatrix();
+
+		PrintMatrix(mtrxPickedObject, "Picked Object when Drag - ging");
 
 		//A mouse move 
 		float flDiffPosX =	ea.getXnormalized() - m_dbMouseLastGetXNormalized; 
@@ -149,83 +155,89 @@ bool PickAndDragHandler::handle( const GUIEventAdapter& ea, GUIActionAdapter& aa
 		float moveFactor = 0.3F * (vec3dLook - eyeVector).length();
 
 		ObjectTransformation * pObjectTransformation = new ObjectTransformation();
-		Matrix mtrx;
+		Matrix mtrxTransformMatrix;
 
 		//Does Up/down-left/right dragging respective to the axes
 		if(m_nCurrentBasicTransform == TRANSLATE) {
 			if(m_nCurrentModalityTransform == DISPLAY_PLANE) {
-				mtrx = m_mtrxPickedObject *
-					pObjectTransformation->setGetTranslation(moveFactor*(flDiffPosX), 0.0, moveFactor*(flDiffPosY));
+				mtrxTransformMatrix = mtrxPickedObject *
+					pObjectTransformation->setTranslationGetMatrix(moveFactor*(flDiffPosX), 0.0, moveFactor*(flDiffPosY));
 			} else if(m_nCurrentModalityTransform == VIEW_DIRECTION) {
-				mtrx = m_mtrxPickedObject *
-					pObjectTransformation->setGetTranslation(
+				mtrxTransformMatrix = mtrxPickedObject *
+					pObjectTransformation->setTranslationGetMatrix(
 					moveFactor*(flDiffPosX)*mat(0,0), 
 					moveFactor*(flDiffPosX)*mat(0,1), 
 					moveFactor*(flDiffPosY)
 					);
 			} else if(m_nCurrentModalityTransform == X_AXIS) {
-				mtrx = m_mtrxPickedObject *
-					pObjectTransformation->setGetTranslation(moveFactor*(flDiffPosX), 0.0, 0.0);
+				mtrxTransformMatrix = mtrxPickedObject *
+					pObjectTransformation->setTranslationGetMatrix(moveFactor*(flDiffPosX), 0.0, 0.0);
 			} else if(m_nCurrentModalityTransform == Y_AXIS) {
-				mtrx = m_mtrxPickedObject *
-					pObjectTransformation->setGetTranslation(0.0, 0.0, moveFactor*(flDiffPosY));
+				mtrxTransformMatrix = mtrxPickedObject *
+					pObjectTransformation->setTranslationGetMatrix(0.0, 0.0, moveFactor*(flDiffPosY));
 			} else if(m_nCurrentModalityTransform == Z_AXIS) {
-				mtrx = m_mtrxPickedObject *
-					pObjectTransformation->setGetTranslation(0.0, moveFactor*(flDiffPosY), 0.0);
+				mtrxTransformMatrix = mtrxPickedObject *
+					pObjectTransformation->setTranslationGetMatrix(0.0, moveFactor*(flDiffPosY), 0.0);
 			}
 		} else if(m_nCurrentBasicTransform == ROTATE) {
+			//Angles should be in radians
+			double flRXAngle = 
+				flDiffPosY
+				//				degrees2Radians(1.0)
+				;
+			double flRYAngle = 
+				flDiffPosX
+				//				degrees2Radians(1.0)
+				;
+			double flRZAngle = 
+				flDiffPosX
+				//				degrees2Radians(1.0)
+				;
 			if(m_nCurrentModalityTransform == DISPLAY_PLANE) {
-				//Angles should be in radians
-				double flRXAngle = 
-					flDiffPosY
-					//				degrees2Radians(1.0)
-					;
-				double flRYAngle = 
-					flDiffPosX
-					//				degrees2Radians(1.0)
-					;
-				double flRZAngle = 
-					flDiffPosX
-					//				degrees2Radians(1.0)
-					;
-				mtrx = pObjectTransformation->setGetRotation(flRZAngle, ROTATION_ON_Z)	*
-					pObjectTransformation->setGetRotation(flRYAngle, ROTATION_ON_Y)	*
-					pObjectTransformation->setGetRotation(flRXAngle, ROTATION_ON_X)	*
-					m_mtrxPickedObject;
+				mtrxTransformMatrix = pObjectTransformation->setRotationGetMatrix(flRZAngle, ROTATION_ON_Z)	*
+					pObjectTransformation->setRotationGetMatrix(flRYAngle, ROTATION_ON_Y)	*
+					pObjectTransformation->setRotationGetMatrix(flRXAngle, ROTATION_ON_X)	*
+					mtrxPickedObject;
 
 			} else if(m_nCurrentModalityTransform == X_AXIS) {
+				mtrxTransformMatrix = pObjectTransformation->setRotationGetMatrix(flRXAngle, ROTATION_ON_X)	*
+					mtrxPickedObject;
 
 			} else if(m_nCurrentModalityTransform == Y_AXIS) {
+				mtrxTransformMatrix = pObjectTransformation->setRotationGetMatrix(flRYAngle, ROTATION_ON_Y)	*
+					mtrxPickedObject;
 
 			} else if(m_nCurrentModalityTransform == Z_AXIS) {
-
-			} else if(m_nCurrentBasicTransform == SCALE) {
-				if(m_nCurrentModalityTransform == X_AXIS) {
-					mtrx = pObjectTransformation->setGetScaling(moveFactor*(flDiffPosX), moveFactor*(flDiffPosX), moveFactor*(flDiffPosX)) 
-						* m_mtrxPickedObject;
-				} else if(m_nCurrentModalityTransform == Y_AXIS)	{
-					mtrx = pObjectTransformation->setGetScaling(moveFactor*(flDiffPosX), moveFactor*(flDiffPosX), moveFactor*(flDiffPosX)) 
-						* m_mtrxPickedObject;
-				} else if(m_nCurrentModalityTransform == Z_AXIS)	{
-					mtrx = pObjectTransformation->setGetScaling(moveFactor*(flDiffPosX), moveFactor*(flDiffPosX), moveFactor*(flDiffPosX)) 
-						* m_mtrxPickedObject;
-				} else {
-					delete pObjectTransformation;
-					return(false);
-				}
+				mtrxTransformMatrix = pObjectTransformation->setRotationGetMatrix(flRZAngle, ROTATION_ON_Z)	*
+					mtrxPickedObject;
+			} 
+		} else if(m_nCurrentBasicTransform == SCALE) {
+			if(m_nCurrentModalityTransform == X_AXIS) {
+				mtrxTransformMatrix = pObjectTransformation->setScalingGetMatrix(moveFactor*(flDiffPosX), 0.0, 0.0) 
+					* mtrxPickedObject;
+			} else if(m_nCurrentModalityTransform == Y_AXIS)	{
+				mtrxTransformMatrix = pObjectTransformation->setScalingGetMatrix(0.0, moveFactor*(flDiffPosX), 0.0) 
+					* mtrxPickedObject;
+			} else if(m_nCurrentModalityTransform == Z_AXIS)	{
+				mtrxTransformMatrix = pObjectTransformation->setScalingGetMatrix(0.0, 0.0, moveFactor*(flDiffPosX)) 
+					* mtrxPickedObject;
+			} else {
+				return(false);
 			}
 		}
 
 		delete pObjectTransformation;
 
-		m_pPickedObject->setMatrix(mtrx);
+		m_pPickedObject->setMatrix(mtrxTransformMatrix);
+
+		PrintMatrix(mtrxTransformMatrix, "mtrxTransformMatrix");
 
 		viewer->setSceneData(m_pScene);
 
 		return(true);
-								 }
-
-	case(GUIEventAdapter::RELEASE): {
+	}
+	
+	else if (nResEvent == GUIEventAdapter::RELEASE)	{
 		//m_nTransformSelection = MOVE_ON_XZ;
 
 		//Remove bounding box - bounding box is put as a last child
@@ -233,9 +245,37 @@ bool PickAndDragHandler::handle( const GUIEventAdapter& ea, GUIActionAdapter& aa
 		//	m_pPickedObject->removeChild(m_pPickedObject->getNumChildren()-1);
 
 		return(true);
-									}
 	}
-	return(false);
 }
 	
 //---------------------------------------------------------------------------------------
+
+void PickAndDragHandler::handleTranslate()	{
+}
+
+//---------------------------------------------------------------------------------------
+
+void PickAndDragHandler::handleRotate()	{
+}
+
+//---------------------------------------------------------------------------------------
+
+void PickAndDragHandler::handleScale()	{
+}
+
+//---------------------------------------------------------------------------------------
+
+void PickAndDragHandler::PrintMatrix(const osg::Matrix & aMtrx, const string & astrTitle) {
+
+	cout << astrTitle << endl;
+	int i,j;
+	for(i = 0; i < 4; i++) {
+		for(j = 0; j < 4; j++) {
+			cout << aMtrx(i, j) << " ";
+		}
+		cout << endl;
+	}
+
+	cout << endl;
+
+}

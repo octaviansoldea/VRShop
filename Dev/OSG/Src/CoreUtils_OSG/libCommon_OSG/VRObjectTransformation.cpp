@@ -3,25 +3,22 @@
 using namespace VR;
 using namespace osg;
 
-ObjectTransformationParams::ObjectTransformationParams() :
-m_flMatrix00(1.0), m_flMatrix01(0.0), m_flMatrix02(0.0), m_flMatrix03(0.0),
-m_flMatrix10(0.0), m_flMatrix11(1.0), m_flMatrix12(0.0), m_flMatrix13(0.0),
-m_flMatrix20(0.0), m_flMatrix21(0.0), m_flMatrix22(1.0), m_flMatrix23(0.0),
-m_flMatrix30(0.0), m_flMatrix31(0.0), m_flMatrix32(0.0), m_flMatrix33(1.0)	{
+ObjectTransformationParams::ObjectTransformationParams() {
+	identity();
 };
 
 //-----------------------------------------------------------
 
 ObjectTransformation::ObjectTransformation()	{
-	const ObjectTransformationParams aObjectTransformationParams;
-	init(aObjectTransformationParams);
+	const ObjectTransformationParams objectTransformationParams;
+	init(objectTransformationParams);
 }
 
 //-----------------------------------------------------------
 
-ObjectTransformation::ObjectTransformation(const ObjectTransformationParams & aObjectTransformationParams)	{
-	init(aObjectTransformationParams);
-}
+//ObjectTransformation::ObjectTransformation(const ObjectTransformationParams & aObjectTransformationParams)	{
+//	init(aObjectTransformationParams);
+//}
 
 //-----------------------------------------------------------
 
@@ -31,71 +28,61 @@ void ObjectTransformation::init(const ObjectTransformationParams & aObjectTransf
 
 //-----------------------------------------------------------
 
-Matrix ObjectTransformation::setGetTranslation(float aflTranslateX, float aflTranslateY, float aflTranslateZ)	{
-	ObjectTransformationParams * pObjectTransformationParams = new ObjectTransformationParams();
+Matrix ObjectTransformation::setTranslationGetMatrix(float aflX, float aflY, float aflZ)	{
+	ObjectTransformationParams params;
 
-	pObjectTransformationParams->m_flMatrix30 = aflTranslateX;
-	pObjectTransformationParams->m_flMatrix31 = aflTranslateY;
-	pObjectTransformationParams->m_flMatrix32 = aflTranslateZ;
+	params(3,0) = aflX;
+	params(3,1) = aflY;
+	params(3,2) = aflZ;
 
-	init(*pObjectTransformationParams);
-	delete pObjectTransformationParams;
+	init(params);
 
 	return getMatrix();
 }
 
 //-----------------------------------------------------------
 
-Matrix ObjectTransformation::setGetRotation(float aflAngle, ROTATION_TYPE aenumRotation)	{
-	ObjectTransformationParams * pObjectTransformationParams = new ObjectTransformationParams();
+Matrix ObjectTransformation::setRotationGetMatrix(float aflAngle, ROTATION_TYPE aENUMRotationm)	{
+	ObjectTransformationParams params;
 
-	int nSelection = aenumRotation;
+	int nSelection = aENUMRotationm;
 
 	if (nSelection == ROTATION_ON_X)	{
-		pObjectTransformationParams->m_flMatrix11 = cos(aflAngle);
-		pObjectTransformationParams->m_flMatrix12 = -sin(aflAngle);
-		pObjectTransformationParams->m_flMatrix21 = sin(aflAngle);
-		pObjectTransformationParams->m_flMatrix22 = cos(aflAngle);
+		params(1,1) = cos(aflAngle);
+		params(1,2) = -sin(aflAngle);
+		params(2,1) = sin(aflAngle);
+		params(2,2) = cos(aflAngle);
 	}
 
 	else if (nSelection == ROTATION_ON_Y)	{
-		pObjectTransformationParams->m_flMatrix00 = cos(aflAngle);
-		pObjectTransformationParams->m_flMatrix02 = -sin(aflAngle);
-		pObjectTransformationParams->m_flMatrix20 = sin(aflAngle);
-		pObjectTransformationParams->m_flMatrix22 = cos(aflAngle);
+		params(0,0) = cos(aflAngle);
+		params(0,2) = -sin(aflAngle);
+		params(2,0) = sin(aflAngle);
+		params(2,2) = cos(aflAngle);
 	}
 
 	else if (nSelection == ROTATION_ON_Z)	{
-		pObjectTransformationParams->m_flMatrix00 = cos(aflAngle);
-		pObjectTransformationParams->m_flMatrix01 = sin(aflAngle);
-		pObjectTransformationParams->m_flMatrix10 = -sin(aflAngle);
-		pObjectTransformationParams->m_flMatrix11 = cos(aflAngle);
+		params(0,0) = cos(aflAngle);
+		params(0,1) = sin(aflAngle);
+		params(1,0) = -sin(aflAngle);
+		params(1,1) = cos(aflAngle);
 	}
 
-	else if (nSelection == ROTATION_ON_XYZ)	{
-	}
-
-	init(*pObjectTransformationParams);
-	delete pObjectTransformationParams;
+	init(params);
 
 	return getMatrix();
 }
 
 //-----------------------------------------------------------
 
-Matrix ObjectTransformation::setGetScaling(float aflScaleX, float aflScaleY, float aflScaleZ)	{
-	ObjectTransformationParams * pObjectTransformationParams = new ObjectTransformationParams();
+Matrix ObjectTransformation::setScalingGetMatrix(float aflX, float aflY, float aflZ)	{
+	ObjectTransformationParams params;
 
-	aflScaleX = (1+aflScaleX)>0 ? 1.0 + aflScaleX : 0.001;
-	aflScaleY = (1+aflScaleY)>0 ? 1.0 + aflScaleY : 0.001;
-	aflScaleZ = (1+aflScaleZ)>0 ? 1.0 + aflScaleZ : 0.001;
+	params(0,0) = (aflX > 0 ? 1.1 : 0.9);
+	params(1,1) = (aflY > 0 ? 1.1 : 0.9);
+	params(2,2) = (aflZ > 0 ? 1.1 : 0.9);
 
-	pObjectTransformationParams->m_flMatrix00 = aflScaleX;
-	pObjectTransformationParams->m_flMatrix11 = aflScaleY;
-	pObjectTransformationParams->m_flMatrix22 = aflScaleZ;
-
-	init(*pObjectTransformationParams);
-	delete pObjectTransformationParams;
+	init(params);
 
 	return getMatrix();
 }
@@ -103,12 +90,12 @@ Matrix ObjectTransformation::setGetScaling(float aflScaleX, float aflScaleY, flo
 //-----------------------------------------------------------
 
 Matrix ObjectTransformation::getMatrix() const	{
-	const ObjectTransformationParams &params = m_ObjectTransformationParams;
+	ObjectTransformationParams params = m_ObjectTransformationParams;
 	Matrix mtrx(
-		params.m_flMatrix00, params.m_flMatrix01, params.m_flMatrix02, params.m_flMatrix03,
-		params.m_flMatrix10, params.m_flMatrix11, params.m_flMatrix12, params.m_flMatrix13,
-		params.m_flMatrix20, params.m_flMatrix21, params.m_flMatrix22, params.m_flMatrix23,
-		params.m_flMatrix30, params.m_flMatrix31, params.m_flMatrix32, params.m_flMatrix33
+		params(0,0), params(0,1), params(0,2), params(0,3),
+		params(1,0), params(1,1), params(1,2), params(1,3),
+		params(2,0), params(2,1), params(2,2), params(2,3),
+		params(3,0), params(3,1), params(3,2), params(3,3)
 	);
 
 	return mtrx;

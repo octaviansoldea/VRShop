@@ -5,19 +5,26 @@
 
 class osg::Group;
 class AbstractObject;
+class ObjectTransformation;
 
 namespace VR	{
 	class PickAndDragHandler : public osgGA::GUIEventHandler	{
 	public:
 		PickAndDragHandler();
 
+		static void PrintMatrix(const osg::Matrix & aMtrx, const std::string & astrTitle);
+
 	private:
 		virtual bool handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa );
+
+		void handleTranslate();
+		void handleRotate();
+		void handleScale();
 
 		osg::ref_ptr<osg::Group> m_pScene;
 		osg::ref_ptr<AbstractObject> m_pPickedObject;
 
-		osg::Matrixd m_mtrxPickedObject;
+		osg::Matrix mtrxPickedObject;
 
 		typedef enum {
 			TRANSLATE = 0, //t
@@ -34,8 +41,6 @@ namespace VR	{
 			Z_AXIS  //z
 		} MODALITY_TRANSFORM;
 		MODALITY_TRANSFORM m_nCurrentModalityTransform;
-
-		//ENUM_OBJECT_TRANSFORM m_nTransformSelection;
 
 		double m_dbMouseLastGetXNormalized;
 		double m_dbMouseLastGetYNormalized;

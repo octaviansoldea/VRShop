@@ -36,10 +36,10 @@ Matrix ObjectTransformation::setTranslationGetMatrix(float aflX, float aflY, flo
 
 //-----------------------------------------------------------
 
-Matrix ObjectTransformation::setRotationGetMatrix(float aflAngle, ROTATION_TYPE aENUMRotationm)	{
+Matrix ObjectTransformation::setRotationGetMatrix(float aflAngle, ROTATION_TYPE aENUMRotation)	{
 	ObjectTransformationParams params;
 
-	int nSelection = aENUMRotationm;
+	int nSelection = aENUMRotation;
 
 	if (nSelection == ROTATION_ON_X)	{
 		params(1,1) = cos(aflAngle);

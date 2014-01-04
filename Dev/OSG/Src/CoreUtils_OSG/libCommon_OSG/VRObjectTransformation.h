@@ -18,7 +18,7 @@ namespace VR {
 			ObjectTransformation();
 
 			osg::Matrix setTranslationGetMatrix(float aflX, float aflY, float aflZ);
-			osg::Matrix setRotationGetMatrix(float aflAngle, ROTATION_TYPE aENUMRotationm);
+			osg::Matrix setRotationGetMatrix(float aflAngle, ROTATION_TYPE aENUMRotation);
 			osg::Matrix setScalingGetMatrix(float aflX, float aflY, float aflZ);
 
 		private:

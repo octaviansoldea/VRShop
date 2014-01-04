@@ -3,28 +3,42 @@
 
 #include <osgGA/GUIEventHandler>
 
+namespace osgViewer { class Viewer; };
+
 class osg::Group;
 class AbstractObject;
 class ObjectTransformation;
 
-namespace VR	{
-	class PickAndDragHandler : public osgGA::GUIEventHandler	{
+namespace VR {
+	class PickAndDragHandler : public osgGA::GUIEventHandler {
 	public:
 		PickAndDragHandler();
 
 		static void PrintMatrix(const osg::Matrix & aMtrx, const std::string & astrTitle);
 
 	private:
+		
+		typedef struct {
+			int m_nButton;
+			float m_flXNormalized;
+			float m_flYNormalized;
+		} MouseSignals;
+		static void getMouseSignals(MouseSignals * apMouseSignals, const osgGA::GUIEventAdapter& ea);
+		
 		virtual bool handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa );
-
+		
+		bool handleKeyDown(int anKey);
+		bool handlePush(const MouseSignals & aMouseSignals, osgViewer::Viewer * apViewer);
+		bool handleDrag(const MouseSignals & aMouseSignals, osgViewer::Viewer * apViewer);
 		void handleTranslate();
 		void handleRotate();
 		void handleScale();
 
+		
 		osg::ref_ptr<osg::Group> m_pScene;
 		osg::ref_ptr<AbstractObject> m_pPickedObject;
 
-		osg::Matrix mtrxPickedObject;
+		osg::Matrix m_mtrxPickedObject;
 
 		typedef enum {
 			TRANSLATE = 0, //t
@@ -45,8 +59,8 @@ namespace VR	{
 		double m_dbMouseLastGetXNormalized;
 		double m_dbMouseLastGetYNormalized;
 
-		double m_dbMouseLastGetX;
-		double m_dbMouseLastGetY;
+		//double m_dbMouseLastGetX;
+		//double m_dbMouseLastGetY;
 	};
 }
 #endif //OSG_PICK_AND_DRAG_HANDLER_H

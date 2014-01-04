@@ -16,12 +16,6 @@ ObjectTransformation::ObjectTransformation()	{
 
 //-----------------------------------------------------------
 
-//ObjectTransformation::ObjectTransformation(const ObjectTransformationParams & aObjectTransformationParams)	{
-//	init(aObjectTransformationParams);
-//}
-
-//-----------------------------------------------------------
-
 void ObjectTransformation::init(const ObjectTransformationParams & aObjectTransformationParams)	{
 	m_ObjectTransformationParams = aObjectTransformationParams;
 }
@@ -97,7 +91,6 @@ Matrix ObjectTransformation::getMatrix() const	{
 		params(2,0), params(2,1), params(2,2), params(2,3),
 		params(3,0), params(3,1), params(3,2), params(3,3)
 	);
-
 	return mtrx;
 }
 

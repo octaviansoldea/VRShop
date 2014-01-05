@@ -5,27 +5,18 @@
 
 namespace VR {
 	typedef enum {
-		ROTATION_ON_X = 0,
-		ROTATION_ON_Y,
-		ROTATION_ON_Z} ROTATION_TYPE;
+		X_AXIS = 0,
+		Y_AXIS,
+		Z_AXIS} ROTATION_AXIS;
 	
-	struct ObjectTransformationParams : public osg::Matrix {
-		ObjectTransformationParams();
-	};
-
-	class ObjectTransformation {
+	class ObjectTransformation : public osg::Matrix	{
 		public:
 			ObjectTransformation();
+			ObjectTransformation(const ObjectTransformation & aObjectTransformation);
 
-			osg::Matrix setTranslationGetMatrix(float aflX, float aflY, float aflZ);
-			osg::Matrix setRotationGetMatrix(float aflAngle, ROTATION_TYPE aENUMRotation);
-			osg::Matrix setScalingGetMatrix(float aflX, float aflY, float aflZ);
-
-		private:
-			void init(const ObjectTransformationParams & aObjectTransformationParams);
-			osg::Matrix getMatrix() const;
-
-			ObjectTransformationParams m_ObjectTransformationParams;
+			static osg::Matrix setTranslationGetMatrix(float aflX, float aflY, float aflZ);
+			static osg::Matrix setRotationGetMatrix(float aflAngle, ROTATION_AXIS aAxis);
+			static osg::Matrix setScalingGetMatrix(float aflX, float aflY, float aflZ);
 	};
 }
 #endif //VR_OBJECT_TRANSFORMATION_H

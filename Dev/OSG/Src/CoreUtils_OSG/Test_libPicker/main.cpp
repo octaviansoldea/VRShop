@@ -83,7 +83,7 @@ int main(int argc, char * argv[])	{
 
 	osgViewer::Viewer viewer;
 	viewer.setSceneData( root.get() );
-	viewer.setUpViewInWindow(0, 0, 1000, 800);
+//	viewer.setUpViewInWindow(0, 0, 1000, 800);
 	viewer.setCameraManipulator(new VR::OSGCameraManipulator);
 	viewer.addEventHandler( new VR::PickAndDragHandler );
 

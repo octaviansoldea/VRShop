@@ -26,9 +26,7 @@ using namespace std;
 
 PickAndDragHandler::PickAndDragHandler() :
 	m_dbMouseLastGetXNormalized(0), m_dbMouseLastGetYNormalized(0),
-	//m_dbMouseLastGetX(0), m_dbMouseLastGetY(0),
 	m_nCurrentBasicTransform(TRANSLATE), m_nCurrentModalityTransform(DISPLAY_PLANE) {
-
 }
 
 //---------------------------------------------------------------------------------------
@@ -115,6 +113,8 @@ bool PickAndDragHandler::handleKeyDown(int anKey) {
 	return(true);
 }
 
+//---------------------------------------------------------------------------------------
+
 bool PickAndDragHandler::handlePush(const MouseSignals & aMouseSignals, osgViewer::Viewer * apViewer) {
 	float flXNormalized = aMouseSignals.m_flXNormalized;
 	float flYNormalized = aMouseSignals.m_flYNormalized;
@@ -153,7 +153,7 @@ bool PickAndDragHandler::handlePush(const MouseSignals & aMouseSignals, osgViewe
 			//Get the matrix of the picked object and pass it to the drag
 			if(idx >= 0) {
 				m_mtrxPickedObject = m_pPickedObject->getMatrix();
-				PrintMatrix(m_mtrxPickedObject, "Picked object matrix");
+				return(true);
 			}	
 			else
 				m_pPickedObject = NULL;
@@ -170,125 +170,96 @@ bool PickAndDragHandler::handlePush(const MouseSignals & aMouseSignals, osgViewe
 
 //---------------------------------------------------------------------------------------
 
-
 bool PickAndDragHandler::handleDrag(const MouseSignals & aMouseSignals, osgViewer::Viewer * apViewer) {
+	Matrix & mtrxPickedObject = m_mtrxPickedObject;
 
-		PrintMatrix(m_mtrxPickedObject, "Picked Object when Drag - ging");
+	float flXNormalized = aMouseSignals.m_flXNormalized;
+	float flYNormalized = aMouseSignals.m_flYNormalized;
 
-		osg::Matrix & mtrxPickedObject = m_mtrxPickedObject;
+	//A mouse move 
+	float flDiffPosX =	flXNormalized - m_dbMouseLastGetXNormalized; 
+	float flDiffPosY =	flYNormalized - m_dbMouseLastGetYNormalized;
 
-		float flXNormalized = aMouseSignals.m_flXNormalized;
-		float flYNormalized = aMouseSignals.m_flYNormalized;
-
-		//A mouse move 
-		float flDiffPosX =	flXNormalized - m_dbMouseLastGetXNormalized; 
-		float flDiffPosY =	flYNormalized - m_dbMouseLastGetYNormalized;
-
-		if(fabs(flDiffPosX)<0.001 && fabs(flDiffPosY)<0.001) {
-			return false;
-		}
-
-		Matrixd mat = apViewer->getCameraManipulator()->getMatrix();
-		Vec3f vec3dLook(mat(2,0),mat(2,1),mat(2,2));
-		Vec3f eyeVector(mat(3,0),mat(3,1),mat(3,2));
-
-		//Move factor controls the move for the distance of the object from the camera
-		float moveFactor = 0.3F * (vec3dLook - eyeVector).length();
-
-		Vec3d vec3dCenter = m_pPickedObject->getBound().center();
-		ObjectTransformation oTCenter;
-		Matrix mtrxCenter = oTCenter.setTranslationGetMatrix(vec3dCenter[0], vec3dCenter[1], vec3dCenter[2]);
-
-		ObjectTransformation oTSpecific;
-		Matrix mtrxSpecific;
-		//Does Up/down-left/right dragging respective to the axes
-		if(m_nCurrentBasicTransform == TRANSLATE) {
-			if(m_nCurrentModalityTransform == DISPLAY_PLANE) {
-				mtrxSpecific = oTSpecific.setTranslationGetMatrix(moveFactor*(flDiffPosX), 0.0, moveFactor*(flDiffPosY));
-			} else if(m_nCurrentModalityTransform == VIEW_DIRECTION) {
-				mtrxSpecific = oTSpecific.setTranslationGetMatrix(
-					moveFactor*(flDiffPosX)*mat(0,0), 
-					moveFactor*(flDiffPosX)*mat(0,1), 
-					moveFactor*(flDiffPosY)
-					);
-			} else if(m_nCurrentModalityTransform == X_AXIS) {
-				mtrxSpecific = 
-					oTSpecific.setTranslationGetMatrix(moveFactor*(flDiffPosX), 0.0, 0.0);
-			} else if(m_nCurrentModalityTransform == Y_AXIS) {
-				mtrxSpecific = 
-					oTSpecific.setTranslationGetMatrix(0.0, 0.0, moveFactor*(flDiffPosY));
-			} else if(m_nCurrentModalityTransform == Z_AXIS) {
-				mtrxSpecific = 
-					oTSpecific.setTranslationGetMatrix(0.0, moveFactor*(flDiffPosY), 0.0);
-			}
-		} else if(m_nCurrentBasicTransform == ROTATE) {
-			//Angles should be in radians
-			double flRXAngle = flDiffPosY;
-			double flRYAngle = flDiffPosX;
-			double flRZAngle = flDiffPosX;
-			//degrees2Radians(1.0)
-
-			if(m_nCurrentModalityTransform == DISPLAY_PLANE) {
-				mtrxSpecific = oTSpecific.setRotationGetMatrix(flRZAngle, ROTATION_ON_Z)	*
-					oTSpecific.setRotationGetMatrix(flRYAngle, ROTATION_ON_Y)	*
-					oTSpecific.setRotationGetMatrix(flRXAngle, ROTATION_ON_X)	*
-					mtrxPickedObject;
-
-			} else if(m_nCurrentModalityTransform == X_AXIS) {
-				mtrxSpecific = oTSpecific.setRotationGetMatrix(flRXAngle, ROTATION_ON_X);
-
-			} else if(m_nCurrentModalityTransform == Y_AXIS) {
-				mtrxSpecific = oTSpecific.setRotationGetMatrix(flRYAngle, ROTATION_ON_Y);
-
-			} else if(m_nCurrentModalityTransform == Z_AXIS) {
-				mtrxSpecific = oTSpecific.setRotationGetMatrix(flRZAngle, ROTATION_ON_Z);
-			} 
-		} else if(m_nCurrentBasicTransform == SCALE) {
-			if(m_nCurrentModalityTransform == X_AXIS) {
-				mtrxSpecific = oTSpecific.setScalingGetMatrix(moveFactor*(flDiffPosX), 0.0, 0.0);
-			} else if(m_nCurrentModalityTransform == Y_AXIS)	{
-				mtrxSpecific = oTSpecific.setScalingGetMatrix(0.0, moveFactor*(flDiffPosX), 0.0);
-			} else if(m_nCurrentModalityTransform == Z_AXIS)	{
-				mtrxSpecific = oTSpecific.setScalingGetMatrix(0.0, 0.0, moveFactor*(flDiffPosX));
-			} else {
-				return(false);
-			}
-		}
-		Matrix mtrxCenterInverse;
-		osg::ref_ptr < MatrixTransform > pMT = new MatrixTransform();
-		pMT->setMatrix(mtrxCenter);
-		mtrxCenterInverse = pMT->getInverseMatrix();
-
-		// Central line of matrix frmation : O^-1 S R O
-		Matrix mtrxTransformMatrix = mtrxPickedObject * mtrxCenterInverse * mtrxSpecific * mtrxCenter;
-		
-		m_pPickedObject->setMatrix(mtrxTransformMatrix);
-
-		PrintMatrix(mtrxPickedObject, "mtrxPickedObject");
-		PrintMatrix(mtrxSpecific, "mtrxSpecific");
-		PrintMatrix(mtrxCenter, "mtrxCenter");
-		PrintMatrix(mtrxCenterInverse, "mtrxCenterInverse");
-
-		PrintMatrix(mtrxTransformMatrix, "mtrxTransformMatrix");
-
-		apViewer->setSceneData(m_pScene);
-
-		return(true);
+	if(fabs(flDiffPosX)<0.001 && fabs(flDiffPosY)<0.001) {
+		return false;
 	}
 
-//---------------------------------------------------------------------------------------
+	Matrixd mat = apViewer->getCameraManipulator()->getMatrix();
+	Vec3f vec3dLook(mat(2,0),mat(2,1),mat(2,2));
+	Vec3f eyeVector(mat(3,0),mat(3,1),mat(3,2));
 
-void PickAndDragHandler::handleTranslate()	{
-}
+	//Move factor controls the move for the distance of the object from the camera
+	float moveFactor = 0.3F * (vec3dLook - eyeVector).length();
 
-//---------------------------------------------------------------------------------------
+	Vec3d vec3dCenter = m_pPickedObject->getBound().center();
+	Matrix mtrxCenter = ObjectTransformation::setTranslationGetMatrix(vec3dCenter[0], vec3dCenter[1], vec3dCenter[2]);
 
-void PickAndDragHandler::handleRotate()	{
-}
+	Matrix mtrxSpecific;
+	//Does Up/down-left/right dragging respective to the axes
+	if(m_nCurrentBasicTransform == TRANSLATE) {
+		if(m_nCurrentModalityTransform == DISPLAY_PLANE) {
+			mtrxSpecific = ObjectTransformation::setTranslationGetMatrix(moveFactor*(flDiffPosX), 0.0, moveFactor*(flDiffPosY));
+		} else if(m_nCurrentModalityTransform == VIEW_DIRECTION) {
+			mtrxSpecific = ObjectTransformation::setTranslationGetMatrix(
+				moveFactor*(flDiffPosX)*mat(0,0), 
+				moveFactor*(flDiffPosX)*mat(0,1), 
+				moveFactor*(flDiffPosY)
+				);
+		} else if(m_nCurrentModalityTransform == X_AXIS) {
+			mtrxSpecific = 
+				ObjectTransformation::setTranslationGetMatrix(moveFactor*(flDiffPosX), 0.0, 0.0);
+		} else if(m_nCurrentModalityTransform == Y_AXIS) {
+			mtrxSpecific = 
+				ObjectTransformation::setTranslationGetMatrix(0.0, 0.0, moveFactor*(flDiffPosY));
+		} else if(m_nCurrentModalityTransform == Z_AXIS) {
+			mtrxSpecific = 
+				ObjectTransformation::setTranslationGetMatrix(0.0, moveFactor*(flDiffPosY), 0.0);
+		}
+	} else if(m_nCurrentBasicTransform == ROTATE) {
+		//Angles should be in radians
+		double flRXAngle = flDiffPosY;
+		double flRYAngle = flDiffPosX;
+		double flRZAngle = flDiffPosX;
+		//degrees2Radians(1.0)
 
-//---------------------------------------------------------------------------------------
+		if(m_nCurrentModalityTransform == DISPLAY_PLANE) {
+			mtrxSpecific = ObjectTransformation::setRotationGetMatrix(flRZAngle, ROTATION_AXIS::Z_AXIS)	*
+				ObjectTransformation::setRotationGetMatrix(flRYAngle, ROTATION_AXIS::Y_AXIS)	*
+				ObjectTransformation::setRotationGetMatrix(flRXAngle, ROTATION_AXIS::X_AXIS);
 
-void PickAndDragHandler::handleScale()	{
+		} else if(m_nCurrentModalityTransform == X_AXIS) {
+			mtrxSpecific = ObjectTransformation::setRotationGetMatrix(flRXAngle, ROTATION_AXIS::X_AXIS);
+
+		} else if(m_nCurrentModalityTransform == Y_AXIS) {
+			mtrxSpecific = ObjectTransformation::setRotationGetMatrix(flRYAngle, ROTATION_AXIS::Y_AXIS);
+
+		} else if(m_nCurrentModalityTransform == Z_AXIS) {
+			mtrxSpecific = ObjectTransformation::setRotationGetMatrix(flRZAngle, ROTATION_AXIS::Z_AXIS);
+		} else {
+			mtrxSpecific = ObjectTransformation::setRotationGetMatrix(flRXAngle, ROTATION_AXIS::X_AXIS)	*
+				ObjectTransformation::setRotationGetMatrix(flRXAngle, ROTATION_AXIS::Y_AXIS);
+		}
+	} else if(m_nCurrentBasicTransform == SCALE) {
+		if(m_nCurrentModalityTransform == X_AXIS) {
+			mtrxSpecific = ObjectTransformation::setScalingGetMatrix(moveFactor*(flDiffPosX), 0.0, 0.0);
+		} else if(m_nCurrentModalityTransform == Y_AXIS)	{
+			mtrxSpecific = ObjectTransformation::setScalingGetMatrix(0.0, moveFactor*(flDiffPosX), 0.0);
+		} else if(m_nCurrentModalityTransform == Z_AXIS)	{
+			mtrxSpecific = ObjectTransformation::setScalingGetMatrix(0.0, 0.0, moveFactor*(flDiffPosY));
+		} else {
+			mtrxSpecific = ObjectTransformation::setScalingGetMatrix(0.0, 0.0, 0.0);
+		}
+	}
+	Matrix mtrxCenterInverse(Matrix::inverse(mtrxCenter));
+
+	// Central line of matrix formation : O^-1 S R O
+	Matrix mtrxTransformMatrix = mtrxPickedObject * mtrxCenterInverse * mtrxSpecific * mtrxCenter;
+	
+	m_pPickedObject->setMatrix(mtrxTransformMatrix);
+
+	apViewer->setSceneData(m_pScene);
+
+	return(true);
 }
 
 //---------------------------------------------------------------------------------------

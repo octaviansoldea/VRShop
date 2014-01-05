@@ -17,7 +17,6 @@ namespace VR {
 		static void PrintMatrix(const osg::Matrix & aMtrx, const std::string & astrTitle);
 
 	private:
-		
 		typedef struct {
 			int m_nButton;
 			float m_flXNormalized;
@@ -30,14 +29,10 @@ namespace VR {
 		bool handleKeyDown(int anKey);
 		bool handlePush(const MouseSignals & aMouseSignals, osgViewer::Viewer * apViewer);
 		bool handleDrag(const MouseSignals & aMouseSignals, osgViewer::Viewer * apViewer);
-		void handleTranslate();
-		void handleRotate();
-		void handleScale();
-
 		
 		osg::ref_ptr<osg::Group> m_pScene;
-		osg::ref_ptr<AbstractObject> m_pPickedObject;
 
+		osg::ref_ptr<AbstractObject> m_pPickedObject;
 		osg::Matrix m_mtrxPickedObject;
 
 		typedef enum {
@@ -58,9 +53,6 @@ namespace VR {
 
 		double m_dbMouseLastGetXNormalized;
 		double m_dbMouseLastGetYNormalized;
-
-		//double m_dbMouseLastGetX;
-		//double m_dbMouseLastGetY;
 	};
 }
 #endif //OSG_PICK_AND_DRAG_HANDLER_H

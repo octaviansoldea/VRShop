@@ -7,7 +7,7 @@
 #include "VRPickAndDragHandler.h"
 #include "VRGrid.h"
 
-#include "OSGCameraManipulator.h"
+#include "VRKeyboardMouseManipulator.h"
 #include <osgGA/TrackballManipulator>
 
 #include <osgViewer/Viewer>
@@ -84,7 +84,7 @@ int main(int argc, char * argv[])	{
 	osgViewer::Viewer viewer;
 	viewer.setSceneData( root.get() );
 //	viewer.setUpViewInWindow(0, 0, 1000, 800);
-	viewer.setCameraManipulator(new VR::OSGCameraManipulator);
+	viewer.setCameraManipulator(new VR::KeyboardMouseManipulator);
 	viewer.addEventHandler( new VR::PickAndDragHandler );
 
 	return viewer.run();

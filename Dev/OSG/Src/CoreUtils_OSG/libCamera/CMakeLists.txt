@@ -8,7 +8,7 @@ INCLUDE_DIRECTORIES(
 )
 
 SET(SRCS
-	OSGCameraManipulator.h OSGCameraManipulator.cpp
+	VRKeyboardMouseManipulator.h VRKeyboardMouseManipulator.cpp
 )
 
 ADD_LIBRARY(libCamera

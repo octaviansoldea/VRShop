@@ -10,7 +10,7 @@
 #include "VRUntransformedSphere.h"
 
 #include "VRPickAndDragHandler.h"
-#include "OSGCameraManipulator.h"
+#include "VRKeyboardMouseManipulator.h"
 
 #include <osgDB/ReadFile>
 #include <osgGA/TrackballManipulator>

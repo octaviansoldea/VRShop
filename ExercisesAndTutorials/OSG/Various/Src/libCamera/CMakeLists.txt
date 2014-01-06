@@ -11,7 +11,7 @@ INCLUDE_DIRECTORIES(
 
 #Define sources to be later added into the library
 SET(SRCS
-	OSGCameraManipulator.h OSGCameraManipulator.cpp
+	VRKeyboardMouseManipulator.h VRKeyboardMouseManipulator.cpp
 )
 
 #Library to be later used in the main

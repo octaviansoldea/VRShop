@@ -1,6 +1,6 @@
 #include "OSGQT_GUI.h"
 
-#include "OSGCameraManipulator.h"
+#include "VRKeyboardMouseManipulator.h"
 #include <osgGA/TrackballManipulator>
 
 #include "VRPicker.h"

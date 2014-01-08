@@ -5,6 +5,9 @@ SET(CMAKE_DEBUG_POSTFIX "D")
 
 INCLUDE_DIRECTORIES(
 	${OPENSCENEGRAPH_INCLUDE_DIRS}
+	${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
+	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCameraPicker
+	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libPicker
 )
 
 SET(SRCS

@@ -9,6 +9,7 @@
 
 #include <osgUtil/PolytopeIntersector>
 #include <osgGA/GUIEventHandler>
+#include <osgGA/TrackballManipulator>
 #include <osgViewer/Viewer>
 #include <osg/Group>
 #include <osg/MatrixTransform>
@@ -17,6 +18,8 @@
 #include "VRAbstractObject.h"
 #include "BasicDefinitions.h"
 #include "VRObjectTransformation.h"
+#include "VRKeyboardMouseManipulator.h"
+
 #include "VRPickAndDragHandler.h"
 
 using namespace osg;
@@ -68,11 +71,6 @@ bool PickAndDragHandler::handle( const GUIEventAdapter& ea, GUIActionAdapter& aa
 		getMouseSignals(&mouseSignals, ea);
 		bRes = handleDrag(mouseSignals, pViewer);			
 	} else if (nResEvent == GUIEventAdapter::RELEASE)	{
-		//m_nTransformSelection = MOVE_ON_XZ;
-
-		//Remove bounding box - bounding box is put as a last child
-		//if(m_pPickedObject!=NULL)
-		//	m_pPickedObject->removeChild(m_pPickedObject->getNumChildren()-1);
 		bRes = true;
 	}
 
@@ -154,9 +152,9 @@ bool PickAndDragHandler::handlePush(const MouseSignals & aMouseSignals, osgViewe
 			if(idx >= 0) {
 				m_mtrxPickedObject = m_pPickedObject->getMatrix();
 				return(true);
-			}	
-			else
+			} else {
 				m_pPickedObject = NULL;
+			}
 		}
 		else	{
 			m_pPickedObject = NULL;

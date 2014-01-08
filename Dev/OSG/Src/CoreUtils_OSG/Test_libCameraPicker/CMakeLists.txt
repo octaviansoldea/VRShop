@@ -1,4 +1,4 @@
-project(Test_libPicker)
+project(Test_libCameraPicker)
 cmake_minimum_required( VERSION 2.8 )
 
 SET(CMAKE_DEBUG_POSTFIX "D")
@@ -36,15 +36,15 @@ INCLUDE_DIRECTORIES(
 	${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
 	${CMAKE_SOURCE_DIR}/Props/GeometricShapes/libGeometricShapes
 	${CMAKE_SOURCE_DIR}/Props/Equipment/Furniture/libFurniture
+	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCameraPicker
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libPicker
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCamera
-	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCameraPicker
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_OSG
 	${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
 	${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabaseMgr
 )
 
-ADD_EXECUTABLE(Test_libPicker
+ADD_EXECUTABLE(Test_libCameraPicker
 	main.cpp)
 
 SET(LIBS_COMMON
@@ -54,12 +54,12 @@ SET(LIBS_COMMON
 	${OSGUTIL_LIBRARIES}
 	${OSGVIEWER_LIBRARIES}
 	${OPENTHREADS_LIBRARIES}
+	libCameraPicker
 	libAbstractObject
 	libGeometricShapes
 	libFurniture
 	libPicker
 	libCamera
-	libCameraPicker
 	libCommon_OSG
 	libCommon
 	libDatabaseMgr
@@ -67,7 +67,7 @@ SET(LIBS_COMMON
 
 
 IF(Qt5_FOUND)
-  TARGET_LINK_LIBRARIES(Test_libPicker
+  TARGET_LINK_LIBRARIES(Test_libCameraPicker
 	${Qt5Core_LIBRARIES}
     ${Qt5Gui_LIBRARIES}
     ${Qt5Widgets_LIBRARIES}
@@ -75,7 +75,7 @@ IF(Qt5_FOUND)
 	${LIBS_COMMON}
   )
 ELSEIF(NOT Qt5_FOUND AND Qt4_FOUND)
-  TARGET_LINK_LIBRARIES(Test_libPicker
+  TARGET_LINK_LIBRARIES(Test_libCameraPicker
   	${QT_LIBRARIES}
     ${QT_QTSQL_LIBRARY}
 	${LIBS_COMMON}
@@ -84,4 +84,4 @@ ENDIF(Qt5_FOUND)
 
 
 
-SET_PROPERTY(TARGET Test_libPicker PROPERTY FOLDER Utils)
+SET_PROPERTY(TARGET Test_libCameraPicker PROPERTY FOLDER Utils)

@@ -2,11 +2,12 @@
 #define OSG_PICK_AND_DRAG_HANDLER_H
 
 #include <osgGA/GUIEventHandler>
+#include "VRAbstractObject.h"
+
 
 namespace osgViewer { class Viewer; };
 
 class osg::Group;
-class AbstractObject;
 class ObjectTransformation;
 
 namespace VR {
@@ -16,6 +17,9 @@ namespace VR {
 
 		static void PrintMatrix(const osg::Matrix & aMtrx, const std::string & astrTitle);
 
+		virtual bool handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa );
+		osg::ref_ptr<AbstractObject> m_pPickedObject;
+
 	private:
 		typedef struct {
 			int m_nButton;
@@ -24,7 +28,6 @@ namespace VR {
 		} MouseSignals;
 		static void getMouseSignals(MouseSignals * apMouseSignals, const osgGA::GUIEventAdapter& ea);
 		
-		virtual bool handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa );
 		
 		bool handleKeyDown(int anKey);
 		bool handlePush(const MouseSignals & aMouseSignals, osgViewer::Viewer * apViewer);
@@ -32,7 +35,6 @@ namespace VR {
 		
 		osg::ref_ptr<osg::Group> m_pScene;
 
-		osg::ref_ptr<AbstractObject> m_pPickedObject;
 		osg::Matrix m_mtrxPickedObject;
 
 		typedef enum {

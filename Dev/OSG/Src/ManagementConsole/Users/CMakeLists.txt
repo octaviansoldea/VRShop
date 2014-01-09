@@ -1,6 +1,6 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
 SUBDIRS(
-	libCashier
-	Test_libCashier
+	libUsers
+	Test_libUsers
 )

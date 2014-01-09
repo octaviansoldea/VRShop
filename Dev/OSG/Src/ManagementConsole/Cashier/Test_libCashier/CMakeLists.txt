@@ -9,6 +9,8 @@ SET(src
 
 INCLUDE_DIRECTORIES(
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Cashier/libCashier
+	${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProduct
+	${CMAKE_SOURCE_DIR}/ManagementConsole/Users/libUsers
 )
 
 ADD_EXECUTABLE(Test_libCashier
@@ -16,6 +18,8 @@ ADD_EXECUTABLE(Test_libCashier
 
 TARGET_LINK_LIBRARIES(Test_libCashier
 	libCashier
+	libProduct
+	libUsers
 )
 
 SET_PROPERTY(TARGET Test_libCashier PROPERTY FOLDER Management)

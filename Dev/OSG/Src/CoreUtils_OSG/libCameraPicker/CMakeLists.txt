@@ -10,7 +10,7 @@ INCLUDE_DIRECTORIES(
 )
 
 SET(SRCS
-    VRKeyboardMousePicker.h VRKeyboardMousePicker.cpp
+    VRKeyboardMousePickerManipulator.h VRKeyboardMousePickerManipulator.cpp
 )
 
 ADD_LIBRARY(libCameraPicker ${SRCS})

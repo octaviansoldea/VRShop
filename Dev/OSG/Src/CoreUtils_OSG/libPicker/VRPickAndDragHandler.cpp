@@ -42,6 +42,46 @@ void PickAndDragHandler::getMouseSignals(MouseSignals * apMouseSignals, const GU
 
 //------------------------------------------------------------------------------
 
+bool PickAndDragHandler::isIntersection(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& us) {
+	osgViewer::Viewer * pViewer = dynamic_cast<osgViewer::Viewer*>(&us);
+	if(!pViewer)	{
+		std::cout << "Error Viewer" << std::endl;
+		exit(-1);
+	}
+
+	m_pScene = dynamic_cast<Group*>(pViewer->getSceneData());
+	Matrix &mtrxPickedObject = m_mtrxPickedObject;
+
+	bool bRes = true;
+
+	MouseSignals mouseSignals;
+	getMouseSignals(&mouseSignals, ea);
+	bRes = handlePush(mouseSignals, pViewer);
+
+	float flXNormalized = mouseSignals.m_flXNormalized;
+	float flYNormalized = mouseSignals.m_flYNormalized;
+
+	double dbMargin = 0.01;
+
+	//Do the polytope intersect the scene graph.
+	osg::ref_ptr < osgUtil::PolytopeIntersector> pPicker = new osgUtil::PolytopeIntersector( 
+		osgUtil::Intersector::PROJECTION,
+		flXNormalized-dbMargin, flYNormalized-dbMargin,
+		flXNormalized+dbMargin, flYNormalized+dbMargin);
+
+	//InteresectionVisitor is used to testing for intersections with the scene
+	osgUtil::IntersectionVisitor iv(pPicker);
+	pViewer->getCamera()->accept(iv);
+
+	//Check if any part of the scene was picked
+	if (pPicker->containsIntersections())
+		return(true);
+
+	return(false);
+}
+
+//------------------------------------------------------------------------------
+
 // The role of this function is to read the computer interface and send it to handles
 bool PickAndDragHandler::handle( const GUIEventAdapter& ea, GUIActionAdapter& aa ) {
 	osgViewer::Viewer * pViewer = dynamic_cast<osgViewer::Viewer*>(&aa);

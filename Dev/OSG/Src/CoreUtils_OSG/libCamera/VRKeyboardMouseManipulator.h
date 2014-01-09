@@ -28,8 +28,9 @@ namespace VR {
         KeyboardMouseManipulator(const KeyboardMouseManipulator& cm,
                              const osg::CopyOp& copyOp = osg::CopyOp::SHALLOW_COPY);
 
-	private:
+
         virtual bool handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& us);
+	private:
 
 		bool keyDown(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa);
 		bool keyUp(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter &aa);

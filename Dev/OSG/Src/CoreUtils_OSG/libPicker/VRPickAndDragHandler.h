@@ -17,6 +17,8 @@ namespace VR {
 
 		static void PrintMatrix(const osg::Matrix & aMtrx, const std::string & astrTitle);
 
+		bool isIntersection(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& us);
+
 		virtual bool handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa );
 		osg::ref_ptr<AbstractObject> m_pPickedObject;
 

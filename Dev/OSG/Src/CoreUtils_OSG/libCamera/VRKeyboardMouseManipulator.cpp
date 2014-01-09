@@ -65,6 +65,8 @@ bool KeyboardMouseManipulator::handle(const osgGA::GUIEventAdapter& ea, osgGA::G
 
 	int nResEvent = ea.getEventType();
 
+	cout << "KeyboardMouseManipulator::handle "<< endl;
+
 	//Orbit manipulator
 	if(nResEvent == GUIEventAdapter::EventType::DRAG ||
 		GUIEventAdapter::EventType::MOVE ||
@@ -72,13 +74,16 @@ bool KeyboardMouseManipulator::handle(const osgGA::GUIEventAdapter& ea, osgGA::G
 		GUIEventAdapter::EventType::RELEASE ||
 		GUIEventAdapter::EventType::SCROLL) {
 
+			cout << "nResEvent == GUIEventAdapter::EventType::DRAG "<< endl;
 			bRes = OrbitManipulator::handle(ea,us);
 	}
 
 	if(nResEvent == GUIEventAdapter::KEYDOWN) {
+		cout << "nResEvent == GUIEventAdapter::KEYDOWN "<< endl;
 		bRes = keyDown(ea, us);
 	}
 	else if(nResEvent == GUIEventAdapter::KEYUP)	{
+		cout << "nResEvent == GUIEventAdapter::KEYUP "<< endl;
 		bRes = keyUp(ea, us);
 	}
 	return(bRes);

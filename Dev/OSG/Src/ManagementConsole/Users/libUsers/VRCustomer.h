@@ -1,19 +1,16 @@
 #ifndef VR_CUSTOMER_H
 #define VR_CUSTOMER_H
 
-#include "VRPlatformUserBase.h"
+#include "VRBasket.h"
 
 namespace VR	{
-	struct CustomerParams : public PlatformUserBaseParams	{
-		CustomerParams();
-	};
-
-	class Customer : public PlatformUserBase	{
+	class Customer {
 	public:
 		Customer();
 
 	private:
 		int m_nNumberOfCustomers;
+		Basket m_Basket;
 	};
 }
 #endif //VR_CUSTOMER_H

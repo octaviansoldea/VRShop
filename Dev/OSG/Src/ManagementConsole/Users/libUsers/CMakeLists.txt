@@ -5,11 +5,12 @@ SET(CMAKE_DEBUG_POSTFIX "D")
 
 #General includes, irrespective of the Qt version
 INCLUDE_DIRECTORIES(
+	${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProduct
 )
 
 #Define sources to be later added into the library
 SET(SRCS
-	VRPlatformUserBase.h VRPlatformUserBase.cpp
+	VRBasket.h VRBasket.cpp
 	VRCustomer.h VRCustomer.cpp
 )
 

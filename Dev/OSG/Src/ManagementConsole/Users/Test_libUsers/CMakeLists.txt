@@ -8,6 +8,7 @@ SET(src
 )
 
 INCLUDE_DIRECTORIES(
+	${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProduct
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Users/libUsers
 )
 

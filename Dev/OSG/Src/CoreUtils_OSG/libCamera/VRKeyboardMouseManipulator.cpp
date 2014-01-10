@@ -74,17 +74,52 @@ bool KeyboardMouseManipulator::handle(const osgGA::GUIEventAdapter& ea, osgGA::G
 		GUIEventAdapter::EventType::RELEASE ||
 		GUIEventAdapter::EventType::SCROLL) {
 
-			cout << "nResEvent == GUIEventAdapter::EventType::DRAG "<< endl;
-			bRes = OrbitManipulator::handle(ea,us);
-	}
+			switch( nResEvent )
+			{
 
-	if(nResEvent == GUIEventAdapter::KEYDOWN) {
-		cout << "nResEvent == GUIEventAdapter::KEYDOWN "<< endl;
-		bRes = keyDown(ea, us);
-	}
-	else if(nResEvent == GUIEventAdapter::KEYUP)	{
-		cout << "nResEvent == GUIEventAdapter::KEYUP "<< endl;
-		bRes = keyUp(ea, us);
+			case GUIEventAdapter::FRAME:
+				return handleFrame( ea, us );
+
+			case GUIEventAdapter::RESIZE:
+				return handleResize( ea, us );
+				
+			case GUIEventAdapter::PUSH:
+				return handleMousePush( ea, us );
+
+			case GUIEventAdapter::KEYDOWN:
+				bRes = keyDown(ea, us);
+			case GUIEventAdapter::KEYUP:
+				bRes = keyUp(ea, us);
+
+			default:
+				break;
+			}
+
+			if( ea.getHandled() )
+				return false;
+
+			switch( nResEvent )
+			{
+			case GUIEventAdapter::MOVE:
+				return handleMouseMove( ea, us );
+
+			case GUIEventAdapter::DRAG:
+				return handleMouseDrag( ea, us );
+
+			case GUIEventAdapter::PUSH:
+				return handleMousePush( ea, us );
+
+			case GUIEventAdapter::RELEASE:
+				return handleMouseRelease( ea, us );
+			case GUIEventAdapter::SCROLL:
+				if( _flags & PROCESS_MOUSE_WHEEL )
+					return handleMouseWheel( ea, us );
+				else
+					return false;
+
+			default:
+				return false;
+			}
 	}
 	return(bRes);
 }

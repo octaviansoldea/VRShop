@@ -9,7 +9,6 @@
 
 #include <osgUtil/PolytopeIntersector>
 #include <osgGA/GUIEventHandler>
-#include <osgGA/TrackballManipulator>
 #include <osgViewer/Viewer>
 #include <osg/Group>
 #include <osg/MatrixTransform>
@@ -18,7 +17,6 @@
 #include "VRAbstractObject.h"
 #include "BasicDefinitions.h"
 #include "VRObjectTransformation.h"
-#include "VRKeyboardMouseManipulator.h"
 
 #include "VRPickAndDragHandler.h"
 
@@ -38,46 +36,6 @@ void PickAndDragHandler::getMouseSignals(MouseSignals * apMouseSignals, const GU
 	apMouseSignals->m_nButton = ea.getButton();
 	apMouseSignals->m_flXNormalized = ea.getXnormalized();
 	apMouseSignals->m_flYNormalized = ea.getYnormalized();
-}
-
-//------------------------------------------------------------------------------
-
-bool PickAndDragHandler::isIntersection(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& us) {
-	osgViewer::Viewer * pViewer = dynamic_cast<osgViewer::Viewer*>(&us);
-	if(!pViewer)	{
-		std::cout << "Error Viewer" << std::endl;
-		exit(-1);
-	}
-
-	m_pScene = dynamic_cast<Group*>(pViewer->getSceneData());
-	Matrix &mtrxPickedObject = m_mtrxPickedObject;
-
-	bool bRes = true;
-
-	MouseSignals mouseSignals;
-	getMouseSignals(&mouseSignals, ea);
-	bRes = handlePush(mouseSignals, pViewer);
-
-	float flXNormalized = mouseSignals.m_flXNormalized;
-	float flYNormalized = mouseSignals.m_flYNormalized;
-
-	double dbMargin = 0.01;
-
-	//Do the polytope intersect the scene graph.
-	osg::ref_ptr < osgUtil::PolytopeIntersector> pPicker = new osgUtil::PolytopeIntersector( 
-		osgUtil::Intersector::PROJECTION,
-		flXNormalized-dbMargin, flYNormalized-dbMargin,
-		flXNormalized+dbMargin, flYNormalized+dbMargin);
-
-	//InteresectionVisitor is used to testing for intersections with the scene
-	osgUtil::IntersectionVisitor iv(pPicker);
-	pViewer->getCamera()->accept(iv);
-
-	//Check if any part of the scene was picked
-	if (pPicker->containsIntersections())
-		return(true);
-
-	return(false);
 }
 
 //------------------------------------------------------------------------------
@@ -161,23 +119,23 @@ bool PickAndDragHandler::handlePush(const MouseSignals & aMouseSignals, osgViewe
 		double dbMargin = 0.01;
 
 		//Do the polytope intersect the scene graph.
-		osgUtil::PolytopeIntersector* picker = new osgUtil::PolytopeIntersector( 
+		ref_ptr<osgUtil::PolytopeIntersector> pPicker = new osgUtil::PolytopeIntersector( 
 			osgUtil::Intersector::PROJECTION,
 			flXNormalized-dbMargin, flYNormalized-dbMargin,
 			flXNormalized+dbMargin, flYNormalized+dbMargin);
 
 		//InteresectionVisitor is used to testing for intersections with the scene
-		osgUtil::IntersectionVisitor iv(picker);
+		osgUtil::IntersectionVisitor iv(pPicker);
 		apViewer->getCamera()->accept(iv);
 
 		//Check if any part of the scene was picked
-		if (picker->containsIntersections()) {
+		if (pPicker->containsIntersections()) {
 
 			m_dbMouseLastGetXNormalized = flXNormalized;
 			m_dbMouseLastGetYNormalized = flYNormalized;
 
 			//A vector of Nodes from a root node to a descendant
-			NodePath& nodePath = picker->getFirstIntersection().nodePath;
+			NodePath& nodePath = pPicker->getFirstIntersection().nodePath;
 
 			//Navigate through nodes and pick the "right" one
 			int idx;
@@ -248,17 +206,16 @@ bool PickAndDragHandler::handleDrag(const MouseSignals & aMouseSignals, osgViewe
 				ObjectTransformation::setTranslationGetMatrix(moveFactor*(flDiffPosX), 0.0, 0.0);
 		} else if(m_nCurrentModalityTransform == Y_AXIS) {
 			mtrxSpecific = 
-				ObjectTransformation::setTranslationGetMatrix(0.0, 0.0, moveFactor*(flDiffPosY));
+				ObjectTransformation::setTranslationGetMatrix(0.0, moveFactor*(flDiffPosY), 0.0);
 		} else if(m_nCurrentModalityTransform == Z_AXIS) {
 			mtrxSpecific = 
-				ObjectTransformation::setTranslationGetMatrix(0.0, moveFactor*(flDiffPosY), 0.0);
+				ObjectTransformation::setTranslationGetMatrix(0.0, 0.0, moveFactor*(flDiffPosY));
 		}
 	} else if(m_nCurrentBasicTransform == ROTATE) {
 		//Angles should be in radians
 		double flRXAngle = flDiffPosY;
 		double flRYAngle = flDiffPosX;
 		double flRZAngle = flDiffPosX;
-		//degrees2Radians(1.0)
 
 		if(m_nCurrentModalityTransform == DISPLAY_PLANE) {
 			mtrxSpecific = ObjectTransformation::setRotationGetMatrix(flRZAngle, ROTATION_AXIS::Z_AXIS)	*
@@ -301,18 +258,3 @@ bool PickAndDragHandler::handleDrag(const MouseSignals & aMouseSignals, osgViewe
 }
 
 //---------------------------------------------------------------------------------------
-
-void PickAndDragHandler::PrintMatrix(const osg::Matrix & aMtrx, const string & astrTitle) {
-
-	cout << astrTitle << endl;
-	int i,j;
-	for(i = 0; i < 4; i++) {
-		for(j = 0; j < 4; j++) {
-			cout << aMtrx(i, j) << " ";
-		}
-		cout << endl;
-	}
-
-	cout << endl;
-
-}

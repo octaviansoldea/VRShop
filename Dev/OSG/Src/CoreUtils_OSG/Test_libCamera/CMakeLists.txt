@@ -13,7 +13,6 @@ INCLUDE_DIRECTORIES(
 	${OPENSCENEGRAPH_INCLUDE_DIRS}
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCamera
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libPicker
-	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCameraPicker
 
 	${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
 	${CMAKE_SOURCE_DIR}/Props/GeometricShapes/libGeometricShapes
@@ -33,7 +32,6 @@ TARGET_LINK_LIBRARIES(Test_libCamera
 	${OPENTHREADS_LIBRARIES}
 	libCamera
 	libPicker
-	libCameraPicker
 	libAbstractObject
 	libGeometricShapes
 	libCommon_OSG

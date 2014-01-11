@@ -11,7 +11,6 @@ INCLUDE_DIRECTORIES(
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_OSG
     ${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCamera
-	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCameraPicker
 )
 
 #Define sources to be later added into the library

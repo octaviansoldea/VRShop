@@ -1,4 +1,3 @@
-#include <osgGA/TrackballManipulator>
 #include <osgViewer/Viewer>
 #include <osgDB/readFile>
 
@@ -20,7 +19,6 @@ int main(int argc, char * argv[])	{
 	viewer.setUpViewInWindow(200, 200, 1000, 800);
 	viewer.setSceneData(root.get());
 	viewer.setCameraManipulator(new VR::KeyboardMouseManipulator);
-//	viewer.setCameraManipulator(new osgGA::TrackballManipulator);
 
 	return viewer.run();
 }

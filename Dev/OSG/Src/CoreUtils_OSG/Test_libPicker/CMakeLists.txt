@@ -38,7 +38,6 @@ INCLUDE_DIRECTORIES(
 	${CMAKE_SOURCE_DIR}/Props/Equipment/Furniture/libFurniture
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libPicker
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCamera
-	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCameraPicker
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_OSG
 	${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
 	${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabaseMgr
@@ -59,7 +58,6 @@ SET(LIBS_COMMON
 	libFurniture
 	libPicker
 	libCamera
-	libCameraPicker
 	libCommon_OSG
 	libCommon
 	libDatabaseMgr

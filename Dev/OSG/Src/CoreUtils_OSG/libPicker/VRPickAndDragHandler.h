@@ -2,11 +2,10 @@
 #define OSG_PICK_AND_DRAG_HANDLER_H
 
 #include <osgGA/GUIEventHandler>
-#include "VRAbstractObject.h"
-
 
 namespace osgViewer { class Viewer; };
 
+class AbstractObject;
 class osg::Group;
 class ObjectTransformation;
 
@@ -14,10 +13,6 @@ namespace VR {
 	class PickAndDragHandler : public osgGA::GUIEventHandler {
 	public:
 		PickAndDragHandler();
-
-		static void PrintMatrix(const osg::Matrix & aMtrx, const std::string & astrTitle);
-
-		bool isIntersection(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& us);
 
 		virtual bool handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa );
 		osg::ref_ptr<AbstractObject> m_pPickedObject;
@@ -28,9 +23,9 @@ namespace VR {
 			float m_flXNormalized;
 			float m_flYNormalized;
 		} MouseSignals;
-		static void getMouseSignals(MouseSignals * apMouseSignals, const osgGA::GUIEventAdapter& ea);
-		
-		
+
+		void getMouseSignals(MouseSignals * apMouseSignals, const osgGA::GUIEventAdapter& ea);
+
 		bool handleKeyDown(int anKey);
 		bool handlePush(const MouseSignals & aMouseSignals, osgViewer::Viewer * apViewer);
 		bool handleDrag(const MouseSignals & aMouseSignals, osgViewer::Viewer * apViewer);

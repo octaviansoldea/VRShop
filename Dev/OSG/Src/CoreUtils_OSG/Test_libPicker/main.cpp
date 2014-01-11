@@ -5,13 +5,11 @@
 #include "VRContainer.h"
 
 #include "VRPickAndDragHandler.h"
-#include "VRGrid.h"
-
 #include "VRKeyboardMouseManipulator.h"
-#include <osgGA/TrackballManipulator>
 
 #include <osgViewer/Viewer>
 
+#include "VRGrid.h"
 #include <osgDB/readFile>
 
 using namespace VR;

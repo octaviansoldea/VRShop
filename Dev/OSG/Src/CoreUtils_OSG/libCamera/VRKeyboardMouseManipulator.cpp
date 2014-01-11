@@ -60,67 +60,38 @@ m_cdbRotationFactor(osg::PI*0.001)
 
 //-------------------------------------------------------------------------------
 
-bool KeyboardMouseManipulator::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& us)	{
+bool KeyboardMouseManipulator::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa)	{
 	bool bRes = true;
 
 	int nResEvent = ea.getEventType();
 
-	cout << "KeyboardMouseManipulator::handle "<< endl;
-
-	//Orbit manipulator
-	if(nResEvent == GUIEventAdapter::EventType::DRAG ||
-		GUIEventAdapter::EventType::MOVE ||
-		GUIEventAdapter::EventType::PUSH ||
-		GUIEventAdapter::EventType::RELEASE ||
-		GUIEventAdapter::EventType::SCROLL) {
-
-			switch( nResEvent )
-			{
-
-			case GUIEventAdapter::FRAME:
-				return handleFrame( ea, us );
-
-			case GUIEventAdapter::RESIZE:
-				return handleResize( ea, us );
-				
-			case GUIEventAdapter::PUSH:
-				return handleMousePush( ea, us );
-
-			case GUIEventAdapter::KEYDOWN:
-				bRes = keyDown(ea, us);
-			case GUIEventAdapter::KEYUP:
-				bRes = keyUp(ea, us);
-
-			default:
-				break;
-			}
-
-			if( ea.getHandled() )
-				return false;
-
-			switch( nResEvent )
-			{
-			case GUIEventAdapter::MOVE:
-				return handleMouseMove( ea, us );
-
-			case GUIEventAdapter::DRAG:
-				return handleMouseDrag( ea, us );
-
-			case GUIEventAdapter::PUSH:
-				return handleMousePush( ea, us );
-
-			case GUIEventAdapter::RELEASE:
-				return handleMouseRelease( ea, us );
-			case GUIEventAdapter::SCROLL:
-				if( _flags & PROCESS_MOUSE_WHEEL )
-					return handleMouseWheel( ea, us );
-				else
-					return false;
-
-			default:
-				return false;
-			}
+	if (nResEvent == GUIEventAdapter::FRAME)	{
+		bRes = OrbitManipulator::handleFrame(ea, aa);
 	}
+
+	if (nResEvent == GUIEventAdapter::RELEASE)	{
+		bRes = OrbitManipulator::handleMouseRelease(ea, aa);
+	}
+
+	if (nResEvent == GUIEventAdapter::PUSH)	{
+		bRes = OrbitManipulator::handleMousePush(ea, aa);
+	}
+
+	if (nResEvent == GUIEventAdapter::KEYDOWN)	{
+		bRes = VR::KeyboardMouseManipulator::keyDown(ea, aa);
+	}
+
+	if (nResEvent == GUIEventAdapter::KEYUP)	{
+		bRes = VR::KeyboardMouseManipulator::keyUp(ea, aa);
+	}
+
+	if(ea.getHandled())
+		return false;
+
+	if (nResEvent == GUIEventAdapter::DRAG)	{
+		bRes = OrbitManipulator::handleMouseDrag(ea, aa);		
+	}
+
 	return(bRes);
 }
 

@@ -8,7 +8,6 @@ SUBDIRS(
 	libCamera
 	libCommon_OSG
 	libPicker
-	libCameraPicker
 	Test_libCamera
 	Test_libPicker
 	Test_libCameraPicker

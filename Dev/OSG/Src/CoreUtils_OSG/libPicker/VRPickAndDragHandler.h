@@ -30,8 +30,6 @@ namespace VR {
 		bool handlePush(const MouseSignals & aMouseSignals, osgViewer::Viewer * apViewer);
 		bool handleDrag(const MouseSignals & aMouseSignals, osgViewer::Viewer * apViewer);
 		
-		osg::ref_ptr<osg::Group> m_pScene;
-
 		osg::Matrix m_mtrxPickedObject;
 
 		typedef enum {

@@ -11,7 +11,9 @@ INCLUDE_DIRECTORIES(
 #Define sources to be later added into the library
 SET(SRCS
 	VRBasket.h VRBasket.cpp
+	VRUsersBase.h VRUsersBase.cpp
 	VRCustomer.h VRCustomer.cpp
+	VRUserAccount.h VRUserAccount.cpp
 )
 
 #Library to be later used in the main

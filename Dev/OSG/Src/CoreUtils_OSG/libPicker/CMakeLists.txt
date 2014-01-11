@@ -7,10 +7,8 @@ SET(CMAKE_DEBUG_POSTFIX "D")
 INCLUDE_DIRECTORIES(
 	${OPENSCENEGRAPH_INCLUDE_DIRS}
 	${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
-	${CMAKE_SOURCE_DIR}/Props/GeometricShapes/libGeometricShapes
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_OSG
     ${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
-	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCamera
 )
 
 #Define sources to be later added into the library

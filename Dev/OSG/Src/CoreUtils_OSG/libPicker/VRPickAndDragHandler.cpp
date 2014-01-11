@@ -48,7 +48,6 @@ bool PickAndDragHandler::handle( const GUIEventAdapter& ea, GUIActionAdapter& aa
 		exit(-1);
 	}
 
-	m_pScene = dynamic_cast<Group*>(pViewer->getSceneData());
 	Matrix &mtrxPickedObject = m_mtrxPickedObject;
 
 	bool bRes = true;
@@ -116,13 +115,13 @@ bool PickAndDragHandler::handlePush(const MouseSignals & aMouseSignals, osgViewe
 	float flYNormalized = aMouseSignals.m_flYNormalized;
 
 	if(aMouseSignals.m_nButton == GUIEventAdapter::LEFT_MOUSE_BUTTON) {
-		double dbMargin = 0.01;
+		float flMargin = 0.01;
 
 		//Do the polytope intersect the scene graph.
 		ref_ptr<osgUtil::PolytopeIntersector> pPicker = new osgUtil::PolytopeIntersector( 
 			osgUtil::Intersector::PROJECTION,
-			flXNormalized-dbMargin, flYNormalized-dbMargin,
-			flXNormalized+dbMargin, flYNormalized+dbMargin);
+			flXNormalized-flMargin, flYNormalized-flMargin,
+			flXNormalized+flMargin, flYNormalized+flMargin);
 
 		//InteresectionVisitor is used to testing for intersections with the scene
 		osgUtil::IntersectionVisitor iv(pPicker);
@@ -213,9 +212,9 @@ bool PickAndDragHandler::handleDrag(const MouseSignals & aMouseSignals, osgViewe
 		}
 	} else if(m_nCurrentBasicTransform == ROTATE) {
 		//Angles should be in radians
-		double flRXAngle = flDiffPosY;
-		double flRYAngle = flDiffPosX;
-		double flRZAngle = flDiffPosX;
+		float flRXAngle = flDiffPosY;
+		float flRYAngle = flDiffPosX;
+		float flRZAngle = flDiffPosX;
 
 		if(m_nCurrentModalityTransform == DISPLAY_PLANE) {
 			mtrxSpecific = ObjectTransformation::setRotationGetMatrix(flRZAngle, ROTATION_AXIS::Z_AXIS)	*
@@ -252,7 +251,8 @@ bool PickAndDragHandler::handleDrag(const MouseSignals & aMouseSignals, osgViewe
 	
 	m_pPickedObject->setMatrix(mtrxTransformMatrix);
 
-	apViewer->setSceneData(m_pScene);
+	ref_ptr<Group> pScene = dynamic_cast<Group*>(apViewer->getSceneData());
+	apViewer->setSceneData(pScene);
 
 	return(true);
 }

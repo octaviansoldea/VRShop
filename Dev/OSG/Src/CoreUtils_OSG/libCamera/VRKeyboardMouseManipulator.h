@@ -40,10 +40,9 @@ namespace VR {
 
 		double		m_dbDirectionRotationRate;	//Side rotation angle
 
-		double		m_dbPitchOffsetRate;	//Angle of rotation on Z 
-		double		m_dbPitchOffset;		//Accumulates angle of rotation on Z
-		double		m_dbLateralRotationRate;		//Angle of rotation on X
-		const double m_cdbRotationFactor;	//Angle in radians
+		double		m_dbTranslationFactorZ;		//Angle of rotation on Z 
+		double		m_dbTranslationFactorX;		//Angle of rotation on X
+		const double m_cdbRotationFactor;		//Angle in radians
 
 		bool m_bCtrl;
 		bool m_bShift;

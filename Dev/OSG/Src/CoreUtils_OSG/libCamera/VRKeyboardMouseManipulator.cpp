@@ -11,9 +11,7 @@
 * OpenSceneGraph Public License for more details.
 */
 
-/* Written by Don Burns */
-
-#include <iostream>
+/* Modified by Matej Steinbacher and Octavian Soldea */
 
 #include <osgGA/GUIEventAdapter>
 
@@ -33,9 +31,8 @@ m_cdbRotationFactor(osg::PI*0.1)
 	setVerticalAxisFixed(false);
 
 	m_dbDirectionRotationRate	= 0.0;
-	m_dbPitchOffsetRate			= 0.0;
-	m_dbPitchOffset				= 0.0;
-	m_dbLateralRotationRate		= 0.0;
+	m_dbTranslationFactorZ		= 0.0;
+	m_dbTranslationFactorX		= 0.0;
 
 	m_dbDefaultMoveSpeed = 1;
 }
@@ -47,13 +44,12 @@ KeyboardMouseManipulator::KeyboardMouseManipulator(const KeyboardMouseManipulato
     inherited(cm, copyOp),
 m_bCtrl(false),
 m_bShift(false),
-m_cdbRotationFactor(osg::PI*0.001)
+m_cdbRotationFactor(osg::PI*0.1)
 
 {
 	m_dbDirectionRotationRate	= 0.0;
-	m_dbPitchOffsetRate			= 0.0;
-	m_dbPitchOffset				= 0.0;
-	m_dbLateralRotationRate		= 0.0;
+	m_dbTranslationFactorZ		= 0.0;
+	m_dbTranslationFactorX		= 0.0;
 
 	m_dbDefaultMoveSpeed = 1.0;
 }
@@ -61,7 +57,7 @@ m_cdbRotationFactor(osg::PI*0.001)
 //-------------------------------------------------------------------------------
 
 bool KeyboardMouseManipulator::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa)	{
-	bool bRes = true;
+	bool bRes = false;
 
 	int nResEvent = ea.getEventType();
 
@@ -113,61 +109,64 @@ bool KeyboardMouseManipulator::keyDown(const osgGA::GUIEventAdapter &ea, osgGA::
 
 	if (nResKey == osgGA::GUIEventAdapter::KEY_Up)	{
 		if(m_bCtrl)	{ //Move forward
-			m_dbForwardFactor = m_bShift ? 0.01*(m_dbDefaultMoveSpeed*=1.1) : 0.01*m_dbDefaultMoveSpeed;
+			m_dbForwardFactor = 0.01 * (m_bShift ? (m_dbDefaultMoveSpeed*=1.1) : m_dbDefaultMoveSpeed);
 			zoomModel(m_dbForwardFactor);
 		} else { //Rotate view (but not direction of travel) up.
-			m_dbLateralRotationRate = m_cdbRotationFactor * (m_bShift ? (m_dbDefaultMoveSpeed*=1.1) : m_dbDefaultMoveSpeed);
-			panModel(0.0,m_dbLateralRotationRate);
+			m_dbTranslationFactorX = m_cdbRotationFactor * 
+				(m_bShift ? (m_dbDefaultMoveSpeed*=1.1) : m_dbDefaultMoveSpeed);
+			panModel(0.0,m_dbTranslationFactorX);
 		}
 	}
 
 	if (nResKey == osgGA::GUIEventAdapter::KEY_Down)	{
 		if(m_bCtrl)	{ //Move backwards
-			m_dbForwardFactor = m_bShift ? -0.01*(m_dbDefaultMoveSpeed*=1.1) : -0.01*m_dbDefaultMoveSpeed;
+			m_dbForwardFactor = -0.01 * (m_bShift ? (m_dbDefaultMoveSpeed*=1.1) : m_dbDefaultMoveSpeed);
 			zoomModel(m_dbForwardFactor);
 		} else { //Rotate view (but not direction of travel) down.
-			m_dbLateralRotationRate = -m_cdbRotationFactor * (m_bShift ? (m_dbDefaultMoveSpeed*=1.1) : m_dbDefaultMoveSpeed);
-			panModel(0.0,m_dbLateralRotationRate);
+			m_dbTranslationFactorX = -m_cdbRotationFactor * 
+				(m_bShift ? (m_dbDefaultMoveSpeed*=1.1) : m_dbDefaultMoveSpeed);
+			panModel(0.0,m_dbTranslationFactorX);
 		}
 	}
 
 	if (nResKey == osgGA::GUIEventAdapter::KEY_Right)	{
-		if(m_bCtrl)	{	//Translate camera
-			m_dbPitchOffsetRate = m_cdbRotationFactor * (m_bShift ? (m_dbDefaultMoveSpeed*=1.1) : m_dbDefaultMoveSpeed);
-			panModel(m_dbPitchOffsetRate,0.0);
-		} else {	//Rotate camera
-			m_dbDirectionRotationRate = - m_cdbRotationFactor * (m_bShift ? (m_dbDefaultMoveSpeed*=1.1) : m_dbDefaultMoveSpeed);
+		if(m_bCtrl)	{	//Translate camera right
+			m_dbTranslationFactorZ = m_cdbRotationFactor * 
+				(m_bShift ? (m_dbDefaultMoveSpeed*=1.1) : m_dbDefaultMoveSpeed);
+			panModel(m_dbTranslationFactorZ,0.0);
+		} else {	//Rotate cameram right
+			m_dbDirectionRotationRate = - m_cdbRotationFactor * 
+				(m_bShift ? (m_dbDefaultMoveSpeed*=1.1) : m_dbDefaultMoveSpeed);
 
-			if( fabs( m_dbDirectionRotationRate ) > 0.0001 )	{
-				Vec3d prevCenter, prevEye, prevUp;
-				getTransformation(prevEye, prevCenter, prevUp);
-				Vec3d dbvecDirection = prevCenter-prevEye;
+			Vec3d prevCenter, prevEye, prevUp;
+			getTransformation(prevEye, prevCenter, prevUp);
+			Vec3d dbvecDirection = prevCenter-prevEye;
 
-				Vec3d normalized = dbvecDirection * osg::Matrix::rotate(osg::DegreesToRadians(m_dbDirectionRotationRate),prevUp);
-				Vec3d newCenter = prevEye+normalized;
+			Vec3d normalized = dbvecDirection * Matrix::rotate(DegreesToRadians(m_dbDirectionRotationRate),prevUp);
+			Vec3d newCenter = prevEye+normalized;
 
-				setTransformation(prevEye, newCenter, prevUp);	
-			}
+			setTransformation(prevEye, newCenter, prevUp);	
 		}
 	}
 
 	if (nResKey == osgGA::GUIEventAdapter::KEY_Left)	{
-		if(m_bCtrl)	{	//Translate view left.
-			m_dbPitchOffsetRate = -m_cdbRotationFactor * (m_bShift ? (m_dbDefaultMoveSpeed*=1.1) : m_dbDefaultMoveSpeed);
-			panModel(m_dbPitchOffsetRate,0.0);
+		if(m_bCtrl)	{	//Translate camera to the left.
+			m_dbTranslationFactorZ = -m_cdbRotationFactor * 
+				(m_bShift ? (m_dbDefaultMoveSpeed*=1.1) : m_dbDefaultMoveSpeed);
+			panModel(m_dbTranslationFactorZ,0.0);
 		}
-		else	{	//Rotate camera
-			m_dbDirectionRotationRate = m_cdbRotationFactor * (m_bShift ? (m_dbDefaultMoveSpeed*=1.1) : m_dbDefaultMoveSpeed);
-			if( fabs( m_dbDirectionRotationRate ) > 0.0001 )	{
-				Vec3d prevCenter, prevEye, prevUp;
-				getTransformation(prevEye, prevCenter, prevUp);
-				Vec3d dbvecDirection = prevCenter-prevEye;
+		else	{	//Rotate camera to the left
+			m_dbDirectionRotationRate = m_cdbRotationFactor * 
+				(m_bShift ? (m_dbDefaultMoveSpeed*=1.1) : m_dbDefaultMoveSpeed);
 
-				Vec3d normalized = dbvecDirection * osg::Matrix::rotate(osg::DegreesToRadians(m_dbDirectionRotationRate),prevUp);
-				Vec3d newCenter = prevEye+normalized;
+			Vec3d prevCenter, prevEye, prevUp;
+			getTransformation(prevEye, prevCenter, prevUp);
+			Vec3d dbvecDirection = prevCenter-prevEye;
 
-				setTransformation(prevEye, newCenter, prevUp);	
-			}
+			Vec3d normalized = dbvecDirection * Matrix::rotate(DegreesToRadians(m_dbDirectionRotationRate),prevUp);
+			Vec3d newCenter = prevEye+normalized;
+
+			setTransformation(prevEye, newCenter, prevUp);
 		}
 	}
 
@@ -176,6 +175,7 @@ bool KeyboardMouseManipulator::keyDown(const osgGA::GUIEventAdapter &ea, osgGA::
 	} else	{
 		bRes = false;
 	}
+
 	return(bRes);
 }
 
@@ -193,20 +193,19 @@ bool KeyboardMouseManipulator::keyUp(const osgGA::GUIEventAdapter& ea, osgGA::GU
 	if ((nResKey ==	osgGA::GUIEventAdapter::KEY_Shift_L) ||
 		(nResKey ==	osgGA::GUIEventAdapter::KEY_Shift_R))	{
 		m_bShift = false;
-		m_dbDefaultMoveSpeed = 1;
 	}
 
 	if ((nResKey == osgGA::GUIEventAdapter::KEY_Up) ||
 		(nResKey == osgGA::GUIEventAdapter::KEY_Down))	{
 		m_dbForwardFactor = 0.0;
-		m_dbLateralRotationRate = 0.0;
+		m_dbTranslationFactorX = 0.0;
 		m_dbDefaultMoveSpeed = 1;
 	}
 
 	if ((nResKey == osgGA::GUIEventAdapter::KEY_Left) ||
 		(nResKey == osgGA::GUIEventAdapter::KEY_Right))	{
 		m_dbDirectionRotationRate = 0.0;
-		m_dbPitchOffsetRate = 0.0;
+		m_dbTranslationFactorZ = 0.0;
 		m_dbDefaultMoveSpeed = 1;
 	}
 

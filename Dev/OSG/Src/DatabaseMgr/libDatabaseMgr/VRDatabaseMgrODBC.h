@@ -12,13 +12,12 @@ namespace VR {
 
 		DatabaseMgrODBC(const QString & astrDBPathName);
 
-		virtual bool createTable(const std::string & astrSQLCommand);
+		virtual bool executeQuery(const std::string & astrSQLCommand);
+
+		virtual bool createTable(const DatabaseMgrParams & aDatabaseMgrParams) {return false;};
 
 		virtual void fillPrimitiveTable(std::string & astrCommand);
 		virtual std::string readFromDB(std::string & astrCommand);
-
-
-		virtual void insertIntoDatabase(const DatabaseMgrParams & aDatabaseMgrParams);
 
 	};
 }

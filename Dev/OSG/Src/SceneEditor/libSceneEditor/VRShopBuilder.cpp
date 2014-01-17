@@ -132,7 +132,7 @@ void ShopBuilder::newDB(const string & astrDBFileName)	{
 			"(SceneID INTEGER PRIMARY KEY AUTOINCREMENT,"
 			"SceneName TEXT);";
 
-		database.createTable(strCreateTable);
+		database.executeQuery(strCreateTable);
 	}
 
  	gridOnOff(true);

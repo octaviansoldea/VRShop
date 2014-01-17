@@ -1,34 +1,27 @@
 #ifndef VR_USER_ACCOUNT_H
 #define VR_USER_ACCOUNT_H
 
+#include <list>
 #include <string>
 
 namespace VR	{
-	struct UserAccountParams	{
-		std::string m_strUserName;
-		std::string m_strUserPassword;
-		std::string m_strUserEMailAddress;
-		std::string m_strUserSecurityQuestion;
-		std::string m_strUserSecurityQuestionAnswer;
-
-		typedef enum {CREATE=0, MODIFY, USE, TERMINATE} ACCOUNT_ACTION;
-
-		//Fill with other params "required" as to define the account
-		UserAccountParams();
-	};
-
 	class UserAccount {
 	public:
 		UserAccount();
-		UserAccount(const UserAccountParams & aUserAccountParams);
+		UserAccount(const std::string & astrUserName, const std::string & astrPassword);
+		
+		void addUserAccount();
+		void modifyUserAccount();
+		void removeUserAccount();
 
-		void createNewAccount(const UserAccountParams & aUserAccountParams);
-		void modifyCurrentAccount(const UserAccountParams & aUserAccountParams);
+		void createUserAccountDB() const;
 
-		void validateUser(const UserAccount & aUserAccount) const;
-
-	private:
-		UserAccountParams m_UserAccountParams;
+	protected:
+		std::string m_strUserName;
+		std::string m_strPassword;
+		std::string m_strEMail;
+		std::list < std::string > m_lststrPhone;
+		int m_nID;
 	};
 }
 #endif //VR_USER_ACCOUNT_H

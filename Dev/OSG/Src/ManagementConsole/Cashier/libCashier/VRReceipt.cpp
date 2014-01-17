@@ -3,7 +3,7 @@
 using namespace VR;
 
 
-Receipt::Receipt()	{
+Receipt::Receipt(const Transaction * apTransaction)	{
 }
 
 //------------------------------------------------------------------------------

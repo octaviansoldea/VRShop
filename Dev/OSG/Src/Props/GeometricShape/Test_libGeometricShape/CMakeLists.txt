@@ -1,4 +1,4 @@
-PROJECT(Test_libGeometricShapes)
+PROJECT(Test_libGeometricShape)
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
 SET(CMAKE_DEBUG_POSTFIX "D")
@@ -29,7 +29,7 @@ INCLUDE_DIRECTORIES(
 	${OPENSCENEGRAPH_INCLUDE_DIRS}
     ${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
 	${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
-	${CMAKE_SOURCE_DIR}/Props/GeometricShapes/libGeometricShapes
+	${CMAKE_SOURCE_DIR}/Props/GeometricShape/libGeometricShape
 	${CMAKE_SOURCE_DIR}/Props/Equipment/Furniture/libFurniture
 	${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabaseMgr
 )
@@ -38,7 +38,7 @@ SET(SRCS
 	main.cpp
 )
 
-ADD_EXECUTABLE(Test_libGeometricShapes ${SRCS})
+ADD_EXECUTABLE(Test_libGeometricShape ${SRCS})
 
 SET(LIBS_COMMON
 	${OSG_LIBRARIES}
@@ -49,13 +49,13 @@ SET(LIBS_COMMON
 	${OPENTHREADS_LIBRARIES}
 	libDatabaseMgr
 	libFurniture
-	libGeometricShapes
+	libGeometricShape
 	libAbstractObject
 	libCommon
 )
 
 IF(Qt5_FOUND)
-  TARGET_LINK_LIBRARIES(Test_libGeometricShapes
+  TARGET_LINK_LIBRARIES(Test_libGeometricShape
 	${Qt5Core_LIBRARIES}
     ${Qt5Gui_LIBRARIES}
     ${Qt5Widgets_LIBRARIES}
@@ -63,11 +63,11 @@ IF(Qt5_FOUND)
 	${LIBS_COMMON}
   )
 ELSEIF(NOT Qt5_FOUND AND Qt4_FOUND)
-  TARGET_LINK_LIBRARIES(Test_libGeometricShapes
+  TARGET_LINK_LIBRARIES(Test_libGeometricShape
   	${QT_LIBRARIES}
     ${QT_QTSQL_LIBRARY}
 	${LIBS_COMMON}
   )
 ENDIF(Qt5_FOUND)
 
-SET_PROPERTY(TARGET Test_libGeometricShapes PROPERTY FOLDER Props)
+SET_PROPERTY(TARGET Test_libGeometricShape PROPERTY FOLDER Props)

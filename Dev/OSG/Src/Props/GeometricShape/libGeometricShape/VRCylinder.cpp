@@ -44,14 +44,14 @@ string VR::Cylinder::getSQLCommand() const {
 
 	for (nI=0;nI<4;nI++)	{
 		for (nJ=0;nJ<4;nJ++)	{
-			strMatrix4X4 += to_string((long double)cylinderMatrix(nI,nJ)) + ";";
+			strMatrix4X4 += to_string((long double)cylinderMatrix(nI,nJ)) + "_";
 		}
 	}
 	strMatrix4X4 += "'";
 
 	string strColor = "'";
 	for (nI=0;nI<4;nI++)	{
-		strColor += to_string((long double)m_CylinderParams.m_arrflRGBA[nI]) + ";";
+		strColor += to_string((long double)m_CylinderParams.m_arrflRGBA[nI]) + "_";
 	}
 	strColor += "'";
 
@@ -60,7 +60,7 @@ string VR::Cylinder::getSQLCommand() const {
 		+ strMatrix4X4 + ","
 		+ strColor + ",'"
 		+ m_CylinderParams.m_strFileNameTexture + "',"
-		+ "(SELECT PrimitiveID FROM Primitive WHERE PrimitiveName = 'Cylinder'))";
+		+ "(SELECT PrimitiveID FROM Primitive WHERE PrimitiveName = 'Cylinder'));";
 
 	return(strSQLCommand);
 }

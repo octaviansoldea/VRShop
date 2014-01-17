@@ -5,16 +5,21 @@
 
 namespace VR	{
 	struct ProductParams	{
-		int m_nProductID;
+		std::string m_strProductCategory;
 		std::string m_strProductName;
+		unsigned long m_nProductCode;
+		std::string m_strProductDescription;
+		std::string m_strProductShortDescription;
 		std::string m_strProductManufacturer;
+		std::string m_strManufacturerOrigin;
+		int m_nProductUnit;
 		float m_flPricePerUnit;
 		float m_flQuantity;
 		float m_flTaxRate;
-		float m_flDiscountRate;
+		int m_nCurrency;
 
-		enum PRODUCT_UNIT { PIECE = 0, GRAM, KILOGRAM, MILILITER, LITER };
-		enum CURRENCY { EURO = 0, US_DOLLAR, IL_SHEQEL };
+		typedef enum PRODUCT_UNIT { PIECE = 0, GRAM, KILOGRAM, MILILITER, LITER };
+		typedef enum CURRENCY { EURO = 0, US_DOLLAR, IL_SHEQEL, RO_RON };
 
 		ProductParams();
 	};
@@ -25,9 +30,12 @@ namespace VR	{
 		Product();
 		Product(const ProductParams & aProductParams);
 
-		void init(const ProductParams & aProductParams);
+		void newProduct(const Product & aProduct);
+		void getProduct(const Product & aProduct);
+		void removeProduct(const Product & aProduct);
+		void modifyProduct(const Product & aProduct);
+		// Make the communication with the Database inside these functions
 
-		void modifyProductSettings(const Product * apProduct);
 
 	private:
 		ProductParams m_ProductParams;

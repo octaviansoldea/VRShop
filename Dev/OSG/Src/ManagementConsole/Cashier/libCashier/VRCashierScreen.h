@@ -4,10 +4,10 @@
 namespace VR	{
 	class CashierScreen	{
 	public:
-		typedef enum {MAIN_MENU = 0, DISPLAY_PRODUCTS, PURCHASE, CLOSE, EXIT_STORE} SCREEN_OPTIONS;
+		typedef enum {MAIN_MENU = 0, DISPLAY_PRODUCTS, PURCHASE, CLOSE, HELP, EXIT_STORE} SCREEN_OPTIONS;
 
 		CashierScreen();
-		CashierScreen(const SCREEN_OPTIONS & aenumSelectOption = MAIN_MENU);
+		CashierScreen(const SCREEN_OPTIONS & aSelectOption = MAIN_MENU);
 
 	};
 }

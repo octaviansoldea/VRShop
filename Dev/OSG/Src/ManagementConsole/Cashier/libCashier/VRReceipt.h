@@ -3,19 +3,15 @@
 
 #include <vector>
 
-#include "VRProduct.h"
-
-class Purchase;
+#include "VRTransaction.h"
 
 namespace VR	{
 	class Receipt	{
 	public:
-		Receipt();
+		Receipt(const Transaction * apTransaction);
 
-		void prepareReceipt(const Purchase & aPurchase);
+		void prepareReceipt(const Transaction & aTransaction);
 		bool printReceipt(const Receipt & aReceipt) {return(true);}
-	protected:
-		std::vector <Product*> m_pvecProducts;
 	};
 }
 #endif //VR_RECEIPT_H

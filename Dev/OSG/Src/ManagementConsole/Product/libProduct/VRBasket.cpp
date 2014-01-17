@@ -1,10 +1,14 @@
-#include "VRPurchase.h"
+#include "VRBasket.h"
 
 using namespace VR;
+using namespace std;
 
-
-Purchase::Purchase()	{
+Basket::Basket()	{
 }
 
 //------------------------------------------------------------------------------
+
+Basket::~Basket()	{
+	delete this;
+}
 

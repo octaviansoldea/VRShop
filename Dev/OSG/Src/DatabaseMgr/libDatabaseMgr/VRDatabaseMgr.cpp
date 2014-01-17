@@ -12,8 +12,7 @@ using namespace VR;
 //===========================================================================
 
 DatabaseMgrParams::DatabaseMgrParams() :
-	m_qstrObjectType(""),
-	m_qstrObjectName(""),
+	m_strTableName(""),
 	m_arrstrParams(1) {
 }
 
@@ -93,11 +92,6 @@ bool DatabaseMgr::connect2SQLDatabase() {
 		return true;
 	}
 	return false;
-}
-
-//-----------------------------------------------------------------------------------------
-
-void DatabaseMgr::insertIntoDatabase(const DatabaseMgrParams & aDatabaseMgrParams)	{
 }
 
 //=========================================================================================

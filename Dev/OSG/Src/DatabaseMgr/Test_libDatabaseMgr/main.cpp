@@ -75,7 +75,7 @@ void createTable(const string & astrDBName) {
 			"(SceneID INTEGER PRIMARY KEY AUTOINCREMENT,"
 			"SceneName TEXT);";
 
-	database.createTable(strCreateTable);
+	database.executeQuery(strCreateTable);
 }
 
 //--------------------------------------------------------------
@@ -83,31 +83,16 @@ void createTable(const string & astrDBName) {
 void populateTable(const string & astrDBName)	{
 	DatabaseMgr & database = DatabaseMgr::Create(astrDBName.c_str(), DatabaseMgr::QSQLITE);
 
-	DatabaseMgrParams dMgrP;
-	dMgrP.m_arrstrParams.resize(0);
-
-	dMgrP.m_qstrObjectType = "Primitive";
-	dMgrP.m_qstrObjectName = "Cylinder";
-	database.insertIntoDatabase(dMgrP);
-
-	dMgrP.m_qstrObjectName = "Plate3D";
-	database.insertIntoDatabase(dMgrP);
-
-	dMgrP.m_qstrObjectName = "Prism";
-	database.insertIntoDatabase(dMgrP);
-
-	dMgrP.m_qstrObjectName = "Sphere";
-	database.insertIntoDatabase(dMgrP);
-
-	dMgrP.m_qstrObjectType = "Equipment";
-	dMgrP.m_qstrObjectName = "Decoration";
-	database.insertIntoDatabase(dMgrP);
-
-	dMgrP.m_qstrObjectName = "CollectingTools";
-	database.insertIntoDatabase(dMgrP);
-
-	dMgrP.m_qstrObjectName = "Furniture";
-	database.insertIntoDatabase(dMgrP);
+	string strSQLCommand;
+	strSQLCommand = "INSERT INTO Primitive(PrimitiveName) VALUES('Cylinder');";
+	strSQLCommand += "INSERT INTO Primitive(PrimitiveName) VALUES('Plate3D');";
+	strSQLCommand += "INSERT INTO Primitive(PrimitiveName) VALUES('Prism');";
+	strSQLCommand += "INSERT INTO Primitive(PrimitiveName) VALUES('Sphere');";
+	
+	strSQLCommand += "INSERT INTO Equipment(EquipmentName) VALUES ('Furniture');";
+	strSQLCommand += "INSERT INTO Equipment(EquipmentName) VALUES ('Decoration');";
+	strSQLCommand += "INSERT INTO Equipment(EquipmentName) VALUES ('CollectingTools');";
+	database.executeQuery(strSQLCommand);
 }
 
 //--------------------------------------------------------------
@@ -120,7 +105,7 @@ void insertIntoDatabase_Sphere(const string & astrDBName)	{
 	pSphere->init(aSphereParams);
 	string strSQLCommand = pSphere->getSQLCommand();
 
-	database.fillPrimitiveTable(strSQLCommand);
+	database.executeQuery(strSQLCommand);
 }
 
 //--------------------------------------------------------------
@@ -133,7 +118,7 @@ void insertIntoDatabase_Cylinder(const string & astrDBName)	{
 	pCylinder->init(aCylinderParams);
 	string strSQLCommand = pCylinder->getSQLCommand();
 
-	database.fillPrimitiveTable(strSQLCommand);
+	database.executeQuery(strSQLCommand);
 }
 
 //--------------------------------------------------------------
@@ -244,10 +229,10 @@ int main(int argc, char *argv[])	{
 	strDBName = "../../Databases/Equipment.db";
 	createTable(strDBName);
 	populateTable(strDBName);
-	//insertIntoDatabase_Sphere(strDBName);
-	//insertIntoDatabase_Cylinder(strDBName);
+	insertIntoDatabase_Sphere(strDBName);
+	insertIntoDatabase_Cylinder(strDBName);
 	//insertIntoDatabase_Plate3D(strDBName);
-	insertIntoDatabase_Furniture(strDBName);
+//	insertIntoDatabase_Furniture(strDBName);
 
 
 	return 0;

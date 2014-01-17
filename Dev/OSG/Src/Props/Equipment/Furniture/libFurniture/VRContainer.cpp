@@ -60,24 +60,14 @@ void Container::init(const FurnitureParams & aFurnitureParams)	{
 
 //-----------------------------------------------------------------------
 
-string Container::setSQLCommand(const string & astrCommand)	{
-	string strSetSQLCommand = astrCommand;
-
-	string strPrimitiveItemIDs = "SELECT PrimitiveID, ItemID FROM PrimitiveItemList "
-		"WHERE EquipmentItemID = 1";
-
-	return strSetSQLCommand;
-}
-
-//-----------------------------------------------------------------------
-
 string Container::getSQLCommand() const {
 	string strSQLCommand = "INSERT INTO EquipmentItem (EquipmentItemName, EquipmentID) "
-		"VALUES ('Container', (SELECT EquipmentID FROM Equipment WHERE EquipmentName = 'Furniture'))_";
+		"VALUES ('Container', (SELECT EquipmentID FROM Equipment WHERE EquipmentName = 'Furniture'));";
 	int nNumParts = m_arrSQLCommandLines.size();
 
-	for (auto it = m_arrSQLCommandLines.begin(); it != m_arrSQLCommandLines.end()-1; it++)	{
-		strSQLCommand += *it + "_";
+	vector < string >::const_iterator it = m_arrSQLCommandLines.begin();
+	for (it; it != m_arrSQLCommandLines.end()-1; it++)	{
+		strSQLCommand += *it;
 	}
 	strSQLCommand += m_arrSQLCommandLines[nNumParts-1];
 	

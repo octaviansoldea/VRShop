@@ -1,16 +1,19 @@
 #ifndef VR_CUSTOMER_H
 #define VR_CUSTOMER_H
 
-#include "VRBasket.h"
+#include "VRAbstractUser.h"
+#include "VRUserAccount.h"
 
 namespace VR	{
-	class Customer {
+
+	class Customer : public AbstractUser	{
 	public:
 		Customer();
 
-	private:
-		int m_nNumberOfCustomers;
-		Basket m_Basket;
+		virtual void trySignIn();
+
+	protected:
+		UserAccount m_UserAccount;
 	};
 }
 #endif //VR_CUSTOMER_H

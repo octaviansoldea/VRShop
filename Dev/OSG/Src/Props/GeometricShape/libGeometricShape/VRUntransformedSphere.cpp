@@ -22,13 +22,14 @@ using namespace VR;
 string UntransformedSphere::m_strSQLFormat =
 	"CREATE TABLE IF NOT EXISTS Sphere "
 	"(SphereID INTEGER PRIMARY KEY AUTOINCREMENT,"
-	"SphereRes INTEGER,"
-	"SphereRadius INTEGER,"
+	"SphereRes TEXT,"
+	"SphereRadius TEXT,"
 	"SphereColor TEXT,"
 	"SphereTexture TEXT, "
 	"PrimitiveID INTEGER, "
 	"FOREIGN KEY (PrimitiveID) REFERENCES Primitive(PrimitiveID));";
 
+//-----------------------------------------------------------------------
 
 SphereParams::SphereParams() : 
 m_flRadius(1.0), m_nResPhi(25), m_nResTheta(25), m_strFileNameTexture(" ") {
@@ -194,16 +195,17 @@ string UntransformedSphere::getSQLCommand() const	{
 	string strColor = "'";
 	int nI;
 	for (nI=0;nI<4;nI++)	{
-		strColor += to_string((long double)m_SphereParams.m_arrflRGBA[nI]) + ";";
+		strColor += to_string((long double)m_SphereParams.m_arrflRGBA[nI]) + "_";
 	}
 	strColor += "'";
 
-	string strSQLCommand = "INSERT INTO Sphere (SphereRes, SphereRadius, SphereColor, SphereTexture, PrimitiveID) VALUES("
-		+ to_string((_Longlong)m_SphereParams.m_nResPhi) + ","
-		+ to_string((_Longlong)m_SphereParams.m_flRadius) + ","
+
+	string strSQLCommand = "INSERT INTO Sphere (SphereRes, SphereRadius, SphereColor, SphereTexture, PrimitiveID) VALUES('"
+		+ to_string((_Longlong)m_SphereParams.m_nResPhi) + "','"
+		+ to_string((_Longlong)m_SphereParams.m_flRadius) + "',"
 		+ strColor + ",'"
 		+ m_SphereParams.m_strFileNameTexture + "',"
-		+ "(SELECT PrimitiveID FROM Primitive WHERE PrimitiveName = 'Sphere'))";
+		+ "(SELECT PrimitiveID FROM Primitive WHERE PrimitiveName = 'Sphere'));";
 
 	return(strSQLCommand);
 }
@@ -214,9 +216,9 @@ void UntransformedSphere::initFromSQLData(const string & astrSQLData)	{
 	string strSQLData = astrSQLData;
 	SphereParams sP;
 	
-	vector <string> arrstrSphereParams = splitString(strSQLData,"_");
-	vector <string> arrstrMatrix = splitString(arrstrSphereParams[1],";");
-	vector <string> arrstrColor = splitString(arrstrSphereParams[3],";");
+	vector <string> arrstrSphereParams = splitString(strSQLData,";");
+	vector <string> arrstrMatrix = splitString(arrstrSphereParams[1],"_");
+	vector <string> arrstrColor = splitString(arrstrSphereParams[3],"_");
 
 	sP.m_nResPhi = sP.m_nResTheta = stof(arrstrSphereParams[1]);
 	sP.m_flRadius = stof(arrstrSphereParams[2]);

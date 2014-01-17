@@ -14,13 +14,14 @@ namespace VR {
 
 		DatabaseMgrSQLite(const QString & aqstrDBPathName);
 
-		virtual bool createTable(const std::string & astrSQLCommand);
+		virtual bool executeQuery(const std::string & astrSQLCommand);
+
+		virtual bool createTable(const DatabaseMgrParams & aDatabaseMgrParams);
 
 		virtual void fillPrimitiveTable(std::string & astrCommand);
 		virtual std::string readFromDB(std::string & astrCommand);
 
 
-		virtual void insertIntoDatabase(const DatabaseMgrParams & aDatabaseMgrParams);
 	};
 }
 #endif //VR_DATABASE_MGR_SQLITE_H

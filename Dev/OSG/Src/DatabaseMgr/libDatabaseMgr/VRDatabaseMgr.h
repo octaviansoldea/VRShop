@@ -11,8 +11,7 @@
 namespace VR {
 
 	struct DatabaseMgrParams	{
-		QString m_qstrObjectType;
-		QString m_qstrObjectName;
+		std::string m_strTableName;
 		std::vector < std::string > m_arrstrParams;
 
 		DatabaseMgrParams();
@@ -36,14 +35,11 @@ namespace VR {
 
 		QSqlError lastError() const;
 
-		virtual bool createTable(const std::string & astrSQLCommand) = 0;
+		virtual bool executeQuery(const std::string & astrSQLCommand) = 0;
+		virtual bool createTable(const DatabaseMgrParams & aDatabaseMgrParams) = 0;
 
 		virtual void fillPrimitiveTable(std::string & astrCommand) = 0;
 		virtual std::string readFromDB(std::string & astrCommand) = 0;
-
-
-		virtual void insertIntoDatabase(const DatabaseMgrParams & aDatabaseMgrParams) = 0;
-
 
 	protected:
 

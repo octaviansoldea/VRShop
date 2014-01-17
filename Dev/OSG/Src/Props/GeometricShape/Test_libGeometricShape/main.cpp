@@ -191,14 +191,11 @@ void main_UntransformedSphere_Texture(ref_ptr<Group> pScene)	{
 //====================================================================
 
 void initFromDB_Plate(ref_ptr<Group> pScene)	{
-	string strDatabase = "../../../../Databases/Equipment.db";
+	string strDatabase = "../../../Databases/Equipment.db";
 	DatabaseMgr & database = DatabaseMgr::Create(strDatabase.c_str(), DatabaseMgr::QSQLITE);
 
-	DatabaseMgrParams aDatabaseMgrParams;
-//	aDatabaseMgrParams.m_arrstrParams
-
 	ref_ptr < Plate3D > pPlate3D;
-	string strSQLQuery = "SELECT * FROM Plate3D WHERE Plate3DID = 3";
+	string strSQLQuery = "SELECT * FROM Plate3D WHERE Plate3DID = 1";
 	string strSQLData = database.readFromDB(strSQLQuery);
 	pPlate3D = new Plate3D();
 	pPlate3D->initFromSQLData(strSQLData);
@@ -262,7 +259,7 @@ int main(int argc, char * argv[])	{
 	ref_ptr<Node> pAxes = osgDB::readNodeFile("../../../../Resources/Models3D/axes.osgt");
 	pScene->addChild(pAxes);
 
-	int nSelection = 13;
+	int nSelection = 14;
 	switch (nSelection)	{
 	case 1: main_UntransformedPlate2D_Color(pScene); break;
 	case 2: main_UntransformedPlate2D_Texture(pScene); break;

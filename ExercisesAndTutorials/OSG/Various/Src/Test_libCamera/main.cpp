@@ -20,8 +20,8 @@ int main(int argc, char * argv[])	{
 	osgViewer::Viewer viewer;
 	viewer.setUpViewInWindow(200, 200, 1000, 800);
 	viewer.setSceneData(root.get());
-//	viewer.setCameraManipulator(new VR::KeyboardMouseManipulator);
-	viewer.setCameraManipulator(new VR::OSGCameraManipulator);
+	viewer.setCameraManipulator(new VR::KeyboardMouseManipulator);
+//	viewer.setCameraManipulator(new VR::OSGCameraManipulator);
 
 	return viewer.run();
 }

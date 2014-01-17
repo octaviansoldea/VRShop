@@ -16,7 +16,6 @@ namespace VR	{
 		virtual void init(const FurnitureParams & aFurnitureParams);
 		virtual void predefinedObject();
 
-		std::string setSQLCommand(const std::string & astrCommand);
 		virtual std::string getSQLCommand() const;
 
 		virtual void initFromSQLData(const std::string & astrSQLData);

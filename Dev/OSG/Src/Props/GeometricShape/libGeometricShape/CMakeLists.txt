@@ -1,4 +1,4 @@
-PROJECT(libGeometricShapes)
+PROJECT(libGeometricShape)
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
 SET(CMAKE_DEBUG_POSTFIX "D")
@@ -21,8 +21,8 @@ SET(SRCS
 	VRUntransformedSphere.h VRUntransformedSphere.cpp
 )
 
-ADD_LIBRARY(libGeometricShapes
+ADD_LIBRARY(libGeometricShape
 	${SRCS}
 )
 
-SET_PROPERTY(TARGET libGeometricShapes PROPERTY FOLDER Props)
+SET_PROPERTY(TARGET libGeometricShape PROPERTY FOLDER Props)

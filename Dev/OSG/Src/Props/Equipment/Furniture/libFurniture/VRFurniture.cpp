@@ -49,6 +49,12 @@ void Furniture::removePart(ref_ptr < Node > apNode) {
 
 //-----------------------------------------------------------------------
 
+string Furniture::getSQLCommand() const {
+	return string(0);
+}
+
+//-----------------------------------------------------------------------
+
 void Furniture::loadAllFurnitures(ref_ptr<Group> apScene, const string & astrDatabase) {
 	DatabaseMgr & database = DatabaseMgr::Create(astrDatabase.c_str(), DatabaseMgr::QSQLITE);
 

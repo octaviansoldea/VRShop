@@ -7,6 +7,7 @@
 #include <QFile>
 #include <QSettings>
 #include <QSqlResult>
+
 #include <QImageWriter>
 
 #include "VRDatabaseMgrSQLite.h"
@@ -33,7 +34,24 @@ DatabaseMgr(aqstrDBPathName) {
 
 //-----------------------------------------------------------------------------------------
 
-bool DatabaseMgrSQLite::createTable(const string & astrSQLCommand) {
+bool DatabaseMgrSQLite::createTable(const DatabaseMgrParams & aDatabaseMgrParams)	{
+	const DatabaseMgrParams & mgrParams = aDatabaseMgrParams;
+
+	int nSize = mgrParams.m_arrstrParams.size();
+
+	string strSQLCommand = "CREATE TABLE IF NOT EXISTS " + mgrParams.m_strTableName + "(";
+	for (auto it = mgrParams.m_arrstrParams.begin(); it != mgrParams.m_arrstrParams.end()-1; it++)	{
+		strSQLCommand += (*it + ",");
+	}
+	strSQLCommand += (mgrParams.m_arrstrParams[nSize-1] + ");");
+
+	bool bRes = executeQuery(strSQLCommand);
+	return bRes;
+}
+
+//-----------------------------------------------------------------------------------------
+
+bool DatabaseMgrSQLite::executeQuery(const string & astrSQLCommand) {
 	if (m_QSqlDatabase.open())	{
 		string strSQLCommand = astrSQLCommand;
 		vector <string> arrstrCommands = splitString(strSQLCommand,";");
@@ -42,10 +60,10 @@ bool DatabaseMgrSQLite::createTable(const string & astrSQLCommand) {
 		for (auto it = arrstrCommands.begin(); it != arrstrCommands.end(); it++)	{
 			query.exec(it->c_str());
 		}
+
 		m_QSqlDatabase.close();
 		return true;
-	}
-	else	{
+	} else {
 		string strMessage = "Error opening: " + string(lastError().text().toStdString());
 		printWarning(strMessage.c_str());
 		return false;
@@ -57,8 +75,8 @@ bool DatabaseMgrSQLite::createTable(const string & astrSQLCommand) {
 void DatabaseMgrSQLite::fillPrimitiveTable(string & astrCommand)	{
 	if(m_QSqlDatabase.open())	{
 
-		//Command is string of SQL commands that are delimited with "_"
-		vector <string> arrstrSQLCommands = splitString(astrCommand,"_");
+		//Command is string of SQL commands that are delimited with ";"
+		vector <string> arrstrSQLCommands = splitString(astrCommand,";");
 		QSqlQuery query(arrstrSQLCommands[0].c_str());
 
 		int nEquipmentItemID = query.lastInsertId().toInt();
@@ -83,105 +101,19 @@ void DatabaseMgrSQLite::fillPrimitiveTable(string & astrCommand)	{
 
 				QSqlQuery tempQuery;
 				tempQuery.exec(qstrPIL);
-			}
-			else	{
+			} else {
 				string strError = "Item not selected.";
 				printError(strError.c_str());
 				return;
 			}
 		}
-	}	
-	else	{
+	} else {
 		string strMessage = "Error opening: " + string(lastError().text().toStdString());
 		printWarning(strMessage.c_str());
 	}
 }
 
 //=============================================================================================
-
-void DatabaseMgrSQLite::insertIntoDatabase(const DatabaseMgrParams & aDatabaseMgrParams)	{
-	if(m_QSqlDatabase.open())	{
-		QString qstrObjectType = aDatabaseMgrParams.m_qstrObjectType;
-		QString qstrObjectName = aDatabaseMgrParams.m_qstrObjectName;
-
-		int nSize = aDatabaseMgrParams.m_arrstrParams.size();
-		vector <string> qarrstrParams;
-		qarrstrParams.resize(nSize);
-		qarrstrParams = aDatabaseMgrParams.m_arrstrParams;
-
-		//get names of columns of a given table
-		QString qstrColumnNames = QString("PRAGMA table_info(%1)").arg(qstrObjectType);
-		QSqlQuery tblColsQry(qstrColumnNames);
-		vector<QString> vecColumnNames;
-		while (tblColsQry.next())	{
-			vecColumnNames.push_back(tblColsQry.value(1).toString());
-		}
-		int nColumnNames = vecColumnNames.size();
-		int nNoColumns = (nColumnNames < aDatabaseMgrParams.m_arrstrParams.size())
-			? nColumnNames : aDatabaseMgrParams.m_arrstrParams.size();
-
-		//Check if the entry is already in the DB
-		QSqlQuery tempQuery;
-		QString tqry = QString("SELECT %1 FROM %2 WHERE %3 = '%4'")
-			.arg(vecColumnNames[0]).arg(qstrObjectType).arg(vecColumnNames[1]).arg(qstrObjectName);
-		int nI;
-		for (nI=0;nI<nNoColumns;nI++)	{
-			tqry += QString(" AND %1 = '%2'").arg(vecColumnNames[nI+2]).arg(aDatabaseMgrParams.m_arrstrParams[nI].c_str());
-		}
-		tempQuery.exec(tqry);
-
-		//Entry not yet in the DB, so proceed
-		if(tempQuery.last() == '\0')	{
-
-			//Check if the table depends on any foreign key and prepare the query
-			QString qstrFKey;
-			QString qstrFKeyValue;
-			for (nI=1; nI<nColumnNames; nI++)	{
-				string strFKey = vecColumnNames[nI].toStdString();
-				if(isAtEndOfString(strFKey,"ID"))	{
-					string strFKeyRef = strFKey.erase(strFKey.size()-2,2);
-					qstrFKey += QString(", %1").arg(vecColumnNames[nI]);
-					qstrFKeyValue += QString(",(SELECT %1 FROM %2 WHERE %3 = '%4')")
-						.arg(vecColumnNames[nI]).arg(strFKeyRef.c_str()).arg((strFKeyRef+string("Name")).c_str()).arg(qstrObjectName);
-				}
-			}
-			
-			//Insert entry into the DB
-			QString qry1 = QString("INSERT INTO %1(%2").arg(qstrObjectType).arg(vecColumnNames[1]);
-			QString qry2 = QString(")VALUES ('%1'").arg(qstrObjectName);
-
-			for (nI=0;nI<nNoColumns;nI++)	{
-				qry1 += QString(", %1 ").arg(vecColumnNames[nI+2]);
-				qry2 += QString(",%1 ").arg(aDatabaseMgrParams.m_arrstrParams[nI].c_str());
-			}
-			qry1 = qry1 + qstrFKey + qry2 + qstrFKeyValue + ")";
-			QSqlQuery query(qry1);
-
-			//CASCADING INTO THE 'PrimitiveItemList'
-			QSqlQuery tempQuery;
-			QString tqry1 = QString("SELECT %1ID, PrimitiveID FROM %1 WHERE %1ID = (SELECT MAX(%1ID) FROM %1)").arg(qstrObjectName);
-			tempQuery.exec(tqry1);
-
-			while(tempQuery.next())	{
-			QString qstrPIL = QString("INSERT INTO PrimitiveItemList (PrimitiveID, ItemID) VALUES(%1, %2)")
-				.arg(tempQuery.value(1).toString()).arg(tempQuery.value(0).toString());
-
-			tempQuery.exec(qstrPIL);
-			}
-		}
-		else	{
-			string strMessage = "Warning message: Item already in the database.";
-			printWarning(strMessage.c_str());
-		}
-	}
-	else	{
-		string strMessage = "Error opening: " + string(lastError().text().toStdString());
-		printWarning(strMessage.c_str());
-	}
-}
-
-
-//-----------------------------------------------------------------------------------------
 
 string DatabaseMgrSQLite::readFromDB(string & astrCommand)	{
 	if(m_QSqlDatabase.open())	{
@@ -230,16 +162,14 @@ string DatabaseMgrSQLite::readFromDB(string & astrCommand)	{
 			while(sqlQuery.next())	{
 				string strTemp;
 				for (int i=0;i<nColumns[nI]-1;i++)	{
-					strTemp += sqlQuery.value(i).toString().toStdString() + "_";
+					strTemp += sqlQuery.value(i).toString().toStdString() + ";";
 				}
 				strTemp += (arrstrPrimitiveName[nI] + "?").c_str();
 				strResult += strTemp;
 			}
 		}
 		return strResult;
-	}
-
-	else	{
+	} else {
 		string strMessage = "Error opening: " + string(lastError().text().toStdString());
 		printWarning(strMessage.c_str());
 

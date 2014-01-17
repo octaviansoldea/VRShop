@@ -94,14 +94,14 @@ string Prism::getSQLCommand() const {
 
 	for (nI=0;nI<4;nI++)	{
 		for (nJ=0;nJ<4;nJ++)	{
-			strMatrix4X4 += to_string((long double)prismMatrix(nI,nJ)) + ";";
+			strMatrix4X4 += to_string((long double)prismMatrix(nI,nJ)) + "_";
 		}
 	}
 	strMatrix4X4 += "'";
 
 	string strColor = "'";
 	for (nI=0;nI<4;nI++)	{
-		strColor += to_string((long double)m_PrismParams.m_arrflRGBA[nI]) + ";";
+		strColor += to_string((long double)m_PrismParams.m_arrflRGBA[nI]) + "_";
 	}
 	strColor += "'";
 
@@ -110,7 +110,7 @@ string Prism::getSQLCommand() const {
 		+ strMatrix4X4 + ","
 		+ strColor + ",'"
 		+ m_PrismParams.m_strFileNameTexture + "',"
-		+ "(SELECT PrimitiveID FROM Primitive WHERE PrimitiveName = 'Prism'))";
+		+ "(SELECT PrimitiveID FROM Primitive WHERE PrimitiveName = 'Prism'));";
 
 	return(strSQLCommand);
 }
@@ -121,9 +121,9 @@ void Prism::initFromSQLData(const std::string & astrSQLData)	{
 	string strSQLData = astrSQLData;
 	PrismParams pP;
 
-	vector <string> arrstrPrismParams = splitString(strSQLData,"_");
-	vector <string> arrstrMatrix = splitString(arrstrPrismParams[2],";");
-	vector <string> arrstrColor = splitString(arrstrPrismParams[3],";");
+	vector <string> arrstrPrismParams = splitString(strSQLData,";");
+	vector <string> arrstrMatrix = splitString(arrstrPrismParams[2],"_");
+	vector <string> arrstrColor = splitString(arrstrPrismParams[3],"_");
 
 	pP.m_nRes = stof(arrstrPrismParams[1]);
 	pP.m_flRadius = stof(arrstrMatrix[0]);

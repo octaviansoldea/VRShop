@@ -81,14 +81,14 @@ std::string Plate3D::getSQLCommand() const	{
 
 	for (nI=0;nI<4;nI++)	{
 		for (nJ=0;nJ<4;nJ++)	{
-			strMatrix4X4 += to_string((long double)plate3DMatrix(nI,nJ)) + ";";
+			strMatrix4X4 += to_string((long double)plate3DMatrix(nI,nJ)) + "_";
 		}
 	}
 	strMatrix4X4 += "'";
 
 	string strColor = "'";
 	for (nI=0;nI<4;nI++)	{
-		strColor += to_string((long double)m_Plate3DParams.m_arrflRGBA[nI]) + ";";
+		strColor += to_string((long double)m_Plate3DParams.m_arrflRGBA[nI]) + "_";
 	}
 	strColor += "'";
 
@@ -96,7 +96,7 @@ std::string Plate3D::getSQLCommand() const	{
 		+ strMatrix4X4 + ","
 		+ strColor + ",'"
 		+ m_Plate3DParams.m_strFileNameTexture + "',"
-		+ "(SELECT PrimitiveID FROM Primitive WHERE PrimitiveName = 'Plate3D'))";
+		+ "(SELECT PrimitiveID FROM Primitive WHERE PrimitiveName = 'Plate3D'));";
 
 	return(strSQLCommand);
 }
@@ -107,10 +107,10 @@ void Plate3D::initFromSQLData(const string & astrSQLData)	{
 	string strSQLData = astrSQLData;
 	Plate3DParams p3DP;
 
-	vector <string> arrstrPlateParams = splitString(strSQLData,"_");
+	vector <string> arrstrPlateParams = splitString(strSQLData,";");
 
-	vector <string> arrstrMatrix = splitString(arrstrPlateParams[1],";");
-	vector <string> arrstrColor = splitString(arrstrPlateParams[2],";");
+	vector <string> arrstrMatrix = splitString(arrstrPlateParams[1],"_");
+	vector <string> arrstrColor = splitString(arrstrPlateParams[2],"_");
 
 	int nI;
 	vector < float > arrflMatrix;

@@ -57,24 +57,13 @@ void Cupboard::init(const FurnitureParams & aFurnitureParams)	{
 
 //-----------------------------------------------------------------------
 
-string Cupboard::setSQLCommand(const string & astrCommand)	{
-	string strSetSQLCommand = astrCommand;
-
-	string strPrimitiveItemIDs = "SELECT PrimitiveID, ItemID FROM PrimitiveItemList "
-		"WHERE EquipmentItemID = 1";
-
-	return strSetSQLCommand;
-}
-
-//-----------------------------------------------------------------------
-
 string Cupboard::getSQLCommand() const {
 	string strSQLCommand = "INSERT INTO EquipmentItem (EquipmentItemName, EquipmentID) "
-		"VALUES ('Cupboard', (SELECT EquipmentID FROM Equipment WHERE EquipmentName = 'Furniture'))_";
+		"VALUES ('Cupboard', (SELECT EquipmentID FROM Equipment WHERE EquipmentName = 'Furniture'));";
 	int nNumParts = m_arrSQLCommandLines.size();
 
 	for (auto it = m_arrSQLCommandLines.begin(); it != m_arrSQLCommandLines.end()-1; it++)	{
-		strSQLCommand += *it + "_";
+		strSQLCommand += *it;
 	}
 	strSQLCommand += m_arrSQLCommandLines[nNumParts-1];
 
@@ -131,7 +120,7 @@ void Cupboard::predefinedObject()	{
 	aPlate3DParams.m_arrflRGBA[2] = 0.45;
 	aPlate3DParams.m_arrflRGBA[3] = 1;
 //	aPlate3DParams.m_strFileNameTexture = "../../../Resources/Textures/lz.rgb";
-	pPlate3D->init(aPlate3DParams);
+pPlate3D->init(aPlate3DParams);
 	addPart(pPlate3D);
 	
 

@@ -20,18 +20,13 @@ DatabaseMgr(astrDBPathName) {
 
 //-----------------------------------------------------------------------------------------
 
-bool DatabaseMgrODBC::createTable(const string & astrSQLCommand)	{
+bool DatabaseMgrODBC::executeQuery(const string & astrSQLCommand)	{
 	return(false);
 }
 
 //-----------------------------------------------------------------------------------------
 
 void DatabaseMgrODBC::fillPrimitiveTable(string & astrCommand)	{
-}
-
-//-----------------------------------------------------------------------------------------
-
-void DatabaseMgrODBC::insertIntoDatabase(const DatabaseMgrParams & aDatabaseMgrParams)	{
 }
 
 //-----------------------------------------------------------------------------------------

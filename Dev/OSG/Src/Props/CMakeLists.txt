@@ -5,5 +5,5 @@ SET(CMAKE_DEBUG_POSTFIX "D")
 SUBDIRS(
 	AbstractObject
 	Equipment
-	GeometricShapes
+	GeometricShape
 )

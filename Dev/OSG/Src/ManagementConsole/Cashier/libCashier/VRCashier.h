@@ -6,8 +6,8 @@
 #include "VRCashierScreen.h"
 #include "VRProduct.h"
 
+class Basket;
 class Customer;
-class Purchase;
 class Receipt;
 
 namespace VR	{
@@ -18,16 +18,9 @@ namespace VR	{
 
 		void displayMainMenu();
 
-		void listProductsInBasket(const Customer * apCustomer);
-
-		void addProductToBasket(const Product * apProduct);
-		void removeProductFromBasket(const Product * apProduct);
-
-		bool authenticateUser(const Customer * apCustomer);
-
 		void getCurrentSubTotal() const;
 
-		void performPurchase(const Purchase * apPurchase) {};
+		void performPurchase(const Basket & aBasket);
 		void abort();
 
 	protected:

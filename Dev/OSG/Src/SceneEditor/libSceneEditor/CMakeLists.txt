@@ -44,7 +44,7 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_BINARY_DIR}/SceneEditor/libSceneEditor
   ${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabaseMgr
   ${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
-  ${CMAKE_SOURCE_DIR}/Props/GeometricShapes/libGeometricShapes
+  ${CMAKE_SOURCE_DIR}/Props/GeometricShape/libGeometricShape
   ${CMAKE_SOURCE_DIR}/Props/Equipment/Furniture/libFurniture
 )
 

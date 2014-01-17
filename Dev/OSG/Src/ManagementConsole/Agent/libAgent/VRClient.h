@@ -7,6 +7,8 @@ namespace VR {
 	class Client : public AbstractUser {
 	public:
 		Client();
+
+		void pay();
 	};
 }
 #endif //VR_CLIENT_H

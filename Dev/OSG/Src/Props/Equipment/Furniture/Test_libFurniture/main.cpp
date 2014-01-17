@@ -42,48 +42,60 @@ void createTable(const string & astrDBName) {
 	file.close();
 	DatabaseMgr & database = DatabaseMgr::Create(astrDBName.c_str(), DatabaseMgr::QSQLITE);
 
+	DatabaseMgrParams dMgrParams;
+
 	string strCreateTable = "CREATE TABLE IF NOT EXISTS Primitive "
 			"(PrimitiveID INTEGER PRIMARY KEY AUTOINCREMENT,"
 			"PrimitiveName TEXT UNIQUE);";
+	dMgrParams.m_arrstrParams.push_back(strCreateTable);
 
 	VR::Cylinder cylinder;
-	strCreateTable += cylinder.getSQLFormat();
+	strCreateTable = cylinder.getSQLFormat();
+	dMgrParams.m_arrstrParams.push_back(strCreateTable);
 
 	Plate3D plate3D;
-	strCreateTable += plate3D.getSQLFormat();
+	strCreateTable = plate3D.getSQLFormat();
+	dMgrParams.m_arrstrParams.push_back(strCreateTable);
 
 	Prism prism;
-	strCreateTable += prism.getSQLFormat();
+	strCreateTable = prism.getSQLFormat();
+	dMgrParams.m_arrstrParams.push_back(strCreateTable);
 
 	UntransformedSphere sphere;
-	strCreateTable += sphere.getSQLFormat();
+	strCreateTable = sphere.getSQLFormat();
+	dMgrParams.m_arrstrParams.push_back(strCreateTable);
 
-	strCreateTable += "CREATE TABLE IF NOT EXISTS PrimitiveItemList "
+	strCreateTable = "CREATE TABLE IF NOT EXISTS PrimitiveItemList "
 			"(PrimitiveItemListID INTEGER PRIMARY KEY AUTOINCREMENT,"
 			"PrimitiveID INTEGER, "
 			"ItemID INTEGER, "
 			"EquipmentItemID INTEGER, "
 			"FOREIGN KEY (PrimitiveID) REFERENCES Primitive(PrimitiveID));";
+	dMgrParams.m_arrstrParams.push_back(strCreateTable);
 
-	strCreateTable += "CREATE TABLE IF NOT EXISTS Texture "
+	strCreateTable = "CREATE TABLE IF NOT EXISTS Texture "
 			"(TextureID INTEGER PRIMARY KEY AUTOINCREMENT,"
 			"TextureFile TEXT);";
+	dMgrParams.m_arrstrParams.push_back(strCreateTable);
 
-	strCreateTable += "CREATE TABLE IF NOT EXISTS Equipment "
+	strCreateTable = "CREATE TABLE IF NOT EXISTS Equipment "
 			"(EquipmentID INTEGER PRIMARY KEY AUTOINCREMENT,"
 			"EquipmentName TEXT);";
+	dMgrParams.m_arrstrParams.push_back(strCreateTable);
 
-	strCreateTable += "CREATE TABLE IF NOT EXISTS EquipmentItem "
+	strCreateTable = "CREATE TABLE IF NOT EXISTS EquipmentItem "
 			"(EquipmentItemID INTEGER PRIMARY KEY AUTOINCREMENT,"
 			"EquipmentItemName TEXT, "
 			"EquipmentID INTEGER,"
 			"FOREIGN KEY (EquipmentID) REFERENCES Equipment(EquipmentID));";
+	dMgrParams.m_arrstrParams.push_back(strCreateTable);
 
-	strCreateTable += "CREATE TABLE IF NOT EXISTS Scene "
+	strCreateTable = "CREATE TABLE IF NOT EXISTS Scene "
 			"(SceneID INTEGER PRIMARY KEY AUTOINCREMENT,"
 			"SceneName TEXT);";
+	dMgrParams.m_arrstrParams.push_back(strCreateTable);
 
-	database.executeQuery(strCreateTable);
+	database.executeQuery(dMgrParams);
 }
 
 //--------------------------------------------------------------
@@ -91,17 +103,30 @@ void createTable(const string & astrDBName) {
 void populateTable(const string & astrDBName)	{
 	DatabaseMgr & database = DatabaseMgr::Create(astrDBName.c_str(), DatabaseMgr::QSQLITE);
 
+	DatabaseMgrParams dMgrParams;
 	string strSQLCommand;
 	strSQLCommand = "INSERT INTO Primitive(PrimitiveName) VALUES('Cylinder');";
-	strSQLCommand += "INSERT INTO Primitive(PrimitiveName) VALUES('Plate3D');";
-	strSQLCommand += "INSERT INTO Primitive(PrimitiveName) VALUES('Prism');";
-	strSQLCommand += "INSERT INTO Primitive(PrimitiveName) VALUES('Sphere');";
-	
-	strSQLCommand += "INSERT INTO Equipment(EquipmentName) VALUES ('Furniture');";
-	strSQLCommand += "INSERT INTO Equipment(EquipmentName) VALUES ('Decoration');";
-	strSQLCommand += "INSERT INTO Equipment(EquipmentName) VALUES ('CollectingTools');";
+	dMgrParams.m_arrstrParams.push_back(strSQLCommand);
 
-	database.executeQuery(strSQLCommand);
+	strSQLCommand = "INSERT INTO Primitive(PrimitiveName) VALUES('Plate3D');";
+	dMgrParams.m_arrstrParams.push_back(strSQLCommand);
+
+	strSQLCommand = "INSERT INTO Primitive(PrimitiveName) VALUES('Prism');";
+	dMgrParams.m_arrstrParams.push_back(strSQLCommand);
+
+	strSQLCommand = "INSERT INTO Primitive(PrimitiveName) VALUES('Sphere');";
+	dMgrParams.m_arrstrParams.push_back(strSQLCommand);
+	
+	strSQLCommand = "INSERT INTO Equipment(EquipmentName) VALUES ('Furniture');";
+	dMgrParams.m_arrstrParams.push_back(strSQLCommand);
+
+	strSQLCommand = "INSERT INTO Equipment(EquipmentName) VALUES ('Decoration');";
+	dMgrParams.m_arrstrParams.push_back(strSQLCommand);
+
+	strSQLCommand = "INSERT INTO Equipment(EquipmentName) VALUES ('CollectingTools');";
+	dMgrParams.m_arrstrParams.push_back(strSQLCommand);
+
+	database.executeQuery(dMgrParams);
 }
 
 //--------------------------------------------------------------
@@ -114,7 +139,10 @@ void insertIntoDatabase_Sphere(const string & astrDBName)	{
 	pSphere->init(aSphereParams);
 	string strSQLCommand = pSphere->getSQLCommand();
 
-	database.executeQuery(strSQLCommand);
+	DatabaseMgrParams dMgrParams;
+	dMgrParams.m_arrstrParams.push_back(strSQLCommand);
+
+	database.executeQuery(dMgrParams);
 }
 
 //--------------------------------------------------------------
@@ -127,13 +155,18 @@ void insertIntoDatabase_Cylinder(const string & astrDBName)	{
 	pCylinder->init(aCylinderParams);
 	string strSQLCommand = pCylinder->getSQLCommand();
 
-	database.executeQuery(strSQLCommand);
+	DatabaseMgrParams dMgrParams;
+	dMgrParams.m_arrstrParams.push_back(strSQLCommand);
+
+	database.executeQuery(dMgrParams);
 }
 
 //--------------------------------------------------------------
 
 void insertIntoDatabase_Plate3D(const string & astrDBName)	{
 	DatabaseMgr & database = DatabaseMgr::Create(astrDBName.c_str(), DatabaseMgr::QSQLITE);
+
+	DatabaseMgrParams dMgrParams;
 
 	ref_ptr < Plate3D > pPlate3D =  new Plate3D;
 	Plate3DParams * aPlate3DParams = new Plate3DParams;
@@ -143,6 +176,7 @@ void insertIntoDatabase_Plate3D(const string & astrDBName)	{
 	aPlate3DParams->m_flLenZ = 0.05;
 	pPlate3D->init(*aPlate3DParams);
 	string strSQLCommand = pPlate3D->getSQLCommand();
+	dMgrParams.m_arrstrParams.push_back(strSQLCommand);
 
 	//Left plate
 	aPlate3DParams = new Plate3DParams;
@@ -150,7 +184,8 @@ void insertIntoDatabase_Plate3D(const string & astrDBName)	{
 	aPlate3DParams->m_flLenY = 1.0;
 	aPlate3DParams->m_flLenZ = 1.0;
 	pPlate3D->init(*aPlate3DParams);
-	strSQLCommand += pPlate3D->getSQLCommand();
+	strSQLCommand = pPlate3D->getSQLCommand();
+	dMgrParams.m_arrstrParams.push_back(strSQLCommand);
 
 	//Right plate
 	aPlate3DParams = new Plate3DParams;
@@ -158,7 +193,8 @@ void insertIntoDatabase_Plate3D(const string & astrDBName)	{
 	aPlate3DParams->m_flLenY = 1.0;
 	aPlate3DParams->m_flLenZ = 1.0;
 	pPlate3D->init(*aPlate3DParams);
-	strSQLCommand += pPlate3D->getSQLCommand();
+	strSQLCommand = pPlate3D->getSQLCommand();
+	dMgrParams.m_arrstrParams.push_back(strSQLCommand);
 
 	//Front plate
 	aPlate3DParams = new Plate3DParams;
@@ -166,7 +202,8 @@ void insertIntoDatabase_Plate3D(const string & astrDBName)	{
 	aPlate3DParams->m_flLenY = 0.05;
 	aPlate3DParams->m_flLenZ = 1.0;
 	pPlate3D->init(*aPlate3DParams);
-	strSQLCommand += pPlate3D->getSQLCommand();
+	strSQLCommand = pPlate3D->getSQLCommand();
+	dMgrParams.m_arrstrParams.push_back(strSQLCommand);
 
 	//Back plate
 	aPlate3DParams = new Plate3DParams;
@@ -174,9 +211,10 @@ void insertIntoDatabase_Plate3D(const string & astrDBName)	{
 	aPlate3DParams->m_flLenY = 0.05;
 	aPlate3DParams->m_flLenZ = 1.0;
 	pPlate3D->init(*aPlate3DParams);
-	strSQLCommand += pPlate3D->getSQLCommand();
+	strSQLCommand = pPlate3D->getSQLCommand();
+	dMgrParams.m_arrstrParams.push_back(strSQLCommand);
 
-	database.executeQuery(strSQLCommand);
+	database.executeQuery(dMgrParams);
 
 	delete aPlate3DParams;
 }
@@ -405,11 +443,11 @@ int main(int argc, char *argv[])	{
 	createTable(strDBName);
 	populateTable(strDBName);
 
-	//insertIntoDatabase_Sphere(strDBName);
-	//insertIntoDatabase_Cylinder(strDBName);
-	//insertIntoDatabase_Plate3D(strDBName);
+	insertIntoDatabase_Sphere(strDBName);
+	insertIntoDatabase_Cylinder(strDBName);
+	insertIntoDatabase_Plate3D(strDBName);
 
-	insertIntoDatabase_Container(strDBName);
+	//insertIntoDatabase_Container(strDBName);
 	//insertIntoDatabase_Cupboard(strDBName);
 
 	//Furniture::loadAllFurnitures(pScene, strDBName);

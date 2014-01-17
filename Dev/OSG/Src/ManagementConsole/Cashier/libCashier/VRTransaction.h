@@ -13,7 +13,6 @@
 #ifndef VR_TRANSACTION_H
 #define VR_TRANSACTION_H
 
-#include "VRBasket.h"
 #include "VRAbstractUser.h"
 
 namespace VR	{
@@ -21,7 +20,7 @@ namespace VR	{
 	class Transaction	{
 	public:
 		Transaction();
-		Transaction(const Basket & aBasket, const AbstractUser & aAbstractUser);
+		Transaction(const std::list<Product> & alstProduct, const AbstractUser & aAbstractUser);
 
 		void applyGeneralDiscount(float & aflDiscountRate);
 
@@ -34,7 +33,7 @@ namespace VR	{
 
 		std::string getSQLInterogationCommand();//check if the shop can satisfy the request.
 
-		Basket m_Basket;
+		std::list<Product> m_vecProduct;
 	};
 }
 #endif //VR_TRANSACTION_H

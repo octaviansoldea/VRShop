@@ -24,12 +24,14 @@ void UserAccount::addUserAccount()	{
 	string strUserAccountQuery = "INSERT INTO UserAccounts VALUES ('"
 		+ m_strUserName + "', '" + m_strPassword + "')";
 
+	DatabaseMgrParams dMgrParams;
+	dMgrParams.m_arrstrParams.push_back(strUserAccountQuery);
+
 	QString strDB = "../../../../Databases/UserAccounts.db";
 
-	DatabaseMgr & database = VR::DatabaseMgr::Create(strDB,VR::DatabaseMgr::DRIVER_NAME::QSQLITE);
+	DatabaseMgr & database = VR::DatabaseMgr::Create(strDB,DatabaseMgr::QSQLITE);
 
-	database.executeQuery(strUserAccountQuery);
-
+	database.executeQuery(dMgrParams);
 }
 
 //------------------------------------------------------------------------------
@@ -38,11 +40,14 @@ void UserAccount::modifyUserAccount()	{
 	string strUserAccountQuery = "UPDATE UserAccount SET UserName = '" + m_strUserName + "', Password = '" + 
 		m_strPassword + "' WHERE UserName = '" + m_strUserName + "';";
 
+	DatabaseMgrParams dMgrParams;
+	dMgrParams.m_arrstrParams.push_back(strUserAccountQuery);
+
 	QString strDB = "../../../../Databases/UserAccounts.db";
 
-	DatabaseMgr & database = VR::DatabaseMgr::Create(strDB,VR::DatabaseMgr::DRIVER_NAME::QSQLITE);
+	DatabaseMgr & database = VR::DatabaseMgr::Create(strDB,DatabaseMgr::QSQLITE);
 
-	database.executeQuery(strUserAccountQuery);
+	database.executeQuery(dMgrParams);
 }
 
 //------------------------------------------------------------------------------
@@ -52,11 +57,14 @@ void UserAccount::removeUserAccount()	{
 		"Username = '" + m_strUserName + 
 		"' AND Password = '" + m_strPassword + "'";
 
+	DatabaseMgrParams dMgrParams;
+	dMgrParams.m_arrstrParams.push_back(strUserAccountQuery);
+
 	QString strDB = "../../../../Databases/UserAccounts.db";
 
-	DatabaseMgr & database = VR::DatabaseMgr::Create(strDB,VR::DatabaseMgr::DRIVER_NAME::QSQLITE);
+	DatabaseMgr & database = VR::DatabaseMgr::Create(strDB,DatabaseMgr::QSQLITE);
 
-	database.executeQuery(strUserAccountQuery);
+	database.executeQuery(dMgrParams);
 }
 
 //------------------------------------------------------------------------------
@@ -74,7 +82,7 @@ void UserAccount::createUserAccountDB() const	{
 
 	QString strDBName = "../../../../Databases/UserAccounts.db";
 
-	DatabaseMgr & database = VR::DatabaseMgr::Create(strDBName,VR::DatabaseMgr::DRIVER_NAME::QSQLITE);
+	DatabaseMgr & database = VR::DatabaseMgr::Create(strDBName,DatabaseMgr::QSQLITE);
 	database.createTable(dMgrP);
 }
 

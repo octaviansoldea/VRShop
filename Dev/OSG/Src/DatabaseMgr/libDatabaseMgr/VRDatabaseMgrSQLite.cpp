@@ -45,16 +45,18 @@ bool DatabaseMgrSQLite::createTable(const DatabaseMgrParams & aDatabaseMgrParams
 	}
 	strSQLCommand += (mgrParams.m_arrstrParams[nSize-1] + ");");
 
-	bool bRes = executeQuery(strSQLCommand);
+	DatabaseMgrParams dMgrParams;
+	dMgrParams.m_arrstrParams.push_back(strSQLCommand);
+
+	bool bRes = executeQuery(dMgrParams);
 	return bRes;
 }
 
 //-----------------------------------------------------------------------------------------
 
-bool DatabaseMgrSQLite::executeQuery(const string & astrSQLCommand) {
+bool DatabaseMgrSQLite::executeQuery(const DatabaseMgrParams & aDatabaseMgrParams) {
 	if (m_QSqlDatabase.open())	{
-		string strSQLCommand = astrSQLCommand;
-		vector <string> arrstrCommands = splitString(strSQLCommand,";");
+		const vector <string> arrstrCommands = aDatabaseMgrParams.m_arrstrParams;
 
 		QSqlQuery query;
 		for (auto it = arrstrCommands.begin(); it != arrstrCommands.end(); it++)	{
@@ -74,7 +76,6 @@ bool DatabaseMgrSQLite::executeQuery(const string & astrSQLCommand) {
 
 void DatabaseMgrSQLite::fillPrimitiveTable(string & astrCommand)	{
 	if(m_QSqlDatabase.open())	{
-
 		//Command is string of SQL commands that are delimited with ";"
 		vector <string> arrstrSQLCommands = splitString(astrCommand,";");
 		QSqlQuery query(arrstrSQLCommands[0].c_str());

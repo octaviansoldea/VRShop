@@ -6,7 +6,6 @@
 #include "VRCashierScreen.h"
 #include "VRProduct.h"
 
-class Basket;
 class Customer;
 class Receipt;
 
@@ -20,7 +19,7 @@ namespace VR	{
 
 		void getCurrentSubTotal() const;
 
-		void performPurchase(const Basket & aBasket);
+		void performPurchase(const std::vector<Product> & avecProducts);
 		void abort();
 
 	protected:

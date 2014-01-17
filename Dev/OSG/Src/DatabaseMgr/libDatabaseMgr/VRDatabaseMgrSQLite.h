@@ -14,8 +14,7 @@ namespace VR {
 
 		DatabaseMgrSQLite(const QString & aqstrDBPathName);
 
-		virtual bool executeQuery(const std::string & astrSQLCommand);
-
+		virtual bool executeQuery(const DatabaseMgrParams & aDatabaseMgrParams);
 		virtual bool createTable(const DatabaseMgrParams & aDatabaseMgrParams);
 
 		virtual void fillPrimitiveTable(std::string & astrCommand);

@@ -30,12 +30,12 @@ namespace VR	{
 		Product();
 		Product(const ProductParams & aProductParams);
 
+		void createProductDB() const;
+
 		void newProduct(const Product & aProduct);
 		void getProduct(const Product & aProduct);
 		void removeProduct(const Product & aProduct);
 		void modifyProduct(const Product & aProduct);
-		// Make the communication with the Database inside these functions
-
 
 	private:
 		ProductParams m_ProductParams;

@@ -35,7 +35,7 @@ namespace VR {
 
 		QSqlError lastError() const;
 
-		virtual bool executeQuery(const std::string & astrSQLCommand) = 0;
+		virtual bool executeQuery(const DatabaseMgrParams & aDatabaseMgrParams) = 0;
 		virtual bool createTable(const DatabaseMgrParams & aDatabaseMgrParams) = 0;
 
 		virtual void fillPrimitiveTable(std::string & astrCommand) = 0;

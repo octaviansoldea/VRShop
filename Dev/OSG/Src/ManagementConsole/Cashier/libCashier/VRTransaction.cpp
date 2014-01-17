@@ -8,5 +8,5 @@ Transaction::Transaction()	{
 
 //------------------------------------------------------------------------------
 
-Transaction::Transaction(const Basket & aBasket, const AbstractUser & aAbstractUser)	{
+Transaction::Transaction(const list<Product> & alstProduct, const AbstractUser & aAbstractUser)	{
 }

@@ -1,6 +1,6 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
 SUBDIRS(
-	libUsers
-	Test_libUsers
+	libAgent
+	Test_libAgent
 )

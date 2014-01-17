@@ -1,4 +1,4 @@
-PROJECT(libProduct)
+PROJECT(libAvatar)
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
 SET(CMAKE_DEBUG_POSTFIX "D")
@@ -25,20 +25,17 @@ ELSE(Qt5_FOUND)
   )
 ENDIF(Qt5_FOUND)
 
-
-#General includes, irrespective of the Qt version
 INCLUDE_DIRECTORIES(
-	${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabaseMgr
+	${OPENSCENEGRAPH_INCLUDE_DIRS}
+    ${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
 )
 
-#Define sources to be later added into the library
 SET(SRCS
-	VRProduct.h VRProduct.cpp
+  VRAvatar.h VRAvatar.cpp
 )
 
-#Library to be later used in the main
-ADD_LIBRARY(libProduct
+ADD_LIBRARY(libAvatar
   ${SRCS}
 )
 
-SET_PROPERTY(TARGET libProduct PROPERTY FOLDER Management)
+SET_PROPERTY(TARGET libAvatar PROPERTY FOLDER Avatar)

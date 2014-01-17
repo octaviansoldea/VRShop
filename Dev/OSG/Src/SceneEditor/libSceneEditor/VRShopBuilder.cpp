@@ -91,48 +91,60 @@ void ShopBuilder::newDB(const string & astrDBFileName)	{
 
 	DatabaseMgr & database = DatabaseMgr::Create(m_qstrFileName, DatabaseMgr::QSQLITE);	
 	{
+		DatabaseMgrParams dMgrParams;
+
 		string strCreateTable = "CREATE TABLE IF NOT EXISTS Primitive "
 			"(PrimitiveID INTEGER PRIMARY KEY AUTOINCREMENT,"
 			"PrimitiveName TEXT UNIQUE);";
+		dMgrParams.m_arrstrParams.push_back(strCreateTable);
 
 		VR::Cylinder cylinder;
-		strCreateTable += cylinder.getSQLFormat();
+		strCreateTable = cylinder.getSQLFormat();
+		dMgrParams.m_arrstrParams.push_back(strCreateTable);
 
 		Plate3D plate3D;
-		strCreateTable += plate3D.getSQLFormat();
+		strCreateTable = plate3D.getSQLFormat();
+		dMgrParams.m_arrstrParams.push_back(strCreateTable);
 
 		Prism prism;
-		strCreateTable += prism.getSQLFormat();
+		strCreateTable = prism.getSQLFormat();
+		dMgrParams.m_arrstrParams.push_back(strCreateTable);
 
 		UntransformedSphere sphere;
-		strCreateTable += sphere.getSQLFormat();
+		strCreateTable = sphere.getSQLFormat();
+		dMgrParams.m_arrstrParams.push_back(strCreateTable);
 
-		strCreateTable += "CREATE TABLE IF NOT EXISTS PrimitiveItemList "
+		strCreateTable = "CREATE TABLE IF NOT EXISTS PrimitiveItemList "
 			"(PrimitiveItemListID INTEGER PRIMARY KEY AUTOINCREMENT,"
 			"PrimitiveID INTEGER, "
 			"ItemID INTEGER, "
 			"EquipmentItemID INTEGER, "
 			"FOREIGN KEY (PrimitiveID) REFERENCES Primitive(PrimitiveID));";
+		dMgrParams.m_arrstrParams.push_back(strCreateTable);
 
-		strCreateTable += "CREATE TABLE IF NOT EXISTS Texture "
+		strCreateTable = "CREATE TABLE IF NOT EXISTS Texture "
 			"(TextureID INTEGER PRIMARY KEY AUTOINCREMENT,"
 			"TextureFile TEXT);";
+		dMgrParams.m_arrstrParams.push_back(strCreateTable);
 
-		strCreateTable += "CREATE TABLE IF NOT EXISTS Equipment "
+		strCreateTable = "CREATE TABLE IF NOT EXISTS Equipment "
 			"(EquipmentID INTEGER PRIMARY KEY AUTOINCREMENT,"
 			"EquipmentName TEXT);";
+		dMgrParams.m_arrstrParams.push_back(strCreateTable);
 
-		strCreateTable += "CREATE TABLE IF NOT EXISTS EquipmentItem "
+		strCreateTable = "CREATE TABLE IF NOT EXISTS EquipmentItem "
 			"(EquipmentItemID INTEGER PRIMARY KEY AUTOINCREMENT,"
 			"EquipmentItemName TEXT, "
 			"EquipmentID INTEGER,"
 			"FOREIGN KEY (EquipmentID) REFERENCES Equipment(EquipmentID));";
+		dMgrParams.m_arrstrParams.push_back(strCreateTable);
 
-		strCreateTable += "CREATE TABLE IF NOT EXISTS Scene "
+		strCreateTable = "CREATE TABLE IF NOT EXISTS Scene "
 			"(SceneID INTEGER PRIMARY KEY AUTOINCREMENT,"
 			"SceneName TEXT);";
+		dMgrParams.m_arrstrParams.push_back(strCreateTable);
 
-		database.executeQuery(strCreateTable);
+		database.executeQuery(dMgrParams);
 	}
 
  	gridOnOff(true);

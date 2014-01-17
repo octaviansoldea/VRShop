@@ -5,5 +5,5 @@ SET(CMAKE_DEBUG_POSTFIX "D")
 SUBDIRS(
   Cashier
   Product
-  Users
+  Agent
 )

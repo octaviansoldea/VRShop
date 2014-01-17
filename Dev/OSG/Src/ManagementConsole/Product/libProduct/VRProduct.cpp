@@ -1,6 +1,12 @@
+#include <vector>
+
+#include "VRDatabaseMgr.h"
+
 #include "VRProduct.h"
 
 using namespace VR;
+using namespace std;
+
 
 ProductParams::ProductParams() : 
 m_strProductCategory(""),
@@ -26,9 +32,31 @@ Product::Product()	{
 //------------------------------------------------------------------------------
 
 void Product::modifyProduct(const Product & aProduct)	{
-	//Define a product
+}
 
-	std::string strSQLCommand = "SELECT PrimitiveID, ItemID FROM PrimitiveItemList "
-		"WHERE EquipmentItemID = 1";
+//------------------------------------------------------------------------------
 
+void Product::createProductDB() const	{
+	vector<string> vecstrDBParams;
+	vecstrDBParams.push_back("ProductCode TEXT");
+	vecstrDBParams.push_back("ProductCategory TEXT");
+	vecstrDBParams.push_back("ProductName TEXT");
+	vecstrDBParams.push_back("ProductDescription TEXT");
+	vecstrDBParams.push_back("ProductShortDescription TEXT");
+	vecstrDBParams.push_back("ProductManufacturer TEXT");
+	vecstrDBParams.push_back("ManufacturerOrigin TEXT");
+	vecstrDBParams.push_back("ProductUnit TEXT");
+	vecstrDBParams.push_back("PricePerUnit TEXT");
+	vecstrDBParams.push_back("Quantity TEXT");
+	vecstrDBParams.push_back("TaxRate TEXT");
+	vecstrDBParams.push_back("Currency TEXT");
+
+	DatabaseMgrParams dMgrP;
+	dMgrP.m_strTableName = "Products";
+	dMgrP.m_arrstrParams = vecstrDBParams;
+
+	string strDBName = "../../../Databases/Products.db";
+
+	DatabaseMgr & database = VR::DatabaseMgr::Create(strDBName.c_str(),DatabaseMgr::QSQLITE);
+	database.createTable(dMgrP);
 }

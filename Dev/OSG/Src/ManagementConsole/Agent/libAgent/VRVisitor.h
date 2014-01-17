@@ -2,7 +2,6 @@
 #define VR_VISITOR_H
 
 #include "VRAbstractUser.h"
-#include "VRBasket.h"
 
 /*	
 	Visitor is a user of the platform who hasn't signed-in yet. 
@@ -18,7 +17,7 @@ namespace VR	{
 	public:
 		Visitor();
 
-		virtual void userSignIn();
+		virtual void trySignIn();
 	};
 }
 #endif //VR_VISITOR_H

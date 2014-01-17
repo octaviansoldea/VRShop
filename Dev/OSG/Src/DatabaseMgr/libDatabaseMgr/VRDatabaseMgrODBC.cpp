@@ -20,7 +20,7 @@ DatabaseMgr(astrDBPathName) {
 
 //-----------------------------------------------------------------------------------------
 
-bool DatabaseMgrODBC::executeQuery(const string & astrSQLCommand)	{
+bool DatabaseMgrODBC::executeQuery(const DatabaseMgrParams & aDatabaseMgrParams)	{
 	return(false);
 }
 

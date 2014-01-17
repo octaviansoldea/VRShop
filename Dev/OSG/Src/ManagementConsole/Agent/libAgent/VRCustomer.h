@@ -6,7 +6,7 @@
 
 namespace VR	{
 
-	class Customer : public AbstractUser	{
+	class Customer : public AbstractUser {
 	public:
 		Customer();
 

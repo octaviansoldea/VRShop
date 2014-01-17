@@ -1,8 +1,10 @@
 #ifndef VR_GENERAL_WORKER_H
 #define VR_GENERAL_WORKER_H
 
+#include "VRAbstractUser.h"
+
 namespace VR {
-	class GeneralWorker	{
+	class GeneralWorker : public AbstractUser{
 	public:
 		GeneralWorker();
 	};

@@ -13,7 +13,7 @@ namespace VR	{
 		std::string m_strVisitorIP;
 	};
 
-	class Visitor : public AbstractUser	{
+	class Visitor : public AbstractUser {
 	public:
 		Visitor();
 

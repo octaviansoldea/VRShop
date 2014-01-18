@@ -7,8 +7,23 @@ namespace VR {
 	class Client : public AbstractUser {
 	public:
 		Client();
+		virtual ~Client();
 
 		void pay();
+
+		void openAccount();
+		virtual void trySignIn() = 0;
+
+		std::list<Product> getBasket() const;
+
+		void addProduct2Basket(const Product & aProduct) const;//check if the shop can satisfy the request.
+		void removeProductFromBasket(const Product & aProduct) const;
+		void findProductInBasket(const Product & aProduct) const;
+
+		void listProductComplements(std::list < Product > & alstProducts, const Product * apProduct);	//e.g. Milk => cereals
+		void listProductSubstitutes(std::list < Product > & alstProducts, const Product * apProduct);	//e.g. Milk1 => Mllk2 or Water => Juice
+
+		float calculateBasketValue() const;	//Calculate the value of the products in the basket
 	};
 }
 #endif //VR_CLIENT_H

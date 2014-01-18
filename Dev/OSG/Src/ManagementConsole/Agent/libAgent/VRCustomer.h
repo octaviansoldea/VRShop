@@ -1,12 +1,12 @@
 #ifndef VR_CUSTOMER_H
 #define VR_CUSTOMER_H
 
-#include "VRAbstractUser.h"
+#include "VRClient.h"
 #include "VRUserAccount.h"
 
 namespace VR	{
 
-	class Customer : public AbstractUser {
+	class Customer : public Client {
 	public:
 		Customer();
 

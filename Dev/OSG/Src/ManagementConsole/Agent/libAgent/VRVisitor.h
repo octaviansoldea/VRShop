@@ -1,7 +1,7 @@
 #ifndef VR_VISITOR_H
 #define VR_VISITOR_H
 
-#include "VRAbstractUser.h"
+#include "VRClient.h"
 
 /*	
 	Visitor is a user of the platform who hasn't signed-in yet. 
@@ -13,7 +13,7 @@ namespace VR	{
 		std::string m_strVisitorIP;
 	};
 
-	class Visitor : public AbstractUser {
+	class Visitor : public Client {
 	public:
 		Visitor();
 

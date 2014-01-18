@@ -32,11 +32,11 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_OSG
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCamera
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libPicker
-  ${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor
-  ${CMAKE_BINARY_DIR}/SceneEditor/libSceneEditor
-  ${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/View
-  ${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/Model
-  ${CMAKE_SOURCE_DIR}/SceneEditor/libSceneEditor/PopUpGUIs
+  ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor
+  ${CMAKE_BINARY_DIR}/ShopScene/libShopEditor
+  ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/View
+  ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/Model
+  ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs
   ${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabaseMgr
   ${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
   ${CMAKE_SOURCE_DIR}/Props/Equipment/GeometricShape/libGeometricShape
@@ -54,7 +54,7 @@ SET(LIBS_COMMON
 	libDatabaseMgr
 	libAbstractObject
 	libGeometricShape
-	libSceneEditor
+	libShopEditor
 	libCommon
 	libCommon_OSG
 	libCamera
@@ -66,10 +66,10 @@ SET(SRCS
   main.cpp
 )
 
-ADD_EXECUTABLE(Test_libSceneEditor ${SRCS})
+ADD_EXECUTABLE(Test_libShopEditor ${SRCS})
 
 IF(Qt5_FOUND)
-  TARGET_LINK_LIBRARIES(Test_libSceneEditor
+  TARGET_LINK_LIBRARIES(Test_libShopEditor
     ${Qt5Core_LIBRARIES}
     ${Qt5Gui_LIBRARIES}
     ${Qt5Widgets_LIBRARIES}
@@ -77,11 +77,11 @@ IF(Qt5_FOUND)
 	${LIBS_COMMON}
   )
 ELSEIF(NOT Qt5_FOUND AND Qt4_FOUND)
-  TARGET_LINK_LIBRARIES(Test_libSceneEditor
+  TARGET_LINK_LIBRARIES(Test_libShopEditor
     ${QT_LIBRARIES}
     ${QT_QTSQL_LIBRARY}
 	${LIBS_COMMON}
   )
 ENDIF()
 
-SET_PROPERTY(TARGET Test_libSceneEditor PROPERTY FOLDER SceneEditor)
+SET_PROPERTY(TARGET Test_libShopEditor PROPERTY FOLDER ShopScene)

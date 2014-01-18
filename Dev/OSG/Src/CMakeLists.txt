@@ -31,5 +31,5 @@ SUBDIRS(
 	DatabaseMgr
 	Props
 	ManagementConsole
-	SceneEditor
+	ShopScene
 )

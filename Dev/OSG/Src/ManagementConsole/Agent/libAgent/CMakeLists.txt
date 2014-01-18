@@ -41,7 +41,6 @@ SET(SRCS
 	VRCustomer.h VRCustomer.cpp
 	VRVisitor.h VRVisitor.cpp
 	VRUserAccount.h VRUserAccount.cpp
-	VRGeneralWorker.h VRGeneralWorker.cpp
 	VRAdministrator.h VRAdministrator.cpp
 	VRClient.h VRClient.cpp
 	VRCustomerSupportOfficer.h VRCustomerSupportOfficer.cpp	

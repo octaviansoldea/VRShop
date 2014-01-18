@@ -1,10 +1,10 @@
 #ifndef VR_ADMINISTRATOR_H
 #define VR_ADMINISTRATOR_H
 
-#include "VRAbstractUser.h"
+#include "VRCustomer.h"
 
 namespace VR {
-	class Administrator : public AbstractUser {
+	class Administrator : public Customer {
 	public:
 		Administrator();
 		void addProduct2Database(const Product & aProduct);
@@ -13,10 +13,7 @@ namespace VR {
 
 		void exposeProduct(const Product & aProduct);
 		void hideProduct(const Product & aProduct);
-
-		void hireGeneralWorker();
-		void fireGeneralWorker();
-
+		
 	};
 }
 #endif //VR_ADMINISTRATOR_H

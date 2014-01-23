@@ -12,7 +12,6 @@ namespace VR {
 		void pay();
 
 		void openAccount();
-		virtual void trySignIn() = 0;
 
 		std::list<Product> getBasket() const;
 

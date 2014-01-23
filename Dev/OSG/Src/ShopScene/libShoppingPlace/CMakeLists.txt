@@ -32,16 +32,15 @@ ENDIF(Qt5_FOUND)
 #General includes, irrespective of the Qt version
 INCLUDE_DIRECTORIES(
   ${OPENSCENEGRAPH_INCLUDE_DIRS}
+  ${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgent
   ${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCamera
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libPicker
-  ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCameraPicker
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_OSG
-  ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor
-  ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/View
-  ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/Model
-  ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs
-  ${CMAKE_BINARY_DIR}/ShopScene/libShopEditor
+  ${CMAKE_SOURCE_DIR}/ShopScene/libShoppingPlace
+  ${CMAKE_SOURCE_DIR}/ShopScene/libShoppingPlace/View
+  ${CMAKE_SOURCE_DIR}/ShopScene/libShoppingPlace/PopUpDialogs
+  ${CMAKE_BINARY_DIR}/ShopScene/libShoppingPlace
   ${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabaseMgr
   ${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
   ${CMAKE_SOURCE_DIR}/Props/GeometricShape/libGeometricShape
@@ -52,66 +51,30 @@ INCLUDE_DIRECTORIES(
 
 #MOC according to the Qt version
 IF(Qt5_FOUND)
-  QT5_WRAP_UI(UI_SRCS	VRShopBuilder_GUI.ui 
-						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRInsertNewItem_GUI.ui
-						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRDuplicateItem_GUI.ui
-						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRProductSettings_GUI.ui
-						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRRemoveProduct_GUI.ui
-						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRRemoveSelection_GUI.ui
-						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRNewProject_GUI.ui
-						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRSaveAs_GUI.ui
+  QT5_WRAP_UI(UI_SRCS	VRShoppingPlace_GUI.ui 
+						${CMAKE_SOURCE_DIR}/ShopScene/libShoppingPlace/PopUpDialogs/VRSignUp_GUI.ui
 						)
-  QT5_WRAP_CPP(MOC_SRCS ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/View/OSGQT_Widget.h 
-						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/Model/VRSceneStructureModel.h
-						VRShopBuilder_GUI.h
-						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRInsertNewItem_GUI.h
-						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRDuplicateItem_GUI.h
-						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRProductSettings_GUI.h
-						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRRemoveProduct_GUI.h
-						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRRemoveSelection_GUI.h
-						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRNewProject_GUI.h
-						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRSaveAs_GUI.h
+  QT5_WRAP_CPP(MOC_SRCS ${CMAKE_SOURCE_DIR}/ShopScene/libShoppingPlace/View/OSGQT_Widget.h 
+						${CMAKE_SOURCE_DIR}/ShopScene/libShoppingPlace/PopUpDialogs/VRSignUp_GUI.h
+						VRShoppingPlace_GUI.h
 						)
 
 ELSE()
-  QT4_WRAP_UI(UI_SRCS	VRShopBuilder_GUI.ui
-						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRInsertNewItem_GUI.ui
-						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRDuplicateItem_GUI.ui
-						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRProductSettings_GUI.ui
-						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRRemoveProduct_GUI.ui
-						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRRemoveSelection_GUI.ui
-						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRNewProject_GUI.ui
-						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRSaveAs_GUI.ui
+  QT4_WRAP_UI(UI_SRCS	VRShoppingPlace_GUI.ui
+						${CMAKE_SOURCE_DIR}/ShopScene/libShoppingPlace/PopUpDialogs/VRSignUp_GUI.ui
 						)
-  QT4_WRAP_CPP(MOC_SRCS ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/View/OSGQT_Widget.h 
-						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/Model/VRSceneStructureModel.h
-						VRShopBuilder_GUI.h
-						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRInsertNewItem_GUI.h
-						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRDuplicateItem_GUI.h
-						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRProductSettings_GUI.h
-						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRRemoveProduct_GUI.h
-						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRRemoveSelection_GUI.h
-						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRNewProject_GUI.h
-						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRSaveAs_GUI.h
+  QT4_WRAP_CPP(MOC_SRCS ${CMAKE_SOURCE_DIR}/ShopScene/libShoppingPlace/View/OSGQT_Widget.h 
+						VRShoppingPlace_GUI.h
 						)
 ENDIF()
 
 
 #Define sources to be later added into the library
 SET(SRCS ${SRCS} ${MOC_SRCS} ${UI_SRCS}
-	${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/View/OSGQT_Widget.h ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/View/OSGQT_Widget.cpp
-	${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/Model/VRSceneStructureItem.h ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/Model/VRSceneStructureItem.cpp
-	${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/Model/VRSceneStructureModel.h ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/Model/VRSceneStructureModel.cpp
-	${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/Model/VRSceneHierarchy.h ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/Model/VRSceneHierarchy.cpp
-	VRShopBuilder.h VRShopBuilder.cpp
-	VRShopBuilder_GUI.h VRShopBuilder_GUI.cpp
-	${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRInsertNewItem_GUI.h ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRInsertNewItem_GUI.cpp
-	${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRDuplicateItem_GUI.h ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRDuplicateItem_GUI.cpp
-	${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRProductSettings_GUI.h ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRProductSettings_GUI.cpp
-	${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRRemoveProduct_GUI.h ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRRemoveProduct_GUI.cpp
-	${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRRemoveSelection_GUI.h ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRRemoveSelection_GUI.cpp
-	${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRNewProject_GUI.h ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRNewProject_GUI.cpp
-	${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRSaveAs_GUI.h ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRSaveAs_GUI.cpp
+	${CMAKE_SOURCE_DIR}/ShopScene/libShoppingPlace/View/OSGQT_Widget.h ${CMAKE_SOURCE_DIR}/ShopScene/libShoppingPlace/View/OSGQT_Widget.cpp
+	${CMAKE_SOURCE_DIR}/ShopScene/libShoppingPlace/PopUpDialogs/VRSignUp_GUI.h ${CMAKE_SOURCE_DIR}/ShopScene/libShoppingPlace/PopUpDialogs/VRSignUp_GUI.cpp
+	VRShoppingPlace.h VRShoppingPlace.cpp
+	VRShoppingPlace_GUI.h VRShoppingPlace_GUI.cpp
 )
 
 #Library to be later used in the main

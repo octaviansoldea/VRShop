@@ -27,7 +27,7 @@ void UserAccount::addUserAccount()	{
 	DatabaseMgrParams dMgrParams;
 	dMgrParams.m_arrstrParams.push_back(strUserAccountQuery);
 
-	QString strDB = "../../../../Databases/UserAccounts.db";
+	QString strDB = "../../../Databases/UserAccounts.db";
 
 	DatabaseMgr & database = VR::DatabaseMgr::Create(strDB,DatabaseMgr::QSQLITE);
 

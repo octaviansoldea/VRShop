@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>InsertNewItem</class>
- <widget class="QDialog" name="InsertNewItem">
+ <class>SignUp</class>
+ <widget class="QDialog" name="SignUp">
   <property name="windowModality">
    <enum>Qt::ApplicationModal</enum>
   </property>
@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>300</width>
-    <height>450</height>
+    <height>267</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -21,8 +21,8 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>300</width>
-    <height>450</height>
+    <width>0</width>
+    <height>0</height>
    </size>
   </property>
   <property name="maximumSize">
@@ -54,54 +54,6 @@ QPushButton:hover {
 	border-radius: 3px;
 }
 
-/*Menu bar*/
-QMenuBar {
-	background-color:rgb(105,105,105);
-	spacing: 0px;
-}
-
-QMenuBar::item {
-	background-color: transparent;
-}
-
-QMenu {
-	background-color:rgb(105,105,105);
-	border: 1px solid black;
-}
-
-/*Combo box*/
-QComboBox {
-	min-height: 19px;
-	background-color: lightgray;
-	selection-background-color: gray;
-	padding-left: 4px;
-	border: 1px solid gray;
-}
-
-QComboBox::down-arrow {
-	image: url(C:/Projekti/VRShop/Dev/OSG/Resources/Icons/arrow_down.png);
-    width: 10px;
-    height: 10px;
-}
-
-QComboBox::drop-down {
-	border: 0px;
-    subcontrol-position: top right;
-    width: 15px;
-}
-
-QComboBox QAbstractItemView {
-	border: 1px solid black;
-	background-color: lightgray;
-	selection-background-color: gray;
-}
-
-
-QMenuBar::item:selected, QMenu::item:selected,QListWidget::item:selected, QComboBox:hover
-{
-	background-color: gray;
-}
-
 
 /*Tool button*/
 QToolButton {
@@ -113,10 +65,12 @@ QToolButton {
 /*Line edit*/
 QLineEdit {
     border: 1px solid gray;
+	height: 21px;
 	border-radius: 3px;
-    background-color: lightgray;
+	background-color: rgb(191,193,194);
     selection-background-color: darkgray;
-}</string>
+}
+</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
@@ -181,7 +135,7 @@ QLineEdit {
          </font>
         </property>
         <property name="text">
-         <string>Insert New</string>
+         <string>Sign Up</string>
         </property>
        </widget>
       </item>
@@ -233,89 +187,135 @@ QLineEdit {
        <number>5</number>
       </property>
       <item>
-       <widget class="QListWidget" name="m_pListWidgetGroup">
-        <property name="mouseTracking">
-         <bool>true</bool>
+       <layout class="QFormLayout" name="formLayout">
+        <property name="fieldGrowthPolicy">
+         <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
         </property>
-        <property name="styleSheet">
-         <string notr="true">QListWidget::item:hover,QListWidget::item:selected{
-	background-color: rgb(105, 105, 105);
-	color:white;
-}
-
-QListWidget{
-	background-color: rgb(191,193,194);
-	border-radius: 3px;
-}
-</string>
-        </property>
-        <property name="frameShape">
-         <enum>QFrame::NoFrame</enum>
-        </property>
-        <property name="spacing">
-         <number>2</number>
-        </property>
-        <property name="sortingEnabled">
-         <bool>true</bool>
-        </property>
-        <item>
-         <property name="text">
-          <string>Equipment</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Geometric Shape</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Product</string>
-         </property>
-        </item>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="m_pArrow">
-        <property name="maximumSize">
-         <size>
-          <width>330</width>
-          <height>16</height>
-         </size>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="pixmap">
-         <pixmap>../../../../Resources/Icons/arrow_down.png</pixmap>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-        <property name="indent">
+        <property name="bottomMargin">
          <number>0</number>
         </property>
-       </widget>
+        <item row="0" column="0">
+         <widget class="QLineEdit" name="m_pLineEditFirstName">
+          <property name="styleSheet">
+           <string notr="true">QLineEdit{
+	background-color: rgb(191,193,194);
+	border-radius: 3px;
+}
+</string>
+          </property>
+          <property name="placeholderText">
+           <string>First Name</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="m_pLineEditLastName">
+          <property name="styleSheet">
+           <string notr="true">QLineEdit{
+	background-color: rgb(191,193,194);
+	border-radius: 3px;
+}
+</string>
+          </property>
+          <property name="placeholderText">
+           <string>Second Name</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0" colspan="2">
+         <widget class="QLineEdit" name="m_pLineEditEMail">
+          <property name="styleSheet">
+           <string notr="true">QLineEdit{
+	background-color: rgb(191,193,194);
+	border-radius: 3px;
+}
+</string>
+          </property>
+          <property name="placeholderText">
+           <string>E-Mail Address</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0" colspan="2">
+         <widget class="QLineEdit" name="m_pLineEditPassword">
+          <property name="styleSheet">
+           <string notr="true">QLineEdit{
+	background-color: rgb(191,193,194);
+	border-radius: 3px;
+}
+</string>
+          </property>
+          <property name="echoMode">
+           <enum>QLineEdit::Password</enum>
+          </property>
+          <property name="placeholderText">
+           <string>Password</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0" colspan="2">
+         <widget class="QLineEdit" name="m_pLineEditRetypePassword">
+          <property name="styleSheet">
+           <string notr="true">QLineEdit{
+	background-color: rgb(191,193,194);
+	border-radius: 3px;
+}
+</string>
+          </property>
+          <property name="echoMode">
+           <enum>QLineEdit::Password</enum>
+          </property>
+          <property name="placeholderText">
+           <string>Re-type Password</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
       <item>
-       <widget class="QListWidget" name="m_pListWidgetItem">
+       <widget class="QPlainTextEdit" name="plainTextEdit">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>71</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>Times New Roman</family>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
         <property name="styleSheet">
-         <string notr="true">QListWidget::item:hover,QListWidget::item:selected{
-	background-color: rgb(105, 105, 105);
-	color:white;
-}
-
-QListWidget{
+         <string notr="true">QPlainTextEdit{
 	background-color: rgb(191,193,194);
 	border-radius: 3px;
 }
 </string>
         </property>
-        <property name="frameShape">
-         <enum>QFrame::NoFrame</enum>
+        <property name="verticalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOff</enum>
         </property>
-        <property name="spacing">
-         <number>2</number>
+        <property name="horizontalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOff</enum>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+        <property name="plainText">
+         <string>By clicking to the 'Submit' button below, you confirm that you have read VRShop's 'Terms of Service', its 'Privacy Policy', and its 'Cookie Policy', and that you agree with them.</string>
+        </property>
+        <property name="textInteractionFlags">
+         <set>Qt::NoTextInteraction</set>
+        </property>
+        <property name="centerOnScroll">
+         <bool>false</bool>
         </property>
        </widget>
       </item>
@@ -324,6 +324,12 @@ QListWidget{
    </item>
    <item>
     <widget class="QFrame" name="m_pFrameButtonBox">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="styleSheet">
       <string notr="true">background-color:rgb(105,105,105);</string>
      </property>
@@ -344,7 +350,7 @@ QListWidget{
        <number>5</number>
       </property>
       <item>
-       <widget class="QPushButton" name="m_pPushButtonInsert">
+       <widget class="QPushButton" name="m_pPushButtonSubmit">
         <property name="styleSheet">
          <string notr="true">QPushButton {
 	min-height: 20px;
@@ -361,29 +367,7 @@ QPushButton:hover {
 }</string>
         </property>
         <property name="text">
-         <string>Insert default</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="m_pPushButtonModify">
-        <property name="styleSheet">
-         <string notr="true">QPushButton {
-	min-height: 20px;
-	border: 1px solid gray;
-	border-radius: 3px;
-	background-color: gray;
-	selection-background-color: rgb(191,193,194);
-}
-
-QPushButton:hover {
-	background-color:rgb(105,105,105);
-	border-radius: 3px;
-	color:white;
-}</string>
-        </property>
-        <property name="text">
-         <string>Modify Settings</string>
+         <string>Submit</string>
         </property>
        </widget>
       </item>

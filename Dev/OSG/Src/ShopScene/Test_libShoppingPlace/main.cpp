@@ -1,14 +1,14 @@
 #include <QApplication>
 #include <QMessageBox>
 
-#include "VRShopBuilder_GUI.h"
+#include "VRShoppingPlace_GUI.h"
 
 using namespace VR;
 
 int main(int argc, char *argv[])	{
 	QApplication app(argc, argv);
 
-	ShopBuilder_GUI widget;
+	ShoppingPlace_GUI widget;
 
 	widget.show();
 

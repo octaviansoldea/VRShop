@@ -13,7 +13,6 @@
 #include "VRKeyboardMouseManipulator.h"
 
 #include <osgDB/ReadFile>
-#include <osgGA/TrackballManipulator>
 
 #include "OSGQT_Widget.h"
 #include "VRDatabaseMgr.h"
@@ -39,7 +38,9 @@ ShopBuilder::ShopBuilder() : m_pSceneHierarchy(0) {
 	ref_ptr<Node> pAxes = osgDB::readNodeFile("../../../Resources/Models3D/axes.osgt");
 	m_pScene->addChild(pAxes);
 
-	m_pGridlines = new Grid;	
+	m_pGridlines = new Grid;
+
+	newDB(m_qstrFileName.toStdString());
 }
 
 //----------------------------------------------------------------------
@@ -55,9 +56,8 @@ void ShopBuilder::init(OSGQT_Widget * apOSGQTWidget, QTreeView * apTreeView) {
 
 	//Send scene to the Widget
 	m_pOSGQTWidget->setSceneData(m_pScene);
-	m_pOSGQTWidget->setCameraManipulator(new osgGA::TrackballManipulator);
-	//m_pOSGQTWidget->setCameraManipulator(new VR::OSGCameraManipulator);
-	//m_pOSGQTWidget->addEventHandler(new VR::PickAndDragHandler);
+	m_pOSGQTWidget->setCameraManipulator(new VR::KeyboardMouseManipulator);
+	m_pOSGQTWidget->addEventHandler(new VR::PickAndDragHandler);
 	
 	m_pTreeView = apTreeView;
 	updateQTreeView();
@@ -72,8 +72,7 @@ void ShopBuilder::gridOnOff(bool abIndicator) {
 	if (abIndicator) {
 		m_pGridlines = new Grid;
 		m_pScene->addChild(m_pGridlines);
-	}
-	else {
+	} else {
 		m_pScene->removeChild(m_pGridlines);
 	}
 }
@@ -89,10 +88,9 @@ void ShopBuilder::newDB(const string & astrDBFileName)	{
 
 	m_qstrFileName = astrDBFileName.c_str();
 
-	DatabaseMgr & database = DatabaseMgr::Create(m_qstrFileName, DatabaseMgr::QSQLITE);	
+	DatabaseMgr & database = DatabaseMgr::Create(m_qstrFileName, DatabaseMgr::QSQLITE);
+	DatabaseMgrParams dMgrParams;
 	{
-		DatabaseMgrParams dMgrParams;
-
 		string strCreateTable = "CREATE TABLE IF NOT EXISTS Primitive "
 			"(PrimitiveID INTEGER PRIMARY KEY AUTOINCREMENT,"
 			"PrimitiveName TEXT UNIQUE);";
@@ -143,16 +141,38 @@ void ShopBuilder::newDB(const string & astrDBFileName)	{
 			"(SceneID INTEGER PRIMARY KEY AUTOINCREMENT,"
 			"SceneName TEXT);";
 		dMgrParams.m_arrstrParams.push_back(strCreateTable);
-
-		database.executeQuery(dMgrParams);
 	}
+	{
+		string strSQLCommand;
+		strSQLCommand = "INSERT INTO Primitive(PrimitiveName) VALUES('Cylinder');";
+		dMgrParams.m_arrstrParams.push_back(strSQLCommand);
 
- 	gridOnOff(true);
+		strSQLCommand = "INSERT INTO Primitive(PrimitiveName) VALUES('Plate3D');";
+		dMgrParams.m_arrstrParams.push_back(strSQLCommand);
+
+		strSQLCommand = "INSERT INTO Primitive(PrimitiveName) VALUES('Prism');";
+		dMgrParams.m_arrstrParams.push_back(strSQLCommand);
+
+		strSQLCommand = "INSERT INTO Primitive(PrimitiveName) VALUES('Sphere');";
+		dMgrParams.m_arrstrParams.push_back(strSQLCommand);
+	
+		strSQLCommand = "INSERT INTO Equipment(EquipmentName) VALUES ('Furniture');";
+		dMgrParams.m_arrstrParams.push_back(strSQLCommand);
+
+		strSQLCommand = "INSERT INTO Equipment(EquipmentName) VALUES ('Decoration');";
+		dMgrParams.m_arrstrParams.push_back(strSQLCommand);
+
+		strSQLCommand = "INSERT INTO Equipment(EquipmentName) VALUES ('CollectingTools');";
+		dMgrParams.m_arrstrParams.push_back(strSQLCommand);
+	}
+	database.executeQuery(dMgrParams);
+
+	gridOnOff(true);
 	ref_ptr<Node> pAxes = osgDB::readNodeFile("../../../Resources/Models3D/axes.osgt");
 	m_pScene->addChild(pAxes);
 	m_pScene->addChild(m_pObjects);
 
-	updateQTreeView();
+//	updateQTreeView();
 }
 
 //----------------------------------------------------------------------
@@ -183,6 +203,7 @@ void ShopBuilder::readDB(const string & astrDBFileName)	{
 		pAbstractObject = static_cast<AbstractObject*>(AbstractObject::createInstance(*it));
 
 		pAbstractObject->initFromSQLData(strSQLData);
+		pAbstractObject->setIsTargetPick(true);
 
 		m_pObjects->addChild(pAbstractObject);
 	}

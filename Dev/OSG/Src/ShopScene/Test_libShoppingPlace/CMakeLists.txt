@@ -28,15 +28,15 @@ ENDIF(Qt5_FOUND)
 
 INCLUDE_DIRECTORIES(
   ${OPENSCENEGRAPH_INCLUDE_DIRS}
+  ${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgent
   ${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_OSG
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCamera
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libPicker
-  ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor
-  ${CMAKE_BINARY_DIR}/ShopScene/libShopEditor
-  ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/View
-  ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/Model
-  ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs
+  ${CMAKE_SOURCE_DIR}/ShopScene/libShoppingPlace
+  ${CMAKE_BINARY_DIR}/ShopScene/libShoppingPlace
+  ${CMAKE_SOURCE_DIR}/ShopScene/libShoppingPlace/View
+  ${CMAKE_SOURCE_DIR}/ShopScene/libShoppingPlace/PopUpDialogs
   ${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabaseMgr
   ${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
   ${CMAKE_SOURCE_DIR}/Props/Equipment/GeometricShape/libGeometricShape
@@ -51,10 +51,11 @@ SET(LIBS_COMMON
 	${OSGUTIL_LIBRARIES}
 	${OSGVIEWER_LIBRARIES}
 	${OPENTHREADS_LIBRARIES}
+	libAgent
 	libDatabaseMgr
 	libAbstractObject
 	libGeometricShape
-	libShopEditor
+	libShoppingPlace
 	libCommon
 	libCommon_OSG
 	libCamera

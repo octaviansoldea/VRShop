@@ -12,6 +12,8 @@ namespace VR {
 		AbstractUser();
 		virtual ~AbstractUser() = 0;
 
+		virtual void trySignIn() = 0;
+
 		void findProductInShop(const Product & aProduct) const;
 
 	protected:

@@ -43,6 +43,7 @@
 
 #include <stdlib.h>
 
+#include <iostream>
 #include "dialog.h"
 #include "fortuneserver.h"
 
@@ -66,9 +67,9 @@ Dialog::Dialog(QWidget *parent)
     QList<QHostAddress> ipAddressesList = QNetworkInterface::allAddresses();
     // use the first non-localhost IPv4 address
     for (int i = 0; i < ipAddressesList.size(); ++i) {
-        if (ipAddressesList.at(i) != QHostAddress::LocalHost &&
-            ipAddressesList.at(i).toIPv4Address()) {
-            ipAddress = ipAddressesList.at(i).toString();
+        if (ipAddressesList[i] != QHostAddress::LocalHost &&
+			ipAddressesList[i].toIPv4Address()) {
+            ipAddress = ipAddressesList[i].toString();
             break;
         }
     }

@@ -73,13 +73,7 @@ DatabaseMgr * DatabaseMgr::CreateODBC(const QString & aqstrDBPathName) {
 //-----------------------------------------------------------------------------------------
 
 DatabaseMgr::~DatabaseMgr()	{
-	if(m_pQSqlDatabase->isOpen())	{
-		m_pQSqlDatabase->close();
-
-		delete m_pQSqlDatabase;
-		m_pQSqlDatabase = NULL;
-		QSqlDatabase::removeDatabase(m_pQSqlDatabase->connectionName());
-	}
+	disconnectFromSQLDatabase();
 }
 
 //-----------------------------------------------------------------------------------------

@@ -152,6 +152,11 @@ void insertIntoDatabase_Cylinder(const string & astrDBName)	{
 
 	ref_ptr < VR::Cylinder > pCylinder =  new VR::Cylinder;
 	CylinderParams aCylinderParams;
+	aCylinderParams.m_arrflRGBA.push_back(0.85);
+	aCylinderParams.m_arrflRGBA.push_back(0.85);
+	aCylinderParams.m_arrflRGBA.push_back(0.85);
+	aCylinderParams.m_arrflRGBA.push_back(1);
+
 	pCylinder->init(aCylinderParams);
 	string strSQLCommand = pCylinder->getSQLCommand();
 
@@ -440,26 +445,26 @@ int main(int argc, char *argv[])	{
 	string strDBName;
 	
 	strDBName = "../../../../Databases/Equipment.db";
-	createTable(strDBName);
-	populateTable(strDBName);
+	//createTable(strDBName);
+	//populateTable(strDBName);
 
-	insertIntoDatabase_Sphere(strDBName);
-	insertIntoDatabase_Cylinder(strDBName);
-	insertIntoDatabase_Plate3D(strDBName);
+	//insertIntoDatabase_Sphere(strDBName);
+	//insertIntoDatabase_Cylinder(strDBName);
+	//insertIntoDatabase_Plate3D(strDBName);
 
 	//insertIntoDatabase_Container(strDBName);
 	//insertIntoDatabase_Cupboard(strDBName);
 
 	//Furniture::loadAllFurnitures(pScene, strDBName);
 
-	//ref_ptr < Container > pContainer = new Container;
-	//pContainer->predefinedObject();
-	//pScene->addChild(pContainer);
+	ref_ptr < Container > pContainer = new Container;
+	pContainer->predefinedObject();
+	pScene->addChild(pContainer);
 
-	//osgViewer::Viewer viewer;
-	//viewer.setSceneData(pScene);
+	osgViewer::Viewer viewer;
+	viewer.setSceneData(pScene);
 
-	//return viewer.run();
+	return viewer.run();
 
-	return (0);
+	//return (0);
 }

@@ -39,8 +39,6 @@ ShopBuilder::ShopBuilder() : m_pSceneHierarchy(0) {
 	m_pScene->addChild(pAxes);
 
 	m_pGridlines = new Grid;
-
-	newDB(m_qstrFileName.toStdString());
 }
 
 //----------------------------------------------------------------------
@@ -168,11 +166,9 @@ void ShopBuilder::newDB(const string & astrDBFileName)	{
 	database.executeQuery(dMgrParams);
 
 	gridOnOff(true);
-	ref_ptr<Node> pAxes = osgDB::readNodeFile("../../../Resources/Models3D/axes.osgt");
-	m_pScene->addChild(pAxes);
+	//ref_ptr<Node> pAxes = osgDB::readNodeFile("../../../Resources/Models3D/axes.osgt");
+	//m_pScene->addChild(pAxes);
 	m_pScene->addChild(m_pObjects);
-
-//	updateQTreeView();
 }
 
 //----------------------------------------------------------------------

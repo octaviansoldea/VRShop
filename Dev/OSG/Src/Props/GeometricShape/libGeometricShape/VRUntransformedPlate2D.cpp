@@ -29,8 +29,6 @@ UntransformedPlate2D::UntransformedPlate2D()	{
 	m_pGeometry->setNormalBinding(Geometry::BIND_OVERALL);
 	pN->push_back(Vec3(0.0, -1.0, 0.0));
 
-	
-
 	addDrawable(m_pGeometry);
 }
 

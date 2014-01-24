@@ -41,22 +41,26 @@ Plate3D::Plate3D()	{
 //-----------------------------------------------------------------------
 
 void Plate3D::init(const AbstractGeomShapeParams & aAbstractGeomShapeParams)	{
-	const Plate3DParams & aPlate3DParams = static_cast<const Plate3DParams&>(aAbstractGeomShapeParams);
+	m_Plate3DParams = static_cast<const Plate3DParams&>(aAbstractGeomShapeParams);
 
 	Matrix matrix;
-	matrix.set(aPlate3DParams.m_flLenX, 0,						 0,						  0,
-			   0,						aPlate3DParams.m_flLenY, 0,						  0,
-			   0,						0,						 aPlate3DParams.m_flLenZ, 0,
-			   aPlate3DParams.m_flPosX, aPlate3DParams.m_flPosY, aPlate3DParams.m_flPosZ, 1);
+	matrix.set(m_Plate3DParams.m_flLenX,	0,							0,						  0,
+			   0,							m_Plate3DParams.m_flLenY,	0,						  0,
+			   0,							0,							m_Plate3DParams.m_flLenZ, 0,
+			   m_Plate3DParams.m_flPosX,	m_Plate3DParams.m_flPosY,	m_Plate3DParams.m_flPosZ, 1);
 
 	setMatrix(matrix);
 
-	m_Plate3DParams = aPlate3DParams;
+	setColor(m_Plate3DParams.m_arrflRGBA);
+	if ((m_Plate3DParams.m_strFileNameTexture != " ") && (m_Plate3DParams.m_strFileNameTexture != ""))
+		setTexture(m_Plate3DParams.m_strFileNameTexture);
 }
 
 //----------------------------------------------------------------------
+
 void Plate3D::setColor(const std::vector < float > & aarrflColor)	{
-	m_pUntransformedPlate3D->setColor(aarrflColor);
+	m_Plate3DParams.m_arrflRGBA = aarrflColor;
+	m_pUntransformedPlate3D->setColor(m_Plate3DParams.m_arrflRGBA);
 }
 
 //----------------------------------------------------------------------
@@ -105,7 +109,6 @@ std::string Plate3D::getSQLCommand() const	{
 
 void Plate3D::initFromSQLData(const string & astrSQLData)	{
 	string strSQLData = astrSQLData;
-	Plate3DParams p3DP;
 
 	vector <string> arrstrPlateParams = splitString(strSQLData,";");
 
@@ -121,24 +124,21 @@ void Plate3D::initFromSQLData(const string & astrSQLData)	{
 	if (arrstrColor.size()!=0)	{
 		vector < float > arrflColor;
 		for (nI=0;nI<4;nI++)	{
-			p3DP.m_arrflRGBA[nI] = (stof(arrstrColor[nI]));
+			m_Plate3DParams.m_arrflRGBA[nI] = stof(arrstrColor[nI]);
 		}
-		setColor(p3DP.m_arrflRGBA);
 	}
 
-	p3DP.m_flLenX = arrflMatrix[0];
-	p3DP.m_flLenY = arrflMatrix[5];
-	p3DP.m_flLenZ = arrflMatrix[10];
+	m_Plate3DParams.m_flLenX = arrflMatrix[0];
+	m_Plate3DParams.m_flLenY = arrflMatrix[5];
+	m_Plate3DParams.m_flLenZ = arrflMatrix[10];
 
-	p3DP.m_flPosX = arrflMatrix[12];
-	p3DP.m_flPosY = arrflMatrix[13];
-	p3DP.m_flPosZ = arrflMatrix[14];
+	m_Plate3DParams.m_flPosX = arrflMatrix[12];
+	m_Plate3DParams.m_flPosY = arrflMatrix[13];
+	m_Plate3DParams.m_flPosZ = arrflMatrix[14];
 
-	if((arrstrPlateParams[3] != " ") && (arrstrPlateParams[3] != ""))	{
-		p3DP.m_strFileNameTexture = arrstrPlateParams[3];
-		setTexture(p3DP.m_strFileNameTexture);
-	}
-	init(p3DP);
+	m_Plate3DParams.m_strFileNameTexture = arrstrPlateParams[3];
+
+	init(m_Plate3DParams);
 }
 
 //----------------------------------------------------------------------

@@ -8,8 +8,8 @@ using namespace osg;
 using namespace VR;
 
 GridParams::GridParams() :
-	m_nResLat(5),
-	m_nResLong(5),
+	m_nResLat(20),
+	m_nResLong(20),
 	m_flSpacing(0.5),
 	m_vec3dStartCenter(0,0,0)	{
 };
@@ -46,7 +46,6 @@ void VR::Grid::init(const GridParams & aGridParams)	{
 		(*pPointsColumns)[2*nI].set(point.x()+nI*flStep, point.y(), 0.0);
 		(*pPointsColumns)[2*nI+1].set(point.x()+nI*flStep, point.y()+flStep*(nNumRows - 1), 0.0);
 	}
-	//(*pPointsColumns)[nNumPointsCol-1].set(point.x()+(nNumColumns)*flStep, point.y()+flStep*nNumRows, 0.0);
 
 	int nNumPointsRows = nNumRows;
 	ref_ptr<Vec3Array> pPointsRows = new Vec3Array(2 * nNumPointsRows);
@@ -55,7 +54,6 @@ void VR::Grid::init(const GridParams & aGridParams)	{
 		(*pPointsRows)[2*nI].set(point.x(), point.y()+nI*flStep, 0.0);
 		(*pPointsRows)[2*nI+1].set(point.x()+flStep*(nNumColumns - 1), point.y()+nI*flStep, 0.0);
 	}
-	//(*pPointsRows)[nNumPointsRows-1].set(point.x()+(nNumColumns)*flStep, point.y()+flStep*nNumRows, 0.0);
 
 	//Set color of the bounding box
 	osg::ref_ptr<osg::Vec4Array> pColor = new osg::Vec4Array;

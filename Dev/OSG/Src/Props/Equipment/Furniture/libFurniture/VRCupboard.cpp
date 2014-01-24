@@ -29,10 +29,11 @@ Cupboard::Cupboard(const CupboardParams & aCupboardParams) : Furniture(aCupboard
 //-----------------------------------------------------------------------
 
 void Cupboard::init(const FurnitureParams & aFurnitureParams)	{
+	m_CupboardParams = static_cast<const CupboardParams&> (aFurnitureParams);
 
-	setScaling(aFurnitureParams);
-	setRotation(aFurnitureParams);
-	setPosition(aFurnitureParams);
+	setScaling(m_CupboardParams);
+	setRotation(m_CupboardParams);
+	setPosition(m_CupboardParams);
 
 	Matrix matrix;
 	matrix.set(1, 0, 0, 0,
@@ -78,12 +79,11 @@ void Cupboard::initFromSQLData(const string & astrSQLData)	{
 	
 	vector < string > arrstrSQLData = splitString(strSQLData,strDelimiter);
 
-	CupboardParams cupboardParams;
-	cupboardParams.m_flPosX = 0.0;
-	cupboardParams.m_flPosY = 0.0;
-	cupboardParams.m_flPosZ = 0.0;
-	cupboardParams.m_flAngleXY = 90.0;
-	cupboardParams.m_flScaleX = 1;
+	m_CupboardParams.m_flPosX = 0.0;
+	m_CupboardParams.m_flPosY = 0.0;
+	m_CupboardParams.m_flPosZ = 0.0;
+	m_CupboardParams.m_flAngleXY = 90.0;
+	m_CupboardParams.m_flScaleX = 1;
 
 	ref_ptr < AbstractGeomShape > pAbstractGeomShape;
 	for (auto it = arrstrSQLData.begin(); it != arrstrSQLData.end()-1; it++)	{
@@ -99,7 +99,7 @@ void Cupboard::initFromSQLData(const string & astrSQLData)	{
 		pAbstractGeomShape->initFromSQLData(*it);
 		addChild(pAbstractGeomShape);
 	}
-	init(cupboardParams);
+	init(m_CupboardParams);
 }
 
 //-----------------------------------------------------------------------
@@ -115,12 +115,12 @@ void Cupboard::predefinedObject()	{
 	aPlate3DParams.m_flPosX = 0.0;
 	aPlate3DParams.m_flPosY = 0.0;
 	aPlate3DParams.m_flPosZ = 0.0;
-	aPlate3DParams.m_arrflRGBA[0] = 0.15;
-	aPlate3DParams.m_arrflRGBA[1] = 0.85;
-	aPlate3DParams.m_arrflRGBA[2] = 0.45;
+	aPlate3DParams.m_arrflRGBA[0] = 0.85;
+	aPlate3DParams.m_arrflRGBA[1] = 0.0;
+	aPlate3DParams.m_arrflRGBA[2] = 0.85;
 	aPlate3DParams.m_arrflRGBA[3] = 1;
-//	aPlate3DParams.m_strFileNameTexture = "../../../Resources/Textures/lz.rgb";
-pPlate3D->init(aPlate3DParams);
+
+	pPlate3D->init(aPlate3DParams);
 	addPart(pPlate3D);
 	
 
@@ -132,6 +132,7 @@ pPlate3D->init(aPlate3DParams);
 	aPlate3DParams.m_flPosX = -2.475;
 	aPlate3DParams.m_flPosY = 0;
 	aPlate3DParams.m_flPosZ = 1.0;
+
 	pPlate3D->init(aPlate3DParams);
 	addPart(pPlate3D);
 
@@ -143,6 +144,7 @@ pPlate3D->init(aPlate3DParams);
 	aPlate3DParams.m_flPosX = 2.475;
 	aPlate3DParams.m_flPosY = 0;
 	aPlate3DParams.m_flPosZ = 1.0;
+
 	pPlate3D->init(aPlate3DParams);
 	addPart(pPlate3D);
 
@@ -154,6 +156,7 @@ pPlate3D->init(aPlate3DParams);
 	aPlate3DParams.m_flPosX = 0;
 	aPlate3DParams.m_flPosY = 0.475;
 	aPlate3DParams.m_flPosZ = 1.0;
+	aPlate3DParams.m_strFileNameTexture = "../../Resources/Textures/lz.rgb";
 	pPlate3D->init(aPlate3DParams);
 	addPart(pPlate3D);
 

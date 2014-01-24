@@ -55,7 +55,9 @@ bool DatabaseMgrSQLite::createTable(const DatabaseMgrParams & aDatabaseMgrParams
 //-----------------------------------------------------------------------------------------
 
 bool DatabaseMgrSQLite::executeQuery(const DatabaseMgrParams & aDatabaseMgrParams) {
-	if (m_QSqlDatabase.open())	{
+	bool nRes = false;
+	nRes = m_QSqlDatabase.isOpen() ? true : m_QSqlDatabase.open();
+	if (nRes)	{
 		const vector <string> arrstrCommands = aDatabaseMgrParams.m_arrstrParams;
 
 		QSqlQuery query;
@@ -75,7 +77,9 @@ bool DatabaseMgrSQLite::executeQuery(const DatabaseMgrParams & aDatabaseMgrParam
 //-----------------------------------------------------------------------------------------
 
 void DatabaseMgrSQLite::fillPrimitiveTable(string & astrCommand)	{
-	if(m_QSqlDatabase.open())	{
+	bool nRes = false;
+	nRes = m_QSqlDatabase.isOpen() ? true : m_QSqlDatabase.open();
+	if (nRes)	{
 		//Command is string of SQL commands that are delimited with ";"
 		vector <string> arrstrSQLCommands = splitString(astrCommand,";");
 		QSqlQuery query(arrstrSQLCommands[0].c_str());
@@ -105,6 +109,7 @@ void DatabaseMgrSQLite::fillPrimitiveTable(string & astrCommand)	{
 			} else {
 				string strError = "Item not selected.";
 				printError(strError.c_str());
+				m_QSqlDatabase.close();
 				return;
 			}
 		}
@@ -112,12 +117,15 @@ void DatabaseMgrSQLite::fillPrimitiveTable(string & astrCommand)	{
 		string strMessage = "Error opening: " + string(lastError().text().toStdString());
 		printWarning(strMessage.c_str());
 	}
+	m_QSqlDatabase.close();
 }
 
 //=============================================================================================
 
 string DatabaseMgrSQLite::readFromDB(string & astrCommand)	{
-	if(m_QSqlDatabase.open())	{
+	bool nRes = false;
+	nRes = m_QSqlDatabase.isOpen() ? true : m_QSqlDatabase.open();
+	if (nRes)	{
 		QSqlQuery sqlQuery;
 		sqlQuery.exec(astrCommand.c_str());
 		vector <string> arrstrEquipmentItem;
@@ -169,11 +177,13 @@ string DatabaseMgrSQLite::readFromDB(string & astrCommand)	{
 				strResult += strTemp;
 			}
 		}
+		m_QSqlDatabase.close();
 		return strResult;
 	} else {
 		string strMessage = "Error opening: " + string(lastError().text().toStdString());
 		printWarning(strMessage.c_str());
 
+		m_QSqlDatabase.close();
 		exit(-1);
 	}
 }

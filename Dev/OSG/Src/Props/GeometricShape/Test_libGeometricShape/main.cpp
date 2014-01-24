@@ -28,9 +28,9 @@ using namespace std;
 void main_UntransformedPlate2D_Color(ref_ptr<Group> pScene)	{
 	ref_ptr<UntransformedPlate2D> pUntransformedPlate2D = new UntransformedPlate2D();
 	vector < float > arrflColor;
-	arrflColor.push_back(1.0);
-	arrflColor.push_back(0.0);
-	arrflColor.push_back(0.0);
+	arrflColor.push_back(0.80);
+	arrflColor.push_back(0.80);
+	arrflColor.push_back(0.10);
 	arrflColor.push_back(1.0);
 	pUntransformedPlate2D->setColor(arrflColor);
 	pScene->addChild(pUntransformedPlate2D);
@@ -40,7 +40,13 @@ void main_UntransformedPlate2D_Color(ref_ptr<Group> pScene)	{
 
 void main_UntransformedPlate3D(ref_ptr<Group> pScene)	{
 	ref_ptr<UntransformedPlate3D> pUntransformedPlate3D = new UntransformedPlate3D();
+	vector < float > arrflColor;
+	arrflColor.push_back(0.80);
+	arrflColor.push_back(0.80);
+	arrflColor.push_back(0.10);
+	arrflColor.push_back(1.0);
 
+	pUntransformedPlate3D->setColor(arrflColor);
 	pScene->addChild(pUntransformedPlate3D);
 }
 
@@ -63,6 +69,12 @@ void main_Plate3D(ref_ptr<Group> pScene)	{
 	p3DP.m_flPosX = 0.0;
 	p3DP.m_flPosY = 0.0;
 	p3DP.m_flPosZ = 8.0;
+
+	p3DP.m_arrflRGBA[0] = 0.85;
+	p3DP.m_arrflRGBA[1] = 0.85;
+	p3DP.m_arrflRGBA[2] = 0.85;
+	p3DP.m_arrflRGBA[3] = 1;
+
 	pPlate3D->init(p3DP);
 
 	pScene->addChild(pPlate3D);
@@ -85,9 +97,9 @@ void main_UntransformedPlate3D_Color(ref_ptr<Group> pScene)
 {
 	ref_ptr<UntransformedPlate3D> pUntransformedPlate3D = new UntransformedPlate3D();
 	vector < float > arrflColor;
-	arrflColor.push_back(1.0);
-	arrflColor.push_back(0.0);
-	arrflColor.push_back(0.0);
+	arrflColor.push_back(0.80);
+	arrflColor.push_back(0.80);
+	arrflColor.push_back(0.10);
 	arrflColor.push_back(1.0);
 	pUntransformedPlate3D->setColor(arrflColor);
 
@@ -191,11 +203,11 @@ void main_UntransformedSphere_Texture(ref_ptr<Group> pScene)	{
 //====================================================================
 
 void initFromDB_Plate(ref_ptr<Group> pScene)	{
-	string strDatabase = "../../../Databases/Equipment.db";
+	string strDatabase = "../../../../Databases/Temp.db";
 	DatabaseMgr & database = DatabaseMgr::Create(strDatabase.c_str(), DatabaseMgr::QSQLITE);
 
 	ref_ptr < Plate3D > pPlate3D;
-	string strSQLQuery = "SELECT * FROM Plate3D WHERE Plate3DID = 1";
+	string strSQLQuery = "SELECT * FROM Plate3D WHERE Plate3DID = 7";
 	string strSQLData = database.readFromDB(strSQLQuery);
 	pPlate3D = new Plate3D();
 	pPlate3D->initFromSQLData(strSQLData);

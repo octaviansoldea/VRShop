@@ -56,7 +56,7 @@ DatabaseMgr * DatabaseMgr::CreateSQLite(const QString & aqstrDBPathName) {
 	if (!QSqlDatabase::drivers().contains("QSQLITE")) {
 		printError("Given driver QSQLITE not supported.");
 		exit(-1);
-	}	
+	}
 	DatabaseMgrSQLite * pDatabaseMgrSQLite = new DatabaseMgrSQLite(aqstrDBPathName);
 	return(pDatabaseMgrSQLite);
 }
@@ -73,25 +73,43 @@ DatabaseMgr * DatabaseMgr::CreateODBC(const QString & aqstrDBPathName) {
 //-----------------------------------------------------------------------------------------
 
 DatabaseMgr::~DatabaseMgr()	{
-	if(m_QSqlDatabase.isOpen())
-		m_QSqlDatabase.close();
+	if(m_pQSqlDatabase->isOpen())	{
+		m_pQSqlDatabase->close();
+
+		delete m_pQSqlDatabase;
+		m_pQSqlDatabase = NULL;
+		QSqlDatabase::removeDatabase(m_pQSqlDatabase->connectionName());
+	}
 }
 
 //-----------------------------------------------------------------------------------------
 
 QSqlError DatabaseMgr::lastError() const {
-	return m_QSqlDatabase.lastError();
+	return m_pQSqlDatabase->lastError();
 }
 
 //-----------------------------------------------------------------------------------------
 
 bool DatabaseMgr::connect2SQLDatabase() {
-	m_QSqlDatabase = QSqlDatabase::addDatabase(getDriverName());
-	m_QSqlDatabase.setDatabaseName(m_qstrDBPathName);
-	if (m_QSqlDatabase.open())	{
-		return true;
+	m_pQSqlDatabase = new QSqlDatabase(QSqlDatabase::addDatabase(getDriverName()));
+	m_pQSqlDatabase->setDatabaseName(m_qstrDBPathName);
+
+	bool bRes = m_pQSqlDatabase->isOpen() ? true : m_pQSqlDatabase->open();
+
+	return bRes;
+}
+
+//-----------------------------------------------------------------------------------------
+
+void DatabaseMgr::disconnectFromSQLDatabase()	{
+	if (m_pQSqlDatabase)	{
+		m_pQSqlDatabase->close();
+		delete m_pQSqlDatabase;
+		m_pQSqlDatabase = NULL;
 	}
-	return false;
+
+	if (!QSqlDatabase::connectionNames().isEmpty())
+		QSqlDatabase::removeDatabase(QSqlDatabase::connectionNames()[0]);
 }
 
 //=========================================================================================

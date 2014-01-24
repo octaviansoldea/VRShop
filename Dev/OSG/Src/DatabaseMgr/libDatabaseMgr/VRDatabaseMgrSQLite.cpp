@@ -55,31 +55,30 @@ bool DatabaseMgrSQLite::createTable(const DatabaseMgrParams & aDatabaseMgrParams
 //-----------------------------------------------------------------------------------------
 
 bool DatabaseMgrSQLite::executeQuery(const DatabaseMgrParams & aDatabaseMgrParams) {
-	bool nRes = false;
-	nRes = m_QSqlDatabase.isOpen() ? true : m_QSqlDatabase.open();
-	if (nRes)	{
+	bool bRes = m_pQSqlDatabase->isOpen() ? true : m_pQSqlDatabase->open();
+
+	if (bRes)	{
 		const vector <string> arrstrCommands = aDatabaseMgrParams.m_arrstrParams;
 
-		QSqlQuery query;
-		for (auto it = arrstrCommands.begin(); it != arrstrCommands.end(); it++)	{
-			query.exec(it->c_str());
+		vector<string>::const_iterator it;
+		for (it = arrstrCommands.begin(); it != arrstrCommands.end(); it++)	{
+			QSqlQuery query(it->c_str());
+			query.finish();
 		}
-
-		m_QSqlDatabase.close();
-		return true;
 	} else {
 		string strMessage = "Error opening: " + string(lastError().text().toStdString());
 		printWarning(strMessage.c_str());
-		return false;
 	}
+	disconnectFromSQLDatabase();
+	return bRes;
 }
 
 //-----------------------------------------------------------------------------------------
 
 void DatabaseMgrSQLite::fillPrimitiveTable(string & astrCommand)	{
-	bool nRes = false;
-	nRes = m_QSqlDatabase.isOpen() ? true : m_QSqlDatabase.open();
-	if (nRes)	{
+	bool bRes = m_pQSqlDatabase->isOpen() ? true : m_pQSqlDatabase->open();
+
+	if (bRes)	{
 		//Command is string of SQL commands that are delimited with ";"
 		vector <string> arrstrSQLCommands = splitString(astrCommand,";");
 		QSqlQuery query(arrstrSQLCommands[0].c_str());
@@ -109,7 +108,8 @@ void DatabaseMgrSQLite::fillPrimitiveTable(string & astrCommand)	{
 			} else {
 				string strError = "Item not selected.";
 				printError(strError.c_str());
-				m_QSqlDatabase.close();
+
+				disconnectFromSQLDatabase();
 				return;
 			}
 		}
@@ -117,15 +117,15 @@ void DatabaseMgrSQLite::fillPrimitiveTable(string & astrCommand)	{
 		string strMessage = "Error opening: " + string(lastError().text().toStdString());
 		printWarning(strMessage.c_str());
 	}
-	m_QSqlDatabase.close();
+	disconnectFromSQLDatabase();
 }
 
 //=============================================================================================
 
 string DatabaseMgrSQLite::readFromDB(string & astrCommand)	{
-	bool nRes = false;
-	nRes = m_QSqlDatabase.isOpen() ? true : m_QSqlDatabase.open();
-	if (nRes)	{
+	bool bRes = m_pQSqlDatabase->isOpen() ? true : m_pQSqlDatabase->open();
+
+	if (bRes)	{
 		QSqlQuery sqlQuery;
 		sqlQuery.exec(astrCommand.c_str());
 		vector <string> arrstrEquipmentItem;
@@ -177,13 +177,13 @@ string DatabaseMgrSQLite::readFromDB(string & astrCommand)	{
 				strResult += strTemp;
 			}
 		}
-		m_QSqlDatabase.close();
+		disconnectFromSQLDatabase();
+
 		return strResult;
 	} else {
 		string strMessage = "Error opening: " + string(lastError().text().toStdString());
 		printWarning(strMessage.c_str());
 
-		m_QSqlDatabase.close();
 		exit(-1);
 	}
 }

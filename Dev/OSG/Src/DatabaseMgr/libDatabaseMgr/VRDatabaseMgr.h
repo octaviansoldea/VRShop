@@ -46,9 +46,11 @@ namespace VR {
 		DatabaseMgr(const QString & aqstrDBPathName);
 		bool connect2SQLDatabase();
 
-		QSqlDatabase m_QSqlDatabase;
+		QSqlDatabase * m_pQSqlDatabase;
 
 		const QString m_qstrDBPathName;
+
+		void disconnectFromSQLDatabase();
 	};
 }
 #endif //VR_DATABASE_MGR_H

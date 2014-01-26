@@ -78,6 +78,7 @@ void createTable(const string & astrDBName) {
 	strCreateTable = "CREATE TABLE IF NOT EXISTS EquipmentItem "
 			"(EquipmentItemID INTEGER PRIMARY KEY AUTOINCREMENT,"
 			"EquipmentItemName TEXT, "
+			"EquipmentItemMatrix TEXT, "
 			"EquipmentID INTEGER,"
 			"FOREIGN KEY (EquipmentID) REFERENCES Equipment(EquipmentID));";
 	dMgrParams.m_arrstrParams.push_back(strCreateTable);
@@ -253,7 +254,11 @@ void insertIntoDatabase_Furniture(const string & astrDBName)	{
 
 	string strSQLCommand = cupboard.getSQLCommand();
 
-	database.fillPrimitiveTable(strSQLCommand);
+	vector<string> arrstrCommands = splitString(strSQLCommand,";");
+	DatabaseMgrParams dMgrP;
+	dMgrP.m_arrstrParams = arrstrCommands;
+
+	database.fillPrimitiveTable(dMgrP);
 }
 
 //====================================================

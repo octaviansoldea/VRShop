@@ -63,24 +63,22 @@ bool DatabaseMgrSQLite::executeQuery(const DatabaseMgrParams & aDatabaseMgrParam
 		vector<string>::const_iterator it;
 		for (it = arrstrCommands.begin(); it != arrstrCommands.end(); it++)	{
 			QSqlQuery query(it->c_str());
-			query.finish();
 		}
 	} else {
-		string strMessage = "Error opening: " + string(lastError().text().toStdString());
+		string strMessage = "Error opening: " + lastError().text().toStdString();
 		printWarning(strMessage.c_str());
 	}
-	disconnectFromSQLDatabase();
+//	disconnectFromSQLDatabase();
 	return bRes;
 }
 
 //-----------------------------------------------------------------------------------------
 
-void DatabaseMgrSQLite::fillPrimitiveTable(string & astrCommand)	{
+void DatabaseMgrSQLite::fillPrimitiveTable(const DatabaseMgrParams & aDatabaseMgrParams)	{
 	bool bRes = m_pQSqlDatabase->isOpen() ? true : m_pQSqlDatabase->open();
 
 	if (bRes)	{
-		//Command is string of SQL commands that are delimited with ";"
-		vector <string> arrstrSQLCommands = splitString(astrCommand,";");
+		vector <string> arrstrSQLCommands = aDatabaseMgrParams.m_arrstrParams;
 		QSqlQuery query(arrstrSQLCommands[0].c_str());
 
 		int nEquipmentItemID = query.lastInsertId().toInt();
@@ -109,15 +107,15 @@ void DatabaseMgrSQLite::fillPrimitiveTable(string & astrCommand)	{
 				string strError = "Item not selected.";
 				printError(strError.c_str());
 
-				disconnectFromSQLDatabase();
+//				disconnectFromSQLDatabase();
 				return;
 			}
 		}
 	} else {
-		string strMessage = "Error opening: " + string(lastError().text().toStdString());
+		string strMessage = "Error opening: " + lastError().text().toStdString();
 		printWarning(strMessage.c_str());
 	}
-	disconnectFromSQLDatabase();
+//	disconnectFromSQLDatabase();
 }
 
 //=============================================================================================
@@ -133,6 +131,7 @@ string DatabaseMgrSQLite::readFromDB(string & astrCommand)	{
 			arrstrEquipmentItem.push_back(sqlQuery.value(0).toString().toStdString());
 			arrstrEquipmentItem.push_back(sqlQuery.value(1).toString().toStdString());
 			arrstrEquipmentItem.push_back(sqlQuery.value(2).toString().toStdString());
+			arrstrEquipmentItem.push_back(sqlQuery.value(3).toString().toStdString());
 		}
 
 		QString strQueryPIL = QString("SELECT Primitive.PrimitiveName, PrimitiveItemList.ItemID FROM Primitive, PrimitiveItemList "
@@ -159,7 +158,7 @@ string DatabaseMgrSQLite::readFromDB(string & astrCommand)	{
 			nColumns.push_back(vecColumnNames.size());
 		}
 
-		string strResult;
+		string strResult = arrstrEquipmentItem[2] + "?";
 		QString strQueryData;
 		int nI;
 		for (auto it = arrnItemID.begin(); it != arrnItemID.end(); it++)	{
@@ -177,11 +176,11 @@ string DatabaseMgrSQLite::readFromDB(string & astrCommand)	{
 				strResult += strTemp;
 			}
 		}
-		disconnectFromSQLDatabase();
+//		disconnectFromSQLDatabase();
 
 		return strResult;
 	} else {
-		string strMessage = "Error opening: " + string(lastError().text().toStdString());
+		string strMessage = "Error opening: " + lastError().text().toStdString();
 		printWarning(strMessage.c_str());
 
 		exit(-1);

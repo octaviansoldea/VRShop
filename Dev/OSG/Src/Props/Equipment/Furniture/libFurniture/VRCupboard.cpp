@@ -59,14 +59,27 @@ void Cupboard::init(const FurnitureParams & aFurnitureParams)	{
 //-----------------------------------------------------------------------
 
 string Cupboard::getSQLCommand() const {
-	string strSQLCommand = "INSERT INTO EquipmentItem (EquipmentItemName, EquipmentID) "
-		"VALUES ('Cupboard', (SELECT EquipmentID FROM Equipment WHERE EquipmentName = 'Furniture'));";
+	string strCupboardParams;
+	strCupboardParams = to_string((long double)m_CupboardParams.m_flPosX) + "_";
+	strCupboardParams += to_string((long double)m_CupboardParams.m_flPosY) + "_";
+	strCupboardParams += to_string((long double)m_CupboardParams.m_flPosZ) + "_";
+
+	strCupboardParams += to_string((long double)m_CupboardParams.m_flScaleX) + "_";
+	strCupboardParams += to_string((long double)m_CupboardParams.m_flScaleY) + "_";
+	strCupboardParams += to_string((long double)m_CupboardParams.m_flScaleZ) + "_";
+
+	strCupboardParams += to_string((long double)m_CupboardParams.m_flAngleXY) + "_";
+	strCupboardParams += to_string((long double)m_CupboardParams.m_flAngleXZ) + "_";
+	strCupboardParams += to_string((long double)m_CupboardParams.m_flAngleYZ);
+
+	string strSQLCommand = "INSERT INTO EquipmentItem (EquipmentItemName, EquipmentItemParams, EquipmentID) "
+		"VALUES ('Cupboard', '" + strCupboardParams + "', (SELECT EquipmentID FROM Equipment WHERE EquipmentName = 'Furniture'));";
 	int nNumParts = m_arrSQLCommandLines.size();
 
-	for (auto it = m_arrSQLCommandLines.begin(); it != m_arrSQLCommandLines.end()-1; it++)	{
+	vector < string >::const_iterator it = m_arrSQLCommandLines.begin();
+	for (it; it != m_arrSQLCommandLines.end(); it++)	{
 		strSQLCommand += *it;
 	}
-	strSQLCommand += m_arrSQLCommandLines[nNumParts-1];
 
 	return(strSQLCommand);
 }
@@ -78,15 +91,28 @@ void Cupboard::initFromSQLData(const string & astrSQLData)	{
 	string strDelimiter = "?";
 	
 	vector < string > arrstrSQLData = splitString(strSQLData,strDelimiter);
+	vector <string> arrstrCupboardParams = splitString(arrstrSQLData[0],"_");
 
-	m_CupboardParams.m_flPosX = 0.0;
-	m_CupboardParams.m_flPosY = 0.0;
-	m_CupboardParams.m_flPosZ = 0.0;
-	m_CupboardParams.m_flAngleXY = 90.0;
-	m_CupboardParams.m_flScaleX = 1;
+	int nI;
+	vector < float > arrflMatrix;
+	for (nI=0;nI<9;nI++)	{
+		arrflMatrix.push_back(stof(arrstrCupboardParams[nI]));
+	}
+
+	m_CupboardParams.m_flPosX = arrflMatrix[0];
+	m_CupboardParams.m_flPosY = arrflMatrix[1];
+	m_CupboardParams.m_flPosZ = arrflMatrix[2];
+
+	m_CupboardParams.m_flScaleX = arrflMatrix[3];
+	m_CupboardParams.m_flScaleY = arrflMatrix[4];
+	m_CupboardParams.m_flScaleZ = arrflMatrix[5];
+
+	m_CupboardParams.m_flAngleXY = arrflMatrix[6];
+	m_CupboardParams.m_flAngleXZ = arrflMatrix[7];
+	m_CupboardParams.m_flAngleYZ = arrflMatrix[8];
 
 	ref_ptr < AbstractGeomShape > pAbstractGeomShape;
-	for (auto it = arrstrSQLData.begin(); it != arrstrSQLData.end()-1; it++)	{
+	for (auto it = arrstrSQLData.begin()+1; it != arrstrSQLData.end()-1; it++)	{
 		if(isAtEndOfString(*it, "Plate3D"))
 			pAbstractGeomShape = new Plate3D;
 		else if(isAtEndOfString(*it, "Cylinder"))

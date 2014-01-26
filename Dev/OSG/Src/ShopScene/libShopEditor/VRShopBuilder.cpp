@@ -1,3 +1,5 @@
+#include "StringManipulation.h"
+
 #include <string>
 
 #include <QString>
@@ -218,10 +220,13 @@ void ShopBuilder::addNewItem(const string & astrObjectName)	{
 	ref_ptr < AbstractObject > pAbstractObject = static_cast<AbstractObject*>(AbstractObject::createInstance(astrObjectName).get());
 
 	pAbstractObject->predefinedObject();
-	DatabaseMgr & database = DatabaseMgr::Create(m_qstrFileName, DatabaseMgr::QSQLITE);
-
 	string strSQLCommand = pAbstractObject->getSQLCommand();
-	database.fillPrimitiveTable(strSQLCommand);
+	vector<string> arrstrCommands = splitString(strSQLCommand,";");
+	DatabaseMgrParams dMgrP;
+	dMgrP.m_arrstrParams = arrstrCommands;
+
+	DatabaseMgr & database = DatabaseMgr::Create(m_qstrFileName, DatabaseMgr::QSQLITE);
+	database.fillPrimitiveTable(dMgrP);
 
 	m_pObjects->addChild(pAbstractObject);
 	m_pScene->addChild(m_pObjects);

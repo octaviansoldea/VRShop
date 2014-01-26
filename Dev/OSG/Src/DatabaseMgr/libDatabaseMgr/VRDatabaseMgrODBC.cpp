@@ -26,7 +26,7 @@ bool DatabaseMgrODBC::executeQuery(const DatabaseMgrParams & aDatabaseMgrParams)
 
 //-----------------------------------------------------------------------------------------
 
-void DatabaseMgrODBC::fillPrimitiveTable(string & astrCommand)	{
+void DatabaseMgrODBC::fillPrimitiveTable(const DatabaseMgrParams & aDatabaseMgrParams)	{
 }
 
 //-----------------------------------------------------------------------------------------

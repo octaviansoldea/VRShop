@@ -66,7 +66,8 @@ void Plate3D::setColor(const std::vector < float > & aarrflColor)	{
 //----------------------------------------------------------------------
 
 void Plate3D::setTexture(const std::string & astrFileName) {
-	m_pUntransformedPlate3D->setTexture(astrFileName);
+	m_Plate3DParams.m_strFileNameTexture = astrFileName;
+	m_pUntransformedPlate3D->setTexture(m_Plate3DParams.m_strFileNameTexture);
 }
 
 //----------------------------------------------------------
@@ -145,4 +146,5 @@ void Plate3D::initFromSQLData(const string & astrSQLData)	{
 
 void Plate3D::predefinedObject()	{
 	init(m_Plate3DParams);
+	setIsTargetPick(true);
 }

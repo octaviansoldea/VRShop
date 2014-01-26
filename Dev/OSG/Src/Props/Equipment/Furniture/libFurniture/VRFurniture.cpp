@@ -58,23 +58,27 @@ string Furniture::getSQLCommand() const {
 void Furniture::loadAllFurnitures(ref_ptr<Group> apScene, const string & astrDatabase) {
 	DatabaseMgr & database = DatabaseMgr::Create(astrDatabase.c_str(), DatabaseMgr::QSQLITE);
 
-	// get the number of equipment to be added to the scene
-	QString qstrCupboardsNr = "SELECT COUNT(EquipmentItemID) FROM EquipmentItem";
-	QSqlQuery qQuery(qstrCupboardsNr);
+	QString qstrFurniture = "SELECT EquipmentItemName FROM EquipmentItem JOIN Equipment ON EquipmentName = 'Furniture'";
+	QSqlQuery qQuery(qstrFurniture);
 
-	int nCupboardsNr;
+	string strTest = qstrFurniture.toStdString();
+
+	vector<string> arrstrEquipmentItems;
 	while (qQuery.next())	{
-		nCupboardsNr = qQuery.value(0).toInt();
+		arrstrEquipmentItems.push_back(qQuery.value(0).toString().toStdString());
 	}
 
-	for(int nI = 1; nI <= nCupboardsNr; nI++) {
-		ref_ptr <Cupboard> cupboard = new Cupboard;
+	vector<string>::iterator it;
+	
+	ref_ptr<Furniture> pFurniture;
+	for(it = arrstrEquipmentItems.begin(); it != arrstrEquipmentItems.end(); it++) {
+		pFurniture = static_cast<Furniture*>(Furniture::createInstance(*it).get());
 		
-		QString strSQLQuery = QString("SELECT * FROM EquipmentItem WHERE EquipmentItemID = %1").arg(nI);
-		string strSQLData = database.readFromDB(strSQLQuery.toStdString());
-		cupboard->initFromSQLData(strSQLData);
+		string strSQLQuery = "SELECT * FROM EquipmentItem WHERE EquipmentItemName = '" + *it + "'";
+		string strSQLData = database.readFromDB(strSQLQuery);
+		pFurniture->initFromSQLData(strSQLData);
 
-		apScene->addChild(cupboard);
+		apScene->addChild(pFurniture);
 	}
 }
 

@@ -17,7 +17,7 @@ namespace VR {
 		virtual bool executeQuery(const DatabaseMgrParams & aDatabaseMgrParams);
 		virtual bool createTable(const DatabaseMgrParams & aDatabaseMgrParams);
 
-		virtual void fillPrimitiveTable(std::string & astrCommand);
+		virtual void fillPrimitiveTable(const DatabaseMgrParams & aDatabaseMgrParams);
 		virtual std::string readFromDB(std::string & astrCommand);
 
 

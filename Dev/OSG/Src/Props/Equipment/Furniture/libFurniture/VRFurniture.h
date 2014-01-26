@@ -2,6 +2,7 @@
 #define VR_FURNITURE_H
 
 #include <string>
+#include <vector>
 
 #include "VRAbstractObject.h"
 

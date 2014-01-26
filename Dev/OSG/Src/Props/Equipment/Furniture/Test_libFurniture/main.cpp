@@ -1,3 +1,5 @@
+#include "StringManipulation.h"
+
 #include <QApplication>
 #include <QMessageBox>
 #include <QFile>
@@ -15,6 +17,7 @@
 
 #include "VRAbstractObject.h"
 #include "VRAbstractGeomShape.h"
+
 
 
 #include "VRUntransformedPlate2D.h"
@@ -86,6 +89,7 @@ void createTable(const string & astrDBName) {
 	strCreateTable = "CREATE TABLE IF NOT EXISTS EquipmentItem "
 			"(EquipmentItemID INTEGER PRIMARY KEY AUTOINCREMENT,"
 			"EquipmentItemName TEXT, "
+			"EquipmentItemParams TEXT, "
 			"EquipmentID INTEGER,"
 			"FOREIGN KEY (EquipmentID) REFERENCES Equipment(EquipmentID));";
 	dMgrParams.m_arrstrParams.push_back(strCreateTable);
@@ -240,6 +244,7 @@ void insertIntoDatabase_Container(const string & astrDBName)	{
 
 	ref_ptr < Plate3D > pPlate3D =  new Plate3D;
 	Plate3DParams aPlate3DParams;
+
 	//Bottom plate
 	aPlate3DParams.m_flLenX = m_flWidth;
 	aPlate3DParams.m_flLenY = m_flDepth;
@@ -316,8 +321,12 @@ void insertIntoDatabase_Container(const string & astrDBName)	{
 
 	string strSQLCommand = container.getSQLCommand();
 
+	vector<string> arrstrCommands = splitString(strSQLCommand,";");
+	DatabaseMgrParams dMgrP;
+	dMgrP.m_arrstrParams = arrstrCommands;
+
 //	database.executeQuery(strSQLCommand);
-	database.fillPrimitiveTable(strSQLCommand);
+	database.fillPrimitiveTable(dMgrP);
 }
 
 //--------------------------------------------------------------
@@ -327,6 +336,13 @@ void insertIntoDatabase_Cupboard(const string & astrDBName)	{
 
 	//Set the cupboard
 	Cupboard cupboard;
+	CupboardParams cParams;
+	cParams.m_flPosX = 4.0;
+	cParams.m_flPosY = 0.0;
+	cParams.m_flPosZ = 0.0;
+
+	cParams.m_flAngleXZ = 25.0;
+	cupboard.init(cParams);
 
 	ref_ptr < Plate3D > pPlate3D =  new Plate3D;
 	Plate3DParams aPlate3DParams;
@@ -430,7 +446,12 @@ void insertIntoDatabase_Cupboard(const string & astrDBName)	{
 	cupboard.addPart(pPlate3D);
 
 	string strSQLCommand = cupboard.getSQLCommand();
-	database.fillPrimitiveTable(strSQLCommand);
+
+	vector<string> arrstrCommands = splitString(strSQLCommand,";");
+	DatabaseMgrParams dMgrP;
+	dMgrP.m_arrstrParams = arrstrCommands;
+
+	database.fillPrimitiveTable(dMgrP);
 }
 
 //====================================================
@@ -445,26 +466,26 @@ int main(int argc, char *argv[])	{
 	string strDBName;
 	
 	strDBName = "../../../../Databases/Equipment.db";
-	//createTable(strDBName);
-	//populateTable(strDBName);
+	createTable(strDBName);
+	populateTable(strDBName);
 
 	//insertIntoDatabase_Sphere(strDBName);
 	//insertIntoDatabase_Cylinder(strDBName);
 	//insertIntoDatabase_Plate3D(strDBName);
 
-	//insertIntoDatabase_Container(strDBName);
-	//insertIntoDatabase_Cupboard(strDBName);
+	insertIntoDatabase_Container(strDBName);
+	insertIntoDatabase_Cupboard(strDBName);
 
-	//Furniture::loadAllFurnitures(pScene, strDBName);
+	Furniture::loadAllFurnitures(pScene, strDBName);
 
-	ref_ptr < Container > pContainer = new Container;
-	pContainer->predefinedObject();
-	pScene->addChild(pContainer);
+	//ref_ptr < Container > pContainer = new Container;
+	//pContainer->predefinedObject();
+	//pScene->addChild(pContainer);
 
 	osgViewer::Viewer viewer;
 	viewer.setSceneData(pScene);
 
 	return viewer.run();
 
-	//return (0);
+//	return (0);
 }

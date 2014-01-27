@@ -21,12 +21,7 @@ string Plate3D::m_strSQLFormat =
 
 //-----------------------------------------------------------------------
 
-Plate3DParams::Plate3DParams() : 
-m_strFileNameTexture(" ")	{
-	m_arrflRGBA.push_back(1.0);
-	m_arrflRGBA.push_back(0.0);
-	m_arrflRGBA.push_back(0.0);
-	m_arrflRGBA.push_back(1.0);
+Plate3DParams::Plate3DParams()	{
 }
 
 //-----------------------------------------------------------------------

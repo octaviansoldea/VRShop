@@ -50,3 +50,8 @@ void UntransformedPolygon2D::setColor(const vector < float > & aarrflColor) {
 	Vec4 vec4(aarrflColor[0], aarrflColor[1], aarrflColor[2], aarrflColor[3]);
 	pColors->push_back(vec4);
 }
+
+//--------------------------------------------------------------
+
+void UntransformedPolygon2D::setTexture(const string & astrFileName)	{
+}

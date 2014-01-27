@@ -8,8 +8,8 @@ namespace VR {
 	public:
 		UntransformedPlate3D();
 
-		void setColor(const std::vector < float > & aarrflColor);
-		void setTexture(const std::string & astrFileName);
+		virtual void setColor(const std::vector < float > & aarrflColor);
+		virtual void setTexture(const std::string & astrFileName);
 	};
 }
 #endif //VR_UNTRANSFORMED_PLATE_3D_H

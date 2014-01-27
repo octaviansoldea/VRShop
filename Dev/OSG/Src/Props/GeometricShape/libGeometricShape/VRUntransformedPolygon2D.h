@@ -9,8 +9,8 @@ namespace VR {
 	public:
 		UntransformedPolygon2D(int anNumSides);
 
-		void setColor(const std::vector < float > & aarrflColor);
-		void setTexture(const std::string & astrFileName);
+		virtual void setColor(const std::vector < float > & aarrflColor);
+		virtual void setTexture(const std::string & astrFileName);
 	private:
 		osg::ref_ptr<osg::Geometry> m_pGeometry;
 	};

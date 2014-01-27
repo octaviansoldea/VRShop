@@ -32,11 +32,7 @@ string UntransformedSphere::m_strSQLFormat =
 //-----------------------------------------------------------------------
 
 SphereParams::SphereParams() : 
-m_flRadius(1.0), m_nResPhi(25), m_nResTheta(25), m_strFileNameTexture(" ") {
-	m_arrflRGBA.push_back(1.0);
-	m_arrflRGBA.push_back(0.0);
-	m_arrflRGBA.push_back(0.0);
-	m_arrflRGBA.push_back(1.0);
+m_flRadius(1.0), m_nResPhi(25), m_nResTheta(25)	{
 }
 
 //-----------------------------------------------------------------------
@@ -130,7 +126,7 @@ void UntransformedSphere::setColor(const vector < float > & aarrflColor) {
 
 //--------------------------------------------------------------
 
-void UntransformedSphere::setTexture(const std::string astrFileName) {
+void UntransformedSphere::setTexture(const std::string & astrFileName) {
 
 	int nDrawablesNr = m_pGeode->getNumDrawables();
 

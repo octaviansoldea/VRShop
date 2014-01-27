@@ -26,6 +26,8 @@ namespace VR	{
 		AbstractObject();
 		AbstractObject(const AbstractObjectParams & aAbstractObjectParams);
 
+		virtual ~AbstractObject() {};
+
 		static osg::ref_ptr<AbstractObject> createInstance(const std::string & astrClassName);
 
 		virtual std::string getSQLFormat() const;

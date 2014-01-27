@@ -13,9 +13,6 @@ namespace VR {
 		int m_nResPhi;
 		int m_nResTheta;
 
-		std::vector < float > m_arrflRGBA;
-		std::string m_strFileNameTexture;
-
 		SphereParams();
 	};
 
@@ -29,8 +26,10 @@ namespace VR {
 		UntransformedSphere();
 		UntransformedSphere(const SphereParams & aSphereParams);
 
-		void setColor(const std::vector < float > & aarrflColor);
-		void setTexture(const std::string astrFileName);
+		virtual void setColor(const std::vector < float > & aarrflColor);
+		virtual void setTexture(const std::string & astrFileName);
+
+
 		void setResolution(int anResPhi, int anResTheta);
 		void setRadius(float aflRadius);
 

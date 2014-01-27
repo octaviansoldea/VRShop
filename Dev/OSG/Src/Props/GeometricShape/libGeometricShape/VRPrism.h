@@ -13,9 +13,6 @@ namespace VR {
 		float m_flHeight;
 		int m_nRes;
 
-		std::vector < float > m_arrflRGBA;
-		std::string m_strFileNameTexture;
-			
 		PrismParams();
 	};
 
@@ -27,8 +24,8 @@ namespace VR {
 		virtual void init(const AbstractGeomShapeParams & aAbstractGeomShapeParams);
 		virtual void predefinedObject();
 
-		void setColor(const std::vector < float > & aarrflColor);
-		void setTexture(const std::string & astrFileName);
+		virtual void setColor(const std::vector < float > & aarrflColor);
+		virtual void setTexture(const std::string & astrFileName);
 		void setResolution(int anRes);
 
 		virtual std::string getSQLFormat() const;

@@ -8,11 +8,6 @@
 
 namespace VR	{
 	struct Plate3DParams : public AbstractGeomShapeParams	{
-
-		std::vector < float > m_arrflRGBA;
-
-		std::string m_strFileNameTexture;
-
 		Plate3DParams();
 	};
 
@@ -34,8 +29,8 @@ namespace VR	{
 
 		virtual void predefinedObject();
 
-		void setColor(const std::vector < float > & aarrflColor);
-		void setTexture(const std::string & astrFileName);
+		virtual void setColor(const std::vector < float > & aarrflColor);
+		virtual void setTexture(const std::string & astrFileName);
 	protected:
 		Plate3DParams m_Plate3DParams;
 	};

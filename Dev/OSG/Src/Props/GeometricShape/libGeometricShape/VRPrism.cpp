@@ -20,12 +20,8 @@ string Prism::m_strSQLFormat =
 
 
 PrismParams::PrismParams() :
-m_flRadius(1.0), m_flHeight(1.0), m_nRes(5),
-m_strFileNameTexture("")	{
-	m_arrflRGBA.push_back(1.0);
-	m_arrflRGBA.push_back(0.0);
-	m_arrflRGBA.push_back(0.0);
-	m_arrflRGBA.push_back(1.0);
+m_flRadius(1.0), m_flHeight(1.0), m_nRes(5)
+{
 }
 
 //-----------------------------------------------------------------------

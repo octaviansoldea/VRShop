@@ -10,9 +10,9 @@ namespace VR	{
 		float m_flPosY;
 		float m_flPosZ;
 
-		float m_flScaleX;
-		float m_flScaleY;
-		float m_flScaleZ;
+		float m_flLenX;
+		float m_flLenY;
+		float m_flLenZ;
 
 		float m_flAngleXY;
 		float m_flAngleXZ;

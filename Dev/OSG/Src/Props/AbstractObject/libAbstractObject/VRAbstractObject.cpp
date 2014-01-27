@@ -19,7 +19,7 @@ string AbstractObject::m_strSQLFormat = "";
 
 AbstractObjectParams::AbstractObjectParams() : 
 	m_flPosX(0.0),		m_flPosY(0.0),		m_flPosZ(0.0),
-	m_flScaleX(1.0),	m_flScaleY(1.0),	m_flScaleZ(1.0),
+	m_flLenX(1.0),		m_flLenY(1.0),		m_flLenZ(1.0),
 	m_flAngleXY(0.0),	m_flAngleXZ(0.0),	m_flAngleYZ(0.0)	{
 }
 
@@ -79,9 +79,9 @@ void AbstractObject::setPosition(const AbstractObjectParams & aAbstractObjectPar
 //--------------------------------------------------------------
 
 void AbstractObject::setScaling(const AbstractObjectParams & aAbstractObjectParams)	{
-	m_AbstractObjectParams.m_flScaleX = aAbstractObjectParams.m_flScaleX;
-	m_AbstractObjectParams.m_flScaleY = aAbstractObjectParams.m_flScaleY;
-	m_AbstractObjectParams.m_flScaleZ = aAbstractObjectParams.m_flScaleZ;
+	m_AbstractObjectParams.m_flLenX = aAbstractObjectParams.m_flLenX;
+	m_AbstractObjectParams.m_flLenY = aAbstractObjectParams.m_flLenY;
+	m_AbstractObjectParams.m_flLenZ = aAbstractObjectParams.m_flLenZ;
 }
 
 //--------------------------------------------------------------------------

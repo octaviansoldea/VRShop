@@ -18,6 +18,8 @@ namespace VR {
 
 		virtual std::string getSQLFormat() const;
 		virtual std::string getSQLCommand() const;
+
+		virtual void predefinedObject();
 	};
 }
 #endif //VR_CYLINDER_H

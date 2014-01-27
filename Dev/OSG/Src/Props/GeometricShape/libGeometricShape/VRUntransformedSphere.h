@@ -39,7 +39,8 @@ namespace VR {
 
 		virtual void init(const AbstractGeomShapeParams & aAbstractGeomShapeParams);
 		virtual void initFromSQLData(const std::string & astrSQLData);
-		virtual void predefinedObject() {};
+
+		virtual void predefinedObject();
 	};
 }
 #endif //UNTRANSFORMED_SPHERE_H

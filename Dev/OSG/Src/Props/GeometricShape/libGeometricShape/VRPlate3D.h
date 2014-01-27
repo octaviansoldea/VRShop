@@ -8,12 +8,6 @@
 
 namespace VR	{
 	struct Plate3DParams : public AbstractGeomShapeParams	{
-		float m_flLenX;
-		float m_flLenY;
-		float m_flLenZ;
-		float m_flPosX;
-		float m_flPosY;
-		float m_flPosZ;
 
 		std::vector < float > m_arrflRGBA;
 

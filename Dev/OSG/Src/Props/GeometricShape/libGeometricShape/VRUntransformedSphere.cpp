@@ -243,8 +243,15 @@ void UntransformedSphere::initFromSQLData(const string & astrSQLData)	{
 
 void UntransformedSphere::setResolution(int anResPhi, int anResTheta) {
 }
-	
+
 //--------------------------------------------------------------
 
 void UntransformedSphere::setRadius(float aflRadius) {
+}
+
+//----------------------------------------------------------------------
+
+void UntransformedSphere::predefinedObject()	{
+	init(m_SphereParams);
+	setIsTargetPick(true);
 }

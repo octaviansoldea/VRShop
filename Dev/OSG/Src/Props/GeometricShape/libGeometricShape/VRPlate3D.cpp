@@ -22,8 +22,6 @@ string Plate3D::m_strSQLFormat =
 //-----------------------------------------------------------------------
 
 Plate3DParams::Plate3DParams() : 
-m_flLenX(1.0), m_flLenY(1.0), m_flLenZ(1.0),
-m_flPosX(0.0), m_flPosY(0.0), m_flPosZ(0.0),
 m_strFileNameTexture(" ")	{
 	m_arrflRGBA.push_back(1.0);
 	m_arrflRGBA.push_back(0.0);
@@ -79,26 +77,29 @@ string Plate3D::getSQLFormat() const {
 //----------------------------------------------------------------------
 
 std::string Plate3D::getSQLCommand() const	{
+	string strPlate3DParams;
+	strPlate3DParams = to_string((long double)m_Plate3DParams.m_flPosX) + "_";
+	strPlate3DParams += to_string((long double)m_Plate3DParams.m_flPosY) + "_";
+	strPlate3DParams += to_string((long double)m_Plate3DParams.m_flPosZ) + "_";
+							   					 
+	strPlate3DParams += to_string((long double)m_Plate3DParams.m_flLenX) + "_";
+	strPlate3DParams += to_string((long double)m_Plate3DParams.m_flLenY) + "_";
+	strPlate3DParams += to_string((long double)m_Plate3DParams.m_flLenZ) + "_";
+												 
+	strPlate3DParams += to_string((long double)m_Plate3DParams.m_flAngleXY) + "_";
+	strPlate3DParams += to_string((long double)m_Plate3DParams.m_flAngleXZ) + "_";
+	strPlate3DParams += to_string((long double)m_Plate3DParams.m_flAngleYZ);
 
-	Matrixd plate3DMatrix = getMatrix();
-	string strMatrix4X4 = "'";
-	int nI, nJ;
 
-	for (nI=0;nI<4;nI++)	{
-		for (nJ=0;nJ<4;nJ++)	{
-			strMatrix4X4 += to_string((long double)plate3DMatrix(nI,nJ)) + "_";
-		}
-	}
-	strMatrix4X4 += "'";
-
+	int nI;
 	string strColor = "'";
 	for (nI=0;nI<4;nI++)	{
 		strColor += to_string((long double)m_Plate3DParams.m_arrflRGBA[nI]) + "_";
 	}
 	strColor += "'";
 
-	string strSQLCommand = "INSERT INTO Plate3D (Plate3DMatrix, Plate3DColor, Plate3DTexture, PrimitiveID) VALUES("
-		+ strMatrix4X4 + ","
+	string strSQLCommand = "INSERT INTO Plate3D (Plate3DMatrix, Plate3DColor, Plate3DTexture, PrimitiveID) VALUES('"
+		+ strPlate3DParams + "',"
 		+ strColor + ",'"
 		+ m_Plate3DParams.m_strFileNameTexture + "',"
 		+ "(SELECT PrimitiveID FROM Primitive WHERE PrimitiveName = 'Plate3D'));";
@@ -118,7 +119,7 @@ void Plate3D::initFromSQLData(const string & astrSQLData)	{
 
 	int nI;
 	vector < float > arrflMatrix;
-	for (nI=0;nI<16;nI++)	{
+	for (nI=0;nI<9;nI++)	{
 		arrflMatrix.push_back(stof(arrstrMatrix[nI]));
 	}
 
@@ -129,13 +130,13 @@ void Plate3D::initFromSQLData(const string & astrSQLData)	{
 		}
 	}
 
-	m_Plate3DParams.m_flLenX = arrflMatrix[0];
-	m_Plate3DParams.m_flLenY = arrflMatrix[5];
-	m_Plate3DParams.m_flLenZ = arrflMatrix[10];
+	m_Plate3DParams.m_flPosX = arrflMatrix[0];
+	m_Plate3DParams.m_flPosY = arrflMatrix[1];
+	m_Plate3DParams.m_flPosZ = arrflMatrix[2];
 
-	m_Plate3DParams.m_flPosX = arrflMatrix[12];
-	m_Plate3DParams.m_flPosY = arrflMatrix[13];
-	m_Plate3DParams.m_flPosZ = arrflMatrix[14];
+	m_Plate3DParams.m_flLenX = arrflMatrix[3];
+	m_Plate3DParams.m_flLenY = arrflMatrix[4];
+	m_Plate3DParams.m_flLenZ = arrflMatrix[5];
 
 	m_Plate3DParams.m_strFileNameTexture = arrstrPlateParams[3];
 

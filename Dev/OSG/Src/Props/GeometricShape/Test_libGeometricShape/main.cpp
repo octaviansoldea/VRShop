@@ -178,6 +178,26 @@ void main_Cylinder(ref_ptr<Group> pScene)	{
 
 //----------------------------------------------------------------------
 
+void main_Prism(ref_ptr<Group> pScene)	{
+	PrismParams prismP;
+	prismP.m_flRadius = 1.0;
+	prismP.m_flHeight = 3.0;
+	prismP.m_nRes = 50;
+	prismP.m_flPosX = 0.0;
+	prismP.m_flPosY = 0.0;
+	prismP.m_flPosZ = 0.0;
+	prismP.m_arrflRGBA[0] = 0.85;
+	prismP.m_arrflRGBA[1] = 0.25;
+	prismP.m_arrflRGBA[2] = 0.15;
+	prismP.m_arrflRGBA[3] = 1.0;
+
+	ref_ptr<VR::Prism> pPrism = new VR::Prism(prismP);
+
+	pScene->addChild(pPrism);
+}
+
+//----------------------------------------------------------------------
+
 void main_UntransformedSphere_Color(ref_ptr<Group> pScene)	{
 	SphereParams sP;
 	ref_ptr<UntransformedSphere> pUntransformedSphere = new UntransformedSphere;
@@ -271,7 +291,7 @@ int main(int argc, char * argv[])	{
 	ref_ptr<Node> pAxes = osgDB::readNodeFile("../../../../Resources/Models3D/axes.osgt");
 	pScene->addChild(pAxes);
 
-	int nSelection = 14;
+	int nSelection = 12;
 	switch (nSelection)	{
 	case 1: main_UntransformedPlate2D_Color(pScene); break;
 	case 2: main_UntransformedPlate2D_Texture(pScene); break;
@@ -284,13 +304,14 @@ int main(int argc, char * argv[])	{
 	case 9: main_UntransformedPolygon3D_Color(pScene); break;
 	case 10: main_UntransformedPolygon3D_Texture(pScene); break;
 	case 11: main_Cylinder(pScene); break;
-	case 12: main_UntransformedSphere_Color(pScene); break;
-	case 13: main_UntransformedSphere_Texture(pScene); break;
+	case 12: main_Prism(pScene); break;
+	case 13: main_UntransformedSphere_Color(pScene); break;
+	case 14: main_UntransformedSphere_Texture(pScene); break;
 
-	case 14: initFromDB_Plate(pScene); break;
-	case 15: initFromDB_Sphere(pScene); break;
-	case 16: initFromDB_Prism(pScene); break;
-	case 17: initFromDB_Cylinder(pScene); break;
+	case 15: initFromDB_Plate(pScene); break;
+	case 16: initFromDB_Sphere(pScene); break;
+	case 17: initFromDB_Prism(pScene); break;
+	case 18: initFromDB_Cylinder(pScene); break;
 	
 	default:	{
 		printError("Error Message: Wrong test number set.");

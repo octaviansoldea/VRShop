@@ -26,14 +26,14 @@ void InsertNewItem_GUI::slotDisplayWidgetItems(QListWidgetItem * item)	{
 
 	QList < QString > qlststrItems;
 	if (qstrGroup == "Geometric Shape")	{
-		qlststrItems << "Cylinder" << "Plate3D" << "Polygon" << "Sphere";
+		qlststrItems << "Cylinder" << "Plate3D" << "Prism" << "Sphere";
 	}
 
-	if (qstrGroup == "Equipment")	{
+	else if (qstrGroup == "Equipment")	{
 		qlststrItems << "Cupboard" << "Container";
 	}
 
-	if (qstrGroup == "Product")	{
+	else if (qstrGroup == "Product")	{
 		qlststrItems << "Product";
 	}
 

@@ -38,17 +38,20 @@ string VR::Cylinder::getSQLFormat() const {
 //----------------------------------------------------------
 
 string VR::Cylinder::getSQLCommand() const {
-	Matrixd cylinderMatrix = getMatrix();
-	string strMatrix4X4 = "'";
-	int nI, nJ;
+	string strCylinderParams;
 
-	for (nI=0;nI<4;nI++)	{
-		for (nJ=0;nJ<4;nJ++)	{
-			strMatrix4X4 += to_string((long double)cylinderMatrix(nI,nJ)) + "_";
-		}
-	}
-	strMatrix4X4 += "'";
+	strCylinderParams= to_string((long double)m_CylinderParams.m_flPosX) + "_";
+	strCylinderParams+= to_string((long double)m_CylinderParams.m_flPosY) + "_";
+	strCylinderParams+= to_string((long double)m_CylinderParams.m_flPosZ) + "_";
+	
+	strCylinderParams+= to_string((long double)m_CylinderParams.m_flRadius) + "_";
+	strCylinderParams+= to_string((long double)m_CylinderParams.m_flHeight) + "_";
+	
+	strCylinderParams+= to_string((long double)m_CylinderParams.m_flAngleXY) + "_";
+	strCylinderParams+= to_string((long double)m_CylinderParams.m_flAngleXZ) + "_";
+	strCylinderParams+= to_string((long double)m_CylinderParams.m_flAngleYZ);
 
+	int nI;
 	string strColor = "'";
 	for (nI=0;nI<4;nI++)	{
 		strColor += to_string((long double)m_CylinderParams.m_arrflRGBA[nI]) + "_";
@@ -56,11 +59,18 @@ string VR::Cylinder::getSQLCommand() const {
 	strColor += "'";
 
 	string strSQLCommand = "INSERT INTO Cylinder (CylinderRes, CylinderMatrix, CylinderColor, CylinderTexture, PrimitiveID) VALUES("
-		+ to_string((_Longlong)m_CylinderParams.m_nRes) + ","
-		+ strMatrix4X4 + ","
+		+ to_string((_Longlong)m_CylinderParams.m_nRes) + ",'"
+		+ strCylinderParams + "',"
 		+ strColor + ",'"
 		+ m_CylinderParams.m_strFileNameTexture + "',"
 		+ "(SELECT PrimitiveID FROM Primitive WHERE PrimitiveName = 'Cylinder'));";
 
 	return(strSQLCommand);
+}
+
+//----------------------------------------------------------------------
+
+void VR::Cylinder::predefinedObject()	{
+	init(m_CylinderParams);
+	setIsTargetPick(true);
 }

@@ -42,8 +42,8 @@ void Container::init(const FurnitureParams & aFurnitureParams)	{
 			   0, 0, 1, 0,
 			   0, 0, 0,	1);
 
-	osg::Matrix containerMatrix =
-		matrix.scale(m_AbstractObjectParams.m_flScaleX, m_AbstractObjectParams.m_flScaleY, m_AbstractObjectParams.m_flScaleZ)
+	Matrix containerMatrix =
+		matrix.scale(m_AbstractObjectParams.m_flLenX, m_AbstractObjectParams.m_flLenY, m_AbstractObjectParams.m_flLenZ)
 		*
 		matrix.rotate(
 			m_AbstractObjectParams.m_flAngleYZ, osg::X_AXIS,
@@ -66,9 +66,9 @@ string Container::getSQLCommand() const {
 	strContainerParams += to_string((long double)m_ContainerParams.m_flPosY) + "_";
 	strContainerParams += to_string((long double)m_ContainerParams.m_flPosZ) + "_";
 	   											   
-	strContainerParams += to_string((long double)m_ContainerParams.m_flScaleX) + "_";
-	strContainerParams += to_string((long double)m_ContainerParams.m_flScaleY) + "_";
-	strContainerParams += to_string((long double)m_ContainerParams.m_flScaleZ) + "_";
+	strContainerParams += to_string((long double)m_ContainerParams.m_flLenX) + "_";
+	strContainerParams += to_string((long double)m_ContainerParams.m_flLenY) + "_";
+	strContainerParams += to_string((long double)m_ContainerParams.m_flLenZ) + "_";
 	   											   
 	strContainerParams += to_string((long double)m_ContainerParams.m_flAngleXY) + "_";
 	strContainerParams += to_string((long double)m_ContainerParams.m_flAngleXZ) + "_";
@@ -105,9 +105,9 @@ void Container::initFromSQLData(const string & astrSQLData)	{
 	m_ContainerParams.m_flPosY = arrflMatrix[1];
 	m_ContainerParams.m_flPosZ = arrflMatrix[2];
 	  
-	m_ContainerParams.m_flScaleX = arrflMatrix[3];
-	m_ContainerParams.m_flScaleY = arrflMatrix[4];
-	m_ContainerParams.m_flScaleZ = arrflMatrix[5];
+	m_ContainerParams.m_flLenX = arrflMatrix[3];
+	m_ContainerParams.m_flLenY = arrflMatrix[4];
+	m_ContainerParams.m_flLenZ = arrflMatrix[5];
 	  
 	m_ContainerParams.m_flAngleXY = arrflMatrix[6];
 	m_ContainerParams.m_flAngleXZ = arrflMatrix[7];

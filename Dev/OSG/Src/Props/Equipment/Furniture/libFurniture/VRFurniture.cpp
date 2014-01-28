@@ -32,6 +32,11 @@ Furniture::Furniture(const FurnitureParams & aFurnitureParams) : AbstractObject(
 
 //-----------------------------------------------------------------------
 
+Furniture::~Furniture()	{
+}
+
+//-----------------------------------------------------------------------
+
 void Furniture::addPart(ref_ptr < Node > apNode) {
 	addChild(apNode);
 
@@ -61,15 +66,12 @@ void Furniture::loadAllFurnitures(ref_ptr<Group> apScene, const string & astrDat
 	QString qstrFurniture = "SELECT EquipmentItemName FROM EquipmentItem JOIN Equipment ON EquipmentName = 'Furniture'";
 	QSqlQuery qQuery(qstrFurniture);
 
-	string strTest = qstrFurniture.toStdString();
-
 	vector<string> arrstrEquipmentItems;
 	while (qQuery.next())	{
 		arrstrEquipmentItems.push_back(qQuery.value(0).toString().toStdString());
 	}
 
 	vector<string>::iterator it;
-	
 	ref_ptr<Furniture> pFurniture;
 	for(it = arrstrEquipmentItems.begin(); it != arrstrEquipmentItems.end(); it++) {
 		pFurniture = static_cast<Furniture*>(Furniture::createInstance(*it).get());

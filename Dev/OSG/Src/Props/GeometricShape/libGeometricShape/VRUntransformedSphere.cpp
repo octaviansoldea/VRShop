@@ -9,8 +9,6 @@
 #include <osg/TexMat>
 #include <osgDB/ReadFile>
 
-#include <osg/Geode>
-
 #include "StringManipulation.h"
 
 #include "VRUntransformedSphere.h"
@@ -19,55 +17,40 @@ using namespace std;
 using namespace osg;
 using namespace VR;
 
-string UntransformedSphere::m_strSQLFormat =
-	"CREATE TABLE IF NOT EXISTS Sphere "
-	"(SphereID INTEGER PRIMARY KEY AUTOINCREMENT,"
-	"SphereRes TEXT,"
-	"SphereRadius TEXT,"
-	"SphereColor TEXT,"
-	"SphereTexture TEXT, "
-	"PrimitiveID INTEGER, "
-	"FOREIGN KEY (PrimitiveID) REFERENCES Primitive(PrimitiveID));";
-
-//-----------------------------------------------------------------------
-
-SphereParams::SphereParams() : 
+UntransformedSphereParams::UntransformedSphereParams() : 
 m_flRadius(1.0), m_nResPhi(25), m_nResTheta(25)	{
 }
 
 //-----------------------------------------------------------------------
 
 UntransformedSphere::UntransformedSphere()	{
-	const SphereParams sphereParams;
-	init(sphereParams);
+	init(m_UntransformedSphereParams);
 }
 
 //-----------------------------------------------------------------------
 
-UntransformedSphere::UntransformedSphere(const SphereParams & aSphereParams)	{
-	init(aSphereParams);
+UntransformedSphere::UntransformedSphere(const UntransformedSphereParams & aUntransformedSphereParams)	{
+	m_UntransformedSphereParams = aUntransformedSphereParams;
+	init(m_UntransformedSphereParams);
 }
 
 //--------------------------------------------------------------
 
-void UntransformedSphere::init(const AbstractGeomShapeParams & aAbstractGeomShapeParams)	{
-	const SphereParams & aSphereParams = static_cast<const SphereParams&>(aAbstractGeomShapeParams);
+void UntransformedSphere::init(const UntransformedSphereParams & aUntransformedSphereParams)	{
+	m_UntransformedSphereParams = aUntransformedSphereParams;
 
-	m_SphereParams = aSphereParams;
-	m_pGeode = new Geode;
-
-	float flResPhiStep = (2 * PI) / m_SphereParams.m_nResPhi;
-	float flResThetaStep = (2 * PI) / m_SphereParams.m_nResTheta;
+	float flResPhiStep = (2 * PI) / m_UntransformedSphereParams.m_nResPhi;
+	float flResThetaStep = (2 * PI) / m_UntransformedSphereParams.m_nResTheta;
 	
 	int nIndxPhi, nIndxTheta;
-	for(nIndxPhi = 0; nIndxPhi < m_SphereParams.m_nResPhi; nIndxPhi++) {
+	for(nIndxPhi = 0; nIndxPhi < m_UntransformedSphereParams.m_nResPhi; nIndxPhi++) {
 		float flPhi = flResPhiStep * nIndxPhi;
 		float flPhiP1 = flPhi + flResPhiStep;
 		float flCosPhi = cos(flPhi);
 		float flCosPhiP1 = cos(flPhiP1);
 		float flSinPhi = sin(flPhi);
 		float flSinPhiP1 = sin(flPhiP1);
-		for(nIndxTheta = 0; nIndxTheta < m_SphereParams.m_nResTheta; nIndxTheta++) {
+		for(nIndxTheta = 0; nIndxTheta < m_UntransformedSphereParams.m_nResTheta; nIndxTheta++) {
 			float flTheta = flResThetaStep * nIndxTheta;
 			float flThetaP1 = flTheta + flResThetaStep;
 			float flCosTheta = cos(flTheta);
@@ -96,19 +79,17 @@ void UntransformedSphere::init(const AbstractGeomShapeParams & aAbstractGeomShap
 			normal += (*pPoints)[3];
 			normal.normalize();
 			pN->push_back(normal);
-			m_pGeode->addDrawable(pGeometry);
+			addDrawable(pGeometry);
 		}
 	}
-	addChild(m_pGeode);
-	setColor(aSphereParams.m_arrflRGBA);
 }
 
 //--------------------------------------------------------------
 
 void UntransformedSphere::setColor(const vector < float > & aarrflColor) {	
-	int nDrawablesNr = m_pGeode->getNumDrawables();
+	int nDrawablesNr = getNumDrawables();
 	for(int nI = 0; nI < nDrawablesNr; nI++) {
-		ref_ptr<Geometry> pGeometry = dynamic_cast<Geometry *>(m_pGeode->getDrawable(nI));
+		ref_ptr<Geometry> pGeometry = dynamic_cast<Geometry *>(getDrawable(nI));
 		if(pGeometry == 0) {
 			continue;
 		}
@@ -128,9 +109,9 @@ void UntransformedSphere::setColor(const vector < float > & aarrflColor) {
 
 void UntransformedSphere::setTexture(const std::string & astrFileName) {
 
-	int nDrawablesNr = m_pGeode->getNumDrawables();
+	int nDrawablesNr = getNumDrawables();
 
-	assert(nDrawablesNr == m_SphereParams.m_nResPhi * m_SphereParams.m_nResTheta);
+	assert(nDrawablesNr == m_UntransformedSphereParams.m_nResPhi * m_UntransformedSphereParams.m_nResTheta);
 
 	ref_ptr<Image> pImage = osgDB::readImageFile(astrFileName);
 	ref_ptr<TextureRectangle> pTexture = new TextureRectangle(pImage);
@@ -138,19 +119,19 @@ void UntransformedSphere::setTexture(const std::string & astrFileName) {
 	pTexMat->setScaleByTextureRectangleSize(true);
 	
 
-	float flTexPhiStep = 1.0 / m_SphereParams.m_nResPhi;
-	float flTexThetaStep = 1.0 / m_SphereParams.m_nResTheta;
+	float flTexPhiStep = 1.0 / m_UntransformedSphereParams.m_nResPhi;
+	float flTexThetaStep = 1.0 / m_UntransformedSphereParams.m_nResTheta;
 	
 	int nIndxDrawable = 0;
 	int nIndxPhi, nIndxTheta;
-	for(nIndxPhi = 0; nIndxPhi < m_SphereParams.m_nResPhi; nIndxPhi++) {
+	for(nIndxPhi = 0; nIndxPhi < m_UntransformedSphereParams.m_nResPhi; nIndxPhi++) {
 		float flPhi = flTexPhiStep * nIndxPhi;
 		float flPhiP1 = flPhi + flTexPhiStep;
-		for(nIndxTheta = 0; nIndxTheta < m_SphereParams.m_nResTheta; nIndxTheta++) {
+		for(nIndxTheta = 0; nIndxTheta < m_UntransformedSphereParams.m_nResTheta; nIndxTheta++) {
 			float flTheta = flTexThetaStep * nIndxTheta;
 			float flThetaP1 = flTheta + flTexThetaStep;
 
-			ref_ptr<Geometry> pGeometry = dynamic_cast<Geometry *>(m_pGeode->getDrawable(nIndxDrawable));
+			ref_ptr<Geometry> pGeometry = dynamic_cast<Geometry *>(getDrawable(nIndxDrawable));
 			if(pGeometry == 0) {
 				continue;
 			}
@@ -181,62 +162,6 @@ void UntransformedSphere::setTexture(const std::string & astrFileName) {
 
 //--------------------------------------------------------------
 
-string UntransformedSphere::getSQLFormat() const {
-	return(m_strSQLFormat);
-}
-
-//----------------------------------------------------------------------
-
-string UntransformedSphere::getSQLCommand() const	{
-	string strColor = "'";
-	int nI;
-	for (nI=0;nI<4;nI++)	{
-		strColor += to_string((long double)m_SphereParams.m_arrflRGBA[nI]) + "_";
-	}
-	strColor += "'";
-
-
-	string strSQLCommand = "INSERT INTO Sphere (SphereRes, SphereRadius, SphereColor, SphereTexture, PrimitiveID) VALUES('"
-		+ to_string((_Longlong)m_SphereParams.m_nResPhi) + "','"
-		+ to_string((_Longlong)m_SphereParams.m_flRadius) + "',"
-		+ strColor + ",'"
-		+ m_SphereParams.m_strFileNameTexture + "',"
-		+ "(SELECT PrimitiveID FROM Primitive WHERE PrimitiveName = 'Sphere'));";
-
-	return(strSQLCommand);
-}
-
-//--------------------------------------------------------------
-
-void UntransformedSphere::initFromSQLData(const string & astrSQLData)	{
-	string strSQLData = astrSQLData;
-	SphereParams sP;
-	
-	vector <string> arrstrSphereParams = splitString(strSQLData,";");
-	vector <string> arrstrMatrix = splitString(arrstrSphereParams[1],"_");
-	vector <string> arrstrColor = splitString(arrstrSphereParams[3],"_");
-
-	sP.m_nResPhi = sP.m_nResTheta = stof(arrstrSphereParams[1]);
-	sP.m_flRadius = stof(arrstrSphereParams[2]);
-
-	if (arrstrColor.size()!=0)	{
-		int nI;
-		vector < float > arrflColor;
-		for (nI=0;nI<4;nI++)	{
-			sP.m_arrflRGBA[nI] = (stof(arrstrColor[nI]));
-		}
-		setColor(sP.m_arrflRGBA);
-	}
-
-	if((arrstrSphereParams[4] != " ") && (arrstrSphereParams[4] != ""))	{
-		sP.m_strFileNameTexture = arrstrSphereParams[4];
-		setTexture(sP.m_strFileNameTexture);
-	}
-	init(sP);
-}
-
-//--------------------------------------------------------------
-
 void UntransformedSphere::setResolution(int anResPhi, int anResTheta) {
 }
 
@@ -247,7 +172,3 @@ void UntransformedSphere::setRadius(float aflRadius) {
 
 //----------------------------------------------------------------------
 
-void UntransformedSphere::predefinedObject()	{
-	init(m_SphereParams);
-	setIsTargetPick(true);
-}

@@ -1,7 +1,6 @@
 #ifndef VR_FURNITURE_H
 #define VR_FURNITURE_H
 
-#include <string>
 #include <vector>
 
 #include "VRAbstractObject.h"
@@ -15,6 +14,8 @@ namespace VR	{
 	public:
 		Furniture();
 		Furniture(const FurnitureParams & aFurnitureParams);
+
+		virtual ~Furniture() = 0;
 
 		virtual void init(const FurnitureParams & aFurnitureParams) = 0;
 

@@ -21,6 +21,9 @@ m_strPassword(astrPassword)
 //------------------------------------------------------------------------------
 
 void UserAccount::addUserAccount()	{
+
+	/* FIRST CHECK IF THE USER ACCOUNT WITH THE SAME NAME ALREADY EXISTS*/
+
 	string strUserAccountQuery = "INSERT INTO UserAccounts VALUES ('"
 		+ m_strUserName + "', '" + m_strPassword + "')";
 
@@ -37,6 +40,8 @@ void UserAccount::addUserAccount()	{
 //------------------------------------------------------------------------------
 
 void UserAccount::modifyUserAccount()	{
+	/* FIRST CHECK IF THE USER ACCOUNT WITH THE SAME NAME ALREADY EXISTS*/
+
 	string strUserAccountQuery = "UPDATE UserAccount SET UserName = '" + m_strUserName + "', Password = '" + 
 		m_strPassword + "' WHERE UserName = '" + m_strUserName + "';";
 

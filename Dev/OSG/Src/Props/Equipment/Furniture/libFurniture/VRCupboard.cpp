@@ -2,7 +2,7 @@
 #include "VRPlate3D.h"
 #include "VRCylinder.h"
 #include "VRPrism.h"
-#include "VRUntransformedSphere.h"
+#include "VRSphere.h"
 
 #include "StringManipulation.h"
 
@@ -74,7 +74,6 @@ string Cupboard::getSQLCommand() const {
 
 	string strSQLCommand = "INSERT INTO EquipmentItem (EquipmentItemName, EquipmentItemParams, EquipmentID) "
 		"VALUES ('Cupboard', '" + strCupboardParams + "', (SELECT EquipmentID FROM Equipment WHERE EquipmentName = 'Furniture'));";
-	int nNumParts = m_arrSQLCommandLines.size();
 
 	vector < string >::const_iterator it = m_arrSQLCommandLines.begin();
 	for (it; it != m_arrSQLCommandLines.end(); it++)	{
@@ -120,7 +119,7 @@ void Cupboard::initFromSQLData(const string & astrSQLData)	{
 		else if(isAtEndOfString(*it, "Prism"))
 			pAbstractGeomShape = new Prism;
 		else if(isAtEndOfString(*it, "Sphere"))
-			pAbstractGeomShape = new UntransformedSphere;
+			pAbstractGeomShape = new Sphere;
 
 		pAbstractGeomShape->initFromSQLData(*it);
 		addChild(pAbstractGeomShape);

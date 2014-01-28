@@ -40,9 +40,18 @@ void Plate3D::init(const AbstractGeomShapeParams & aAbstractGeomShapeParams)	{
 	matrix.set(m_Plate3DParams.m_flLenX,	0,							0,						  0,
 			   0,							m_Plate3DParams.m_flLenY,	0,						  0,
 			   0,							0,							m_Plate3DParams.m_flLenZ, 0,
-			   m_Plate3DParams.m_flPosX,	m_Plate3DParams.m_flPosY,	m_Plate3DParams.m_flPosZ, 1);
+			   0,							0,							0,						  1);
 
-	setMatrix(matrix);
+	Matrix PlateMatrix =
+		matrix.rotate(
+			m_AbstractObjectParams.m_flAngleYZ, osg::X_AXIS,
+			m_AbstractObjectParams.m_flAngleXZ, osg::Y_AXIS,
+			m_AbstractObjectParams.m_flAngleXY, osg::Z_AXIS)
+		*
+		matrix.translate(m_Plate3DParams.m_flPosX, m_Plate3DParams.m_flPosY, m_Plate3DParams.m_flPosZ)
+	;
+	
+	setMatrix(PlateMatrix);
 
 	setColor(m_Plate3DParams.m_arrflRGBA);
 	if ((m_Plate3DParams.m_strFileNameTexture != " ") && (m_Plate3DParams.m_strFileNameTexture != ""))
@@ -87,15 +96,14 @@ std::string Plate3D::getSQLCommand() const	{
 
 
 	int nI;
-	string strColor = "'";
+	string strColor;
 	for (nI=0;nI<4;nI++)	{
 		strColor += to_string((long double)m_Plate3DParams.m_arrflRGBA[nI]) + "_";
 	}
-	strColor += "'";
 
 	string strSQLCommand = "INSERT INTO Plate3D (Plate3DMatrix, Plate3DColor, Plate3DTexture, PrimitiveID) VALUES('"
-		+ strPlate3DParams + "',"
-		+ strColor + ",'"
+		+ strPlate3DParams + "','"
+		+ strColor + "','"
 		+ m_Plate3DParams.m_strFileNameTexture + "',"
 		+ "(SELECT PrimitiveID FROM Primitive WHERE PrimitiveName = 'Plate3D'));";
 

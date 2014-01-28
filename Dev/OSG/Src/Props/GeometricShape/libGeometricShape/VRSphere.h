@@ -1,23 +1,29 @@
-#ifndef VR_PLATE_3D_H
-#define VR_PLATE_3D_H
+#ifndef VR_SPHERE_H
+#define VR_SPHERE_H
 
 #include "VRAbstractGeomShape.h"
-#include "VRUntransformedPlate3D.h"
+#include "VRUntransformedSphere.h"
 
 namespace VR	{
-	struct Plate3DParams : public AbstractGeomShapeParams	{
-		Plate3DParams();
+	struct SphereParams : public AbstractGeomShapeParams	{
+		float m_flRadius;
+		float m_nResPhi;
+		float m_nResTheta;
+
+		SphereParams();
 	};
 
 
-	class Plate3D : public AbstractGeomShape	{
+	class Sphere : public AbstractGeomShape	{
 	private:
 		static std::string m_strSQLFormat;
 
-		osg::ref_ptr <UntransformedPlate3D> m_pUntransformedPlate3D;
+		osg::ref_ptr <UntransformedSphere> m_pUntransformedSphere;
+		SphereParams m_SphereParams;
 
 	public:
-		Plate3D();
+		Sphere();
+		Sphere(const SphereParams & aSphereParams);
 
 		virtual std::string getSQLFormat() const;
 		virtual std::string getSQLCommand() const;
@@ -29,8 +35,7 @@ namespace VR	{
 
 		virtual void setColor(const std::vector < float > & aarrflColor);
 		virtual void setTexture(const std::string & astrFileName);
-	protected:
-		Plate3DParams m_Plate3DParams;
+		void setResolution(int anRes);
 	};
 }
-#endif //VR_PLATE_3D_H
+#endif //VR_SPHERE_H

@@ -13,9 +13,11 @@
 #include "VRUntransformedPlate3D.h"
 #include "VRUntransformedPolygon2D.h"
 #include "VRUntransformedPolygon3D.h"
+#include "VRUntransformedSphere.h"
+
 #include "VRPlate3D.h"
 #include "VRCylinder.h"
-#include "VRUntransformedSphere.h"
+#include "VRSphere.h"
 
 
 using namespace osg;
@@ -198,18 +200,19 @@ void main_Prism(ref_ptr<Group> pScene)	{
 
 //----------------------------------------------------------------------
 
-void main_UntransformedSphere_Color(ref_ptr<Group> pScene)	{
-	SphereParams sP;
-	ref_ptr<UntransformedSphere> pUntransformedSphere = new UntransformedSphere;
-	vector < float > arrflColor;
-	arrflColor.push_back(1.0);
-	arrflColor.push_back(0.0);
-	arrflColor.push_back(0.0);
-	arrflColor.push_back(1.0);
-	pUntransformedSphere->setColor(arrflColor);
+void main_Sphere_Color(ref_ptr<Group> pScene)	{
+	UntransformedSphereParams sP;
 	sP.m_nResPhi = sP.m_nResTheta = 50;
-	pUntransformedSphere = new UntransformedSphere(sP);
-	pScene->addChild(pUntransformedSphere);
+
+	ref_ptr<UntransformedSphere> pSphere = new UntransformedSphere(sP);
+	vector <float> arrflColor;
+	arrflColor.push_back(1.0);
+	arrflColor.push_back(0);
+	arrflColor.push_back(0);
+	arrflColor.push_back(1.0);
+
+	pSphere->setColor(arrflColor);
+	pScene->addChild(pSphere);
 }
 
 //----------------------------------------------------------------------
@@ -241,10 +244,10 @@ void initFromDB_Sphere(ref_ptr<Group> pScene)	{
 	string strDatabase = "../../../../Databases/Equipment.db";
 	DatabaseMgr & database = DatabaseMgr::Create(strDatabase.c_str(), DatabaseMgr::QSQLITE);
 
-	ref_ptr < UntransformedSphere > pSphere;
-	string strSQLQuery = "SELECT * FROM Sphere WHERE SphereID = 1";
+	ref_ptr < VR::Sphere > pSphere;
+	string strSQLQuery = "SELECT * FROM Sphere WHERE SphereID = 7";
 	string strSQLData = database.readFromDB(strSQLQuery);
-	pSphere = new UntransformedSphere();
+	pSphere = new VR::Sphere();
 	pSphere->initFromSQLData(strSQLData);
 
 	pScene->addChild(pSphere);
@@ -291,7 +294,7 @@ int main(int argc, char * argv[])	{
 	ref_ptr<Node> pAxes = osgDB::readNodeFile("../../../../Resources/Models3D/axes.osgt");
 	pScene->addChild(pAxes);
 
-	int nSelection = 12;
+	int nSelection = 16;
 	switch (nSelection)	{
 	case 1: main_UntransformedPlate2D_Color(pScene); break;
 	case 2: main_UntransformedPlate2D_Texture(pScene); break;
@@ -305,7 +308,7 @@ int main(int argc, char * argv[])	{
 	case 10: main_UntransformedPolygon3D_Texture(pScene); break;
 	case 11: main_Cylinder(pScene); break;
 	case 12: main_Prism(pScene); break;
-	case 13: main_UntransformedSphere_Color(pScene); break;
+	case 13: main_Sphere_Color(pScene); break;
 	case 14: main_UntransformedSphere_Texture(pScene); break;
 
 	case 15: initFromDB_Plate(pScene); break;

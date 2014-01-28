@@ -3,43 +3,30 @@
 
 #include <osg/Geometry>
 #include <osg/Geode>
-#include <osg/MatrixTransform>
-
-#include "VRAbstractGeomShape.h"
 
 namespace VR {
-	struct SphereParams : public AbstractGeomShapeParams	{
+	struct UntransformedSphereParams	{
 		float m_flRadius;
 		int m_nResPhi;
 		int m_nResTheta;
 
-		SphereParams();
+		UntransformedSphereParams();
 	};
 
-	class UntransformedSphere : public AbstractGeomShape	{
+	class UntransformedSphere : public osg::Geode	{
 	private:
-		static std::string m_strSQLFormat;
-		SphereParams m_SphereParams;
-		osg::ref_ptr<osg::Geode> m_pGeode;
+		UntransformedSphereParams m_UntransformedSphereParams;
 
+		void init(const UntransformedSphereParams & aUntransformedSphereParams);
 	public:
 		UntransformedSphere();
-		UntransformedSphere(const SphereParams & aSphereParams);
+		UntransformedSphere(const UntransformedSphereParams & aUntransformedSphereParams);
 
 		virtual void setColor(const std::vector < float > & aarrflColor);
 		virtual void setTexture(const std::string & astrFileName);
 
-
 		void setResolution(int anResPhi, int anResTheta);
 		void setRadius(float aflRadius);
-
-		virtual std::string getSQLFormat() const;
-		virtual std::string getSQLCommand() const;
-
-		virtual void init(const AbstractGeomShapeParams & aAbstractGeomShapeParams);
-		virtual void initFromSQLData(const std::string & astrSQLData);
-
-		virtual void predefinedObject();
 	};
 }
 #endif //UNTRANSFORMED_SPHERE_H

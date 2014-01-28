@@ -15,8 +15,10 @@ m_strFileNameTexture(""){
 
 //=======================================================================
 
-AbstractGeomShape::AbstractGeomShape(){
+AbstractGeomShape::AbstractGeomShape()	{
 }
 
 //--------------------------------------------------------------------------
 
+AbstractGeomShape::~AbstractGeomShape()	{
+}

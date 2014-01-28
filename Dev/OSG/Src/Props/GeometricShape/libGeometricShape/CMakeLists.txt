@@ -14,6 +14,7 @@ SET(SRCS
 	VRCylinder.h VRCylinder.cpp
 	VRPrism.h VRPrism.cpp
 	VRPlate3D.h VRPlate3D.cpp
+	VRSphere.h VRSphere.cpp
 	VRUntransformedPlate2D.h VRUntransformedPlate2D.cpp
 	VRUntransformedPlate3D.h VRUntransformedPlate3D.cpp
 	VRUntransformedPolygon2D.h VRUntransformedPolygon2D.cpp

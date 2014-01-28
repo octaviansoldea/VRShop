@@ -57,8 +57,20 @@ void Prism::init(const AbstractGeomShapeParams & aAbstractGeomShapeParams) {
 	matrix.set(m_PrismParams.m_flRadius,	0,							0,							0,
 			   0,							m_PrismParams.m_flHeight,	0,							0,
 			   0,							0,							m_PrismParams.m_flRadius,	0,
-			   m_PrismParams.m_flPosX,		m_PrismParams.m_flPosY,		m_PrismParams.m_flPosZ,		1);
-	setMatrix(matrix);
+			   0,							0,							0,							1);
+
+	Matrix PrismMatrix =
+		matrix.scale(m_AbstractObjectParams.m_flLenX, m_AbstractObjectParams.m_flLenY, m_AbstractObjectParams.m_flLenZ)
+		*
+		matrix.rotate(
+			m_AbstractObjectParams.m_flAngleYZ, osg::X_AXIS,
+			m_AbstractObjectParams.m_flAngleXZ, osg::Y_AXIS,
+			m_AbstractObjectParams.m_flAngleXY, osg::Z_AXIS)
+		*
+		matrix.translate(m_AbstractObjectParams.m_flPosX, m_AbstractObjectParams.m_flPosY, m_AbstractObjectParams.m_flPosZ)
+	;
+	
+	setMatrix(PrismMatrix);
 
 	setColor(m_PrismParams.m_arrflRGBA);
 	if ((m_PrismParams.m_strFileNameTexture != " ") && (m_PrismParams.m_strFileNameTexture != ""))
@@ -88,28 +100,31 @@ string Prism::getSQLFormat() const {
 string Prism::getSQLCommand() const {
 	string strPrismParams;
 
-	strPrismParams= to_string((long double)m_PrismParams.m_flPosX) + "_";
+	strPrismParams= to_string((long double)m_PrismParams.m_flRadius) + "_";
+	strPrismParams+= to_string((long double)m_PrismParams.m_flHeight) + "_";
+
+	strPrismParams+= to_string((long double)m_PrismParams.m_flPosX) + "_";
 	strPrismParams+= to_string((long double)m_PrismParams.m_flPosY) + "_";
 	strPrismParams+= to_string((long double)m_PrismParams.m_flPosZ) + "_";
-	
-	strPrismParams+= to_string((long double)m_PrismParams.m_flRadius) + "_";
-	strPrismParams+= to_string((long double)m_PrismParams.m_flHeight) + "_";
-								 
+
+	strPrismParams += to_string((long double)m_PrismParams.m_flLenX) + "_";
+	strPrismParams += to_string((long double)m_PrismParams.m_flLenY) + "_";
+	strPrismParams += to_string((long double)m_PrismParams.m_flLenZ) + "_";
+			 
 	strPrismParams+= to_string((long double)m_PrismParams.m_flAngleXY) + "_";
 	strPrismParams+= to_string((long double)m_PrismParams.m_flAngleXZ) + "_";
 	strPrismParams+= to_string((long double)m_PrismParams.m_flAngleYZ);
 
 	int nI;
-	string strColor = "'";
+	string strColor;
 	for (nI=0;nI<4;nI++)	{
 		strColor += to_string((long double)m_PrismParams.m_arrflRGBA[nI]) + "_";
 	}
-	strColor += "'";
 
 	string strSQLCommand = "INSERT INTO Prism (PrismSides, PrismMatrix, PrismColor, PrismTexture, PrimitiveID) VALUES("
 		+ to_string((_Longlong)m_PrismParams.m_nRes) + ",'"
-		+ strPrismParams + "',"
-		+ strColor + ",'"
+		+ strPrismParams + "','"
+		+ strColor + "','"
 		+ m_PrismParams.m_strFileNameTexture + "',"
 		+ "(SELECT PrimitiveID FROM Primitive WHERE PrimitiveName = 'Prism'));";
 
@@ -126,12 +141,20 @@ void Prism::initFromSQLData(const std::string & astrSQLData)	{
 	vector <string> arrstrColor = splitString(arrstrPrismParams[3],"_");
 
 	m_PrismParams.m_nRes = stof(arrstrPrismParams[1]);
-	m_PrismParams.m_flRadius = stof(arrstrMatrix[3]);
-	m_PrismParams.m_flHeight = stof(arrstrMatrix[4]);
+	m_PrismParams.m_flRadius = stof(arrstrMatrix[0]);
+	m_PrismParams.m_flHeight = stof(arrstrMatrix[1]);
 	
-	m_PrismParams.m_flPosX = stof(arrstrMatrix[0]);
-	m_PrismParams.m_flPosY = stof(arrstrMatrix[1]);
-	m_PrismParams.m_flPosZ = stof(arrstrMatrix[2]);
+	m_PrismParams.m_flPosX = stof(arrstrMatrix[2]);
+	m_PrismParams.m_flPosY = stof(arrstrMatrix[3]);
+	m_PrismParams.m_flPosZ = stof(arrstrMatrix[4]);
+
+	m_PrismParams.m_flLenX = stof(arrstrMatrix[5]);
+	m_PrismParams.m_flLenY = stof(arrstrMatrix[6]);
+	m_PrismParams.m_flLenZ = stof(arrstrMatrix[7]);
+
+	m_PrismParams.m_flAngleXY = stof(arrstrMatrix[8]);
+	m_PrismParams.m_flAngleXZ = stof(arrstrMatrix[9]);
+	m_PrismParams.m_flAngleYZ = stof(arrstrMatrix[10]);
 
 	int nI;
 	if (arrstrColor.size()!=0)	{

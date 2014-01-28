@@ -14,7 +14,7 @@ namespace VR {
 	class AbstractGeomShape	: public AbstractObject	{
 	public:
 		AbstractGeomShape();
-		virtual ~AbstractGeomShape() {};
+		virtual ~AbstractGeomShape() = 0;
 
 		virtual void init(const AbstractGeomShapeParams & aAbstractGeomShapeParams) = 0;
 

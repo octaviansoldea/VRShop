@@ -76,7 +76,6 @@ string Container::getSQLCommand() const {
 
 	string strSQLCommand = "INSERT INTO EquipmentItem (EquipmentItemName, EquipmentItemParams, EquipmentID) "
 		"VALUES ('Container', '" + strContainerParams + "', (SELECT EquipmentID FROM Equipment WHERE EquipmentName = 'Furniture'));";
-	int nNumParts = m_arrSQLCommandLines.size();
 
 	vector < string >::const_iterator it = m_arrSQLCommandLines.begin();
 	for (it; it != m_arrSQLCommandLines.end(); it++)	{

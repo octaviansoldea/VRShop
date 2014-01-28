@@ -9,7 +9,7 @@
 #include "VRFurniture.h"
 #include "VRPlate3D.h"
 #include "VRCylinder.h"
-#include "VRUntransformedSphere.h"
+#include "VRSphere.h"
 
 #include "VRPickAndDragHandler.h"
 #include "VRKeyboardMouseManipulator.h"
@@ -108,7 +108,7 @@ void ShopBuilder::newDB(const string & astrDBFileName)	{
 		strCreateTable = prism.getSQLFormat();
 		dMgrParams.m_arrstrParams.push_back(strCreateTable);
 
-		UntransformedSphere sphere;
+		VR::Sphere sphere;
 		strCreateTable = sphere.getSQLFormat();
 		dMgrParams.m_arrstrParams.push_back(strCreateTable);
 

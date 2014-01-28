@@ -1,6 +1,6 @@
 #include "VRPlate3D.h"
 #include "VRCylinder.h"
-#include "VRUntransformedSphere.h"
+#include "VRSphere.h"
 
 #include "VRContainer.h"
 
@@ -48,8 +48,8 @@ void main_Cylinder(osg::ref_ptr<osg::Group> pScene)	{
 
 //----------------------------------------------------------------------
 
-void main_VRUntransformedSphere(osg::ref_ptr<osg::Group> pScene)	{
-	osg::ref_ptr<UntransformedSphere> pSphere = new UntransformedSphere();
+void main_VRSphere(osg::ref_ptr<osg::Group> pScene)	{
+	osg::ref_ptr<VR::Sphere> pSphere = new VR::Sphere();
 	vector < float > arrflColor;
 	arrflColor.push_back(0.0);
 	arrflColor.push_back(0.0);
@@ -57,7 +57,7 @@ void main_VRUntransformedSphere(osg::ref_ptr<osg::Group> pScene)	{
 	arrflColor.push_back(1.0);
 
 	pSphere->setColor(arrflColor);
-	pSphere->setResolution(20,20);
+	pSphere->setResolution(20);
 	pSphere->setIsTargetPick(true);
 	pScene->addChild(pSphere);
 }
@@ -73,7 +73,7 @@ int main(int argc, char * argv[])	{
 
 //	main_Plate3D(root);
 	main_Cylinder(root);
-//	main_VRUntransformedSphere(root);
+//	main_VRSphere(root);
 
 	osg::ref_ptr < Container > pContainer = new Container;
 	pContainer->predefinedObject();

@@ -60,3 +60,16 @@ void Product::createProductDB() const	{
 	DatabaseMgr & database = VR::DatabaseMgr::Create(strDBName.c_str(),DatabaseMgr::QSQLITE);
 	database.createTable(dMgrP);
 }
+
+//------------------------------------------------------------------------------
+
+void Product::productViewed(const Product & aProduct /* User & aUser*/)	{
+
+	//When a product is viewed, update the database
+	string strSQLCommand;
+
+	strSQLCommand = "UPDATE " /* + PRODUCT_TABLE + */ 
+		"SET products_viewed = products_viewed+1"
+		"WHERE products_id = '" /*+ GET_PRODUCT_ID + */ "'";
+
+}

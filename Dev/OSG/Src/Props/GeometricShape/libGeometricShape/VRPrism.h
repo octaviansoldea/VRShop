@@ -1,8 +1,6 @@
 #ifndef VR_PRISM_H
 #define VR_PRISM_H
 
-#include <osg/MatrixTransform>
-
 #include "VRAbstractGeomShape.h"
 
 #include "VRUntransformedPolygon3D.h"

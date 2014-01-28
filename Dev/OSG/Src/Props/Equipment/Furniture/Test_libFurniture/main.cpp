@@ -24,9 +24,10 @@
 #include "VRUntransformedPlate3D.h"
 #include "VRUntransformedPolygon2D.h"
 #include "VRUntransformedPolygon3D.h"
+#include "VRUntransformedSphere.h"
 #include "VRPlate3D.h"
 #include "VRCylinder.h"
-#include "VRUntransformedSphere.h"
+#include "VRSphere.h"
 
 #include "VRFurniture.h"
 #include "VRCupboard.h"
@@ -64,7 +65,7 @@ void createTable(const string & astrDBName) {
 	strCreateTable = prism.getSQLFormat();
 	dMgrParams.m_arrstrParams.push_back(strCreateTable);
 
-	UntransformedSphere sphere;
+	VR::Sphere sphere;
 	strCreateTable = sphere.getSQLFormat();
 	dMgrParams.m_arrstrParams.push_back(strCreateTable);
 
@@ -138,7 +139,7 @@ void populateTable(const string & astrDBName)	{
 void insertIntoDatabase_Sphere(const string & astrDBName)	{
 	DatabaseMgr & database = DatabaseMgr::Create(astrDBName.c_str(), DatabaseMgr::QSQLITE);
 
-	ref_ptr < UntransformedSphere > pSphere =  new UntransformedSphere;
+	ref_ptr < VR::Sphere > pSphere =  new VR::Sphere;
 	SphereParams aSphereParams;
 	pSphere->init(aSphereParams);
 	string strSQLCommand = pSphere->getSQLCommand();
@@ -476,7 +477,7 @@ int main(int argc, char *argv[])	{
 	insertIntoDatabase_Container(strDBName);
 	insertIntoDatabase_Cupboard(strDBName);
 
-	Furniture::loadAllFurnitures(pScene, strDBName);
+//	Furniture::loadAllFurnitures(pScene, strDBName);
 
 	//ref_ptr < Container > pContainer = new Container;
 	//pContainer->predefinedObject();

@@ -6,7 +6,7 @@
 #include "VRCylinder.h"
 #include "VRPlate3D.h"
 #include "VRPrism.h"
-#include "VRUntransformedSphere.h"
+#include "VRSphere.h"
 
 #include "VRAbstractObject.h"
 
@@ -28,6 +28,11 @@ AbstractObjectParams::AbstractObjectParams() :
 AbstractObject::AbstractObject() : m_bIsTargetPick(false)	{
 }
 
+//--------------------------------------------------------------
+
+AbstractObject::~AbstractObject()	{
+}
+
 //=======================================================================
 
 osg::ref_ptr<AbstractObject> AbstractObject::createInstance(const std::string & astrClassName)	{
@@ -42,7 +47,7 @@ osg::ref_ptr<AbstractObject> AbstractObject::createInstance(const std::string & 
 	if (astrClassName == "Prism")
 		return (new Prism);
 	if (astrClassName == "Sphere")
-		return (new UntransformedSphere);
+		return (new VR::Sphere);
 }
 
 //=======================================================================

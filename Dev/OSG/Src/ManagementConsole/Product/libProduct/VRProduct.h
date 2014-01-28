@@ -37,6 +37,8 @@ namespace VR	{
 		void removeProduct(const Product & aProduct);
 		void modifyProduct(const Product & aProduct);
 
+		void productViewed(const Product & aProduct /* User & aUser*/);
+
 	private:
 		ProductParams m_ProductParams;
 	};

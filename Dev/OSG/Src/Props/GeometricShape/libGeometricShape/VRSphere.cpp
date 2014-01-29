@@ -37,7 +37,6 @@ VR::Sphere::Sphere()	{
 VR::Sphere::Sphere(const SphereParams & aSphereParams)	{
 	m_SphereParams = aSphereParams;
 	m_pUntransformedSphere = new UntransformedSphere(m_SphereParams);
-//	init(m_SphereParams);
 	addChild(m_pUntransformedSphere);
 }
 
@@ -55,14 +54,14 @@ void VR::Sphere::init(const AbstractGeomShapeParams & aAbstractGeomShapeParams)	
 			   0,							0,							0,							1);
 
 	Matrix SphereMatrix =
-		matrix.scale(m_AbstractObjectParams.m_flLenX, m_AbstractObjectParams.m_flLenY, m_AbstractObjectParams.m_flLenZ)
+		matrix.scale(m_SphereParams.m_flLenX, m_SphereParams.m_flLenY, m_SphereParams.m_flLenZ)
 		*
 		matrix.rotate(
-			m_AbstractObjectParams.m_flAngleYZ, osg::X_AXIS,
-			m_AbstractObjectParams.m_flAngleXZ, osg::Y_AXIS,
-			m_AbstractObjectParams.m_flAngleXY, osg::Z_AXIS)
+			m_SphereParams.m_flAngleYZ, osg::X_AXIS,
+			m_SphereParams.m_flAngleXZ, osg::Y_AXIS,
+			m_SphereParams.m_flAngleXY, osg::Z_AXIS)
 		*
-		matrix.translate(m_AbstractObjectParams.m_flPosX, m_AbstractObjectParams.m_flPosY, m_AbstractObjectParams.m_flPosZ)
+		matrix.translate(m_SphereParams.m_flPosX, m_SphereParams.m_flPosY, m_SphereParams.m_flPosZ)
 	;
 	
 	setMatrix(SphereMatrix);

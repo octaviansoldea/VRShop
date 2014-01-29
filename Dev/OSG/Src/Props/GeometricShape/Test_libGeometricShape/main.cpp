@@ -188,6 +188,9 @@ void main_Prism(ref_ptr<Group> pScene)	{
 	prismP.m_flPosX = 0.0;
 	prismP.m_flPosY = 0.0;
 	prismP.m_flPosZ = 0.0;
+	prismP.m_flLenX = 1;
+	prismP.m_flLenY = 2;
+	prismP.m_flLenZ = 3;
 	prismP.m_arrflRGBA[0] = 0.85;
 	prismP.m_arrflRGBA[1] = 0.25;
 	prismP.m_arrflRGBA[2] = 0.15;
@@ -294,7 +297,7 @@ int main(int argc, char * argv[])	{
 	ref_ptr<Node> pAxes = osgDB::readNodeFile("../../../../Resources/Models3D/axes.osgt");
 	pScene->addChild(pAxes);
 
-	int nSelection = 16;
+	int nSelection = 12;
 	switch (nSelection)	{
 	case 1: main_UntransformedPlate2D_Color(pScene); break;
 	case 2: main_UntransformedPlate2D_Texture(pScene); break;

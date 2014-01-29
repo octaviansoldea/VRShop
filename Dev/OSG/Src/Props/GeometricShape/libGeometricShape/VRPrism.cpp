@@ -59,14 +59,14 @@ void Prism::init(const AbstractGeomShapeParams & aAbstractGeomShapeParams) {
 			   0,							0,							0,							1);
 
 	Matrix PrismMatrix =
-		matrix.scale(m_AbstractObjectParams.m_flLenX, m_AbstractObjectParams.m_flLenY, m_AbstractObjectParams.m_flLenZ)
+		matrix.scale(m_PrismParams.m_flLenX, m_PrismParams.m_flLenY, m_PrismParams.m_flLenZ)
 		*
 		matrix.rotate(
-			m_AbstractObjectParams.m_flAngleYZ, osg::X_AXIS,
-			m_AbstractObjectParams.m_flAngleXZ, osg::Y_AXIS,
-			m_AbstractObjectParams.m_flAngleXY, osg::Z_AXIS)
+			m_PrismParams.m_flAngleYZ, osg::X_AXIS,
+			m_PrismParams.m_flAngleXZ, osg::Y_AXIS,
+			m_PrismParams.m_flAngleXY, osg::Z_AXIS)
 		*
-		matrix.translate(m_AbstractObjectParams.m_flPosX, m_AbstractObjectParams.m_flPosY, m_AbstractObjectParams.m_flPosZ)
+		matrix.translate(m_PrismParams.m_flPosX, m_PrismParams.m_flPosY, m_PrismParams.m_flPosZ)
 	;
 	
 	setMatrix(PrismMatrix);

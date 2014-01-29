@@ -46,9 +46,9 @@ void Plate3D::init(const AbstractGeomShapeParams & aAbstractGeomShapeParams)	{
 		matrix.scale(m_Plate3DParams.m_flLenX, m_Plate3DParams.m_flLenY, m_Plate3DParams.m_flLenZ)
 		*
 		matrix.rotate(
-			m_AbstractObjectParams.m_flAngleYZ, osg::X_AXIS,
-			m_AbstractObjectParams.m_flAngleXZ, osg::Y_AXIS,
-			m_AbstractObjectParams.m_flAngleXY, osg::Z_AXIS)
+			m_Plate3DParams.m_flAngleYZ, osg::X_AXIS,
+			m_Plate3DParams.m_flAngleXZ, osg::Y_AXIS,
+			m_Plate3DParams.m_flAngleXY, osg::Z_AXIS)
 		*
 		matrix.translate(m_Plate3DParams.m_flPosX, m_Plate3DParams.m_flPosY, m_Plate3DParams.m_flPosZ)
 	;

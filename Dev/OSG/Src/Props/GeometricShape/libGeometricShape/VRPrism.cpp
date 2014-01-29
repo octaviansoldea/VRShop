@@ -19,17 +19,15 @@ string Prism::m_strSQLFormat =
 	"FOREIGN KEY (PrimitiveID) REFERENCES Primitive(PrimitiveID));";
 
 
-PrismParams::PrismParams() :
-m_flRadius(1.0), m_flHeight(1.0), m_nRes(5)
+PrismParams::PrismParams()
 {
 }
 
 //-----------------------------------------------------------------------
 
 Prism::Prism()	{
-	m_pUntransformedPolygon3D = new UntransformedPolygon3D();
-	const PrismParams aPrismParams;
-	init(aPrismParams);
+	m_pUntransformedPolygon3D = new UntransformedPolygon3D(m_PrismParams);
+//	init(m_PrismParams);
 	addChild(m_pUntransformedPolygon3D);
 }
 
@@ -44,7 +42,7 @@ Prism::Prism(const PrismParams & aPrismParams)	{
 //----------------------------------------------------------
 
 void Prism::setResolution(int anRes) {
-	m_pUntransformedPolygon3D->setResolution(anRes);
+	m_PrismParams.m_nRes = anRes;
 }
 
 //----------------------------------------------------------
@@ -52,7 +50,8 @@ void Prism::setResolution(int anRes) {
 void Prism::init(const AbstractGeomShapeParams & aAbstractGeomShapeParams) {
 	m_PrismParams = static_cast<const PrismParams&>(aAbstractGeomShapeParams);
 
-	setResolution(m_PrismParams.m_nRes);
+	m_pUntransformedPolygon3D->init(m_PrismParams);
+
 	Matrix matrix;
 	matrix.set(m_PrismParams.m_flRadius,	0,							0,							0,
 			   0,							m_PrismParams.m_flHeight,	0,							0,

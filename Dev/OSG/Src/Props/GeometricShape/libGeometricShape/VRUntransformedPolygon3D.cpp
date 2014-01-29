@@ -15,7 +15,22 @@ using namespace osg;
 using namespace VR;
 using namespace std;
 
+UntransformedPolygon3DParams::UntransformedPolygon3DParams() :
+m_flRadius(1.0),
+m_flHeight(1.0),
+m_nRes(5)	{
+}
+
+//==========================================================================
+
 UntransformedPolygon3D::UntransformedPolygon3D()	{
+}
+
+//--------------------------------------------------------------------------
+
+UntransformedPolygon3D::UntransformedPolygon3D(const UntransformedPolygon3DParams & aUntransformedPolygon3DParams)	{
+	m_UntransformedPolygon3DParams = aUntransformedPolygon3DParams;
+	init(m_UntransformedPolygon3DParams);
 }
 
 //--------------------------------------------------------------------------
@@ -24,7 +39,7 @@ void UntransformedPolygon3D::setColor(const vector < float > & aarrflColor)	{
 	Vec4 vec4(aarrflColor[0], aarrflColor[1], aarrflColor[2], aarrflColor[3]);
 	int nI;
 	int nGeodesNr = this->getNumChildren();
-	assert(nGeodesNr == 3);
+
 	for(nI = 0; nI < nGeodesNr; nI++) {
 		osg::Geode * pGeode = dynamic_cast< osg::Geode * >(getChild(nI));
 
@@ -106,8 +121,16 @@ void UntransformedPolygon3D::setTexture(const std::string & astrFileName) {
 
 //-----------------------------------------------------------------------------
 
-void UntransformedPolygon3D::setResolution(int anSidesNr) {
-	removeChildren(0, 3);
+void UntransformedPolygon3D::setResolution(int anRes) {
+	m_UntransformedPolygon3DParams.m_nRes = anRes;
+}
+
+//-----------------------------------------------------------------------------
+
+void UntransformedPolygon3D::init(const UntransformedPolygon3DParams & aUntransformedPolygon3DParams)	{
+	m_UntransformedPolygon3DParams = aUntransformedPolygon3DParams;
+
+	int anSidesNr = m_UntransformedPolygon3DParams.m_nRes;
 
 	int nPointsNr = 2*anSidesNr+2;
 	ref_ptr<Vec3Array> m_pPoints = new Vec3Array(nPointsNr);

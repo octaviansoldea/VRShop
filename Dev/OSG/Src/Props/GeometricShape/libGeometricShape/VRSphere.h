@@ -5,11 +5,7 @@
 #include "VRUntransformedSphere.h"
 
 namespace VR	{
-	struct SphereParams : public AbstractGeomShapeParams	{
-		float m_flRadius;
-		float m_nResPhi;
-		float m_nResTheta;
-
+	struct SphereParams : public AbstractGeomShapeParams, public UntransformedSphereParams	{
 		SphereParams();
 	};
 

@@ -6,11 +6,7 @@
 #include "VRUntransformedPolygon3D.h"
 
 namespace VR {
-	struct PrismParams : public AbstractGeomShapeParams {
-		float m_flRadius;
-		float m_flHeight;
-		int m_nRes;
-
+	struct PrismParams : public AbstractGeomShapeParams, public UntransformedPolygon3DParams {
 		PrismParams();
 	};
 

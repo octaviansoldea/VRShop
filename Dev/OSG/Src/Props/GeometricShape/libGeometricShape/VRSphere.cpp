@@ -22,22 +22,22 @@ string VR::Sphere::m_strSQLFormat =
 
 //-----------------------------------------------------------------------
 
-VR::SphereParams::SphereParams() :
-m_flRadius(1.0), m_nResPhi(35), m_nResTheta(35)	{
+VR::SphereParams::SphereParams()	{
 }
 
 //-----------------------------------------------------------------------
 
 VR::Sphere::Sphere()	{
-	m_pUntransformedSphere = new UntransformedSphere();
+	m_pUntransformedSphere = new UntransformedSphere(m_SphereParams);
 	addChild(m_pUntransformedSphere);
 }
 
 //----------------------------------------------------------
 
 VR::Sphere::Sphere(const SphereParams & aSphereParams)	{
-	m_pUntransformedSphere = new UntransformedSphere();
-	init(aSphereParams);
+	m_SphereParams = aSphereParams;
+	m_pUntransformedSphere = new UntransformedSphere(m_SphereParams);
+//	init(m_SphereParams);
 	addChild(m_pUntransformedSphere);
 }
 
@@ -46,6 +46,8 @@ VR::Sphere::Sphere(const SphereParams & aSphereParams)	{
 void VR::Sphere::init(const AbstractGeomShapeParams & aAbstractGeomShapeParams)	{
 	m_SphereParams = static_cast<const SphereParams&>(aAbstractGeomShapeParams);
 
+	setResolution(m_SphereParams.m_nResPhi);
+	
 	Matrix matrix;
 	matrix.set(m_SphereParams.m_flRadius,	0,							0,							0,
 			   0,							m_SphereParams.m_flRadius,	0,							0,

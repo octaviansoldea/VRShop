@@ -36,7 +36,8 @@ VR::Sphere::Sphere()	{
 
 VR::Sphere::Sphere(const SphereParams & aSphereParams)	{
 	m_SphereParams = aSphereParams;
-	m_pUntransformedSphere = new UntransformedSphere(m_SphereParams);
+	m_pUntransformedSphere = new UntransformedSphere();
+	init(m_SphereParams);
 	addChild(m_pUntransformedSphere);
 }
 

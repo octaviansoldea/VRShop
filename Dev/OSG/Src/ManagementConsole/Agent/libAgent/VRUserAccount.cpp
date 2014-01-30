@@ -1,3 +1,5 @@
+//  CreateDBCommand($table, $data, $action = 'insert', $parameters = '', $link = 'db_link')
+
 #include "VRDatabaseMgr.h"
 
 #include "VRUserAccount.h"
@@ -21,18 +23,26 @@ m_strPassword(astrPassword)
 //------------------------------------------------------------------------------
 
 void UserAccount::addUserAccount()	{
+	QString strDB = "../../../Databases/UserAccounts.db";
+	DatabaseMgr & database = VR::DatabaseMgr::Create(strDB,DatabaseMgr::QSQLITE);
+
+	DatabaseMgrParams dMgrParams;
 
 	/* FIRST CHECK IF THE USER ACCOUNT WITH THE SAME NAME ALREADY EXISTS*/
+	//Encrypt password
+	//Add Date of the insertion
+	//Validate E-mail by sending an E-mail that needs to be responded
 
+	string strCheckUserName = "SELECT UserName FROM UserAccounts "
+		"WHERE UserName = '" + m_strUserName + "'";
+
+	//If SELECT returns a valid cell, report that the username has to be changed
+
+	//When OK, insert the user into the DB
 	string strUserAccountQuery = "INSERT INTO UserAccounts VALUES ('"
 		+ m_strUserName + "', '" + m_strPassword + "')";
 
-	DatabaseMgrParams dMgrParams;
 	dMgrParams.m_arrstrParams.push_back(strUserAccountQuery);
-
-	QString strDB = "../../../Databases/UserAccounts.db";
-
-	DatabaseMgr & database = VR::DatabaseMgr::Create(strDB,DatabaseMgr::QSQLITE);
 
 	database.executeQuery(dMgrParams);
 }

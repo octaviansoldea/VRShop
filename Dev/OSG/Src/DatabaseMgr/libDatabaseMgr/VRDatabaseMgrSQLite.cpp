@@ -25,7 +25,7 @@ QString DatabaseMgrSQLite::getDriverName() const {
 
 DatabaseMgrSQLite::DatabaseMgrSQLite(const QString & aqstrDBPathName) :
 DatabaseMgr(aqstrDBPathName) {
-	bool bOk = connect2SQLDatabase();
+	bool bOk = QSqlDatabase::connectionNames().isEmpty() ? connect2SQLDatabase() : true;
 	if(bOk == false) {
 		printError("Could not connect to SQLite database");
 		exit(-1);
@@ -68,7 +68,7 @@ bool DatabaseMgrSQLite::executeQuery(const DatabaseMgrParams & aDatabaseMgrParam
 		string strMessage = "Error opening: " + lastError().text().toStdString();
 		printWarning(strMessage.c_str());
 	}
-//	disconnectFromSQLDatabase();
+	disconnectFromSQLDatabase();
 	return bRes;
 }
 
@@ -107,7 +107,7 @@ void DatabaseMgrSQLite::fillPrimitiveTable(const DatabaseMgrParams & aDatabaseMg
 				string strError = "Item not selected.";
 				printError(strError.c_str());
 
-//				disconnectFromSQLDatabase();
+				disconnectFromSQLDatabase();
 				return;
 			}
 		}
@@ -115,7 +115,7 @@ void DatabaseMgrSQLite::fillPrimitiveTable(const DatabaseMgrParams & aDatabaseMg
 		string strMessage = "Error opening: " + lastError().text().toStdString();
 		printWarning(strMessage.c_str());
 	}
-//	disconnectFromSQLDatabase();
+	disconnectFromSQLDatabase();
 }
 
 //=============================================================================================
@@ -176,7 +176,7 @@ string DatabaseMgrSQLite::readFromDB(string & astrCommand)	{
 				strResult += strTemp;
 			}
 		}
-//		disconnectFromSQLDatabase();
+		disconnectFromSQLDatabase();
 
 		return strResult;
 	} else {

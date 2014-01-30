@@ -14,8 +14,10 @@ m_strProductName(""),
 m_nProductCode(NULL),
 m_strProductDescription(""),
 m_strProductShortDescription(""),
-m_strProductManufacturer(""),
+m_nManufacturerID(NULL),
 m_strManufacturerOrigin(""),
+m_strDateAdded(""),
+m_strDateLastModified(""),
 m_nProductUnit(NULL),
 m_flPricePerUnit(NULL),
 m_flQuantity(NULL),
@@ -43,13 +45,14 @@ void Product::createProductDB() const	{
 	vecstrDBParams.push_back("ProductName TEXT");
 	vecstrDBParams.push_back("ProductDescription TEXT");
 	vecstrDBParams.push_back("ProductShortDescription TEXT");
-	vecstrDBParams.push_back("ProductManufacturer TEXT");
+	vecstrDBParams.push_back("ManufacturerID INTEGER");
 	vecstrDBParams.push_back("ManufacturerOrigin TEXT");
 	vecstrDBParams.push_back("ProductUnit TEXT");
 	vecstrDBParams.push_back("PricePerUnit TEXT");
 	vecstrDBParams.push_back("Quantity TEXT");
 	vecstrDBParams.push_back("TaxRate TEXT");
 	vecstrDBParams.push_back("Currency TEXT");
+	vecstrDBParams.push_back("FOREIGN KEY (ManufacturerID) REFERENCES Manufacturer(ManufacturerID)");
 
 	DatabaseMgrParams dMgrP;
 	dMgrP.m_strTableName = "Products";
@@ -63,7 +66,7 @@ void Product::createProductDB() const	{
 
 //------------------------------------------------------------------------------
 
-void Product::productViewed(const Product & aProduct /* User & aUser*/)	{
+void Product::productViewed(const Product & aProduct /*, User & aUser*/)	{
 
 	//When a product is viewed, update the database
 	string strSQLCommand;

@@ -10,8 +10,10 @@ namespace VR	{
 		unsigned long m_nProductCode;
 		std::string m_strProductDescription;
 		std::string m_strProductShortDescription;
-		std::string m_strProductManufacturer;
+		unsigned long m_nManufacturerID;
 		std::string m_strManufacturerOrigin;
+		std::string m_strDateAdded;
+		std::string m_strDateLastModified;
 		int m_nProductUnit;
 		float m_flPricePerUnit;
 		float m_flQuantity;
@@ -30,7 +32,7 @@ namespace VR	{
 		Product();
 		Product(const ProductParams & aProductParams);
 
-		void createProductDB() const;
+		void createProductDB() const;	//Let be Manufacturers in a separate table
 
 		void newProduct(const Product & aProduct);
 		void getProduct(const Product & aProduct);

@@ -9,6 +9,8 @@ namespace VR {
 		Client();
 		virtual ~Client();
 
+		// Track client's activity: client_ID, access_date/time, exit_date/time, products_observed
+
 		void pay();
 
 		void openAccount();

@@ -70,7 +70,7 @@ void main_Plate3D(ref_ptr<Group> pScene)	{
 	p3DP.m_flLenZ = 4.0;
 	p3DP.m_flPosX = 0.0;
 	p3DP.m_flPosY = 0.0;
-	p3DP.m_flPosZ = 8.0;
+	p3DP.m_flPosZ = 0.0;
 
 	p3DP.m_arrflRGBA[0] = 0.85;
 	p3DP.m_arrflRGBA[1] = 0.85;
@@ -168,6 +168,9 @@ void main_Cylinder(ref_ptr<Group> pScene)	{
 	cylinderP.m_flPosX = 0.0;
 	cylinderP.m_flPosY = 0.0;
 	cylinderP.m_flPosZ = 0.0;
+	cylinderP.m_flLenX = 1.0;
+	cylinderP.m_flLenY = 2.0;
+	cylinderP.m_flLenZ = 3.0;
 	cylinderP.m_arrflRGBA[0] = 0.85;
 	cylinderP.m_arrflRGBA[1] = 0.25;
 	cylinderP.m_arrflRGBA[2] = 0.15;
@@ -183,14 +186,14 @@ void main_Cylinder(ref_ptr<Group> pScene)	{
 void main_Prism(ref_ptr<Group> pScene)	{
 	PrismParams prismP;
 	prismP.m_flRadius = 1.0;
-	prismP.m_flHeight = 3.0;
-	prismP.m_nRes = 50;
+	prismP.m_flHeight = 1.0;
+	prismP.m_nRes = 4;
 	prismP.m_flPosX = 0.0;
 	prismP.m_flPosY = 0.0;
 	prismP.m_flPosZ = 0.0;
-	prismP.m_flLenX = 1;
-	prismP.m_flLenY = 2;
-	prismP.m_flLenZ = 3;
+	//prismP.m_flLenX = 1;
+	//prismP.m_flLenY = 2;
+	//prismP.m_flLenZ = 3;
 	prismP.m_arrflRGBA[0] = 0.85;
 	prismP.m_arrflRGBA[1] = 0.25;
 	prismP.m_arrflRGBA[2] = 0.15;
@@ -204,17 +207,20 @@ void main_Prism(ref_ptr<Group> pScene)	{
 //----------------------------------------------------------------------
 
 void main_Sphere_Color(ref_ptr<Group> pScene)	{
-	UntransformedSphereParams sP;
+	SphereParams sP;
 	sP.m_nResPhi = sP.m_nResTheta = 50;
+	sP.m_flLenX = 1;
+	sP.m_flLenY = 2;
+	sP.m_flLenZ = 3;
 
-	ref_ptr<UntransformedSphere> pSphere = new UntransformedSphere(sP);
 	vector <float> arrflColor;
+	arrflColor.push_back(0.85);
+	arrflColor.push_back(0.15);
+	arrflColor.push_back(0.25);
 	arrflColor.push_back(1.0);
-	arrflColor.push_back(0);
-	arrflColor.push_back(0);
-	arrflColor.push_back(1.0);
+	sP.m_arrflRGBA = arrflColor;
 
-	pSphere->setColor(arrflColor);
+	ref_ptr<VR::Sphere> pSphere = new VR::Sphere(sP);
 	pScene->addChild(pSphere);
 }
 

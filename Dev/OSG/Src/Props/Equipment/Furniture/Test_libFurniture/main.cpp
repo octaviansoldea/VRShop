@@ -457,7 +457,7 @@ void insertIntoDatabase_Cupboard(const string & astrDBName)	{
 
 //====================================================
 
-int main(int argc, char *argv[])	{
+int main1(int argc, char *argv[])	{
 	QApplication app(argc,argv);
 
 	ref_ptr<Group> pScene = new Group;
@@ -467,34 +467,58 @@ int main(int argc, char *argv[])	{
 	string strDBName;
 	
 	strDBName = "../../../../Databases/Equipment.db";
-	//createTable(strDBName);
-	//populateTable(strDBName);
+	createTable(strDBName);
+	populateTable(strDBName);
 
-	//insertIntoDatabase_Sphere(strDBName);
-	//insertIntoDatabase_Cylinder(strDBName);
-	//insertIntoDatabase_Plate3D(strDBName);
+	insertIntoDatabase_Sphere(strDBName);
+	insertIntoDatabase_Cylinder(strDBName);
+	insertIntoDatabase_Plate3D(strDBName);
 
-	//insertIntoDatabase_Container(strDBName);
-	//insertIntoDatabase_Cupboard(strDBName);
+	insertIntoDatabase_Container(strDBName);
+	insertIntoDatabase_Cupboard(strDBName);
 
-//	Furniture::loadAllFurnitures(pScene, strDBName);
+	Furniture::loadAllFurnitures(pScene, strDBName);
+
+	osgViewer::Viewer viewer;
+	viewer.setSceneData(pScene);
+
+	return viewer.run();
+}
+
+//--------------------------------------------------------------------------------------
+
+int main2(int argc, char * argv[])	{
+	QApplication app(argc,argv);
+
+	ref_ptr<Group> pScene = new Group;
+	ref_ptr<Node> pAxes = osgDB::readNodeFile("../../../../Resources/Models3D/axes.osgt");
+	pScene->addChild(pAxes);
 
 	ref_ptr < Container > pContainer = new Container;
 	pContainer->predefinedObject();
 	pContainer->removePart(3);
-//	pScene->addChild(pContainer);
+	ref_ptr<AbstractObject> pChild = dynamic_cast<AbstractObject*>(pContainer->getChild(3));
+	pContainer->removePart(pChild);
 
-	vector <ref_ptr<AbstractObject> > arrpChildren =
-	pContainer->splitObject2Children();
+	vector <ref_ptr<AbstractObject> > arrpChildren;
+	pContainer->splitObject2Children(arrpChildren);
 
-	for (int i=0;i<arrpChildren.size();i++)	{
-		pScene->addChild(static_cast<ref_ptr<AbstractObject>>(arrpChildren[i]));
+	int nI;
+	for (nI=0;nI<arrpChildren.size();nI++)	{
+		pScene->addChild(static_cast<ref_ptr<AbstractObject>>(arrpChildren[nI]));
 	}
 
 	osgViewer::Viewer viewer;
 	viewer.setSceneData(pScene);
 
 	return viewer.run();
+}
 
-//	return (0);
+//======================================================================
+
+int main(int argc, char * argv[])	{
+//	main1(argc, argv);
+	main2(argc, argv);
+
+	return (0);
 }

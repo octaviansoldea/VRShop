@@ -56,19 +56,15 @@ void Furniture::removePart(unsigned int anPartNo)	{
 
 //-----------------------------------------------------------------------
 
-//void Furniture::removePart(ref_ptr < AbstractObject > apAbstractObject)	{
-//	unsigned int nPartNo;
-//
-//	vector <ref_ptr<Node>>::const_iterator it = _children.begin();
-//	for (it; it != _children.end(); it++)	{
-//		if (*it==apAbstractObject)	{
-//			nPartNo == it - _children.begin();
-//			removePart(nPartNo);
-//		} else {
-//			return;
-//		}
-//	}
-//}
+void Furniture::removePart(ref_ptr < AbstractObject > &apAbstractObject)	{
+	vector <ref_ptr<Node>>::const_iterator it = _children.begin();
+	for (it; it != _children.end(); it++)	{
+		if (*it==apAbstractObject)	{
+			removeChild(*it);
+			return;
+		} 
+	} 
+}
 
 //-----------------------------------------------------------------------
 
@@ -104,8 +100,8 @@ void Furniture::loadAllFurnitures(ref_ptr<Group> apScene, const string & astrDat
 
 //-----------------------------------------------------------------------
 
-vector< osg::ref_ptr<AbstractObject>> Furniture::splitObject2Children()	{
-	vector< ref_ptr<AbstractObject>> aarrpChildren;
+void Furniture::splitObject2Children(std::vector< osg::ref_ptr<AbstractObject> > &aarrpChildren)	{
+	aarrpChildren.resize(0);
 
 	int nI;
 	ref_ptr<AbstractObject> pAbstractObject;
@@ -114,5 +110,4 @@ vector< osg::ref_ptr<AbstractObject>> Furniture::splitObject2Children()	{
 		pAbstractObject->setIsTargetPick(true);
 		aarrpChildren.push_back(pAbstractObject);
 	}
-	return aarrpChildren;
 }

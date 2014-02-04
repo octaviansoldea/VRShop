@@ -151,8 +151,8 @@ void main_UntransformedPolygon3D_Color(ref_ptr<Group> pScene)	{
 //----------------------------------------------------------------------
 
 void main_UntransformedPolygon3D_Texture(ref_ptr<Group> pScene)	{
-	ref_ptr<UntransformedPolygon3D> pUntransformedPolygon3D = new UntransformedPolygon3D();
-
+	UntransformedPolygon3DParams uPP;
+	ref_ptr<UntransformedPolygon3D> pUntransformedPolygon3D = new UntransformedPolygon3D(uPP);
 	pUntransformedPolygon3D->setTexture("../../../../Resources/Textures/lz.rgb");
 
 	pScene->addChild(pUntransformedPolygon3D);
@@ -164,7 +164,7 @@ void main_Cylinder(ref_ptr<Group> pScene)	{
 	CylinderParams cylinderP;
 	cylinderP.m_flRadius = 1.0;
 	cylinderP.m_flHeight = 3.0;
-	cylinderP.m_nRes = 50;
+	cylinderP.m_nRes = 100;
 	cylinderP.m_flPosX = 0.0;
 	cylinderP.m_flPosY = 0.0;
 	cylinderP.m_flPosZ = 0.0;
@@ -175,6 +175,7 @@ void main_Cylinder(ref_ptr<Group> pScene)	{
 	cylinderP.m_arrflRGBA[1] = 0.25;
 	cylinderP.m_arrflRGBA[2] = 0.15;
 	cylinderP.m_arrflRGBA[3] = 1.0;
+	cylinderP.m_strFileNameTexture = "../../../../Resources/Textures/lz.rgb";
 
 	ref_ptr<VR::Cylinder> pCylinder = new VR::Cylinder(cylinderP);
 
@@ -303,7 +304,7 @@ int main(int argc, char * argv[])	{
 	ref_ptr<Node> pAxes = osgDB::readNodeFile("../../../../Resources/Models3D/axes.osgt");
 	pScene->addChild(pAxes);
 
-	int nSelection = 12;
+	int nSelection = 11;
 	switch (nSelection)	{
 	case 1: main_UntransformedPlate2D_Color(pScene); break;
 	case 2: main_UntransformedPlate2D_Texture(pScene); break;

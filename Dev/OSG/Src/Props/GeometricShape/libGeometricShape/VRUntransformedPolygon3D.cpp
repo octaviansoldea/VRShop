@@ -87,7 +87,8 @@ void UntransformedPolygon3D::setTexture(const std::string & astrFileName) {
 		ref_ptr<StateSet> pState = pGeometry->getOrCreateStateSet();
 		pState->setTextureAttributeAndModes(0, pTexture, StateAttribute::ON);
 		pState->setTextureAttributeAndModes(0, pTexMat, StateAttribute::ON);
-		pState->setMode(GL_LIGHTING, StateAttribute::OFF);
+
+		pState->setMode(GL_LIGHTING, StateAttribute::ON);
 	}
 
 	dbStep *= 2 * PI;
@@ -103,7 +104,6 @@ void UntransformedPolygon3D::setTexture(const std::string & astrFileName) {
 			(*pTexCoords)[nJ].set(0.5 * (1.0 + cos(dbStep * nJ)), 0.5 * (1.0 + sin(dbStep * nJ)));
 		}
 		pGeometry->setTexCoordArray(0,pTexCoords);
-		pGeometry->setTexCoordArray(0,pTexCoords);
 
 		ref_ptr<Vec4Array> pColors = new Vec4Array(1);
 		(*pColors)[0].set(1.0,1.0,1.0,1.0);
@@ -114,8 +114,6 @@ void UntransformedPolygon3D::setTexture(const std::string & astrFileName) {
 		pState->setTextureAttributeAndModes(0, pTexture, StateAttribute::ON);
 		pState->setTextureAttributeAndModes(0, pTexMat, StateAttribute::ON);
 		pState->setMode(GL_LIGHTING, StateAttribute::OFF);
-
-
 	}
 }
 

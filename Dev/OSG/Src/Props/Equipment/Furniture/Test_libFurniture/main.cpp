@@ -467,21 +467,29 @@ int main(int argc, char *argv[])	{
 	string strDBName;
 	
 	strDBName = "../../../../Databases/Equipment.db";
-	createTable(strDBName);
-	populateTable(strDBName);
+	//createTable(strDBName);
+	//populateTable(strDBName);
 
 	//insertIntoDatabase_Sphere(strDBName);
 	//insertIntoDatabase_Cylinder(strDBName);
 	//insertIntoDatabase_Plate3D(strDBName);
 
-	insertIntoDatabase_Container(strDBName);
-	insertIntoDatabase_Cupboard(strDBName);
+	//insertIntoDatabase_Container(strDBName);
+	//insertIntoDatabase_Cupboard(strDBName);
 
 //	Furniture::loadAllFurnitures(pScene, strDBName);
 
-	//ref_ptr < Container > pContainer = new Container;
-	//pContainer->predefinedObject();
-	//pScene->addChild(pContainer);
+	ref_ptr < Container > pContainer = new Container;
+	pContainer->predefinedObject();
+	pContainer->removePart(3);
+//	pScene->addChild(pContainer);
+
+	vector <ref_ptr<AbstractObject> > arrpChildren =
+	pContainer->splitObject2Children();
+
+	for (int i=0;i<arrpChildren.size();i++)	{
+		pScene->addChild(static_cast<ref_ptr<AbstractObject>>(arrpChildren[i]));
+	}
 
 	osgViewer::Viewer viewer;
 	viewer.setSceneData(pScene);

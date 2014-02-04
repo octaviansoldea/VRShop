@@ -2,7 +2,6 @@
 
 #include "VRAbstractGeomShape.h"
 
-
 #include "VRDatabaseMgr.h"
 #include "VRCupboard.h"
 #include "VRContainer.h"
@@ -37,20 +36,39 @@ Furniture::~Furniture()	{
 
 //-----------------------------------------------------------------------
 
-void Furniture::addPart(ref_ptr < Node > apNode) {
-	addChild(apNode);
+void Furniture::addPart(ref_ptr < AbstractObject > apAbstractObject) {
+	addChild(apAbstractObject);
 
-	AbstractGeomShape * aAbstractGeomShape = dynamic_cast<AbstractGeomShape*>(apNode.get());
-	string strCommand = aAbstractGeomShape->getSQLCommand();
+	string strCommand = apAbstractObject->getSQLCommand();
 
 	m_arrSQLCommandLines.push_back(strCommand);
 }
 
 //-----------------------------------------------------------------------
 
-void Furniture::removePart(ref_ptr < Node > apNode) {
-	removeChild(apNode);
+void Furniture::removePart(unsigned int anPartNo)	{
+	if (anPartNo >= getNumChildren())
+		return;
+
+	ref_ptr<AbstractObject> pFurniturePart = dynamic_cast<AbstractObject*>(getChild(anPartNo));
+	removeChild(pFurniturePart);
 }
+
+//-----------------------------------------------------------------------
+
+//void Furniture::removePart(ref_ptr < AbstractObject > apAbstractObject)	{
+//	unsigned int nPartNo;
+//
+//	vector <ref_ptr<Node>>::const_iterator it = _children.begin();
+//	for (it; it != _children.end(); it++)	{
+//		if (*it==apAbstractObject)	{
+//			nPartNo == it - _children.begin();
+//			removePart(nPartNo);
+//		} else {
+//			return;
+//		}
+//	}
+//}
 
 //-----------------------------------------------------------------------
 
@@ -85,3 +103,16 @@ void Furniture::loadAllFurnitures(ref_ptr<Group> apScene, const string & astrDat
 }
 
 //-----------------------------------------------------------------------
+
+vector< osg::ref_ptr<AbstractObject>> Furniture::splitObject2Children()	{
+	vector< ref_ptr<AbstractObject>> aarrpChildren;
+
+	int nI;
+	ref_ptr<AbstractObject> pAbstractObject;
+	for (nI=0;nI<this->getNumChildren();nI++)	{
+		pAbstractObject = dynamic_cast<AbstractObject *>(getChild(nI));
+		pAbstractObject->setIsTargetPick(true);
+		aarrpChildren.push_back(pAbstractObject);
+	}
+	return aarrpChildren;
+}

@@ -514,11 +514,32 @@ int main2(int argc, char * argv[])	{
 	return viewer.run();
 }
 
+//----------------------------------------------------------------------------------------
+
+int main3(int argc, char * argv[])	{
+	QApplication app(argc,argv);
+
+	ref_ptr<Group> pScene = new Group;
+	ref_ptr<Node> pAxes = osgDB::readNodeFile("../../../../Resources/Models3D/axes.osgt");
+	pScene->addChild(pAxes);
+
+	ref_ptr < Container > pContainer = new Container;
+	pContainer->predefinedObject();
+
+	pScene->addChild(pContainer);
+
+	osgViewer::Viewer viewer;
+	viewer.setSceneData(pScene);
+
+	return viewer.run();
+}
+
 //======================================================================
 
 int main(int argc, char * argv[])	{
 //	main1(argc, argv);
-	main2(argc, argv);
+//	main2(argc, argv);
+	main3(argc, argv);
 
 	return (0);
 }

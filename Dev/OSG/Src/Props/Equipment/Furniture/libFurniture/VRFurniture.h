@@ -14,7 +14,7 @@ namespace VR	{
 	public:
 		Furniture();
 		Furniture(const FurnitureParams & aFurnitureParams);
-        
+
 		virtual ~Furniture() = 0;
 
 		virtual void init(const FurnitureParams & aFurnitureParams) = 0;
@@ -23,7 +23,6 @@ namespace VR	{
 		virtual void removePart(unsigned int anPartNo);
 		virtual void removePart(osg::ref_ptr < AbstractObject > &apAbstractObject);
 
-		
 		void splitObject2Children(std::vector< osg::ref_ptr<AbstractObject> > &aarrpChildren);
 
 		virtual std::string getSQLCommand() const;

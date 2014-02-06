@@ -38,7 +38,7 @@ int main(int argc, char * argv[])	{
 	osg::ref_ptr<osg::Group> root = new osg::Group;
 
 	root->addChild(new VR::Grid);
-//	root->addChild(pModel3D.get());
+	root->addChild(pModel3D);
 	root->addChild(axes);
 
 	osgViewer::Viewer viewer;

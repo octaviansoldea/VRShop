@@ -6,6 +6,7 @@
 
 #include "ui_VRShopBuilder_GUI.h"
 
+class CameraController;
 class Grid;
 
 namespace VR	{
@@ -13,6 +14,7 @@ namespace VR	{
 		Q_OBJECT
 	public:
 		ShopBuilder_GUI();
+		~ShopBuilder_GUI();
 		ShopBuilder m_ShopBuilder;
 
 	private:
@@ -20,6 +22,8 @@ namespace VR	{
 
 		QString openDialog(const char * apchDBName);
 		QString saveDialog(const char * apchDBName);
+
+		CameraController * m_pCameraController;
 
 	public slots:
 		void slotNewProject();
@@ -40,16 +44,11 @@ namespace VR	{
 		void slotSetDirectionOfTranslation(const QString & astrText);
 		void slotSetTranslateRelativeTo(const QString & astrText);
 		void slotSetCenterOfRotation(const QString & astrText);
-		void slotSetPredefinedViewport(const QString & astrText);
 
 		void slotSetRotation();
 		void slotSetScaling();
 		void slotSetShearing();
 		void slotSetPosition();
-		void slotSetDirection();
-
-		void slotSetHomePosition();
-		void slotSetHomeDirection();
 
 		void slotModifySceneActions();
 		void slotModifyProductSettings();

@@ -13,8 +13,9 @@
 #include "VRInsertNewItem_GUI.h"
 #include "VRDuplicateItem_GUI.h"
 #include "VRSaveAs_GUI.h"
-
+#include "VRCameraController.h"
 #include "VRShopBuilder_GUI.h"
+#include "VRKeyboardMouseManipulatorShopEditor.h"
 
 using namespace osg;
 using namespace Ui;
@@ -29,11 +30,43 @@ ShopBuilder_GUI::ShopBuilder_GUI()	{
 
 	m_ShopBuilder.init(m_pOSGQTWidget, m_pTreeView);
 
+	KeyboardMouseManipulatorShopEditor * pKeyboardMouseManipulatorShopEditor = 
+		dynamic_cast<KeyboardMouseManipulatorShopEditor *>(m_pOSGQTWidget->getCameraManipulator());
+
+	try{
+		typeid(*pKeyboardMouseManipulatorShopEditor);
+
+		m_pCameraController = new CameraController(
+			m_p_ComboBox_PredefinedViewport,
+			m_p_DoubleSpinBox_CameraPositionX,
+			m_p_DoubleSpinBox_CameraPositionY,
+			m_p_DoubleSpinBox_CameraPositionZ,
+			m_p_PushButton_SetCameraPositionDefault,
+			m_p_PushButton_CameraPosition,
+			m_p_DoubleSpinBox_CameraHeadingDirectionX,
+			m_p_DoubleSpinBox_CameraHeadingDirectionY,
+			m_p_DoubleSpinBox_CameraHeadingDirectionZ,
+			m_p_PushButton_SetCameraHeadingDirectionDefault,
+			m_p_PushButton_CameraHeadingDirection,
+			pKeyboardMouseManipulatorShopEditor);
+
+		m_pCameraController->slotUpdateCameraGUI();
+
+	} catch(std::bad_typeid & bt) {
+		m_pCameraController = 0;
+		cerr << bt.what() << endl;
+	}
+
 	m_pOSGQTWidget->show();
 
 	buildConnections();
 }
 
+//=========================================================================================
+
+ShopBuilder_GUI::~ShopBuilder_GUI() {
+	delete m_pCameraController;
+}
 
 //=========================================================================================
 
@@ -68,24 +101,9 @@ void ShopBuilder_GUI::buildConnections() {
 	connect(m_p_DoubleSpinBox_ShearingY,SIGNAL(valueChanged(double)),this,SLOT(slotSetShearing()));
 	connect(m_p_DoubleSpinBox_ShearingZ,SIGNAL(valueChanged(double)),this,SLOT(slotSetShearing()));
 
-	connect(m_p_DoubleSpinBox_CameraPositionX,SIGNAL(valueChanged(double)),this,SLOT(slotSetPosition()));
-	connect(m_p_DoubleSpinBox_CameraPositionY,SIGNAL(valueChanged(double)),this,SLOT(slotSetPosition()));
-	connect(m_p_DoubleSpinBox_CameraPositionZ,SIGNAL(valueChanged(double)),this,SLOT(slotSetPosition()));
-
-	connect(m_p_DoubleSpinBox_CameraDirectionX,SIGNAL(valueChanged(double)),this,SLOT(slotSetDirection()));
-	connect(m_p_DoubleSpinBox_CameraDirectionY,SIGNAL(valueChanged(double)),this,SLOT(slotSetDirection()));
-	connect(m_p_DoubleSpinBox_CameraDirectionZ,SIGNAL(valueChanged(double)),this,SLOT(slotSetDirection()));
-
 	connect(m_p_ComboBox_DirectionOfTranslation,SIGNAL(currentTextChanged(const QString &)),this,SLOT(slotSetDirectionOfTranslation(const QString &)));
 	connect(m_p_ComboBox_TranslateRelativeTo,SIGNAL(currentTextChanged(const QString &)),this,SLOT(slotSetTranslateRelativeTo(const QString &)));
 	connect(m_p_ComboBox_CenterOfRotation,SIGNAL(currentTextChanged(const QString &)),this,SLOT(slotSetCenterOfRotation(const QString &)));
-
-	connect(m_p_ComboBox_PredefinedViewport,SIGNAL(currentTextChanged(const QString &)),this,SLOT(slotSetPredefinedViewport(const QString &)));
-
-	connect(m_p_PushButton_SetHomePosition,SIGNAL(clicked()),this,SLOT(slotSetHomePosition()));
-	connect(m_p_PushButton_HomePosition,SIGNAL(clicked()),this,SLOT(slotSetHomePosition()));
-	connect(m_p_PushButton_SetHomeDirection,SIGNAL(clicked()),this,SLOT(slotSetHomeDirection()));
-	connect(m_p_PushButton_HomeDirection,SIGNAL(clicked()),this,SLOT(slotSetHomeDirection()));
 
 	connect(m_p_PushButton_ModifyScene_AddNewItem,SIGNAL(clicked()),this,SLOT(slotModifySceneActions()));
 	connect(m_p_PushButton_ModifyScene_EditItem,SIGNAL(clicked()),this,SLOT(slotModifySceneActions()));
@@ -275,12 +293,6 @@ void ShopBuilder_GUI::slotSetRotation()	{
 
 //---------------------------------------------------------------------------------------
 
-void ShopBuilder_GUI::slotSetPredefinedViewport(const QString & astrText)	{
-	std::string strText = astrText.toStdString();
-}
-
-//---------------------------------------------------------------------------------------
-
 void ShopBuilder_GUI::slotSetScaling() {
 	QDoubleSpinBox * pQDoubleSpinBox = dynamic_cast<QDoubleSpinBox*>(sender());
 }
@@ -295,37 +307,6 @@ void ShopBuilder_GUI::slotSetShearing()	{
 
 void ShopBuilder_GUI::slotSetPosition() {
 	QDoubleSpinBox * pQDoubleSpinBox = dynamic_cast<QDoubleSpinBox*>(sender());
-}
-
-//---------------------------------------------------------------------------------------
-
-void ShopBuilder_GUI::slotSetDirection() {
-	QDoubleSpinBox * pQDoubleSpinBox = dynamic_cast<QDoubleSpinBox*>(sender());
-}
-
-//---------------------------------------------------------------------------------------
-
-void ShopBuilder_GUI::slotSetHomePosition()	{
-	QPushButton * pPushButton = dynamic_cast<QPushButton*>(sender());
-	if(pPushButton == m_p_PushButton_SetHomePosition)	{
-	}
-	else if	(pPushButton == m_p_PushButton_HomePosition)	{
-	}
-}
-
-//---------------------------------------------------------------------------------------
-
-void ShopBuilder_GUI::slotSetHomeDirection()	{
-	QPushButton * pPushButton = dynamic_cast<QPushButton*>(sender());
-	if(pPushButton == m_p_PushButton_SetHomeDirection)	{
-		return;
-	}
-	if	(pPushButton == m_p_PushButton_HomeDirection)	{
-		return;
-	}
-	else	{
-		return;
-	}
 }
 
 //---------------------------------------------------------------------------------------

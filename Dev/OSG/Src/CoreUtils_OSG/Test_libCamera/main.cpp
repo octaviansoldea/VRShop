@@ -1,7 +1,7 @@
 #include <osgViewer/Viewer>
 #include <osgDB/readFile>
 
-#include "VRKeyboardMouseManipulator.h"
+#include "VRKeyboardMouseManipulatorShopEditor.h"
 
 using namespace VR;
 
@@ -18,7 +18,7 @@ int main(int argc, char * argv[])	{
 	osgViewer::Viewer viewer;
 	viewer.setUpViewInWindow(200, 200, 1000, 800);
 	viewer.setSceneData(root.get());
-	viewer.setCameraManipulator(new VR::KeyboardMouseManipulator);
+	viewer.setCameraManipulator(new VR::KeyboardMouseManipulatorShopEditor);
 
 	return viewer.run();
 }

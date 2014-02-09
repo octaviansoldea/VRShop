@@ -1,26 +1,21 @@
-#include "StringManipulation.h"
-
 #include <string>
 
 #include <QString>
 #include <QVariant>
 #include <QVBoxLayout>
 
+#include <osgDB/ReadFile>
+
+#include "OSGQT_Widget.h"
+#include "StringManipulation.h"
+#include "VRDatabaseMgr.h"
 #include "VRFurniture.h"
 #include "VRPlate3D.h"
 #include "VRCylinder.h"
 #include "VRSphere.h"
-
 #include "VRPickAndDragHandler.h"
-#include "VRKeyboardMouseManipulator.h"
-
-#include <osgDB/ReadFile>
-
-#include "OSGQT_Widget.h"
-#include "VRDatabaseMgr.h"
-
+#include "VRKeyboardMouseManipulatorShopEditor.h"
 #include "VRSceneStructureModel.h"
-
 #include "VRShopBuilder.h"
 
 using namespace osg;
@@ -56,7 +51,7 @@ void ShopBuilder::init(OSGQT_Widget * apOSGQTWidget, QTreeView * apTreeView) {
 
 	//Send scene to the Widget
 	m_pOSGQTWidget->setSceneData(m_pScene);
-	m_pOSGQTWidget->setCameraManipulator(new VR::KeyboardMouseManipulator);
+	m_pOSGQTWidget->setCameraManipulator(new VR::KeyboardMouseManipulatorShopEditor);
 	m_pOSGQTWidget->addEventHandler(new VR::PickAndDragHandler);
 	
 	m_pTreeView = apTreeView;

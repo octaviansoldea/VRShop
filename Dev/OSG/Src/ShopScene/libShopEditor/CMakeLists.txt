@@ -45,6 +45,7 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
   ${CMAKE_SOURCE_DIR}/Props/GeometricShape/libGeometricShape
   ${CMAKE_SOURCE_DIR}/Props/Equipment/Furniture/libFurniture
+  ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libController
 )
 
 

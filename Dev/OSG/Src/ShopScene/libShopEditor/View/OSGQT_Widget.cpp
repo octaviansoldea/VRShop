@@ -1,11 +1,13 @@
-#include "OSGQT_Widget.h"
+#include <QWidget>
+#include <QPaintEvent>
+#include <QTimerEvent>
+#include <QGridLayout>
+#include <QFrame>
 
 #include <osgQt/GraphicsWindowQt>
 #include <osgGA/CameraManipulator>
 
-
-#include <QGridLayout>
-#include <QFrame>
+#include "OSGQT_Widget.h"
 
 using namespace osg;
 
@@ -60,6 +62,12 @@ void OSGQT_Widget::setSceneData(osg::Node* apNode)	{
 
 void OSGQT_Widget::setCameraManipulator(osgGA::CameraManipulator* manipulator, bool resetPosition)	{
 	m_viewer.setCameraManipulator(manipulator, resetPosition);
+}
+
+//--------------------------------------------------------------------
+
+osgGA::CameraManipulator* OSGQT_Widget::getCameraManipulator()	{
+	return(m_viewer.getCameraManipulator());
 }
 
 //--------------------------------------------------------------------

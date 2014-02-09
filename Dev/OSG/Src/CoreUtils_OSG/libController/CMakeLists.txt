@@ -1,7 +1,8 @@
-PROJECT(libCamera)
+PROJECT(libController)
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
 SET(CMAKE_DEBUG_POSTFIX "D")
+
 
 #start Qt
 IF(Qt5_FOUND)
@@ -29,23 +30,22 @@ ENDIF(Qt5_FOUND)
 
 #MOC according to the Qt version
 IF(Qt5_FOUND)
-  QT5_WRAP_CPP(MOC_SRCS VRKeyboardMouseManipulatorShopEditor.h)
+   QT5_WRAP_CPP(MOC_SRCS VRCameraController.h)
 ELSE()
-  QT4_WRAP_CPP(MOC_SRCS VRKeyboardMouseManipulatorShopEditor.h)
+  QT4_WRAP_CPP(MOC_SRCS VRCameraController.h)
 ENDIF()
-
 
 INCLUDE_DIRECTORIES(
 	${OPENSCENEGRAPH_INCLUDE_DIRS}
+	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCamera
 )
 
 SET(SRCS
-	VRKeyboardMouseManipulator.h VRKeyboardMouseManipulator.cpp
-	VRKeyboardMouseManipulatorShopEditor.h VRKeyboardMouseManipulatorShopEditor.cpp
+	VRCameraController.h VRCameraController.cpp
 )
 
-ADD_LIBRARY(libCamera
+ADD_LIBRARY(libController
   ${SRCS} ${MOC_SRCS}
 )
 
-SET_PROPERTY(TARGET libCamera PROPERTY FOLDER Utils)
+SET_PROPERTY(TARGET libController PROPERTY FOLDER Utils)

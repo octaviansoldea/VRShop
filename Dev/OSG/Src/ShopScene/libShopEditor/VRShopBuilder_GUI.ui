@@ -388,8 +388,8 @@ QSpinBox::down-arrow:off {border-left: 17px solid none; border-right: 17px solid
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>261</width>
-              <height>623</height>
+              <width>258</width>
+              <height>587</height>
              </rect>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_8">
@@ -436,7 +436,7 @@ QSpinBox::down-arrow:off {border-left: 17px solid none; border-right: 17px solid
                  <number>0</number>
                 </property>
                 <item>
-                 <widget class="QPushButton" name="m_pPushButtonTranslation">
+                 <widget class="QPushButton" name="m_pPushButtonTranslation_Header">
                   <property name="enabled">
                    <bool>true</bool>
                   </property>
@@ -702,7 +702,7 @@ QSpinBox::down-arrow:off {border-left: 17px solid none; border-right: 17px solid
                  <number>0</number>
                 </property>
                 <item>
-                 <widget class="QPushButton" name="m_pPushButtonRotation">
+                 <widget class="QPushButton" name="m_pPushButtonRotation_Header">
                   <property name="enabled">
                    <bool>true</bool>
                   </property>
@@ -894,7 +894,7 @@ QSpinBox::down-arrow:off {border-left: 17px solid none; border-right: 17px solid
                  <number>0</number>
                 </property>
                 <item>
-                 <widget class="QPushButton" name="m_pPushButtonScaling">
+                 <widget class="QPushButton" name="m_pPushButtonScaling_Header">
                   <property name="enabled">
                    <bool>true</bool>
                   </property>
@@ -1585,7 +1585,7 @@ QSpinBox::down-arrow:off {border-left: 17px solid none; border-right: 17px solid
                      <number>0</number>
                     </property>
                     <item>
-                     <widget class="QPushButton" name="m_pPushButtonCameraPosition">
+                     <widget class="QPushButton" name="m_p_PushButton_CameraPosition_Header">
                       <property name="enabled">
                        <bool>true</bool>
                       </property>
@@ -1709,7 +1709,7 @@ QSpinBox::down-arrow:off {border-left: 17px solid none; border-right: 17px solid
                        <number>0</number>
                       </property>
                       <item>
-                       <widget class="QPushButton" name="m_p_PushButton_SetHomePosition">
+                       <widget class="QPushButton" name="m_p_PushButton_SetCameraPositionDefault">
                         <property name="sizePolicy">
                          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                           <horstretch>0</horstretch>
@@ -1729,12 +1729,12 @@ QSpinBox::down-arrow:off {border-left: 17px solid none; border-right: 17px solid
                          </size>
                         </property>
                         <property name="text">
-                         <string>Set Home Position</string>
+                         <string>Set Default</string>
                         </property>
                        </widget>
                       </item>
                       <item>
-                       <widget class="QPushButton" name="m_p_PushButton_HomePosition">
+                       <widget class="QPushButton" name="m_p_PushButton_CameraPosition">
                         <property name="sizePolicy">
                          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                           <horstretch>0</horstretch>
@@ -1761,13 +1761,52 @@ QSpinBox::down-arrow:off {border-left: 17px solid none; border-right: 17px solid
                      </layout>
                     </item>
                     <item row="0" column="1">
-                     <widget class="QDoubleSpinBox" name="m_p_DoubleSpinBox_CameraPositionX"/>
+                     <widget class="QDoubleSpinBox" name="m_p_DoubleSpinBox_CameraPositionX">
+                      <property name="decimals">
+                       <number>4</number>
+                      </property>
+                      <property name="minimum">
+                       <double>-999999999.000000000000000</double>
+                      </property>
+                      <property name="maximum">
+                       <double>999999999.000000000000000</double>
+                      </property>
+                      <property name="singleStep">
+                       <double>0.010000000000000</double>
+                      </property>
+                     </widget>
                     </item>
                     <item row="1" column="1">
-                     <widget class="QDoubleSpinBox" name="m_p_DoubleSpinBox_CameraPositionY"/>
+                     <widget class="QDoubleSpinBox" name="m_p_DoubleSpinBox_CameraPositionY">
+                      <property name="decimals">
+                       <number>4</number>
+                      </property>
+                      <property name="minimum">
+                       <double>-999999999.000000000000000</double>
+                      </property>
+                      <property name="maximum">
+                       <double>999999999.000000000000000</double>
+                      </property>
+                      <property name="singleStep">
+                       <double>0.010000000000000</double>
+                      </property>
+                     </widget>
                     </item>
                     <item row="2" column="1">
-                     <widget class="QDoubleSpinBox" name="m_p_DoubleSpinBox_CameraPositionZ"/>
+                     <widget class="QDoubleSpinBox" name="m_p_DoubleSpinBox_CameraPositionZ">
+                      <property name="decimals">
+                       <number>4</number>
+                      </property>
+                      <property name="minimum">
+                       <double>-999999999.000000000000000</double>
+                      </property>
+                      <property name="maximum">
+                       <double>999999999.000000000000000</double>
+                      </property>
+                      <property name="singleStep">
+                       <double>0.010000000000000</double>
+                      </property>
+                     </widget>
                     </item>
                    </layout>
                   </widget>
@@ -1794,7 +1833,7 @@ QSpinBox::down-arrow:off {border-left: 17px solid none; border-right: 17px solid
                      <number>0</number>
                     </property>
                     <item>
-                     <widget class="QPushButton" name="m_pPushButtonCameraDirection">
+                     <widget class="QPushButton" name="m_p_PushButton_Header_CameraHeadingDirection">
                       <property name="enabled">
                        <bool>true</bool>
                       </property>
@@ -1833,7 +1872,7 @@ QSpinBox::down-arrow:off {border-left: 17px solid none; border-right: 17px solid
 </string>
                       </property>
                       <property name="text">
-                       <string>Direction</string>
+                       <string>Heading Direction</string>
                       </property>
                       <property name="iconSize">
                        <size>
@@ -1889,10 +1928,42 @@ QSpinBox::down-arrow:off {border-left: 17px solid none; border-right: 17px solid
                       </property>
                      </widget>
                     </item>
+                    <item row="0" column="1">
+                     <widget class="QDoubleSpinBox" name="m_p_DoubleSpinBox_CameraHeadingDirectionX">
+                      <property name="decimals">
+                       <number>4</number>
+                      </property>
+                      <property name="minimum">
+                       <double>-999999999.000000000000000</double>
+                      </property>
+                      <property name="maximum">
+                       <double>999999999.000000000000000</double>
+                      </property>
+                      <property name="singleStep">
+                       <double>0.010000000000000</double>
+                      </property>
+                     </widget>
+                    </item>
                     <item row="1" column="0">
                      <widget class="QLabel" name="label_56">
                       <property name="text">
                        <string>Y:</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="1" column="1">
+                     <widget class="QDoubleSpinBox" name="m_p_DoubleSpinBox_CameraHeadingDirectionY">
+                      <property name="decimals">
+                       <number>4</number>
+                      </property>
+                      <property name="minimum">
+                       <double>-999999999.000000000000000</double>
+                      </property>
+                      <property name="maximum">
+                       <double>999999999.000000000000000</double>
+                      </property>
+                      <property name="singleStep">
+                       <double>0.010000000000000</double>
                       </property>
                      </widget>
                     </item>
@@ -1903,13 +1974,29 @@ QSpinBox::down-arrow:off {border-left: 17px solid none; border-right: 17px solid
                       </property>
                      </widget>
                     </item>
+                    <item row="2" column="1">
+                     <widget class="QDoubleSpinBox" name="m_p_DoubleSpinBox_CameraHeadingDirectionZ">
+                      <property name="decimals">
+                       <number>4</number>
+                      </property>
+                      <property name="minimum">
+                       <double>-999999999.000000000000000</double>
+                      </property>
+                      <property name="maximum">
+                       <double>999999999.000000000000000</double>
+                      </property>
+                      <property name="singleStep">
+                       <double>0.010000000000000</double>
+                      </property>
+                     </widget>
+                    </item>
                     <item row="3" column="0" colspan="2">
                      <layout class="QHBoxLayout" name="horizontalLayout_15">
                       <property name="spacing">
                        <number>10</number>
                       </property>
                       <item>
-                       <widget class="QPushButton" name="m_p_PushButton_SetHomeDirection">
+                       <widget class="QPushButton" name="m_p_PushButton_SetCameraHeadingDirectionDefault">
                         <property name="sizePolicy">
                          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                           <horstretch>0</horstretch>
@@ -1929,12 +2016,12 @@ QSpinBox::down-arrow:off {border-left: 17px solid none; border-right: 17px solid
                          </size>
                         </property>
                         <property name="text">
-                         <string>Set Home Direction</string>
+                         <string>Set Default</string>
                         </property>
                        </widget>
                       </item>
                       <item>
-                       <widget class="QPushButton" name="m_p_PushButton_HomeDirection">
+                       <widget class="QPushButton" name="m_p_PushButton_CameraHeadingDirection">
                         <property name="sizePolicy">
                          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                           <horstretch>0</horstretch>
@@ -1954,20 +2041,11 @@ QSpinBox::down-arrow:off {border-left: 17px solid none; border-right: 17px solid
                          </size>
                         </property>
                         <property name="text">
-                         <string>Home Direction</string>
+                         <string>Heading Direction</string>
                         </property>
                        </widget>
                       </item>
                      </layout>
-                    </item>
-                    <item row="0" column="1">
-                     <widget class="QDoubleSpinBox" name="m_p_DoubleSpinBox_CameraDirectionX"/>
-                    </item>
-                    <item row="1" column="1">
-                     <widget class="QDoubleSpinBox" name="m_p_DoubleSpinBox_CameraDirectionY"/>
-                    </item>
-                    <item row="2" column="1">
-                     <widget class="QDoubleSpinBox" name="m_p_DoubleSpinBox_CameraDirectionZ"/>
                     </item>
                    </layout>
                   </widget>
@@ -3459,7 +3537,7 @@ QTreeView::item:hover,QTreeView::item:selected {
                  <number>0</number>
                 </property>
                 <item>
-                 <widget class="QPushButton" name="m_pPushButtonProductAdd">
+                 <widget class="QPushButton" name="m_pPushButton_ProductAdd_Header">
                   <property name="enabled">
                    <bool>true</bool>
                   </property>
@@ -3635,7 +3713,7 @@ QTreeView::item:hover,QTreeView::item:selected {
                  <number>0</number>
                 </property>
                 <item>
-                 <widget class="QPushButton" name="m_pPushButtonProductChange">
+                 <widget class="QPushButton" name="m_pPushButton_ProductChange_Header">
                   <property name="enabled">
                    <bool>true</bool>
                   </property>
@@ -3940,8 +4018,8 @@ background-color: rgb(191,193,194);</string>
      <rect>
       <x>187</x>
       <y>171</y>
-      <width>138</width>
-      <height>190</height>
+      <width>130</width>
+      <height>196</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -4129,7 +4207,7 @@ background-color: rgb(191,193,194);</string>
    </hints>
   </connection>
   <connection>
-   <sender>m_pPushButtonProductAdd</sender>
+   <sender>m_pPushButton_ProductAdd_Header</sender>
    <signal>clicked(bool)</signal>
    <receiver>m_pProductAddWidget</receiver>
    <slot>setVisible(bool)</slot>
@@ -4145,7 +4223,7 @@ background-color: rgb(191,193,194);</string>
    </hints>
   </connection>
   <connection>
-   <sender>m_pPushButtonProductChange</sender>
+   <sender>m_pPushButton_ProductChange_Header</sender>
    <signal>clicked(bool)</signal>
    <receiver>m_pProductChangeWidget</receiver>
    <slot>setVisible(bool)</slot>
@@ -4225,7 +4303,7 @@ background-color: rgb(191,193,194);</string>
    </hints>
   </connection>
   <connection>
-   <sender>m_pPushButtonTranslation</sender>
+   <sender>m_pPushButtonTranslation_Header</sender>
    <signal>clicked(bool)</signal>
    <receiver>m_pTranslationWidget</receiver>
    <slot>setVisible(bool)</slot>
@@ -4241,7 +4319,7 @@ background-color: rgb(191,193,194);</string>
    </hints>
   </connection>
   <connection>
-   <sender>m_pPushButtonScaling</sender>
+   <sender>m_pPushButtonScaling_Header</sender>
    <signal>clicked(bool)</signal>
    <receiver>m_pScalingWidget</receiver>
    <slot>setVisible(bool)</slot>
@@ -4257,7 +4335,7 @@ background-color: rgb(191,193,194);</string>
    </hints>
   </connection>
   <connection>
-   <sender>m_pPushButtonRotation</sender>
+   <sender>m_pPushButtonRotation_Header</sender>
    <signal>clicked(bool)</signal>
    <receiver>m_pRotationWidget</receiver>
    <slot>setVisible(bool)</slot>
@@ -4289,7 +4367,7 @@ background-color: rgb(191,193,194);</string>
    </hints>
   </connection>
   <connection>
-   <sender>m_pPushButtonCameraPosition</sender>
+   <sender>m_p_PushButton_CameraPosition_Header</sender>
    <signal>clicked(bool)</signal>
    <receiver>m_pCameraPositionWidget</receiver>
    <slot>setVisible(bool)</slot>
@@ -4305,7 +4383,7 @@ background-color: rgb(191,193,194);</string>
    </hints>
   </connection>
   <connection>
-   <sender>m_pPushButtonCameraDirection</sender>
+   <sender>m_p_PushButton_Header_CameraHeadingDirection</sender>
    <signal>clicked(bool)</signal>
    <receiver>m_pCameraDirectionWidget</receiver>
    <slot>setVisible(bool)</slot>

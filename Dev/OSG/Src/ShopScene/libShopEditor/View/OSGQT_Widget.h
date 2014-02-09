@@ -2,11 +2,8 @@
 #define OSGQT_WIDGET_H
 
 #include <QWidget>
-
-#include <osgViewer/Viewer>
-#include <QPaintEvent>
-#include <QTimerEvent>
 #include <QTimer>
+#include <osgViewer/Viewer>
 
 class OSGQT_Widget : public QWidget {
 	Q_OBJECT
@@ -19,10 +16,11 @@ public:
 
 	void setSceneData(osg::Node* apNode);
 	void setCameraManipulator(osgGA::CameraManipulator* manipulator, bool resetPosition = true);
+	osgGA::CameraManipulator * getCameraManipulator();
 	void addEventHandler(osgGA::GUIEventHandler *eventHandler);
 
 private:
 	osgViewer::Viewer m_viewer;
-	QTimer            m_timer;
+	//QTimer            m_timer;
 };
 #endif //OSGQT_WIDGET_H

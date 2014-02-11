@@ -88,7 +88,8 @@ bool KeyboardMouseManipulator::handle(const osgGA::GUIEventAdapter& ea, osgGA::G
 		bRes = OrbitManipulator::handleMouseDrag(ea, aa);		
 	}
 
-	return(bRes);
+//	return(bRes);
+	return true;
 }
 
 //-------------------------------------------------------------------------------

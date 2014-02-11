@@ -2,7 +2,6 @@
 #include <QPushButton>
 #include <QDoubleSpinBox>
 
-#include <osgGA/CameraManipulator>
 
 #include "VRKeyboardMouseManipulatorShopEditor.h"
 #include "VRCameraController.h"

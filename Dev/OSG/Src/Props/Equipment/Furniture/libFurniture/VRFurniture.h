@@ -23,7 +23,9 @@ namespace VR	{
 		virtual void removePart(unsigned int anPartNo);
 		virtual void removePart(osg::ref_ptr < AbstractObject > &apAbstractObject);
 
-		void splitObject2Children(std::vector< osg::ref_ptr<AbstractObject> > &aarrpChildren);
+		bool splitObject2Children(std::vector< osg::ref_ptr<AbstractObject> > &aarrChildren);
+		osg::ref_ptr<osg::Group> groupSelection(std::vector< osg::ref_ptr<AbstractObject> > &aarrParts);
+
 
 		virtual std::string getSQLCommand() const;
 

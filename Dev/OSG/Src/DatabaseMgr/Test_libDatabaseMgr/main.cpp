@@ -278,10 +278,10 @@ int main(int argc, char *argv[])	{
 	createTable(strDBName);
 	populateTable(strDBName);
 	insertIntoDatabase_Sphere(strDBName);
-	//insertIntoDatabase_Cylinder(strDBName);
-	//insertIntoDatabase_Plate3D(strDBName);
-	//insertIntoDatabase_Furniture(strDBName);
-	//insertIntoDatabase_Furniture(strDBName);
+	insertIntoDatabase_Cylinder(strDBName);
+	insertIntoDatabase_Plate3D(strDBName);
+	insertIntoDatabase_Furniture(strDBName);
+	insertIntoDatabase_Furniture(strDBName);
 
 
 	return 0;

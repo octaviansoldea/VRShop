@@ -56,14 +56,14 @@ void Furniture::removePart(unsigned int anPartNo)	{
 
 //-----------------------------------------------------------------------
 
-void Furniture::removePart(ref_ptr < AbstractObject > &apAbstractObject)	{
+void Furniture::removePart(ref_ptr < AbstractObject > &aAbstractObject)	{
 	vector <ref_ptr<Node>>::const_iterator it = _children.begin();
 	for (it; it != _children.end(); it++)	{
-		if (*it==apAbstractObject)	{
+		if (*it==aAbstractObject)	{
 			removeChild(*it);
 			return;
-		} 
-	} 
+		}
+	}
 }
 
 //-----------------------------------------------------------------------
@@ -100,14 +100,26 @@ void Furniture::loadAllFurnitures(ref_ptr<Group> apScene, const string & astrDat
 
 //-----------------------------------------------------------------------
 
-void Furniture::splitObject2Children(std::vector< osg::ref_ptr<AbstractObject> > &aarrpChildren)	{
-	aarrpChildren.resize(0);
+bool Furniture::splitObject2Children(std::vector< osg::ref_ptr<AbstractObject> > &aarrChildren)	{
+	aarrChildren.resize(0);
+
+	bool bRes;
 
 	int nI;
 	ref_ptr<AbstractObject> pAbstractObject;
 	for (nI=0;nI<this->getNumChildren();nI++)	{
 		pAbstractObject = dynamic_cast<AbstractObject *>(getChild(nI));
 		pAbstractObject->setIsTargetPick(true);
-		aarrpChildren.push_back(pAbstractObject);
+		aarrChildren.push_back(pAbstractObject);
 	}
+	bRes = (aarrChildren.size()==0) ? false : true;
+	return bRes;
+}
+
+//-----------------------------------------------------------------------
+
+ref_ptr<Group> Furniture::groupSelection(vector< ref_ptr<AbstractObject> > &aarrParts)	{
+	ref_ptr<Group> newFurniture = new Group;
+
+	return newFurniture;
 }

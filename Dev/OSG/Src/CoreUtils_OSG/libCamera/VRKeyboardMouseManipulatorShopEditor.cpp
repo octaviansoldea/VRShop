@@ -35,15 +35,23 @@ KeyboardMouseManipulator(cm, copyOp) {
 
 //-------------------------------------------------------------------------------
 bool KeyboardMouseManipulatorShopEditor::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa) {
+	Matrix currentCameraMatrix = getMatrix();
+
 	bool bRes = KeyboardMouseManipulator::handle(ea, aa);
 	if(bRes == false) {
 		return(bRes);
 	}
-	int nResEvent = ea.getEventType();
+	//int nResEvent = ea.getEventType();
 
-	if (nResEvent == GUIEventAdapter::DRAG)	{
+	//if (nResEvent == GUIEventAdapter::DRAG)	{
+	//	emit signalCameraPositionOrHeadingDirectionChanged();
+	//}
+
+	//Emit signal only if there was a change in the matrix
+	if (currentCameraMatrix != getMatrix())	{
 		emit signalCameraPositionOrHeadingDirectionChanged();
 	}
+
 	return(bRes);
 }
 

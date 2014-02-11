@@ -16,8 +16,6 @@
 
 #include <QObject>
 
-#include <osgGA/OrbitManipulator>
-
 #include "VRKeyboardMouseManipulator.h"
 
 namespace VR {

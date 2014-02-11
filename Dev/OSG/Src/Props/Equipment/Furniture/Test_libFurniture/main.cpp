@@ -503,9 +503,9 @@ int main2(int argc, char * argv[])	{
 	vector <ref_ptr<AbstractObject> > arrpChildren;
 	pContainer->splitObject2Children(arrpChildren);
 
-	int nI;
-	for (nI=0;nI<arrpChildren.size();nI++)	{
-		pScene->addChild(static_cast<ref_ptr<AbstractObject>>(arrpChildren[nI]));
+	vector <ref_ptr<AbstractObject> >::iterator it;
+	for (it=arrpChildren.begin();it != arrpChildren.end();it++)	{
+		pScene->addChild(static_cast<ref_ptr<AbstractObject>>(*it));
 	}
 
 	osgViewer::Viewer viewer;
@@ -525,7 +525,6 @@ int main3(int argc, char * argv[])	{
 
 	ref_ptr < Container > pContainer = new Container;
 	pContainer->predefinedObject();
-
 	pScene->addChild(pContainer);
 
 	osgViewer::Viewer viewer;
@@ -537,9 +536,9 @@ int main3(int argc, char * argv[])	{
 //======================================================================
 
 int main(int argc, char * argv[])	{
-//	main1(argc, argv);
+	main1(argc, argv);
 //	main2(argc, argv);
-	main3(argc, argv);
+//	main3(argc, argv);
 
 	return (0);
 }

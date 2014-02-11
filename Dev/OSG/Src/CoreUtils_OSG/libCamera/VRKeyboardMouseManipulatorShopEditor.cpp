@@ -15,6 +15,7 @@
 
 #include <osgGA/GUIEventAdapter>
 
+#include "BasicDefinitions.h"
 #include "VRKeyboardMouseManipulatorShopEditor.h"
 
 using namespace VR;
@@ -35,24 +36,30 @@ KeyboardMouseManipulator(cm, copyOp) {
 
 //-------------------------------------------------------------------------------
 bool KeyboardMouseManipulatorShopEditor::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa) {
-	Matrix currentCameraMatrix = getMatrix();
+	Matrixd prevCameraMatrix = getMatrix();
 
 	bool bRes = KeyboardMouseManipulator::handle(ea, aa);
 	if(bRes == false) {
 		return(bRes);
 	}
-	//int nResEvent = ea.getEventType();
+	
+	Matrixd currentCameraMatrix = getMatrix();
 
-	//if (nResEvent == GUIEventAdapter::DRAG)	{
-	//	emit signalCameraPositionOrHeadingDirectionChanged();
-	//}
+	double dbSumAbsDiff = 0.0;
 
+	int iI, iJ;
+	for(iI = 0; iI < 4; iI++) {
+		for(iJ = 0; iJ < 4; iJ++) {
+			dbSumAbsDiff += fabs(prevCameraMatrix(iI,iJ) - currentCameraMatrix(iI,iJ));
+		}
+	}
+ 
 	//Emit signal only if there was a change in the matrix
-	if (currentCameraMatrix != getMatrix())	{
+	if (dbSumAbsDiff > EPS)	{
 		emit signalCameraPositionOrHeadingDirectionChanged();
 	}
 
 	return(bRes);
 }
 
-////-------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------

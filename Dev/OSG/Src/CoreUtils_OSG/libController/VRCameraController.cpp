@@ -48,27 +48,26 @@ CameraController::CameraController(
 	connect(m_p_DoubleSpinBox_CameraPositionZ,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraPosition()));
 
 	connect(m_p_PushButton_SetCameraPositionDefault,SIGNAL(clicked()),this,SLOT(slotSetCameraPositionDefault()));
-
+	
 	connect(m_p_DoubleSpinBox_CameraHeadingDirectionX,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraHeadingDirection()));
 	connect(m_p_DoubleSpinBox_CameraHeadingDirectionY,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraHeadingDirection()));
 	connect(m_p_DoubleSpinBox_CameraHeadingDirectionZ,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraHeadingDirection()));
 
-	connect(m_p_PushButton_CameraHeadingDirection,SIGNAL(clicked()),this,SLOT(slotSetCameraHeadingDirectionDefault()));
+	connect(m_p_PushButton_SetCameraHeadingDirectionDefault,SIGNAL(clicked()),this,SLOT(slotSetCameraHeadingDirectionDefault()));
 
 	connect(m_pKeyboardMouseManipulatorShopEditor,
 			SIGNAL(signalCameraPositionOrHeadingDirectionChanged()),
 			this,
 			SLOT(slotUpdateCameraGUI()));
-
 }
 
 void CameraController::slotUpdateCameraGUI() {
-	disconnect(m_p_DoubleSpinBox_CameraPositionX,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraPosition()));
-	disconnect(m_p_DoubleSpinBox_CameraPositionY,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraPosition()));
-	disconnect(m_p_DoubleSpinBox_CameraPositionZ,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraPosition()));
-	disconnect(m_p_DoubleSpinBox_CameraHeadingDirectionX,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraHeadingDirection()));
-	disconnect(m_p_DoubleSpinBox_CameraHeadingDirectionY,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraHeadingDirection()));
-	disconnect(m_p_DoubleSpinBox_CameraHeadingDirectionZ,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraHeadingDirection()));
+	//disconnect(m_p_DoubleSpinBox_CameraPositionX,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraPosition()));
+	//disconnect(m_p_DoubleSpinBox_CameraPositionY,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraPosition()));
+	//disconnect(m_p_DoubleSpinBox_CameraPositionZ,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraPosition()));
+	//disconnect(m_p_DoubleSpinBox_CameraHeadingDirectionX,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraHeadingDirection()));
+	//disconnect(m_p_DoubleSpinBox_CameraHeadingDirectionY,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraHeadingDirection()));
+	//disconnect(m_p_DoubleSpinBox_CameraHeadingDirectionZ,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraHeadingDirection()));
 
 	osg::Vec3d vec3dEye, vec3dCenter, vec3dUp;
 	m_pKeyboardMouseManipulatorShopEditor->getTransformation(vec3dEye, vec3dCenter, vec3dUp);
@@ -106,6 +105,12 @@ void CameraController::slotSetCameraPosition() {
 }
 
 void CameraController::slotSetCameraPositionDefault() {
+	osg::Vec3d vec3dEye, vec3dCenter, vec3dUp;
+	m_pKeyboardMouseManipulatorShopEditor->getHomePosition(vec3dEye, vec3dCenter, vec3dUp);
+	vec3dEye[0] = m_p_DoubleSpinBox_CameraPositionX->value();
+	vec3dEye[1] = m_p_DoubleSpinBox_CameraPositionY->value();
+	vec3dEye[2] = m_p_DoubleSpinBox_CameraPositionZ->value();
+	m_pKeyboardMouseManipulatorShopEditor->setHomePosition(vec3dEye, vec3dCenter, vec3dUp);	
 }
 
 void CameraController::slotSetCameraHeadingDirection() {
@@ -118,4 +123,10 @@ void CameraController::slotSetCameraHeadingDirection() {
 }
 
 void CameraController::slotSetCameraHeadingDirectionDefault() {
+	osg::Vec3d vec3dEye, vec3dCenter, vec3dUp;
+	m_pKeyboardMouseManipulatorShopEditor->getHomePosition(vec3dEye, vec3dCenter, vec3dUp);
+	vec3dCenter[0] = m_p_DoubleSpinBox_CameraHeadingDirectionX->value();
+	vec3dCenter[1] = m_p_DoubleSpinBox_CameraHeadingDirectionY->value();
+	vec3dCenter[2] = m_p_DoubleSpinBox_CameraHeadingDirectionZ->value();
+	m_pKeyboardMouseManipulatorShopEditor->setHomePosition(vec3dEye, vec3dCenter, vec3dUp);
 }

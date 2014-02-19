@@ -37,6 +37,8 @@ namespace VR {
 		void signalCameraPositionOrHeadingDirectionChanged();
 
 
+	public slots:
+		void slotSetPredefinedViewport(const QString & astrText);
 	};
 }
 #endif //VR_KEYBOARD_MOUSE_MANIPULATOR_SHOP_EDITOR_H

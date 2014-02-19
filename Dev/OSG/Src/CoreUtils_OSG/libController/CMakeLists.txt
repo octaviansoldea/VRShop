@@ -30,18 +30,20 @@ ENDIF(Qt5_FOUND)
 
 #MOC according to the Qt version
 IF(Qt5_FOUND)
-   QT5_WRAP_CPP(MOC_SRCS VRCameraController.h)
+   QT5_WRAP_CPP(MOC_SRCS VRCameraController.h VRPickAndDragController.h)
 ELSE()
-  QT4_WRAP_CPP(MOC_SRCS VRCameraController.h)
+  QT4_WRAP_CPP(MOC_SRCS VRCameraController.h VRPickAndDragController.h)
 ENDIF()
 
 INCLUDE_DIRECTORIES(
 	${OPENSCENEGRAPH_INCLUDE_DIRS}
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCamera
+	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libPicker
 )
 
 SET(SRCS
 	VRCameraController.h VRCameraController.cpp
+	VRPickAndDragController.h VRPickAndDragController.cpp
 )
 
 ADD_LIBRARY(libController

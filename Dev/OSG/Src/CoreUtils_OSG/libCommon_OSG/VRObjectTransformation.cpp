@@ -65,3 +65,7 @@ Matrix ObjectTransformation::setScalingGetMatrix(float aflX, float aflY, float a
 }
 
 //-----------------------------------------------------------
+
+const Matrix &ObjectTransformation::getMatrix() const	{
+	return *this;
+}

@@ -13,7 +13,7 @@
 #include "VRPlate3D.h"
 #include "VRCylinder.h"
 #include "VRSphere.h"
-#include "VRPickAndDragHandler.h"
+#include "VRPickAndDragHandlerShopEditor.h"
 #include "VRKeyboardMouseManipulatorShopEditor.h"
 #include "VRSceneStructureModel.h"
 #include "VRShopBuilder.h"
@@ -49,10 +49,11 @@ ShopBuilder::~ShopBuilder() {
 void ShopBuilder::init(OSGQT_Widget * apOSGQTWidget, QTreeView * apTreeView) {
 	m_pOSGQTWidget = apOSGQTWidget;
 
+	m_pEvent = new PickAndDragHandlerShopEditor;
 	//Send scene to the Widget
 	m_pOSGQTWidget->setSceneData(m_pScene);
 	m_pOSGQTWidget->setCameraManipulator(new VR::KeyboardMouseManipulatorShopEditor);
-	m_pOSGQTWidget->addEventHandler(new VR::PickAndDragHandler);
+	m_pOSGQTWidget->addEventHandler(m_pEvent);
 	
 	m_pTreeView = apTreeView;
 	updateQTreeView();

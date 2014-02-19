@@ -40,6 +40,10 @@ namespace VR	{
 		virtual void setPosition(const AbstractObjectParams & aAbstractObjectParams);
 		virtual void setScaling(const AbstractObjectParams & aAbstractObjectParams);
 
+		osg::Vec3d getRotation() const;
+		osg::Vec3d getPosition() const;
+		osg::Vec3d getScaling() const;
+
 		virtual void setIsTargetPick(bool abIsTargetPick);
 		virtual bool getIsTargetPick() const;
 

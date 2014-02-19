@@ -28,6 +28,7 @@ CameraController::CameraController(
 	m_p_DoubleSpinBox_CameraPositionY = ap_DoubleSpinBox_CameraPositionY;
 	m_p_DoubleSpinBox_CameraPositionZ = ap_DoubleSpinBox_CameraPositionZ;
 	m_p_PushButton_SetCameraPositionDefault = ap_PushButton_SetCameraPositionDefault;
+	m_p_PushButton_CameraPosition = ap_PushButton_CameraPosition;
 	m_p_PushButton_CameraHeadingDirection = ap_PushButton_CameraHeadingDirection;
 	
 	m_p_DoubleSpinBox_CameraHeadingDirectionX = ap_DoubleSpinBox_CameraHeadingDirectionX;
@@ -35,25 +36,24 @@ CameraController::CameraController(
 	m_p_DoubleSpinBox_CameraHeadingDirectionZ = ap_DoubleSpinBox_CameraHeadingDirectionZ;
 	m_p_PushButton_SetCameraHeadingDirectionDefault = ap_PushButton_SetCameraHeadingDirectionDefault;
 
-	m_p_PushButton_CameraHeadingDirection = ap_PushButton_CameraHeadingDirection;
-	
 	m_pKeyboardMouseManipulatorShopEditor = apKeyboardMouseManipulatorShopEditor;
 
-	/*
-	connect(m_p_ComboBox_PredefinedViewport,SIGNAL(currentTextChanged(const QString &)),this,SLOT(slotSetPredefinedViewport(const QString &)));
-	*/
+	connect(m_p_ComboBox_PredefinedViewport,SIGNAL(currentTextChanged(const QString &)),
+		m_pKeyboardMouseManipulatorShopEditor,SLOT(slotSetPredefinedViewport(const QString &)));
 
-	connect(m_p_DoubleSpinBox_CameraPositionX,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraPosition()));
-	connect(m_p_DoubleSpinBox_CameraPositionY,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraPosition()));
-	connect(m_p_DoubleSpinBox_CameraPositionZ,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraPosition()));
+	//THESE SEEM UNNECESSARY
+	//connect(m_p_DoubleSpinBox_CameraPositionX,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraPosition()));
+	//connect(m_p_DoubleSpinBox_CameraPositionY,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraPosition()));
+	//connect(m_p_DoubleSpinBox_CameraPositionZ,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraPosition()));
+	//connect(m_p_DoubleSpinBox_CameraHeadingDirectionX,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraHeadingDirection()));
+	//connect(m_p_DoubleSpinBox_CameraHeadingDirectionY,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraHeadingDirection()));
+	//connect(m_p_DoubleSpinBox_CameraHeadingDirectionZ,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraHeadingDirection()));
 
 	connect(m_p_PushButton_SetCameraPositionDefault,SIGNAL(clicked()),this,SLOT(slotSetCameraPositionDefault()));
-	
-	connect(m_p_DoubleSpinBox_CameraHeadingDirectionX,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraHeadingDirection()));
-	connect(m_p_DoubleSpinBox_CameraHeadingDirectionY,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraHeadingDirection()));
-	connect(m_p_DoubleSpinBox_CameraHeadingDirectionZ,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraHeadingDirection()));
-
 	connect(m_p_PushButton_SetCameraHeadingDirectionDefault,SIGNAL(clicked()),this,SLOT(slotSetCameraHeadingDirectionDefault()));
+
+	connect(m_p_PushButton_CameraPosition,SIGNAL(clicked()),this,SLOT(slotCameraHomePosition()));
+	connect(m_p_PushButton_CameraHeadingDirection,SIGNAL(clicked()),this,SLOT(slotCameraHomePosition()));
 
 	connect(m_pKeyboardMouseManipulatorShopEditor,
 			SIGNAL(signalCameraPositionOrHeadingDirectionChanged()),
@@ -62,6 +62,7 @@ CameraController::CameraController(
 }
 
 void CameraController::slotUpdateCameraGUI() {
+	//THESE SEEM UNNECESSARY
 	//disconnect(m_p_DoubleSpinBox_CameraPositionX,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraPosition()));
 	//disconnect(m_p_DoubleSpinBox_CameraPositionY,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraPosition()));
 	//disconnect(m_p_DoubleSpinBox_CameraPositionZ,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraPosition()));
@@ -86,14 +87,11 @@ void CameraController::slotUpdateCameraGUI() {
 	connect(m_p_DoubleSpinBox_CameraHeadingDirectionZ,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraHeadingDirection()));
 }
 
-void CameraController::slotSetPredefinedViewport(const QString & astrText) {
+
+void CameraController::slotCameraHomePosition() {
+	m_pKeyboardMouseManipulatorShopEditor->home(0);
 }
 
-void CameraController::slotCameraPosition() {
-}
-
-void CameraController::slotHeadingDirection() {
-}
 
 void CameraController::slotSetCameraPosition() {
 	osg::Vec3d vec3dEye, vec3dCenter, vec3dUp;

@@ -26,10 +26,12 @@ namespace VR {
 
 		void getMouseSignals(MouseSignals * apMouseSignals, const osgGA::GUIEventAdapter& ea);
 
+
+	protected:
 		bool handleKeyDown(int anKey);
 		bool handlePush(const MouseSignals & aMouseSignals, osgViewer::Viewer * apViewer);
 		bool handleDrag(const MouseSignals & aMouseSignals, osgViewer::Viewer * apViewer);
-		
+
 		osg::Matrix m_mtrxPickedObject;
 
 		typedef enum {

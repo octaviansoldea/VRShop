@@ -48,9 +48,8 @@ bool PickAndDragHandler::handle( const GUIEventAdapter& ea, GUIActionAdapter& aa
 		exit(-1);
 	}
 
-	Matrix &mtrxPickedObject = m_mtrxPickedObject;
-
-	bool bRes = true;
+//	bool bRes = true;
+	bool bRes = false;
 
 	int nResEvent = ea.getEventType();
 	if(nResEvent == GUIEventAdapter::KEYDOWN) {
@@ -166,6 +165,8 @@ bool PickAndDragHandler::handlePush(const MouseSignals & aMouseSignals, osgViewe
 //---------------------------------------------------------------------------------------
 
 bool PickAndDragHandler::handleDrag(const MouseSignals & aMouseSignals, osgViewer::Viewer * apViewer) {
+	AbstractObjectParams aOP;
+
 	Matrix & mtrxPickedObject = m_mtrxPickedObject;
 
 	float flXNormalized = aMouseSignals.m_flXNormalized;
@@ -210,6 +211,11 @@ bool PickAndDragHandler::handleDrag(const MouseSignals & aMouseSignals, osgViewe
 			mtrxSpecific = 
 				ObjectTransformation::setTranslationGetMatrix(0.0, 0.0, moveFactor*(flDiffPosY));
 		}
+		aOP.m_flPosX = (mtrxPickedObject*mtrxSpecific)(3,0);
+		aOP.m_flPosY = (mtrxPickedObject*mtrxSpecific)(3,1);
+		aOP.m_flPosZ = (mtrxPickedObject*mtrxSpecific)(3,2);
+		m_pPickedObject->setPosition(aOP);
+
 	} else if(m_nCurrentBasicTransform == ROTATE) {
 		//Angles should be in radians
 		float flRXAngle = flDiffPosY;
@@ -233,6 +239,11 @@ bool PickAndDragHandler::handleDrag(const MouseSignals & aMouseSignals, osgViewe
 			mtrxSpecific = ObjectTransformation::setRotationGetMatrix(flRXAngle, ROTATION_AXIS::X_AXIS)	*
 				ObjectTransformation::setRotationGetMatrix(flRXAngle, ROTATION_AXIS::Y_AXIS);
 		}
+		aOP.m_flAngleXY = flRZAngle;
+		aOP.m_flAngleXZ = flRYAngle;
+		aOP.m_flAngleYZ = flRXAngle;
+		m_pPickedObject->setRotation(aOP);
+
 	} else if(m_nCurrentBasicTransform == SCALE) {
 		if(m_nCurrentModalityTransform == X_AXIS) {
 			mtrxSpecific = ObjectTransformation::setScalingGetMatrix(moveFactor*(flDiffPosX), 0.0, 0.0);
@@ -243,13 +254,26 @@ bool PickAndDragHandler::handleDrag(const MouseSignals & aMouseSignals, osgViewe
 		} else {
 			mtrxSpecific = ObjectTransformation::setScalingGetMatrix(0.0, 0.0, 0.0);
 		}
+		aOP.m_flLenX = (mtrxPickedObject*mtrxSpecific)(0,0);
+		aOP.m_flLenY = (mtrxPickedObject*mtrxSpecific)(1,1);
+		aOP.m_flLenZ = (mtrxPickedObject*mtrxSpecific)(2,2);
+		m_pPickedObject->setScaling(aOP);
 	}
 	Matrix mtrxCenterInverse(Matrix::inverse(mtrxCenter));
 
 	// Central line of matrix formation : O^-1 S R O
 	Matrix mtrxTransformMatrix = mtrxPickedObject * mtrxCenterInverse * mtrxSpecific * mtrxCenter;
-	
+
 	m_pPickedObject->setMatrix(mtrxTransformMatrix);
+
+//
+
+	double x = m_pPickedObject->getScaling().x();
+	double y = m_pPickedObject->getScaling().y();
+	double z = m_pPickedObject->getScaling().z();
+
+	cout << x << " " << " " << y << " " << z << endl;
+//
 
 	ref_ptr<Group> pScene = dynamic_cast<Group*>(apViewer->getSceneData());
 	apViewer->setSceneData(pScene);

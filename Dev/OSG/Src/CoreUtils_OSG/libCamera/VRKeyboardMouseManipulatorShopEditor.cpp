@@ -35,6 +35,7 @@ KeyboardMouseManipulator(cm, copyOp) {
 }
 
 //-------------------------------------------------------------------------------
+
 bool KeyboardMouseManipulatorShopEditor::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa) {
 	Matrixd prevCameraMatrix = getMatrix();
 
@@ -45,21 +46,49 @@ bool KeyboardMouseManipulatorShopEditor::handle(const osgGA::GUIEventAdapter& ea
 	
 	Matrixd currentCameraMatrix = getMatrix();
 
-	double dbSumAbsDiff = 0.0;
-
 	int iI, iJ;
-	for(iI = 0; iI < 4; iI++) {
-		for(iJ = 0; iJ < 4; iJ++) {
-			dbSumAbsDiff += fabs(prevCameraMatrix(iI,iJ) - currentCameraMatrix(iI,iJ));
+	for(iI = 0; iI < 4; iI++)	{
+		for(iJ = 0; iJ < 4; iJ++)	{
+			if (fabs(prevCameraMatrix(iI,iJ) - currentCameraMatrix(iI,iJ)) > EPS)	{
+
+				//Emit signal only if there was a change in the matrix
+				emit signalCameraPositionOrHeadingDirectionChanged();
+				return true;
+			}
 		}
 	}
  
-	//Emit signal only if there was a change in the matrix
-	if (dbSumAbsDiff > EPS)	{
-		emit signalCameraPositionOrHeadingDirectionChanged();
-	}
-
 	return(bRes);
 }
 
 //-------------------------------------------------------------------------------
+
+void KeyboardMouseManipulatorShopEditor::slotSetPredefinedViewport(const QString & astrText) {
+	const QString & strText = astrText;
+	osg::Vec3d vec3dEye, vec3dCenter(osg::Vec3d(0,0,0)), vec3dUp(osg::Vec3d(0,0,1));
+
+	if (strText == "Front")	{
+		vec3dEye[0] = 0.0;
+		vec3dEye[1] = -10.0;
+		vec3dEye[2] = 0.0;
+	} else if (strText == "Rear")	{
+		vec3dEye[0] = 0.0;
+		vec3dEye[1] = 10.0;
+		vec3dEye[2] = 0.0;
+	} else if (strText == "Left")	{
+		vec3dEye[0] = -10.0;
+		vec3dEye[1] = 0.0;
+		vec3dEye[2] = 0.0;
+	} else if (strText == "Right")	{
+		vec3dEye[0] = 10.0;
+		vec3dEye[1] = 0.0;
+		vec3dEye[2] = 0.0;
+	} else if (strText == "Top-Down")	{
+		vec3dEye[0] = 0.0;
+		vec3dEye[1] = 0.0;
+		vec3dEye[2] = 20.0;
+	}
+
+	emit signalCameraPositionOrHeadingDirectionChanged();
+	setTransformation(vec3dEye, vec3dCenter, vec3dUp);
+}

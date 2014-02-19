@@ -17,6 +17,10 @@ namespace VR {
 			static osg::Matrix setTranslationGetMatrix(float aflX, float aflY, float aflZ);
 			static osg::Matrix setRotationGetMatrix(float aflAngle, ROTATION_AXIS aAxis);
 			static osg::Matrix setScalingGetMatrix(float aflX, float aflY, float aflZ);
+
+			const osg::Matrix& getMatrix() const;
+
+
 	};
 }
 #endif //VR_OBJECT_TRANSFORMATION_H

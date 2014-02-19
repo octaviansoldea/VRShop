@@ -37,16 +37,10 @@ namespace VR {
 			QPushButton * ap_PushButton_CameraHeadingDirection,
 			VR::KeyboardMouseManipulatorShopEditor * aKeyboardMouseManipulatorShopEditor);
 
-		signals:
-
-		//void foo1();
-
 		public slots:
 			void slotUpdateCameraGUI();
 
-			void slotSetPredefinedViewport(const QString & astrText);
-			void slotCameraPosition();
-			void slotHeadingDirection();
+			void slotCameraHomePosition();
 
 			void slotSetCameraPosition();
 			void slotSetCameraPositionDefault();

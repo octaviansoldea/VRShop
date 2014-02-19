@@ -1,6 +1,7 @@
 #include "StringManipulation.h"
 
 #include <osgDB/ReadFile>
+#include <osgGA/GUIEventHandler>
 
 #include <QFileDialog>
 #include <QMessageBox>
@@ -13,9 +14,13 @@
 #include "VRInsertNewItem_GUI.h"
 #include "VRDuplicateItem_GUI.h"
 #include "VRSaveAs_GUI.h"
+
 #include "VRCameraController.h"
-#include "VRShopBuilder_GUI.h"
+#include "VRPickAndDragController.h"
 #include "VRKeyboardMouseManipulatorShopEditor.h"
+#include "VRPickAndDragHandlerShopEditor.h"
+
+#include "VRShopBuilder_GUI.h"
 
 using namespace osg;
 using namespace Ui;
@@ -49,13 +54,26 @@ ShopBuilder_GUI::ShopBuilder_GUI()	{
 			m_p_PushButton_SetCameraHeadingDirectionDefault,
 			m_p_PushButton_CameraHeadingDirection,
 			pKeyboardMouseManipulatorShopEditor);
-
 		m_pCameraController->slotUpdateCameraGUI();
 
 	} catch(std::bad_typeid & bt) {
 		m_pCameraController = 0;
 		cerr << bt.what() << endl;
 	}
+
+	PickAndDragHandlerShopEditor *pPickAndDragHandlerShopEditor = 		
+		dynamic_cast<PickAndDragHandlerShopEditor *>(m_ShopBuilder.m_pEvent);
+
+	m_pPickAndDragController = new PickAndDragController(m_p_DoubleSpinBox_TranslationX,
+		m_p_DoubleSpinBox_TranslationY,
+		m_p_DoubleSpinBox_TranslationZ,
+		m_p_DoubleSpinBox_ScalingX,
+		m_p_DoubleSpinBox_ScalingY,
+		m_p_DoubleSpinBox_ScalingZ,		
+		m_p_ComboBox_DirectionOfTranslation,
+		m_p_ComboBox_TranslateRelativeTo,
+		pPickAndDragHandlerShopEditor);
+	m_pPickAndDragController->slotUpdatePickAndDragGUI();
 
 	m_pOSGQTWidget->show();
 
@@ -66,6 +84,7 @@ ShopBuilder_GUI::ShopBuilder_GUI()	{
 
 ShopBuilder_GUI::~ShopBuilder_GUI() {
 	delete m_pCameraController;
+	delete m_pPickAndDragController;
 }
 
 //=========================================================================================
@@ -85,9 +104,9 @@ void ShopBuilder_GUI::buildConnections() {
 
 	connect(m_p_ComboBox_DefineDragAxis, SIGNAL(currentTextChanged(const QString &)),this,SLOT(slotDefineDragAxis(const QString &)));
 
-	connect(m_p_DoubleSpinBox_TranslationX,SIGNAL(valueChanged(double)),this,SLOT(slotSetTranslation()));
-	connect(m_p_DoubleSpinBox_TranslationY,SIGNAL(valueChanged(double)),this,SLOT(slotSetTranslation()));
-	connect(m_p_DoubleSpinBox_TranslationZ,SIGNAL(valueChanged(double)),this,SLOT(slotSetTranslation()));
+	//connect(m_p_DoubleSpinBox_TranslationX,SIGNAL(valueChanged(double)),this,SLOT(slotSetTranslation()));
+	//connect(m_p_DoubleSpinBox_TranslationY,SIGNAL(valueChanged(double)),this,SLOT(slotSetTranslation()));
+	//connect(m_p_DoubleSpinBox_TranslationZ,SIGNAL(valueChanged(double)),this,SLOT(slotSetTranslation()));
 
 	connect(m_p_DoubleSpinBox_RotationX,SIGNAL(valueChanged(double)),this,SLOT(slotSetRotation()));
 	connect(m_p_DoubleSpinBox_RotationY,SIGNAL(valueChanged(double)),this,SLOT(slotSetRotation()));

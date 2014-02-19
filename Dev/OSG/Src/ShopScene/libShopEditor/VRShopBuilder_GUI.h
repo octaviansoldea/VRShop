@@ -7,6 +7,7 @@
 #include "ui_VRShopBuilder_GUI.h"
 
 class CameraController;
+class PickAndDragController;
 class Grid;
 
 namespace VR	{
@@ -24,6 +25,7 @@ namespace VR	{
 		QString saveDialog(const char * apchDBName);
 
 		CameraController * m_pCameraController;
+		PickAndDragController * m_pPickAndDragController;
 
 	public slots:
 		void slotNewProject();

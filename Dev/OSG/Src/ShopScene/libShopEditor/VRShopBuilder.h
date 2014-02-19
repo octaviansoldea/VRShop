@@ -4,6 +4,7 @@
 #include <QTreeView>
 
 #include <osg/Group>
+#include <osgGA/GUIEventHandler>
 
 #include "VRGrid.h"
 
@@ -25,7 +26,9 @@ namespace VR	{
 		void saveDB(const std::string & astrDBFileName);
 
 		void addNewItem(const std::string & astrObjectName);
-		
+
+		osgGA::GUIEventHandler * m_pEvent;
+
 	private:
 		OSGQT_Widget * m_pOSGQTWidget;
 		QTreeView * m_pTreeView;

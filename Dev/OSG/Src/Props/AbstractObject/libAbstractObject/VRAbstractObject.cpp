@@ -11,6 +11,7 @@
 #include "VRAbstractObject.h"
 
 using namespace VR;
+using namespace osg;
 using namespace std;
 
 string AbstractObject::m_strSQLFormat = "";
@@ -26,6 +27,8 @@ AbstractObjectParams::AbstractObjectParams() :
 //==============================================================
 
 AbstractObject::AbstractObject() : m_bIsTargetPick(false)	{
+	const AbstractObjectParams aAbstractObjectParams;
+	m_AbstractObjectParams = aAbstractObjectParams;
 }
 
 //--------------------------------------------------------------
@@ -35,7 +38,7 @@ AbstractObject::~AbstractObject()	{
 
 //=======================================================================
 
-osg::ref_ptr<AbstractObject> AbstractObject::createInstance(const std::string & astrClassName)	{
+ref_ptr<AbstractObject> AbstractObject::createInstance(const string & astrClassName)	{
 	if (astrClassName == "Cupboard")
 		return (new Cupboard);
 	if (astrClassName == "Container")
@@ -91,6 +94,33 @@ void AbstractObject::setScaling(const AbstractObjectParams & aAbstractObjectPara
 
 //--------------------------------------------------------------------------
 
+Vec3d AbstractObject::getPosition() const	{
+	Vec3d pos;
+	pos.set(m_AbstractObjectParams.m_flPosX, m_AbstractObjectParams.m_flPosY, m_AbstractObjectParams.m_flPosZ);
+
+	return pos;
+}
+
+//--------------------------------------------------------------------------
+
+Vec3d AbstractObject::getScaling() const	{
+	Vec3d scale;
+	scale.set(m_AbstractObjectParams.m_flLenX, m_AbstractObjectParams.m_flLenY, m_AbstractObjectParams.m_flLenZ);
+
+	return scale;
+}
+
+//--------------------------------------------------------------------------
+
+Vec3d AbstractObject::getRotation() const	{
+	Vec3d rotation;
+	rotation.set(m_AbstractObjectParams.m_flAngleXY, m_AbstractObjectParams.m_flAngleXZ, m_AbstractObjectParams.m_flAngleYZ);
+
+	return rotation;
+}
+
+//--------------------------------------------------------------------------
+
 void AbstractObject::setIsTargetPick(bool abIsTargetPick)	{
 	m_bIsTargetPick = abIsTargetPick;
 }
@@ -100,3 +130,6 @@ void AbstractObject::setIsTargetPick(bool abIsTargetPick)	{
 bool AbstractObject::getIsTargetPick() const	{
 	return m_bIsTargetPick;
 }
+
+//--------------------------------------------------------------------------
+

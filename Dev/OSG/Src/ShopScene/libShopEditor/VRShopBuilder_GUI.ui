@@ -388,8 +388,8 @@ QSpinBox::down-arrow:off {border-left: 17px solid none; border-right: 17px solid
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>258</width>
-              <height>587</height>
+              <width>261</width>
+              <height>623</height>
              </rect>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_8">
@@ -669,13 +669,43 @@ QSpinBox::down-arrow:off {border-left: 17px solid none; border-right: 17px solid
                  </layout>
                 </item>
                 <item row="0" column="1">
-                 <widget class="QDoubleSpinBox" name="m_p_DoubleSpinBox_TranslationX"/>
+                 <widget class="QDoubleSpinBox" name="m_p_DoubleSpinBox_TranslationX">
+                  <property name="decimals">
+                   <number>4</number>
+                  </property>
+                  <property name="minimum">
+                   <double>-99.989999999999995</double>
+                  </property>
+                  <property name="singleStep">
+                   <double>0.010000000000000</double>
+                  </property>
+                 </widget>
                 </item>
                 <item row="1" column="1">
-                 <widget class="QDoubleSpinBox" name="m_p_DoubleSpinBox_TranslationY"/>
+                 <widget class="QDoubleSpinBox" name="m_p_DoubleSpinBox_TranslationY">
+                  <property name="decimals">
+                   <number>4</number>
+                  </property>
+                  <property name="minimum">
+                   <double>-99.989999999999995</double>
+                  </property>
+                  <property name="singleStep">
+                   <double>0.010000000000000</double>
+                  </property>
+                 </widget>
                 </item>
                 <item row="2" column="1">
-                 <widget class="QDoubleSpinBox" name="m_p_DoubleSpinBox_TranslationZ"/>
+                 <widget class="QDoubleSpinBox" name="m_p_DoubleSpinBox_TranslationZ">
+                  <property name="decimals">
+                   <number>4</number>
+                  </property>
+                  <property name="minimum">
+                   <double>-99.989999999999995</double>
+                  </property>
+                  <property name="singleStep">
+                   <double>0.010000000000000</double>
+                  </property>
+                 </widget>
                 </item>
                </layout>
               </widget>
@@ -861,13 +891,43 @@ QSpinBox::down-arrow:off {border-left: 17px solid none; border-right: 17px solid
                  </layout>
                 </item>
                 <item row="0" column="1">
-                 <widget class="QDoubleSpinBox" name="m_p_DoubleSpinBox_RotationX"/>
+                 <widget class="QDoubleSpinBox" name="m_p_DoubleSpinBox_RotationX">
+                  <property name="decimals">
+                   <number>4</number>
+                  </property>
+                  <property name="minimum">
+                   <double>-99.989999999999995</double>
+                  </property>
+                  <property name="singleStep">
+                   <double>0.000100000000000</double>
+                  </property>
+                 </widget>
                 </item>
                 <item row="1" column="1">
-                 <widget class="QDoubleSpinBox" name="m_p_DoubleSpinBox_RotationY"/>
+                 <widget class="QDoubleSpinBox" name="m_p_DoubleSpinBox_RotationY">
+                  <property name="decimals">
+                   <number>4</number>
+                  </property>
+                  <property name="minimum">
+                   <double>-99.989999999999995</double>
+                  </property>
+                  <property name="singleStep">
+                   <double>0.000100000000000</double>
+                  </property>
+                 </widget>
                 </item>
                 <item row="2" column="1">
-                 <widget class="QDoubleSpinBox" name="m_p_DoubleSpinBox_RotationZ"/>
+                 <widget class="QDoubleSpinBox" name="m_p_DoubleSpinBox_RotationZ">
+                  <property name="decimals">
+                   <number>4</number>
+                  </property>
+                  <property name="minimum">
+                   <double>-99.989999999999995</double>
+                  </property>
+                  <property name="singleStep">
+                   <double>0.000100000000000</double>
+                  </property>
+                 </widget>
                 </item>
                </layout>
               </widget>
@@ -1004,13 +1064,43 @@ QSpinBox::down-arrow:off {border-left: 17px solid none; border-right: 17px solid
                  </widget>
                 </item>
                 <item row="0" column="1">
-                 <widget class="QDoubleSpinBox" name="m_p_DoubleSpinBox_ScalingX"/>
+                 <widget class="QDoubleSpinBox" name="m_p_DoubleSpinBox_ScalingX">
+                  <property name="decimals">
+                   <number>4</number>
+                  </property>
+                  <property name="minimum">
+                   <double>-99.989999999999995</double>
+                  </property>
+                  <property name="singleStep">
+                   <double>0.000100000000000</double>
+                  </property>
+                 </widget>
                 </item>
                 <item row="1" column="1">
-                 <widget class="QDoubleSpinBox" name="m_p_DoubleSpinBox_ScalingY"/>
+                 <widget class="QDoubleSpinBox" name="m_p_DoubleSpinBox_ScalingY">
+                  <property name="decimals">
+                   <number>4</number>
+                  </property>
+                  <property name="minimum">
+                   <double>-99.989999999999995</double>
+                  </property>
+                  <property name="singleStep">
+                   <double>0.000100000000000</double>
+                  </property>
+                 </widget>
                 </item>
                 <item row="2" column="1">
-                 <widget class="QDoubleSpinBox" name="m_p_DoubleSpinBox_ScalingZ"/>
+                 <widget class="QDoubleSpinBox" name="m_p_DoubleSpinBox_ScalingZ">
+                  <property name="decimals">
+                   <number>4</number>
+                  </property>
+                  <property name="minimum">
+                   <double>-99.989999999999995</double>
+                  </property>
+                  <property name="singleStep">
+                   <double>0.000100000000000</double>
+                  </property>
+                 </widget>
                 </item>
                </layout>
               </widget>
@@ -1144,13 +1234,43 @@ QSpinBox::down-arrow:off {border-left: 17px solid none; border-right: 17px solid
                  </widget>
                 </item>
                 <item row="0" column="1">
-                 <widget class="QDoubleSpinBox" name="m_p_DoubleSpinBox_ShearingX"/>
+                 <widget class="QDoubleSpinBox" name="m_p_DoubleSpinBox_ShearingX">
+                  <property name="decimals">
+                   <number>4</number>
+                  </property>
+                  <property name="minimum">
+                   <double>-99.989999999999995</double>
+                  </property>
+                  <property name="singleStep">
+                   <double>0.000100000000000</double>
+                  </property>
+                 </widget>
                 </item>
                 <item row="1" column="1">
-                 <widget class="QDoubleSpinBox" name="m_p_DoubleSpinBox_ShearingY"/>
+                 <widget class="QDoubleSpinBox" name="m_p_DoubleSpinBox_ShearingY">
+                  <property name="decimals">
+                   <number>4</number>
+                  </property>
+                  <property name="minimum">
+                   <double>-99.989999999999995</double>
+                  </property>
+                  <property name="singleStep">
+                   <double>0.000100000000000</double>
+                  </property>
+                 </widget>
                 </item>
                 <item row="2" column="1">
-                 <widget class="QDoubleSpinBox" name="m_p_DoubleSpinBox_ShearingZ"/>
+                 <widget class="QDoubleSpinBox" name="m_p_DoubleSpinBox_ShearingZ">
+                  <property name="decimals">
+                   <number>4</number>
+                  </property>
+                  <property name="minimum">
+                   <double>-99.989999999999995</double>
+                  </property>
+                  <property name="singleStep">
+                   <double>0.000100000000000</double>
+                  </property>
+                 </widget>
                 </item>
                </layout>
               </widget>
@@ -1547,7 +1667,22 @@ QSpinBox::down-arrow:off {border-left: 17px solid none; border-right: 17px solid
                          </property>
                          <item>
                           <property name="text">
-                           <string>User View</string>
+                           <string>Front</string>
+                          </property>
+                         </item>
+                         <item>
+                          <property name="text">
+                           <string>Right</string>
+                          </property>
+                         </item>
+                         <item>
+                          <property name="text">
+                           <string>Rear</string>
+                          </property>
+                         </item>
+                         <item>
+                          <property name="text">
+                           <string>Left</string>
                           </property>
                          </item>
                          <item>
@@ -4018,8 +4153,8 @@ background-color: rgb(191,193,194);</string>
      <rect>
       <x>187</x>
       <y>171</y>
-      <width>130</width>
-      <height>196</height>
+      <width>138</width>
+      <height>190</height>
      </rect>
     </property>
     <property name="styleSheet">

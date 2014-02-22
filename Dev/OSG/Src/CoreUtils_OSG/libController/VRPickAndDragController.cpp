@@ -113,14 +113,9 @@ void PickAndDragController::slotUpdatePickAndDragGUI() {
 	mp_DoubleSpinBox_ScalingZ->setValue(vec3dScale.z());
 
 	Vec3d & vec3dRot = mpPickAndDragHandlerShopEditor->m_pPickedObject->getRotation();
-	mp_DoubleSpinBox_RotationX->setValue(radians2degrees(vec3dRot.x()));
-	mp_DoubleSpinBox_RotationY->setValue(radians2degrees(vec3dRot.y()));
-	mp_DoubleSpinBox_RotationZ->setValue(radians2degrees(vec3dRot.z()));
-
-	std::cout << "mp_DoubleSpinBox_RotationZ RAD: " << vec3dRot.z() << std::endl;
-	std::cout << "mp_DoubleSpinBox_RotationZ DEG: " << radians2degrees(vec3dRot.z()) << std::endl;
-
-	std::cout << std::endl;
+	mp_DoubleSpinBox_RotationX->setValue(vec3dRot.x());
+	mp_DoubleSpinBox_RotationY->setValue(vec3dRot.y());
+	mp_DoubleSpinBox_RotationZ->setValue(vec3dRot.z());
 
 	connect(mp_DoubleSpinBox_TranslationX,SIGNAL(valueChanged(double)),
 		this,SLOT(slotSetPropertiesPosition()));

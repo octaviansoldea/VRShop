@@ -99,9 +99,9 @@ void PickAndDragHandlerShopEditor::setPropertiesPosition(const osg::Vec3d & avec
 	Matrix posMatrix =
 		matrix.scale(vec3dLen)	*
 		matrix.rotate(
-			vec3dRot[0], osg::X_AXIS,
-			vec3dRot[1], osg::Y_AXIS,
-			vec3dRot[2], osg::Z_AXIS)	*
+			degrees2Radians(vec3dRot[0]), osg::X_AXIS,
+			degrees2Radians(vec3dRot[1]), osg::Y_AXIS,
+			degrees2Radians(vec3dRot[2]), osg::Z_AXIS)	*
 		matrix.translate(vec3dPos);
 
 	m_pPickedObject->setMatrix(posMatrix);
@@ -127,9 +127,9 @@ void PickAndDragHandlerShopEditor::setPropertiesScaling(const Vec3d & avec3dScal
 	Matrix scalingMatrix =
 		matrix.scale(vec3dLen)	*
 		matrix.rotate(
-			vec3dRot[0], osg::X_AXIS,
-			vec3dRot[1], osg::Y_AXIS,
-			vec3dRot[2], osg::Z_AXIS)	*
+			degrees2Radians(vec3dRot[0]), osg::X_AXIS,
+			degrees2Radians(vec3dRot[1]), osg::Y_AXIS,
+			degrees2Radians(vec3dRot[2]), osg::Z_AXIS)	*
 		matrix.translate(vec3dPos);
 
 	m_pPickedObject->setMatrix(scalingMatrix);
@@ -150,27 +150,15 @@ void PickAndDragHandlerShopEditor::setPropertiesRotation(const Vec3d & avec3dRot
 	Vec3d vec3dRot = m_pPickedObject->getRotation();
 	Vec3d vec3dLen = m_pPickedObject->getScaling();
 
-	cout << "Value from the Dialog" << vec3dRot[2] << endl;
-
 	Matrix matrix(Matrix::identity());
 
 	Matrix rotationMatrix =
 		matrix.scale(vec3dLen)	*
 		matrix.rotate(
-			vec3dRot[0], osg::X_AXIS,
-			vec3dRot[1], osg::Y_AXIS,
-			vec3dRot[2], osg::Z_AXIS)	*
+			degrees2Radians(vec3dRot[0]), osg::X_AXIS,
+			degrees2Radians(vec3dRot[1]), osg::Y_AXIS,
+			degrees2Radians(vec3dRot[2]), osg::Z_AXIS)	*
 		matrix.translate(vec3dPos);
-
-	int nI,nJ;
-
-	cout << "Matrix: " << endl;
-	for (nI=0;nI<4;nI++) {
-		for (nJ=0;nJ<4;nJ++) {
-			cout << rotationMatrix(nI,nJ) << " ";
-		}
-		cout << endl;
-	}
 
 	m_pPickedObject->setMatrix(rotationMatrix);
 }

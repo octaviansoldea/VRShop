@@ -112,7 +112,11 @@ Vec3d AbstractObject::getScaling() const	{
 //--------------------------------------------------------------------------
 
 Vec3d AbstractObject::getRotation() const	{
-	Vec3d rotation(m_AbstractObjectParams.m_flAngleYZ, m_AbstractObjectParams.m_flAngleXZ, m_AbstractObjectParams.m_flAngleXY);
+	float flAngleX = radians2degrees(m_AbstractObjectParams.m_flAngleYZ);
+	float flAngleY = radians2degrees(m_AbstractObjectParams.m_flAngleXZ);
+	float flAngleZ = radians2degrees(m_AbstractObjectParams.m_flAngleXY);
+
+	Vec3d rotation(flAngleX, flAngleY, flAngleZ);
 
 	return rotation;
 }

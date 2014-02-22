@@ -1,7 +1,7 @@
 #include "VRUntransformedSphere.h"
 #include "VRSphere.h"
 
-#include "StringManipulation.h"
+#include "BasicStringDefinitions.h"
 
 #include <string>
 #include <iostream>

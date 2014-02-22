@@ -1,14 +1,14 @@
 #ifndef FILE_OPERATIONS_H
 #define FILE_OPERATIONS_H
-#include <windows.h>
 
 #include <iostream>
 #include <exception>
 #include <string>
 
 
-
+#ifdef _WIN32
 unsigned __int64 GetFileSizeFromName(const char * astrFileName);
+#endif //_WIN32
 
 void CheckedFileOpen(FILE ** appfp, const std::string & astrFileName, const char * apchMode);
 

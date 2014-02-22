@@ -3,18 +3,13 @@ PROJECT(libCommon)
 SET(CMAKE_DEBUG_POSTFIX "D")
 
 SET(SRCS
+	Array.h Array.cpp
 	BasicDefinitions.h
-    Array.h Array.cpp
     BasicStringDefinitions.h BasicStringDefinitions.cpp
-    BitFlip.h
-    Factorial.h Factorial.cpp
-    FileOperations.h FileOperations.cpp
-    IniReader.h IniReader.cpp
-    IniWriter.h IniWriter.cpp
+	FileOperations.h FileOperations.cpp
     Log.h Log.cpp
     Singleton.h
     Trace.h Trace.cpp
-	StringManipulation.h StringManipulation.cpp
 )
 
 ADD_LIBRARY(libCommon ${SRCS})

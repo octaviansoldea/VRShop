@@ -1,7 +1,7 @@
 #include "VRUntransformedPlate3D.h"
 #include "VRPlate3D.h"
 
-#include "StringManipulation.h"
+#include "BasicStringDefinitions.h"
 
 #include <string>
 #include <iostream>

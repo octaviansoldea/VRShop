@@ -1,4 +1,4 @@
-#include "StringManipulation.h"
+#include "BasicStringDefinitions.h"
 
 #include <QApplication>
 #include <QMessageBox>

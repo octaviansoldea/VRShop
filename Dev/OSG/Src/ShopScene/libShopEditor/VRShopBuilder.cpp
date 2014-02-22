@@ -7,7 +7,7 @@
 #include <osgDB/ReadFile>
 
 #include "OSGQT_Widget.h"
-#include "StringManipulation.h"
+#include "BasicStringDefinitions.h"
 #include "VRDatabaseMgr.h"
 #include "VRFurniture.h"
 #include "VRPlate3D.h"

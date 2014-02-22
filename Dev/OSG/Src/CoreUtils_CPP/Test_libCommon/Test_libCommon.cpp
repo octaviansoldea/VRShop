@@ -3,10 +3,13 @@
 
 #include "Array.h"
 #include "Singleton.h"
+/*
 #include "IniReader.h"
 #include "IniWriter.h"
 #include "Factorial.h"
+*/
 #include "FileOperations.h"
+
 
 using namespace std;
 
@@ -24,21 +27,8 @@ int main() {
 
 	T_VOL< float > volflData;
 	int arrnSizes[3] = {5, 10, 2};
-	volflData.init(arrnSizes, 0.0);
 	
-	{
-		CIniWriter iniWriter(".\\u.txt");
-		iniWriter.WriteDouble("Section", "Key", 10.000000000012);
-	}
-
-	double dbVal;
-	{
-		CIniReader iniReader(".\\u.txt");
-		dbVal = iniReader.ReadDouble("Section", "Key", 2.0);
-	}
-
-	
-	string strFileName = "sjkdfhksdf.hks";
+		string strFileName = "sjkdfhksdf.hks";
 	string strSuffix;
 	try {
 		strSuffix = getSuffix(strFileName);
@@ -46,16 +36,6 @@ int main() {
 		cerr << eS.what();
 		int indy = 1;
 	}
-
-	int nRes = factorial(6);
-
-	nRes = factorial(2);
-
-	nRes = factorial(9);
-
-	nRes = factorial(7);
-
-	
 
 	X * pX = Singleton<X>::instance();
 	pX->m_arrstrNames.setSize(2);

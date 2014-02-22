@@ -1,6 +1,6 @@
 #include "VRPlate3D.h"
 
-#include "StringManipulation.h"
+#include "BasicStringDefinitions.h"
 
 #include "VRContainer.h"
 

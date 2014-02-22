@@ -1,7 +1,10 @@
+#ifdef _WIN32
 #include <windows.h>
+#endif //_WIN32
+#include <string>
 #include <sstream>
-
-#include "BasicDefinitions.h"
+//
+//#include "BasicDefinitions.h"
 #include "BasicStringDefinitions.h"
 
 using namespace std;
@@ -14,6 +17,7 @@ std::string itostr(int anVal) {
 
 }
 
+#ifdef _WIN32
 std::string GetLastErrorString() {
 	LPVOID lpMsgBuf;
 	DWORD dw = GetLastError(); 
@@ -30,7 +34,13 @@ std::string GetLastErrorString() {
 		std::string strVal((char *)lpMsgBuf);
 		LocalFree(lpMsgBuf);
 		return(strVal);
+
 }
+#else // _WIN32
+std::string GetLastErrorString() {
+   return("");
+}
+#endif //_WIN32
 
 bool isInString(const std::string & astrName, const std::string & astrField) {
 	bool bRes = false;
@@ -43,8 +53,6 @@ bool isInString(const std::string & astrName, const std::string & astrField) {
 
 bool isAtEndOfString(const std::string & astrName, const std::string & astrField)	{
 	bool bRes = false;
-	int nStrSize = sizeof(astrName);
-//	int indexCh = astrName.find ( astrField ,  nStrSize - (nStrSize-sizeof(astrField)));
 	int indexCh = astrName.find ( astrField ,  astrName.size() - astrField.size());
 	if (indexCh != std::string::npos )
 		bRes = true;

@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "StringManipulation.h"
+#include "BasicStringDefinitions.h"
 
 #include "VRAbstractObject.h"
 

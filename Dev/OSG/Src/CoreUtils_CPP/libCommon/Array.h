@@ -5,7 +5,7 @@
 
 #include <stdlib.h>
 
-template <class T>
+template <typename T>
 struct Array {
 	T	 *array;
 	int  size;
@@ -30,26 +30,26 @@ protected:
 	void assertIndex(int index) const;
 };
 
-template <class T>
+template <typename T>
 std::ostream& operator <<(std::ostream& os, const Array<T>& a);
 
-template <class T>
+template <typename T>
 Array<T>::Array(int sz) {
 	size = sz;
 	array = new T[size];
 }
 
-template <class T>
+template <typename T>
 Array<T>::~Array() {
 	delete [] array;
 }
 
-template <class T>
+template <typename T>
 void Array<T>::append(T e) {
 	insert(e, size);
 }
 
-template <class T>
+template <typename T>
 void Array<T>::insert(T e, int index) {
 	if(index != size)
 		assertIndex(index);
@@ -70,26 +70,26 @@ void Array<T>::insert(T e, int index) {
 	size++;
 }
 
-template <class T>
+template <typename T>
 T& Array<T>::operator[] (int index) {
 	assertIndex(index);
 	return array[index];
 }
 
-template <class T>
+template <typename T>
 const T& Array<T>::operator[] (int index) const {
 	assertIndex(index);
 	return array[index];
 }
 
-template <class T>
+template <typename T>
 void Array<T>::setSize(int sz) {
 	size = sz;
 	delete [] array;
 	array = new T[size];
 }
 
-template <class T>
+template <typename T>
 void Array<T>::init(int sz, T aTVal) {
 	setSize(sz);
 	unsigned int unI;
@@ -99,7 +99,7 @@ void Array<T>::init(int sz, T aTVal) {
 }
 
 
-template <class T>
+template <typename T>
 void Array<T>::append(Array<T>& a) {
 	append(a, 0);
 }
@@ -108,7 +108,7 @@ void Array<T>::append(Array<T>& a) {
  * Appends a starting from the a's index 'from'
  * to the and of this array.
  */
-template <class T>
+template <typename T>
 void Array<T>::append(Array<T>& a, int from) {
 	T *newarray = new T[size+a.size-from];
 
@@ -124,7 +124,7 @@ void Array<T>::append(Array<T>& a, int from) {
 	size += a.size-from;
 }
 
-template <class T>
+template <typename T>
 T Array<T>::remove(int index) {
 	assertIndex(index);
 
@@ -144,7 +144,7 @@ T Array<T>::remove(int index) {
 	return ret;
 }
 
-template <class T>
+template <typename T>
 void Array<T>::assertIndex(int index) const {
 	if(index<0 || index>=size) {
 		std::cerr << "Array index out of bounds: "<<index<<std::endl;
@@ -152,14 +152,14 @@ void Array<T>::assertIndex(int index) const {
 	}
 }
 
-template <class T>
+template <typename T>
 std::ostream& operator <<(std::ostream& os, const Array<T>& a) {
 	for(int i=0; i<a.size; i++)
 		os << a[i] << ' ';
 	return os<<std::endl;
 }
 
-template <class T>
+template <typename T>
 Array<T> & Array<T>::operator=(const Array & a) {
     this->setSize(a.size);
 	int nI;
@@ -169,7 +169,7 @@ Array<T> & Array<T>::operator=(const Array & a) {
 	return(*this);
 }
 
-template <class T>
+template <typename T>
 Array<T>::Array(const Array<T> & a) {
 	array = NULL;
 	(*this) = a;
@@ -188,36 +188,36 @@ typedef Array<double> DOUBLE_ARRAY;
 typedef Array< DOUBLE_ARRAY > DOUBLE_TBL;
 typedef Array< DOUBLE_TBL > DOUBLE_VOL;
 
-template <class T>
+template <typename T>
 struct T_TBL : public Array < Array < T > > {
 	void init(const int aarrnSizes[2], T aTVal = 0);
 };
 
-template <class T>
-void T_TBL< T >::init(const int aarrnSizes[2], T aTVal = 0) {
+template <typename T>
+void T_TBL< T >::init(const int aarrnSizes[2], T aTVal) {
 
 	unsigned int unI;
 	 
-	setSize(aarrnSizes[0]);
+	T_TBL < T >::setSize(aarrnSizes[0]);
 	for(unI = 0; unI < aarrnSizes[0]; unI++) {
-		(array[unI]).init(aarrnSizes[1], aTVal);
+		(T_TBL< T >::array[unI]).init(aarrnSizes[1], aTVal);
 	}
 
 }
 
 
-template <class T>
+template <typename T>
 struct T_VOL : public Array < T_TBL < T > > {
 	void init(const int aarrnSizes[3], T aTVal = 0);
 };
 
-template < class T >
-void T_VOL<T>::init(const int aarrnSizes[3], T aTVal = 0) {
-	int nI;
+template < typename T >
+void T_VOL<T>::init(const int aarrnSizes[3], T aTVal) {
+	unsigned int unI;
 	 
-	setSize(aarrnSizes[0]);
-	for(nI = 0; nI < aarrnSizes[0]; nI++) {
-		(array[nI]).init(&(aarrnSizes[1]), aTVal);
+	T_VOL < T >::setSize(aarrnSizes[0]);
+	for(unI = 0; unI < aarrnSizes[0]; unI++) {
+		(T_VOL< T >::array[unI]).init(&(aarrnSizes[1]), aTVal);
 	}
 }
 

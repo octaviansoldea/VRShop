@@ -9,7 +9,7 @@
 #include <osg/TexMat>
 #include <osgDB/ReadFile>
 
-#include "StringManipulation.h"
+#include "BasicStringDefinitions.h"
 
 #include "VRUntransformedSphere.h"
 

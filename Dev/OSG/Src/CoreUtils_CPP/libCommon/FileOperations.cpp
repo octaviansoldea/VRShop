@@ -1,18 +1,30 @@
-#include <sys/types.h> 
+#ifdef _WIN32
 #include <sys/stat.h>
-#include <string>
+#endif //_WIN32
+
+// Left here for requiring implementations
+#ifdef _WIN32
+#include <windows.h>
+#endif //_WIN32
+#ifdef __linux__
+#endif
+#ifdef __unix__
+#endif
+#ifdef __APPLE__
+#endif
 
 
 #include <stdio.h>
 #include <string>
+#include <exception>
 
-#include "BasicDefinitions.h"
 #include "Singleton.h"
 #include "Trace.h"
 #include "FileOperations.h"
 
 using namespace std;
 
+#ifdef _WIN32
 unsigned __int64 GetFileSizeFromName(const char * astrFileName) {
 	
 	/*
@@ -56,6 +68,8 @@ unsigned __int64 GetFileSizeFromName(const char * astrFileName) {
 	nFileSize = st.st_size;
 	return(nFileSize);
 }
+
+#endif //_WIN32
 
 void CheckedFileOpen(FILE ** appfp, const string & astrFileName, const char * apchMode) {
 	(*appfp) = fopen(astrFileName.c_str(), apchMode);//"wb");

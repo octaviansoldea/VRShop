@@ -14,9 +14,9 @@ namespace VR	{
 		float m_flLenY;
 		float m_flLenZ;
 
-		float m_flAngleXY;
-		float m_flAngleXZ;
 		float m_flAngleYZ;
+		float m_flAngleXZ;
+		float m_flAngleXY;
 
 		AbstractObjectParams();
 	};
@@ -36,9 +36,9 @@ namespace VR	{
 		virtual void initFromSQLData(const std::string & astrSQLData) = 0;
 		virtual void predefinedObject() = 0;
 
-		virtual void setRotation(const AbstractObjectParams & aAbstractObjectParams);
-		virtual void setPosition(const AbstractObjectParams & aAbstractObjectParams);
-		virtual void setScaling(const AbstractObjectParams & aAbstractObjectParams);
+		virtual void setRotation(float & aflAngleX, float & aflAngleY, float & aflAngleZ);
+		virtual void setPosition(float & aflPosX, float & aflPosY, float & aflPosZ);
+		virtual void setScaling(float & aflLenX, float & aflLenY, float & aflLenZ);
 
 		osg::Vec3d getRotation() const;
 		osg::Vec3d getPosition() const;

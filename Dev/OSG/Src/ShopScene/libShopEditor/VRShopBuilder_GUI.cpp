@@ -69,11 +69,13 @@ ShopBuilder_GUI::ShopBuilder_GUI()	{
 		m_p_DoubleSpinBox_TranslationZ,
 		m_p_DoubleSpinBox_ScalingX,
 		m_p_DoubleSpinBox_ScalingY,
-		m_p_DoubleSpinBox_ScalingZ,		
+		m_p_DoubleSpinBox_ScalingZ,
+		m_p_DoubleSpinBox_RotationX,
+		m_p_DoubleSpinBox_RotationY,
+		m_p_DoubleSpinBox_RotationZ,
 		m_p_ComboBox_DirectionOfTranslation,
 		m_p_ComboBox_TranslateRelativeTo,
 		pPickAndDragHandlerShopEditor);
-	m_pPickAndDragController->slotUpdatePickAndDragGUI();
 
 	m_pOSGQTWidget->show();
 
@@ -103,26 +105,6 @@ void ShopBuilder_GUI::buildConnections() {
 	connect(m_pComboBox_PercentageZoom, SIGNAL(currentTextChanged(const QString &)),this,SLOT(slotPercentageZoom(const QString &)));
 
 	connect(m_p_ComboBox_DefineDragAxis, SIGNAL(currentTextChanged(const QString &)),this,SLOT(slotDefineDragAxis(const QString &)));
-
-	//connect(m_p_DoubleSpinBox_TranslationX,SIGNAL(valueChanged(double)),this,SLOT(slotSetTranslation()));
-	//connect(m_p_DoubleSpinBox_TranslationY,SIGNAL(valueChanged(double)),this,SLOT(slotSetTranslation()));
-	//connect(m_p_DoubleSpinBox_TranslationZ,SIGNAL(valueChanged(double)),this,SLOT(slotSetTranslation()));
-
-	connect(m_p_DoubleSpinBox_RotationX,SIGNAL(valueChanged(double)),this,SLOT(slotSetRotation()));
-	connect(m_p_DoubleSpinBox_RotationY,SIGNAL(valueChanged(double)),this,SLOT(slotSetRotation()));
-	connect(m_p_DoubleSpinBox_RotationZ,SIGNAL(valueChanged(double)),this,SLOT(slotSetRotation()));
-
-	connect(m_p_DoubleSpinBox_ScalingX,SIGNAL(valueChanged(double)),this,SLOT(slotSetScaling()));
-	connect(m_p_DoubleSpinBox_ScalingY,SIGNAL(valueChanged(double)),this,SLOT(slotSetScaling()));
-	connect(m_p_DoubleSpinBox_ScalingZ,SIGNAL(valueChanged(double)),this,SLOT(slotSetScaling()));
-
-	connect(m_p_DoubleSpinBox_ShearingX,SIGNAL(valueChanged(double)),this,SLOT(slotSetShearing()));
-	connect(m_p_DoubleSpinBox_ShearingY,SIGNAL(valueChanged(double)),this,SLOT(slotSetShearing()));
-	connect(m_p_DoubleSpinBox_ShearingZ,SIGNAL(valueChanged(double)),this,SLOT(slotSetShearing()));
-
-	connect(m_p_ComboBox_DirectionOfTranslation,SIGNAL(currentTextChanged(const QString &)),this,SLOT(slotSetDirectionOfTranslation(const QString &)));
-	connect(m_p_ComboBox_TranslateRelativeTo,SIGNAL(currentTextChanged(const QString &)),this,SLOT(slotSetTranslateRelativeTo(const QString &)));
-	connect(m_p_ComboBox_CenterOfRotation,SIGNAL(currentTextChanged(const QString &)),this,SLOT(slotSetCenterOfRotation(const QString &)));
 
 	connect(m_p_PushButton_ModifyScene_AddNewItem,SIGNAL(clicked()),this,SLOT(slotModifySceneActions()));
 	connect(m_p_PushButton_ModifyScene_EditItem,SIGNAL(clicked()),this,SLOT(slotModifySceneActions()));
@@ -278,54 +260,6 @@ void ShopBuilder_GUI::slotPercentageZoom(const QString & astrZoomFactor)	{
 //---------------------------------------------------------------------------------------
 
 void ShopBuilder_GUI::slotDefineDragAxis(const QString & astrAxis)	{
-}
-
-//---------------------------------------------------------------------------------------
-
-void ShopBuilder_GUI::slotSetTranslation()	{
-	QDoubleSpinBox * pQDoubleSpinBox = dynamic_cast<QDoubleSpinBox*>(sender());
-}
-
-//---------------------------------------------------------------------------------------
-
-void ShopBuilder_GUI::slotSetDirectionOfTranslation(const QString & astrText)	{
-	std::string strText = astrText.toStdString();
-}
-
-//---------------------------------------------------------------------------------------
-
-void ShopBuilder_GUI::slotSetTranslateRelativeTo(const QString & astrText)	{
-	std::string strText = astrText.toStdString();
-}
-
-//---------------------------------------------------------------------------------------
-
-void ShopBuilder_GUI::slotSetCenterOfRotation(const QString & astrText)	{
-	std::string strText = astrText.toStdString();
-}
-
-//---------------------------------------------------------------------------------------
-void ShopBuilder_GUI::slotSetRotation()	{
-	QDoubleSpinBox * pQDoubleSpinBox = dynamic_cast<QDoubleSpinBox*>(sender());
-	
-}
-
-//---------------------------------------------------------------------------------------
-
-void ShopBuilder_GUI::slotSetScaling() {
-	QDoubleSpinBox * pQDoubleSpinBox = dynamic_cast<QDoubleSpinBox*>(sender());
-}
-
-//---------------------------------------------------------------------------------------
-
-void ShopBuilder_GUI::slotSetShearing()	{
-	QDoubleSpinBox * pQDoubleSpinBox = dynamic_cast<QDoubleSpinBox*>(sender());
-}
-
-//---------------------------------------------------------------------------------------
-
-void ShopBuilder_GUI::slotSetPosition() {
-	QDoubleSpinBox * pQDoubleSpinBox = dynamic_cast<QDoubleSpinBox*>(sender());
 }
 
 //---------------------------------------------------------------------------------------

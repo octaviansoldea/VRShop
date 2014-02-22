@@ -21,6 +21,8 @@
 #include "VRAbstractObject.h"
 
 #include "BasicDefinitions.h"
+#include "VRObjectTransformation.h"
+
 #include "VRPickAndDragHandlerShopEditor.h"
 
 using namespace VR;
@@ -49,11 +51,9 @@ bool PickAndDragHandlerShopEditor::handle(const GUIEventAdapter& ea, GUIActionAd
 
 	addPart(PickAndDragHandler::m_pPickedObject);
 
-	m_pPickedObjects = PickAndDragHandler::m_pPickedObject.get();
-
-	Matrixd vecPickedObjectPos = PickAndDragHandler::m_pPickedObject->getMatrix();
-
-	emit signalPropertiesSettingsChanged(vecPickedObjectPos);
+	if (ea.getEventType() == GUIEventAdapter::EventType::DRAG) {
+		emit signalPropertiesSettingsChanged();
+	}
 
 	return(bRes);
 }
@@ -82,23 +82,97 @@ void PickAndDragHandlerShopEditor::clearList()	{
 //==========================================================================
 
 void PickAndDragHandlerShopEditor::setPropertiesPosition(const osg::Vec3d & avec3dPosition)	{
-	if (m_pvecPickedObjects.size()==0)
+	if(!m_pPickedObject)
 		return;
 
-	vector<ref_ptr<AbstractObject>>::iterator it;
-	for (it = m_pvecPickedObjects.begin(); it != m_pvecPickedObjects.end(); it++)	{
-		ref_ptr <AbstractObject> pPickedObject = dynamic_cast<AbstractObject*>(it->get());
-		Matrix mtrxTemp = pPickedObject->getMatrix();
-		AbstractObjectParams aOP;
-		aOP.m_flPosX = avec3dPosition[0];
-		aOP.m_flPosY = avec3dPosition[1];
-		aOP.m_flPosZ = avec3dPosition[2];
-		pPickedObject->setPosition(aOP);
+	float flPosX = avec3dPosition[0];
+	float flPosY = avec3dPosition[1];
+	float flPosZ = avec3dPosition[2];
+	m_pPickedObject->setPosition(flPosX, flPosY, flPosZ);
 
-		mtrxTemp.setTrans(avec3dPosition);
+	Vec3d vec3dPos = m_pPickedObject->getPosition();
+	Vec3d vec3dRot = m_pPickedObject->getRotation();
+	Vec3d vec3dLen = m_pPickedObject->getScaling();
 
-		m_pPickedObjects->setMatrix(mtrxTemp);
+	Matrix matrix(Matrix::identity());
+
+	Matrix posMatrix =
+		matrix.scale(vec3dLen)	*
+		matrix.rotate(
+			vec3dRot[0], osg::X_AXIS,
+			vec3dRot[1], osg::Y_AXIS,
+			vec3dRot[2], osg::Z_AXIS)	*
+		matrix.translate(vec3dPos);
+
+	m_pPickedObject->setMatrix(posMatrix);
+}
+
+//------------------------------------------------------------------------------
+
+void PickAndDragHandlerShopEditor::setPropertiesScaling(const Vec3d & avec3dScaling)	{
+	if (!m_pPickedObject)
+		return;
+
+	float flLenX = avec3dScaling[0];
+	float flLenY = avec3dScaling[1];
+	float flLenZ = avec3dScaling[2];
+	m_pPickedObject->setScaling(flLenX, flLenY, flLenZ);
+
+	Vec3d vec3dPos = m_pPickedObject->getPosition();
+	Vec3d vec3dRot = m_pPickedObject->getRotation();
+	Vec3d vec3dLen = m_pPickedObject->getScaling();
+
+	Matrix matrix(Matrix::identity());
+
+	Matrix scalingMatrix =
+		matrix.scale(vec3dLen)	*
+		matrix.rotate(
+			vec3dRot[0], osg::X_AXIS,
+			vec3dRot[1], osg::Y_AXIS,
+			vec3dRot[2], osg::Z_AXIS)	*
+		matrix.translate(vec3dPos);
+
+	m_pPickedObject->setMatrix(scalingMatrix);
+}
+
+//------------------------------------------------------------------------------
+
+void PickAndDragHandlerShopEditor::setPropertiesRotation(const Vec3d & avec3dRotation)	{
+	if (!m_pPickedObject)
+		return;
+
+	float flRotX = avec3dRotation[0];
+	float flRotY = avec3dRotation[1];
+	float flRotZ = avec3dRotation[2];
+	m_pPickedObject->setRotation(flRotX, flRotY, flRotZ);
+
+	Vec3d vec3dPos = m_pPickedObject->getPosition();
+	Vec3d vec3dRot = m_pPickedObject->getRotation();
+	Vec3d vec3dLen = m_pPickedObject->getScaling();
+
+	cout << "Value from the Dialog" << vec3dRot[2] << endl;
+
+	Matrix matrix(Matrix::identity());
+
+	Matrix rotationMatrix =
+		matrix.scale(vec3dLen)	*
+		matrix.rotate(
+			vec3dRot[0], osg::X_AXIS,
+			vec3dRot[1], osg::Y_AXIS,
+			vec3dRot[2], osg::Z_AXIS)	*
+		matrix.translate(vec3dPos);
+
+	int nI,nJ;
+
+	cout << "Matrix: " << endl;
+	for (nI=0;nI<4;nI++) {
+		for (nJ=0;nJ<4;nJ++) {
+			cout << rotationMatrix(nI,nJ) << " ";
+		}
+		cout << endl;
 	}
+
+	m_pPickedObject->setMatrix(rotationMatrix);
 }
 
 //------------------------------------------------------------------------------
@@ -119,3 +193,5 @@ void PickAndDragHandlerShopEditor::slotSetTransformParams(const QString & astrTe
 		m_nCurrentModalityTransform = VIEW_DIRECTION;
 	}
 }
+
+//-----------------------------------------------------------------------------------

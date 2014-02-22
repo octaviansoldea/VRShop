@@ -42,16 +42,6 @@ namespace VR	{
 
 		void slotDefineDragAxis(const QString & astrAxis);
 
-		void slotSetTranslation();
-		void slotSetDirectionOfTranslation(const QString & astrText);
-		void slotSetTranslateRelativeTo(const QString & astrText);
-		void slotSetCenterOfRotation(const QString & astrText);
-
-		void slotSetRotation();
-		void slotSetScaling();
-		void slotSetShearing();
-		void slotSetPosition();
-
 		void slotModifySceneActions();
 		void slotModifyProductSettings();
 		void slotSetProductSettings(const QString & astrSelectedProduct);

@@ -32,9 +32,9 @@ Container::Container(const ContainerParams & aContainerParams) : Furniture(aCont
 void Container::init(const FurnitureParams & aFurnitureParams)	{
 	m_ContainerParams = static_cast<const ContainerParams&>(aFurnitureParams);
 
-	setScaling(m_ContainerParams);
-	setRotation(m_ContainerParams);
-	setPosition(m_ContainerParams);
+	setScaling(m_ContainerParams.m_flLenX, m_ContainerParams.m_flLenY, m_ContainerParams.m_flLenZ);
+	setRotation(m_ContainerParams.m_flAngleXY, m_ContainerParams.m_flAngleXZ, m_ContainerParams.m_flAngleYZ);
+	setPosition(m_ContainerParams.m_flPosX, m_ContainerParams.m_flPosY, m_ContainerParams.m_flPosZ);
 
 	Matrix matrix;
 	matrix.set(1, 0, 0, 0,

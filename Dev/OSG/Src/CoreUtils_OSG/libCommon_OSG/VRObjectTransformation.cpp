@@ -53,13 +53,13 @@ Matrix ObjectTransformation::setRotationGetMatrix(float aflAngle, ROTATION_AXIS 
 
 Matrix ObjectTransformation::setScalingGetMatrix(float aflX, float aflY, float aflZ)	{
 
-	//aflX = (1+aflX)>0 ? 1.0 + aflX : 0.001;
-	//aflY = (1+aflY)>0 ? 1.0 + aflY : 0.001;
-	//aflZ = (1+aflZ)>0 ? 1.0 + aflZ : 0.001;
+	aflX = (1+aflX)>0 ? 1+aflX : 0.001;
+	aflY = (1+aflY)>0 ? 1+aflY : 0.001;
+	aflZ = (1+aflZ)>0 ? 1+aflZ : 0.001;
 
-	aflX = (aflX > 0 ? 1.1 : 0.9);
-	aflY = (aflY > 0 ? 1.1 : 0.9);
-	aflZ = (aflZ > 0 ? 1.1 : 0.9);
+	//aflX = (aflX > 0 ? 1.1 : 0.9);
+	//aflY = (aflY > 0 ? 1.1 : 0.9);
+	//aflZ = (aflZ > 0 ? 1.1 : 0.9);
 
 	return Matrix::scale(aflX,aflY,aflZ);
 }

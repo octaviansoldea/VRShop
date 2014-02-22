@@ -16,8 +16,7 @@
 
 #include <QObject>
 
-#include <osg/Matrix>
-#include <osg/Vec3d>
+#include "VRAbstractObject.h"
 
 class QComboBox;
 class QDoubleSpinBox;
@@ -27,24 +26,28 @@ namespace VR {
 	
 	struct PickAndDragController : public QObject {
 		PickAndDragController(
-			QDoubleSpinBox * ap_DoubleSpinBox_TranslationX,
-			QDoubleSpinBox * ap_DoubleSpinBox_TranslationY,
-			QDoubleSpinBox * ap_DoubleSpinBox_TranslationZ,
+			QDoubleSpinBox * a_p_DoubleSpinBox_TranslationX,
+			QDoubleSpinBox * a_p_DoubleSpinBox_TranslationY,
+			QDoubleSpinBox * a_p_DoubleSpinBox_TranslationZ,
+							  
+			QDoubleSpinBox * a_p_DoubleSpinBox_ScalingX,
+			QDoubleSpinBox * a_p_DoubleSpinBox_ScalingY,
+			QDoubleSpinBox * a_p_DoubleSpinBox_ScalingZ,
+			QDoubleSpinBox * a_p_DoubleSpinBox_RotationX,
+			QDoubleSpinBox * a_p_DoubleSpinBox_RotationY,
+			QDoubleSpinBox * a_p_DoubleSpinBox_RotationZ,
 
-			QDoubleSpinBox * ap_DoubleSpinBox_ScalingX,
-			QDoubleSpinBox * ap_DoubleSpinBox_ScalingY,
-			QDoubleSpinBox * ap_DoubleSpinBox_ScalingZ,
+			QComboBox * a_p_ComboBox_DirectionOfTranslation,
+			QComboBox * a_p_ComboBox_TranslateRelativeTo,
 
-			QComboBox * ap_ComboBox_DirectionOfTranslation,
-			QComboBox * ap_ComboBox_TranslateRelativeTo,
-
-			PickAndDragHandlerShopEditor * apPickAndDragHandlerShopEditor);
+			PickAndDragHandlerShopEditor * a_pPickAndDragHandlerShopEditor);	//End of constructor
 
 	public slots:
 		void slotUpdatePickAndDragGUI();
 
-		void slotSetPropertiesPosition(const osg::Matrixd & amtrxMatrix);
-		void slotSetPropertiesPositionFromDlg();
+		void slotSetPropertiesPosition();
+		void slotSetPropertiesRotation();
+		void slotSetPropertiesScaling();
 
 	private:
 		Q_OBJECT
@@ -56,15 +59,14 @@ namespace VR {
 		QDoubleSpinBox * mp_DoubleSpinBox_ScalingX;
 		QDoubleSpinBox * mp_DoubleSpinBox_ScalingY;
 		QDoubleSpinBox * mp_DoubleSpinBox_ScalingZ;
+		QDoubleSpinBox * mp_DoubleSpinBox_RotationX;
+		QDoubleSpinBox * mp_DoubleSpinBox_RotationY;
+		QDoubleSpinBox * mp_DoubleSpinBox_RotationZ;
 
 		QComboBox * mp_ComboBox_DirectionOfTranslation;
 		QComboBox * mp_ComboBox_TranslateRelativeTo;
 
 		PickAndDragHandlerShopEditor * mpPickAndDragHandlerShopEditor;
-
-		void setRotationController();
-		void setTranslationController();
-		void setScalingController();
 
 	};
 }

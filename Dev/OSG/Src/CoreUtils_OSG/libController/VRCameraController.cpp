@@ -41,13 +41,12 @@ CameraController::CameraController(
 	connect(m_p_ComboBox_PredefinedViewport,SIGNAL(currentTextChanged(const QString &)),
 		m_pKeyboardMouseManipulatorShopEditor,SLOT(slotSetPredefinedViewport(const QString &)));
 
-	//THESE SEEM UNNECESSARY
-	//connect(m_p_DoubleSpinBox_CameraPositionX,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraPosition()));
-	//connect(m_p_DoubleSpinBox_CameraPositionY,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraPosition()));
-	//connect(m_p_DoubleSpinBox_CameraPositionZ,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraPosition()));
-	//connect(m_p_DoubleSpinBox_CameraHeadingDirectionX,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraHeadingDirection()));
-	//connect(m_p_DoubleSpinBox_CameraHeadingDirectionY,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraHeadingDirection()));
-	//connect(m_p_DoubleSpinBox_CameraHeadingDirectionZ,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraHeadingDirection()));
+	connect(m_p_DoubleSpinBox_CameraPositionX,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraPosition()));
+	connect(m_p_DoubleSpinBox_CameraPositionY,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraPosition()));
+	connect(m_p_DoubleSpinBox_CameraPositionZ,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraPosition()));
+	connect(m_p_DoubleSpinBox_CameraHeadingDirectionX,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraHeadingDirection()));
+	connect(m_p_DoubleSpinBox_CameraHeadingDirectionY,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraHeadingDirection()));
+	connect(m_p_DoubleSpinBox_CameraHeadingDirectionZ,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraHeadingDirection()));
 
 	connect(m_p_PushButton_SetCameraPositionDefault,SIGNAL(clicked()),this,SLOT(slotSetCameraPositionDefault()));
 	connect(m_p_PushButton_SetCameraHeadingDirectionDefault,SIGNAL(clicked()),this,SLOT(slotSetCameraHeadingDirectionDefault()));
@@ -62,13 +61,12 @@ CameraController::CameraController(
 }
 
 void CameraController::slotUpdateCameraGUI() {
-	//THESE SEEM UNNECESSARY
-	//disconnect(m_p_DoubleSpinBox_CameraPositionX,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraPosition()));
-	//disconnect(m_p_DoubleSpinBox_CameraPositionY,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraPosition()));
-	//disconnect(m_p_DoubleSpinBox_CameraPositionZ,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraPosition()));
-	//disconnect(m_p_DoubleSpinBox_CameraHeadingDirectionX,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraHeadingDirection()));
-	//disconnect(m_p_DoubleSpinBox_CameraHeadingDirectionY,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraHeadingDirection()));
-	//disconnect(m_p_DoubleSpinBox_CameraHeadingDirectionZ,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraHeadingDirection()));
+	disconnect(m_p_DoubleSpinBox_CameraPositionX,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraPosition()));
+	disconnect(m_p_DoubleSpinBox_CameraPositionY,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraPosition()));
+	disconnect(m_p_DoubleSpinBox_CameraPositionZ,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraPosition()));
+	disconnect(m_p_DoubleSpinBox_CameraHeadingDirectionX,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraHeadingDirection()));
+	disconnect(m_p_DoubleSpinBox_CameraHeadingDirectionY,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraHeadingDirection()));
+	disconnect(m_p_DoubleSpinBox_CameraHeadingDirectionZ,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraHeadingDirection()));
 
 	osg::Vec3d vec3dEye, vec3dCenter, vec3dUp;
 	m_pKeyboardMouseManipulatorShopEditor->getTransformation(vec3dEye, vec3dCenter, vec3dUp);
@@ -79,6 +77,7 @@ void CameraController::slotUpdateCameraGUI() {
 	m_p_DoubleSpinBox_CameraHeadingDirectionY->setValue(vec3dCenter[1]);
 	m_p_DoubleSpinBox_CameraHeadingDirectionZ->setValue(vec3dCenter[2]);
 
+	//THESE SEEM UNNECESSARY
 	connect(m_p_DoubleSpinBox_CameraPositionX,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraPosition()));
 	connect(m_p_DoubleSpinBox_CameraPositionY,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraPosition()));
 	connect(m_p_DoubleSpinBox_CameraPositionZ,SIGNAL(valueChanged(double)),this,SLOT(slotSetCameraPosition()));

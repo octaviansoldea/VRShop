@@ -18,7 +18,7 @@
 
 #include "VRPickAndDragHandler.h"
 
-class AbstractObject;
+#include "VRAbstractObject.h"
 
 namespace VR {
 
@@ -31,12 +31,14 @@ namespace VR {
 		virtual bool handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa);
 
 		void setPropertiesPosition(const osg::Vec3d & avec3dPosition);
+		void setPropertiesScaling(const osg::Vec3d & avec3dScaling);
+		void setPropertiesRotation(const osg::Vec3d & avec3dRotation);
 
 	public slots:
 		void slotSetTransformParams(const QString & astrText);
 
 	signals:
-		void signalPropertiesSettingsChanged(const osg::Matrixd & amtrxMatrix);
+		void signalPropertiesSettingsChanged();
 
 	private:
 		osg::ref_ptr<AbstractObject> m_pPickedObjects;

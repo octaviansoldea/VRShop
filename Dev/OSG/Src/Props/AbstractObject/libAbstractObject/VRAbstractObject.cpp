@@ -21,7 +21,7 @@ string AbstractObject::m_strSQLFormat = "";
 AbstractObjectParams::AbstractObjectParams() : 
 	m_flPosX(0.0),		m_flPosY(0.0),		m_flPosZ(0.0),
 	m_flLenX(1.0),		m_flLenY(1.0),		m_flLenZ(1.0),
-	m_flAngleXY(0.0),	m_flAngleXZ(0.0),	m_flAngleYZ(0.0)	{
+	m_flAngleYZ(0.0),	m_flAngleXZ(0.0),	m_flAngleXY(0.0)	{
 }
 
 //==============================================================
@@ -67,29 +67,28 @@ string AbstractObject::getSQLFormat() const {
 
 //--------------------------------------------------------------
 
-void AbstractObject::setRotation(const AbstractObjectParams & aAbstractObjectParams)	{
+void AbstractObject::setRotation(float & aflAngleX, float & aflAngleY, float & aflAngleZ)	{
 	//Rotation goes counter-clockwise
-	m_AbstractObjectParams = aAbstractObjectParams;
 
-	m_AbstractObjectParams.m_flAngleXY = degrees2Radians(m_AbstractObjectParams.m_flAngleXY);
-	m_AbstractObjectParams.m_flAngleXZ = degrees2Radians(m_AbstractObjectParams.m_flAngleXZ);
-	m_AbstractObjectParams.m_flAngleYZ = degrees2Radians(m_AbstractObjectParams.m_flAngleYZ);
+	m_AbstractObjectParams.m_flAngleYZ = degrees2Radians(aflAngleX);
+	m_AbstractObjectParams.m_flAngleXZ = degrees2Radians(aflAngleY);
+	m_AbstractObjectParams.m_flAngleXY = degrees2Radians(aflAngleZ);
 }
 
 //--------------------------------------------------------------
 
-void AbstractObject::setPosition(const AbstractObjectParams & aAbstractObjectParams)	{
-	m_AbstractObjectParams.m_flPosX = aAbstractObjectParams.m_flPosX;
-	m_AbstractObjectParams.m_flPosY = aAbstractObjectParams.m_flPosY;
-	m_AbstractObjectParams.m_flPosZ = aAbstractObjectParams.m_flPosZ;
+void AbstractObject::setPosition(float & aflPosX, float & aflPosY, float & aflPosZ)	{
+	m_AbstractObjectParams.m_flPosX = aflPosX;
+	m_AbstractObjectParams.m_flPosY = aflPosY;
+	m_AbstractObjectParams.m_flPosZ = aflPosZ;
 }
 
 //--------------------------------------------------------------
 
-void AbstractObject::setScaling(const AbstractObjectParams & aAbstractObjectParams)	{
-	m_AbstractObjectParams.m_flLenX = aAbstractObjectParams.m_flLenX;
-	m_AbstractObjectParams.m_flLenY = aAbstractObjectParams.m_flLenY;
-	m_AbstractObjectParams.m_flLenZ = aAbstractObjectParams.m_flLenZ;
+void AbstractObject::setScaling(float & aflLenX, float & aflLenY, float & aflLenZ)	{
+	m_AbstractObjectParams.m_flLenX = aflLenX;
+	m_AbstractObjectParams.m_flLenY = aflLenY;
+	m_AbstractObjectParams.m_flLenZ = aflLenZ;
 }
 
 //--------------------------------------------------------------------------
@@ -113,8 +112,7 @@ Vec3d AbstractObject::getScaling() const	{
 //--------------------------------------------------------------------------
 
 Vec3d AbstractObject::getRotation() const	{
-	Vec3d rotation;
-	rotation.set(m_AbstractObjectParams.m_flAngleXY, m_AbstractObjectParams.m_flAngleXZ, m_AbstractObjectParams.m_flAngleYZ);
+	Vec3d rotation(m_AbstractObjectParams.m_flAngleYZ, m_AbstractObjectParams.m_flAngleXZ, m_AbstractObjectParams.m_flAngleXY);
 
 	return rotation;
 }

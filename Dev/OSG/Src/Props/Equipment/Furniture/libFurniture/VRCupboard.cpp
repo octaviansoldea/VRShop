@@ -31,9 +31,9 @@ Cupboard::Cupboard(const CupboardParams & aCupboardParams) : Furniture(aCupboard
 void Cupboard::init(const FurnitureParams & aFurnitureParams)	{
 	m_CupboardParams = static_cast<const CupboardParams&> (aFurnitureParams);
 
-	setScaling(m_CupboardParams);
-	setRotation(m_CupboardParams);
-	setPosition(m_CupboardParams);
+	setScaling(m_CupboardParams.m_flLenX, m_CupboardParams.m_flLenY, m_CupboardParams.m_flLenZ);
+	setRotation(m_CupboardParams.m_flAngleXY, m_CupboardParams.m_flAngleXZ, m_CupboardParams.m_flAngleYZ);
+	setPosition(m_CupboardParams.m_flPosX, m_CupboardParams.m_flPosY, m_CupboardParams.m_flPosZ);
 
 	Matrix matrix;
 	matrix.set(1, 0, 0, 0,

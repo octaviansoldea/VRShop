@@ -21,6 +21,7 @@
 #include "VRAbstractObject.h"
 
 namespace VR {
+	class Scene;
 
 	class PickAndDragHandlerShopEditor : public QObject, public PickAndDragHandler	{
 
@@ -34,6 +35,11 @@ namespace VR {
 		void setPropertiesScaling(const osg::Vec3d & avec3dScaling);
 		void setPropertiesRotation(const osg::Vec3d & avec3dRotation);
 
+		void groupSelection(osg::ref_ptr<Scene> apScene);
+		void splitSelection(osg::ref_ptr<Scene> apScene);
+		void duplicateSelection(osg::ref_ptr<Scene> apScene);
+		void removeSelection(osg::ref_ptr<Scene> apScene);
+
 	public slots:
 		void slotSetTransformParams(const QString & astrText);
 
@@ -41,9 +47,8 @@ namespace VR {
 		void signalPropertiesSettingsChanged();
 
 	private:
-		osg::ref_ptr<AbstractObject> m_pPickedObjects;
-		void addPart(osg::ref_ptr < AbstractObject > apAbstractObject);
-		void removePart(osg::ref_ptr < AbstractObject > apAbstractObject);
+		bool addPart(osg::ref_ptr < AbstractObject > apAbstractObject);
+		bool removePart(osg::ref_ptr < AbstractObject > apAbstractObject);
 		void clearList();
 
 		std::vector<osg::ref_ptr<AbstractObject>> m_pvecPickedObjects;

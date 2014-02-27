@@ -146,7 +146,6 @@ bool PickAndDragHandler::handlePush(const MouseSignals & aMouseSignals, osgViewe
 
 			//Get the matrix of the picked object and pass it to the drag
 			if(idx >= 0) {
-				m_mtrxPickedObject = m_pPickedObject->getMatrix();
 				return(true);
 			} else {
 				m_pPickedObject = NULL;
@@ -165,8 +164,6 @@ bool PickAndDragHandler::handlePush(const MouseSignals & aMouseSignals, osgViewe
 //---------------------------------------------------------------------------------------
 
 bool PickAndDragHandler::handleDrag(const MouseSignals & aMouseSignals, osgViewer::Viewer * apViewer) {
-	Matrix & mtrxPickedObject = m_mtrxPickedObject;
-
 	float flXNormalized = aMouseSignals.m_flXNormalized;
 	float flYNormalized = aMouseSignals.m_flYNormalized;
 
@@ -188,7 +185,6 @@ bool PickAndDragHandler::handleDrag(const MouseSignals & aMouseSignals, osgViewe
 	//Move factor controls the move for the distance of the object from the camera
 	float moveFactor = 0.3F * (vec3dLook - eyeVector).length();
 
-	Matrix mtrxSpecific;
 	//Does Up/down-left/right dragging respective to the axes
 	if(m_nCurrentBasicTransform == TRANSLATE) {
 		float flPosX=0.0;
@@ -202,45 +198,12 @@ bool PickAndDragHandler::handleDrag(const MouseSignals & aMouseSignals, osgViewe
 
 			m_pPickedObject->setPosition(flPosX, flPosY, flPosZ);
 
-			Vec3d vec3dPos = m_pPickedObject->getPosition();
-			Vec3d vec3dRot = m_pPickedObject->getRotation();
-			Vec3d vec3dLen = m_pPickedObject->getScaling();
-
-			Matrix matrix(Matrix::identity());
-
-			Matrix positionMatrix =
-				matrix.scale(vec3dLen)	*
-				matrix.rotate(
-					degrees2Radians(vec3dRot[0]), osg::X_AXIS,
-					degrees2Radians(vec3dRot[1]), osg::Y_AXIS,
-					degrees2Radians(vec3dRot[2]), osg::Z_AXIS)	*
-				matrix.translate(vec3dPos);
-
-			m_pPickedObject->setMatrix(positionMatrix);
-
 		} else if(m_nCurrentModalityTransform == VIEW_DIRECTION) {
 			flPosX = m_pPickedObject->getPosition()[0] + moveFactor*(flDiffPosX)*mat(0,0);
 			flPosY = m_pPickedObject->getPosition()[1] + moveFactor*(flDiffPosX)*mat(0,1);
 			flPosZ = m_pPickedObject->getPosition()[2] + moveFactor*(flDiffPosY);
 
 			m_pPickedObject->setPosition(flPosX, flPosY, flPosZ);
-
-			Vec3d vec3dPos = m_pPickedObject->getPosition();
-			Vec3d vec3dRot = m_pPickedObject->getRotation();
-			Vec3d vec3dLen = m_pPickedObject->getScaling();
-
-			Matrix matrix(Matrix::identity());
-
-			Matrix positionMatrix =
-				matrix.scale(vec3dLen)	*
-				matrix.rotate(
-					degrees2Radians(vec3dRot[0]), osg::X_AXIS,
-					degrees2Radians(vec3dRot[1]), osg::Y_AXIS,
-					degrees2Radians(vec3dRot[2]), osg::Z_AXIS)	*
-				matrix.translate(vec3dPos);
-
-			m_pPickedObject->setMatrix(positionMatrix);
-
 
 		} else if(m_nCurrentModalityTransform == X_AXIS) {
 			flPosX = m_pPickedObject->getPosition()[0] + moveFactor*(flDiffPosX);
@@ -249,22 +212,6 @@ bool PickAndDragHandler::handleDrag(const MouseSignals & aMouseSignals, osgViewe
 
 			m_pPickedObject->setPosition(flPosX, flPosY, flPosZ);
 
-			Vec3d vec3dPos = m_pPickedObject->getPosition();
-			Vec3d vec3dRot = m_pPickedObject->getRotation();
-			Vec3d vec3dLen = m_pPickedObject->getScaling();
-
-			Matrix matrix(Matrix::identity());
-
-			Matrix positionMatrix =
-				matrix.scale(vec3dLen)	*
-				matrix.rotate(
-					degrees2Radians(vec3dRot[0]), osg::X_AXIS,
-					degrees2Radians(vec3dRot[1]), osg::Y_AXIS,
-					degrees2Radians(vec3dRot[2]), osg::Z_AXIS)	*
-				matrix.translate(vec3dPos);
-
-			m_pPickedObject->setMatrix(positionMatrix);
-
 		} else if(m_nCurrentModalityTransform == Y_AXIS) {
 			flPosX = m_pPickedObject->getPosition()[0];
 			flPosY = m_pPickedObject->getPosition()[1] + moveFactor*(flDiffPosY);
@@ -272,43 +219,12 @@ bool PickAndDragHandler::handleDrag(const MouseSignals & aMouseSignals, osgViewe
 
 			m_pPickedObject->setPosition(flPosX, flPosY, flPosZ);
 
-			Vec3d vec3dPos = m_pPickedObject->getPosition();
-			Vec3d vec3dRot = m_pPickedObject->getRotation();
-			Vec3d vec3dLen = m_pPickedObject->getScaling();
-
-			Matrix matrix(Matrix::identity());
-
-			Matrix positionMatrix =
-				matrix.scale(vec3dLen)	*
-				matrix.rotate(
-					degrees2Radians(vec3dRot[0]), osg::X_AXIS,
-					degrees2Radians(vec3dRot[1]), osg::Y_AXIS,
-					degrees2Radians(vec3dRot[2]), osg::Z_AXIS)	*
-				matrix.translate(vec3dPos);
-
-			m_pPickedObject->setMatrix(positionMatrix);
 		} else if(m_nCurrentModalityTransform == Z_AXIS) {
 			flPosX = m_pPickedObject->getPosition()[0];
 			flPosY = m_pPickedObject->getPosition()[1];
 			flPosZ = m_pPickedObject->getPosition()[2] + moveFactor*(flDiffPosY);
 
 			m_pPickedObject->setPosition(flPosX, flPosY, flPosZ);
-
-			Vec3d vec3dPos = m_pPickedObject->getPosition();
-			Vec3d vec3dRot = m_pPickedObject->getRotation();
-			Vec3d vec3dLen = m_pPickedObject->getScaling();
-
-			Matrix matrix(Matrix::identity());
-
-			Matrix positionMatrix =
-				matrix.scale(vec3dLen)	*
-				matrix.rotate(
-					degrees2Radians(vec3dRot[0]), osg::X_AXIS,
-					degrees2Radians(vec3dRot[1]), osg::Y_AXIS,
-					degrees2Radians(vec3dRot[2]), osg::Z_AXIS)	*
-				matrix.translate(vec3dPos);
-
-			m_pPickedObject->setMatrix(positionMatrix);
 		}
 
 	} else if(m_nCurrentBasicTransform == ROTATE) {
@@ -328,22 +244,6 @@ bool PickAndDragHandler::handleDrag(const MouseSignals & aMouseSignals, osgViewe
 
 			m_pPickedObject->setRotation(flRXAngle, flRYAngle, flRZAngle);
 
-			Vec3d vec3dPos = m_pPickedObject->getPosition();
-			Vec3d vec3dRot = m_pPickedObject->getRotation();
-			Vec3d vec3dLen = m_pPickedObject->getScaling();
-
-			Matrix matrix(Matrix::identity());
-
-			Matrix rotationMatrix =
-				matrix.scale(vec3dLen)	*
-				matrix.rotate(
-					degrees2Radians(vec3dRot[0]), osg::X_AXIS,
-					degrees2Radians(vec3dRot[1]), osg::Y_AXIS,
-					degrees2Radians(vec3dRot[2]), osg::Z_AXIS)	*
-				matrix.translate(vec3dPos);
-
-			m_pPickedObject->setMatrix(rotationMatrix);
-
 		} else if(m_nCurrentModalityTransform == X_AXIS) {
 			flRXAngle = m_pPickedObject->getRotation()[0] + flDiffPosY*moveFactor;
 			flRYAngle = m_pPickedObject->getRotation()[1];
@@ -351,89 +251,24 @@ bool PickAndDragHandler::handleDrag(const MouseSignals & aMouseSignals, osgViewe
 
 			m_pPickedObject->setRotation(flRXAngle, flRYAngle, flRZAngle);
 
-			Vec3d vec3dPos = m_pPickedObject->getPosition();
-			Vec3d vec3dRot = m_pPickedObject->getRotation();
-			Vec3d vec3dLen = m_pPickedObject->getScaling();
-
-			Matrix matrix(Matrix::identity());
-
-			Matrix rotationMatrix =
-				matrix.scale(vec3dLen)	*
-				matrix.rotate(
-					degrees2Radians(vec3dRot[0]), osg::X_AXIS,
-					degrees2Radians(vec3dRot[1]), osg::Y_AXIS,
-					degrees2Radians(vec3dRot[2]), osg::Z_AXIS)	*
-				matrix.translate(vec3dPos);
-
-			m_pPickedObject->setMatrix(rotationMatrix);
-
 		} else if(m_nCurrentModalityTransform == Y_AXIS) {
 			flRXAngle = m_pPickedObject->getRotation()[0];
 			flRYAngle = m_pPickedObject->getRotation()[1] + flDiffPosX*moveFactor;
 			flRZAngle = m_pPickedObject->getRotation()[2];
 
 			m_pPickedObject->setRotation(flRXAngle, flRYAngle, flRZAngle);
-
-			Vec3d vec3dPos = m_pPickedObject->getPosition();
-			Vec3d vec3dRot = m_pPickedObject->getRotation();
-			Vec3d vec3dLen = m_pPickedObject->getScaling();
-
-			Matrix matrix(Matrix::identity());
-
-			Matrix rotationMatrix =
-				matrix.scale(vec3dLen)	*
-				matrix.rotate(
-					degrees2Radians(vec3dRot[0]), osg::X_AXIS,
-					degrees2Radians(vec3dRot[1]), osg::Y_AXIS,
-					degrees2Radians(vec3dRot[2]), osg::Z_AXIS)	*
-				matrix.translate(vec3dPos);
-
-			m_pPickedObject->setMatrix(rotationMatrix);
-
 		} else if(m_nCurrentModalityTransform == Z_AXIS) {
-			flRZAngle = m_pPickedObject->getRotation()[2] + flDiffPosX*moveFactor;
 			flRXAngle = m_pPickedObject->getRotation()[0];
 			flRYAngle = m_pPickedObject->getRotation()[1];
+			flRZAngle = m_pPickedObject->getRotation()[2] + flDiffPosX*moveFactor;
 
 			m_pPickedObject->setRotation(flRXAngle, flRYAngle, flRZAngle);
-
-			Vec3d vec3dPos = m_pPickedObject->getPosition();
-			Vec3d vec3dRot = m_pPickedObject->getRotation();
-			Vec3d vec3dLen = m_pPickedObject->getScaling();
-
-			Matrix matrix(Matrix::identity());
-
-			Matrix rotationMatrix =
-				matrix.scale(vec3dLen)	*
-				matrix.rotate(
-					degrees2Radians(vec3dRot[0]), osg::X_AXIS,
-					degrees2Radians(vec3dRot[1]), osg::Y_AXIS,
-					degrees2Radians(vec3dRot[2]), osg::Z_AXIS)	*
-				matrix.translate(vec3dPos);
-
-			m_pPickedObject->setMatrix(rotationMatrix);
 		} else {
 			flRXAngle = m_pPickedObject->getRotation()[0] + flDiffPosY*moveFactor;
 			flRYAngle = m_pPickedObject->getRotation()[1] + flDiffPosX*moveFactor;
 			flRZAngle = m_pPickedObject->getRotation()[2];
 
 			m_pPickedObject->setRotation(flRXAngle, flRYAngle, flRZAngle);
-
-			Vec3d vec3dPos = m_pPickedObject->getPosition();
-			Vec3d vec3dRot = m_pPickedObject->getRotation();
-			Vec3d vec3dLen = m_pPickedObject->getScaling();
-
-			Matrix matrix(Matrix::identity());
-
-			Matrix rotationMatrix =
-				matrix.scale(vec3dLen)	*
-				matrix.rotate(
-					degrees2Radians(vec3dRot[0]), osg::X_AXIS,
-					degrees2Radians(vec3dRot[1]), osg::Y_AXIS,
-					degrees2Radians(vec3dRot[2]), osg::Z_AXIS)	*
-				matrix.translate(vec3dPos);
-
-			m_pPickedObject->setMatrix(rotationMatrix);
 		}
 
 	} else if(m_nCurrentBasicTransform == SCALE) {
@@ -447,23 +282,6 @@ bool PickAndDragHandler::handleDrag(const MouseSignals & aMouseSignals, osgViewe
 			flLenZ = m_pPickedObject->getScaling()[2];
 
 			m_pPickedObject->setScaling(flLenX, flLenY, flLenZ);
-
-			Vec3d vec3dPos = m_pPickedObject->getPosition();
-			Vec3d vec3dRot = m_pPickedObject->getRotation();
-			Vec3d vec3dLen = m_pPickedObject->getScaling();
-
-			Matrix matrix(Matrix::identity());
-
-			Matrix scalingMatrix =
-				matrix.scale(vec3dLen)	*
-				matrix.rotate(
-					degrees2Radians(vec3dRot[0]), osg::X_AXIS,
-					degrees2Radians(vec3dRot[1]), osg::Y_AXIS,
-					degrees2Radians(vec3dRot[2]), osg::Z_AXIS)	*
-				matrix.translate(vec3dPos);
-
-			m_pPickedObject->setMatrix(scalingMatrix);
-
 		} else if(m_nCurrentModalityTransform == Y_AXIS)	{
 			flLenX = m_pPickedObject->getScaling()[0];
 			flLenY = m_pPickedObject->getScaling()[1] + moveFactor*(flDiffPosX);
@@ -471,63 +289,35 @@ bool PickAndDragHandler::handleDrag(const MouseSignals & aMouseSignals, osgViewe
 
 			m_pPickedObject->setScaling(flLenX, flLenY, flLenZ);
 
-			Vec3d vec3dPos = m_pPickedObject->getPosition();
-			Vec3d vec3dRot = m_pPickedObject->getRotation();
-			Vec3d vec3dLen = m_pPickedObject->getScaling();
-
-			Matrix matrix(Matrix::identity());
-
-			Matrix scalingMatrix =
-				matrix.scale(vec3dLen)	*
-				matrix.rotate(
-					degrees2Radians(vec3dRot[0]), osg::X_AXIS,
-					degrees2Radians(vec3dRot[1]), osg::Y_AXIS,
-					degrees2Radians(vec3dRot[2]), osg::Z_AXIS)	*
-				matrix.translate(vec3dPos);
-
-			m_pPickedObject->setMatrix(scalingMatrix);
-
 		} else if(m_nCurrentModalityTransform == Z_AXIS)	{
 			flLenX = m_pPickedObject->getScaling()[0];
 			flLenY = m_pPickedObject->getScaling()[1];
 			flLenZ = m_pPickedObject->getScaling()[2] + moveFactor*(flDiffPosY);
 
 			m_pPickedObject->setScaling(flLenX, flLenY, flLenZ);
-
-			Vec3d vec3dPos = m_pPickedObject->getPosition();
-			Vec3d vec3dRot = m_pPickedObject->getRotation();
-			Vec3d vec3dLen = m_pPickedObject->getScaling();
-
-			Matrix matrix(Matrix::identity());
-
-			Matrix scalingMatrix =
-				matrix.scale(vec3dLen)	*
-				matrix.rotate(
-					degrees2Radians(vec3dRot[0]), osg::X_AXIS,
-					degrees2Radians(vec3dRot[1]), osg::Y_AXIS,
-					degrees2Radians(vec3dRot[2]), osg::Z_AXIS)	*
-				matrix.translate(vec3dPos);
-
-			m_pPickedObject->setMatrix(scalingMatrix);
-
 		} else {
-			Vec3d vec3dPos = m_pPickedObject->getPosition();
-			Vec3d vec3dRot = m_pPickedObject->getRotation();
-			Vec3d vec3dLen = m_pPickedObject->getScaling();
+			flLenX = m_pPickedObject->getScaling()[0];
+			flLenY = m_pPickedObject->getScaling()[1];
+			flLenZ = m_pPickedObject->getScaling()[2];
 
-			Matrix matrix(Matrix::identity());
-
-			Matrix scalingMatrix =
-				matrix.scale(vec3dLen)	*
-				matrix.rotate(
-					degrees2Radians(vec3dRot[0]), osg::X_AXIS,
-					degrees2Radians(vec3dRot[1]), osg::Y_AXIS,
-					degrees2Radians(vec3dRot[2]), osg::Z_AXIS)	*
-				matrix.translate(vec3dPos);
-
-			m_pPickedObject->setMatrix(scalingMatrix);
+			m_pPickedObject->setScaling(flLenX, flLenY, flLenZ);
 		}
 	}
+	Vec3d vec3dPos = m_pPickedObject->getPosition();
+	Vec3d vec3dRot = m_pPickedObject->getRotation();
+	Vec3d vec3dLen = m_pPickedObject->getScaling();
+
+	Matrix matrix(Matrix::identity());
+
+	Matrix positionMatrix =
+		matrix.scale(vec3dLen)	*
+		matrix.rotate(
+			degrees2Radians(vec3dRot[0]), osg::X_AXIS,
+			degrees2Radians(vec3dRot[1]), osg::Y_AXIS,
+			degrees2Radians(vec3dRot[2]), osg::Z_AXIS)	*
+		matrix.translate(vec3dPos);
+
+	m_pPickedObject->setMatrix(positionMatrix);
 
 	ref_ptr<Group> pScene = dynamic_cast<Group*>(apViewer->getSceneData());
 	apViewer->setSceneData(pScene);

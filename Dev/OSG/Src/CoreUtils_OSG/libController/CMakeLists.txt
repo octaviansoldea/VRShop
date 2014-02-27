@@ -40,6 +40,7 @@ INCLUDE_DIRECTORIES(
 	${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCamera
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libPicker
+	${CMAKE_SOURCE_DIR}/Props/Scene/libScene
 	${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
 )
 

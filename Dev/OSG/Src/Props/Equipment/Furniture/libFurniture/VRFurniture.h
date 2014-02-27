@@ -13,19 +13,15 @@ namespace VR	{
 	class Furniture : public AbstractObject	{
 	public:
 		Furniture();
-		Furniture(const FurnitureParams & aFurnitureParams);
+		Furniture(FurnitureParams * apFurnitureParams);
 
 		virtual ~Furniture() = 0;
 
-		virtual void init(const FurnitureParams & aFurnitureParams) = 0;
+		virtual void init(FurnitureParams & aFurnitureParams) = 0;
 
 		virtual void addPart(osg::ref_ptr < AbstractObject > apAbstractObject);
 		virtual void removePart(unsigned int anPartNo);
 		virtual void removePart(osg::ref_ptr < AbstractObject > &apAbstractObject);
-
-		bool splitObject2Children(std::vector< osg::ref_ptr<AbstractObject> > &aarrChildren);
-		osg::ref_ptr<osg::Group> groupSelection(std::vector< osg::ref_ptr<AbstractObject> > &aarrParts);
-
 
 		virtual std::string getSQLCommand() const;
 
@@ -33,7 +29,6 @@ namespace VR	{
 
 	protected:
 		std::vector < std::string > m_arrSQLCommandLines;
-		FurnitureParams m_FurnitureParams;
 	};
 }
 #endif //VR_FURNITURE_H

@@ -35,6 +35,7 @@ INCLUDE_DIRECTORIES(
 
 SET(SRCS
   VRFurniture.h VRFurniture.cpp
+  VRCustomFurniture.h VRCustomFurniture.cpp
   VRCupboard.h VRCupboard.cpp
   VRContainer.h VRContainer.cpp
 )

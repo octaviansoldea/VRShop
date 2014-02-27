@@ -14,19 +14,19 @@ string VR::Cylinder::m_strSQLFormat =
 	"PrimitiveID INTEGER, "
 	"FOREIGN KEY (PrimitiveID) REFERENCES Primitive(PrimitiveID));";
 
-CylinderParams::CylinderParams() {
+CylinderParams::CylinderParams() : PrismParams() {
 	m_nRes = 20;
 }
 
 //-----------------------------------------------------------------------
 
-VR::Cylinder::Cylinder()	{
+VR::Cylinder::Cylinder() : Prism(new CylinderParams())	{
 }
 
 //----------------------------------------------------------
 
-VR::Cylinder::Cylinder(const CylinderParams & aCylinderParams) : Prism(aCylinderParams)	{
-	m_CylinderParams = aCylinderParams;
+VR::Cylinder::Cylinder(CylinderParams * apCylinderParams) : Prism(apCylinderParams)	{
+	CylinderParams * pCylinderParams = dynamic_cast<CylinderParams*>(m_pAbstractObjectParams);
 }
 
 //----------------------------------------------------------
@@ -38,34 +38,35 @@ string VR::Cylinder::getSQLFormat() const {
 //----------------------------------------------------------
 
 string VR::Cylinder::getSQLCommand() const {
+	CylinderParams * pCylinderParams = dynamic_cast<CylinderParams*>(m_pAbstractObjectParams);
 	string strCylinderParams;
 
-	strCylinderParams= to_string((long double)m_CylinderParams.m_flRadius) + "_";
-	strCylinderParams+= to_string((long double)m_CylinderParams.m_flHeight) + "_";
+	strCylinderParams= to_string((long double)pCylinderParams->m_flRadius) + "_";
+	strCylinderParams+= to_string((long double)pCylinderParams->m_flHeight) + "_";
 
-	strCylinderParams+= to_string((long double)m_CylinderParams.m_flPosX) + "_";
-	strCylinderParams+= to_string((long double)m_CylinderParams.m_flPosY) + "_";
-	strCylinderParams+= to_string((long double)m_CylinderParams.m_flPosZ) + "_";
+	strCylinderParams+= to_string((long double)pCylinderParams->m_flPosX) + "_";
+	strCylinderParams+= to_string((long double)pCylinderParams->m_flPosY) + "_";
+	strCylinderParams+= to_string((long double)pCylinderParams->m_flPosZ) + "_";
 
-	strCylinderParams += to_string((long double)m_CylinderParams.m_flLenX) + "_";
-	strCylinderParams += to_string((long double)m_CylinderParams.m_flLenY) + "_";
-	strCylinderParams += to_string((long double)m_CylinderParams.m_flLenZ) + "_";
-												 
-	strCylinderParams+= to_string((long double)m_CylinderParams.m_flAngleXY) + "_";
-	strCylinderParams+= to_string((long double)m_CylinderParams.m_flAngleXZ) + "_";
-	strCylinderParams+= to_string((long double)m_CylinderParams.m_flAngleYZ);	
+	strCylinderParams += to_string((long double)pCylinderParams->m_flLenX) + "_";
+	strCylinderParams += to_string((long double)pCylinderParams->m_flLenY) + "_";
+	strCylinderParams += to_string((long double)pCylinderParams->m_flLenZ) + "_";
+
+	strCylinderParams+= to_string((long double)pCylinderParams->m_flAngleXY) + "_";
+	strCylinderParams+= to_string((long double)pCylinderParams->m_flAngleXZ) + "_";
+	strCylinderParams+= to_string((long double)pCylinderParams->m_flAngleYZ);	
 
 	int nI;
 	string strColor;
 	for (nI=0;nI<4;nI++)	{
-		strColor += to_string((long double)m_CylinderParams.m_arrflRGBA[nI]) + "_";
+		strColor += to_string((long double)pCylinderParams->m_arrflRGBA[nI]) + "_";
 	}
 
 	string strSQLCommand = "INSERT INTO Cylinder (CylinderRes, CylinderMatrix, CylinderColor, CylinderTexture, PrimitiveID) VALUES("
-		+ to_string((_Longlong)m_CylinderParams.m_nRes) + ",'"
+		+ to_string((_Longlong)pCylinderParams->m_nRes) + ",'"
 		+ strCylinderParams + "','"
 		+ strColor + "','"
-		+ m_CylinderParams.m_strFileNameTexture + "',"
+		+ pCylinderParams->m_strFileNameTexture + "',"
 		+ "(SELECT PrimitiveID FROM Primitive WHERE PrimitiveName = 'Cylinder'));";
 
 	return(strSQLCommand);
@@ -74,6 +75,7 @@ string VR::Cylinder::getSQLCommand() const {
 //----------------------------------------------------------------------
 
 void VR::Cylinder::predefinedObject()	{
-	init(m_CylinderParams);
+	CylinderParams * pCylinderParams = dynamic_cast<CylinderParams*>(m_pAbstractObjectParams);
+	init(*pCylinderParams);
 	setIsTargetPick(true);
 }

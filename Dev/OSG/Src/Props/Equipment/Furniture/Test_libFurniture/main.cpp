@@ -500,13 +500,13 @@ int main2(int argc, char * argv[])	{
 	ref_ptr<AbstractObject> pChild = dynamic_cast<AbstractObject*>(pContainer->getChild(3));
 	pContainer->removePart(pChild);
 
-	vector <ref_ptr<AbstractObject> > arrpChildren;
-	pContainer->splitObject2Children(arrpChildren);
+	//vector <ref_ptr<AbstractObject> > arrpChildren;
+	//pContainer->splitObject2Children(arrpChildren);
 
-	vector <ref_ptr<AbstractObject> >::iterator it;
-	for (it=arrpChildren.begin();it != arrpChildren.end();it++)	{
-		pScene->addChild(static_cast<ref_ptr<AbstractObject>>(*it));
-	}
+	//vector <ref_ptr<AbstractObject> >::iterator it;
+	//for (it=arrpChildren.begin();it != arrpChildren.end();it++)	{
+	//	pScene->addChild(static_cast<ref_ptr<AbstractObject>>(*it));
+	//}
 
 	osgViewer::Viewer viewer;
 	viewer.setSceneData(pScene);

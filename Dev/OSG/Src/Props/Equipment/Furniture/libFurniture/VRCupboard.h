@@ -11,18 +11,14 @@ namespace VR	{
 	class Cupboard : public Furniture	{
 	public:
 		Cupboard();
-		Cupboard(const CupboardParams & aCupboardParams);
+		Cupboard(CupboardParams * apCupboardParams);
 
-		virtual void init(const FurnitureParams & aFurnitureParams);
+		virtual void init(FurnitureParams & aFurnitureParams);
 		virtual void predefinedObject();
 
 		virtual std::string getSQLCommand() const;
 
 		virtual void initFromSQLData(const std::string & astrSQLData);
-
-
-	private:
-		CupboardParams m_CupboardParams;
 	};
 }
 #endif //VR_CUPBOARD_H

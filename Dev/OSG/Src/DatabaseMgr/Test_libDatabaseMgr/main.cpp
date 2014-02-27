@@ -128,15 +128,17 @@ void populateTable(const string & astrDBName)	{
 void insertIntoDatabase_Sphere(const string & astrDBName)	{
 	DatabaseMgr & database = DatabaseMgr::Create(astrDBName.c_str(), DatabaseMgr::QSQLITE);
 
-	VR::SphereParams aSphereParams;
-	aSphereParams.m_nResPhi = 35;
-	aSphereParams.m_arrflRGBA.push_back(0.85);
-	aSphereParams.m_arrflRGBA.push_back(0.15);
-	aSphereParams.m_arrflRGBA.push_back(0.15);
-	aSphereParams.m_arrflRGBA.push_back(1.0);
+	SphereParams * apSphereParams = new SphereParams;
+	apSphereParams->m_nResPhi = 35;
+	apSphereParams->m_arrflRGBA.push_back(0.85);
+	apSphereParams->m_arrflRGBA.push_back(0.15);
+	apSphereParams->m_arrflRGBA.push_back(0.15);
+	apSphereParams->m_arrflRGBA.push_back(1.0);
 
-	ref_ptr < VR::Sphere > pSphere =  new VR::Sphere(aSphereParams);
+	ref_ptr < VR::Sphere > pSphere =  new VR::Sphere(apSphereParams);
 	string strSQLCommand = pSphere->getSQLCommand();
+
+	delete apSphereParams;
 
 	DatabaseMgrParams dMgrParams;
 	dMgrParams.m_arrstrParams.push_back(strSQLCommand);

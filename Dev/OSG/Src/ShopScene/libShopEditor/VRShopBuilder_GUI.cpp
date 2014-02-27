@@ -1,4 +1,4 @@
-#include "StringManipulation.h"
+#include "BasicStringDefinitions.h"
 
 #include <osgDB/ReadFile>
 #include <osgGA/GUIEventHandler>
@@ -15,6 +15,9 @@
 #include "VRDuplicateItem_GUI.h"
 #include "VRSaveAs_GUI.h"
 
+#include "VRShopBuilder.h"
+#include "VRScene.h"
+
 #include "VRCameraController.h"
 #include "VRPickAndDragController.h"
 #include "VRKeyboardMouseManipulatorShopEditor.h"
@@ -25,6 +28,7 @@
 using namespace osg;
 using namespace Ui;
 using namespace VR;
+using namespace std;
 
 //----------------------------------------------------------------------
 
@@ -33,7 +37,8 @@ ShopBuilder_GUI::ShopBuilder_GUI()	{
 
 	setWindowTitle("VR Shop Server Dialog");
 
-	m_ShopBuilder.init(m_pOSGQTWidget, m_pTreeView);
+	m_pShopBuilder = new ShopBuilder(m_pOSGQTWidget);
+	ref_ptr<Scene> pScene = m_pShopBuilder->getScene();
 
 	KeyboardMouseManipulatorShopEditor * pKeyboardMouseManipulatorShopEditor = 
 		dynamic_cast<KeyboardMouseManipulatorShopEditor *>(m_pOSGQTWidget->getCameraManipulator());
@@ -62,9 +67,10 @@ ShopBuilder_GUI::ShopBuilder_GUI()	{
 	}
 
 	PickAndDragHandlerShopEditor *pPickAndDragHandlerShopEditor = 		
-		dynamic_cast<PickAndDragHandlerShopEditor *>(m_ShopBuilder.m_pEvent);
+		dynamic_cast<PickAndDragHandlerShopEditor *>(m_pShopBuilder->m_pEvent);
 
-	m_pPickAndDragController = new PickAndDragController(m_p_DoubleSpinBox_TranslationX,
+	m_pPickAndDragController = new PickAndDragController(
+		m_p_DoubleSpinBox_TranslationX,
 		m_p_DoubleSpinBox_TranslationY,
 		m_p_DoubleSpinBox_TranslationZ,
 		m_p_DoubleSpinBox_ScalingX,
@@ -77,6 +83,15 @@ ShopBuilder_GUI::ShopBuilder_GUI()	{
 		m_p_ComboBox_TranslateRelativeTo,
 		pPickAndDragHandlerShopEditor);
 
+
+	m_pPickAndDragController = new PickAndDragController(
+		m_p_PushButton_ModifyScene_DuplicateSelection,
+		m_p_PushButton_ModifyScene_DeleteSelection,
+		m_p_PushButton_ModifyScene_SplitItem,
+		m_p_PushButton_ModifyScene_GroupItems,
+		pPickAndDragHandlerShopEditor,
+		pScene);
+
 	m_pOSGQTWidget->show();
 
 	buildConnections();
@@ -87,6 +102,8 @@ ShopBuilder_GUI::ShopBuilder_GUI()	{
 ShopBuilder_GUI::~ShopBuilder_GUI() {
 	delete m_pCameraController;
 	delete m_pPickAndDragController;
+	delete m_pOSGQTWidget;
+//	delete m_pShopBuilder;
 }
 
 //=========================================================================================
@@ -108,10 +125,8 @@ void ShopBuilder_GUI::buildConnections() {
 
 	connect(m_p_PushButton_ModifyScene_AddNewItem,SIGNAL(clicked()),this,SLOT(slotModifySceneActions()));
 	connect(m_p_PushButton_ModifyScene_EditItem,SIGNAL(clicked()),this,SLOT(slotModifySceneActions()));
-	connect(m_p_PushButton_ModifyScene_GroupItems,SIGNAL(clicked()),this,SLOT(slotModifySceneActions()));
-	connect(m_p_PushButton_ModifyScene_SplitItem,SIGNAL(clicked()),this,SLOT(slotModifySceneActions()));
-	connect(m_p_PushButton_ModifyScene_DuplicateSelection,SIGNAL(clicked()),this,SLOT(slotModifySceneActions()));
-	connect(m_p_PushButton_ModifyScene_DeleteSelection,SIGNAL(clicked()),this,SLOT(slotModifySceneActions()));	
+//	connect(m_p_PushButton_ModifyScene_DuplicateSelection,SIGNAL(clicked()),this,SLOT(slotModifySceneActions()));
+//	connect(m_p_PushButton_ModifyScene_DeleteSelection,SIGNAL(clicked()),this,SLOT(slotModifySceneActions()));	
 
 	connect(m_p_PushButton_ProductSettings_AddNewProduct,SIGNAL(clicked()),this,SLOT(slotModifyProductSettings()));
 	connect(m_p_PushButton_ProductSettings_RemoveProduct,SIGNAL(clicked()),this,SLOT(slotModifyProductSettings()));
@@ -155,7 +170,7 @@ void ShopBuilder_GUI::slotNewProject()	{
 	if (newProject.result() == 1)	{
 		QString qstrFileName;
 		qstrFileName = newProject.m_pLineEditDirectory->text() + "/" + newProject.m_pLineEditFileName->text() + ".db";
-		m_ShopBuilder.newDB(qstrFileName.toStdString());
+		m_pShopBuilder->newDB(qstrFileName.toStdString());
 	}
 	return;
 }
@@ -173,7 +188,7 @@ void ShopBuilder_GUI::slotOpenDB() {
 		int nRes = msgBox.exec();
 		return;
 	}
-	m_ShopBuilder.readDB(qstrFileName.toStdString());
+	m_pShopBuilder->readDB(qstrFileName.toStdString());
 }
 
 //=========================================================================================
@@ -188,7 +203,7 @@ void ShopBuilder_GUI::slotSaveDB() {
 		int nRes = msgBox.exec();
 		return;
 	}
-	m_ShopBuilder.saveDB(qstrFileName.toStdString());
+	m_pShopBuilder->saveDB(qstrFileName.toStdString());
 }
 
 //---------------------------------------------------------------------------------------
@@ -218,7 +233,7 @@ void ShopBuilder_GUI::slotCloseDB()	{
 //---------------------------------------------------------------------------------------
 
 void ShopBuilder_GUI::slotGridOnOff(bool abIndicator)	{
-	m_ShopBuilder.gridOnOff(abIndicator);
+	m_pShopBuilder->gridOnOff(abIndicator);
 }
 
 //---------------------------------------------------------------------------------------
@@ -281,16 +296,6 @@ void ShopBuilder_GUI::slotModifySceneActions()	{
 	if	(pPushButton == m_p_PushButton_ModifyScene_EditItem)	{
 		std::cout << "Edit item" << std::endl;
 		// void editItemWidget();
-		return;
-	}
-	if	(pPushButton == m_p_PushButton_ModifyScene_GroupItems)	{
-		std::cout << "Group items" << std::endl;
-		// void groupItemsWidget();
-		return;
-	}
-	if	(pPushButton == m_p_PushButton_ModifyScene_SplitItem)	{
-		std::cout << "Split item" << std::endl;
-		// void splitItemWidget();
 		return;
 	}
 	if	(pPushButton == m_p_PushButton_ModifyScene_DuplicateSelection)	{
@@ -398,5 +403,8 @@ void ShopBuilder_GUI::slotModifyProductButtons()	{
 //---------------------------------------------------------------------------------------
 
 void ShopBuilder_GUI::slotAddNewItem(const QString & aqstrItemName)	{
-	m_ShopBuilder.addNewItem(aqstrItemName.toStdString());
+	m_pShopBuilder->addNewItem(aqstrItemName.toStdString());
 }
+
+
+//=======================================================================================

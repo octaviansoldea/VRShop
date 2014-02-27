@@ -1,9 +1,9 @@
-#include <iostream>
-
 #include <QDoubleSpinBox>
 #include <QComboBox>
+#include <QPushButton>
+
 #include "VRAbstractObject.h"
-#include "BasicDefinitions.h"
+#include "VRScene.h"
 
 #include "VRPickAndDragHandlerShopEditor.h"
 
@@ -77,6 +77,35 @@ PickAndDragHandlerShopEditor * a_pPickAndDragHandlerShopEditor)	{
 }
 
 //--------------------------------------------------------------------------------------
+
+PickAndDragController::PickAndDragController(
+QPushButton * a_pPushButton_ModifyScene_DuplicateSelection,
+QPushButton * a_pPushButton_ModifyScene_DeleteSelection,
+QPushButton * a_pPushButton_ModifyScene_SplitItem,
+QPushButton * a_pPushButton_ModifyScene_GroupItems,
+PickAndDragHandlerShopEditor * a_pPickAndDragHandlerShopEditor,
+ref_ptr<Scene> a_pScene)	{
+
+	mp_PushButton_ModifyScene_DuplicateSelection = a_pPushButton_ModifyScene_DuplicateSelection;
+	mp_PushButton_ModifyScene_DeleteSelection = a_pPushButton_ModifyScene_DeleteSelection;
+	mp_PushButton_ModifyScene_SplitItem = a_pPushButton_ModifyScene_SplitItem;
+	mp_PushButton_ModifyScene_GroupItems = a_pPushButton_ModifyScene_GroupItems;
+
+	mpPickAndDragHandlerShopEditor = dynamic_cast<PickAndDragHandlerShopEditor*>(a_pPickAndDragHandlerShopEditor);
+
+	mp_Scene = a_pScene;
+
+	connect(mp_PushButton_ModifyScene_DeleteSelection,SIGNAL(clicked()),
+		this,SLOT(slotRemoveSelection()));
+	connect(mp_PushButton_ModifyScene_SplitItem,SIGNAL(clicked()),
+		this,SLOT(slotSplitItem()));
+	connect(mp_PushButton_ModifyScene_GroupItems,SIGNAL(clicked()),
+		this,SLOT(slotGroupItems()));
+	connect(mp_PushButton_ModifyScene_DuplicateSelection,SIGNAL(clicked()),
+		this,SLOT(slotDuplicateSelection()));
+}
+
+//======================================================================================
 
 void PickAndDragController::slotUpdatePickAndDragGUI() {
 	disconnect(mp_DoubleSpinBox_TranslationX,SIGNAL(valueChanged(double)),
@@ -178,3 +207,24 @@ void PickAndDragController::slotSetPropertiesScaling()	{
 
 //=====================================================================================
 
+void PickAndDragController::slotGroupItems()	{
+	mpPickAndDragHandlerShopEditor->groupSelection(mp_Scene);
+}
+
+//--------------------------------------------------------------------------------------
+
+void PickAndDragController::slotSplitItem()	{
+	mpPickAndDragHandlerShopEditor->splitSelection(mp_Scene);
+}
+
+//--------------------------------------------------------------------------------------
+
+void PickAndDragController::slotDuplicateSelection()	{
+	mpPickAndDragHandlerShopEditor->duplicateSelection(mp_Scene);
+}
+
+//--------------------------------------------------------------------------------------
+
+void PickAndDragController::slotRemoveSelection()	{
+	mpPickAndDragHandlerShopEditor->removeSelection(mp_Scene);
+}

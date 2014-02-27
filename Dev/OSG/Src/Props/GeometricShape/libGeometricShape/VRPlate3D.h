@@ -18,6 +18,7 @@ namespace VR	{
 
 	public:
 		Plate3D();
+		Plate3D(Plate3DParams * apPlate3DParams);
 
 		virtual std::string getSQLFormat() const;
 		virtual std::string getSQLCommand() const;
@@ -29,8 +30,6 @@ namespace VR	{
 
 		virtual void setColor(const std::vector < float > & aarrflColor);
 		virtual void setTexture(const std::string & astrFileName);
-	protected:
-		Plate3DParams m_Plate3DParams;
 	};
 }
 #endif //VR_PLATE_3D_H

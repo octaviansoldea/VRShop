@@ -13,7 +13,7 @@ namespace VR {
 	class Prism : public AbstractGeomShape	{
 	public:
 		Prism();
-		Prism(const PrismParams & aPrismParams);
+		Prism(PrismParams * apPrismParams);
 
 		virtual void init(const AbstractGeomShapeParams & aAbstractGeomShapeParams);
 		virtual void predefinedObject();
@@ -28,8 +28,7 @@ namespace VR {
 		virtual void initFromSQLData(const std::string & astrSQLData);
 
 		osg::ref_ptr <UntransformedPolygon3D> m_pUntransformedPolygon3D;
-	protected: 
-		PrismParams m_PrismParams;
+
 	private:
 		static std::string m_strSQLFormat;
 	};

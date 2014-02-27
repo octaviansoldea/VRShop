@@ -38,6 +38,7 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_SOURCE_DIR}/ShopScene/libShoppingPlace/View
   ${CMAKE_SOURCE_DIR}/ShopScene/libShoppingPlace/PopUpDialogs
   ${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabaseMgr
+  ${CMAKE_SOURCE_DIR}/Props/Scene/libScene
   ${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
   ${CMAKE_SOURCE_DIR}/Props/Equipment/GeometricShape/libGeometricShape
   ${CMAKE_SOURCE_DIR}/Props/Equipment/Furniture/libFurniture
@@ -61,6 +62,7 @@ SET(LIBS_COMMON
 	libCamera
 	libPicker
 	libFurniture
+	libScene
 )
 
 SET(SRCS

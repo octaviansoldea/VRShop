@@ -16,17 +16,14 @@ namespace VR	{
 	class Container : public Furniture	{
 	public:
 		Container();
-		Container(const ContainerParams & aContainerParams);
+		Container(ContainerParams * apContainerParams);
 
-		virtual void init(const FurnitureParams & aFurnitureParams);
+		virtual void init(FurnitureParams & aFurnitureParams);
 		virtual void predefinedObject();
 
 		virtual std::string getSQLCommand() const;
 
 		virtual void initFromSQLData(const std::string & astrSQLData);
-
-	private:
-		ContainerParams m_ContainerParams;
 	};
 }
 #endif //VR_CONTAINER_H

@@ -11,10 +11,10 @@ namespace VR {
 	class Cylinder : public Prism {
 	private:
 		static std::string m_strSQLFormat;
-		CylinderParams m_CylinderParams;
+
 	public:
 		Cylinder();
-		Cylinder(const CylinderParams & aCylinderParams);
+		Cylinder(CylinderParams * apCylinderParams);
 
 		virtual std::string getSQLFormat() const;
 		virtual std::string getSQLCommand() const;

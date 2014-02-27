@@ -19,12 +19,12 @@ namespace VR	{
 		float m_flAngleXY;
 
 		AbstractObjectParams();
+		virtual ~AbstractObjectParams();
 	};
 
 	class AbstractObject : public osg::MatrixTransform	{
 	public:
-		AbstractObject();
-		AbstractObject(const AbstractObjectParams & aAbstractObjectParams);
+		AbstractObject(AbstractObjectParams * pAbstractObjectParams = 0);
 
 		virtual ~AbstractObject() = 0;
 
@@ -52,7 +52,7 @@ namespace VR	{
 		static std::string m_strSQLFormat;
 
 	protected:
-		AbstractObjectParams m_AbstractObjectParams;
+		AbstractObjectParams * m_pAbstractObjectParams;
 	};
 }
 #endif //VR_ABSTRACT_OBJECT_H

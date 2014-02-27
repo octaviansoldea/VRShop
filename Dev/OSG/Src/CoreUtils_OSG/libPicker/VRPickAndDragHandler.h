@@ -6,8 +6,6 @@
 namespace osgViewer { class Viewer; };
 
 class AbstractObject;
-class osg::Group;
-class ObjectTransformation;
 
 namespace VR {
 	class PickAndDragHandler : public osgGA::GUIEventHandler {
@@ -28,11 +26,9 @@ namespace VR {
 
 
 	protected:
-		bool handleKeyDown(int anKey);
-		bool handlePush(const MouseSignals & aMouseSignals, osgViewer::Viewer * apViewer);
-		bool handleDrag(const MouseSignals & aMouseSignals, osgViewer::Viewer * apViewer);
-
-		osg::Matrix m_mtrxPickedObject;
+		virtual bool handleKeyDown(int anKey);
+		virtual bool handlePush(const MouseSignals & aMouseSignals, osgViewer::Viewer * apViewer);
+		virtual bool handleDrag(const MouseSignals & aMouseSignals, osgViewer::Viewer * apViewer);
 
 		typedef enum {
 			TRANSLATE = 0, //t

@@ -22,68 +22,72 @@ string VR::Sphere::m_strSQLFormat =
 
 //-----------------------------------------------------------------------
 
-VR::SphereParams::SphereParams()	{
+VR::SphereParams::SphereParams() : AbstractGeomShapeParams()	{
 }
 
 //-----------------------------------------------------------------------
 
-VR::Sphere::Sphere()	{
-	m_pUntransformedSphere = new UntransformedSphere(m_SphereParams);
+VR::Sphere::Sphere() : AbstractGeomShape(new SphereParams())	{
+	SphereParams * pSphereParams = dynamic_cast<SphereParams*>(m_pAbstractObjectParams);
+	m_pUntransformedSphere = new UntransformedSphere(*pSphereParams);
 	addChild(m_pUntransformedSphere);
 }
 
 //----------------------------------------------------------
 
-VR::Sphere::Sphere(const SphereParams & aSphereParams)	{
-	m_SphereParams = aSphereParams;
+VR::Sphere::Sphere(SphereParams * apSphereParams) : AbstractGeomShape(apSphereParams)	{
+	SphereParams * pSphereParams = dynamic_cast<SphereParams*>(m_pAbstractObjectParams);
 	m_pUntransformedSphere = new UntransformedSphere();
-	init(m_SphereParams);
+	init(*pSphereParams);
 	addChild(m_pUntransformedSphere);
 }
 
 //-----------------------------------------------------------------------
 
 void VR::Sphere::init(const AbstractGeomShapeParams & aAbstractGeomShapeParams)	{
-	m_SphereParams = static_cast<const SphereParams&>(aAbstractGeomShapeParams);
+	const SphereParams * pSphereParams = dynamic_cast<const SphereParams*>(&aAbstractGeomShapeParams);
 
-	setResolution(m_SphereParams.m_nResPhi);
+	setResolution(pSphereParams->m_nResPhi);
 	
 	Matrix matrix;
-	matrix.set(m_SphereParams.m_flRadius,	0,							0,							0,
-			   0,							m_SphereParams.m_flRadius,	0,							0,
-			   0,							0,							m_SphereParams.m_flRadius,	0,
+	matrix.set(pSphereParams->m_flRadius,	0,							0,							0,
+			   0,							pSphereParams->m_flRadius,	0,							0,
+			   0,							0,							pSphereParams->m_flRadius,	0,
 			   0,							0,							0,							1);
 
 	Matrix SphereMatrix =
-		matrix.scale(m_SphereParams.m_flLenX, m_SphereParams.m_flLenY, m_SphereParams.m_flLenZ)
+		matrix.scale(pSphereParams->m_flLenX, pSphereParams->m_flLenY, pSphereParams->m_flLenZ)
 		*
 		matrix.rotate(
-			m_SphereParams.m_flAngleYZ, osg::X_AXIS,
-			m_SphereParams.m_flAngleXZ, osg::Y_AXIS,
-			m_SphereParams.m_flAngleXY, osg::Z_AXIS)
+			pSphereParams->m_flAngleYZ, osg::X_AXIS,
+			pSphereParams->m_flAngleXZ, osg::Y_AXIS,
+			pSphereParams->m_flAngleXY, osg::Z_AXIS)
 		*
-		matrix.translate(m_SphereParams.m_flPosX, m_SphereParams.m_flPosY, m_SphereParams.m_flPosZ)
+		matrix.translate(pSphereParams->m_flPosX, pSphereParams->m_flPosY, pSphereParams->m_flPosZ)
 	;
 	
 	setMatrix(SphereMatrix);
 
-	setColor(m_SphereParams.m_arrflRGBA);
-	if ((m_SphereParams.m_strFileNameTexture != " ") && (m_SphereParams.m_strFileNameTexture != ""))
-		setTexture(m_SphereParams.m_strFileNameTexture);
+	setColor(pSphereParams->m_arrflRGBA);
+	if ((pSphereParams->m_strFileNameTexture != " ") && (pSphereParams->m_strFileNameTexture != ""))
+		setTexture(pSphereParams->m_strFileNameTexture);
 }
 
 //----------------------------------------------------------------------
 
 void VR::Sphere::setColor(const std::vector < float > & aarrflColor)	{
-	m_SphereParams.m_arrflRGBA = aarrflColor;
-	m_pUntransformedSphere->setColor(m_SphereParams.m_arrflRGBA);
+	SphereParams * pSphereParams = dynamic_cast<SphereParams*>(m_pAbstractObjectParams);
+
+	pSphereParams->m_arrflRGBA = aarrflColor;
+	m_pUntransformedSphere->setColor(pSphereParams->m_arrflRGBA);
 }
 
 //----------------------------------------------------------------------
 
 void VR::Sphere::setTexture(const std::string & astrFileName) {
-	m_SphereParams.m_strFileNameTexture = astrFileName;
-	m_pUntransformedSphere->setTexture(m_SphereParams.m_strFileNameTexture);
+	SphereParams * pSphereParams = dynamic_cast<SphereParams*>(m_pAbstractObjectParams);
+	pSphereParams->m_strFileNameTexture = astrFileName;
+	m_pUntransformedSphere->setTexture(pSphereParams->m_strFileNameTexture);
 }
 
 //----------------------------------------------------------
@@ -101,32 +105,34 @@ string VR::Sphere::getSQLFormat() const {
 //----------------------------------------------------------------------
 
 string VR::Sphere::getSQLCommand() const	{
-	string strSphereParams;
-	strSphereParams = to_string((long double)m_SphereParams.m_flRadius) + "_";
+	SphereParams * pSphereParams = dynamic_cast<SphereParams*>(m_pAbstractObjectParams);
 
-	strSphereParams += to_string((long double)m_SphereParams.m_flPosX) + "_";
-	strSphereParams += to_string((long double)m_SphereParams.m_flPosY) + "_";
-	strSphereParams += to_string((long double)m_SphereParams.m_flPosZ) + "_";
-							   					 
-	strSphereParams += to_string((long double)m_SphereParams.m_flLenX) + "_";
-	strSphereParams += to_string((long double)m_SphereParams.m_flLenY) + "_";
-	strSphereParams += to_string((long double)m_SphereParams.m_flLenZ) + "_";
-												 
-	strSphereParams += to_string((long double)m_SphereParams.m_flAngleXY) + "_";
-	strSphereParams += to_string((long double)m_SphereParams.m_flAngleXZ) + "_";
-	strSphereParams += to_string((long double)m_SphereParams.m_flAngleYZ);
+	string strSphereParams;
+	strSphereParams = to_string((long double)pSphereParams->m_flRadius) + "_";
+
+	strSphereParams += to_string((long double)pSphereParams->m_flPosX) + "_";
+	strSphereParams += to_string((long double)pSphereParams->m_flPosY) + "_";
+	strSphereParams += to_string((long double)pSphereParams->m_flPosZ) + "_";
+
+	strSphereParams += to_string((long double)pSphereParams->m_flLenX) + "_";
+	strSphereParams += to_string((long double)pSphereParams->m_flLenY) + "_";
+	strSphereParams += to_string((long double)pSphereParams->m_flLenZ) + "_";
+
+	strSphereParams += to_string((long double)pSphereParams->m_flAngleXY) + "_";
+	strSphereParams += to_string((long double)pSphereParams->m_flAngleXZ) + "_";
+	strSphereParams += to_string((long double)pSphereParams->m_flAngleYZ);
 
 	int nI;
 	string strColor;
 	for (nI=0;nI<4;nI++)	{
-		strColor += to_string((long double)m_SphereParams.m_arrflRGBA[nI]) + "_";
+		strColor += to_string((long double)pSphereParams->m_arrflRGBA[nI]) + "_";
 	}
 
 	string strSQLCommand = "INSERT INTO Sphere (SphereRes, SphereMatrix, SphereColor, SphereTexture, PrimitiveID) VALUES("
-		+ to_string((_Longlong)m_SphereParams.m_nResPhi) + ",'"
+		+ to_string((_Longlong)pSphereParams->m_nResPhi) + ",'"
 		+ strSphereParams + "','"
 		+ strColor + "','"
-		+ m_SphereParams.m_strFileNameTexture + "',"
+		+ pSphereParams->m_strFileNameTexture + "',"
 		+ "(SELECT PrimitiveID FROM Primitive WHERE PrimitiveName = 'Sphere'));";
 
 	return(strSQLCommand);
@@ -135,42 +141,44 @@ string VR::Sphere::getSQLCommand() const	{
 //----------------------------------------------------------------------
 
 void VR::Sphere::initFromSQLData(const string & astrSQLData)	{
+	SphereParams * pSphereParams = dynamic_cast<SphereParams*>(m_pAbstractObjectParams);
 	string strSQLData = astrSQLData;
 
 	vector <string> arrstrSphereParams = splitString(strSQLData,";");
 	vector <string> arrstrMatrix = splitString(arrstrSphereParams[2],"_");
 	vector <string> arrstrColor = splitString(arrstrSphereParams[3],"_");
 
-	m_SphereParams.m_nResPhi = m_SphereParams.m_nResTheta = stof(arrstrSphereParams[1]);
-	m_SphereParams.m_flRadius = stof(arrstrMatrix[0]);
-	
-	m_SphereParams.m_flPosX = stof(arrstrMatrix[1]);
-	m_SphereParams.m_flPosY = stof(arrstrMatrix[2]);
-	m_SphereParams.m_flPosZ = stof(arrstrMatrix[3]);
+	pSphereParams->m_nResPhi = pSphereParams->m_nResTheta = stof(arrstrSphereParams[1]);
+	pSphereParams->m_flRadius = stof(arrstrMatrix[0]);
 
-	m_SphereParams.m_flLenX = stof(arrstrMatrix[4]);
-	m_SphereParams.m_flLenY = stof(arrstrMatrix[5]);
-	m_SphereParams.m_flLenZ = stof(arrstrMatrix[6]);
+	pSphereParams->m_flPosX = stof(arrstrMatrix[1]);
+	pSphereParams->m_flPosY = stof(arrstrMatrix[2]);
+	pSphereParams->m_flPosZ = stof(arrstrMatrix[3]);
 
-	m_SphereParams.m_flAngleXY = stof(arrstrMatrix[7]);
-	m_SphereParams.m_flAngleXZ = stof(arrstrMatrix[8]);
-	m_SphereParams.m_flAngleYZ = stof(arrstrMatrix[9]);
+	pSphereParams->m_flLenX = stof(arrstrMatrix[4]);
+	pSphereParams->m_flLenY = stof(arrstrMatrix[5]);
+	pSphereParams->m_flLenZ = stof(arrstrMatrix[6]);
+
+	pSphereParams->m_flAngleXY = stof(arrstrMatrix[7]);
+	pSphereParams->m_flAngleXZ = stof(arrstrMatrix[8]);
+	pSphereParams->m_flAngleYZ = stof(arrstrMatrix[9]);
 
 	int nI;
 	if (arrstrColor.size()!=0)	{
 		for (nI=0;nI<4;nI++)	{
-			m_SphereParams.m_arrflRGBA[nI] = (stof(arrstrColor[nI]));
+			pSphereParams->m_arrflRGBA[nI] = (stof(arrstrColor[nI]));
 		}
 	}
 
-	m_SphereParams.m_strFileNameTexture = arrstrSphereParams[4];
+	pSphereParams->m_strFileNameTexture = arrstrSphereParams[4];
 
-	init(m_SphereParams);
+	init(*pSphereParams);
 }
 
 //----------------------------------------------------------------------
 
 void VR::Sphere::predefinedObject()	{
-	init(m_SphereParams);
+	SphereParams * pSphereParams = dynamic_cast<SphereParams*>(m_pAbstractObjectParams);
+	init(*pSphereParams);
 	setIsTargetPick(true);
 }

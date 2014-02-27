@@ -161,68 +161,66 @@ void main_UntransformedPolygon3D_Texture(ref_ptr<Group> pScene)	{
 //----------------------------------------------------------------------
 
 void main_Cylinder(ref_ptr<Group> pScene)	{
-	CylinderParams cylinderP;
-	cylinderP.m_flRadius = 1.0;
-	cylinderP.m_flHeight = 3.0;
-	cylinderP.m_nRes = 100;
-	cylinderP.m_flPosX = 0.0;
-	cylinderP.m_flPosY = 0.0;
-	cylinderP.m_flPosZ = 0.0;
-	cylinderP.m_flLenX = 1.0;
-	cylinderP.m_flLenY = 2.0;
-	cylinderP.m_flLenZ = 3.0;
-	cylinderP.m_arrflRGBA[0] = 0.85;
-	cylinderP.m_arrflRGBA[1] = 0.25;
-	cylinderP.m_arrflRGBA[2] = 0.15;
-	cylinderP.m_arrflRGBA[3] = 1.0;
-	cylinderP.m_strFileNameTexture = "../../../../Resources/Textures/lz.rgb";
+	CylinderParams * pCP = new CylinderParams;
+	pCP->m_flRadius = 1.0;
+	pCP->m_flHeight = 3.0;
+	pCP->m_nRes = 100;
+	pCP->m_flPosX = 0.0;
+	pCP->m_flPosY = 0.0;
+	pCP->m_flPosZ = 0.0;
+	pCP->m_flLenX = 1.0;
+	pCP->m_flLenY = 2.0;
+	pCP->m_flLenZ = 3.0;
+	pCP->m_arrflRGBA[0] = 0.85;
+	pCP->m_arrflRGBA[1] = 0.25;
+	pCP->m_arrflRGBA[2] = 0.15;
+	pCP->m_arrflRGBA[3] = 1.0;
+	pCP->m_strFileNameTexture = "../../../../Resources/Textures/lz.rgb";
 
-	ref_ptr<VR::Cylinder> pCylinder = new VR::Cylinder(cylinderP);
-
+	ref_ptr<VR::Cylinder> pCylinder = new VR::Cylinder(pCP);
 	pScene->addChild(pCylinder);
+	delete pCP;
 }
 
 //----------------------------------------------------------------------
 
 void main_Prism(ref_ptr<Group> pScene)	{
-	PrismParams prismP;
-	prismP.m_flRadius = 1.0;
-	prismP.m_flHeight = 1.0;
-	prismP.m_nRes = 4;
-	prismP.m_flPosX = 0.0;
-	prismP.m_flPosY = 0.0;
-	prismP.m_flPosZ = 0.0;
-	//prismP.m_flLenX = 1;
-	//prismP.m_flLenY = 2;
-	//prismP.m_flLenZ = 3;
-	prismP.m_arrflRGBA[0] = 0.85;
-	prismP.m_arrflRGBA[1] = 0.25;
-	prismP.m_arrflRGBA[2] = 0.15;
-	prismP.m_arrflRGBA[3] = 1.0;
+	PrismParams * pPP = new PrismParams;
+	pPP->m_flRadius = 1.0;
+	pPP->m_flHeight = 1.0;
+	pPP->m_nRes = 4;
+	pPP->m_flPosX = 0.0;
+	pPP->m_flPosY = 0.0;
+	pPP->m_flPosZ = 0.0;
+	pPP->m_arrflRGBA[0] = 0.85;
+	pPP->m_arrflRGBA[1] = 0.25;
+	pPP->m_arrflRGBA[2] = 0.15;
+	pPP->m_arrflRGBA[3] = 1.0;
 
-	ref_ptr<VR::Prism> pPrism = new VR::Prism(prismP);
-
+	ref_ptr<VR::Prism> pPrism = new VR::Prism(pPP);
 	pScene->addChild(pPrism);
+	delete pPP;
 }
 
 //----------------------------------------------------------------------
 
 void main_Sphere_Color(ref_ptr<Group> pScene)	{
-	SphereParams sP;
-	sP.m_nResPhi = sP.m_nResTheta = 50;
-	sP.m_flLenX = 1;
-	sP.m_flLenY = 2;
-	sP.m_flLenZ = 3;
+	SphereParams * pSP = new SphereParams;
+	pSP->m_nResPhi = pSP->m_nResTheta = 50;
+	pSP->m_flLenX = 1;
+	pSP->m_flLenY = 2;
+	pSP->m_flLenZ = 3;
 
 	vector <float> arrflColor;
 	arrflColor.push_back(0.85);
 	arrflColor.push_back(0.15);
 	arrflColor.push_back(0.25);
 	arrflColor.push_back(1.0);
-	sP.m_arrflRGBA = arrflColor;
+	pSP->m_arrflRGBA = arrflColor;
 
-	ref_ptr<VR::Sphere> pSphere = new VR::Sphere(sP);
+	ref_ptr<VR::Sphere> pSphere = new VR::Sphere(pSP);
 	pScene->addChild(pSphere);
+	delete pSP;
 }
 
 //----------------------------------------------------------------------

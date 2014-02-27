@@ -3,21 +3,22 @@
 
 #include <QTreeView>
 
-#include <osg/Group>
 #include <osgGA/GUIEventHandler>
-
-#include "VRGrid.h"
 
 #include "VRSceneHierarchy.h"
 
 class OSGQT_Widget;
+class Grid;
 
 namespace VR	{
+	class Scene;
+
 	struct ShopBuilder {
 		ShopBuilder();
+		ShopBuilder(OSGQT_Widget * apOSGQTWidget);
+		
 		~ShopBuilder();
 
-		void init(OSGQT_Widget * apOSGQTWidget, QTreeView * apTreeView);
 
 		void gridOnOff(bool abIndicator);
 
@@ -25,21 +26,19 @@ namespace VR	{
 		void readDB(const std::string & astrDBFileName);
 		void saveDB(const std::string & astrDBFileName);
 
+		osg::ref_ptr<Scene> getScene() const;
+
 		void addNewItem(const std::string & astrObjectName);
 
 		osgGA::GUIEventHandler * m_pEvent;
 
 	private:
 		OSGQT_Widget * m_pOSGQTWidget;
-		QTreeView * m_pTreeView;
-		osg::ref_ptr<osg::Group> m_pScene;
-		osg::ref_ptr < osg::Group > m_pObjects;
-
-		QString m_qstrFileName;
+		osg::ref_ptr<Scene> m_pScene;
 
 		void updateQTreeView();
+		QTreeView * m_pTreeView;
 
-		SceneHierarchy * m_pSceneHierarchy;
 		osg::ref_ptr<Grid> m_pGridlines;
 	};
 }

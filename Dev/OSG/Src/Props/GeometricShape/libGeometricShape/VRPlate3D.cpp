@@ -21,21 +21,30 @@ string Plate3D::m_strSQLFormat =
 
 //-----------------------------------------------------------------------
 
-Plate3DParams::Plate3DParams()	{
+Plate3DParams::Plate3DParams() : AbstractGeomShapeParams()	{
 }
 
-//-----------------------------------------------------------------------
+//========================================================================
 
-Plate3D::Plate3D()	{
+Plate3D::Plate3D() : AbstractGeomShape(new Plate3DParams())	{
 	m_pUntransformedPlate3D = new UntransformedPlate3D();
 	addChild(m_pUntransformedPlate3D);
 }
 
 //-----------------------------------------------------------------------
 
-void Plate3D::init(const AbstractGeomShapeParams & aAbstractGeomShapeParams)	{
-	m_Plate3DParams = static_cast<const Plate3DParams&>(aAbstractGeomShapeParams);
+Plate3D::Plate3D(Plate3DParams * apPlate3DParams) : AbstractGeomShape(apPlate3DParams)	{
+	m_pUntransformedPlate3D = new UntransformedPlate3D();
+	addChild(m_pUntransformedPlate3D);
 
+	Plate3DParams * pPlate3DParams = dynamic_cast<Plate3DParams*>(m_pAbstractObjectParams);
+	init(*pPlate3DParams);
+}
+
+//-----------------------------------------------------------------------
+
+void Plate3D::init(const AbstractGeomShapeParams & aAbstractGeomShapeParams)	{
+	const Plate3DParams & aGSP = dynamic_cast<const Plate3DParams&>(aAbstractGeomShapeParams);
 	Matrix matrix;
 	matrix.set(1,	0,	0,	0,
 			   0,	1,	0,	0,
@@ -43,35 +52,41 @@ void Plate3D::init(const AbstractGeomShapeParams & aAbstractGeomShapeParams)	{
 			   0,	0,	0,	1);
 
 	Matrix PlateMatrix =
-		matrix.scale(m_Plate3DParams.m_flLenX, m_Plate3DParams.m_flLenY, m_Plate3DParams.m_flLenZ)
+		matrix.scale(aGSP.m_flLenX, aGSP.m_flLenY, aGSP.m_flLenZ)
 		*
 		matrix.rotate(
-			m_Plate3DParams.m_flAngleYZ, osg::X_AXIS,
-			m_Plate3DParams.m_flAngleXZ, osg::Y_AXIS,
-			m_Plate3DParams.m_flAngleXY, osg::Z_AXIS)
+			aGSP.m_flAngleYZ, osg::X_AXIS,
+			aGSP.m_flAngleXZ, osg::Y_AXIS,
+			aGSP.m_flAngleXY, osg::Z_AXIS)
 		*
-		matrix.translate(m_Plate3DParams.m_flPosX, m_Plate3DParams.m_flPosY, m_Plate3DParams.m_flPosZ)
+		matrix.translate(aGSP.m_flPosX, aGSP.m_flPosY, aGSP.m_flPosZ)
 	;
 	
 	setMatrix(PlateMatrix);
 
-	setColor(m_Plate3DParams.m_arrflRGBA);
-	if ((m_Plate3DParams.m_strFileNameTexture != " ") && (m_Plate3DParams.m_strFileNameTexture != ""))
-		setTexture(m_Plate3DParams.m_strFileNameTexture);
+	setColor(aGSP.m_arrflRGBA);
+	if ((aGSP.m_strFileNameTexture != " ") && (aGSP.m_strFileNameTexture != ""))
+		setTexture(aGSP.m_strFileNameTexture);
 }
 
 //----------------------------------------------------------------------
 
 void Plate3D::setColor(const std::vector < float > & aarrflColor)	{
-	m_Plate3DParams.m_arrflRGBA = aarrflColor;
-	m_pUntransformedPlate3D->setColor(m_Plate3DParams.m_arrflRGBA);
+	Plate3DParams * pPlate3DParams = dynamic_cast<Plate3DParams *>(m_pAbstractObjectParams);
+	if(pPlate3DParams != 0) {
+		pPlate3DParams->m_arrflRGBA = aarrflColor;
+		m_pUntransformedPlate3D->setColor(pPlate3DParams->m_arrflRGBA);
+	}
 }
 
 //----------------------------------------------------------------------
 
 void Plate3D::setTexture(const std::string & astrFileName) {
-	m_Plate3DParams.m_strFileNameTexture = astrFileName;
-	m_pUntransformedPlate3D->setTexture(m_Plate3DParams.m_strFileNameTexture);
+	Plate3DParams * pPlate3DParams = dynamic_cast<Plate3DParams *>(m_pAbstractObjectParams);
+	if(pPlate3DParams != 0) {
+		pPlate3DParams->m_strFileNameTexture = astrFileName;
+		m_pUntransformedPlate3D->setTexture(pPlate3DParams->m_strFileNameTexture);
+	}
 }
 
 //----------------------------------------------------------
@@ -83,30 +98,35 @@ string Plate3D::getSQLFormat() const {
 //----------------------------------------------------------------------
 
 std::string Plate3D::getSQLCommand() const	{
+	Plate3DParams * pPlate3DParams = dynamic_cast<Plate3DParams *>(m_pAbstractObjectParams);
+	if(pPlate3DParams == 0) {
+		return(0);
+	}
+
 	string strPlate3DParams;
-	strPlate3DParams = to_string((long double)m_Plate3DParams.m_flPosX) + "_";
-	strPlate3DParams += to_string((long double)m_Plate3DParams.m_flPosY) + "_";
-	strPlate3DParams += to_string((long double)m_Plate3DParams.m_flPosZ) + "_";
-							   					 
-	strPlate3DParams += to_string((long double)m_Plate3DParams.m_flLenX) + "_";
-	strPlate3DParams += to_string((long double)m_Plate3DParams.m_flLenY) + "_";
-	strPlate3DParams += to_string((long double)m_Plate3DParams.m_flLenZ) + "_";
-												 
-	strPlate3DParams += to_string((long double)m_Plate3DParams.m_flAngleXY) + "_";
-	strPlate3DParams += to_string((long double)m_Plate3DParams.m_flAngleXZ) + "_";
-	strPlate3DParams += to_string((long double)m_Plate3DParams.m_flAngleYZ);
+	strPlate3DParams = to_string((long double)pPlate3DParams->m_flPosX) + "_";
+	strPlate3DParams += to_string((long double)pPlate3DParams->m_flPosY) + "_";
+	strPlate3DParams += to_string((long double)pPlate3DParams->m_flPosZ) + "_";
+
+	strPlate3DParams += to_string((long double)pPlate3DParams->m_flLenX) + "_";
+	strPlate3DParams += to_string((long double)pPlate3DParams->m_flLenY) + "_";
+	strPlate3DParams += to_string((long double)pPlate3DParams->m_flLenZ) + "_";
+
+	strPlate3DParams += to_string((long double)pPlate3DParams->m_flAngleXY) + "_";
+	strPlate3DParams += to_string((long double)pPlate3DParams->m_flAngleXZ) + "_";
+	strPlate3DParams += to_string((long double)pPlate3DParams->m_flAngleYZ);
 
 
 	int nI;
 	string strColor;
 	for (nI=0;nI<4;nI++)	{
-		strColor += to_string((long double)m_Plate3DParams.m_arrflRGBA[nI]) + "_";
+		strColor += to_string((long double)pPlate3DParams->m_arrflRGBA[nI]) + "_";
 	}
 
 	string strSQLCommand = "INSERT INTO Plate3D (Plate3DMatrix, Plate3DColor, Plate3DTexture, PrimitiveID) VALUES('"
 		+ strPlate3DParams + "','"
 		+ strColor + "','"
-		+ m_Plate3DParams.m_strFileNameTexture + "',"
+		+ pPlate3DParams->m_strFileNameTexture + "',"
 		+ "(SELECT PrimitiveID FROM Primitive WHERE PrimitiveName = 'Plate3D'));";
 
 	return(strSQLCommand);
@@ -115,6 +135,7 @@ std::string Plate3D::getSQLCommand() const	{
 //----------------------------------------------------------------------
 
 void Plate3D::initFromSQLData(const string & astrSQLData)	{
+	Plate3DParams * pPlate3DParams = dynamic_cast<Plate3DParams*>(m_pAbstractObjectParams);
 	string strSQLData = astrSQLData;
 
 	vector <string> arrstrPlateParams = splitString(strSQLData,";");
@@ -131,26 +152,27 @@ void Plate3D::initFromSQLData(const string & astrSQLData)	{
 	if (arrstrColor.size()!=0)	{
 		vector < float > arrflColor;
 		for (nI=0;nI<4;nI++)	{
-			m_Plate3DParams.m_arrflRGBA[nI] = stof(arrstrColor[nI]);
+			pPlate3DParams->m_arrflRGBA[nI] = stof(arrstrColor[nI]);
 		}
 	}
 
-	m_Plate3DParams.m_flPosX = arrflMatrix[0];
-	m_Plate3DParams.m_flPosY = arrflMatrix[1];
-	m_Plate3DParams.m_flPosZ = arrflMatrix[2];
+	pPlate3DParams->m_flPosX = arrflMatrix[0];
+	pPlate3DParams->m_flPosY = arrflMatrix[1];
+	pPlate3DParams->m_flPosZ = arrflMatrix[2];
 
-	m_Plate3DParams.m_flLenX = arrflMatrix[3];
-	m_Plate3DParams.m_flLenY = arrflMatrix[4];
-	m_Plate3DParams.m_flLenZ = arrflMatrix[5];
+	pPlate3DParams->m_flLenX = arrflMatrix[3];
+	pPlate3DParams->m_flLenY = arrflMatrix[4];
+	pPlate3DParams->m_flLenZ = arrflMatrix[5];
 
-	m_Plate3DParams.m_strFileNameTexture = arrstrPlateParams[3];
+	pPlate3DParams->m_strFileNameTexture = arrstrPlateParams[3];
 
-	init(m_Plate3DParams);
+	init(*pPlate3DParams);
 }
 
 //----------------------------------------------------------------------
 
 void Plate3D::predefinedObject()	{
-	init(m_Plate3DParams);
+	Plate3DParams * pPlate3DParams = dynamic_cast<Plate3DParams*>(m_pAbstractObjectParams);
+	init(*pPlate3DParams);
 	setIsTargetPick(true);
 }

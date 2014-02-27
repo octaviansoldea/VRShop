@@ -19,61 +19,64 @@ string Prism::m_strSQLFormat =
 	"FOREIGN KEY (PrimitiveID) REFERENCES Primitive(PrimitiveID));";
 
 
-PrismParams::PrismParams()
-{
+PrismParams::PrismParams() : AbstractGeomShapeParams()	{
 }
 
 //-----------------------------------------------------------------------
 
-Prism::Prism()	{
-	m_pUntransformedPolygon3D = new UntransformedPolygon3D(m_PrismParams);
-//	init(m_PrismParams);
+Prism::Prism() : AbstractGeomShape(new PrismParams())	{
+	PrismParams * pPrismParams = dynamic_cast<PrismParams*>(m_pAbstractObjectParams);
+
+	m_pUntransformedPolygon3D = new UntransformedPolygon3D(*pPrismParams);
 	addChild(m_pUntransformedPolygon3D);
 }
 
 //----------------------------------------------------------
 
-Prism::Prism(const PrismParams & aPrismParams)	{
+Prism::Prism(PrismParams * apPrismParams) : AbstractGeomShape(apPrismParams)	{
 	m_pUntransformedPolygon3D = new UntransformedPolygon3D();
-	init(aPrismParams);
-	addChild(m_pUntransformedPolygon3D);
+
+	PrismParams * pPrismParams = dynamic_cast<PrismParams*>(m_pAbstractObjectParams);
+	init(*pPrismParams);
+//	addChild(m_pUntransformedPolygon3D);
 }
 
 //----------------------------------------------------------
 
 void Prism::setResolution(int anRes) {
-	m_PrismParams.m_nRes = anRes;
+	PrismParams * pPrismParams = dynamic_cast<PrismParams*>(m_pAbstractObjectParams);
+	pPrismParams->m_nRes = anRes;
 }
 
 //----------------------------------------------------------
 
 void Prism::init(const AbstractGeomShapeParams & aAbstractGeomShapeParams) {
-	m_PrismParams = static_cast<const PrismParams&>(aAbstractGeomShapeParams);
+	const PrismParams & pP = dynamic_cast<const PrismParams&>(aAbstractGeomShapeParams);
 
-	m_pUntransformedPolygon3D->init(m_PrismParams);
+	m_pUntransformedPolygon3D->init(pP);
 
 	Matrix matrix;
-	matrix.set(m_PrismParams.m_flRadius,	0,							0,							0,
-			   0,							m_PrismParams.m_flHeight,	0,							0,
-			   0,							0,							m_PrismParams.m_flRadius,	0,
-			   0,							0,							0,							1);
+	matrix.set(pP.m_flRadius,	0,				0,				0,
+			   0,				pP.m_flHeight,	0,				0,
+			   0,				0,				pP.m_flRadius,	0,
+			   0,				0,				0,				1);
 
 	Matrix PrismMatrix =
-		matrix.scale(m_PrismParams.m_flLenX, m_PrismParams.m_flLenY, m_PrismParams.m_flLenZ)
+		matrix.scale(pP.m_flLenX, pP.m_flLenY, pP.m_flLenZ)
 		*
 		matrix.rotate(
-			m_PrismParams.m_flAngleYZ, osg::X_AXIS,
-			m_PrismParams.m_flAngleXZ, osg::Y_AXIS,
-			m_PrismParams.m_flAngleXY, osg::Z_AXIS)
+			pP.m_flAngleYZ, osg::X_AXIS,
+			pP.m_flAngleXZ, osg::Y_AXIS,
+			pP.m_flAngleXY, osg::Z_AXIS)
 		*
-		matrix.translate(m_PrismParams.m_flPosX, m_PrismParams.m_flPosY, m_PrismParams.m_flPosZ)
+		matrix.translate(pP.m_flPosX, pP.m_flPosY, pP.m_flPosZ)
 	;
 	
 	setMatrix(PrismMatrix);
 
-	setColor(m_PrismParams.m_arrflRGBA);
-	if ((m_PrismParams.m_strFileNameTexture != " ") && (m_PrismParams.m_strFileNameTexture != ""))
-		setTexture(m_PrismParams.m_strFileNameTexture);
+	setColor(pP.m_arrflRGBA);
+	if ((pP.m_strFileNameTexture != " ") && (pP.m_strFileNameTexture != ""))
+		setTexture(pP.m_strFileNameTexture);
 }
 
 //----------------------------------------------------------------------
@@ -97,34 +100,36 @@ string Prism::getSQLFormat() const {
 //----------------------------------------------------------------------
 
 string Prism::getSQLCommand() const {
+	PrismParams * pPrismParams = dynamic_cast<PrismParams*>(m_pAbstractObjectParams);
+
 	string strPrismParams;
 
-	strPrismParams= to_string((long double)m_PrismParams.m_flRadius) + "_";
-	strPrismParams+= to_string((long double)m_PrismParams.m_flHeight) + "_";
+	strPrismParams= to_string((long double)pPrismParams->m_flRadius) + "_";
+	strPrismParams+= to_string((long double)pPrismParams->m_flHeight) + "_";
 
-	strPrismParams+= to_string((long double)m_PrismParams.m_flPosX) + "_";
-	strPrismParams+= to_string((long double)m_PrismParams.m_flPosY) + "_";
-	strPrismParams+= to_string((long double)m_PrismParams.m_flPosZ) + "_";
+	strPrismParams+= to_string((long double)pPrismParams->m_flPosX) + "_";
+	strPrismParams+= to_string((long double)pPrismParams->m_flPosY) + "_";
+	strPrismParams+= to_string((long double)pPrismParams->m_flPosZ) + "_";
 
-	strPrismParams += to_string((long double)m_PrismParams.m_flLenX) + "_";
-	strPrismParams += to_string((long double)m_PrismParams.m_flLenY) + "_";
-	strPrismParams += to_string((long double)m_PrismParams.m_flLenZ) + "_";
+	strPrismParams += to_string((long double)pPrismParams->m_flLenX) + "_";
+	strPrismParams += to_string((long double)pPrismParams->m_flLenY) + "_";
+	strPrismParams += to_string((long double)pPrismParams->m_flLenZ) + "_";
 			 
-	strPrismParams+= to_string((long double)m_PrismParams.m_flAngleXY) + "_";
-	strPrismParams+= to_string((long double)m_PrismParams.m_flAngleXZ) + "_";
-	strPrismParams+= to_string((long double)m_PrismParams.m_flAngleYZ);
+	strPrismParams+= to_string((long double)pPrismParams->m_flAngleXY) + "_";
+	strPrismParams+= to_string((long double)pPrismParams->m_flAngleXZ) + "_";
+	strPrismParams+= to_string((long double)pPrismParams->m_flAngleYZ);
 
 	int nI;
 	string strColor;
 	for (nI=0;nI<4;nI++)	{
-		strColor += to_string((long double)m_PrismParams.m_arrflRGBA[nI]) + "_";
+		strColor += to_string((long double)pPrismParams->m_arrflRGBA[nI]) + "_";
 	}
 
 	string strSQLCommand = "INSERT INTO Prism (PrismSides, PrismMatrix, PrismColor, PrismTexture, PrimitiveID) VALUES("
-		+ to_string((_Longlong)m_PrismParams.m_nRes) + ",'"
+		+ to_string((_Longlong)pPrismParams->m_nRes) + ",'"
 		+ strPrismParams + "','"
 		+ strColor + "','"
-		+ m_PrismParams.m_strFileNameTexture + "',"
+		+ pPrismParams->m_strFileNameTexture + "',"
 		+ "(SELECT PrimitiveID FROM Primitive WHERE PrimitiveName = 'Prism'));";
 
 	return(strSQLCommand);
@@ -133,43 +138,46 @@ string Prism::getSQLCommand() const {
 //----------------------------------------------------------------------
 
 void Prism::initFromSQLData(const std::string & astrSQLData)	{
+	PrismParams * pPrismParams = dynamic_cast<PrismParams*>(m_pAbstractObjectParams);
+
 	string strSQLData = astrSQLData;
 
 	vector <string> arrstrPrismParams = splitString(strSQLData,";");
 	vector <string> arrstrMatrix = splitString(arrstrPrismParams[2],"_");
 	vector <string> arrstrColor = splitString(arrstrPrismParams[3],"_");
 
-	m_PrismParams.m_nRes = stof(arrstrPrismParams[1]);
-	m_PrismParams.m_flRadius = stof(arrstrMatrix[0]);
-	m_PrismParams.m_flHeight = stof(arrstrMatrix[1]);
-	
-	m_PrismParams.m_flPosX = stof(arrstrMatrix[2]);
-	m_PrismParams.m_flPosY = stof(arrstrMatrix[3]);
-	m_PrismParams.m_flPosZ = stof(arrstrMatrix[4]);
+	pPrismParams->m_nRes = stof(arrstrPrismParams[1]);
+	pPrismParams->m_flRadius = stof(arrstrMatrix[0]);
+	pPrismParams->m_flHeight = stof(arrstrMatrix[1]);
 
-	m_PrismParams.m_flLenX = stof(arrstrMatrix[5]);
-	m_PrismParams.m_flLenY = stof(arrstrMatrix[6]);
-	m_PrismParams.m_flLenZ = stof(arrstrMatrix[7]);
+	pPrismParams->m_flPosX = stof(arrstrMatrix[2]);
+	pPrismParams->m_flPosY = stof(arrstrMatrix[3]);
+	pPrismParams->m_flPosZ = stof(arrstrMatrix[4]);
 
-	m_PrismParams.m_flAngleXY = stof(arrstrMatrix[8]);
-	m_PrismParams.m_flAngleXZ = stof(arrstrMatrix[9]);
-	m_PrismParams.m_flAngleYZ = stof(arrstrMatrix[10]);
+	pPrismParams->m_flLenX = stof(arrstrMatrix[5]);
+	pPrismParams->m_flLenY = stof(arrstrMatrix[6]);
+	pPrismParams->m_flLenZ = stof(arrstrMatrix[7]);
+
+	pPrismParams->m_flAngleXY = stof(arrstrMatrix[8]);
+	pPrismParams->m_flAngleXZ = stof(arrstrMatrix[9]);
+	pPrismParams->m_flAngleYZ = stof(arrstrMatrix[10]);
 
 	int nI;
 	if (arrstrColor.size()!=0)	{
 		for (nI=0;nI<4;nI++)	{
-			m_PrismParams.m_arrflRGBA[nI] = (stof(arrstrColor[nI]));
+			pPrismParams->m_arrflRGBA[nI] = (stof(arrstrColor[nI]));
 		}
 	}
 
-	m_PrismParams.m_strFileNameTexture = arrstrPrismParams[4];
+	pPrismParams->m_strFileNameTexture = arrstrPrismParams[4];
 
-	init(m_PrismParams);
+	init(*pPrismParams);
 }
 
 //----------------------------------------------------------------------
 
 void Prism::predefinedObject()	{
-	init(m_PrismParams);
+	PrismParams * pPrismParams = dynamic_cast<PrismParams*>(m_pAbstractObjectParams);
+	init(*pPrismParams);
 	setIsTargetPick(true);
 }

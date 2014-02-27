@@ -2,10 +2,10 @@
 #define VR_SHOP_BUILDER_GUI_H
 
 #include <QMainWindow>
-#include "VRShopBuilder.h"
 
 #include "ui_VRShopBuilder_GUI.h"
 
+class ShopBuilder;
 class CameraController;
 class PickAndDragController;
 class Grid;
@@ -16,13 +16,14 @@ namespace VR	{
 	public:
 		ShopBuilder_GUI();
 		~ShopBuilder_GUI();
-		ShopBuilder m_ShopBuilder;
 
 	private:
 		void buildConnections();
 
 		QString openDialog(const char * apchDBName);
 		QString saveDialog(const char * apchDBName);
+
+		ShopBuilder * m_pShopBuilder;
 
 		CameraController * m_pCameraController;
 		PickAndDragController * m_pPickAndDragController;

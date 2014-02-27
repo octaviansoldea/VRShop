@@ -15,11 +15,10 @@ namespace VR	{
 		static std::string m_strSQLFormat;
 
 		osg::ref_ptr <UntransformedSphere> m_pUntransformedSphere;
-		SphereParams m_SphereParams;
 
 	public:
 		Sphere();
-		Sphere(const SphereParams & aSphereParams);
+		Sphere(SphereParams * apSphereParams);
 
 		virtual std::string getSQLFormat() const;
 		virtual std::string getSQLCommand() const;

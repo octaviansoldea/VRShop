@@ -125,7 +125,7 @@ void UntransformedPolygon3D::setResolution(int anRes) {
 
 //-----------------------------------------------------------------------------
 
-void UntransformedPolygon3D::init(const UntransformedPolygon3DParams & aUntransformedPolygon3DParams)	{
+void UntransformedPolygon3D::init(UntransformedPolygon3DParams & aUntransformedPolygon3DParams)	{
 	m_UntransformedPolygon3DParams = aUntransformedPolygon3DParams;
 
 	int anSidesNr = m_UntransformedPolygon3DParams.m_nRes;

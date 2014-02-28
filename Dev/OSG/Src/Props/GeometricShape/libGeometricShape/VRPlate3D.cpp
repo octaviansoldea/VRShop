@@ -43,8 +43,8 @@ Plate3D::Plate3D(Plate3DParams * apPlate3DParams) : AbstractGeomShape(apPlate3DP
 
 //-----------------------------------------------------------------------
 
-void Plate3D::init(const AbstractGeomShapeParams & aAbstractGeomShapeParams)	{
-	const Plate3DParams & aGSP = dynamic_cast<const Plate3DParams&>(aAbstractGeomShapeParams);
+void Plate3D::init(AbstractGeomShapeParams & aAbstractGeomShapeParams)	{
+	Plate3DParams & aGSP = dynamic_cast<Plate3DParams&>(aAbstractGeomShapeParams);
 	Matrix matrix;
 	matrix.set(1,	0,	0,	0,
 			   0,	1,	0,	0,

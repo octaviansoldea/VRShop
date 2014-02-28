@@ -17,7 +17,7 @@ namespace VR	{
 
 		virtual ~Furniture() = 0;
 
-		virtual void init(FurnitureParams & aFurnitureParams) = 0;
+		virtual void init(FurnitureParams * apFurnitureParams) = 0;
 
 		virtual void addPart(osg::ref_ptr < AbstractObject > apAbstractObject);
 		virtual void removePart(unsigned int anPartNo);

@@ -15,7 +15,7 @@ namespace VR {
 		Prism();
 		Prism(PrismParams * apPrismParams);
 
-		virtual void init(const AbstractGeomShapeParams & aAbstractGeomShapeParams);
+		virtual void init(AbstractGeomShapeParams & aAbstractGeomShapeParams);
 		virtual void predefinedObject();
 
 		virtual void setColor(const std::vector < float > & aarrflColor);

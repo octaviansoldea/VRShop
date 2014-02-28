@@ -343,7 +343,7 @@ void insertIntoDatabase_Cupboard(const string & astrDBName)	{
 	cParams.m_flPosZ = 0.0;
 
 	cParams.m_flAngleXZ = 25.0;
-	cupboard.init(cParams);
+	cupboard.init(&cParams);
 
 	ref_ptr < Plate3D > pPlate3D =  new Plate3D;
 	Plate3DParams aPlate3DParams;

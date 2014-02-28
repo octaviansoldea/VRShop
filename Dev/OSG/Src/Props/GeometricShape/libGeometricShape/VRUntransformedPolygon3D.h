@@ -27,7 +27,7 @@ namespace VR {
 		virtual void setTexture(const std::string & astrFileName);
 
 		void setResolution(int anRes);
-		void init(const UntransformedPolygon3DParams & aUntransformedPolygon3DParams);
+		void init(UntransformedPolygon3DParams & aUntransformedPolygon3DParams);
 	};
 }
 #endif //VR_UNTRANSFORMED_POLYGON_3D_H

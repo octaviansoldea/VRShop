@@ -8,7 +8,7 @@ using namespace std;
 using namespace osg;
 using namespace VR;
 
-ContainerParams::ContainerParams() : 
+ContainerParams::ContainerParams() : FurnitureParams(),
 	m_flWidth(2.0),
 	m_flHeight(3.0),
 	m_flDepth(1.5),
@@ -18,42 +18,28 @@ ContainerParams::ContainerParams() :
 //=======================================================================
 
 Container::Container() : Furniture(new ContainerParams())	{
+	ContainerParams * pContainerParams = dynamic_cast<ContainerParams*>(m_pAbstractObjectParams);
+	init(pContainerParams);
 }
 
 //-----------------------------------------------------------------------
 
 Container::Container(ContainerParams * apContainerParams) : Furniture(apContainerParams)	{
 	ContainerParams * pContainerParams = dynamic_cast<ContainerParams*>(m_pAbstractObjectParams);
-	init(*pContainerParams);
+	init(pContainerParams);
 }
 
 //-----------------------------------------------------------------------
 
-void Container::init(FurnitureParams & aFurnitureParams)	{
-	ContainerParams & contParams = static_cast<ContainerParams&>(aFurnitureParams);
+void Container::init(FurnitureParams * apFurnitureParams)	{
+	apFurnitureParams = dynamic_cast<FurnitureParams*>(m_pAbstractObjectParams);
 
-	setScaling(contParams.m_flLenX, contParams.m_flLenY, contParams.m_flLenZ);
-	setRotation(contParams.m_flAngleYZ, contParams.m_flAngleXZ, contParams.m_flAngleXY);
-	setPosition(contParams.m_flPosX, contParams.m_flPosY, contParams.m_flPosZ);
-
-	Matrix matrix;
-	matrix.set(1, 0, 0, 0,
-			   0, 1, 0, 0,
-			   0, 0, 1, 0,
-			   0, 0, 0,	1);
-
-	Matrix customFurnitureMatrix =
-		matrix.scale(contParams.m_flLenX, contParams.m_flLenY, contParams.m_flLenZ)
-		*
-		matrix.rotate(
-			contParams.m_flAngleYZ, osg::X_AXIS,
-			contParams.m_flAngleXZ, osg::Y_AXIS,
-			contParams.m_flAngleXY, osg::Z_AXIS)
-		*
-		matrix.translate(contParams.m_flPosX, contParams.m_flPosY, contParams.m_flPosZ)
-	;
+	setScaling(apFurnitureParams->m_flLenX, apFurnitureParams->m_flLenY, apFurnitureParams->m_flLenZ);
+	setRotation(apFurnitureParams->m_flAngleYZ, apFurnitureParams->m_flAngleXZ, apFurnitureParams->m_flAngleXY);
+	setPosition(apFurnitureParams->m_flPosX, apFurnitureParams->m_flPosY, apFurnitureParams->m_flPosZ);
 	
-	setMatrix(customFurnitureMatrix);
+	Matrix & containerMatrix = calculateMatrix();
+	setMatrix(containerMatrix);
 
 	setName(Furniture::getName() + ":Container");
 }
@@ -121,7 +107,7 @@ void Container::initFromSQLData(const string & astrSQLData)	{
 		pPlate->initFromSQLData(*it);
 		addChild(pPlate);
 	}
-	init(*pContainerParams);
+	init(pContainerParams);
 }
 
 //-----------------------------------------------------------------------
@@ -201,6 +187,6 @@ void Container::predefinedObject()	{
 	pPlate3D->init(aPlate3DParams);
 	addPart(pPlate3D);
 
-	init(*pContainerParams);
+	init(pContainerParams);
 	setIsTargetPick(true);
 }

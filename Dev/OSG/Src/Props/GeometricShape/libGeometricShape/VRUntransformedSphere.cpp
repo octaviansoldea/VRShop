@@ -36,7 +36,7 @@ UntransformedSphere::UntransformedSphere(const UntransformedSphereParams & aUntr
 
 //--------------------------------------------------------------
 
-void UntransformedSphere::init(const UntransformedSphereParams & aUntransformedSphereParams)	{
+void UntransformedSphere::init(UntransformedSphereParams & aUntransformedSphereParams)	{
 	m_UntransformedSphereParams = aUntransformedSphereParams;
 
 	float flResPhiStep = (2 * PI) / m_UntransformedSphereParams.m_nResPhi;

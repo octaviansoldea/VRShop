@@ -18,7 +18,7 @@ namespace VR {
 
 		virtual ~AbstractGeomShape() = 0;
 
-		virtual void init(const AbstractGeomShapeParams & aAbstractGeomShapeParams) = 0;
+		virtual void init(AbstractGeomShapeParams & aAbstractGeomShapeParams) = 0;
 
 		virtual void setColor(const std::vector < float > & aarrflColor) = 0;
 		virtual void setTexture(const std::string & astrFileName) = 0;

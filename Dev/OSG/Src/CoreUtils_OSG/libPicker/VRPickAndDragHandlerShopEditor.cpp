@@ -18,8 +18,9 @@
 #include <osgGA/GUIEventAdapter>
 #include <osgGA/GUIActionAdapter>
 
-#include "VRAbstractObject.h"
 #include "VRScene.h"
+#include "VRAbstractObject.h"
+#include "VRBoundingBox.h"
 
 #include "BasicDefinitions.h"
 
@@ -54,12 +55,13 @@ bool PickAndDragHandlerShopEditor::handle(const GUIEventAdapter& ea, GUIActionAd
 	}
 
 	if(nEventType == osgGA::GUIEventAdapter::LEFT_MOUSE_BUTTON && ea.getModKeyMask()&osgGA::GUIEventAdapter::MODKEY_CTRL)	{
-		bool bRes = addPart(PickAndDragHandler::m_pPickedObject);
+		ref_ptr< AbstractObject> pPickedObject = dynamic_cast<AbstractObject*>(m_pPickedObject.get());
+
+		bool bRes = addPart(pPickedObject);
 		if (bRes==false)	{
-			removePart(PickAndDragHandler::m_pPickedObject);
+			removePart(pPickedObject);
 		}
 	}
-
 	return(bRes);
 }
 
@@ -67,8 +69,10 @@ bool PickAndDragHandlerShopEditor::handle(const GUIEventAdapter& ea, GUIActionAd
 
 bool PickAndDragHandlerShopEditor::addPart(ref_ptr < VR::AbstractObject > apAbstractObject) {
 	bool bRes = false;
-	if(find(m_pvecPickedObjects.begin(),m_pvecPickedObjects.end(),apAbstractObject) == m_pvecPickedObjects.end())	{
-		m_pvecPickedObjects.push_back(apAbstractObject);
+	ref_ptr < VR::AbstractObject > pAbstractObject = dynamic_cast< VR::AbstractObject *>(apAbstractObject.get());
+
+	if(find(m_pvecPickedObjects.begin(),m_pvecPickedObjects.end(),pAbstractObject) == m_pvecPickedObjects.end())	{
+		m_pvecPickedObjects.push_back(pAbstractObject);
 		bRes = true;
 	}
 	return bRes;
@@ -78,8 +82,11 @@ bool PickAndDragHandlerShopEditor::addPart(ref_ptr < VR::AbstractObject > apAbst
 
 bool PickAndDragHandlerShopEditor::removePart(ref_ptr < VR::AbstractObject > apAbstractObject) {
 	bool bRes = true;
-	m_pvecPickedObjects.erase(remove(m_pvecPickedObjects.begin(), m_pvecPickedObjects.end(), apAbstractObject),
+	ref_ptr < VR::AbstractObject > pAbstractObject = dynamic_cast< VR::AbstractObject *>(apAbstractObject.get());
+
+	m_pvecPickedObjects.erase(remove(m_pvecPickedObjects.begin(), m_pvecPickedObjects.end(), pAbstractObject),
 		m_pvecPickedObjects.end());
+
 	return bRes;
 }
 
@@ -95,26 +102,15 @@ void PickAndDragHandlerShopEditor::setPropertiesPosition(const osg::Vec3d & avec
 	if(!m_pPickedObject)
 		return;
 
+	ref_ptr<AbstractObject> pPickedObject = dynamic_cast<AbstractObject*>(m_pPickedObject.get());
+
 	float flPosX = avec3dPosition[0];
 	float flPosY = avec3dPosition[1];
 	float flPosZ = avec3dPosition[2];
-	m_pPickedObject->setPosition(flPosX, flPosY, flPosZ);
+	pPickedObject->setPosition(flPosX, flPosY, flPosZ);
 
-	Vec3d vec3dPos = m_pPickedObject->getPosition();
-	Vec3d vec3dRot = m_pPickedObject->getRotation();
-	Vec3d vec3dLen = m_pPickedObject->getScaling();
-
-	Matrix matrix(Matrix::identity());
-
-	Matrix posMatrix =
-		matrix.scale(vec3dLen)	*
-		matrix.rotate(
-			degrees2Radians(vec3dRot[0]), osg::X_AXIS,
-			degrees2Radians(vec3dRot[1]), osg::Y_AXIS,
-			degrees2Radians(vec3dRot[2]), osg::Z_AXIS)	*
-		matrix.translate(vec3dPos);
-
-	m_pPickedObject->setMatrix(posMatrix);
+	Matrix & mtrxPos = pPickedObject->calculateMatrix();
+	pPickedObject->setMatrix(mtrxPos);
 }
 
 //------------------------------------------------------------------------------
@@ -123,26 +119,15 @@ void PickAndDragHandlerShopEditor::setPropertiesScaling(const Vec3d & avec3dScal
 	if (!m_pPickedObject)
 		return;
 
+	ref_ptr<AbstractObject> pPickedObject = dynamic_cast<AbstractObject*>(m_pPickedObject.get());
+
 	float flLenX = avec3dScaling[0];
 	float flLenY = avec3dScaling[1];
 	float flLenZ = avec3dScaling[2];
-	m_pPickedObject->setScaling(flLenX, flLenY, flLenZ);
+	pPickedObject->setScaling(flLenX, flLenY, flLenZ);
 
-	Vec3d vec3dPos = m_pPickedObject->getPosition();
-	Vec3d vec3dRot = m_pPickedObject->getRotation();
-	Vec3d vec3dLen = m_pPickedObject->getScaling();
-
-	Matrix matrix(Matrix::identity());
-
-	Matrix scalingMatrix =
-		matrix.scale(vec3dLen)	*
-		matrix.rotate(
-			degrees2Radians(vec3dRot[0]), osg::X_AXIS,
-			degrees2Radians(vec3dRot[1]), osg::Y_AXIS,
-			degrees2Radians(vec3dRot[2]), osg::Z_AXIS)	*
-		matrix.translate(vec3dPos);
-
-	m_pPickedObject->setMatrix(scalingMatrix);
+	Matrix & mtrxLen = pPickedObject->calculateMatrix();
+	pPickedObject->setMatrix(mtrxLen);
 }
 
 //------------------------------------------------------------------------------
@@ -151,26 +136,15 @@ void PickAndDragHandlerShopEditor::setPropertiesRotation(const Vec3d & avec3dRot
 	if (!m_pPickedObject)
 		return;
 
+	ref_ptr<AbstractObject> pPickedObject = dynamic_cast<AbstractObject*>(m_pPickedObject.get());
+
 	float flRotX = avec3dRotation[0];
 	float flRotY = avec3dRotation[1];
 	float flRotZ = avec3dRotation[2];
-	m_pPickedObject->setRotation(flRotX, flRotY, flRotZ);
+	pPickedObject->setRotation(flRotX, flRotY, flRotZ);
 
-	Vec3d vec3dPos = m_pPickedObject->getPosition();
-	Vec3d vec3dRot = m_pPickedObject->getRotation();
-	Vec3d vec3dLen = m_pPickedObject->getScaling();
-
-	Matrix matrix(Matrix::identity());
-
-	Matrix rotationMatrix =
-		matrix.scale(vec3dLen)	*
-		matrix.rotate(
-			degrees2Radians(vec3dRot[0]), osg::X_AXIS,
-			degrees2Radians(vec3dRot[1]), osg::Y_AXIS,
-			degrees2Radians(vec3dRot[2]), osg::Z_AXIS)	*
-		matrix.translate(vec3dPos);
-
-	m_pPickedObject->setMatrix(rotationMatrix);
+	Matrix & mtrxRot = pPickedObject->calculateMatrix();
+	pPickedObject->setMatrix(mtrxRot);
 }
 
 //------------------------------------------------------------------------------
@@ -194,7 +168,7 @@ void PickAndDragHandlerShopEditor::slotSetTransformParams(const QString & astrTe
 
 //-----------------------------------------------------------------------
 
-void PickAndDragHandlerShopEditor::groupSelection(osg::ref_ptr<Scene> apScene)	{
+void PickAndDragHandlerShopEditor::groupSelection(ref_ptr<Scene> apScene)	{
 	if(m_pvecPickedObjects.size() < 2)	{
 		cout << "Too few items selected for grouping" << endl;
 		return;
@@ -203,7 +177,7 @@ void PickAndDragHandlerShopEditor::groupSelection(osg::ref_ptr<Scene> apScene)	{
 	vector<ref_ptr<VR::AbstractObject>>::iterator it = m_pvecPickedObjects.begin();
 	
 	ref_ptr<VR::AbstractObject> pGroupedObject = dynamic_cast<AbstractObject*>(AbstractObject::createInstance("CustomFurniture").get());
-	for (it=it; it != m_pvecPickedObjects.end(); it++)	{		
+	for (it; it != m_pvecPickedObjects.end(); it++)	{
 		it->get()->setIsTargetPick(false);
 		pGroupedObject->addChild(*it);
 		apScene->removeElement(*it);
@@ -216,13 +190,13 @@ void PickAndDragHandlerShopEditor::groupSelection(osg::ref_ptr<Scene> apScene)	{
 
 //-----------------------------------------------------------------------------------
 
-void PickAndDragHandlerShopEditor::splitSelection(osg::ref_ptr<Scene> apScene)	{
+void PickAndDragHandlerShopEditor::splitSelection(ref_ptr<Scene> apScene)	{
 	if (m_pvecPickedObjects.size() == 0)	{
 		cout << "No items selected" << endl;
 		return;
 	}
 
-	vector<osg::ref_ptr<AbstractObject>>::iterator it = m_pvecPickedObjects.begin();
+	vector<ref_ptr<AbstractObject>>::iterator it = m_pvecPickedObjects.begin();
 
 	int nI;
 	ref_ptr<AbstractObject> pAbstractObject;
@@ -239,7 +213,7 @@ void PickAndDragHandlerShopEditor::splitSelection(osg::ref_ptr<Scene> apScene)	{
 
 //-----------------------------------------------------------------------
 
-void PickAndDragHandlerShopEditor::duplicateSelection(osg::ref_ptr<Scene> apScene)	{
+void PickAndDragHandlerShopEditor::duplicateSelection(ref_ptr<Scene> apScene)	{
 	if(m_pvecPickedObjects.size() < 1)	{
 		cout << "No items selected for removal" << endl;
 		return;
@@ -247,13 +221,10 @@ void PickAndDragHandlerShopEditor::duplicateSelection(osg::ref_ptr<Scene> apScen
 
 	vector<osg::ref_ptr<AbstractObject>>::iterator it = m_pvecPickedObjects.begin();
 
-	int nI;
-	ref_ptr<AbstractObject> pAbstractObject;
+//	ref_ptr<AbstractObject> pAbstractObject;
 	for (it; it != m_pvecPickedObjects.end(); it++)	{
-		pAbstractObject = AbstractObject::createInstance("Container");
-		float Pos[3] = {2,0,0};
-		pAbstractObject->setPosition(Pos[0],Pos[1],Pos[2]);
-		apScene->addElement(pAbstractObject.get());
+//		pAbstractObject = AbstractObject::createInstance("Container");
+		apScene->addElement(*it);
 	}
 	clearList();
 }
@@ -267,12 +238,8 @@ void PickAndDragHandlerShopEditor::removeSelection(ref_ptr<Scene> apScene)	{
 	}
 
 	vector<osg::ref_ptr<AbstractObject>>::iterator it = m_pvecPickedObjects.begin();
-
-	int nI;
-	ref_ptr<AbstractObject> pAbstractObject;
 	for (it; it != m_pvecPickedObjects.end(); it++)	{
-		pAbstractObject = dynamic_cast<AbstractObject *>(it->get());
-		apScene->removeElement(pAbstractObject);
+		apScene->removeElement(*it);
 	}
 	clearList();
 }

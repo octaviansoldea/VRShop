@@ -24,7 +24,8 @@ QDoubleSpinBox * a_p_DoubleSpinBox_RotationY,
 QDoubleSpinBox * a_p_DoubleSpinBox_RotationZ,
 QComboBox * a_p_ComboBox_DirectionOfTranslation,
 QComboBox * a_p_ComboBox_TranslateRelativeTo,
-PickAndDragHandlerShopEditor * a_pPickAndDragHandlerShopEditor)	{
+PickAndDragHandlerShopEditor * a_pPickAndDragHandlerShopEditor,
+ref_ptr<Scene> a_pScene)	{
 
 	mp_DoubleSpinBox_TranslationX = a_p_DoubleSpinBox_TranslationX;
 	mp_DoubleSpinBox_TranslationY = a_p_DoubleSpinBox_TranslationY;
@@ -42,6 +43,7 @@ PickAndDragHandlerShopEditor * a_pPickAndDragHandlerShopEditor)	{
 
 	mpPickAndDragHandlerShopEditor = dynamic_cast<PickAndDragHandlerShopEditor*>(a_pPickAndDragHandlerShopEditor);
 
+	mp_Scene = a_pScene;
 
 	connect(mp_DoubleSpinBox_TranslationX,SIGNAL(valueChanged(double)),
 		this,SLOT(slotSetPropertiesPosition()));

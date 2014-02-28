@@ -44,8 +44,8 @@ VR::Sphere::Sphere(SphereParams * apSphereParams) : AbstractGeomShape(apSpherePa
 
 //-----------------------------------------------------------------------
 
-void VR::Sphere::init(const AbstractGeomShapeParams & aAbstractGeomShapeParams)	{
-	const SphereParams * pSphereParams = dynamic_cast<const SphereParams*>(&aAbstractGeomShapeParams);
+void VR::Sphere::init(AbstractGeomShapeParams & aAbstractGeomShapeParams)	{
+	SphereParams * pSphereParams = dynamic_cast<SphereParams*>(&aAbstractGeomShapeParams);
 
 	setResolution(pSphereParams->m_nResPhi);
 	

@@ -42,7 +42,8 @@ namespace VR {
 			QComboBox * a_p_ComboBox_DirectionOfTranslation,
 			QComboBox * a_p_ComboBox_TranslateRelativeTo,
 
-			PickAndDragHandlerShopEditor * a_pPickAndDragHandlerShopEditor);	//End of constructor
+			PickAndDragHandlerShopEditor * a_pPickAndDragHandlerShopEditor,
+			osg::ref_ptr<Scene> a_pScene);	//End of constructor
 
 		PickAndDragController(
 			QPushButton * a_pPushButton_ModifyScene_DuplicateSelection,

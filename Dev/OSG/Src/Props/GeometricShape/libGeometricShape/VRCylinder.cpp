@@ -21,12 +21,19 @@ CylinderParams::CylinderParams() : PrismParams() {
 //-----------------------------------------------------------------------
 
 VR::Cylinder::Cylinder() : Prism(new CylinderParams())	{
+	CylinderParams * pCylinderParams = dynamic_cast<CylinderParams*>(m_pAbstractObjectParams);
+
+	m_pUntransformedPolygon3D = new UntransformedPolygon3D(*pCylinderParams);
+	addChild(m_pUntransformedPolygon3D);
 }
 
 //----------------------------------------------------------
 
 VR::Cylinder::Cylinder(CylinderParams * apCylinderParams) : Prism(apCylinderParams)	{
+	m_pUntransformedPolygon3D = new UntransformedPolygon3D();
+
 	CylinderParams * pCylinderParams = dynamic_cast<CylinderParams*>(m_pAbstractObjectParams);
+	init(*pCylinderParams);
 }
 
 //----------------------------------------------------------

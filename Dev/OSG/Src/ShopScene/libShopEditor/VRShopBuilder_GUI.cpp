@@ -81,7 +81,8 @@ ShopBuilder_GUI::ShopBuilder_GUI()	{
 		m_p_DoubleSpinBox_RotationZ,
 		m_p_ComboBox_DirectionOfTranslation,
 		m_p_ComboBox_TranslateRelativeTo,
-		pPickAndDragHandlerShopEditor);
+		pPickAndDragHandlerShopEditor,
+		pScene);
 
 
 	m_pPickAndDragController = new PickAndDragController(

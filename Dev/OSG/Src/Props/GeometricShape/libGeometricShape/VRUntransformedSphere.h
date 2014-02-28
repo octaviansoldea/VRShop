@@ -17,7 +17,7 @@ namespace VR {
 	private:
 		UntransformedSphereParams m_UntransformedSphereParams;
 
-		void init(const UntransformedSphereParams & aUntransformedSphereParams);
+		void init(UntransformedSphereParams & aUntransformedSphereParams);
 	public:
 		UntransformedSphere();
 		UntransformedSphere(const UntransformedSphereParams & aUntransformedSphereParams);

@@ -16,7 +16,6 @@
 #include "VRBoundingBox.h"
 #include "VRAbstractObject.h"
 #include "BasicDefinitions.h"
-#include "VRObjectTransformation.h"
 
 #include "VRPickAndDragHandler.h"
 
@@ -40,7 +39,6 @@ void PickAndDragHandler::getMouseSignals(MouseSignals * apMouseSignals, const GU
 
 //------------------------------------------------------------------------------
 
-// The role of this function is to read the computer interface and send it to handles
 bool PickAndDragHandler::handle( const GUIEventAdapter& ea, GUIActionAdapter& aa ) {
 	osgViewer::Viewer * pViewer = dynamic_cast<osgViewer::Viewer*>(&aa);
 	if(!pViewer)	{
@@ -170,8 +168,8 @@ bool PickAndDragHandler::handleDrag(const MouseSignals & aMouseSignals, osgViewe
 	//A mouse move 
 	float flDiffPosX =	flXNormalized - m_dbMouseLastGetXNormalized; 
 	float flDiffPosY =	flYNormalized - m_dbMouseLastGetYNormalized;
-
-	if(fabs(flDiffPosX)<0.001 && fabs(flDiffPosY)<0.001) {
+	
+	if(fabs(flDiffPosX)<EPS && fabs(flDiffPosY)<EPS) {
 		return false;
 	}
 
@@ -303,24 +301,12 @@ bool PickAndDragHandler::handleDrag(const MouseSignals & aMouseSignals, osgViewe
 			m_pPickedObject->setScaling(flLenX, flLenY, flLenZ);
 		}
 	}
-	Vec3d vec3dPos = m_pPickedObject->getPosition();
-	Vec3d vec3dRot = m_pPickedObject->getRotation();
-	Vec3d vec3dLen = m_pPickedObject->getScaling();
 
-	Matrix matrix(Matrix::identity());
+	Matrix & mtrxMatrix = m_pPickedObject->calculateMatrix();
+	m_pPickedObject->setMatrix(mtrxMatrix);
 
-	Matrix positionMatrix =
-		matrix.scale(vec3dLen)	*
-		matrix.rotate(
-			degrees2Radians(vec3dRot[0]), osg::X_AXIS,
-			degrees2Radians(vec3dRot[1]), osg::Y_AXIS,
-			degrees2Radians(vec3dRot[2]), osg::Z_AXIS)	*
-		matrix.translate(vec3dPos);
-
-	m_pPickedObject->setMatrix(positionMatrix);
-
-	ref_ptr<Group> pScene = dynamic_cast<Group*>(apViewer->getSceneData());
-	apViewer->setSceneData(pScene);
+	//ref_ptr<Group> pScene = dynamic_cast<Group*>(apViewer->getSceneData());
+	//apViewer->setSceneData(pScene);
 
 	return(true);
 }

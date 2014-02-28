@@ -24,7 +24,7 @@ namespace VR	{
 		virtual std::string getSQLCommand() const;
 
 		virtual void initFromSQLData(const std::string & astrSQLData);
-		virtual void init(const AbstractGeomShapeParams & aAbstractGeomShapeParams);
+		virtual void init(AbstractGeomShapeParams & aAbstractGeomShapeParams);
 
 		virtual void predefinedObject();
 

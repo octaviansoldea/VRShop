@@ -90,10 +90,10 @@ ref_ptr<Scene> ShopBuilder::getScene() const	{
 //----------------------------------------------------------------------
 
 void ShopBuilder::addNewItem(const string & astrObjectName)	{
-	ref_ptr < AbstractObject > pAbstractObject = static_cast<AbstractObject*>(AbstractObject::createInstance(astrObjectName).get());
+	ref_ptr < AbstractObject > pAbstractObject = dynamic_cast<AbstractObject*>(AbstractObject::createInstance(astrObjectName).get());
 	pAbstractObject->predefinedObject();
 
-	m_pScene->addElement(pAbstractObject);
+	m_pScene->addElement(pAbstractObject.get());
 }
 
 //----------------------------------------------------------------------

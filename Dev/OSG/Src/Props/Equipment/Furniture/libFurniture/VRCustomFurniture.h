@@ -12,7 +12,7 @@ namespace VR	{
 		CustomFurniture();
 		CustomFurniture(CustomFurnitureParams * apCustomFurnitureParams);
 
-		virtual void init(FurnitureParams & aFurnitureParams);
+		virtual void init(FurnitureParams * apFurnitureParams);
 
 		virtual std::string getSQLCommand() const;
 

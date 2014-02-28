@@ -36,13 +36,15 @@ namespace VR	{
 		virtual void initFromSQLData(const std::string & astrSQLData) = 0;
 		virtual void predefinedObject() = 0;
 
-		virtual void setRotation(float & aflAngleX, float & aflAngleY, float & aflAngleZ);
-		virtual void setPosition(float & aflPosX, float & aflPosY, float & aflPosZ);
-		virtual void setScaling(float & aflLenX, float & aflLenY, float & aflLenZ);
+		virtual void setRotation(float aflAngleX, float aflAngleY, float aflAngleZ);
+		virtual void setPosition(float aflPosX, float aflPosY, float aflPosZ);
+		virtual void setScaling(float aflLenX, float aflLenY, float aflLenZ);
 
 		osg::Vec3d getRotation() const;
 		osg::Vec3d getPosition() const;
 		osg::Vec3d getScaling() const;
+
+		osg::Matrix calculateMatrix() const;
 
 		virtual void setIsTargetPick(bool abIsTargetPick);
 		virtual bool getIsTargetPick() const;

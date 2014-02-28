@@ -12,7 +12,7 @@ using namespace std;
 using namespace osg;
 using namespace VR;
 
-CupboardParams::CupboardParams()	{
+CupboardParams::CupboardParams() : FurnitureParams()	{
 }
 
 //=======================================================================
@@ -24,36 +24,21 @@ Cupboard::Cupboard() : Furniture(new CupboardParams())	{
 
 Cupboard::Cupboard(CupboardParams * apCupboardParams) : Furniture(apCupboardParams)	{
 	CupboardParams * pCupboardParams = dynamic_cast<CupboardParams*>(m_pAbstractObjectParams);
-	init(*pCupboardParams);
+	init(pCupboardParams);
 }
 
 //-----------------------------------------------------------------------
 
-void Cupboard::init(FurnitureParams & aFurnitureParams)	{
-	CupboardParams & cupboardParams = static_cast<CupboardParams&>(aFurnitureParams);
+void Cupboard::init(FurnitureParams * apFurnitureParams)	{
+	apFurnitureParams = dynamic_cast<FurnitureParams*>(m_pAbstractObjectParams);
 
-	setScaling(cupboardParams.m_flLenX, cupboardParams.m_flLenY, cupboardParams.m_flLenZ);
-	setRotation(cupboardParams.m_flAngleYZ, cupboardParams.m_flAngleXZ, cupboardParams.m_flAngleXY);
-	setPosition(cupboardParams.m_flPosX, cupboardParams.m_flPosY, cupboardParams.m_flPosZ);
+	setScaling(apFurnitureParams->m_flLenX, apFurnitureParams->m_flLenY, apFurnitureParams->m_flLenZ);
+	setRotation(apFurnitureParams->m_flAngleYZ, apFurnitureParams->m_flAngleXZ, apFurnitureParams->m_flAngleXY);
+	setPosition(apFurnitureParams->m_flPosX, apFurnitureParams->m_flPosY, apFurnitureParams->m_flPosZ);
 
-	Matrix matrix;
-	matrix.set(1, 0, 0, 0,
-			   0, 1, 0, 0,
-			   0, 0, 1, 0,
-			   0, 0, 0,	1);
-
-	osg::Matrix cupboardMatrix =
-		matrix.scale(cupboardParams.m_flLenX, cupboardParams.m_flLenY, cupboardParams.m_flLenZ)
-		*
-		matrix.rotate(
-			cupboardParams.m_flAngleYZ, osg::X_AXIS,
-			cupboardParams.m_flAngleXZ, osg::Y_AXIS,
-			cupboardParams.m_flAngleXY, osg::Z_AXIS)
-		*
-		matrix.translate(cupboardParams.m_flPosX, cupboardParams.m_flPosY, cupboardParams.m_flPosZ)
-	;
-	
+	Matrix & cupboardMatrix = calculateMatrix();
 	setMatrix(cupboardMatrix);
+
 	setName(Furniture::getName() + ":Cupboard");
 }
 
@@ -128,7 +113,7 @@ void Cupboard::initFromSQLData(const string & astrSQLData)	{
 		pAbstractGeomShape->initFromSQLData(*it);
 		addChild(pAbstractGeomShape);
 	}
-	init(*pCupboardParams);
+	init(pCupboardParams);
 }
 
 //-----------------------------------------------------------------------
@@ -228,6 +213,6 @@ void Cupboard::predefinedObject()	{
 	pPlate3D->init(aPlate3DParams);
 	addPart(pPlate3D);
 
-	init(*pCupboardParams);
+	init(pCupboardParams);
 	setIsTargetPick(true);
 }

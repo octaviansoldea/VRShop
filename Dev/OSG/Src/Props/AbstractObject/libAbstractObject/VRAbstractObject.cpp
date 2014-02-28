@@ -72,7 +72,7 @@ string AbstractObject::getSQLFormat() const {
 
 //--------------------------------------------------------------
 
-void AbstractObject::setRotation(float & aflAngleX, float & aflAngleY, float & aflAngleZ)	{
+void AbstractObject::setRotation(float aflAngleX, float aflAngleY, float aflAngleZ)	{
 	//Rotation goes counter-clockwise
 
 	m_pAbstractObjectParams->m_flAngleYZ = degrees2Radians(aflAngleX);
@@ -82,7 +82,7 @@ void AbstractObject::setRotation(float & aflAngleX, float & aflAngleY, float & a
 
 //--------------------------------------------------------------
 
-void AbstractObject::setPosition(float & aflPosX, float & aflPosY, float & aflPosZ)	{
+void AbstractObject::setPosition(float aflPosX, float aflPosY, float aflPosZ)	{
 	m_pAbstractObjectParams->m_flPosX = aflPosX;
 	m_pAbstractObjectParams->m_flPosY = aflPosY;
 	m_pAbstractObjectParams->m_flPosZ = aflPosZ;
@@ -90,7 +90,7 @@ void AbstractObject::setPosition(float & aflPosX, float & aflPosY, float & aflPo
 
 //--------------------------------------------------------------
 
-void AbstractObject::setScaling(float & aflLenX, float & aflLenY, float & aflLenZ)	{
+void AbstractObject::setScaling(float aflLenX, float aflLenY, float aflLenZ)	{
 	m_pAbstractObjectParams->m_flLenX = aflLenX;
 	m_pAbstractObjectParams->m_flLenY = aflLenY;
 	m_pAbstractObjectParams->m_flLenZ = aflLenZ;
@@ -124,6 +124,26 @@ Vec3d AbstractObject::getRotation() const	{
 	Vec3d rotation(flAngleX, flAngleY, flAngleZ);
 
 	return rotation;
+}
+
+//--------------------------------------------------------------------------
+
+Matrix AbstractObject::calculateMatrix() const	{
+	Vec3d vec3dPos = this->getPosition();
+	Vec3d vec3dRot = this->getRotation();
+	Vec3d vec3dLen = this->getScaling();
+
+	Matrix matrix(Matrix::identity());
+
+	Matrix mtrxMatrix =
+		matrix.scale(vec3dLen)	*
+		matrix.rotate(
+			degrees2Radians(vec3dRot[0]), osg::X_AXIS,
+			degrees2Radians(vec3dRot[1]), osg::Y_AXIS,
+			degrees2Radians(vec3dRot[2]), osg::Z_AXIS)	*
+		matrix.translate(vec3dPos);
+
+	return mtrxMatrix;
 }
 
 //--------------------------------------------------------------------------

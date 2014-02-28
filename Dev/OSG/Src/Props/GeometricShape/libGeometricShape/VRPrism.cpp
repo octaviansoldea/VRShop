@@ -50,8 +50,8 @@ void Prism::setResolution(int anRes) {
 
 //----------------------------------------------------------
 
-void Prism::init(const AbstractGeomShapeParams & aAbstractGeomShapeParams) {
-	const PrismParams & pP = dynamic_cast<const PrismParams&>(aAbstractGeomShapeParams);
+void Prism::init(AbstractGeomShapeParams & aAbstractGeomShapeParams) {
+	PrismParams & pP = dynamic_cast<PrismParams&>(aAbstractGeomShapeParams);
 
 	m_pUntransformedPolygon3D->init(pP);
 

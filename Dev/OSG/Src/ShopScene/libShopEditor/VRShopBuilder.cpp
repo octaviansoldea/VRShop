@@ -10,13 +10,6 @@
 #include "VRGrid.h"
 #include "VRScene.h"
 
-
-#include "BasicStringDefinitions.h"
-#include "VRDatabaseMgr.h"
-#include "VRFurniture.h"
-#include "VRPlate3D.h"
-#include "VRCylinder.h"
-#include "VRSphere.h"
 #include "VRPickAndDragHandlerShopEditor.h"
 #include "VRKeyboardMouseManipulatorShopEditor.h"
 #include "VRSceneStructureModel.h"
@@ -25,6 +18,7 @@
 using namespace osg;
 using namespace VR;
 using namespace std;
+
 
 //----------------------------------------------------------------------
 
@@ -102,3 +96,4 @@ void ShopBuilder::updateQTreeView()	{
 }
 
 //==========================================================================
+

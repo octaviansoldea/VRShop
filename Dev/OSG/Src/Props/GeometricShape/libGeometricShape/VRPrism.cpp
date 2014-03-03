@@ -3,6 +3,7 @@
 #include "VRPrism.h"
 
 #include <string>
+#include <fstream>
 
 using namespace std;
 using namespace osg;
@@ -29,6 +30,8 @@ Prism::Prism() : AbstractGeomShape(new PrismParams())	{
 
 	m_pUntransformedPolygon3D = new UntransformedPolygon3D(*pPrismParams);
 	addChild(m_pUntransformedPolygon3D);
+
+	setName("Prism");
 }
 
 //----------------------------------------------------------
@@ -39,6 +42,12 @@ Prism::Prism(PrismParams * apPrismParams) : AbstractGeomShape(apPrismParams)	{
 	PrismParams * pPrismParams = dynamic_cast<PrismParams*>(m_pAbstractObjectParams);
 	init(*pPrismParams);
 //	addChild(m_pUntransformedPolygon3D);
+}
+
+//----------------------------------------------------------
+
+const char* Prism::className() const	{
+	return "Prism";
 }
 
 //----------------------------------------------------------
@@ -77,6 +86,8 @@ void Prism::init(AbstractGeomShapeParams & aAbstractGeomShapeParams) {
 	setColor(pP.m_arrflRGBA);
 	if ((pP.m_strFileNameTexture != " ") && (pP.m_strFileNameTexture != ""))
 		setTexture(pP.m_strFileNameTexture);
+
+	setName("Prism");
 }
 
 //----------------------------------------------------------------------
@@ -180,4 +191,9 @@ void Prism::predefinedObject()	{
 	PrismParams * pPrismParams = dynamic_cast<PrismParams*>(m_pAbstractObjectParams);
 	init(*pPrismParams);
 	setIsTargetPick(true);
+}
+
+//------------------------------------------------------------------------------------------
+
+void Prism::print(std::ostream & os) const	{
 }

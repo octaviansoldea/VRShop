@@ -19,7 +19,6 @@ namespace VR	{
 		
 		~ShopBuilder();
 
-
 		void gridOnOff(bool abIndicator);
 
 		void newDB(const std::string & astrDBFileName);
@@ -33,6 +32,8 @@ namespace VR	{
 		osgGA::GUIEventHandler * m_pEvent;
 
 	private:
+
+
 		OSGQT_Widget * m_pOSGQTWidget;
 		osg::ref_ptr<Scene> m_pScene;
 

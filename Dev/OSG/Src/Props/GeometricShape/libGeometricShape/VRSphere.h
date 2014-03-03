@@ -4,6 +4,8 @@
 #include "VRAbstractGeomShape.h"
 #include "VRUntransformedSphere.h"
 
+class ostream;
+
 namespace VR	{
 	struct SphereParams : public AbstractGeomShapeParams, public UntransformedSphereParams	{
 		SphereParams();
@@ -19,6 +21,7 @@ namespace VR	{
 	public:
 		Sphere();
 		Sphere(SphereParams * apSphereParams);
+		virtual const char* className() const;
 
 		virtual std::string getSQLFormat() const;
 		virtual std::string getSQLCommand() const;
@@ -31,6 +34,8 @@ namespace VR	{
 		virtual void setColor(const std::vector < float > & aarrflColor);
 		virtual void setTexture(const std::string & astrFileName);
 		void setResolution(int anRes);
+
+		virtual void print(std::ostream & os) const;
 	};
 }
 #endif //VR_SPHERE_H

@@ -1,3 +1,5 @@
+#include <fstream>
+
 #include "VRCylinder.h"
 
 using namespace VR;
@@ -25,6 +27,8 @@ VR::Cylinder::Cylinder() : Prism(new CylinderParams())	{
 
 	m_pUntransformedPolygon3D = new UntransformedPolygon3D(*pCylinderParams);
 	addChild(m_pUntransformedPolygon3D);
+
+	setName("Cylinder");
 }
 
 //----------------------------------------------------------
@@ -34,6 +38,14 @@ VR::Cylinder::Cylinder(CylinderParams * apCylinderParams) : Prism(apCylinderPara
 
 	CylinderParams * pCylinderParams = dynamic_cast<CylinderParams*>(m_pAbstractObjectParams);
 	init(*pCylinderParams);
+	setName("Cylinder");
+
+}
+
+//----------------------------------------------------------
+
+const char* VR::Cylinder::className() const	{
+	return "Cylinder";
 }
 
 //----------------------------------------------------------
@@ -85,4 +97,9 @@ void VR::Cylinder::predefinedObject()	{
 	CylinderParams * pCylinderParams = dynamic_cast<CylinderParams*>(m_pAbstractObjectParams);
 	init(*pCylinderParams);
 	setIsTargetPick(true);
+}
+
+//------------------------------------------------------------------------------------------
+
+void VR::Cylinder::print(std::ostream & os) const	{
 }

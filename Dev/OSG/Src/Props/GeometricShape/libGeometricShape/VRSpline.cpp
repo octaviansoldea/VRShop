@@ -1,3 +1,5 @@
+#include <fstream>
+
 #include "VRSpline.h"
 
 using namespace VR;
@@ -17,3 +19,12 @@ Spline::Spline(const SplineParams & aSplineParams)	{
 }
 
 //----------------------------------------------------------
+
+const char* Spline::className() const	{
+	return "Spline";
+}
+
+//----------------------------------------------------------
+
+void Spline::print(std::ostream & os) const	{
+}

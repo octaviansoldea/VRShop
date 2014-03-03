@@ -4,6 +4,7 @@
 #include "BasicStringDefinitions.h"
 
 #include <string>
+#include <fstream>
 #include <iostream>
 
 using namespace std;
@@ -29,6 +30,8 @@ Plate3DParams::Plate3DParams() : AbstractGeomShapeParams()	{
 Plate3D::Plate3D() : AbstractGeomShape(new Plate3DParams())	{
 	m_pUntransformedPlate3D = new UntransformedPlate3D();
 	addChild(m_pUntransformedPlate3D);
+
+	setName("Plate3D");
 }
 
 //-----------------------------------------------------------------------
@@ -43,30 +46,29 @@ Plate3D::Plate3D(Plate3DParams * apPlate3DParams) : AbstractGeomShape(apPlate3DP
 
 //-----------------------------------------------------------------------
 
-void Plate3D::init(AbstractGeomShapeParams & aAbstractGeomShapeParams)	{
-	Plate3DParams & aGSP = dynamic_cast<Plate3DParams&>(aAbstractGeomShapeParams);
-	Matrix matrix;
-	matrix.set(1,	0,	0,	0,
-			   0,	1,	0,	0,
-			   0,	0,	1,	0,
-			   0,	0,	0,	1);
+const char* Plate3D::className() const	{
+	return "Plate3D";
+}
 
-	Matrix PlateMatrix =
-		matrix.scale(aGSP.m_flLenX, aGSP.m_flLenY, aGSP.m_flLenZ)
-		*
-		matrix.rotate(
-			aGSP.m_flAngleYZ, osg::X_AXIS,
-			aGSP.m_flAngleXZ, osg::Y_AXIS,
-			aGSP.m_flAngleXY, osg::Z_AXIS)
-		*
-		matrix.translate(aGSP.m_flPosX, aGSP.m_flPosY, aGSP.m_flPosZ)
-	;
+//-----------------------------------------------------------------------
+
+void Plate3D::init(AbstractGeomShapeParams & aAbstractGeomShapeParams)	{
+	*((Plate3DParams *)m_pAbstractObjectParams) = *((Plate3DParams*)&aAbstractGeomShapeParams);
+
+	Plate3DParams & aGSP = dynamic_cast<Plate3DParams&>(aAbstractGeomShapeParams);
+
+	setScaling(aGSP.m_flLenX, aGSP.m_flLenY, aGSP.m_flLenZ);
+	setRotation(aGSP.m_flAngleYZ, aGSP.m_flAngleXZ, aGSP.m_flAngleXY);
+	setPosition(aGSP.m_flPosX, aGSP.m_flPosY, aGSP.m_flPosZ);
 	
-	setMatrix(PlateMatrix);
+	Matrix & plate3DMatrix = calculateMatrix();
+	setMatrix(plate3DMatrix);
 
 	setColor(aGSP.m_arrflRGBA);
 	if ((aGSP.m_strFileNameTexture != " ") && (aGSP.m_strFileNameTexture != ""))
 		setTexture(aGSP.m_strFileNameTexture);
+
+	setName("Plate3D");
 }
 
 //----------------------------------------------------------------------
@@ -175,4 +177,31 @@ void Plate3D::predefinedObject()	{
 	Plate3DParams * pPlate3DParams = dynamic_cast<Plate3DParams*>(m_pAbstractObjectParams);
 	init(*pPlate3DParams);
 	setIsTargetPick(true);
+}
+
+//------------------------------------------------------------------------------------------
+
+void Plate3D::print(std::ostream & os) const	{
+	os << "Object name: " << getName() << endl;
+	int nI, nJ;
+	os << "GetMatrix()" << endl;
+	for (nI=0;nI<4;nI++)	{
+		for (nJ=0;nJ<4;nJ++)	{
+			os << getMatrix()(nI,nJ) << " ";
+		}
+		os << endl;
+	}
+	os << endl;
+	os << "calculateMatrix()" << endl;
+	for (nI=0;nI<4;nI++)	{
+		for (nJ=0;nJ<4;nJ++)	{
+			os << calculateMatrix()(nI,nJ) << " ";
+		}
+		os << endl;
+	}
+	os << endl;
+
+	os << "Child index: " << getChildIndex(this) << endl;
+
+	os << "========================================" << endl;
 }

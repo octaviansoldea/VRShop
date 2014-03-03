@@ -5,6 +5,8 @@
 
 #include "VRUntransformedPolygon3D.h"
 
+class ostream;
+
 namespace VR {
 	struct PrismParams : public AbstractGeomShapeParams, public UntransformedPolygon3DParams {
 		PrismParams();
@@ -14,6 +16,7 @@ namespace VR {
 	public:
 		Prism();
 		Prism(PrismParams * apPrismParams);
+		virtual const char* className() const;
 
 		virtual void init(AbstractGeomShapeParams & aAbstractGeomShapeParams);
 		virtual void predefinedObject();
@@ -28,6 +31,8 @@ namespace VR {
 		virtual void initFromSQLData(const std::string & astrSQLData);
 
 		osg::ref_ptr <UntransformedPolygon3D> m_pUntransformedPolygon3D;
+
+		virtual void print(std::ostream & os) const;
 
 	private:
 		static std::string m_strSQLFormat;

@@ -3,8 +3,6 @@
 
 #include <QDialog>
 
-#include <osg/Node>
-
 #include "ui_VRRemoveSelection_GUI.h"
 
 namespace VR	{
@@ -12,9 +10,6 @@ namespace VR	{
 		Q_OBJECT
 	public:
 		RemoveSelection_GUI();
-
-	public slots:
-		void slotRemoveSelection();
 	};
 }
 #endif //VR_REMOVE_SELECTION_GUI_H

@@ -4,6 +4,8 @@
 #include "VRAbstractGeomShape.h"
 #include "VRUntransformedPlate3D.h"
 
+class ostream;
+
 namespace VR	{
 	struct Plate3DParams : public AbstractGeomShapeParams	{
 		Plate3DParams();
@@ -19,6 +21,7 @@ namespace VR	{
 	public:
 		Plate3D();
 		Plate3D(Plate3DParams * apPlate3DParams);
+		virtual const char* className() const;
 
 		virtual std::string getSQLFormat() const;
 		virtual std::string getSQLCommand() const;
@@ -30,6 +33,8 @@ namespace VR	{
 
 		virtual void setColor(const std::vector < float > & aarrflColor);
 		virtual void setTexture(const std::string & astrFileName);
+
+		virtual void print(std::ostream & os) const;
 	};
 }
 #endif //VR_PLATE_3D_H

@@ -3,6 +3,10 @@
 
 #include <QMainWindow>
 
+#include <fstream>
+#include <ostream>
+
+
 #include "ui_VRShopBuilder_GUI.h"
 
 class ShopBuilder;

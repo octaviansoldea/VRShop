@@ -3,8 +3,6 @@
 
 #include <QDialog>
 
-#include <osg/Node>
-
 #include "ui_VRDuplicateItem_GUI.h"
 
 namespace VR	{
@@ -12,9 +10,6 @@ namespace VR	{
 		Q_OBJECT
 	public:
 		DuplicateItem_GUI();
-
-	public slots:
-		void slotDuplicateItem();
 	};
 }
 #endif //VR_DUPLICATE_ITEM_GUI_H

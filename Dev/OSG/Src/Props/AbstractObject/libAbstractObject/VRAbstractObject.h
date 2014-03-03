@@ -4,6 +4,8 @@
 #include <string>
 #include <osg/MatrixTransform>
 
+class ostream;
+
 namespace VR	{
 	struct AbstractObjectParams	{
 		float m_flPosX;
@@ -28,6 +30,8 @@ namespace VR	{
 
 		virtual ~AbstractObject() = 0;
 
+        virtual const char* className() const;
+
 		static osg::ref_ptr<AbstractObject> createInstance(const std::string & astrClassName);
 
 		virtual std::string getSQLFormat() const;
@@ -48,6 +52,8 @@ namespace VR	{
 
 		virtual void setIsTargetPick(bool abIsTargetPick);
 		virtual bool getIsTargetPick() const;
+
+		virtual void print(std::ostream & os) const = 0;
 
 	private:
 		bool m_bIsTargetPick;

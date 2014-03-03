@@ -206,28 +206,17 @@ border-radius: 3px;</string>
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="m_pLabelRemoveItems">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
+       <widget class="QListView" name="m_pListView">
         <property name="styleSheet">
          <string notr="true">background-color: rgb(191,193,194);
-border-radius: 3px;</string>
+border-radius: 3px;
+</string>
         </property>
-        <property name="text">
-         <string/>
+        <property name="selectionMode">
+         <enum>QAbstractItemView::NoSelection</enum>
         </property>
-        <property name="margin">
-         <number>5</number>
-        </property>
-        <property name="indent">
-         <number>50</number>
-        </property>
-        <property name="textInteractionFlags">
-         <set>Qt::NoTextInteraction</set>
+        <property name="spacing">
+         <number>2</number>
         </property>
        </widget>
       </item>

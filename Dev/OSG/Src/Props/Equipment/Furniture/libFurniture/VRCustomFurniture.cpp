@@ -1,3 +1,5 @@
+#include <fstream>
+
 #include "BasicStringDefinitions.h"
 
 #include "VRCustomFurniture.h"
@@ -7,6 +9,7 @@ using namespace osg;
 using namespace VR;
 
 CustomFurniture::CustomFurniture() : Furniture(new CustomFurnitureParams())	{
+	setName("CustomFurniture");
 }
 
 //-----------------------------------------------------------------------
@@ -14,6 +17,12 @@ CustomFurniture::CustomFurniture() : Furniture(new CustomFurnitureParams())	{
 CustomFurniture::CustomFurniture(CustomFurnitureParams * apCustomFurnitureParams) : Furniture(apCustomFurnitureParams)	{
 	CustomFurnitureParams * pCustomFurnitureParams = dynamic_cast<CustomFurnitureParams*>(m_pAbstractObjectParams);
 	init(pCustomFurnitureParams);
+}
+
+//-----------------------------------------------------------------------
+
+const char* CustomFurniture::className() const	{
+	return "CustomFurniture";
 }
 
 //-----------------------------------------------------------------------
@@ -28,7 +37,7 @@ void CustomFurniture::init(FurnitureParams * apFurnitureParams)	{
 	Matrix & customFurnitureMatrix = calculateMatrix();
 	setMatrix(customFurnitureMatrix);
 
-	setName(Furniture::getName() + ":CustomFurniture");
+	setName("CustomFurniture");
 }
 
 //-----------------------------------------------------------------------
@@ -46,4 +55,31 @@ void CustomFurniture::initFromSQLData(const string & astrSQLData)	{
 //-----------------------------------------------------------------------
 
 void CustomFurniture::predefinedObject()	{
+}
+
+//------------------------------------------------------------------------------------------
+
+void CustomFurniture::print(std::ostream & os) const	{
+	os << "Object name: " << getName() << endl;
+	int nI, nJ;
+	os << "GetMatrix()" << endl;
+	for (nI=0;nI<4;nI++)	{
+		for (nJ=0;nJ<4;nJ++)	{
+			os << getMatrix()(nI,nJ) << " ";
+		}
+		os << endl;
+	}
+	os << endl;
+	os << "calculateMatrix()" << endl;
+	for (nI=0;nI<4;nI++)	{
+		for (nJ=0;nJ<4;nJ++)	{
+			os << calculateMatrix()(nI,nJ) << " ";
+		}
+		os << endl;
+	}
+	os << endl;
+
+	os << "Child index: " << getChildIndex(this) << endl;
+
+	os << "========================================" << endl;
 }

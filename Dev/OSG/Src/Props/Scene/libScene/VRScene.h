@@ -12,6 +12,9 @@ namespace VR	{
 		void addElement(osg::ref_ptr<osg::Node> apElement);
 		void removeElement(osg::ref_ptr<osg::Node> apElement);
 		void clearScene();
+
+		void print();
+		static int m_nIteration;
 	};
 }
 #endif //VR_SCENE_H

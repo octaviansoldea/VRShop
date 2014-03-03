@@ -35,6 +35,12 @@ Furniture::~Furniture()	{
 
 //-----------------------------------------------------------------------
 
+const char* Furniture::className() const	{
+	return "Furniture";
+}
+
+//-----------------------------------------------------------------------
+
 void Furniture::addPart(ref_ptr < AbstractObject > apAbstractObject) {
 	addChild(apAbstractObject);
 

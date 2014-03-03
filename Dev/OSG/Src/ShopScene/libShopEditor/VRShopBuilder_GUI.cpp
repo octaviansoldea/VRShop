@@ -1,5 +1,8 @@
 #include "BasicStringDefinitions.h"
 
+#include <fstream>
+#include <ostream>
+
 #include <osgDB/ReadFile>
 #include <osgGA/GUIEventHandler>
 
@@ -8,12 +11,10 @@
 
 #include "VRProductSettings_GUI.h"
 #include "VRRemoveProduct_GUI.h"
-#include "VRRemoveSelection_GUI.h"
 
 #include "VRNewProject_GUI.h"
 #include "VRInsertNewItem_GUI.h"
-#include "VRDuplicateItem_GUI.h"
-#include "VRSaveAs_GUI.h"
+//#include "VRSaveAs_GUI.h"
 
 #include "VRShopBuilder.h"
 #include "VRScene.h"
@@ -126,8 +127,6 @@ void ShopBuilder_GUI::buildConnections() {
 
 	connect(m_p_PushButton_ModifyScene_AddNewItem,SIGNAL(clicked()),this,SLOT(slotModifySceneActions()));
 	connect(m_p_PushButton_ModifyScene_EditItem,SIGNAL(clicked()),this,SLOT(slotModifySceneActions()));
-//	connect(m_p_PushButton_ModifyScene_DuplicateSelection,SIGNAL(clicked()),this,SLOT(slotModifySceneActions()));
-//	connect(m_p_PushButton_ModifyScene_DeleteSelection,SIGNAL(clicked()),this,SLOT(slotModifySceneActions()));	
 
 	connect(m_p_PushButton_ProductSettings_AddNewProduct,SIGNAL(clicked()),this,SLOT(slotModifyProductSettings()));
 	connect(m_p_PushButton_ProductSettings_RemoveProduct,SIGNAL(clicked()),this,SLOT(slotModifyProductSettings()));
@@ -210,12 +209,12 @@ void ShopBuilder_GUI::slotSaveDB() {
 //---------------------------------------------------------------------------------------
 
 void ShopBuilder_GUI::slotSaveAsDB()	{
-	SaveAs_GUI saveAsGUI;
+	//SaveAs_GUI saveAsGUI;
 
-	//To get a widget without a "TitleBar"
-	saveAsGUI.setWindowFlags(Qt::FramelessWindowHint);
-	saveAsGUI.exec();
-	return;
+	////To get a widget without a "TitleBar"
+	//saveAsGUI.setWindowFlags(Qt::FramelessWindowHint);
+	//saveAsGUI.exec();
+	//return;
 }
 
 //---------------------------------------------------------------------------------------
@@ -297,26 +296,6 @@ void ShopBuilder_GUI::slotModifySceneActions()	{
 	if	(pPushButton == m_p_PushButton_ModifyScene_EditItem)	{
 		std::cout << "Edit item" << std::endl;
 		// void editItemWidget();
-		return;
-	}
-	if	(pPushButton == m_p_PushButton_ModifyScene_DuplicateSelection)	{
-		DuplicateItem_GUI * pDuplicateItem_GUI = new DuplicateItem_GUI;
-
-		//To get a widget without a "TitleBar"
-		pDuplicateItem_GUI->setWindowFlags(Qt::FramelessWindowHint);
-		pDuplicateItem_GUI->exec();
-
-		delete pDuplicateItem_GUI;
-		return;
-	}
-	if	(pPushButton == m_p_PushButton_ModifyScene_DeleteSelection)	{
-		RemoveSelection_GUI * pRemoveSelection_GUI = new RemoveSelection_GUI;
-
-		//To get a widget without a "TitleBar"
-		pRemoveSelection_GUI->setWindowFlags(Qt::FramelessWindowHint);
-		pRemoveSelection_GUI->exec();
-
-		delete pRemoveSelection_GUI;
 		return;
 	}
 	else	{

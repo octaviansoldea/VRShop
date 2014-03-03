@@ -1,3 +1,5 @@
+#include <fstream>
+
 #include "VRPlate3D.h"
 
 #include "BasicStringDefinitions.h"
@@ -31,6 +33,12 @@ Container::Container(ContainerParams * apContainerParams) : Furniture(apContaine
 
 //-----------------------------------------------------------------------
 
+const char* Container::className() const	{
+	return "Container";
+}
+
+//-----------------------------------------------------------------------
+
 void Container::init(FurnitureParams * apFurnitureParams)	{
 	apFurnitureParams = dynamic_cast<FurnitureParams*>(m_pAbstractObjectParams);
 
@@ -41,7 +49,7 @@ void Container::init(FurnitureParams * apFurnitureParams)	{
 	Matrix & containerMatrix = calculateMatrix();
 	setMatrix(containerMatrix);
 
-	setName(Furniture::getName() + ":Container");
+	setName("Container");
 }
 
 //-----------------------------------------------------------------------
@@ -136,7 +144,7 @@ void Container::predefinedObject()	{
 
 	//Left plate
 	pPlate3D = new Plate3D;
-	
+
 	aPlate3DParams.m_flLenX = pContainerParams->m_flThickness;
 	aPlate3DParams.m_flLenY = pContainerParams->m_flDepth;
 	aPlate3DParams.m_flLenZ = pContainerParams->m_flHeight;
@@ -189,4 +197,31 @@ void Container::predefinedObject()	{
 
 	init(pContainerParams);
 	setIsTargetPick(true);
+}
+
+//------------------------------------------------------------------------------------------
+
+void Container::print(std::ostream & os) const	{
+	os << "Object name: " << getName() << endl;
+	int nI, nJ;
+	os << "GetMatrix()" << endl;
+	for (nI=0;nI<4;nI++)	{
+		for (nJ=0;nJ<4;nJ++)	{
+			os << getMatrix()(nI,nJ) << " ";
+		}
+		os << endl;
+	}
+	os << endl;
+	os << "calculateMatrix()" << endl;
+	for (nI=0;nI<4;nI++)	{
+		for (nJ=0;nJ<4;nJ++)	{
+			os << calculateMatrix()(nI,nJ) << " ";
+		}
+		os << endl;
+	}
+	os << endl;
+
+	os << "Child index: " << getChildIndex(this) << endl;
+
+	os << "========================================" << endl;
 }

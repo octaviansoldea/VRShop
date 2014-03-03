@@ -5,6 +5,7 @@
 
 #include <string>
 #include <iostream>
+#include <fstream>
 
 using namespace std;
 using namespace osg;
@@ -31,6 +32,8 @@ VR::Sphere::Sphere() : AbstractGeomShape(new SphereParams())	{
 	SphereParams * pSphereParams = dynamic_cast<SphereParams*>(m_pAbstractObjectParams);
 	m_pUntransformedSphere = new UntransformedSphere(*pSphereParams);
 	addChild(m_pUntransformedSphere);
+
+	setName("Sphere");
 }
 
 //----------------------------------------------------------
@@ -40,6 +43,12 @@ VR::Sphere::Sphere(SphereParams * apSphereParams) : AbstractGeomShape(apSpherePa
 	m_pUntransformedSphere = new UntransformedSphere();
 	init(*pSphereParams);
 	addChild(m_pUntransformedSphere);
+}
+
+//-----------------------------------------------------------------------
+
+const char* VR::Sphere::className() const	{
+	return "Sphere";
 }
 
 //-----------------------------------------------------------------------
@@ -71,6 +80,8 @@ void VR::Sphere::init(AbstractGeomShapeParams & aAbstractGeomShapeParams)	{
 	setColor(pSphereParams->m_arrflRGBA);
 	if ((pSphereParams->m_strFileNameTexture != " ") && (pSphereParams->m_strFileNameTexture != ""))
 		setTexture(pSphereParams->m_strFileNameTexture);
+
+	setName("Sphere");
 }
 
 //----------------------------------------------------------------------
@@ -181,4 +192,9 @@ void VR::Sphere::predefinedObject()	{
 	SphereParams * pSphereParams = dynamic_cast<SphereParams*>(m_pAbstractObjectParams);
 	init(*pSphereParams);
 	setIsTargetPick(true);
+}
+
+//------------------------------------------------------------------------------------------
+
+void VR::Sphere::print(std::ostream & os) const	{
 }

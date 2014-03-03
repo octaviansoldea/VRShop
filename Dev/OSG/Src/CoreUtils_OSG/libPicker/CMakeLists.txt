@@ -29,9 +29,17 @@ ENDIF(Qt5_FOUND)
 
 #MOC according to the Qt version
 IF(Qt5_FOUND)
-  QT5_WRAP_CPP(MOC_SRCS VRPickAndDragHandlerShopEditor.h)
+  QT5_WRAP_UI(UI_SRCS
+  )
+  QT5_WRAP_CPP(MOC_SRCS 
+	VRPickAndDragHandlerShopEditor.h
+  )
 ELSE()
-  QT4_WRAP_CPP(MOC_SRCS VRPickAndDragHandlerShopEditor.h)
+  QT4_WRAP_UI(UI_SRCS
+  )
+  QT4_WRAP_CPP(MOC_SRCS
+	VRPickAndDragHandlerShopEditor.h
+)
 ENDIF()
 
 
@@ -42,6 +50,8 @@ INCLUDE_DIRECTORIES(
 	${CMAKE_SOURCE_DIR}/Props/Scene/libScene
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_OSG
     ${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
+	${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs
+	${CMAKE_BINARY_DIR}/ShopScene/libShopEditor
 )
 
 #Define sources to be later added into the library

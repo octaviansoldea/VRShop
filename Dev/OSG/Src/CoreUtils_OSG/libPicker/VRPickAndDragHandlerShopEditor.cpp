@@ -14,6 +14,7 @@
 /* Modified by Matej Steinbacher and Octavian Soldea */
 
 #include <iostream>
+#include <fstream>
 
 #include <osgGA/GUIEventAdapter>
 #include <osgGA/GUIActionAdapter>
@@ -23,6 +24,12 @@
 #include "VRBoundingBox.h"
 
 #include "BasicDefinitions.h"
+
+#include <QStringListModel>
+
+#include "VRDuplicateItem_GUI.h"
+#include "VRRemoveSelection_GUI.h"
+
 
 #include "VRPickAndDragHandlerShopEditor.h"
 
@@ -49,7 +56,11 @@ bool PickAndDragHandlerShopEditor::handle(const GUIEventAdapter& ea, GUIActionAd
 	}
 
 	int nEventType = ea.getEventType();
-	if ((nEventType == GUIEventAdapter::DRAG) || (nEventType == GUIEventAdapter::LEFT_MOUSE_BUTTON)) {
+	if ((nEventType == GUIEventAdapter::DRAG)) {
+		
+		emit signalPropertiesSettingsChanged();
+	}
+	if ((nEventType == GUIEventAdapter::LEFT_MOUSE_BUTTON)) {
 		
 		emit signalPropertiesSettingsChanged();
 	}
@@ -62,6 +73,7 @@ bool PickAndDragHandlerShopEditor::handle(const GUIEventAdapter& ea, GUIActionAd
 			removePart(pPickedObject);
 		}
 	}
+
 	return(bRes);
 }
 
@@ -198,12 +210,33 @@ void PickAndDragHandlerShopEditor::splitSelection(ref_ptr<Scene> apScene)	{
 
 	vector<ref_ptr<AbstractObject>>::iterator it = m_pvecPickedObjects.begin();
 
-	int nI;
 	ref_ptr<AbstractObject> pAbstractObject;
+
+	Vec3d vec3dPos;
+	Vec3d vec3dRot;
+	Vec3d vec3dLen;
+
 	for (it; it != m_pvecPickedObjects.end(); it++)	{
+		vec3dPos = it->get()->getPosition();
+		vec3dRot = it->get()->getRotation();
+		vec3dLen = it->get()->getScaling();
+
 		apScene->removeElement(*it);
+		int nI;
 		for (nI=0;nI<it->get()->getNumChildren(); nI++)	{
 			pAbstractObject = dynamic_cast<AbstractObject *>(it->get()->getChild(nI));
+
+			Vec3d vec3dPosItem = pAbstractObject->getPosition();
+			Vec3d vec3dRotItem = pAbstractObject->getRotation();
+			Vec3d vec3dLenItem = pAbstractObject->getScaling();
+
+			pAbstractObject->setPosition(vec3dPosItem[0]+vec3dPos[0], vec3dPosItem[1]+vec3dPos[1], vec3dPosItem[2]+vec3dPos[2]);
+			pAbstractObject->setRotation(vec3dRotItem[0]+vec3dRot[0], vec3dRotItem[1]+vec3dRot[1], vec3dRotItem[2]+vec3dRot[2]);
+			pAbstractObject->setScaling(vec3dLenItem[0]*vec3dLen[0], vec3dLenItem[1]*vec3dLen[1], vec3dLenItem[2]*vec3dLen[2]);
+
+			Matrix & mtrxItem = pAbstractObject->calculateMatrix();
+			pAbstractObject->setMatrix(mtrxItem);
+
 			pAbstractObject->setIsTargetPick(true);
 			apScene->addElement(pAbstractObject);
 		}
@@ -219,14 +252,57 @@ void PickAndDragHandlerShopEditor::duplicateSelection(ref_ptr<Scene> apScene)	{
 		return;
 	}
 
+	//If selection not empty, open the dialog
+	DuplicateItem_GUI * pDuplicateItem_GUI = new DuplicateItem_GUI;
+	pDuplicateItem_GUI->setWindowFlags(Qt::FramelessWindowHint);
+	bool bRes = pDuplicateItem_GUI->exec();
+	const int nNumberOfCopies = pDuplicateItem_GUI->m_pSpinBoxCopies->text().toInt();
+
+	if ((bRes == 0) || (nNumberOfCopies == 0))	{
+		clearList();
+		delete pDuplicateItem_GUI;
+		return;
+	}
+
+	Vec3d vec3dPos = Vec3d(
+		pDuplicateItem_GUI->m_pLineEditLocationX->text().toFloat(),
+		pDuplicateItem_GUI->m_pLineEditLocationY->text().toFloat(),
+		pDuplicateItem_GUI->m_pLineEditLocationZ->text().toFloat());
+
+	Vec3d vec3dRot = Vec3d(
+		pDuplicateItem_GUI->m_pLineEditRotationX->text().toFloat(),
+		pDuplicateItem_GUI->m_pLineEditRotationY->text().toFloat(),
+		pDuplicateItem_GUI->m_pLineEditRotationZ->text().toFloat());
+
+	Vec3d vec3dLen = Vec3d(
+		pDuplicateItem_GUI->m_pLineEditScaleX->text().toFloat(),
+		pDuplicateItem_GUI->m_pLineEditScaleY->text().toFloat(),
+		pDuplicateItem_GUI->m_pLineEditScaleZ->text().toFloat());
+
 	vector<osg::ref_ptr<AbstractObject>>::iterator it = m_pvecPickedObjects.begin();
 
-//	ref_ptr<AbstractObject> pAbstractObject;
+	ref_ptr<AbstractObject> pAbstractObject = 0;
 	for (it; it != m_pvecPickedObjects.end(); it++)	{
-//		pAbstractObject = AbstractObject::createInstance("Container");
-		apScene->addElement(*it);
+		pAbstractObject = AbstractObject::createInstance(it->get()->className());
+
+		pAbstractObject->setPosition(vec3dPos[0],vec3dPos[1],vec3dPos[2]);
+		pAbstractObject->setRotation(vec3dRot[0],vec3dRot[1],vec3dRot[2]);
+		pAbstractObject->setScaling(vec3dLen[0],vec3dLen[1],vec3dLen[2]);
+
+		Matrix & mtrxObject = pAbstractObject->calculateMatrix();
+
+		int nI;
+		for (nI=0;nI<it->get()->getNumChildren();nI++)	{
+			pAbstractObject->addChild(it->get()->getChild(nI));
+		}
+
+		pAbstractObject->setIsTargetPick(true);
+		pAbstractObject->setMatrix(mtrxObject);
+
+		apScene->addElement(pAbstractObject);
 	}
 	clearList();
+	delete pDuplicateItem_GUI;
 }
 
 //-----------------------------------------------------------------------------------
@@ -237,10 +313,34 @@ void PickAndDragHandlerShopEditor::removeSelection(ref_ptr<Scene> apScene)	{
 		return;
 	}
 
-	vector<osg::ref_ptr<AbstractObject>>::iterator it = m_pvecPickedObjects.begin();
-	for (it; it != m_pvecPickedObjects.end(); it++)	{
+	//If selection not empty, open the dialog
+	RemoveSelection_GUI * pRemoveSelection_GUI = new RemoveSelection_GUI;
+	pRemoveSelection_GUI->setWindowFlags(Qt::FramelessWindowHint);
+
+	QStringListModel * pModel = new QStringListModel();
+	QStringList list;
+
+	vector<osg::ref_ptr<AbstractObject>>::iterator it;
+	for (it = m_pvecPickedObjects.begin(); it != m_pvecPickedObjects.end(); it++)	{
+		list.push_back(string("- " + it->get()->getName()).c_str());
+	}
+
+	pModel->setStringList(list);
+	pRemoveSelection_GUI->m_pListView->setModel(pModel);
+
+	bool bRes = pRemoveSelection_GUI->exec();
+	if (bRes == 0)	{
+		clearList();
+		delete pRemoveSelection_GUI;
+		delete pModel;
+		return;
+	}
+
+	for (it = m_pvecPickedObjects.begin(); it != m_pvecPickedObjects.end(); it++)	{
 		apScene->removeElement(*it);
 	}
 	clearList();
+	delete pRemoveSelection_GUI;
+	delete pModel;
 }
 

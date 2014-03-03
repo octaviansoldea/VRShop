@@ -47,6 +47,12 @@ AbstractObject::~AbstractObject()	{
 
 //=======================================================================
 
+const char * AbstractObject::className() const	{
+	return "AbstractObject";
+}
+
+//-----------------------------------------------------------------------
+
 ref_ptr<AbstractObject> AbstractObject::createInstance(const string & astrClassName)	{
 	if (astrClassName == "Cupboard")
 		return (new Cupboard);

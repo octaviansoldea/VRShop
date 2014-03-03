@@ -14,6 +14,7 @@ namespace VR	{
 	public:
 		Furniture();
 		Furniture(FurnitureParams * apFurnitureParams);
+		virtual const char* className() const;
 
 		virtual ~Furniture() = 0;
 

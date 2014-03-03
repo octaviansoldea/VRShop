@@ -3,6 +3,8 @@
 
 #include "VRFurniture.h"
 
+class ostream;
+
 namespace VR	{
 	struct CustomFurnitureParams : public FurnitureParams	{
 	};
@@ -11,6 +13,7 @@ namespace VR	{
 	public:
 		CustomFurniture();
 		CustomFurniture(CustomFurnitureParams * apCustomFurnitureParams);
+		virtual const char* className() const;
 
 		virtual void init(FurnitureParams * apFurnitureParams);
 
@@ -19,6 +22,7 @@ namespace VR	{
 		virtual void initFromSQLData(const std::string & astrSQLData);
 
 		virtual void predefinedObject();
+		virtual void print(std::ostream & os) const;
 	};
 }
 #endif //VR_CUSTOM_FURNITURE_H

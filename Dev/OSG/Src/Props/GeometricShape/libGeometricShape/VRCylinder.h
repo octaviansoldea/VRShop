@@ -3,6 +3,8 @@
 
 #include "VRPrism.h"
 
+class ostream;
+
 namespace VR {
 	struct CylinderParams : public PrismParams {
 		CylinderParams();
@@ -15,11 +17,13 @@ namespace VR {
 	public:
 		Cylinder();
 		Cylinder(CylinderParams * apCylinderParams);
+		virtual const char* className() const;
 
 		virtual std::string getSQLFormat() const;
 		virtual std::string getSQLCommand() const;
 
 		virtual void predefinedObject();
+		virtual void print(std::ostream & os) const;
 	};
 }
 #endif //VR_CYLINDER_H

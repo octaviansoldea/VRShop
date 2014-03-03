@@ -1,3 +1,6 @@
+#include <fstream>
+#include <ostream>
+
 #include "VRAbstractGeomShape.h"
 #include "VRPlate3D.h"
 #include "VRCylinder.h"
@@ -18,6 +21,7 @@ CupboardParams::CupboardParams() : FurnitureParams()	{
 //=======================================================================
 
 Cupboard::Cupboard() : Furniture(new CupboardParams())	{
+	setName("Cupboard");
 }
 
 //-----------------------------------------------------------------------
@@ -29,17 +33,24 @@ Cupboard::Cupboard(CupboardParams * apCupboardParams) : Furniture(apCupboardPara
 
 //-----------------------------------------------------------------------
 
+const char* Cupboard::className() const	{
+	return "Cupboard";
+}
+
+//-----------------------------------------------------------------------
+
 void Cupboard::init(FurnitureParams * apFurnitureParams)	{
+	CupboardParams * pCupboardParams = dynamic_cast<CupboardParams*>(apFurnitureParams);
 	apFurnitureParams = dynamic_cast<FurnitureParams*>(m_pAbstractObjectParams);
 
-	setScaling(apFurnitureParams->m_flLenX, apFurnitureParams->m_flLenY, apFurnitureParams->m_flLenZ);
-	setRotation(apFurnitureParams->m_flAngleYZ, apFurnitureParams->m_flAngleXZ, apFurnitureParams->m_flAngleXY);
-	setPosition(apFurnitureParams->m_flPosX, apFurnitureParams->m_flPosY, apFurnitureParams->m_flPosZ);
+	setScaling(pCupboardParams->m_flLenX, pCupboardParams->m_flLenY, pCupboardParams->m_flLenZ);
+	setRotation(pCupboardParams->m_flAngleYZ, pCupboardParams->m_flAngleXZ, pCupboardParams->m_flAngleXY);
+	setPosition(pCupboardParams->m_flPosX, pCupboardParams->m_flPosY, pCupboardParams->m_flPosZ);
 
 	Matrix & cupboardMatrix = calculateMatrix();
 	setMatrix(cupboardMatrix);
 
-	setName(Furniture::getName() + ":Cupboard");
+	setName("Cupboard");
 }
 
 //-----------------------------------------------------------------------
@@ -215,4 +226,31 @@ void Cupboard::predefinedObject()	{
 
 	init(pCupboardParams);
 	setIsTargetPick(true);
+}
+
+//------------------------------------------------------------------------------------------
+
+void Cupboard::print(std::ostream & os) const	{
+	os << "Object name: " << getName() << endl;
+	int nI, nJ;
+	os << "GetMatrix()" << endl;
+	for (nI=0;nI<4;nI++)	{
+		for (nJ=0;nJ<4;nJ++)	{
+			os << getMatrix()(nI,nJ) << " ";
+		}
+		os << endl;
+	}
+	os << endl;
+	os << "calculateMatrix()" << endl;
+	for (nI=0;nI<4;nI++)	{
+		for (nJ=0;nJ<4;nJ++)	{
+			os << calculateMatrix()(nI,nJ) << " ";
+		}
+		os << endl;
+	}
+	os << endl;
+
+	os << "Child index: " << getChildIndex(this) << endl;
+
+	os << "========================================" << endl;
 }

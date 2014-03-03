@@ -3,6 +3,7 @@ PROJECT(libScene)
 INCLUDE_DIRECTORIES(
 	${OPENSCENEGRAPH_INCLUDE_DIRS}
 	${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
+	${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
 )
 
 SET(SRCS

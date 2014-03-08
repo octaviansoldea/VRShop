@@ -36,9 +36,9 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCamera
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libPicker
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_OSG
+  ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libItemView
   ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor
   ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/View
-  ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/Model
   ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs
   ${CMAKE_BINARY_DIR}/ShopScene/libShopEditor
   ${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabaseMgr
@@ -63,8 +63,6 @@ IF(Qt5_FOUND)
 						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRSaveAs_GUI.ui
 						)
   QT5_WRAP_CPP(MOC_SRCS ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/View/OSGQT_Widget.h 
-						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/Model/VRSceneStructureModel.h
-						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/Model/VRSceneObjectsSearch.h
 						VRShopBuilder_GUI.h
 						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRInsertNewItem_GUI.h
 						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRDuplicateItem_GUI.h
@@ -86,8 +84,6 @@ ELSE()
 						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRSaveAs_GUI.ui
 						)
   QT4_WRAP_CPP(MOC_SRCS ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/View/OSGQT_Widget.h 
-						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/Model/VRSceneStructureModel.h
-						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/Model/VRSceneObjectsSearch.h
 						VRShopBuilder_GUI.h
 						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRInsertNewItem_GUI.h
 						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRDuplicateItem_GUI.h
@@ -103,10 +99,6 @@ ENDIF()
 #Define sources to be later added into the library
 SET(SRCS ${SRCS} ${MOC_SRCS} ${UI_SRCS}
 	${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/View/OSGQT_Widget.h ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/View/OSGQT_Widget.cpp
-	${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/Model/VRSceneStructureItem.h ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/Model/VRSceneStructureItem.cpp
-	${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/Model/VRSceneStructureModel.h ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/Model/VRSceneStructureModel.cpp
-	${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/Model/VRSceneHierarchy.h ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/Model/VRSceneHierarchy.cpp
-	${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/Model/VRSceneObjectsSearch.h ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/Model/VRSceneObjectsSearch.cpp
 	VRShopBuilder.h VRShopBuilder.cpp
 	VRShopBuilder_GUI.h VRShopBuilder_GUI.cpp
 	${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRInsertNewItem_GUI.h ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRInsertNewItem_GUI.cpp

@@ -21,7 +21,11 @@ namespace VR	{
 	public:
 		Plate3D();
 		Plate3D(Plate3DParams * apPlate3DParams);
+		Plate3D(const Plate3D& p3D,const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY);
+
 		virtual const char* className() const;
+		virtual osg::Object* cloneType() const { return new Plate3D(); }
+		virtual osg::Object* clone(const osg::CopyOp& copyop) const { return new Plate3D(*this,copyop); }
 
 		virtual std::string getSQLFormat() const;
 		virtual std::string getSQLCommand() const;
@@ -33,8 +37,6 @@ namespace VR	{
 
 		virtual void setColor(const std::vector < float > & aarrflColor);
 		virtual void setTexture(const std::string & astrFileName);
-
-		virtual void print(std::ostream & os) const;
 	};
 }
 #endif //VR_PLATE_3D_H

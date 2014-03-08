@@ -14,6 +14,8 @@ namespace VR	{
 	public:
 		Furniture();
 		Furniture(FurnitureParams * apFurnitureParams);
+		Furniture(const Furniture& fur,const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY);
+
 		virtual const char* className() const;
 
 		virtual ~Furniture() = 0;

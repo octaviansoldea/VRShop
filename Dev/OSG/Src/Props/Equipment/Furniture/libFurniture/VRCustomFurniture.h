@@ -13,7 +13,11 @@ namespace VR	{
 	public:
 		CustomFurniture();
 		CustomFurniture(CustomFurnitureParams * apCustomFurnitureParams);
+		CustomFurniture(const CustomFurniture& cf,const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY);
+
 		virtual const char* className() const;
+		virtual osg::Object* cloneType() const;
+		virtual osg::Object* clone(const osg::CopyOp& copyop) const;
 
 		virtual void init(FurnitureParams * apFurnitureParams);
 
@@ -22,7 +26,6 @@ namespace VR	{
 		virtual void initFromSQLData(const std::string & astrSQLData);
 
 		virtual void predefinedObject();
-		virtual void print(std::ostream & os) const;
 	};
 }
 #endif //VR_CUSTOM_FURNITURE_H

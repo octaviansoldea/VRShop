@@ -5,17 +5,32 @@
 using namespace VR;
 using namespace std;
 
+
+SceneStructureModelParams::SceneStructureModelParams() : 
+parent(0), aqvarRootHeader(QModelIndex())	{
+}
+
 //--------------------------------------------------------------------
 
-SceneStructureModel::SceneStructureModel(const QList <QString> &data, QObject *parent)
-	: QAbstractItemModel(parent)	{
+SceneStructureModel::SceneStructureModel()	{
+}
 
-		QVariant arrqRootHeader;
-		arrqRootHeader = "Scene";
+//--------------------------------------------------------------------
+
+SceneStructureModel::SceneStructureModel(const SceneStructureModelParams & aSceneStructureModelParams)
+	: QAbstractItemModel(aSceneStructureModelParams.parent)	{
+
+		QVariant arrqRootHeader = aSceneStructureModelParams.aqvarRootHeader;
 
 		m_pRootItem = new SceneStructureItem(arrqRootHeader);
 
-		setupDataElements(data, m_pRootItem);
+		setupDataElements(aSceneStructureModelParams.data, m_pRootItem);
+}
+
+//--------------------------------------------------------------------
+
+SceneStructureModel::~SceneStructureModel()	{
+	delete m_pRootItem;
 }
 
 //--------------------------------------------------------------------
@@ -97,6 +112,33 @@ QVariant SceneStructureModel::data(const QModelIndex &index, int role) const	{
 
 //--------------------------------------------------------------------
 
+bool SceneStructureModel::setData(const QModelIndex& index, const QVariant& value,int role)	{
+	if (role != Qt::EditRole)	{
+		return false;
+	}
+
+	SceneStructureItem * item = static_cast<SceneStructureItem*>(index.internalPointer());
+	QVariant prevValue = item->data();
+
+	item->setData(value);
+
+	if (prevValue != value)
+		emit dataChanged(index, index);
+
+	return true;
+}
+
+//--------------------------------------------------------------------
+
+Qt::ItemFlags SceneStructureModel::flags(const QModelIndex& index) const {
+	if(index.isValid())
+		return Qt::ItemIsEditable | QAbstractItemModel::flags(index);
+	else
+		return 0;
+}
+
+//--------------------------------------------------------------------
+
 void SceneStructureModel::setupDataElements(const QList <QString> & aarrstrSceneData, SceneStructureItem *apParent)	{
 	string strElementDataLine;
     QList <SceneStructureItem*> parents;
@@ -104,7 +146,8 @@ void SceneStructureModel::setupDataElements(const QList <QString> & aarrstrScene
 	QList <int> lstnLayer;
 	lstnLayer.push_back(0);
 
-	for (auto it = aarrstrSceneData.begin(); it != aarrstrSceneData.end(); it++)	{
+	QList<QString>::const_iterator it;
+	for (it = aarrstrSceneData.begin(); it != aarrstrSceneData.end(); it++)	{
 		int nPos = 0;
 		strElementDataLine = it->toStdString();
 

@@ -8,15 +8,14 @@ namespace VR {
 		SplineParams();
 	};
 
-	class Spline	{
+	class Spline 	{
 	private:
 		SplineParams m_SplineParams;
 	public:
 		Spline();
 		Spline(const SplineParams & aSplineParams);
-		virtual const char* className() const;
 
-		virtual void print(std::ostream & os) const;
+		const char* className() const;
 	};
 }
 #endif //VR_SPLINE_H

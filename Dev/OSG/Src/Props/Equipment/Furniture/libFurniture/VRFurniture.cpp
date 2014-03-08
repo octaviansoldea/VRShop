@@ -30,6 +30,11 @@ Furniture::Furniture(FurnitureParams * apFurnitureParams) : AbstractObject(apFur
 
 //-----------------------------------------------------------------------
 
+Furniture::Furniture(const Furniture& fur,const CopyOp& copyop) : AbstractObject(fur, copyop)	{
+}
+
+//-----------------------------------------------------------------------
+
 Furniture::~Furniture()	{
 }
 

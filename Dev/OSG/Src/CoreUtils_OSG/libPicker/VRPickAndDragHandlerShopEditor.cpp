@@ -19,6 +19,8 @@
 #include <osgGA/GUIEventAdapter>
 #include <osgGA/GUIActionAdapter>
 
+#include <osgViewer/Viewer>
+
 #include "VRScene.h"
 #include "VRAbstractObject.h"
 #include "VRBoundingBox.h"
@@ -47,6 +49,10 @@ PickAndDragHandlerShopEditor::PickAndDragHandlerShopEditor()	{
 //-------------------------------------------------------------------------------
 
 bool PickAndDragHandlerShopEditor::handle(const GUIEventAdapter& ea, GUIActionAdapter& aa) {
+	osgViewer::Viewer * pViewer = dynamic_cast<osgViewer::Viewer*>(&aa);
+
+	ref_ptr<Scene > pScene = dynamic_cast<VR::Scene*>(pViewer->getSceneData());
+
 	bool bRes = true;
 
 	if((PickAndDragHandler::handle(ea, aa) == false) || 
@@ -57,12 +63,14 @@ bool PickAndDragHandlerShopEditor::handle(const GUIEventAdapter& ea, GUIActionAd
 
 	int nEventType = ea.getEventType();
 	if ((nEventType == GUIEventAdapter::DRAG)) {
-		
 		emit signalPropertiesSettingsChanged();
+
+		pScene->print();
 	}
-	if ((nEventType == GUIEventAdapter::LEFT_MOUSE_BUTTON)) {
-		
+	if ((nEventType == GUIEventAdapter::LEFT_MOUSE_BUTTON)) {		
 		emit signalPropertiesSettingsChanged();
+
+		pScene->print();
 	}
 
 	if(nEventType == osgGA::GUIEventAdapter::LEFT_MOUSE_BUTTON && ea.getModKeyMask()&osgGA::GUIEventAdapter::MODKEY_CTRL)	{
@@ -195,7 +203,7 @@ void PickAndDragHandlerShopEditor::groupSelection(ref_ptr<Scene> apScene)	{
 		apScene->removeElement(*it);
 	}
 	pGroupedObject->setIsTargetPick(true);
-	apScene->addElement(pGroupedObject);
+	apScene->addElement(pGroupedObject.get());
 
 	clearList();
 }
@@ -281,25 +289,11 @@ void PickAndDragHandlerShopEditor::duplicateSelection(ref_ptr<Scene> apScene)	{
 
 	vector<osg::ref_ptr<AbstractObject>>::iterator it = m_pvecPickedObjects.begin();
 
-	ref_ptr<AbstractObject> pAbstractObject = 0;
+	ref_ptr<AbstractObject> pObject = 0;
 	for (it; it != m_pvecPickedObjects.end(); it++)	{
-		pAbstractObject = AbstractObject::createInstance(it->get()->className());
-
-		pAbstractObject->setPosition(vec3dPos[0],vec3dPos[1],vec3dPos[2]);
-		pAbstractObject->setRotation(vec3dRot[0],vec3dRot[1],vec3dRot[2]);
-		pAbstractObject->setScaling(vec3dLen[0],vec3dLen[1],vec3dLen[2]);
-
-		Matrix & mtrxObject = pAbstractObject->calculateMatrix();
-
-		int nI;
-		for (nI=0;nI<it->get()->getNumChildren();nI++)	{
-			pAbstractObject->addChild(it->get()->getChild(nI));
-		}
-
-		pAbstractObject->setIsTargetPick(true);
-		pAbstractObject->setMatrix(mtrxObject);
-
-		apScene->addElement(pAbstractObject);
+		//An open issue with the matrix
+		pObject = dynamic_cast<AbstractObject*>(it->get()->clone(CopyOp::DEEP_COPY_ALL));
+		apScene->addElement(pObject);
 	}
 	clearList();
 	delete pDuplicateItem_GUI;
@@ -320,7 +314,7 @@ void PickAndDragHandlerShopEditor::removeSelection(ref_ptr<Scene> apScene)	{
 	QStringListModel * pModel = new QStringListModel();
 	QStringList list;
 
-	vector<osg::ref_ptr<AbstractObject>>::iterator it;
+	vector<ref_ptr<AbstractObject>>::iterator it;
 	for (it = m_pvecPickedObjects.begin(); it != m_pvecPickedObjects.end(); it++)	{
 		list.push_back(string("- " + it->get()->getName()).c_str());
 	}

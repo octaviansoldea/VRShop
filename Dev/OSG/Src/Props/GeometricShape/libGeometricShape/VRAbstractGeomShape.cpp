@@ -2,6 +2,7 @@
 
 using namespace VR;
 using namespace std;
+using namespace osg;
 
 //=======================================================================
 
@@ -22,6 +23,12 @@ AbstractGeomShape::AbstractGeomShape() : AbstractObject(new AbstractGeomShapePar
 
 AbstractGeomShape::AbstractGeomShape(AbstractGeomShapeParams * apAbstractGeomShapeParams) : 
 AbstractObject(apAbstractGeomShapeParams)	{
+}
+
+//--------------------------------------------------------------------------
+
+AbstractGeomShape::AbstractGeomShape(const AbstractGeomShape& ags,const CopyOp& copyop) :
+AbstractObject(ags,copyop)	{
 }
 
 //--------------------------------------------------------------------------

@@ -39,6 +39,8 @@ namespace VR	{
 		void slotSaveAsDB();
 		void slotCloseDB();
 
+		void slotSearchScene();
+
 		void slotGridOnOff(bool abIndicator);
 		void slotCameraManipulatorOnOff(bool abIndicator);
 

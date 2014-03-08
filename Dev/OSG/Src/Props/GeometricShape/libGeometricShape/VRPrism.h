@@ -16,7 +16,11 @@ namespace VR {
 	public:
 		Prism();
 		Prism(PrismParams * apPrismParams);
+		Prism(const Prism& pr,const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY);
+
 		virtual const char* className() const;
+		virtual osg::Object* cloneType() const { return new Prism(); }
+		virtual osg::Object* clone(const osg::CopyOp& copyop) const { return new Prism(*this,copyop); }
 
 		virtual void init(AbstractGeomShapeParams & aAbstractGeomShapeParams);
 		virtual void predefinedObject();
@@ -31,8 +35,6 @@ namespace VR {
 		virtual void initFromSQLData(const std::string & astrSQLData);
 
 		osg::ref_ptr <UntransformedPolygon3D> m_pUntransformedPolygon3D;
-
-		virtual void print(std::ostream & os) const;
 
 	private:
 		static std::string m_strSQLFormat;

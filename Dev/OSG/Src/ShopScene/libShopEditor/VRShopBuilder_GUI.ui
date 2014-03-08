@@ -2912,6 +2912,9 @@ border: 0px;</string>
             </item>
             <item>
              <widget class="QWidget" name="m_pSearchListWidget" native="true">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
               <property name="styleSheet">
                <string notr="true">background-color:rgb(191,193,194);</string>
               </property>
@@ -2929,18 +2932,20 @@ border: 0px;</string>
                 <number>0</number>
                </property>
                <item>
-                <widget class="QListWidget" name="listWidget">
+                <widget class="QListView" name="m_pListView">
                  <property name="enabled">
                   <bool>true</bool>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true">QListWidget {
+                  <string notr="true">QListView {
 	background-color:rgb(191,193,194);
 	selection-background-color: rgb(132, 132, 132);
 	color:rgb(255,255,255);
 }
 
-QListWidget::item:hover{background-color: rgb(132, 132, 132)}
+QListView::item:hover,QListView::item:selected {
+	background-color: rgb(132, 132, 132)
+}
 </string>
                  </property>
                  <property name="frameShape">
@@ -2988,22 +2993,6 @@ QListWidget::item:hover{background-color: rgb(132, 132, 132)}
                  <property name="selectionRectVisible">
                   <bool>true</bool>
                  </property>
-                 <property name="currentRow">
-                  <number>0</number>
-                 </property>
-                 <property name="sortingEnabled">
-                  <bool>true</bool>
-                 </property>
-                 <item>
-                  <property name="text">
-                   <string>Matej</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>Tavi</string>
-                  </property>
-                 </item>
                 </widget>
                </item>
                <item>
@@ -4571,38 +4560,6 @@ background-color: rgb(191,193,194);</string>
     <hint type="destinationlabel">
      <x>567</x>
      <y>474</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>m_p_ToolButton_Search</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>m_pSearchListWidget</receiver>
-   <slot>show()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1124</x>
-     <y>51</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>861</x>
-     <y>158</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>m_p_LineEdit_Search</sender>
-   <signal>editingFinished()</signal>
-   <receiver>m_pSearchListWidget</receiver>
-   <slot>show()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>850</x>
-     <y>52</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>861</x>
-     <y>158</y>
     </hint>
    </hints>
   </connection>

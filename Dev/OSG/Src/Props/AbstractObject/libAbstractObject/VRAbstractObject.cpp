@@ -32,11 +32,24 @@ AbstractObjectParams::~AbstractObjectParams()	{
 
 //==============================================================
 
-AbstractObject::AbstractObject(AbstractObjectParams * apAbstractObjectParams) : m_bIsTargetPick(false)	{
+AbstractObject::AbstractObject() : MatrixTransform()	{
+}
+
+//--------------------------------------------------------------
+
+AbstractObject::AbstractObject(AbstractObjectParams * apAbstractObjectParams) : m_bIsTargetPick(false),MatrixTransform()	{
 	if(apAbstractObjectParams == 0)
 		m_pAbstractObjectParams = new AbstractObjectParams;
 	else
 		m_pAbstractObjectParams = apAbstractObjectParams;
+}
+
+//--------------------------------------------------------------
+
+AbstractObject::AbstractObject(const AbstractObject& ao,const CopyOp& copyop) :
+MatrixTransform(ao,copyop)	{
+	m_pAbstractObjectParams = ao.m_pAbstractObjectParams;
+	m_bIsTargetPick = ao.m_bIsTargetPick;
 }
 
 //--------------------------------------------------------------
@@ -63,7 +76,7 @@ ref_ptr<AbstractObject> AbstractObject::createInstance(const string & astrClassN
 	if (astrClassName == "Plate3D")
 		return (new Plate3D);
 	if (astrClassName == "Cylinder")
-		return (new Cylinder);
+		return (new VR::Cylinder);
 	if (astrClassName == "Prism")
 		return (new Prism);
 	if (astrClassName == "Sphere")
@@ -135,9 +148,9 @@ Vec3d AbstractObject::getRotation() const	{
 //--------------------------------------------------------------------------
 
 Matrix AbstractObject::calculateMatrix() const	{
-	Vec3d vec3dPos = this->getPosition();
-	Vec3d vec3dRot = this->getRotation();
-	Vec3d vec3dLen = this->getScaling();
+	Vec3d vec3dPos = getPosition();
+	Vec3d vec3dRot = getRotation();
+	Vec3d vec3dLen = getScaling();
 
 	Matrix matrix(Matrix::identity());
 
@@ -165,3 +178,34 @@ bool AbstractObject::getIsTargetPick() const	{
 }
 
 //--------------------------------------------------------------------------
+
+void AbstractObject::print(std::ostream & os) const	{
+	os << "Object name: " << getName() << endl;
+	int nI, nJ;
+	os << "GetMatrix()" << endl;
+	for (nI=0;nI<4;nI++)	{
+		for (nJ=0;nJ<4;nJ++)	{
+			os << getMatrix()(nI,nJ) << " ";
+		}
+		os << endl;
+	}
+	os << endl;
+	os << "calculateMatrix()" << endl;
+	for (nI=0;nI<4;nI++)	{
+		for (nJ=0;nJ<4;nJ++)	{
+			os << calculateMatrix()(nI,nJ) << " ";
+		}
+		os << endl;
+	}
+	os << endl;
+
+	os << "getPosition()" << endl;
+	for (nI=0;nI<3;nI++)	{
+		os << getPosition()[nI] << " ";
+	}
+	os << endl;
+
+	os << "Child index: " << getChildIndex(this) << endl;
+
+	os << "========================================" << endl;
+}

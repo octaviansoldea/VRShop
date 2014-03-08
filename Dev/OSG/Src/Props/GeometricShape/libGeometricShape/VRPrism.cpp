@@ -46,6 +46,11 @@ Prism::Prism(PrismParams * apPrismParams) : AbstractGeomShape(apPrismParams)	{
 
 //----------------------------------------------------------
 
+Prism::Prism(const Prism& pr,const CopyOp& copyop) : AbstractGeomShape(pr,copyop)	{
+}
+
+//----------------------------------------------------------
+
 const char* Prism::className() const	{
 	return "Prism";
 }
@@ -191,9 +196,4 @@ void Prism::predefinedObject()	{
 	PrismParams * pPrismParams = dynamic_cast<PrismParams*>(m_pAbstractObjectParams);
 	init(*pPrismParams);
 	setIsTargetPick(true);
-}
-
-//------------------------------------------------------------------------------------------
-
-void Prism::print(std::ostream & os) const	{
 }

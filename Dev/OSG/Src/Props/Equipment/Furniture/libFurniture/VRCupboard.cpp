@@ -33,19 +33,37 @@ Cupboard::Cupboard(CupboardParams * apCupboardParams) : Furniture(apCupboardPara
 
 //-----------------------------------------------------------------------
 
+Cupboard::Cupboard(const Cupboard& cup,const CopyOp& copyop) : Furniture(cup, copyop)	{
+	CupboardParams *pCupboardParams = dynamic_cast<CupboardParams*>(m_pAbstractObjectParams);
+	init(pCupboardParams);
+}
+
+//-----------------------------------------------------------------------
+
 const char* Cupboard::className() const	{
 	return "Cupboard";
 }
 
 //-----------------------------------------------------------------------
 
+Object* Cupboard::cloneType() const	{
+	return new Cupboard();
+}
+
+//-----------------------------------------------------------------------
+
+Object* Cupboard::clone(const CopyOp& copyop) const	{
+	return new Cupboard(*this,copyop);
+}
+
+//-----------------------------------------------------------------------
+
 void Cupboard::init(FurnitureParams * apFurnitureParams)	{
-	CupboardParams * pCupboardParams = dynamic_cast<CupboardParams*>(apFurnitureParams);
 	apFurnitureParams = dynamic_cast<FurnitureParams*>(m_pAbstractObjectParams);
 
-	setScaling(pCupboardParams->m_flLenX, pCupboardParams->m_flLenY, pCupboardParams->m_flLenZ);
-	setRotation(pCupboardParams->m_flAngleYZ, pCupboardParams->m_flAngleXZ, pCupboardParams->m_flAngleXY);
-	setPosition(pCupboardParams->m_flPosX, pCupboardParams->m_flPosY, pCupboardParams->m_flPosZ);
+	setScaling(apFurnitureParams->m_flLenX, apFurnitureParams->m_flLenY, apFurnitureParams->m_flLenZ);
+	setRotation(apFurnitureParams->m_flAngleYZ, apFurnitureParams->m_flAngleXZ, apFurnitureParams->m_flAngleXY);
+	setPosition(apFurnitureParams->m_flPosX, apFurnitureParams->m_flPosY, apFurnitureParams->m_flPosZ);
 
 	Matrix & cupboardMatrix = calculateMatrix();
 	setMatrix(cupboardMatrix);
@@ -229,28 +247,3 @@ void Cupboard::predefinedObject()	{
 }
 
 //------------------------------------------------------------------------------------------
-
-void Cupboard::print(std::ostream & os) const	{
-	os << "Object name: " << getName() << endl;
-	int nI, nJ;
-	os << "GetMatrix()" << endl;
-	for (nI=0;nI<4;nI++)	{
-		for (nJ=0;nJ<4;nJ++)	{
-			os << getMatrix()(nI,nJ) << " ";
-		}
-		os << endl;
-	}
-	os << endl;
-	os << "calculateMatrix()" << endl;
-	for (nI=0;nI<4;nI++)	{
-		for (nJ=0;nJ<4;nJ++)	{
-			os << calculateMatrix()(nI,nJ) << " ";
-		}
-		os << endl;
-	}
-	os << endl;
-
-	os << "Child index: " << getChildIndex(this) << endl;
-
-	os << "========================================" << endl;
-}

@@ -33,8 +33,26 @@ Container::Container(ContainerParams * apContainerParams) : Furniture(apContaine
 
 //-----------------------------------------------------------------------
 
+Container::Container(const Container& cont,const osg::CopyOp& copyop) :
+VR::Furniture(cont, copyop)	{
+}
+
+//-----------------------------------------------------------------------
+
 const char* Container::className() const	{
 	return "Container";
+}
+
+//-----------------------------------------------------------------------
+
+Object* Container::cloneType() const	{
+	return new Container();
+}
+
+//-----------------------------------------------------------------------
+
+Object* Container::clone(const CopyOp& copyop) const	{
+	return new Container(*this,copyop);
 }
 
 //-----------------------------------------------------------------------
@@ -197,31 +215,4 @@ void Container::predefinedObject()	{
 
 	init(pContainerParams);
 	setIsTargetPick(true);
-}
-
-//------------------------------------------------------------------------------------------
-
-void Container::print(std::ostream & os) const	{
-	os << "Object name: " << getName() << endl;
-	int nI, nJ;
-	os << "GetMatrix()" << endl;
-	for (nI=0;nI<4;nI++)	{
-		for (nJ=0;nJ<4;nJ++)	{
-			os << getMatrix()(nI,nJ) << " ";
-		}
-		os << endl;
-	}
-	os << endl;
-	os << "calculateMatrix()" << endl;
-	for (nI=0;nI<4;nI++)	{
-		for (nJ=0;nJ<4;nJ++)	{
-			os << calculateMatrix()(nI,nJ) << " ";
-		}
-		os << endl;
-	}
-	os << endl;
-
-	os << "Child index: " << getChildIndex(this) << endl;
-
-	os << "========================================" << endl;
 }

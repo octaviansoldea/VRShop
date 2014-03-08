@@ -21,8 +21,25 @@ CustomFurniture::CustomFurniture(CustomFurnitureParams * apCustomFurnitureParams
 
 //-----------------------------------------------------------------------
 
+CustomFurniture::CustomFurniture(const CustomFurniture& cf,const CopyOp& copyop) : Furniture(cf,copyop)	{
+}
+
+//-----------------------------------------------------------------------
+
 const char* CustomFurniture::className() const	{
 	return "CustomFurniture";
+}
+
+//-----------------------------------------------------------------------
+
+Object* CustomFurniture::cloneType() const	{
+	return new CustomFurniture();
+}
+
+//-----------------------------------------------------------------------
+
+Object* CustomFurniture::clone(const CopyOp& copyop) const	{
+	return new CustomFurniture(*this,copyop);
 }
 
 //-----------------------------------------------------------------------
@@ -58,28 +75,3 @@ void CustomFurniture::predefinedObject()	{
 }
 
 //------------------------------------------------------------------------------------------
-
-void CustomFurniture::print(std::ostream & os) const	{
-	os << "Object name: " << getName() << endl;
-	int nI, nJ;
-	os << "GetMatrix()" << endl;
-	for (nI=0;nI<4;nI++)	{
-		for (nJ=0;nJ<4;nJ++)	{
-			os << getMatrix()(nI,nJ) << " ";
-		}
-		os << endl;
-	}
-	os << endl;
-	os << "calculateMatrix()" << endl;
-	for (nI=0;nI<4;nI++)	{
-		for (nJ=0;nJ<4;nJ++)	{
-			os << calculateMatrix()(nI,nJ) << " ";
-		}
-		os << endl;
-	}
-	os << endl;
-
-	os << "Child index: " << getChildIndex(this) << endl;
-
-	os << "========================================" << endl;
-}

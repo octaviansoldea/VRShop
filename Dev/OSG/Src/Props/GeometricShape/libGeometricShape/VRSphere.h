@@ -21,7 +21,11 @@ namespace VR	{
 	public:
 		Sphere();
 		Sphere(SphereParams * apSphereParams);
+		Sphere(const Sphere& sp,const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY);
+
 		virtual const char* className() const;
+		virtual osg::Object* cloneType() const { return new Sphere(); }
+		virtual osg::Object* clone(const osg::CopyOp& copyop) const { return new Sphere(*this,copyop); }
 
 		virtual std::string getSQLFormat() const;
 		virtual std::string getSQLCommand() const;
@@ -34,8 +38,6 @@ namespace VR	{
 		virtual void setColor(const std::vector < float > & aarrflColor);
 		virtual void setTexture(const std::string & astrFileName);
 		void setResolution(int anRes);
-
-		virtual void print(std::ostream & os) const;
 	};
 }
 #endif //VR_SPHERE_H

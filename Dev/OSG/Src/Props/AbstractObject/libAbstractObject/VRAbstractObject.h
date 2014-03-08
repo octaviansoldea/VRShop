@@ -26,11 +26,15 @@ namespace VR	{
 
 	class AbstractObject : public osg::MatrixTransform	{
 	public:
-		AbstractObject(AbstractObjectParams * pAbstractObjectParams = 0);
+		AbstractObject();
+		AbstractObject(AbstractObjectParams * apAbstractObjectParams = 0);
+		AbstractObject(const AbstractObject& ao,const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY);
 
 		virtual ~AbstractObject() = 0;
 
         virtual const char* className() const;
+		virtual osg::Object* cloneType() const = 0;
+		virtual osg::Object* clone(const osg::CopyOp& copyop) const = 0;
 
 		static osg::ref_ptr<AbstractObject> createInstance(const std::string & astrClassName);
 
@@ -53,7 +57,7 @@ namespace VR	{
 		virtual void setIsTargetPick(bool abIsTargetPick);
 		virtual bool getIsTargetPick() const;
 
-		virtual void print(std::ostream & os) const = 0;
+		virtual void print(std::ostream & os) const;
 
 	private:
 		bool m_bIsTargetPick;

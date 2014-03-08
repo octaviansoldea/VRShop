@@ -46,6 +46,11 @@ Plate3D::Plate3D(Plate3DParams * apPlate3DParams) : AbstractGeomShape(apPlate3DP
 
 //-----------------------------------------------------------------------
 
+Plate3D::Plate3D(const Plate3D& p3D,const CopyOp& copyop) : AbstractGeomShape(p3D,copyop)	{
+}
+
+//-----------------------------------------------------------------------
+
 const char* Plate3D::className() const	{
 	return "Plate3D";
 }
@@ -177,31 +182,4 @@ void Plate3D::predefinedObject()	{
 	Plate3DParams * pPlate3DParams = dynamic_cast<Plate3DParams*>(m_pAbstractObjectParams);
 	init(*pPlate3DParams);
 	setIsTargetPick(true);
-}
-
-//------------------------------------------------------------------------------------------
-
-void Plate3D::print(std::ostream & os) const	{
-	os << "Object name: " << getName() << endl;
-	int nI, nJ;
-	os << "GetMatrix()" << endl;
-	for (nI=0;nI<4;nI++)	{
-		for (nJ=0;nJ<4;nJ++)	{
-			os << getMatrix()(nI,nJ) << " ";
-		}
-		os << endl;
-	}
-	os << endl;
-	os << "calculateMatrix()" << endl;
-	for (nI=0;nI<4;nI++)	{
-		for (nJ=0;nJ<4;nJ++)	{
-			os << calculateMatrix()(nI,nJ) << " ";
-		}
-		os << endl;
-	}
-	os << endl;
-
-	os << "Child index: " << getChildIndex(this) << endl;
-
-	os << "========================================" << endl;
 }

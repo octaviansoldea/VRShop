@@ -44,6 +44,11 @@ VR::Cylinder::Cylinder(CylinderParams * apCylinderParams) : Prism(apCylinderPara
 
 //----------------------------------------------------------
 
+VR::Cylinder::Cylinder(const VR::Cylinder& cyl,const CopyOp& copyop) : Prism(cyl,copyop)	{
+}
+
+//----------------------------------------------------------
+
 const char* VR::Cylinder::className() const	{
 	return "Cylinder";
 }
@@ -100,6 +105,3 @@ void VR::Cylinder::predefinedObject()	{
 }
 
 //------------------------------------------------------------------------------------------
-
-void VR::Cylinder::print(std::ostream & os) const	{
-}

@@ -1,8 +1,5 @@
 #include "BasicStringDefinitions.h"
 
-#include <fstream>
-#include <ostream>
-
 #include <osgDB/ReadFile>
 #include <osgGA/GUIEventHandler>
 
@@ -23,6 +20,9 @@
 #include "VRPickAndDragController.h"
 #include "VRKeyboardMouseManipulatorShopEditor.h"
 #include "VRPickAndDragHandlerShopEditor.h"
+#include "VRSceneObjectsSearchShopEditor.h"
+
+#include "VRSceneStructureModel.h"
 
 #include "VRShopBuilder_GUI.h"
 
@@ -33,7 +33,7 @@ using namespace std;
 
 //----------------------------------------------------------------------
 
-ShopBuilder_GUI::ShopBuilder_GUI()	{	
+ShopBuilder_GUI::ShopBuilder_GUI()	{
 	setupUi(this);
 
 	setWindowTitle("VR Shop Server Dialog");
@@ -68,7 +68,7 @@ ShopBuilder_GUI::ShopBuilder_GUI()	{
 	}
 
 	PickAndDragHandlerShopEditor *pPickAndDragHandlerShopEditor = 		
-		dynamic_cast<PickAndDragHandlerShopEditor *>(m_pShopBuilder->m_pEvent);
+		dynamic_cast<PickAndDragHandlerShopEditor *>(m_pShopBuilder->m_pEventHandler);
 
 	m_pPickAndDragController = new PickAndDragController(
 		m_p_DoubleSpinBox_TranslationX,
@@ -94,6 +94,7 @@ ShopBuilder_GUI::ShopBuilder_GUI()	{
 		pPickAndDragHandlerShopEditor,
 		pScene);
 
+
 	m_pOSGQTWidget->show();
 
 	buildConnections();
@@ -104,6 +105,7 @@ ShopBuilder_GUI::ShopBuilder_GUI()	{
 ShopBuilder_GUI::~ShopBuilder_GUI() {
 	delete m_pCameraController;
 	delete m_pPickAndDragController;
+	delete m_pListView;
 	delete m_pOSGQTWidget;
 //	delete m_pShopBuilder;
 }
@@ -116,6 +118,9 @@ void ShopBuilder_GUI::buildConnections() {
 	connect(actionSave, SIGNAL(triggered()), this, SLOT(slotSaveDB()));
 	connect(actionSave_As, SIGNAL(triggered()), this, SLOT(slotSaveAsDB()));
 	connect(actionClose, SIGNAL(triggered()), this, SLOT(slotCloseDB()));
+
+	connect(m_p_LineEdit_Search,SIGNAL(returnPressed()), this,SLOT(slotSearchScene()));
+	connect(m_p_ToolButton_Search,SIGNAL(pressed()), this,SLOT(slotSearchScene()));
 
 	connect(m_p_ToolButton_GridOnOff, SIGNAL(toggled(bool)),this,SLOT(slotGridOnOff(bool)));
 	connect(m_p_ToolButton_CameraManipulatorOnOff, SIGNAL(toggled(bool)),this,SLOT(slotCameraManipulatorOnOff(bool)));
@@ -228,6 +233,23 @@ void ShopBuilder_GUI::slotCloseDB()	{
 
 	std::cout << "slot Close entered" << std::endl;
 	return;
+}
+
+//---------------------------------------------------------------------------------------
+
+void ShopBuilder_GUI::slotSearchScene()	{
+	string & strSearchQuery = m_p_LineEdit_Search->text().toStdString();
+
+	if (strSearchQuery.empty())
+		return;
+
+	SceneStructureModel * pSceneStructureModel = 0;
+	
+	if(m_pShopBuilder->searchScene(strSearchQuery, &pSceneStructureModel))	{
+		m_pSearchListWidget->show();
+		m_pListView->setModel(pSceneStructureModel);
+		m_pListView->show();
+	}
 }
 
 //---------------------------------------------------------------------------------------

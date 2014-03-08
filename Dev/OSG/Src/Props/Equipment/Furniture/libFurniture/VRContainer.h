@@ -19,7 +19,11 @@ namespace VR	{
 	public:
 		Container();
 		Container(ContainerParams * apContainerParams);
+		Container(const Container& cont,const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY);
+
 		virtual const char* className() const;
+		virtual osg::Object* cloneType() const;
+		virtual osg::Object* clone(const osg::CopyOp& copyop) const;
 
 		virtual void init(FurnitureParams * apFurnitureParams);
 		virtual void predefinedObject();
@@ -27,7 +31,6 @@ namespace VR	{
 		virtual std::string getSQLCommand() const;
 
 		virtual void initFromSQLData(const std::string & astrSQLData);
-		virtual void print(std::ostream & os) const;
 	};
 }
 #endif //VR_CONTAINER_H

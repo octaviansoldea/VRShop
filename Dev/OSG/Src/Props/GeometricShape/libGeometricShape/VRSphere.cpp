@@ -47,6 +47,12 @@ VR::Sphere::Sphere(SphereParams * apSphereParams) : AbstractGeomShape(apSpherePa
 
 //-----------------------------------------------------------------------
 
+VR::Sphere::Sphere(const VR::Sphere& sp,const osg::CopyOp& copyop) :
+AbstractGeomShape(sp,copyop)	{
+}
+
+//-----------------------------------------------------------------------
+
 const char* VR::Sphere::className() const	{
 	return "Sphere";
 }
@@ -192,9 +198,4 @@ void VR::Sphere::predefinedObject()	{
 	SphereParams * pSphereParams = dynamic_cast<SphereParams*>(m_pAbstractObjectParams);
 	init(*pSphereParams);
 	setIsTargetPick(true);
-}
-
-//------------------------------------------------------------------------------------------
-
-void VR::Sphere::print(std::ostream & os) const	{
 }

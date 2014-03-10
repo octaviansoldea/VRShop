@@ -18,6 +18,7 @@
 
 #include "VRCameraController.h"
 #include "VRPickAndDragController.h"
+#include "VRSearchListController.h"
 #include "VRKeyboardMouseManipulatorShopEditor.h"
 #include "VRPickAndDragHandlerShopEditor.h"
 #include "VRSceneObjectsSearchShopEditor.h"
@@ -94,7 +95,6 @@ ShopBuilder_GUI::ShopBuilder_GUI()	{
 		pPickAndDragHandlerShopEditor,
 		pScene);
 
-
 	m_pOSGQTWidget->show();
 
 	buildConnections();
@@ -105,9 +105,9 @@ ShopBuilder_GUI::ShopBuilder_GUI()	{
 ShopBuilder_GUI::~ShopBuilder_GUI() {
 	delete m_pCameraController;
 	delete m_pPickAndDragController;
-	delete m_pListView;
 	delete m_pOSGQTWidget;
-//	delete m_pShopBuilder;
+
+	delete m_pShopBuilder;
 }
 
 //=========================================================================================
@@ -121,6 +121,7 @@ void ShopBuilder_GUI::buildConnections() {
 
 	connect(m_p_LineEdit_Search,SIGNAL(returnPressed()), this,SLOT(slotSearchScene()));
 	connect(m_p_ToolButton_Search,SIGNAL(pressed()), this,SLOT(slotSearchScene()));
+	connect(m_pListView,SIGNAL(clicked(const QModelIndex &)), this,SLOT(slotItemClicked(const QModelIndex &)));
 
 	connect(m_p_ToolButton_GridOnOff, SIGNAL(toggled(bool)),this,SLOT(slotGridOnOff(bool)));
 	connect(m_p_ToolButton_CameraManipulatorOnOff, SIGNAL(toggled(bool)),this,SLOT(slotCameraManipulatorOnOff(bool)));
@@ -250,6 +251,22 @@ void ShopBuilder_GUI::slotSearchScene()	{
 		m_pListView->setModel(pSceneStructureModel);
 		m_pListView->show();
 	}
+}
+
+//---------------------------------------------------------------------------------------
+
+void ShopBuilder_GUI::slotItemClicked(const QModelIndex & aItemIndex)	{
+	QString & strClickedItem = aItemIndex.data().toString();
+
+	PickAndDragHandlerShopEditor *pPickAndDragHandlerShopEditor = 		
+		dynamic_cast<PickAndDragHandlerShopEditor *>(m_pShopBuilder->m_pEventHandler);
+
+	SearchListController searchList(
+		strClickedItem,
+		pPickAndDragHandlerShopEditor,
+		m_pShopBuilder->getScene()
+	);
+	searchList.updateSearchListGUI();
 }
 
 //---------------------------------------------------------------------------------------

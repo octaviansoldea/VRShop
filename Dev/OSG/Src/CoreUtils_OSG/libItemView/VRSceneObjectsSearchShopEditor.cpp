@@ -1,6 +1,9 @@
 #include <iostream>
 #include "BasicStringDefinitions.h"
 
+#include "VRSceneStructureModel.h"
+
+#include "VRAbstractObject.h"
 #include "VRScene.h"
 
 #include "VRSceneObjectsSearchShopEditor.h"
@@ -10,8 +13,18 @@ using namespace std;
 
 //--------------------------------------------------------------------
 
-SceneObjectsSearchShopEditor::SceneObjectsSearchShopEditor(const string & astrSearchQuery, const Scene * apScene) :
-SceneObjectsSearch(astrSearchQuery,apScene) {
+SceneObjectsSearchShopEditor::SceneObjectsSearchShopEditor() : SceneObjectsSearch()	{
+}
+
+//--------------------------------------------------------------------
+
+SceneObjectsSearchShopEditor::SceneObjectsSearchShopEditor(const QString & aqstrSearchQuery, Scene * apScene) :
+SceneObjectsSearch(aqstrSearchQuery,apScene) {
+
+	connect(m_pSceneStructureModel,
+		SIGNAL(dataChanged(const QModelIndex &,const QModelIndex &)),
+		this, SLOT(slotChangeName(const QModelIndex &))
+	);
 }
 
 //--------------------------------------------------------------------
@@ -26,3 +39,14 @@ SceneStructureModel * SceneObjectsSearchShopEditor::getModel() const	{
 }
 
 //--------------------------------------------------------------------
+
+void SceneObjectsSearchShopEditor::slotChangeName(const QModelIndex & anIndex)	{
+	string & strPrevName = m_pSceneStructureModel->getPrevValue().toString().toStdString();
+	AbstractObject * pObject = dynamic_cast<AbstractObject*>(m_pScene->getChild(strPrevName));
+
+	if (!pObject)
+		return;
+
+	string & strNewName = anIndex.data().toString().toStdString();
+	pObject->setName(strNewName);
+}

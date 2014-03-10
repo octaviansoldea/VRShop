@@ -45,8 +45,11 @@ namespace VR	{
 
 		void setupDataElements(const QList <QString> & aarrstrSceneData, SceneStructureItem *apParent);
 
+		QVariant getPrevValue() const;
+
 	private:
 		SceneStructureItem * m_pRootItem;
+		QVariant m_PreviousValue;
 	};
 }
 #endif //VR_SCENE_STRUCTURE_MODEL_H

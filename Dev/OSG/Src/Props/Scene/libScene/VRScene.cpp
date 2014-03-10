@@ -24,6 +24,26 @@ Scene::~Scene()	{
 
 //=======================================================================
 
+Node * Scene::getChild(const string & astrChildName)	{
+	Node * pChild = 0;
+	if (astrChildName.empty())	{
+		return pChild;
+	}
+
+	NodeList::iterator it = _children.begin();
+	for (it; it != _children.end(); it++)	{
+		string strChild = it->get()->getName();
+		if (strChild == astrChildName)	{
+			pChild = dynamic_cast<Node*>(it->get());
+
+			return pChild;
+		}
+	}
+	return pChild;
+}
+
+//--------------------------------------------------------------
+
 void Scene::addElement(ref_ptr<Node> apElement)	{
 	addChild(apElement);
 }

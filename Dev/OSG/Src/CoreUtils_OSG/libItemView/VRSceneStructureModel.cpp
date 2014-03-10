@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include "VRSceneStructureModel.h"
 
 using namespace VR;
@@ -100,8 +98,8 @@ int SceneStructureModel::columnCount(const QModelIndex &parent) const	{
 //--------------------------------------------------------------------
 
 QVariant SceneStructureModel::data(const QModelIndex &index, int role) const	{
-    if (role != Qt::DisplayRole)
-        return QVariant();
+	if (role != Qt::DisplayRole && role != Qt::EditRole)
+		return QVariant();
 
 	//From the index number initialize an item
 	SceneStructureItem *item = static_cast<SceneStructureItem*>(index.internalPointer());
@@ -118,11 +116,11 @@ bool SceneStructureModel::setData(const QModelIndex& index, const QVariant& valu
 	}
 
 	SceneStructureItem * item = static_cast<SceneStructureItem*>(index.internalPointer());
-	QVariant prevValue = item->data();
+	m_PreviousValue = item->data();
 
 	item->setData(value);
 
-	if (prevValue != value)
+	if (m_PreviousValue != value)
 		emit dataChanged(index, index);
 
 	return true;
@@ -135,6 +133,12 @@ Qt::ItemFlags SceneStructureModel::flags(const QModelIndex& index) const {
 		return Qt::ItemIsEditable | QAbstractItemModel::flags(index);
 	else
 		return 0;
+}
+
+//--------------------------------------------------------------------
+
+QVariant SceneStructureModel::getPrevValue() const	{
+	return m_PreviousValue;
 }
 
 //--------------------------------------------------------------------

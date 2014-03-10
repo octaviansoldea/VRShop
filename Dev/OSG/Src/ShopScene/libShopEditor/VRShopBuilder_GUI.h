@@ -3,10 +3,6 @@
 
 #include <QMainWindow>
 
-#include <fstream>
-#include <ostream>
-
-
 #include "ui_VRShopBuilder_GUI.h"
 
 class ShopBuilder;
@@ -40,6 +36,7 @@ namespace VR	{
 		void slotCloseDB();
 
 		void slotSearchScene();
+		void slotItemClicked(const QModelIndex & aItemIndex);
 
 		void slotGridOnOff(bool abIndicator);
 		void slotCameraManipulatorOnOff(bool abIndicator);

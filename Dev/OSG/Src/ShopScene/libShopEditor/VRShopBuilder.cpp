@@ -4,12 +4,6 @@
 #include <QVariant>
 #include <QVBoxLayout>
 
-#include <QLineEdit>
-#include <QWidget>
-#include <QListView>
-#include <QToolButton>
-
-
 #include <osgDB/ReadFile>
 
 #include "OSGQT_Widget.h"
@@ -91,7 +85,7 @@ bool ShopBuilder::searchScene(const string & astrSearchTerm, SceneStructureModel
 	const string & strSearchTerm = astrSearchTerm;
 
 	SceneObjectsSearchShopEditor * pSceneObjectsSearchShopEditor = 
-		new SceneObjectsSearchShopEditor(strSearchTerm, m_pScene);
+		new SceneObjectsSearchShopEditor(strSearchTerm.c_str(), m_pScene);
 	
 	if (!pSceneObjectsSearchShopEditor->getModel())	{
 		delete pSceneObjectsSearchShopEditor;

@@ -8,12 +8,19 @@
 #include "VRSceneObjectsSearch.h"
 
 using namespace VR;
+using namespace osg;
 using namespace std;
 
 //--------------------------------------------------------------------
 
-SceneObjectsSearch::SceneObjectsSearch(const string & astrSearchQuery, const Scene * apScene)	{
-	setupSearchData(astrSearchQuery, apScene);
+SceneObjectsSearch::SceneObjectsSearch()	{
+}
+
+//--------------------------------------------------------------------
+
+SceneObjectsSearch::SceneObjectsSearch(const QString & aqstrSearchQuery, Scene * apScene)	{
+	m_pScene = apScene;
+	setupSearchData(aqstrSearchQuery);
 }
 
 //--------------------------------------------------------------------
@@ -30,17 +37,17 @@ SceneStructureModel * SceneObjectsSearch::getModel() const	{
 
 //--------------------------------------------------------------------
 
-void SceneObjectsSearch::setupSearchData(const std::string & astrSearchQuery, const Scene * apScene)	{
-	string strSearchQuery = astrSearchQuery;
-	vector<string> & strvecSearchQueries = splitString(strSearchQuery,",; ");
+void SceneObjectsSearch::setupSearchData(const QString & aqstrSearchQuery)	{
+	QString strSearchQuery = aqstrSearchQuery;
+//	vector<string> & strvecSearchQueries = splitString(strSearchQuery,",; ");
 
 	QList<QString> data;
 
-	int nI;	
-	for (nI=0;nI<apScene->getNumChildren(); nI++)	{
-		string strObjectName = apScene->getChild(nI)->getName();
-		if (isInString(strObjectName,astrSearchQuery))
-			data.push_back(strObjectName.c_str());
+	int nI;
+	for (nI=0;nI<m_pScene->getNumChildren(); nI++)	{
+		QString strObjectName = m_pScene->getChild(nI)->getName().c_str();
+		if (strObjectName.contains(strSearchQuery,Qt::CaseInsensitive))
+			data.push_back(strObjectName);
 	}
 
 	if (data.isEmpty())	{
@@ -48,8 +55,8 @@ void SceneObjectsSearch::setupSearchData(const std::string & astrSearchQuery, co
 		return;
 	}
 
-	SceneStructureModelParams * sP = new SceneStructureModelParams;
-	sP->data = data;
+	SceneStructureModelParams sP;
+	sP.data = data;
 
-	m_pSceneStructureModel = new SceneStructureModel(*sP);
+	m_pSceneStructureModel = new SceneStructureModel(sP);
 }

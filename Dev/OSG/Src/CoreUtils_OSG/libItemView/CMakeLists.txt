@@ -33,12 +33,14 @@ IF(Qt5_FOUND)
   )
   QT5_WRAP_CPP(MOC_SRCS 
 	VRSceneStructureModel.h
+	VRSceneObjectsSearchShopEditor.h
   )
 ELSE()
   QT4_WRAP_UI(UI_SRCS
   )
   QT4_WRAP_CPP(MOC_SRCS
 	VRSceneStructureModel.h
+	VRSceneObjectsSearchShopEditor.h
 )
 ENDIF()
 
@@ -50,7 +52,7 @@ INCLUDE_DIRECTORIES(
 	${CMAKE_SOURCE_DIR}/Props/Scene/libScene
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_OSG
     ${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
-#	${CMAKE_BINARY_DIR}/ShopScene/libShopEditor
+	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libPicker
 )
 
 #Define sources to be later added into the library

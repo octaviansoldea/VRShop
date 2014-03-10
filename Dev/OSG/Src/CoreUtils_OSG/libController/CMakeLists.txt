@@ -33,11 +33,13 @@ IF(Qt5_FOUND)
    QT5_WRAP_CPP(MOC_SRCS
    VRCameraController.h
    VRPickAndDragController.h
+   VRSearchListController.h
    )
 ELSE()
   QT4_WRAP_CPP(MOC_SRCS
   VRCameraController.h
   VRPickAndDragController.h
+  VRSearchListController.h
   )
 ENDIF()
 
@@ -53,6 +55,7 @@ INCLUDE_DIRECTORIES(
 SET(SRCS
 	VRCameraController.h VRCameraController.cpp
 	VRPickAndDragController.h VRPickAndDragController.cpp
+	VRSearchListController.h VRSearchListController.cpp
 )
 
 ADD_LIBRARY(libController

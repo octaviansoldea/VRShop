@@ -3,17 +3,24 @@
 
 #include "VRSceneObjectsSearch.h"
 
+#include <QObject>
+
 namespace VR	{
-	class SceneObjectsSearchShopEditor : SceneObjectsSearch	{
+	class AbstractObject;
+
+	class SceneObjectsSearchShopEditor : public QObject, public SceneObjectsSearch	{
+		Q_OBJECT
 
 	public:
-		SceneObjectsSearchShopEditor(const std::string & astrSearchQuery, const Scene * apScene);
+		SceneObjectsSearchShopEditor();
+		SceneObjectsSearchShopEditor(const QString & aqstrSearchQuery, Scene * apScene);
 
 		~SceneObjectsSearchShopEditor();
 
 		virtual SceneStructureModel * getModel() const;
 
-//		void 
+	public slots:
+		void slotChangeName(const QModelIndex & anIndex);
 	};
 }
 #endif //VR_SCENE_OBJECTS_SEARCH_SHOP_EDITOR_H

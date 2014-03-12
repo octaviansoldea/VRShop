@@ -15,6 +15,7 @@ int Scene::m_nIteration = 0;
 //--------------------------------------------------------------
 
 Scene::Scene()	{
+	setName("Scene");
 }
 
 //--------------------------------------------------------------
@@ -23,6 +24,12 @@ Scene::~Scene()	{
 }
 
 //=======================================================================
+
+const char* Scene::className() const	{
+	return "Scene";
+}
+
+//-----------------------------------------------------------------------
 
 Node * Scene::getChild(const string & astrChildName)	{
 	Node * pChild = 0;
@@ -46,25 +53,52 @@ Node * Scene::getChild(const string & astrChildName)	{
 
 void Scene::addElement(ref_ptr<Node> apElement)	{
 	addChild(apElement);
+	setSceneHierarchy();
 }
 
 //--------------------------------------------------------------
 
 void Scene::removeElement(ref_ptr<Node> apElement)	{
 	removeChild(apElement);
+	setSceneHierarchy();
 }
 
 //--------------------------------------------------------------
 
 void Scene::clearScene()	{
 	removeChildren(0,getNumChildren());
+	setSceneHierarchy();
 }
 
 //--------------------------------------------------------------
 
+void Scene::setSceneHierarchy()	{
+	if (getNumChildren() == 0)	
+		return;
+
+	m_vecstrSceneHierarchy.clear();
+
+	NodeList::iterator it = _children.begin();
+	AbstractObject * pObject = 0;
+	for (it; it != _children.end(); it++)	{
+		pObject = dynamic_cast<AbstractObject*>(it->get());
+		if (pObject != 0)
+			pObject->writeObjectHierarchy(m_vecstrSceneHierarchy);
+	}
+}
+
+//--------------------------------------------------------------
+
+vector<string> Scene::getSceneHierarchy()	{
+	return m_vecstrSceneHierarchy;
+}
+
+
+//==============================================================
+
 void Scene::print()	{
 
-	string strFileName = string("C:/Projekti/VRShop/Dev/OSG/Log/" + itostr(m_nIteration) + string(".txt"));
+	string strFileName = string("../../../Log/" + itostr(m_nIteration) + string(".txt"));
 	ofstream output(strFileName);
 
 	int nI;
@@ -72,14 +106,17 @@ void Scene::print()	{
 	output << "SCENE" << endl;
 
 	output << "Scene objects by name: " << endl;
-	for (nI=0;nI<this->getNumChildren(); nI++)	{
-		output << this->getChild(nI)->getName() << endl;
+	NodeList::iterator it;
+	for (it = _children.begin(); it != _children.end(); it++)	{
+		output << "Parent: " << it->get()->getParent(0)->getName()
+			<< "; Class Name:" << it->get()->className() << "; Object Name: " <<it->get()->getName() << endl;
 	}
 
 	output << "========================================================" << endl;
 
 	ref_ptr<VR::AbstractObject> pObject;
-	for (nI = 2; nI < this->getNumChildren(); nI++)	{
+	for (it = _children.begin() + 2; it != _children.end(); it++)	{
+		nI = it - _children.begin();
 		pObject = dynamic_cast<VR::AbstractObject*>(this->getChild(nI));
 		pObject->print(output);
 	}

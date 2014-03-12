@@ -8,6 +8,7 @@
 class ShopBuilder;
 class CameraController;
 class PickAndDragController;
+class SceneHierarchy;
 class Grid;
 
 namespace VR	{

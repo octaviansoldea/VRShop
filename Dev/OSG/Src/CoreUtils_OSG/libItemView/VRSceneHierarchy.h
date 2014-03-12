@@ -2,6 +2,9 @@
 
 FURNITURE
 	CUPBOARD
+		Cup1
+		Cup2
+		Cup3
 	CONTAINER
 GEOMETRIC SHAPE
 AGENTS
@@ -10,45 +13,23 @@ AGENTS
 #ifndef VR_SCENE_HIERARCHY_H
 #define VR_SCENE_HIERARCHY_H
 
-#include <osg/Node>
-#include <osg/Group>
-
 #include <QString>
 #include <QList>
-#include <vector>
+
+#include "VRScene.h"
 
 namespace VR	{
-	class SceneHierarchyItem : public osg::Node	{
+	class SceneHierarchy : public Scene	{
 	public:
-		SceneHierarchyItem(const osg::ref_ptr<osg::Node> apNode);
+		SceneHierarchy();
 
-		SceneHierarchyItem * getParent();
-		SceneHierarchyItem * getChild(int anChildNumber);
-
-		std::vector < osg::ref_ptr<SceneHierarchyItem> > getChildren() const;
-
-		int sizeParent() const;
-
-	private:
-		std::vector < osg::ref_ptr<SceneHierarchyItem> > m_pvecChildren;
-		osg::ref_ptr<SceneHierarchyItem> m_pParent;
-	};
-
-
-	class SceneHierarchy	{
-	public:
-		SceneHierarchy(const osg::ref_ptr<osg::Group> apScene);
-
-		void setSceneHierarchy(const std::vector < osg::ref_ptr<SceneHierarchyItem> > apSceneItems);
+		void setSceneHierarchy();
 		QList < QString > getSceneHierarchy() const;
 
-	private:
-		QList < QString > m_lstqstrSceneHierarchy;
-		SceneHierarchyItem * m_pSceneHierarchyItem;
+		void updateHierarchy();
 
-		std::string m_strIndent;
-		void setIndent(int anLevel);
-		std::string getIndent() const;	
+	private:
+		QList<QString> m_vecstrSceneHierarchy;
 	};
 }
 #endif //VR_SCENE_HIERARCHY_H

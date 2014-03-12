@@ -10,6 +10,7 @@
 
 using namespace VR;
 using namespace std;
+using namespace osg;
 
 //--------------------------------------------------------------------
 
@@ -42,7 +43,8 @@ SceneStructureModel * SceneObjectsSearchShopEditor::getModel() const	{
 
 void SceneObjectsSearchShopEditor::slotChangeName(const QModelIndex & anIndex)	{
 	string & strPrevName = m_pSceneStructureModel->getPrevValue().toString().toStdString();
-	AbstractObject * pObject = dynamic_cast<AbstractObject*>(m_pScene->getChild(strPrevName));
+//	AbstractObject * pObject = dynamic_cast<AbstractObject*>(m_pScene->getChild(strPrevName));
+	Node * pObject = dynamic_cast<Node*>(m_pScene->getChild(strPrevName));
 
 	if (!pObject)
 		return;

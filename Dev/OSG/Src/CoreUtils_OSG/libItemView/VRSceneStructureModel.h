@@ -25,7 +25,6 @@ namespace VR	{
 		Q_OBJECT
 
 	public:
-		SceneStructureModel();
 		SceneStructureModel(const SceneStructureModelParams & aSceneStructureModelParams);
 		~SceneStructureModel();
 

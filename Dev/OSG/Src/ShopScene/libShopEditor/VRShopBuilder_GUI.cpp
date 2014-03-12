@@ -39,7 +39,7 @@ ShopBuilder_GUI::ShopBuilder_GUI()	{
 
 	setWindowTitle("VR Shop Server Dialog");
 
-	m_pShopBuilder = new ShopBuilder(m_pOSGQTWidget);
+	m_pShopBuilder = new ShopBuilder(m_pOSGQTWidget, m_pTreeView);
 	ref_ptr<Scene> pScene = m_pShopBuilder->getScene();
 
 	KeyboardMouseManipulatorShopEditor * pKeyboardMouseManipulatorShopEditor = 
@@ -94,6 +94,7 @@ ShopBuilder_GUI::ShopBuilder_GUI()	{
 		m_p_PushButton_ModifyScene_GroupItems,
 		pPickAndDragHandlerShopEditor,
 		pScene);
+
 
 	m_pOSGQTWidget->show();
 

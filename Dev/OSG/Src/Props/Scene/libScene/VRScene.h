@@ -3,6 +3,8 @@
 
 #include <osg/Group>
 
+#include <string>
+
 namespace VR	{
 
 	class AbstractObject;
@@ -12,19 +14,24 @@ namespace VR	{
 		Scene();
 		~Scene();
 
-		Node * getChild(const std::string & astrChildName);
-        /** Return child node at position i. */
-        inline Node* getChild( unsigned  int i ) { return _children[i].get(); }
+		virtual const char* className() const;
 
-        /** Return child node at position i. */
+		Node * getChild(const std::string & astrChildName);
+        inline Node* getChild( unsigned  int i ) { return _children[i].get(); }
         inline const Node* getChild( unsigned  int i ) const { return _children[i].get(); }
 
 		void addElement(osg::ref_ptr<osg::Node> apElement);
 		void removeElement(osg::ref_ptr<osg::Node> apElement);
 		void clearScene();
 
+		void setSceneHierarchy();
+		std::vector<std::string> getSceneHierarchy();
+
 		void print();
 		static int m_nIteration;
+
+	private:
+		std::vector<std::string> m_vecstrSceneHierarchy;
 	};
 }
 #endif //VR_SCENE_H

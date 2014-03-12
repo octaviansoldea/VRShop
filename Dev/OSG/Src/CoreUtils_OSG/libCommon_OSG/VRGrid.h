@@ -19,6 +19,8 @@ namespace VR {
 			Grid();
 			Grid(const GridParams & aGridParams);
 
+			virtual const char* className() const;
+
 		private:
 			void init(const GridParams & aGridParams);
 			

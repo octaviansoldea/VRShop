@@ -35,3 +35,9 @@ AbstractObject(ags,copyop)	{
 
 AbstractGeomShape::~AbstractGeomShape()	{
 }
+
+//--------------------------------------------------------------------------
+
+const char* AbstractGeomShape::className() const	{
+	return "AbstractGeomShape";
+};

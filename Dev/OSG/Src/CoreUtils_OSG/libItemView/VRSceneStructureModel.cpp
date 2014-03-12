@@ -10,11 +10,6 @@ parent(0), aqvarRootHeader(QModelIndex())	{
 
 //--------------------------------------------------------------------
 
-SceneStructureModel::SceneStructureModel()	{
-}
-
-//--------------------------------------------------------------------
-
 SceneStructureModel::SceneStructureModel(const SceneStructureModelParams & aSceneStructureModelParams)
 	: QAbstractItemModel(aSceneStructureModelParams.parent)	{
 
@@ -165,8 +160,7 @@ void SceneStructureModel::setupDataElements(const QList <QString> & aarrstrScene
 			//The last child of the current parent is new parent
 			parents.push_back(parents.last()->child(parents.last()->childCount()-1));
 			lstnLayer.push_back(int(nPos / 2));
-		}
-		else {
+		} else {
 			//Iterate back to find adequate parent in the layer
 			while (int(nPos / 2) < lstnLayer.last() && parents.count() > 0) {
 				parents.pop_back();
@@ -176,6 +170,7 @@ void SceneStructureModel::setupDataElements(const QList <QString> & aarrstrScene
 
 		// new item is in any case a child
 		int size =  parents.size();
+
 		SceneStructureItem * item = new SceneStructureItem(strElementDataLine.c_str(), parents[size-1]);
 		parents[size-1]->insertChild(item);
 

@@ -179,6 +179,25 @@ bool AbstractObject::getIsTargetPick() const	{
 
 //--------------------------------------------------------------------------
 
+void AbstractObject::writeObjectHierarchy(std::vector<std::string> &avecstrHierarchy)	{
+	avecstrHierarchy.push_back(getName());
+	
+	AbstractObject * pAO = dynamic_cast<AbstractObject*>(this);
+
+	NodeList::iterator it = pAO->_children.begin();
+	for (it; it != pAO->_children.end(); it++)	{
+		string strName = it->get()->getName();
+		if (strName.empty())	{
+			break;
+		} else {
+			strName = string(2,' ') + strName;
+			avecstrHierarchy.push_back(strName);
+		}
+	}
+}
+
+//--------------------------------------------------------------------------
+
 void AbstractObject::print(std::ostream & os) const	{
 	os << "Object name: " << getName() << endl;
 	int nI, nJ;
@@ -196,12 +215,6 @@ void AbstractObject::print(std::ostream & os) const	{
 			os << calculateMatrix()(nI,nJ) << " ";
 		}
 		os << endl;
-	}
-	os << endl;
-
-	os << "getPosition()" << endl;
-	for (nI=0;nI<3;nI++)	{
-		os << getPosition()[nI] << " ";
 	}
 	os << endl;
 

@@ -17,7 +17,7 @@ namespace VR {
 		AbstractGeomShape(AbstractGeomShapeParams * apAbstractGeomShapeParams);
 		AbstractGeomShape(const AbstractGeomShape& ags,const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY);
 
-		virtual const char* className() const {return "AbstractGeomShape";};
+		virtual const char* className() const;
 
 		virtual ~AbstractGeomShape() = 0;
 

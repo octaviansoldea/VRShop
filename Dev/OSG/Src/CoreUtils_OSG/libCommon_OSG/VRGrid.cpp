@@ -31,6 +31,12 @@ VR::Grid::Grid(const GridParams & aGridParams)	{
 
 //-----------------------------------------------------------
 
+const char* VR::Grid::className() const	{
+	return "Grid";
+}
+
+//-----------------------------------------------------------
+
 void VR::Grid::init(const GridParams & aGridParams)	{
 	Vec3d vec3dCenter(aGridParams.m_vec3dStartCenter);
 	int nNumColumns(aGridParams.m_nResLat);

@@ -57,6 +57,7 @@ namespace VR	{
 		virtual void setIsTargetPick(bool abIsTargetPick);
 		virtual bool getIsTargetPick() const;
 
+		virtual void writeObjectHierarchy(std::vector<std::string> &avecstrHierarchy);
 		virtual void print(std::ostream & os) const;
 
 	private:

@@ -4,6 +4,25 @@
 #include "Log.h"
 #include "time.h"
 
+using namespace std;
+
+std::string getLogFile() {
+	static int m_nIteration = 0;
+	static string strFileName = "../../../Log/log";
+	if(m_nIteration == 0) {
+		time_t long_time;
+		time( &long_time );                
+		struct tm *pt = localtime( &long_time ); 
+
+		std::ostringstream stream;
+		stream<<"AT-"<<pt->tm_hour<<'-'<<pt->tm_min<<'-'<<pt->tm_sec<<'-'<<pt->tm_year+1900<<'-'<<pt->tm_mon+1<<'-'<<pt->tm_mday;
+		strFileName=strFileName + stream.str() + ".txt";
+	}
+
+	m_nIteration++;
+	return(strFileName);
+}
+
 
 void FileLogImpl::AddTimeStamp(std::string& LogStr)
 {

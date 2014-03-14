@@ -26,7 +26,7 @@
 //	return _log_level;
 //}
 
-
+std::string getLogFile();
 
 class GeneralLogControl //Base class of any specific log control class,providing basic controls
 	{

@@ -200,6 +200,7 @@ void AbstractObject::writeObjectHierarchy(vector<string> &avecstrHierarchy)	{
 //--------------------------------------------------------------------------
 
 void AbstractObject::print(std::ostream & os) const	{
+	os << "========================================Begin AbstractObject" << endl;
 	os << "Object name: " << getName() << endl;
 	int nI, nJ;
 	os << "GetMatrix()" << endl;
@@ -221,5 +222,5 @@ void AbstractObject::print(std::ostream & os) const	{
 
 	os << "Child index: " << getChildIndex(this) << endl;
 
-	os << "========================================" << endl;
+	os << "========================================End AbstractObject" << endl;
 }

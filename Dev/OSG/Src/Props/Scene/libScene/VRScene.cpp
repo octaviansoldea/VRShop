@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "BasicStringDefinitions.h"
+#include "Log.h"
 
 #include "VRAbstractObject.h"
 #include "VRScene.h"
@@ -11,11 +12,10 @@ using namespace VR;
 using namespace osg;
 using namespace std;
 
-int Scene::m_nIteration = 0;
 
 //--------------------------------------------------------------
 
-Scene::Scene()	{
+Scene::Scene() : m_nIteration(0) {
 	setName("Scene");
 }
 
@@ -102,12 +102,13 @@ vector<string> Scene::getSceneHierarchy()	{
 
 void Scene::print()	{
 
-	string strFileName = string("../../../Log/" + itostr(m_nIteration) + string(".txt"));
-	ofstream output(strFileName);
+	string strFileName = getLogFile();
+	ofstream output(strFileName, ios::app);
+	output << "========================================================Begin Scene" << endl;
 
 	int nI;
 
-	output << "SCENE" << endl;
+	output << "SCENE at iteration " << m_nIteration << endl;
 
 	output << "Scene objects by name: " << endl;
 	NodeList::iterator it;
@@ -116,7 +117,7 @@ void Scene::print()	{
 			<< "; Class Name:" << it->get()->className() << "; Object Name: " <<it->get()->getName() << endl;
 	}
 
-	output << "========================================================" << endl;
+	
 
 	ref_ptr<VR::AbstractObject> pObject;
 	for (it = _children.begin() + 2; it != _children.end(); it++)	{
@@ -124,9 +125,11 @@ void Scene::print()	{
 		pObject = dynamic_cast<VR::AbstractObject*>(this->getChild(nI));
 		pObject->print(output);
 	}
+	output << "========================================================End Scene" << endl;
 
 	output.close();
 	m_nIteration++;
+	
 }
 
 //----------------------------------------------------------------------

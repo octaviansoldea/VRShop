@@ -28,10 +28,9 @@ namespace VR	{
 		void updateSceneHierarchy() {};
 		std::vector<std::string> getSceneHierarchy();
 
-		void print();
-		static int m_nIteration;
-
-	private:
+		virtual void print();
+private:
+		int m_nIteration;
 		std::vector<std::string> m_vecstrSceneHierarchy;
 	};
 }

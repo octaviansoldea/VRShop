@@ -27,6 +27,7 @@
 //}
 
 std::string getLogFile();
+void CreateLogFile();
 
 class GeneralLogControl //Base class of any specific log control class,providing basic controls
 	{

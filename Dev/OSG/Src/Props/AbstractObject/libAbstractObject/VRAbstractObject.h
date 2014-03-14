@@ -26,8 +26,7 @@ namespace VR	{
 
 	class AbstractObject : public osg::MatrixTransform	{
 	public:
-		AbstractObject();
-		AbstractObject(AbstractObjectParams * apAbstractObjectParams = 0);
+		AbstractObject(const AbstractObjectParams & aAbstractObjectParams);
 		AbstractObject(const AbstractObject& ao,const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY);
 
 		virtual ~AbstractObject() = 0;
@@ -60,12 +59,26 @@ namespace VR	{
 		virtual void writeObjectHierarchy(std::vector<std::string> &avecstrHierarchy);
 		virtual void print(std::ostream & os) const;
 
+	protected:
+		virtual void setParams(const AbstractObjectParams & aAbstractObjectParams);
+		virtual void getParams(AbstractObjectParams & aAbstractObjectParams) const;
+
 	private:
 		bool m_bIsTargetPick;
 		static std::string m_strSQLFormat;
 
 	protected:
-		AbstractObjectParams * m_pAbstractObjectParams;
+		float m_flPosX;
+		float m_flPosY;
+		float m_flPosZ;
+
+		float m_flLenX;
+		float m_flLenY;
+		float m_flLenZ;
+
+		float m_flAngleYZ;
+		float m_flAngleXZ;
+		float m_flAngleXY;
 	};
 }
 #endif //VR_ABSTRACT_OBJECT_H

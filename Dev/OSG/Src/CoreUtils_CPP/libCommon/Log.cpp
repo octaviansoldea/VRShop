@@ -15,12 +15,20 @@ std::string getLogFile() {
 		struct tm *pt = localtime( &long_time ); 
 
 		std::ostringstream stream;
-		stream<<"AT-"<<pt->tm_hour<<'-'<<pt->tm_min<<'-'<<pt->tm_sec<<'-'<<pt->tm_year+1900<<'-'<<pt->tm_mon+1<<'-'<<pt->tm_mday;
+		stream<<"AT-"//<<pt->tm_hour<<'-'<<pt->tm_min<<'-'<<pt->tm_sec<<'-'<<pt->tm_year+1900<<'-'<<pt->tm_mon+1<<'-'<<pt->tm_mday
+			;
 		strFileName=strFileName + stream.str() + ".txt";
 	}
 
 	m_nIteration++;
 	return(strFileName);
+}
+
+void CreateLogFile() {
+	string strFileName = getLogFile();
+	ofstream output;
+	output.open(strFileName);
+	output.close();
 }
 
 

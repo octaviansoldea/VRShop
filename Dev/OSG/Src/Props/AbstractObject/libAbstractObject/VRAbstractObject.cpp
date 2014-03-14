@@ -32,30 +32,24 @@ AbstractObjectParams::~AbstractObjectParams()	{
 
 //==============================================================
 
-AbstractObject::AbstractObject() : MatrixTransform()	{
-}
-
-//--------------------------------------------------------------
-
-AbstractObject::AbstractObject(AbstractObjectParams * apAbstractObjectParams) : m_bIsTargetPick(false),MatrixTransform()	{
-	if(apAbstractObjectParams == 0)
-		m_pAbstractObjectParams = new AbstractObjectParams;
-	else
-		m_pAbstractObjectParams = apAbstractObjectParams;
+AbstractObject::AbstractObject(const AbstractObjectParams & aAbstractObjectParams) :
+	MatrixTransform(), m_bIsTargetPick(false) {
+	setParams(aAbstractObjectParams);
 }
 
 //--------------------------------------------------------------
 
 AbstractObject::AbstractObject(const AbstractObject& ao,const CopyOp& copyop) :
-MatrixTransform(ao,copyop)	{
-	m_pAbstractObjectParams = ao.m_pAbstractObjectParams;
+MatrixTransform(ao,copyop) {
+	AbstractObjectParams aop;
+	ao.getParams(aop);
+	setParams(aop);
 	m_bIsTargetPick = ao.m_bIsTargetPick;
 }
 
 //--------------------------------------------------------------
 
-AbstractObject::~AbstractObject()	{
-	delete m_pAbstractObjectParams;
+AbstractObject::~AbstractObject() {
 }
 
 //=======================================================================
@@ -223,4 +217,37 @@ void AbstractObject::print(std::ostream & os) const	{
 	os << "Child index: " << getChildIndex(this) << endl;
 
 	os << "========================================End AbstractObject" << endl;
+}
+
+//--------------------------------------------------------------------------
+
+void AbstractObject::setParams(const AbstractObjectParams & aAbstractObjectParams) {
+	m_flPosX = aAbstractObjectParams.m_flPosX;
+	m_flPosY = aAbstractObjectParams.m_flPosY;
+	m_flPosZ =aAbstractObjectParams.m_flPosZ;
+
+	m_flLenX =aAbstractObjectParams.m_flLenX;
+	m_flLenY =aAbstractObjectParams.m_flLenY;
+	m_flLenZ =aAbstractObjectParams.m_flLenZ;
+
+	m_flAngleYZ =aAbstractObjectParams.m_flAngleXZ;
+	m_flAngleXZ =aAbstractObjectParams.m_flAngleXY;
+	m_flAngleYZ =aAbstractObjectParams.m_flAngleYZ;
+}
+
+//--------------------------------------------------------------------------
+
+void AbstractObject::getParams(AbstractObjectParams & aAbstractObjectParams) const {
+	
+	aAbstractObjectParams.m_flPosX = m_flPosX;
+	aAbstractObjectParams.m_flPosY = m_flPosY;
+	aAbstractObjectParams.m_flPosZ = m_flPosZ;
+
+	aAbstractObjectParams.m_flLenX = m_flLenX;
+	aAbstractObjectParams.m_flLenY = m_flLenY;
+	aAbstractObjectParams.m_flLenZ = m_flLenZ;
+
+	aAbstractObjectParams.m_flAngleXZ = m_flAngleYZ;
+	aAbstractObjectParams.m_flAngleXY = m_flAngleXZ;
+	aAbstractObjectParams.m_flAngleYZ = m_flAngleYZ;
 }

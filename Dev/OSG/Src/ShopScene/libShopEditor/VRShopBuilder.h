@@ -5,14 +5,12 @@
 
 #include <osgGA/GUIEventHandler>
 
-#include "VRSceneHierarchy.h"
-
 class OSGQT_Widget;
 class Grid;
 
 namespace VR	{
 	class Scene;
-	class SceneStructureModel;
+	class DataStructureModel;
 
 	struct ShopBuilder {
 		ShopBuilder();
@@ -26,7 +24,7 @@ namespace VR	{
 		void readDB(const std::string & astrDBFileName);
 		void saveDB(const std::string & astrDBFileName);
 
-		bool searchScene(const std::string & astrSearchTerm, SceneStructureModel ** appSceneStructureModel);
+		bool searchScene(const std::string & astrSearchTerm, DataStructureModel ** appDataStructureModel);
 		bool setTreeStructure();
 
 		osg::ref_ptr<Scene> getScene() const;
@@ -40,7 +38,7 @@ namespace VR	{
 
 		OSGQT_Widget * m_pOSGQTWidget;
 		QTreeView * m_pQTreeView;
-		SceneStructureModel * m_pSceneStructureModel;
+		DataStructureModel * m_pDataStructureModel;
 		osg::ref_ptr<Scene> m_pScene;
 	};
 }

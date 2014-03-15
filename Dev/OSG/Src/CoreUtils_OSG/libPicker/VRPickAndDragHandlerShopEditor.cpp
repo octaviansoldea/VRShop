@@ -200,10 +200,10 @@ void PickAndDragHandlerShopEditor::groupSelection(ref_ptr<Scene> apScene)	{
 	for (it; it != m_pvecPickedObjects.end(); it++)	{
 		it->get()->setIsTargetPick(false);
 		pGroupedObject->addChild(*it);
-		apScene->removeElement(*it);
+		apScene->removeChild(*it);
 	}
 	pGroupedObject->setIsTargetPick(true);
-	apScene->addElement(pGroupedObject.get());
+	apScene->addChild(pGroupedObject.get());
 
 	clearList();
 }
@@ -229,7 +229,7 @@ void PickAndDragHandlerShopEditor::splitSelection(ref_ptr<Scene> apScene)	{
 		vec3dRot = it->get()->getRotation();
 		vec3dLen = it->get()->getScaling();
 
-		apScene->removeElement(*it);
+		apScene->removeChild(*it);
 		int nI;
 		for (nI=0;nI<it->get()->getNumChildren(); nI++)	{
 			pAbstractObject = dynamic_cast<AbstractObject *>(it->get()->getChild(nI));
@@ -246,7 +246,7 @@ void PickAndDragHandlerShopEditor::splitSelection(ref_ptr<Scene> apScene)	{
 			pAbstractObject->setMatrix(mtrxItem);
 
 			pAbstractObject->setIsTargetPick(true);
-			apScene->addElement(pAbstractObject);
+			apScene->addChild(pAbstractObject);
 		}
 	}
 	clearList();
@@ -293,7 +293,7 @@ void PickAndDragHandlerShopEditor::duplicateSelection(ref_ptr<Scene> apScene)	{
 	for (it; it != m_pvecPickedObjects.end(); it++)	{
 		//An open issue with the matrix
 		pObject = dynamic_cast<AbstractObject*>(it->get()->clone(CopyOp::DEEP_COPY_ALL));
-		apScene->addElement(pObject);
+		apScene->addChild(pObject);
 	}
 	clearList();
 	delete pDuplicateItem_GUI;
@@ -308,8 +308,8 @@ void PickAndDragHandlerShopEditor::removeSelection(ref_ptr<Scene> apScene)	{
 	}
 
 	//If selection not empty, open the dialog
-	RemoveSelection_GUI * pRemoveSelection_GUI = new RemoveSelection_GUI;
-	pRemoveSelection_GUI->setWindowFlags(Qt::FramelessWindowHint);
+	RemoveSelection_GUI removeSelection_GUI;
+	removeSelection_GUI.setWindowFlags(Qt::FramelessWindowHint);
 
 	QStringListModel * pModel = new QStringListModel();
 	QStringList list;
@@ -320,21 +320,19 @@ void PickAndDragHandlerShopEditor::removeSelection(ref_ptr<Scene> apScene)	{
 	}
 
 	pModel->setStringList(list);
-	pRemoveSelection_GUI->m_pListView->setModel(pModel);
+	removeSelection_GUI.m_pListView->setModel(pModel);
 
-	bool bRes = pRemoveSelection_GUI->exec();
+	bool bRes = removeSelection_GUI.exec();
 	if (bRes == 0)	{
 		clearList();
-		delete pRemoveSelection_GUI;
 		delete pModel;
 		return;
 	}
 
 	for (it = m_pvecPickedObjects.begin(); it != m_pvecPickedObjects.end(); it++)	{
-		apScene->removeElement(*it);
+		apScene->removeChild(*it);
 	}
 	clearList();
-	delete pRemoveSelection_GUI;
 	delete pModel;
 }
 

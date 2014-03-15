@@ -4,7 +4,7 @@
 #include <QString>
 
 namespace VR	{
-	class SceneStructureModel;
+	class DataStructureModel;
 	class Scene;
 
 	class SceneObjectsSearch	{
@@ -14,10 +14,10 @@ namespace VR	{
 		SceneObjectsSearch(const QString & aqstrSearchQuery, Scene * apScene);
 		virtual ~SceneObjectsSearch();
 
-		virtual SceneStructureModel * getModel() const;
+		virtual DataStructureModel * getModel() const;
 
 	protected:
-		SceneStructureModel * m_pSceneStructureModel;
+		DataStructureModel * m_pDataStructureModel;
 		Scene * m_pScene;
 
 	private:

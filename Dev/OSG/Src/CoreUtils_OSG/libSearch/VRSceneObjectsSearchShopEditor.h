@@ -17,7 +17,7 @@ namespace VR	{
 
 		~SceneObjectsSearchShopEditor();
 
-		virtual SceneStructureModel * getModel() const;
+		virtual DataStructureModel * getModel() const;
 
 	public slots:
 		void slotChangeName(const QModelIndex & anIndex);

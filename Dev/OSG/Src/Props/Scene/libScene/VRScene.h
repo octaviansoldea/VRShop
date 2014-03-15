@@ -20,11 +20,12 @@ namespace VR	{
         inline Node* getChild( unsigned  int i ) { return _children[i].get(); }
         inline const Node* getChild( unsigned  int i ) const { return _children[i].get(); }
 
-		void addElement(osg::ref_ptr<osg::Node> apElement);
-		void removeElement(osg::ref_ptr<osg::Node> apElement);
+		virtual bool addChild(Node *child);
+		virtual bool removeChild(Node *child);
 		void clearScene();
 
 		void setSceneHierarchy();
+		void updateSceneHierarchy() {};
 		std::vector<std::string> getSceneHierarchy();
 
 		void print();

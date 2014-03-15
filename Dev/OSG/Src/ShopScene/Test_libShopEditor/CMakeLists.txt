@@ -32,7 +32,8 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_OSG
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCamera
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libPicker
-  ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libItemView
+  ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libItemModel
+  ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libSearch
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCameraController
   ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor
   ${CMAKE_BINARY_DIR}/ShopScene/libShopEditor
@@ -59,7 +60,8 @@ SET(LIBS_COMMON
 	libShopEditor
 	libCommon
 	libCommon_OSG
-	libItemView
+	libItemModel
+	libSearch
 	libCamera
 	libPicker
 	libController

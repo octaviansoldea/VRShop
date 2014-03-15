@@ -1,4 +1,4 @@
-PROJECT(libItemView)
+PROJECT(libSearch)
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
 SET(CMAKE_DEBUG_POSTFIX "D")
@@ -32,14 +32,12 @@ IF(Qt5_FOUND)
   QT5_WRAP_UI(UI_SRCS
   )
   QT5_WRAP_CPP(MOC_SRCS 
-	VRSceneStructureModel.h
 	VRSceneObjectsSearchShopEditor.h
   )
 ELSE()
   QT4_WRAP_UI(UI_SRCS
   )
   QT4_WRAP_CPP(MOC_SRCS
-	VRSceneStructureModel.h
 	VRSceneObjectsSearchShopEditor.h
 )
 ENDIF()
@@ -53,19 +51,17 @@ INCLUDE_DIRECTORIES(
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_OSG
     ${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libPicker
+	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libItemModel	
 )
 
 #Define sources to be later added into the library
 SET(SRCS
-	VRSceneHierarchy.h VRSceneHierarchy.cpp
 	VRSceneObjectsSearch.h VRSceneObjectsSearch.cpp
-	VRSceneStructureItem.h VRSceneStructureItem.cpp
-	VRSceneStructureModel.h VRSceneStructureModel.cpp
 	VRSceneObjectsSearchShopEditor.h VRSceneObjectsSearchShopEditor.cpp
 )
 
-ADD_LIBRARY(libItemView
+ADD_LIBRARY(libSearch
   ${SRCS} ${MOC_SRCS}
 )
 
-SET_PROPERTY(TARGET libItemView PROPERTY FOLDER Utils)
+SET_PROPERTY(TARGET libSearch PROPERTY FOLDER Utils)

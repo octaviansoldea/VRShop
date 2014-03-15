@@ -1,5 +1,5 @@
-#ifndef VR_SCENE_STRUCTURE_MODEL_H
-#define VR_SCENE_STRUCTURE_MODEL_H
+#ifndef VR_DATA_STRUCTURE_MODEL_H
+#define VR_DATA_STRUCTURE_MODEL_H
 
 #include <QAbstractItemModel>
 #include <QModelIndex>
@@ -8,25 +8,25 @@
 #include <vector>
 #include <string>
 
-#include "VRSceneStructureItem.h"
+#include "VRDataStructureItem.h"
 
 
 namespace VR	{
 
-	struct SceneStructureModelParams	{
+	struct DataStructureModelParams	{
 		QList <QString> data;
 		QVariant aqvarRootHeader;
 		QObject *parent;
-		SceneStructureModelParams();
+		DataStructureModelParams();
 	};
 
-	class SceneStructureModel : public QAbstractItemModel {
+	class DataStructureModel : public QAbstractItemModel {
 
 		Q_OBJECT
 
 	public:
-		SceneStructureModel(const SceneStructureModelParams & aSceneStructureModelParams);
-		~SceneStructureModel();
+		DataStructureModel(const DataStructureModelParams & aDataStructureModelParams);
+		~DataStructureModel();
 
 		virtual QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
 		virtual QModelIndex parent(const QModelIndex &index) const;
@@ -42,13 +42,13 @@ namespace VR	{
 		virtual bool setData(const QModelIndex& index, const QVariant& value,int role = Qt::EditRole);
 		virtual Qt::ItemFlags flags(const QModelIndex& index) const;
 
-		void setupDataElements(const QList <QString> & aarrstrSceneData, SceneStructureItem *apParent);
+		void setupDataElements(const QList <QString> & aarrstrSceneData, DataStructureItem *apParent);
 
 		QVariant getPrevValue() const;
 
 	private:
-		SceneStructureItem * m_pRootItem;
+		DataStructureItem * m_pRootItem;
 		QVariant m_PreviousValue;
 	};
 }
-#endif //VR_SCENE_STRUCTURE_MODEL_H
+#endif //VR_DATA_STRUCTURE_MODEL_H

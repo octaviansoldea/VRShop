@@ -3,7 +3,7 @@
 
 #include "VRScene.h"
 
-#include "VRSceneStructureModel.h"
+#include "VRDataStructureModel.h"
 
 #include "VRSceneObjectsSearch.h"
 
@@ -26,13 +26,13 @@ SceneObjectsSearch::SceneObjectsSearch(const QString & aqstrSearchQuery, Scene *
 //--------------------------------------------------------------------
 
 SceneObjectsSearch::~SceneObjectsSearch()	{
-	delete m_pSceneStructureModel;
+	delete m_pDataStructureModel;
 }
 
 //--------------------------------------------------------------------
 
-SceneStructureModel * SceneObjectsSearch::getModel() const	{
-	return m_pSceneStructureModel;
+DataStructureModel * SceneObjectsSearch::getModel() const	{
+	return m_pDataStructureModel;
 }
 
 //--------------------------------------------------------------------
@@ -51,12 +51,12 @@ void SceneObjectsSearch::setupSearchData(const QString & aqstrSearchQuery)	{
 	}
 
 	if (data.isEmpty())	{
-		m_pSceneStructureModel = 0;
+		m_pDataStructureModel = 0;
 		return;
 	}
 
-	SceneStructureModelParams sP;
+	DataStructureModelParams sP;
 	sP.data = data;
 
-	m_pSceneStructureModel = new SceneStructureModel(sP);
+	m_pDataStructureModel = new DataStructureModel(sP);
 }

@@ -34,12 +34,14 @@ IF(Qt5_FOUND)
    VRCameraController.h
    VRPickAndDragController.h
    VRSearchListController.h
+   VRSceneHierarchyController.h
    )
 ELSE()
   QT4_WRAP_CPP(MOC_SRCS
   VRCameraController.h
   VRPickAndDragController.h
   VRSearchListController.h
+  VRSceneHierarchyController.h
   )
 ENDIF()
 
@@ -56,6 +58,7 @@ SET(SRCS
 	VRCameraController.h VRCameraController.cpp
 	VRPickAndDragController.h VRPickAndDragController.cpp
 	VRSearchListController.h VRSearchListController.cpp
+	VRSceneHierarchyController.h VRSceneHierarchyController.cpp
 )
 
 ADD_LIBRARY(libController

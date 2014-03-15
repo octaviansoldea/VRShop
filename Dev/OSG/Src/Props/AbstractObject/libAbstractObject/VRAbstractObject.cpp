@@ -179,7 +179,8 @@ bool AbstractObject::getIsTargetPick() const	{
 
 //--------------------------------------------------------------------------
 
-void AbstractObject::writeObjectHierarchy(std::vector<std::string> &avecstrHierarchy)	{
+void AbstractObject::writeObjectHierarchy(vector<string> &avecstrHierarchy)	{
+	//Object name
 	avecstrHierarchy.push_back(getName());
 	
 	AbstractObject * pAO = dynamic_cast<AbstractObject*>(this);

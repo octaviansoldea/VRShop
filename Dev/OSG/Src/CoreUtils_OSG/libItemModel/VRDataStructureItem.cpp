@@ -1,45 +1,45 @@
 #include <iostream>
 
-#include "VRSceneStructureItem.h"
+#include "VRDataStructureItem.h"
 
 using namespace VR;
 using namespace std;
 
 //--------------------------------------------------------------------
 
-SceneStructureItem::SceneStructureItem(const QVariant & aarrData, SceneStructureItem *parent)	{
+DataStructureItem::DataStructureItem(const QVariant & aarrData, DataStructureItem *parent)	{
 	m_pParent = parent;
 	m_parrItemData = aarrData;
 }
 
 //--------------------------------------------------------------------
 
-SceneStructureItem::~SceneStructureItem()	{
+DataStructureItem::~DataStructureItem()	{
 	delete m_pParent;
 }
 
 //--------------------------------------------------------------------
 
-SceneStructureItem *SceneStructureItem::child(int row)	{
+DataStructureItem *DataStructureItem::child(int row)	{
 	return m_arrChildren[row];
 }
 
 //--------------------------------------------------------------------
 
-SceneStructureItem *SceneStructureItem::parent()	{	
+DataStructureItem *DataStructureItem::parent()	{	
 	return m_pParent;
 }
 
 //--------------------------------------------------------------------
 
-QVariant SceneStructureItem::data() const	{
+QVariant DataStructureItem::data() const	{
 	
 	return m_parrItemData;
 }
 
 //--------------------------------------------------------------------
 
-bool SceneStructureItem::setData(const QVariant &value)	{
+bool DataStructureItem::setData(const QVariant &value)	{
 	m_parrItemData = value;
 
 	return true;
@@ -47,22 +47,22 @@ bool SceneStructureItem::setData(const QVariant &value)	{
 
 //--------------------------------------------------------------------
 
-int SceneStructureItem::childCount() const	{
+int DataStructureItem::childCount() const	{
 	return m_arrChildren.size();
 }
 
 //--------------------------------------------------------------------
 
-int SceneStructureItem::row() const	{
+int DataStructureItem::row() const	{
 	if (m_pParent)
-		return m_pParent->m_arrChildren.indexOf(const_cast<SceneStructureItem*>(this));
+		return m_pParent->m_arrChildren.indexOf(const_cast<DataStructureItem*>(this));
 
 	return 0;
 }
 
 //--------------------------------------------------------------------
 
-void SceneStructureItem::insertChild(SceneStructureItem * apChild)	{
+void DataStructureItem::insertChild(DataStructureItem * apChild)	{
 	m_arrChildren.append(apChild);
 }
 

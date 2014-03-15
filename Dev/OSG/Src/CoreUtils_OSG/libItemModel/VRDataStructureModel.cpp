@@ -1,45 +1,45 @@
-#include "VRSceneStructureModel.h"
+#include "VRDataStructureModel.h"
 
 using namespace VR;
 using namespace std;
 
 
-SceneStructureModelParams::SceneStructureModelParams() : 
+DataStructureModelParams::DataStructureModelParams() : 
 parent(0), aqvarRootHeader(QModelIndex())	{
 }
 
 //--------------------------------------------------------------------
 
-SceneStructureModel::SceneStructureModel(const SceneStructureModelParams & aSceneStructureModelParams)
-	: QAbstractItemModel(aSceneStructureModelParams.parent)	{
+DataStructureModel::DataStructureModel(const DataStructureModelParams & aDataStructureModelParams)
+	: QAbstractItemModel(aDataStructureModelParams.parent)	{
 
-		QVariant arrqRootHeader = aSceneStructureModelParams.aqvarRootHeader;
+		QVariant arrqRootHeader = aDataStructureModelParams.aqvarRootHeader;
 
-		m_pRootItem = new SceneStructureItem(arrqRootHeader);
+		m_pRootItem = new DataStructureItem(arrqRootHeader);
 
-		setupDataElements(aSceneStructureModelParams.data, m_pRootItem);
+		setupDataElements(aDataStructureModelParams.data, m_pRootItem);
 }
 
 //--------------------------------------------------------------------
 
-SceneStructureModel::~SceneStructureModel()	{
+DataStructureModel::~DataStructureModel()	{
 	delete m_pRootItem;
 }
 
 //--------------------------------------------------------------------
 
-QModelIndex SceneStructureModel::index(int row, int column, const QModelIndex &parent) const	{
+QModelIndex DataStructureModel::index(int row, int column, const QModelIndex &parent) const	{
 	if(!m_pRootItem || row < 0 || column < 0)
 		return QModelIndex();
 
-	SceneStructureItem *parentItem;
+	DataStructureItem *parentItem;
 
 	if (parent == QModelIndex::QModelIndex())	//The root
-		parentItem = static_cast<SceneStructureItem*>(m_pRootItem);
+		parentItem = static_cast<DataStructureItem*>(m_pRootItem);
 	else
-		parentItem = static_cast<SceneStructureItem*>(parent.internalPointer());
+		parentItem = static_cast<DataStructureItem*>(parent.internalPointer());
 
-	SceneStructureItem *childItem = parentItem->child(row);
+	DataStructureItem *childItem = parentItem->child(row);
 	if (childItem)
 		return createIndex(row, 0, childItem);
 	else
@@ -48,12 +48,12 @@ QModelIndex SceneStructureModel::index(int row, int column, const QModelIndex &p
 
 //--------------------------------------------------------------------
 
-QModelIndex SceneStructureModel::parent(const QModelIndex &index) const	{
+QModelIndex DataStructureModel::parent(const QModelIndex &index) const	{
 	if (index == QModelIndex::QModelIndex())	//Root doesn't have a parent
 		return QModelIndex();
 
-	SceneStructureItem *childItem = static_cast<SceneStructureItem*>(index.internalPointer());
-	SceneStructureItem *parentItem = childItem->parent();
+	DataStructureItem *childItem = static_cast<DataStructureItem*>(index.internalPointer());
+	DataStructureItem *parentItem = childItem->parent();
 
 	if (parentItem == m_pRootItem)
 		return QModelIndex();
@@ -63,7 +63,7 @@ QModelIndex SceneStructureModel::parent(const QModelIndex &index) const	{
 
 //--------------------------------------------------------------------
 
-QVariant SceneStructureModel::headerData(int section, Qt::Orientation orientation, int role) const	{
+QVariant DataStructureModel::headerData(int section, Qt::Orientation orientation, int role) const	{
 	if (orientation == Qt::Horizontal && role == Qt::DisplayRole)	{
 		return m_pRootItem->data();
 	}
@@ -72,32 +72,32 @@ QVariant SceneStructureModel::headerData(int section, Qt::Orientation orientatio
 
 //--------------------------------------------------------------------
 
-int SceneStructureModel::rowCount(const QModelIndex &parent) const	{
+int DataStructureModel::rowCount(const QModelIndex &parent) const	{
 	//Rows equals to the number of children
-	SceneStructureItem *parentItem;
+	DataStructureItem *parentItem;
 
 	if (parent == QModelIndex::QModelIndex())	//Root
 		parentItem = m_pRootItem;
 	else
-		parentItem = static_cast<SceneStructureItem*>(parent.internalPointer());
+		parentItem = static_cast<DataStructureItem*>(parent.internalPointer());
 
 	return parentItem->childCount();
 }
 
 //--------------------------------------------------------------------
 
-int SceneStructureModel::columnCount(const QModelIndex &parent) const	{
+int DataStructureModel::columnCount(const QModelIndex &parent) const	{
 	return 1;
 }
 
 //--------------------------------------------------------------------
 
-QVariant SceneStructureModel::data(const QModelIndex &index, int role) const	{
+QVariant DataStructureModel::data(const QModelIndex &index, int role) const	{
 	if (role != Qt::DisplayRole && role != Qt::EditRole)
 		return QVariant();
 
 	//From the index number initialize an item
-	SceneStructureItem *item = static_cast<SceneStructureItem*>(index.internalPointer());
+	DataStructureItem *item = static_cast<DataStructureItem*>(index.internalPointer());
 
 	//See the content behind the item
 	return item->data();
@@ -105,12 +105,12 @@ QVariant SceneStructureModel::data(const QModelIndex &index, int role) const	{
 
 //--------------------------------------------------------------------
 
-bool SceneStructureModel::setData(const QModelIndex& index, const QVariant& value,int role)	{
+bool DataStructureModel::setData(const QModelIndex& index, const QVariant& value,int role)	{
 	if (role != Qt::EditRole)	{
 		return false;
 	}
 
-	SceneStructureItem * item = static_cast<SceneStructureItem*>(index.internalPointer());
+	DataStructureItem * item = static_cast<DataStructureItem*>(index.internalPointer());
 	m_PreviousValue = item->data();
 
 	item->setData(value);
@@ -123,7 +123,7 @@ bool SceneStructureModel::setData(const QModelIndex& index, const QVariant& valu
 
 //--------------------------------------------------------------------
 
-Qt::ItemFlags SceneStructureModel::flags(const QModelIndex& index) const {
+Qt::ItemFlags DataStructureModel::flags(const QModelIndex& index) const {
 	if(index.isValid())
 		return Qt::ItemIsEditable | QAbstractItemModel::flags(index);
 	else
@@ -132,15 +132,15 @@ Qt::ItemFlags SceneStructureModel::flags(const QModelIndex& index) const {
 
 //--------------------------------------------------------------------
 
-QVariant SceneStructureModel::getPrevValue() const	{
+QVariant DataStructureModel::getPrevValue() const	{
 	return m_PreviousValue;
 }
 
 //--------------------------------------------------------------------
 
-void SceneStructureModel::setupDataElements(const QList <QString> & aarrstrSceneData, SceneStructureItem *apParent)	{
+void DataStructureModel::setupDataElements(const QList <QString> & aarrstrSceneData, DataStructureItem *apParent)	{
 	string strElementDataLine;
-    QList <SceneStructureItem*> parents;
+    QList <DataStructureItem*> parents;
 	parents.append(apParent);
 	QList <int> lstnLayer;
 	lstnLayer.push_back(0);
@@ -171,7 +171,7 @@ void SceneStructureModel::setupDataElements(const QList <QString> & aarrstrScene
 		// new item is in any case a child
 		int size =  parents.size();
 
-		SceneStructureItem * item = new SceneStructureItem(strElementDataLine.c_str(), parents[size-1]);
+		DataStructureItem * item = new DataStructureItem(strElementDataLine.c_str(), parents[size-1]);
 		parents[size-1]->insertChild(item);
 
 		parents[size-1]->child(parents[size-1]->childCount() - 1)->setData(strElementDataLine.c_str());

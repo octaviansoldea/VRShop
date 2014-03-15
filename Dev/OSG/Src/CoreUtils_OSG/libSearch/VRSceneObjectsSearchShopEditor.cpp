@@ -1,7 +1,7 @@
 #include <iostream>
 #include "BasicStringDefinitions.h"
 
-#include "VRSceneStructureModel.h"
+#include "VRDataStructureModel.h"
 
 #include "VRAbstractObject.h"
 #include "VRScene.h"
@@ -22,7 +22,7 @@ SceneObjectsSearchShopEditor::SceneObjectsSearchShopEditor() : SceneObjectsSearc
 SceneObjectsSearchShopEditor::SceneObjectsSearchShopEditor(const QString & aqstrSearchQuery, Scene * apScene) :
 SceneObjectsSearch(aqstrSearchQuery,apScene) {
 
-	connect(m_pSceneStructureModel,
+	connect(m_pDataStructureModel,
 		SIGNAL(dataChanged(const QModelIndex &,const QModelIndex &)),
 		this, SLOT(slotChangeName(const QModelIndex &))
 	);
@@ -35,14 +35,14 @@ SceneObjectsSearchShopEditor::~SceneObjectsSearchShopEditor()	{
 
 //--------------------------------------------------------------------
 
-SceneStructureModel * SceneObjectsSearchShopEditor::getModel() const	{
-	return this->m_pSceneStructureModel;
+DataStructureModel * SceneObjectsSearchShopEditor::getModel() const	{
+	return this->m_pDataStructureModel;
 }
 
 //--------------------------------------------------------------------
 
 void SceneObjectsSearchShopEditor::slotChangeName(const QModelIndex & anIndex)	{
-	string & strPrevName = m_pSceneStructureModel->getPrevValue().toString().toStdString();
+	string & strPrevName = m_pDataStructureModel->getPrevValue().toString().toStdString();
 //	AbstractObject * pObject = dynamic_cast<AbstractObject*>(m_pScene->getChild(strPrevName));
 	Node * pObject = dynamic_cast<Node*>(m_pScene->getChild(strPrevName));
 

@@ -1,5 +1,6 @@
 #include <string>
 #include <fstream>
+#include <iostream>
 
 #include "BasicStringDefinitions.h"
 
@@ -51,16 +52,18 @@ Node * Scene::getChild(const string & astrChildName)	{
 
 //--------------------------------------------------------------
 
-void Scene::addElement(ref_ptr<Node> apElement)	{
-	addChild(apElement);
+bool Scene::addChild(Node *child)	{
+	bool bRes = Group::addChild(child);
 	setSceneHierarchy();
+	return bRes;
 }
 
 //--------------------------------------------------------------
 
-void Scene::removeElement(ref_ptr<Node> apElement)	{
-	removeChild(apElement);
+bool Scene::removeChild(Node *child)	{
+	bool bRes = Group::removeChild(child);
 	setSceneHierarchy();
+	return bRes;
 }
 
 //--------------------------------------------------------------
@@ -82,8 +85,9 @@ void Scene::setSceneHierarchy()	{
 	AbstractObject * pObject = 0;
 	for (it; it != _children.end(); it++)	{
 		pObject = dynamic_cast<AbstractObject*>(it->get());
-		if (pObject != 0)
+		if (pObject != 0)	{
 			pObject->writeObjectHierarchy(m_vecstrSceneHierarchy);
+		}
 	}
 }
 

@@ -19,11 +19,13 @@
 #include "VRCameraController.h"
 #include "VRPickAndDragController.h"
 #include "VRSearchListController.h"
+#include "VRSceneHierarchyController.h"
+
 #include "VRKeyboardMouseManipulatorShopEditor.h"
 #include "VRPickAndDragHandlerShopEditor.h"
 #include "VRSceneObjectsSearchShopEditor.h"
 
-#include "VRSceneStructureModel.h"
+#include "VRDataStructureModel.h"
 
 #include "VRShopBuilder_GUI.h"
 
@@ -96,6 +98,11 @@ ShopBuilder_GUI::ShopBuilder_GUI()	{
 		pScene);
 
 
+	m_pSceneHierarchyController = new SceneHierarchyController(
+		m_pTreeView,
+		pPickAndDragHandlerShopEditor,
+		pScene);
+
 	m_pOSGQTWidget->show();
 
 	buildConnections();
@@ -106,6 +113,7 @@ ShopBuilder_GUI::ShopBuilder_GUI()	{
 ShopBuilder_GUI::~ShopBuilder_GUI() {
 	delete m_pCameraController;
 	delete m_pPickAndDragController;
+	delete m_pSceneHierarchyController;
 	delete m_pOSGQTWidget;
 
 	delete m_pShopBuilder;
@@ -245,11 +253,11 @@ void ShopBuilder_GUI::slotSearchScene()	{
 	if (strSearchQuery.empty())
 		return;
 
-	SceneStructureModel * pSceneStructureModel = 0;
+	DataStructureModel * pDataStructureModel = 0;
 	
-	if(m_pShopBuilder->searchScene(strSearchQuery, &pSceneStructureModel))	{
+	if(m_pShopBuilder->searchScene(strSearchQuery, &pDataStructureModel))	{
 		m_pSearchListWidget->show();
-		m_pListView->setModel(pSceneStructureModel);
+		m_pListView->setModel(pDataStructureModel);
 		m_pListView->show();
 	}
 }

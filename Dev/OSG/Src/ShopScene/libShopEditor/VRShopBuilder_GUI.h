@@ -8,7 +8,7 @@
 class ShopBuilder;
 class CameraController;
 class PickAndDragController;
-class SceneHierarchy;
+class SceneHierarchyController;
 class Grid;
 
 namespace VR	{
@@ -28,6 +28,7 @@ namespace VR	{
 
 		CameraController * m_pCameraController;
 		PickAndDragController * m_pPickAndDragController;
+		SceneHierarchyController * m_pSceneHierarchyController;
 
 	public slots:
 		void slotNewProject();

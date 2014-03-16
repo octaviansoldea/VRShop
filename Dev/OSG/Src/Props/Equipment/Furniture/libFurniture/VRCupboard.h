@@ -12,15 +12,14 @@ namespace VR	{
 
 	class Cupboard : public Furniture	{
 	public:
-		Cupboard();
-		Cupboard(CupboardParams * apCupboardParams);
+		Cupboard(const CupboardParams & aCupboardParams);
 		Cupboard(const Cupboard& cup,const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY);
 
 		virtual const char* className() const;
 		virtual osg::Object* cloneType() const;
 		virtual osg::Object* clone(const osg::CopyOp& copyop) const;
 
-		virtual void init(FurnitureParams * apFurnitureParams);
+		virtual void init(const CupboardParams & aCupboardParams);
 		virtual void predefinedObject();
 
 		virtual std::string getSQLCommand() const;

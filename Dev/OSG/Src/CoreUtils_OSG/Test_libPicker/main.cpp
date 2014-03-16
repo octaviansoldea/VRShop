@@ -18,7 +18,8 @@ using namespace std;
 //----------------------------------------------------------------------
 
 void main_Plate3D(osg::ref_ptr<osg::Group> pScene)	{
-	osg::ref_ptr<Plate3D> pPlate3D = new Plate3D();
+	Plate3DParams plate3DParams;
+	osg::ref_ptr<Plate3D> pPlate3D = new Plate3D(plate3DParams);
 	vector < float > arrflColor;
 	arrflColor.push_back(0.0);
 	arrflColor.push_back(0.0);
@@ -33,15 +34,15 @@ void main_Plate3D(osg::ref_ptr<osg::Group> pScene)	{
 //----------------------------------------------------------------------
 
 void main_Cylinder(osg::ref_ptr<osg::Group> pScene)	{
-	osg::ref_ptr<Cylinder> pCylinder = new Cylinder();
+	CylinderParams cylinderParams;
+	cylinderParams.m_nResolution = 20;
+	osg::ref_ptr<Cylinder> pCylinder = new Cylinder(cylinderParams);
 	vector < float > arrflColor;
 	arrflColor.push_back(0.0);
 	arrflColor.push_back(0.0);
 	arrflColor.push_back(1.0);
 	arrflColor.push_back(1.0);
-
 	pCylinder->setColor(arrflColor);
-	pCylinder->setResolution(20);
 	pCylinder->setIsTargetPick(true);
 	pScene->addChild(pCylinder);
 }
@@ -49,7 +50,8 @@ void main_Cylinder(osg::ref_ptr<osg::Group> pScene)	{
 //----------------------------------------------------------------------
 
 void main_VRSphere(osg::ref_ptr<osg::Group> pScene)	{
-	osg::ref_ptr<VR::Sphere> pSphere = new VR::Sphere();
+	SphereParams sphereParams;
+	osg::ref_ptr<VR::Sphere> pSphere = new VR::Sphere(sphereParams);
 	vector < float > arrflColor;
 	arrflColor.push_back(0.0);
 	arrflColor.push_back(0.0);
@@ -75,7 +77,8 @@ int main(int argc, char * argv[])	{
 	main_Cylinder(root);
 //	main_VRUntransformedSphere(root);
 
-	osg::ref_ptr < Container > pContainer = new Container;
+	ContainerParams containerParams;
+	osg::ref_ptr < Container > pContainer = new Container(containerParams);
 	pContainer->predefinedObject();
 	root->addChild(pContainer);
 

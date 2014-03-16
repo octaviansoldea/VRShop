@@ -14,20 +14,18 @@ namespace VR {
 
 	class Prism : public AbstractGeomShape	{
 	public:
-		Prism();
-		Prism(PrismParams * apPrismParams);
+		Prism(const PrismParams & aPrismParams);
 		Prism(const Prism& pr,const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY);
 
 		virtual const char* className() const;
-		virtual osg::Object* cloneType() const { return new Prism(); }
-		virtual osg::Object* clone(const osg::CopyOp& copyop) const { return new Prism(*this,copyop); }
+		virtual osg::Object* cloneType() const;
+		virtual osg::Object* clone(const osg::CopyOp& copyop) const;
 
-		virtual void init(AbstractGeomShapeParams & aAbstractGeomShapeParams);
+		virtual void init(const PrismParams & aPrismParams);
 		virtual void predefinedObject();
 
 		virtual void setColor(const std::vector < float > & aarrflColor);
 		virtual void setTexture(const std::string & astrFileName);
-		void setResolution(int anRes);
 
 		virtual std::string getSQLFormat() const;
 		virtual std::string getSQLCommand() const;
@@ -38,6 +36,10 @@ namespace VR {
 
 	private:
 		static std::string m_strSQLFormat;
+
+	protected:		
+		virtual void setParams(const PrismParams & aPrismParams);
+		virtual void getParams(PrismParams & aPrismParams) const;
 	};
 }
 

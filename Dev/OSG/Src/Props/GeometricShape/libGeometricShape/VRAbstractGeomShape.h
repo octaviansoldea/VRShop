@@ -13,15 +13,12 @@ namespace VR {
 
 	class AbstractGeomShape	: public AbstractObject	{
 	public:
-		AbstractGeomShape();
-		AbstractGeomShape(AbstractGeomShapeParams * apAbstractGeomShapeParams);
+		AbstractGeomShape(const AbstractGeomShapeParams & aAbstractGeomShapeParams);
 		AbstractGeomShape(const AbstractGeomShape& ags,const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY);
 
 		virtual const char* className() const;
 
 		virtual ~AbstractGeomShape() = 0;
-
-		virtual void init(AbstractGeomShapeParams & aAbstractGeomShapeParams) = 0;
 
 		virtual void setColor(const std::vector < float > & aarrflColor) = 0;
 		virtual void setTexture(const std::string & astrFileName) = 0;

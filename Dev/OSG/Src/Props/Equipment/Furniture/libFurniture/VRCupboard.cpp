@@ -20,22 +20,16 @@ CupboardParams::CupboardParams() : FurnitureParams()	{
 
 //=======================================================================
 
-Cupboard::Cupboard() : Furniture(new CupboardParams())	{
-	setName("Cupboard");
-}
-
-//-----------------------------------------------------------------------
-
-Cupboard::Cupboard(CupboardParams * apCupboardParams) : Furniture(apCupboardParams)	{
-	CupboardParams * pCupboardParams = dynamic_cast<CupboardParams*>(m_pAbstractObjectParams);
-	init(pCupboardParams);
+Cupboard::Cupboard(const CupboardParams & aCupboardParams) : Furniture(aCupboardParams)	{
+	setParams(aCupboardParams);
 }
 
 //-----------------------------------------------------------------------
 
 Cupboard::Cupboard(const Cupboard& cup,const CopyOp& copyop) : Furniture(cup, copyop)	{
-	CupboardParams *pCupboardParams = dynamic_cast<CupboardParams*>(m_pAbstractObjectParams);
-	init(pCupboardParams);
+	CupboardParams aCup;
+	cup.getParams(aCup);
+	setParams(aCup);
 }
 
 //-----------------------------------------------------------------------
@@ -47,7 +41,8 @@ const char* Cupboard::className() const	{
 //-----------------------------------------------------------------------
 
 Object* Cupboard::cloneType() const	{
-	return new Cupboard();
+	CupboardParams aCup;
+	return new Cupboard(aCup);
 }
 
 //-----------------------------------------------------------------------
@@ -58,12 +53,8 @@ Object* Cupboard::clone(const CopyOp& copyop) const	{
 
 //-----------------------------------------------------------------------
 
-void Cupboard::init(FurnitureParams * apFurnitureParams)	{
-	apFurnitureParams = dynamic_cast<FurnitureParams*>(m_pAbstractObjectParams);
-
-	setScaling(apFurnitureParams->m_flLenX, apFurnitureParams->m_flLenY, apFurnitureParams->m_flLenZ);
-	setRotation(apFurnitureParams->m_flAngleYZ, apFurnitureParams->m_flAngleXZ, apFurnitureParams->m_flAngleXY);
-	setPosition(apFurnitureParams->m_flPosX, apFurnitureParams->m_flPosY, apFurnitureParams->m_flPosZ);
+void Cupboard::init(const CupboardParams & aCupboardParams)	{
+	setParams(aCupboardParams);
 
 	Matrix & cupboardMatrix = calculateMatrix();
 	setMatrix(cupboardMatrix);
@@ -74,20 +65,21 @@ void Cupboard::init(FurnitureParams * apFurnitureParams)	{
 //-----------------------------------------------------------------------
 
 string Cupboard::getSQLCommand() const {
-	CupboardParams * pCupboardParams = dynamic_cast<CupboardParams*>(m_pAbstractObjectParams);
+	CupboardParams cupboardParams;
+	getParams(cupboardParams);
 
 	string strCupboardParams;
-	strCupboardParams = to_string((long double)pCupboardParams->m_flPosX) + "_";
-	strCupboardParams += to_string((long double)pCupboardParams->m_flPosY) + "_";
-	strCupboardParams += to_string((long double)pCupboardParams->m_flPosZ) + "_";
+	strCupboardParams = to_string((long double)cupboardParams.m_flPosX) + "_";
+	strCupboardParams += to_string((long double)cupboardParams.m_flPosY) + "_";
+	strCupboardParams += to_string((long double)cupboardParams.m_flPosZ) + "_";
 
-	strCupboardParams += to_string((long double)pCupboardParams->m_flLenX) + "_";
-	strCupboardParams += to_string((long double)pCupboardParams->m_flLenY) + "_";
-	strCupboardParams += to_string((long double)pCupboardParams->m_flLenZ) + "_";
+	strCupboardParams += to_string((long double)cupboardParams.m_flLenX) + "_";
+	strCupboardParams += to_string((long double)cupboardParams.m_flLenY) + "_";
+	strCupboardParams += to_string((long double)cupboardParams.m_flLenZ) + "_";
 
-	strCupboardParams += to_string((long double)pCupboardParams->m_flAngleXY) + "_";
-	strCupboardParams += to_string((long double)pCupboardParams->m_flAngleXZ) + "_";
-	strCupboardParams += to_string((long double)pCupboardParams->m_flAngleYZ);
+	strCupboardParams += to_string((long double)cupboardParams.m_flAngleXY) + "_";
+	strCupboardParams += to_string((long double)cupboardParams.m_flAngleXZ) + "_";
+	strCupboardParams += to_string((long double)cupboardParams.m_flAngleYZ);
 
 	string strSQLCommand = "INSERT INTO EquipmentItem (EquipmentItemName, EquipmentItemParams, EquipmentID) "
 		"VALUES ('Cupboard', '" + strCupboardParams + "', (SELECT EquipmentID FROM Equipment WHERE EquipmentName = 'Furniture'));";
@@ -103,7 +95,7 @@ string Cupboard::getSQLCommand() const {
 //-----------------------------------------------------------------------
 
 void Cupboard::initFromSQLData(const string & astrSQLData)	{
-	CupboardParams * pCupboardParams = dynamic_cast<CupboardParams*>(m_pAbstractObjectParams);
+	CupboardParams cupboardParams;
 	string strSQLData = astrSQLData;
 	string strDelimiter = "?";
 	
@@ -116,41 +108,49 @@ void Cupboard::initFromSQLData(const string & astrSQLData)	{
 		arrflMatrix.push_back(stof(arrstrCupboardParams[nI]));
 	}
 
-	pCupboardParams->m_flPosX = arrflMatrix[0];
-	pCupboardParams->m_flPosY = arrflMatrix[1];
-	pCupboardParams->m_flPosZ = arrflMatrix[2];
+	cupboardParams.m_flPosX = arrflMatrix[0];
+	cupboardParams.m_flPosY = arrflMatrix[1];
+	cupboardParams.m_flPosZ = arrflMatrix[2];
 
-	pCupboardParams->m_flLenX = arrflMatrix[3];
-	pCupboardParams->m_flLenY = arrflMatrix[4];
-	pCupboardParams->m_flLenZ = arrflMatrix[5];
+	cupboardParams.m_flLenX = arrflMatrix[3];
+	cupboardParams.m_flLenY = arrflMatrix[4];
+	cupboardParams.m_flLenZ = arrflMatrix[5];
 
-	pCupboardParams->m_flAngleXY = arrflMatrix[6];
-	pCupboardParams->m_flAngleXZ = arrflMatrix[7];
-	pCupboardParams->m_flAngleYZ = arrflMatrix[8];
+	cupboardParams.m_flAngleXY = arrflMatrix[6];
+	cupboardParams.m_flAngleXZ = arrflMatrix[7];
+	cupboardParams.m_flAngleYZ = arrflMatrix[8];
 
 	ref_ptr < AbstractGeomShape > pAbstractGeomShape;
 	for (auto it = arrstrSQLData.begin()+1; it != arrstrSQLData.end()-1; it++)	{
-		if(isAtEndOfString(*it, "Plate3D"))
-			pAbstractGeomShape = new Plate3D;
-		else if(isAtEndOfString(*it, "Cylinder"))
-			pAbstractGeomShape = new Cylinder;
-		else if(isAtEndOfString(*it, "Prism"))
-			pAbstractGeomShape = new Prism;
-		else if(isAtEndOfString(*it, "Sphere"))
-			pAbstractGeomShape = new Sphere;
+		if(isAtEndOfString(*it, "Plate3D"))	{
+			Plate3DParams p3Dp;
+			pAbstractGeomShape = new Plate3D(p3Dp);
+		} else if(isAtEndOfString(*it, "Cylinder"))	{
+			CylinderParams cP;
+			pAbstractGeomShape = new VR::Cylinder(cP);
+		} else if(isAtEndOfString(*it, "Prism"))	{
+			PrismParams pP;
+			pAbstractGeomShape = new Prism(pP);
+		} else if(isAtEndOfString(*it, "Sphere"))	{
+			SphereParams sP;
+			pAbstractGeomShape = new Sphere(sP);
+		}
 
 		pAbstractGeomShape->initFromSQLData(*it);
 		addChild(pAbstractGeomShape);
 	}
-	init(pCupboardParams);
+	init(cupboardParams);
 }
 
 //-----------------------------------------------------------------------
 
 void Cupboard::predefinedObject()	{
-	CupboardParams * pCupboardParams = dynamic_cast<CupboardParams*>(m_pAbstractObjectParams);
+	CupboardParams cupboardParams;
+	cupboardParams.m_flAngleXY = 0;
+	cupboardParams.m_flAngleXZ = 0;
+	cupboardParams.m_flAngleYZ = 0;
 
-	ref_ptr < Plate3D > pPlate3D = new Plate3D;
+	ref_ptr < Plate3D > pPlate3D;
 	Plate3DParams aPlate3DParams;
 	//Bottom plate
 	aPlate3DParams.m_flLenX = 5.0;
@@ -165,12 +165,11 @@ void Cupboard::predefinedObject()	{
 	aPlate3DParams.m_arrflRGBA[2] = 0.85;
 	aPlate3DParams.m_arrflRGBA[3] = 1;
 
-	pPlate3D->init(aPlate3DParams);
+	pPlate3D = new Plate3D(aPlate3DParams);
 	addPart(pPlate3D);
 	
 
 	//Left side
-	pPlate3D = new Plate3D;
 	aPlate3DParams.m_flLenX = 0.05;
 	aPlate3DParams.m_flLenY = 1.0;
 	aPlate3DParams.m_flLenZ = 2.0;
@@ -178,11 +177,10 @@ void Cupboard::predefinedObject()	{
 	aPlate3DParams.m_flPosY = 0;
 	aPlate3DParams.m_flPosZ = 1.0;
 
-	pPlate3D->init(aPlate3DParams);
+	pPlate3D = new Plate3D(aPlate3DParams);
 	addPart(pPlate3D);
 
 	//Right side
-	pPlate3D = new Plate3D;
 	aPlate3DParams.m_flLenX = 0.05;
 	aPlate3DParams.m_flLenY = 1.0;
 	aPlate3DParams.m_flLenZ = 2.0;
@@ -190,11 +188,10 @@ void Cupboard::predefinedObject()	{
 	aPlate3DParams.m_flPosY = 0;
 	aPlate3DParams.m_flPosZ = 1.0;
 
-	pPlate3D->init(aPlate3DParams);
+	pPlate3D = new Plate3D(aPlate3DParams);
 	addPart(pPlate3D);
 
 	//Back side
-	pPlate3D = new Plate3D;
 	aPlate3DParams.m_flLenX = 5.0;
 	aPlate3DParams.m_flLenY = 0.05;
 	aPlate3DParams.m_flLenZ = 2.0;
@@ -202,11 +199,11 @@ void Cupboard::predefinedObject()	{
 	aPlate3DParams.m_flPosY = 0.475;
 	aPlate3DParams.m_flPosZ = 1.0;
 	aPlate3DParams.m_strFileNameTexture = "../../Resources/Textures/lz.rgb";
-	pPlate3D->init(aPlate3DParams);
+
+	pPlate3D = new Plate3D(aPlate3DParams);
 	addPart(pPlate3D);
 
 	//shelf 1
-	pPlate3D = new Plate3D;
 	aPlate3DParams.m_flLenX = 5.0;
 	aPlate3DParams.m_flLenY = 1.0;
 	aPlate3DParams.m_flLenZ = 0.05;
@@ -214,12 +211,12 @@ void Cupboard::predefinedObject()	{
 	aPlate3DParams.m_flPosX = 0;
 	aPlate3DParams.m_flPosY = 0;
 	aPlate3DParams.m_flPosZ = 0.675;
-	pPlate3D->init(aPlate3DParams);
+
+	pPlate3D = new Plate3D(aPlate3DParams);
 	addPart(pPlate3D);
 
 
 	//shelf 2
-	pPlate3D = new Plate3D;
 	aPlate3DParams.m_flLenX = 5.0;
 	aPlate3DParams.m_flLenY = 1.0;
 	aPlate3DParams.m_flLenZ = 0.05;
@@ -227,11 +224,10 @@ void Cupboard::predefinedObject()	{
 	aPlate3DParams.m_flPosX = 0;
 	aPlate3DParams.m_flPosY = 0;
 	aPlate3DParams.m_flPosZ = 1.375;
-	pPlate3D->init(aPlate3DParams);
+	pPlate3D = new Plate3D(aPlate3DParams);
 	addPart(pPlate3D);
 
 	//shelf 3
-	pPlate3D = new Plate3D;
 	aPlate3DParams.m_flLenX = 5.0;
 	aPlate3DParams.m_flLenY = 1.0;
 	aPlate3DParams.m_flLenZ = 0.05;
@@ -239,10 +235,10 @@ void Cupboard::predefinedObject()	{
 	aPlate3DParams.m_flPosX = 0;
 	aPlate3DParams.m_flPosY = 0;
 	aPlate3DParams.m_flPosZ = 2;
-	pPlate3D->init(aPlate3DParams);
+	pPlate3D = new Plate3D(aPlate3DParams);
 	addPart(pPlate3D);
 
-	init(pCupboardParams);
+	init(cupboardParams);
 	setIsTargetPick(true);
 }
 

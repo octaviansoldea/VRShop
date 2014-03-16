@@ -62,8 +62,6 @@ void main_UntransformedPolygon2D(ref_ptr<Group> pScene)	{
 //=====================================================================
 
 void main_Plate3D(ref_ptr<Group> pScene)	{
-	ref_ptr<Plate3D> pPlate3D = new Plate3D();
-
 	Plate3DParams p3DP;
 	p3DP.m_flLenX = 1.0;
 	p3DP.m_flLenY = 2.0;
@@ -77,8 +75,8 @@ void main_Plate3D(ref_ptr<Group> pScene)	{
 	p3DP.m_arrflRGBA[2] = 0.85;
 	p3DP.m_arrflRGBA[3] = 1;
 
-	pPlate3D->init(p3DP);
-
+	ref_ptr<Plate3D> pPlate3D = new Plate3D(p3DP);
+	
 	pScene->addChild(pPlate3D);
 }
 
@@ -161,66 +159,63 @@ void main_UntransformedPolygon3D_Texture(ref_ptr<Group> pScene)	{
 //----------------------------------------------------------------------
 
 void main_Cylinder(ref_ptr<Group> pScene)	{
-	CylinderParams * pCP = new CylinderParams;
-	pCP->m_flRadius = 1.0;
-	pCP->m_flHeight = 3.0;
-	pCP->m_nRes = 100;
-	pCP->m_flPosX = 0.0;
-	pCP->m_flPosY = 0.0;
-	pCP->m_flPosZ = 0.0;
-	pCP->m_flLenX = 1.0;
-	pCP->m_flLenY = 2.0;
-	pCP->m_flLenZ = 3.0;
-	pCP->m_arrflRGBA[0] = 0.85;
-	pCP->m_arrflRGBA[1] = 0.25;
-	pCP->m_arrflRGBA[2] = 0.15;
-	pCP->m_arrflRGBA[3] = 1.0;
-	pCP->m_strFileNameTexture = "../../../../Resources/Textures/lz.rgb";
+	CylinderParams cP;
+	cP.m_flRadius = 1.0;
+	cP.m_flHeight = 3.0;
+	cP.m_nResolution = 100;
+	cP.m_flPosX = 0.0;
+	cP.m_flPosY = 0.0;
+	cP.m_flPosZ = 0.0;
+	cP.m_flLenX = 1.0;
+	cP.m_flLenY = 2.0;
+	cP.m_flLenZ = 3.0;
+	cP.m_arrflRGBA[0] = 0.85;
+	cP.m_arrflRGBA[1] = 0.25;
+	cP.m_arrflRGBA[2] = 0.15;
+	cP.m_arrflRGBA[3] = 1.0;
+	cP.m_strFileNameTexture = "../../../../Resources/Textures/lz.rgb";
 
-	ref_ptr<VR::Cylinder> pCylinder = new VR::Cylinder(pCP);
+	ref_ptr<VR::Cylinder> pCylinder = new VR::Cylinder(cP);
 	pScene->addChild(pCylinder);
-	delete pCP;
 }
 
 //----------------------------------------------------------------------
 
 void main_Prism(ref_ptr<Group> pScene)	{
-	PrismParams * pPP = new PrismParams;
-	pPP->m_flRadius = 1.0;
-	pPP->m_flHeight = 1.0;
-	pPP->m_nRes = 4;
-	pPP->m_flPosX = 0.0;
-	pPP->m_flPosY = 0.0;
-	pPP->m_flPosZ = 0.0;
-	pPP->m_arrflRGBA[0] = 0.85;
-	pPP->m_arrflRGBA[1] = 0.25;
-	pPP->m_arrflRGBA[2] = 0.15;
-	pPP->m_arrflRGBA[3] = 1.0;
+	PrismParams pP;
+	pP.m_flRadius = 1.0;
+	pP.m_flHeight = 1.0;
+	pP.m_nResolution = 4;
+	pP.m_flPosX = 0.0;
+	pP.m_flPosY = 0.0;
+	pP.m_flPosZ = 0.0;
+	pP.m_arrflRGBA[0] = 0.85;
+	pP.m_arrflRGBA[1] = 0.25;
+	pP.m_arrflRGBA[2] = 0.15;
+	pP.m_arrflRGBA[3] = 1.0;
 
-	ref_ptr<VR::Prism> pPrism = new VR::Prism(pPP);
+	ref_ptr<VR::Prism> pPrism = new VR::Prism(pP);
 	pScene->addChild(pPrism);
-	delete pPP;
 }
 
 //----------------------------------------------------------------------
 
 void main_Sphere_Color(ref_ptr<Group> pScene)	{
-	SphereParams * pSP = new SphereParams;
-	pSP->m_nResPhi = pSP->m_nResTheta = 50;
-	pSP->m_flLenX = 1;
-	pSP->m_flLenY = 2;
-	pSP->m_flLenZ = 3;
+	SphereParams sP;
+	sP.m_nResPhi = sP.m_nResTheta = 50;
+	sP.m_flLenX = 1;
+	sP.m_flLenY = 2;
+	sP.m_flLenZ = 3;
 
 	vector <float> arrflColor;
 	arrflColor.push_back(0.85);
 	arrflColor.push_back(0.15);
 	arrflColor.push_back(0.25);
 	arrflColor.push_back(1.0);
-	pSP->m_arrflRGBA = arrflColor;
+	sP.m_arrflRGBA = arrflColor;
 
-	ref_ptr<VR::Sphere> pSphere = new VR::Sphere(pSP);
+	ref_ptr<VR::Sphere> pSphere = new VR::Sphere(sP);
 	pScene->addChild(pSphere);
-	delete pSP;
 }
 
 //----------------------------------------------------------------------
@@ -240,7 +235,9 @@ void initFromDB_Plate(ref_ptr<Group> pScene)	{
 	ref_ptr < Plate3D > pPlate3D;
 	string strSQLQuery = "SELECT * FROM Plate3D WHERE Plate3DID = 7";
 	string strSQLData = database.readFromDB(strSQLQuery);
-	pPlate3D = new Plate3D();
+
+	Plate3DParams plate3DParams;
+	pPlate3D = new Plate3D(plate3DParams);
 	pPlate3D->initFromSQLData(strSQLData);
 
 	pScene->addChild(pPlate3D);
@@ -255,7 +252,8 @@ void initFromDB_Sphere(ref_ptr<Group> pScene)	{
 	ref_ptr < VR::Sphere > pSphere;
 	string strSQLQuery = "SELECT * FROM Sphere WHERE SphereID = 7";
 	string strSQLData = database.readFromDB(strSQLQuery);
-	pSphere = new VR::Sphere();
+	SphereParams sphereParams;
+	pSphere = new VR::Sphere(sphereParams);
 	pSphere->initFromSQLData(strSQLData);
 
 	pScene->addChild(pSphere);
@@ -267,7 +265,8 @@ void initFromDB_Prism(ref_ptr<Group> pScene)	{
 	string strDatabase = "../../../../Databases/Equipment.db";
 	DatabaseMgr & database = DatabaseMgr::Create(strDatabase.c_str(), DatabaseMgr::QSQLITE);
 
-	ref_ptr < Prism > pPrism = new Prism();
+	PrismParams prismParams;
+	ref_ptr < Prism > pPrism = new Prism(prismParams);
 
 	string strCommand = "SELECT * FROM Prism WHERE PrismID = 1";
 	string strSQLData = database.readFromDB(strCommand);
@@ -285,7 +284,8 @@ void initFromDB_Cylinder(ref_ptr<Group> pScene)	{
 	ref_ptr < VR::Cylinder > pCylinder;
 	string strSQLQuery = "SELECT * FROM Cylinder WHERE CylinderID = 1";
 	string strSQLData = database.readFromDB(strSQLQuery);
-	pCylinder = new VR::Cylinder();
+	CylinderParams cylinderParams;
+	pCylinder = new VR::Cylinder(cylinderParams);
 	pCylinder->initFromSQLData(strSQLData);
 
 	pScene->addChild(pCylinder);

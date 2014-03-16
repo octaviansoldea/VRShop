@@ -12,15 +12,12 @@ namespace VR	{
 
 	class Furniture : public AbstractObject	{
 	public:
-		Furniture();
-		Furniture(FurnitureParams * apFurnitureParams);
+		Furniture(const FurnitureParams & aFurnitureParams);
 		Furniture(const Furniture& fur,const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY);
 
 		virtual const char* className() const;
 
 		virtual ~Furniture() = 0;
-
-		virtual void init(FurnitureParams * apFurnitureParams) = 0;
 
 		virtual void addPart(osg::ref_ptr < AbstractObject > apAbstractObject);
 		virtual void removePart(unsigned int anPartNo);

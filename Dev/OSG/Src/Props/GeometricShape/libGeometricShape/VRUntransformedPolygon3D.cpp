@@ -18,7 +18,7 @@ using namespace std;
 UntransformedPolygon3DParams::UntransformedPolygon3DParams() :
 m_flRadius(1.0),
 m_flHeight(1.0),
-m_nRes(5)	{
+m_nResolution(5)	{
 }
 
 //==========================================================================
@@ -119,16 +119,16 @@ void UntransformedPolygon3D::setTexture(const std::string & astrFileName) {
 
 //-----------------------------------------------------------------------------
 
-void UntransformedPolygon3D::setResolution(int anRes) {
-	m_UntransformedPolygon3DParams.m_nRes = anRes;
+void UntransformedPolygon3D::setResolution(int anResolution) {
+	m_UntransformedPolygon3DParams.m_nResolution = anResolution;
 }
 
 //-----------------------------------------------------------------------------
 
-void UntransformedPolygon3D::init(UntransformedPolygon3DParams & aUntransformedPolygon3DParams)	{
+void UntransformedPolygon3D::init(const UntransformedPolygon3DParams & aUntransformedPolygon3DParams)	{
 	m_UntransformedPolygon3DParams = aUntransformedPolygon3DParams;
 
-	int anSidesNr = m_UntransformedPolygon3DParams.m_nRes;
+	int anSidesNr = m_UntransformedPolygon3DParams.m_nResolution;
 
 	int nPointsNr = 2*anSidesNr+2;
 	ref_ptr<Vec3Array> m_pPoints = new Vec3Array(nPointsNr);

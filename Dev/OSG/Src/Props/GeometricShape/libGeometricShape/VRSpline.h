@@ -12,7 +12,6 @@ namespace VR {
 	private:
 		SplineParams m_SplineParams;
 	public:
-		Spline();
 		Spline(const SplineParams & aSplineParams);
 
 		const char* className() const;

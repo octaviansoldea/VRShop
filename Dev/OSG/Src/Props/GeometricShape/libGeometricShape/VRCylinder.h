@@ -15,13 +15,14 @@ namespace VR {
 		static std::string m_strSQLFormat;
 
 	public:
-		Cylinder();
-		Cylinder(CylinderParams * apCylinderParams);
+		Cylinder(const CylinderParams & aCylinderParams);
 		Cylinder(const Cylinder& cyl,const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY);
 
 		virtual const char* className() const;
-		virtual osg::Object* cloneType() const { return new VR::Cylinder(); }
-		virtual osg::Object* clone(const osg::CopyOp& copyop) const { return new VR::Cylinder(*this,copyop); }
+		virtual osg::Object* cloneType() const;
+		virtual osg::Object* clone(const osg::CopyOp& copyop) const;
+
+		virtual void init(const CylinderParams & aCylinderParams);
 
 		virtual std::string getSQLFormat() const;
 		virtual std::string getSQLCommand() const;

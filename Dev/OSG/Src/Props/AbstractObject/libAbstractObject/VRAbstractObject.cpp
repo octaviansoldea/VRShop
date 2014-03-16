@@ -61,20 +61,28 @@ const char * AbstractObject::className() const	{
 //-----------------------------------------------------------------------
 
 ref_ptr<AbstractObject> AbstractObject::createInstance(const string & astrClassName)	{
-	if (astrClassName == "Cupboard")
-		return (new Cupboard);
-	if (astrClassName == "Container")
-		return (new Container);
-	if (astrClassName == "CustomFurniture")
-		return (new CustomFurniture);
-	if (astrClassName == "Plate3D")
-		return (new Plate3D);
-	if (astrClassName == "Cylinder")
-		return (new VR::Cylinder);
-	if (astrClassName == "Prism")
-		return (new Prism);
-	if (astrClassName == "Sphere")
-		return (new VR::Sphere);
+	if (astrClassName == "Cupboard")	{
+		CupboardParams cP;
+		return (new Cupboard(cP));
+	} else if (astrClassName == "Container")	{
+		ContainerParams cP;
+		return (new Container(cP));
+	} else if (astrClassName == "CustomFurniture")	{
+		CustomFurnitureParams cF;
+		return (new CustomFurniture(cF));
+	} else if (astrClassName == "Plate3D")	{
+		Plate3DParams p3DP;
+		return (new Plate3D(p3DP));
+	} else if (astrClassName == "Cylinder")	{
+		CylinderParams cP;
+		return (new VR::Cylinder(cP));
+	} else if (astrClassName == "Prism")	{
+		PrismParams pP;
+		return (new Prism(pP));
+	} else if (astrClassName == "Sphere")	{
+		SphereParams sP;
+		return (new VR::Sphere(sP));
+	}
 }
 
 //=======================================================================
@@ -88,32 +96,32 @@ string AbstractObject::getSQLFormat() const {
 void AbstractObject::setRotation(float aflAngleX, float aflAngleY, float aflAngleZ)	{
 	//Rotation goes counter-clockwise
 
-	m_pAbstractObjectParams->m_flAngleYZ = degrees2Radians(aflAngleX);
-	m_pAbstractObjectParams->m_flAngleXZ = degrees2Radians(aflAngleY);
-	m_pAbstractObjectParams->m_flAngleXY = degrees2Radians(aflAngleZ);
+	m_flAngleYZ = degrees2Radians(aflAngleX);
+	m_flAngleXZ = degrees2Radians(aflAngleY);
+	m_flAngleXY = degrees2Radians(aflAngleZ);
 }
 
 //--------------------------------------------------------------
 
 void AbstractObject::setPosition(float aflPosX, float aflPosY, float aflPosZ)	{
-	m_pAbstractObjectParams->m_flPosX = aflPosX;
-	m_pAbstractObjectParams->m_flPosY = aflPosY;
-	m_pAbstractObjectParams->m_flPosZ = aflPosZ;
+	m_flPosX = aflPosX;
+	m_flPosY = aflPosY;
+	m_flPosZ = aflPosZ;
 }
 
 //--------------------------------------------------------------
 
 void AbstractObject::setScaling(float aflLenX, float aflLenY, float aflLenZ)	{
-	m_pAbstractObjectParams->m_flLenX = aflLenX;
-	m_pAbstractObjectParams->m_flLenY = aflLenY;
-	m_pAbstractObjectParams->m_flLenZ = aflLenZ;
+	m_flLenX = aflLenX;
+	m_flLenY = aflLenY;
+	m_flLenZ = aflLenZ;
 }
 
 //--------------------------------------------------------------------------
 
 Vec3d AbstractObject::getPosition() const	{
 	Vec3d pos;
-	pos.set(m_pAbstractObjectParams->m_flPosX, m_pAbstractObjectParams->m_flPosY, m_pAbstractObjectParams->m_flPosZ);
+	pos.set(m_flPosX, m_flPosY, m_flPosZ);
 
 	return pos;
 }
@@ -122,7 +130,7 @@ Vec3d AbstractObject::getPosition() const	{
 
 Vec3d AbstractObject::getScaling() const	{
 	Vec3d scale;
-	scale.set(m_pAbstractObjectParams->m_flLenX, m_pAbstractObjectParams->m_flLenY, m_pAbstractObjectParams->m_flLenZ);
+	scale.set(m_flLenX, m_flLenY, m_flLenZ);
 
 	return scale;
 }
@@ -130,9 +138,9 @@ Vec3d AbstractObject::getScaling() const	{
 //--------------------------------------------------------------------------
 
 Vec3d AbstractObject::getRotation() const	{
-	float flAngleX = radians2degrees(m_pAbstractObjectParams->m_flAngleYZ);
-	float flAngleY = radians2degrees(m_pAbstractObjectParams->m_flAngleXZ);
-	float flAngleZ = radians2degrees(m_pAbstractObjectParams->m_flAngleXY);
+	float flAngleX = radians2degrees(m_flAngleYZ);
+	float flAngleY = radians2degrees(m_flAngleXZ);
+	float flAngleZ = radians2degrees(m_flAngleXY);
 
 	Vec3d rotation(flAngleX, flAngleY, flAngleZ);
 
@@ -230,9 +238,9 @@ void AbstractObject::setParams(const AbstractObjectParams & aAbstractObjectParam
 	m_flLenY =aAbstractObjectParams.m_flLenY;
 	m_flLenZ =aAbstractObjectParams.m_flLenZ;
 
-	m_flAngleYZ =aAbstractObjectParams.m_flAngleXZ;
-	m_flAngleXZ =aAbstractObjectParams.m_flAngleXY;
 	m_flAngleYZ =aAbstractObjectParams.m_flAngleYZ;
+	m_flAngleXZ =aAbstractObjectParams.m_flAngleXZ;
+	m_flAngleXY =aAbstractObjectParams.m_flAngleXY;
 }
 
 //--------------------------------------------------------------------------
@@ -247,7 +255,7 @@ void AbstractObject::getParams(AbstractObjectParams & aAbstractObjectParams) con
 	aAbstractObjectParams.m_flLenY = m_flLenY;
 	aAbstractObjectParams.m_flLenZ = m_flLenZ;
 
-	aAbstractObjectParams.m_flAngleXZ = m_flAngleYZ;
-	aAbstractObjectParams.m_flAngleXY = m_flAngleXZ;
 	aAbstractObjectParams.m_flAngleYZ = m_flAngleYZ;
+	aAbstractObjectParams.m_flAngleXZ = m_flAngleXZ;
+	aAbstractObjectParams.m_flAngleXY = m_flAngleXY;
 }

@@ -152,7 +152,7 @@ void ShopBuilder::addNewItem(const string & astrObjectName)	{
 	ref_ptr < AbstractObject > pAbstractObject = dynamic_cast<AbstractObject*>(AbstractObject::createInstance(astrObjectName).get());
 	pAbstractObject->predefinedObject();
 
-	m_pScene->addChild(pAbstractObject.get());
+	m_pScene->addChild(pAbstractObject);
 	setTreeStructure();
 }
 

@@ -18,19 +18,18 @@ FurnitureParams::FurnitureParams() : AbstractObjectParams()	{
 
 //=======================================================================
 
-Furniture::Furniture() : AbstractObject(new FurnitureParams())	{
-	setName("Furniture");
-}
+Furniture::Furniture(const FurnitureParams & aFurnitureParams) : AbstractObject(aFurnitureParams)	{
+	setParams(aFurnitureParams);
 
-//-----------------------------------------------------------------------
-
-Furniture::Furniture(FurnitureParams * apFurnitureParams) : AbstractObject(apFurnitureParams)	{
 	setName("Furniture");
 }
 
 //-----------------------------------------------------------------------
 
 Furniture::Furniture(const Furniture& fur,const CopyOp& copyop) : AbstractObject(fur, copyop)	{
+	FurnitureParams aFp;
+	fur.getParams(aFp);
+	setParams(aFp);
 }
 
 //-----------------------------------------------------------------------

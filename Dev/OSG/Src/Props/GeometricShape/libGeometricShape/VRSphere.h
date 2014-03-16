@@ -19,19 +19,18 @@ namespace VR	{
 		osg::ref_ptr <UntransformedSphere> m_pUntransformedSphere;
 
 	public:
-		Sphere();
-		Sphere(SphereParams * apSphereParams);
+		Sphere(const SphereParams & aSphereParams);
 		Sphere(const Sphere& sp,const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY);
 
 		virtual const char* className() const;
-		virtual osg::Object* cloneType() const { return new Sphere(); }
-		virtual osg::Object* clone(const osg::CopyOp& copyop) const { return new Sphere(*this,copyop); }
+		virtual osg::Object* cloneType() const;
+		virtual osg::Object* clone(const osg::CopyOp& copyop) const;
 
 		virtual std::string getSQLFormat() const;
 		virtual std::string getSQLCommand() const;
 
 		virtual void initFromSQLData(const std::string & astrSQLData);
-		virtual void init(AbstractGeomShapeParams & aAbstractGeomShapeParams);
+		virtual void init(const SphereParams & aSphereParams);
 
 		virtual void predefinedObject();
 

@@ -53,19 +53,24 @@ void createTable(const string & astrDBName) {
 			"PrimitiveName TEXT UNIQUE);";
 	dMgrParams.m_arrstrParams.push_back(strCreateTable);
 
-	VR::Cylinder cylinder;
+	VR::CylinderParams cylinderParams;
+	VR::Cylinder cylinder(cylinderParams);
 	strCreateTable = cylinder.getSQLFormat();
 	dMgrParams.m_arrstrParams.push_back(strCreateTable);
 
-	Plate3D plate3D;
+	Plate3DParams plate3DParams;
+	Plate3D plate3D(plate3DParams);
+
 	strCreateTable = plate3D.getSQLFormat();
 	dMgrParams.m_arrstrParams.push_back(strCreateTable);
 
-	Prism prism;
+	PrismParams prismParams;
+	Prism prism(prismParams);
 	strCreateTable = prism.getSQLFormat();
 	dMgrParams.m_arrstrParams.push_back(strCreateTable);
 
-	VR::Sphere sphere;
+	SphereParams sphereParams;
+	VR::Sphere sphere(sphereParams);
 	strCreateTable = sphere.getSQLFormat();
 	dMgrParams.m_arrstrParams.push_back(strCreateTable);
 
@@ -139,9 +144,8 @@ void populateTable(const string & astrDBName)	{
 void insertIntoDatabase_Sphere(const string & astrDBName)	{
 	DatabaseMgr & database = DatabaseMgr::Create(astrDBName.c_str(), DatabaseMgr::QSQLITE);
 
-	ref_ptr < VR::Sphere > pSphere =  new VR::Sphere;
 	SphereParams aSphereParams;
-	pSphere->init(aSphereParams);
+	ref_ptr < VR::Sphere > pSphere =  new VR::Sphere(aSphereParams);
 	string strSQLCommand = pSphere->getSQLCommand();
 
 	DatabaseMgrParams dMgrParams;
@@ -155,15 +159,14 @@ void insertIntoDatabase_Sphere(const string & astrDBName)	{
 void insertIntoDatabase_Cylinder(const string & astrDBName)	{
 	DatabaseMgr & database = DatabaseMgr::Create(astrDBName.c_str(), DatabaseMgr::QSQLITE);
 
-	ref_ptr < VR::Cylinder > pCylinder =  new VR::Cylinder;
 	CylinderParams aCylinderParams;
 	aCylinderParams.m_arrflRGBA.push_back(0.85);
 	aCylinderParams.m_arrflRGBA.push_back(0.85);
 	aCylinderParams.m_arrflRGBA.push_back(0.85);
 	aCylinderParams.m_arrflRGBA.push_back(1);
 
-	pCylinder->init(aCylinderParams);
-	string strSQLCommand = pCylinder->getSQLCommand();
+	VR::Cylinder cylinder(aCylinderParams);
+	string strSQLCommand = cylinder.getSQLCommand();
 
 	DatabaseMgrParams dMgrParams;
 	dMgrParams.m_arrstrParams.push_back(strSQLCommand);
@@ -178,13 +181,13 @@ void insertIntoDatabase_Plate3D(const string & astrDBName)	{
 
 	DatabaseMgrParams dMgrParams;
 
-	ref_ptr < Plate3D > pPlate3D =  new Plate3D;
+	ref_ptr < Plate3D > pPlate3D;
 	Plate3DParams * aPlate3DParams = new Plate3DParams;
 	//Bottom plate
 	aPlate3DParams->m_flLenX = 1.0;
 	aPlate3DParams->m_flLenY = 1.0;
 	aPlate3DParams->m_flLenZ = 0.05;
-	pPlate3D->init(*aPlate3DParams);
+	pPlate3D = new Plate3D(*aPlate3DParams);
 	string strSQLCommand = pPlate3D->getSQLCommand();
 	dMgrParams.m_arrstrParams.push_back(strSQLCommand);
 
@@ -193,7 +196,7 @@ void insertIntoDatabase_Plate3D(const string & astrDBName)	{
 	aPlate3DParams->m_flLenX = 0.05;
 	aPlate3DParams->m_flLenY = 1.0;
 	aPlate3DParams->m_flLenZ = 1.0;
-	pPlate3D->init(*aPlate3DParams);
+	pPlate3D = new Plate3D(*aPlate3DParams);
 	strSQLCommand = pPlate3D->getSQLCommand();
 	dMgrParams.m_arrstrParams.push_back(strSQLCommand);
 
@@ -202,7 +205,7 @@ void insertIntoDatabase_Plate3D(const string & astrDBName)	{
 	aPlate3DParams->m_flLenX = 0.05;
 	aPlate3DParams->m_flLenY = 1.0;
 	aPlate3DParams->m_flLenZ = 1.0;
-	pPlate3D->init(*aPlate3DParams);
+	pPlate3D = new Plate3D(*aPlate3DParams);
 	strSQLCommand = pPlate3D->getSQLCommand();
 	dMgrParams.m_arrstrParams.push_back(strSQLCommand);
 
@@ -211,7 +214,7 @@ void insertIntoDatabase_Plate3D(const string & astrDBName)	{
 	aPlate3DParams->m_flLenX = 1.0;
 	aPlate3DParams->m_flLenY = 0.05;
 	aPlate3DParams->m_flLenZ = 1.0;
-	pPlate3D->init(*aPlate3DParams);
+	pPlate3D = new Plate3D(*aPlate3DParams);
 	strSQLCommand = pPlate3D->getSQLCommand();
 	dMgrParams.m_arrstrParams.push_back(strSQLCommand);
 
@@ -220,7 +223,7 @@ void insertIntoDatabase_Plate3D(const string & astrDBName)	{
 	aPlate3DParams->m_flLenX = 1.0;
 	aPlate3DParams->m_flLenY = 0.05;
 	aPlate3DParams->m_flLenZ = 1.0;
-	pPlate3D->init(*aPlate3DParams);
+	pPlate3D = new Plate3D(*aPlate3DParams);
 	strSQLCommand = pPlate3D->getSQLCommand();
 	dMgrParams.m_arrstrParams.push_back(strSQLCommand);
 
@@ -241,9 +244,10 @@ void insertIntoDatabase_Container(const string & astrDBName)	{
 	m_flThickness(0.01);
 
 	//Set the cupboard
-	Container container;
+	ContainerParams conParams;
+	Container container(conParams);
 
-	ref_ptr < Plate3D > pPlate3D =  new Plate3D;
+	ref_ptr < Plate3D > pPlate3D;
 	Plate3DParams aPlate3DParams;
 
 	//Bottom plate
@@ -259,7 +263,7 @@ void insertIntoDatabase_Container(const string & astrDBName)	{
 	aPlate3DParams.m_arrflRGBA[1] = 0.81;
 	aPlate3DParams.m_arrflRGBA[2] = 0.1;
 	aPlate3DParams.m_arrflRGBA[3] = 1;
-	pPlate3D->init(aPlate3DParams);
+	pPlate3D = new Plate3D(aPlate3DParams);
 	container.addPart(pPlate3D);
 	
 
@@ -275,7 +279,7 @@ void insertIntoDatabase_Container(const string & astrDBName)	{
 	aPlate3DParams.m_arrflRGBA[1] = 1;
 	aPlate3DParams.m_arrflRGBA[2] = 0;
 	aPlate3DParams.m_arrflRGBA[3] = 1;
-	pPlate3D->init(aPlate3DParams);
+	pPlate3D = new Plate3D(aPlate3DParams);
 	container.addPart(pPlate3D);
 
 	//Right plate
@@ -290,7 +294,7 @@ void insertIntoDatabase_Container(const string & astrDBName)	{
 	aPlate3DParams.m_arrflRGBA[1] = 1;
 	aPlate3DParams.m_arrflRGBA[2] = 1;
 	aPlate3DParams.m_arrflRGBA[3] = 1;
-	pPlate3D->init(aPlate3DParams);
+	pPlate3D = new Plate3D(aPlate3DParams);
 	container.addPart(pPlate3D);
 
 	//Front plate
@@ -305,7 +309,7 @@ void insertIntoDatabase_Container(const string & astrDBName)	{
 	aPlate3DParams.m_arrflRGBA[1] = 0;
 	aPlate3DParams.m_arrflRGBA[2] = 1;
 	aPlate3DParams.m_arrflRGBA[3] = 1;
-	pPlate3D->init(aPlate3DParams);
+	pPlate3D = new Plate3D(aPlate3DParams);
 	container.addPart(pPlate3D);
 
 	//Back plate
@@ -317,7 +321,7 @@ void insertIntoDatabase_Container(const string & astrDBName)	{
 	aPlate3DParams.m_flPosZ = - 0.5 + m_flHeight/2;
 
 	aPlate3DParams.m_strFileNameTexture = "../../../../Resources/Textures/lz.rgb";
-	pPlate3D->init(aPlate3DParams);
+	pPlate3D = new Plate3D(aPlate3DParams);
 	container.addPart(pPlate3D);
 
 	string strSQLCommand = container.getSQLCommand();
@@ -336,16 +340,15 @@ void insertIntoDatabase_Cupboard(const string & astrDBName)	{
 	DatabaseMgr & database = DatabaseMgr::Create(astrDBName.c_str(), DatabaseMgr::QSQLITE);
 
 	//Set the cupboard
-	Cupboard cupboard;
 	CupboardParams cParams;
 	cParams.m_flPosX = 4.0;
 	cParams.m_flPosY = 0.0;
 	cParams.m_flPosZ = 0.0;
 
 	cParams.m_flAngleXZ = 25.0;
-	cupboard.init(&cParams);
+	Cupboard cupboard(cParams);
 
-	ref_ptr < Plate3D > pPlate3D =  new Plate3D;
+	ref_ptr < Plate3D > pPlate3D;
 	Plate3DParams aPlate3DParams;
 	//Bottom plate
 	aPlate3DParams.m_flLenX = 5.0;
@@ -360,7 +363,7 @@ void insertIntoDatabase_Cupboard(const string & astrDBName)	{
 	aPlate3DParams.m_arrflRGBA[2] = 0;
 	aPlate3DParams.m_arrflRGBA[3] = 1;
 	aPlate3DParams.m_strFileNameTexture = "../../../../Resources/Textures/lz.rgb";
-	pPlate3D->init(aPlate3DParams);
+	pPlate3D = new Plate3D(aPlate3DParams);
 	cupboard.addPart(pPlate3D);
 	
 
@@ -376,7 +379,7 @@ void insertIntoDatabase_Cupboard(const string & astrDBName)	{
 	aPlate3DParams.m_arrflRGBA[2] = 0;
 	aPlate3DParams.m_arrflRGBA[3] = 1;
 	aPlate3DParams.m_strFileNameTexture = "../../../../Resources/Textures/lz.rgb";
-	pPlate3D->init(aPlate3DParams);
+	pPlate3D = new Plate3D(aPlate3DParams);
 	cupboard.addPart(pPlate3D);
 
 	//Right side
@@ -391,7 +394,7 @@ void insertIntoDatabase_Cupboard(const string & astrDBName)	{
 	aPlate3DParams.m_arrflRGBA[2] = 1;
 	aPlate3DParams.m_arrflRGBA[3] = 1;
 	aPlate3DParams.m_strFileNameTexture = "../../../../Resources/Textures/lz.rgb";
-	pPlate3D->init(aPlate3DParams);
+	pPlate3D = new Plate3D(aPlate3DParams);
 	cupboard.addPart(pPlate3D);
 
 	//Back side
@@ -406,7 +409,7 @@ void insertIntoDatabase_Cupboard(const string & astrDBName)	{
 	aPlate3DParams.m_arrflRGBA[2] = 1;
 	aPlate3DParams.m_arrflRGBA[3] = 1;
 	aPlate3DParams.m_strFileNameTexture = "../../../../Resources/Textures/lz.rgb";
-	pPlate3D->init(aPlate3DParams);
+	pPlate3D = new Plate3D(aPlate3DParams);
 	cupboard.addPart(pPlate3D);
 
 	//shelf 1
@@ -418,7 +421,7 @@ void insertIntoDatabase_Cupboard(const string & astrDBName)	{
 	aPlate3DParams.m_flPosY = 0;
 	aPlate3DParams.m_flPosZ = -0.375;
 	aPlate3DParams.m_strFileNameTexture = "../../../../Resources/Textures/lz.rgb";
-	pPlate3D->init(aPlate3DParams);
+	pPlate3D = new Plate3D(aPlate3DParams);
 	cupboard.addPart(pPlate3D);
 
 
@@ -431,7 +434,7 @@ void insertIntoDatabase_Cupboard(const string & astrDBName)	{
 	aPlate3DParams.m_flPosY = 0;
 	aPlate3DParams.m_flPosZ = 0.375;
 	aPlate3DParams.m_strFileNameTexture = "../../../../Resources/Textures/lz.rgb";
-	pPlate3D->init(aPlate3DParams);
+	pPlate3D = new Plate3D(aPlate3DParams);
 	cupboard.addPart(pPlate3D);
 
 	//shelf 3
@@ -443,7 +446,7 @@ void insertIntoDatabase_Cupboard(const string & astrDBName)	{
 	aPlate3DParams.m_flPosY = 0;
 	aPlate3DParams.m_flPosZ = 1;
 	aPlate3DParams.m_strFileNameTexture = "../../../../Resources/Textures/lz.rgb";
-	pPlate3D->init(aPlate3DParams);
+	pPlate3D = new Plate3D(aPlate3DParams);
 	cupboard.addPart(pPlate3D);
 
 	string strSQLCommand = cupboard.getSQLCommand();
@@ -494,7 +497,8 @@ int main2(int argc, char * argv[])	{
 	ref_ptr<Node> pAxes = osgDB::readNodeFile("../../../../Resources/Models3D/axes.osgt");
 	pScene->addChild(pAxes);
 
-	ref_ptr < Container > pContainer = new Container;
+	ContainerParams cParams;
+	ref_ptr < Container > pContainer = new Container(cParams);
 	pContainer->predefinedObject();
 	pContainer->removePart(3);
 	ref_ptr<AbstractObject> pChild = dynamic_cast<AbstractObject*>(pContainer->getChild(3));
@@ -523,7 +527,8 @@ int main3(int argc, char * argv[])	{
 	ref_ptr<Node> pAxes = osgDB::readNodeFile("../../../../Resources/Models3D/axes.osgt");
 	pScene->addChild(pAxes);
 
-	ref_ptr < Container > pContainer = new Container;
+	ContainerParams cParams;
+	ref_ptr < Container > pContainer = new Container(cParams);
 	pContainer->predefinedObject();
 	pScene->addChild(pContainer);
 

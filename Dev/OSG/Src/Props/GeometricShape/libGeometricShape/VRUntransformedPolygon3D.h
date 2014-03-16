@@ -10,7 +10,7 @@ namespace VR {
 	struct UntransformedPolygon3DParams	{
 		float m_flRadius;
 		float m_flHeight;
-		int m_nRes;
+		int m_nResolution;
 
 		UntransformedPolygon3DParams();
 	};
@@ -26,8 +26,8 @@ namespace VR {
 		virtual void setColor(const std::vector < float > & aarrflColor);
 		virtual void setTexture(const std::string & astrFileName);
 
-		void setResolution(int anRes);
-		void init(UntransformedPolygon3DParams & aUntransformedPolygon3DParams);
+		void setResolution(int anResolution);
+		virtual void init(const UntransformedPolygon3DParams & aUntransformedPolygon3DParams);
 	};
 }
 #endif //VR_UNTRANSFORMED_POLYGON_3D_H

@@ -42,19 +42,23 @@ void createTable(const string & astrDBName) {
 			"PrimitiveName TEXT UNIQUE);";
 	dMgrParams.m_arrstrParams.push_back(strCreateTable);
 
-	VR::Cylinder cylinder;
+	CylinderParams cylinderParams;
+	VR::Cylinder cylinder(cylinderParams);
 	strCreateTable = cylinder.getSQLFormat();
 	dMgrParams.m_arrstrParams.push_back(strCreateTable);
 
-	Plate3D plate3D;
+	Plate3DParams plate3DParams;
+	Plate3D plate3D(plate3DParams);
 	strCreateTable = plate3D.getSQLFormat();
 	dMgrParams.m_arrstrParams.push_back(strCreateTable);
 
-	Prism prism;
+	PrismParams prismParams;
+	Prism prism(prismParams);
 	strCreateTable = prism.getSQLFormat();
 	dMgrParams.m_arrstrParams.push_back(strCreateTable);
 
-	VR::Sphere sphere;
+	SphereParams sphereParams;
+	VR::Sphere sphere(sphereParams);
 	strCreateTable = sphere.getSQLFormat();
 	dMgrParams.m_arrstrParams.push_back(strCreateTable);
 
@@ -128,17 +132,15 @@ void populateTable(const string & astrDBName)	{
 void insertIntoDatabase_Sphere(const string & astrDBName)	{
 	DatabaseMgr & database = DatabaseMgr::Create(astrDBName.c_str(), DatabaseMgr::QSQLITE);
 
-	SphereParams * apSphereParams = new SphereParams;
-	apSphereParams->m_nResPhi = 35;
-	apSphereParams->m_arrflRGBA.push_back(0.85);
-	apSphereParams->m_arrflRGBA.push_back(0.15);
-	apSphereParams->m_arrflRGBA.push_back(0.15);
-	apSphereParams->m_arrflRGBA.push_back(1.0);
+	SphereParams aSphereParams;
+	aSphereParams.m_nResPhi = 35;
+	aSphereParams.m_arrflRGBA.push_back(0.85);
+	aSphereParams.m_arrflRGBA.push_back(0.15);
+	aSphereParams.m_arrflRGBA.push_back(0.15);
+	aSphereParams.m_arrflRGBA.push_back(1.0);
 
-	ref_ptr < VR::Sphere > pSphere =  new VR::Sphere(apSphereParams);
+	ref_ptr < VR::Sphere > pSphere =  new VR::Sphere(aSphereParams);
 	string strSQLCommand = pSphere->getSQLCommand();
-
-	delete apSphereParams;
 
 	DatabaseMgrParams dMgrParams;
 	dMgrParams.m_arrstrParams.push_back(strSQLCommand);
@@ -151,9 +153,9 @@ void insertIntoDatabase_Sphere(const string & astrDBName)	{
 void insertIntoDatabase_Cylinder(const string & astrDBName)	{
 	DatabaseMgr & database = DatabaseMgr::Create(astrDBName.c_str(), DatabaseMgr::QSQLITE);
 
-	ref_ptr < VR::Cylinder > pCylinder =  new VR::Cylinder;
 	CylinderParams aCylinderParams;
-	pCylinder->init(aCylinderParams);
+
+	ref_ptr < VR::Cylinder > pCylinder =  new VR::Cylinder(aCylinderParams);
 	string strSQLCommand = pCylinder->getSQLCommand();
 
 	DatabaseMgrParams dMgrParams;
@@ -169,13 +171,12 @@ void insertIntoDatabase_Plate3D(const string & astrDBName)	{
 
 	DatabaseMgrParams dMgrParams;
 
-	Plate3D plate3D;
 	Plate3DParams aPlate3DParams;
 	//Bottom plate
 	aPlate3DParams.m_flLenX = 1.0;
 	aPlate3DParams.m_flLenY = 1.0;
 	aPlate3DParams.m_flLenZ = 0.05;
-	plate3D.init(aPlate3DParams);
+	Plate3D plate3D(aPlate3DParams);
 	string strSQLCommand = plate3D.getSQLCommand();
 	dMgrParams.m_arrstrParams.push_back(strSQLCommand);
 
@@ -220,15 +221,16 @@ void insertIntoDatabase_Furniture(const string & astrDBName)	{
 	DatabaseMgr & database = DatabaseMgr::Create(astrDBName.c_str(), DatabaseMgr::QSQLITE);
 
 	//Set the cupboard
-	Cupboard cupboard;
+	CupboardParams cupboardParams;
+	Cupboard cupboard(cupboardParams);
 
-	ref_ptr < Plate3D > pPlate3D =  new Plate3D;
+	ref_ptr < Plate3D > pPlate3D;
 	Plate3DParams aPlate3DParams;
 	//Bottom plate
 	aPlate3DParams.m_flLenX = 1.0;
 	aPlate3DParams.m_flLenY = 1.0;
 	aPlate3DParams.m_flLenZ = 0.05;
-	pPlate3D->init(aPlate3DParams);
+	pPlate3D =  new Plate3D(aPlate3DParams);
 	cupboard.addPart(pPlate3D);
 	
 
@@ -236,28 +238,28 @@ void insertIntoDatabase_Furniture(const string & astrDBName)	{
 	aPlate3DParams.m_flLenX = 0.05;
 	aPlate3DParams.m_flLenY = 1.0;
 	aPlate3DParams.m_flLenZ = 1.0;
-	pPlate3D->init(aPlate3DParams);
+	pPlate3D =  new Plate3D(aPlate3DParams);
 	cupboard.addPart(pPlate3D);
 
 	//Right plate
 	aPlate3DParams.m_flLenX = 0.05;
 	aPlate3DParams.m_flLenY = 1.0;
 	aPlate3DParams.m_flLenZ = 1.0;
-	pPlate3D->init(aPlate3DParams);
+	pPlate3D =  new Plate3D(aPlate3DParams);
 	cupboard.addPart(pPlate3D);
 
 	//Front plate
 	aPlate3DParams.m_flLenX = 1.0;
 	aPlate3DParams.m_flLenY = 0.05;
 	aPlate3DParams.m_flLenZ = 1.0;
-	pPlate3D->init(aPlate3DParams);
+	pPlate3D =  new Plate3D(aPlate3DParams);
 	cupboard.addPart(pPlate3D);
 
 	//Back plate
 	aPlate3DParams.m_flLenX = 1.0;
 	aPlate3DParams.m_flLenY = 0.05;
 	aPlate3DParams.m_flLenZ = 1.0;
-	pPlate3D->init(aPlate3DParams);
+	pPlate3D =  new Plate3D(aPlate3DParams);
 	cupboard.addPart(pPlate3D);
 
 	string strSQLCommand = cupboard.getSQLCommand();

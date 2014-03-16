@@ -8,20 +8,18 @@ using namespace std;
 using namespace osg;
 using namespace VR;
 
-CustomFurniture::CustomFurniture() : Furniture(new CustomFurnitureParams())	{
-	setName("CustomFurniture");
-}
-
 //-----------------------------------------------------------------------
 
-CustomFurniture::CustomFurniture(CustomFurnitureParams * apCustomFurnitureParams) : Furniture(apCustomFurnitureParams)	{
-	CustomFurnitureParams * pCustomFurnitureParams = dynamic_cast<CustomFurnitureParams*>(m_pAbstractObjectParams);
-	init(pCustomFurnitureParams);
+CustomFurniture::CustomFurniture(const CustomFurnitureParams & aCustomFurnitureParams) : Furniture(aCustomFurnitureParams)	{
+	setParams(aCustomFurnitureParams);
 }
 
 //-----------------------------------------------------------------------
 
 CustomFurniture::CustomFurniture(const CustomFurniture& cf,const CopyOp& copyop) : Furniture(cf,copyop)	{
+	CustomFurnitureParams aCf;
+	cf.getParams(aCf);
+	setParams(aCf);
 }
 
 //-----------------------------------------------------------------------
@@ -33,7 +31,8 @@ const char* CustomFurniture::className() const	{
 //-----------------------------------------------------------------------
 
 Object* CustomFurniture::cloneType() const	{
-	return new CustomFurniture();
+	CustomFurnitureParams aCf;
+	return new CustomFurniture(aCf);
 }
 
 //-----------------------------------------------------------------------
@@ -44,13 +43,9 @@ Object* CustomFurniture::clone(const CopyOp& copyop) const	{
 
 //-----------------------------------------------------------------------
 
-void CustomFurniture::init(FurnitureParams * apFurnitureParams)	{
-	apFurnitureParams = dynamic_cast<FurnitureParams*>(m_pAbstractObjectParams);
+void CustomFurniture::init(const CustomFurnitureParams & aCustomFurnitureParams)	{
+	setParams(aCustomFurnitureParams);
 
-	setScaling(apFurnitureParams->m_flLenX, apFurnitureParams->m_flLenY, apFurnitureParams->m_flLenZ);
-	setRotation(apFurnitureParams->m_flAngleYZ, apFurnitureParams->m_flAngleXZ, apFurnitureParams->m_flAngleXY);
-	setPosition(apFurnitureParams->m_flPosX, apFurnitureParams->m_flPosY, apFurnitureParams->m_flPosZ);
-	
 	Matrix & customFurnitureMatrix = calculateMatrix();
 	setMatrix(customFurnitureMatrix);
 

@@ -16,19 +16,18 @@ m_strFileNameTexture(""){
 
 //=======================================================================
 
-AbstractGeomShape::AbstractGeomShape() : AbstractObject(new AbstractGeomShapeParams())	{
-}
-
-//--------------------------------------------------------------------------
-
-AbstractGeomShape::AbstractGeomShape(AbstractGeomShapeParams * apAbstractGeomShapeParams) : 
-AbstractObject(apAbstractGeomShapeParams)	{
+AbstractGeomShape::AbstractGeomShape(const AbstractGeomShapeParams & aAbstractGeomShapeParams) : 
+AbstractObject(aAbstractGeomShapeParams)	{
+	setParams(aAbstractGeomShapeParams);
 }
 
 //--------------------------------------------------------------------------
 
 AbstractGeomShape::AbstractGeomShape(const AbstractGeomShape& ags,const CopyOp& copyop) :
 AbstractObject(ags,copyop)	{
+	AbstractGeomShapeParams aGsp;
+	ags.getParams(aGsp);
+	setParams(aGsp);
 }
 
 //--------------------------------------------------------------------------

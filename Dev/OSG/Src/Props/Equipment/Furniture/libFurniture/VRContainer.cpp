@@ -19,22 +19,17 @@ ContainerParams::ContainerParams() : FurnitureParams(),
 
 //=======================================================================
 
-Container::Container() : Furniture(new ContainerParams())	{
-	ContainerParams * pContainerParams = dynamic_cast<ContainerParams*>(m_pAbstractObjectParams);
-	init(pContainerParams);
-}
-
-//-----------------------------------------------------------------------
-
-Container::Container(ContainerParams * apContainerParams) : Furniture(apContainerParams)	{
-	ContainerParams * pContainerParams = dynamic_cast<ContainerParams*>(m_pAbstractObjectParams);
-	init(pContainerParams);
+Container::Container(const ContainerParams & aContainerParams) : Furniture(aContainerParams)	{
+	setParams(aContainerParams);
 }
 
 //-----------------------------------------------------------------------
 
 Container::Container(const Container& cont,const osg::CopyOp& copyop) :
 VR::Furniture(cont, copyop)	{
+	ContainerParams aCont;
+	cont.getParams(aCont);
+	setParams(aCont);
 }
 
 //-----------------------------------------------------------------------
@@ -46,7 +41,9 @@ const char* Container::className() const	{
 //-----------------------------------------------------------------------
 
 Object* Container::cloneType() const	{
-	return new Container();
+	ContainerParams aCont;
+
+	return new Container(aCont);
 }
 
 //-----------------------------------------------------------------------
@@ -57,12 +54,17 @@ Object* Container::clone(const CopyOp& copyop) const	{
 
 //-----------------------------------------------------------------------
 
-void Container::init(FurnitureParams * apFurnitureParams)	{
-	apFurnitureParams = dynamic_cast<FurnitureParams*>(m_pAbstractObjectParams);
+void Container::init(const ContainerParams & aContainerParams)	{
 
-	setScaling(apFurnitureParams->m_flLenX, apFurnitureParams->m_flLenY, apFurnitureParams->m_flLenZ);
-	setRotation(apFurnitureParams->m_flAngleYZ, apFurnitureParams->m_flAngleXZ, apFurnitureParams->m_flAngleXY);
-	setPosition(apFurnitureParams->m_flPosX, apFurnitureParams->m_flPosY, apFurnitureParams->m_flPosZ);
+	setParams(aContainerParams);
+
+	/*
+	const ContainerParams & cP = dynamic_cast<const ContainerParams&>(aContainerParams);
+
+	setScaling(cP.m_flLenX, cP.m_flLenY, cP.m_flLenZ);
+	setRotation(cP.m_flAngleYZ, cP.m_flAngleXZ, cP.m_flAngleXY);
+	setPosition(cP.m_flPosX, cP.m_flPosY, cP.m_flPosZ);
+	*/
 	
 	Matrix & containerMatrix = calculateMatrix();
 	setMatrix(containerMatrix);
@@ -73,20 +75,21 @@ void Container::init(FurnitureParams * apFurnitureParams)	{
 //-----------------------------------------------------------------------
 
 string Container::getSQLCommand() const {
-	ContainerParams * pContainerParams = dynamic_cast<ContainerParams*>(m_pAbstractObjectParams);
+	ContainerParams containerParams;
+	getParams(containerParams);
 
 	string strContainerParams;
-	strContainerParams = to_string((long double)pContainerParams->m_flPosX) + "_";
-	strContainerParams += to_string((long double)pContainerParams->m_flPosY) + "_";
-	strContainerParams += to_string((long double)pContainerParams->m_flPosZ) + "_";
+	strContainerParams = to_string((long double)containerParams.m_flPosX) + "_";
+	strContainerParams += to_string((long double)containerParams.m_flPosY) + "_";
+	strContainerParams += to_string((long double)containerParams.m_flPosZ) + "_";
 
-	strContainerParams += to_string((long double)pContainerParams->m_flLenX) + "_";
-	strContainerParams += to_string((long double)pContainerParams->m_flLenY) + "_";
-	strContainerParams += to_string((long double)pContainerParams->m_flLenZ) + "_";
+	strContainerParams += to_string((long double)containerParams.m_flLenX) + "_";
+	strContainerParams += to_string((long double)containerParams.m_flLenY) + "_";
+	strContainerParams += to_string((long double)containerParams.m_flLenZ) + "_";
 
-	strContainerParams += to_string((long double)pContainerParams->m_flAngleXY) + "_";
-	strContainerParams += to_string((long double)pContainerParams->m_flAngleXZ) + "_";
-	strContainerParams += to_string((long double)pContainerParams->m_flAngleYZ);
+	strContainerParams += to_string((long double)containerParams.m_flAngleXY) + "_";
+	strContainerParams += to_string((long double)containerParams.m_flAngleXZ) + "_";
+	strContainerParams += to_string((long double)containerParams.m_flAngleYZ);
 
 	string strSQLCommand = "INSERT INTO EquipmentItem (EquipmentItemName, EquipmentItemParams, EquipmentID) "
 		"VALUES ('Container', '" + strContainerParams + "', (SELECT EquipmentID FROM Equipment WHERE EquipmentName = 'Furniture'));";
@@ -102,7 +105,7 @@ string Container::getSQLCommand() const {
 //-----------------------------------------------------------------------
 
 void Container::initFromSQLData(const string & astrSQLData)	{
-	ContainerParams * pContainerParams = dynamic_cast<ContainerParams*>(m_pAbstractObjectParams);
+	ContainerParams containerParams;
 
 	string strSQLData = astrSQLData;
 	string strDelimiter = "?";
@@ -116,103 +119,118 @@ void Container::initFromSQLData(const string & astrSQLData)	{
 		arrflMatrix.push_back(stof(arrstrContainerParams[nI]));
 	}
 
-	pContainerParams->m_flPosX = arrflMatrix[0];
-	pContainerParams->m_flPosY = arrflMatrix[1];
-	pContainerParams->m_flPosZ = arrflMatrix[2];
+	containerParams.m_flPosX = arrflMatrix[0];
+	containerParams.m_flPosY = arrflMatrix[1];
+	containerParams.m_flPosZ = arrflMatrix[2];
 
-	pContainerParams->m_flLenX = arrflMatrix[3];
-	pContainerParams->m_flLenY = arrflMatrix[4];
-	pContainerParams->m_flLenZ = arrflMatrix[5];
+	containerParams.m_flLenX = arrflMatrix[3];
+	containerParams.m_flLenY = arrflMatrix[4];
+	containerParams.m_flLenZ = arrflMatrix[5];
 
-	pContainerParams->m_flAngleXY = arrflMatrix[6];
-	pContainerParams->m_flAngleXZ = arrflMatrix[7];
-	pContainerParams->m_flAngleYZ = arrflMatrix[8];
+	containerParams.m_flAngleXY = arrflMatrix[6];
+	containerParams.m_flAngleXZ = arrflMatrix[7];
+	containerParams.m_flAngleYZ = arrflMatrix[8];
 
 	for (auto it = arrstrSQLData.begin()+1; it != arrstrSQLData.end()-1; it++)	{
-		ref_ptr < Plate3D > pPlate = new Plate3D;
+		Plate3DParams plate3DParams;
+		ref_ptr < Plate3D > pPlate = new Plate3D(plate3DParams);
 		pPlate->initFromSQLData(*it);
 		addChild(pPlate);
 	}
-	init(pContainerParams);
+	init(containerParams);
 }
 
 //-----------------------------------------------------------------------
 
 void Container::predefinedObject()	{
-	ContainerParams * pContainerParams = dynamic_cast<ContainerParams*>(m_pAbstractObjectParams);
+	ContainerParams containerParams;
 
-	ref_ptr < Plate3D > pPlate3D = new Plate3D;
+	ref_ptr < Plate3D > pPlate3D;
 	Plate3DParams aPlate3DParams;
 	//Bottom plate
-	aPlate3DParams.m_flLenX = pContainerParams->m_flWidth;
-	aPlate3DParams.m_flLenY = pContainerParams->m_flDepth;
-	aPlate3DParams.m_flLenZ = pContainerParams->m_flThickness;
+	aPlate3DParams.m_flLenX = containerParams.m_flWidth;
+	aPlate3DParams.m_flLenY = containerParams.m_flDepth;
+	aPlate3DParams.m_flLenZ = containerParams.m_flThickness;
 
 	aPlate3DParams.m_flPosX = 0;
 	aPlate3DParams.m_flPosY = 0;
-	aPlate3DParams.m_flPosZ = pContainerParams->m_flThickness/2;
+	aPlate3DParams.m_flPosZ = containerParams.m_flThickness/2;
 
 	aPlate3DParams.m_arrflRGBA[0] = 0.85;
 	aPlate3DParams.m_arrflRGBA[1] = 0.0;
 	aPlate3DParams.m_arrflRGBA[2] = 0.85;
 	aPlate3DParams.m_arrflRGBA[3] = 1;
 
-	pPlate3D->init(aPlate3DParams);
+	pPlate3D = new Plate3D(aPlate3DParams);
 	addPart(pPlate3D);
 
 	//Left plate
-	pPlate3D = new Plate3D;
-
-	aPlate3DParams.m_flLenX = pContainerParams->m_flThickness;
-	aPlate3DParams.m_flLenY = pContainerParams->m_flDepth;
-	aPlate3DParams.m_flLenZ = pContainerParams->m_flHeight;
-	aPlate3DParams.m_flPosX = (-pContainerParams->m_flWidth+pContainerParams->m_flThickness)/2;
+	aPlate3DParams.m_flLenX = containerParams.m_flThickness;
+	aPlate3DParams.m_flLenY = containerParams.m_flDepth;
+	aPlate3DParams.m_flLenZ = containerParams.m_flHeight;
+	aPlate3DParams.m_flPosX = (-containerParams.m_flWidth+containerParams.m_flThickness)/2;
 	aPlate3DParams.m_flPosY = 0;
-	aPlate3DParams.m_flPosZ = pContainerParams->m_flHeight/2;
+	aPlate3DParams.m_flPosZ = containerParams.m_flHeight/2;
 
-	pPlate3D->init(aPlate3DParams);
+	pPlate3D = new Plate3D(aPlate3DParams);
 	addPart(pPlate3D);
 
 	//Right plate
-	pPlate3D = new Plate3D;
-
-	aPlate3DParams.m_flLenX = pContainerParams->m_flThickness;
-	aPlate3DParams.m_flLenY = pContainerParams->m_flDepth;
-	aPlate3DParams.m_flLenZ = pContainerParams->m_flHeight;
-	aPlate3DParams.m_flPosX = (pContainerParams->m_flWidth-pContainerParams->m_flThickness)/2;
+	aPlate3DParams.m_flLenX = containerParams.m_flThickness;
+	aPlate3DParams.m_flLenY = containerParams.m_flDepth;
+	aPlate3DParams.m_flLenZ = containerParams.m_flHeight;
+	aPlate3DParams.m_flPosX = (containerParams.m_flWidth-containerParams.m_flThickness)/2;
 	aPlate3DParams.m_flPosY = 0;
-	aPlate3DParams.m_flPosZ = pContainerParams->m_flHeight/2;
+	aPlate3DParams.m_flPosZ = containerParams.m_flHeight/2;
 
-	pPlate3D->init(aPlate3DParams);
+	pPlate3D = new Plate3D(aPlate3DParams);
 	addPart(pPlate3D);
 
 	//Front plate
-	pPlate3D =  new Plate3D;
-
-	aPlate3DParams.m_flLenX = pContainerParams->m_flWidth;
-	aPlate3DParams.m_flLenY = pContainerParams->m_flThickness;
-	aPlate3DParams.m_flLenZ = pContainerParams->m_flHeight;
+	aPlate3DParams.m_flLenX = containerParams.m_flWidth;
+	aPlate3DParams.m_flLenY = containerParams.m_flThickness;
+	aPlate3DParams.m_flLenZ = containerParams.m_flHeight;
 	aPlate3DParams.m_flPosX = 0;
-	aPlate3DParams.m_flPosY = (-pContainerParams->m_flDepth+pContainerParams->m_flThickness)/2;
-	aPlate3DParams.m_flPosZ = pContainerParams->m_flHeight/2;
+	aPlate3DParams.m_flPosY = (-containerParams.m_flDepth+containerParams.m_flThickness)/2;
+	aPlate3DParams.m_flPosZ = containerParams.m_flHeight/2;
 
-	pPlate3D->init(aPlate3DParams);
+	pPlate3D = new Plate3D(aPlate3DParams);
 	addPart(pPlate3D);
 
 	//Back plate
-	pPlate3D = new Plate3D;
-
-	aPlate3DParams.m_flLenX = pContainerParams->m_flWidth;
-	aPlate3DParams.m_flLenY = pContainerParams->m_flThickness;
-	aPlate3DParams.m_flLenZ = pContainerParams->m_flHeight;
+	aPlate3DParams.m_flLenX = containerParams.m_flWidth;
+	aPlate3DParams.m_flLenY = containerParams.m_flThickness;
+	aPlate3DParams.m_flLenZ = containerParams.m_flHeight;
 	aPlate3DParams.m_flPosX = 0;
-	aPlate3DParams.m_flPosY = (pContainerParams->m_flDepth-pContainerParams->m_flThickness)/2;
-	aPlate3DParams.m_flPosZ = pContainerParams->m_flHeight/2;
+	aPlate3DParams.m_flPosY = (containerParams.m_flDepth-containerParams.m_flThickness)/2;
+	aPlate3DParams.m_flPosZ = containerParams.m_flHeight/2;
 
 	aPlate3DParams.m_strFileNameTexture = "../../Resources/Textures/lz.rgb";
-	pPlate3D->init(aPlate3DParams);
+	pPlate3D = new Plate3D(aPlate3DParams);
 	addPart(pPlate3D);
 
-	init(pContainerParams);
+	init(containerParams);
 	setIsTargetPick(true);
+}
+
+//-----------------------------------------------------------------------
+
+void Container::setParams(const ContainerParams & aContainerParams)	{
+	Furniture::setParams(aContainerParams);
+
+	m_flWidth = aContainerParams.m_flWidth;
+	m_flHeight = aContainerParams.m_flHeight;
+	m_flDepth = aContainerParams.m_flDepth;
+	m_flThickness = aContainerParams.m_flThickness;
+}
+
+//-----------------------------------------------------------------------
+
+void Container::getParams(ContainerParams & aContainerParams) const	{
+	Furniture::getParams(aContainerParams);
+
+	aContainerParams.m_flWidth = m_flWidth;
+	aContainerParams.m_flHeight = m_flHeight;
+	aContainerParams.m_flDepth = m_flDepth;
+	aContainerParams.m_flThickness = m_flThickness;
 }

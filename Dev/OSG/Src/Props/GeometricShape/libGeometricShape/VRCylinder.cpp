@@ -23,7 +23,7 @@ CylinderParams::CylinderParams() : PrismParams() {
 //-----------------------------------------------------------------------
 
 VR::Cylinder::Cylinder(const CylinderParams & aCylinderParams) : Prism(aCylinderParams)	{
-	m_pUntransformedPolygon3D = new UntransformedPolygon3D();
+	m_pUntransformedPolyhedron = new UntransformedPolyhedron();
 
 	init(aCylinderParams);
 	setName("Cylinder");
@@ -116,3 +116,37 @@ void VR::Cylinder::predefinedObject()	{
 }
 
 //------------------------------------------------------------------------------------------
+
+string VR::Cylinder::SQLFieldValues()	{
+	CylinderParams cylinderParams;
+	getParams(cylinderParams);
+	string strCylinderParams;
+
+	strCylinderParams= to_string((long double)cylinderParams.m_flRadius) + "_";
+	strCylinderParams+= to_string((long double)cylinderParams.m_flHeight) + "_";
+
+	strCylinderParams+= to_string((long double)cylinderParams.m_flPosX) + "_";
+	strCylinderParams+= to_string((long double)cylinderParams.m_flPosY) + "_";
+	strCylinderParams+= to_string((long double)cylinderParams.m_flPosZ) + "_";
+
+	strCylinderParams += to_string((long double)cylinderParams.m_flLenX) + "_";
+	strCylinderParams += to_string((long double)cylinderParams.m_flLenY) + "_";
+	strCylinderParams += to_string((long double)cylinderParams.m_flLenZ) + "_";
+
+	strCylinderParams+= to_string((long double)cylinderParams.m_flAngleXY) + "_";
+	strCylinderParams+= to_string((long double)cylinderParams.m_flAngleXZ) + "_";
+	strCylinderParams+= to_string((long double)cylinderParams.m_flAngleYZ) + ";";	
+
+	int nI;
+	string strColor;
+	for (nI=0;nI<3;nI++)	{
+		strColor += to_string((long double)cylinderParams.m_arrflRGBA[nI]) + "_";
+	}
+	strColor += to_string((long double)cylinderParams.m_arrflRGBA[3]) + ";";
+
+	strCylinderParams += strColor;
+
+	strCylinderParams += cylinderParams.m_strFileNameTexture + ";";
+
+	return strCylinderParams;
+}

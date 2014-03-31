@@ -22,6 +22,18 @@ namespace VR {
 
 		virtual void setColor(const std::vector < float > & aarrflColor) = 0;
 		virtual void setTexture(const std::string & astrFileName) = 0;
+
+		virtual void addChild2DB(std::vector<std::string> &avecItems);
+
+
+	protected:
+		virtual void setParams(const AbstractGeomShapeParams & aAbstractGeomShapeParams);
+		virtual void getParams(AbstractGeomShapeParams & aAbstractGeomShapeParams) const;
+
+		std::vector < float > m_arrflRGBA;
+		std::string m_strFileNameTexture;
+
+
 	};
 }
 #endif //VR_ABSTRACT_GEOM_SHAPE_H

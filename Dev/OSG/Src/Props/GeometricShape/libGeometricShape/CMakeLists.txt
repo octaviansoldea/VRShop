@@ -19,7 +19,7 @@ SET(SRCS
 	VRUntransformedPlate2D.h VRUntransformedPlate2D.cpp
 	VRUntransformedPlate3D.h VRUntransformedPlate3D.cpp
 	VRUntransformedPolygon2D.h VRUntransformedPolygon2D.cpp
-	VRUntransformedPolygon3D.h VRUntransformedPolygon3D.cpp
+	VRUntransformedPolyhedron.h VRUntransformedPolyhedron.cpp
 	VRUntransformedSphere.h VRUntransformedSphere.cpp
 )
 

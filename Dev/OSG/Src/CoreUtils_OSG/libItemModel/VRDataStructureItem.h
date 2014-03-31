@@ -11,7 +11,7 @@ namespace VR	{
 	class DataStructureItem {
 
 	public:
-		DataStructureItem(const QVariant & aarrData, DataStructureItem *parent = 0);
+		DataStructureItem(const QVariant & aarrData="", DataStructureItem *parent = 0);
 		~DataStructureItem();
 
 		DataStructureItem * parent();
@@ -25,6 +25,8 @@ namespace VR	{
 		int row() const;
 
 		void insertChild(DataStructureItem * apChild);
+		bool insertChildren(int position, int count);
+		bool removeChildren(int position, int count);
 		
 	private:
 		QList <DataStructureItem*> m_arrChildren;

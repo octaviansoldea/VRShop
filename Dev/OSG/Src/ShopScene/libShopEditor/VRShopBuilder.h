@@ -14,7 +14,7 @@ namespace VR	{
 
 	struct ShopBuilder {
 		ShopBuilder();
-		ShopBuilder(OSGQT_Widget * apOSGQTWidget, QTreeView * apQTreeView);
+		ShopBuilder(OSGQT_Widget * apOSGQTWidget);
 		
 		~ShopBuilder();
 
@@ -25,7 +25,6 @@ namespace VR	{
 		void saveDB(const std::string & astrDBFileName);
 
 		bool searchScene(const std::string & astrSearchTerm, DataStructureModel ** appDataStructureModel);
-		bool setTreeStructure();
 
 		osg::ref_ptr<Scene> getScene() const;
 
@@ -34,12 +33,10 @@ namespace VR	{
 		osgGA::GUIEventHandler * m_pEventHandler;
 
 	private:
-
-
 		OSGQT_Widget * m_pOSGQTWidget;
-		QTreeView * m_pQTreeView;
-		DataStructureModel * m_pDataStructureModel;
 		osg::ref_ptr<Scene> m_pScene;
+
+		std::string m_strDBFileName;
 	};
 }
 #endif //VR_SHOP_BUILDER_H

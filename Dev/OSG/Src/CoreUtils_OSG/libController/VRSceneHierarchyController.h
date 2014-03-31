@@ -34,6 +34,7 @@ namespace VR {
 
 	public slots:
 			void slotItemClicked(const QModelIndex & anItemIndex);
+			void slotItemDeleted(const QModelIndex & anItemIndex);
 
 	private:
 		Q_OBJECT

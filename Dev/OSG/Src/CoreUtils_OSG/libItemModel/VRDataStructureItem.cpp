@@ -67,3 +67,30 @@ void DataStructureItem::insertChild(DataStructureItem * apChild)	{
 }
 
 //--------------------------------------------------------------------
+
+bool DataStructureItem::insertChildren(int position, int count)	{
+	if (position < 0 || position > m_arrChildren.size())
+		return false;
+
+	int nI;
+	for (nI = 0; nI < count; ++nI) {
+		const QVariant data;
+		DataStructureItem *item = new DataStructureItem(data, this);
+		m_arrChildren.insert(position, item);
+	}
+
+	return true;
+}
+
+//--------------------------------------------------------------------
+
+bool DataStructureItem::removeChildren(int position, int count)	{
+	if (position < 0 || position + count > m_arrChildren.size())
+		return false;
+
+	int nI;
+	for (nI = 0; nI < count; ++nI)
+		delete m_arrChildren[position];
+
+	return true;
+}

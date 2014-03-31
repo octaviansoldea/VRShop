@@ -44,3 +44,17 @@ void SceneHierarchyController::slotItemClicked(const QModelIndex & anItemIndex)	
 	mpPickAndDragHandlerShopEditor->m_pPickedObject = pAbstractObject;
 	emit mpPickAndDragHandlerShopEditor->signalPropertiesSettingsChanged();
 }
+
+//--------------------------------------------------------------------------------------
+
+void SceneHierarchyController::slotItemDeleted(const QModelIndex & anItemIndex)	{
+	string strItemName = anItemIndex.data().toString().toStdString();
+
+	AbstractObject * pAbstractObject = dynamic_cast<AbstractObject*>(mp_Scene->getChild(strItemName));
+
+	if (pAbstractObject==0)
+		return;
+
+	mpPickAndDragHandlerShopEditor->m_pPickedObject = pAbstractObject;
+
+}

@@ -16,6 +16,8 @@ namespace VR	{
 
 		virtual const char* className() const;
 
+		Scene * getScene(const std::string & astrSceneName);
+
 		Node * getChild(const std::string & astrChildName);
         inline Node* getChild( unsigned  int i ) { return _children[i].get(); }
         inline const Node* getChild( unsigned  int i ) const { return _children[i].get(); }
@@ -29,8 +31,11 @@ namespace VR	{
 		std::vector<std::string> getSceneHierarchy();
 
 		virtual void print();
-private:
+
+	private:
 		int m_nIteration;
+
+		std::vector<Scene *> m_pvecScene;
 		std::vector<std::string> m_vecstrSceneHierarchy;
 	};
 }

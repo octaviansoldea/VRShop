@@ -37,6 +37,9 @@ namespace VR	{
 		virtual void setColor(const std::vector < float > & aarrflColor);
 		virtual void setTexture(const std::string & astrFileName);
 		void setResolution(int anRes);
+
+		virtual std::string SQLFieldValues();
+
 	};
 }
 #endif //VR_SPHERE_H

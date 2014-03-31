@@ -2,10 +2,14 @@
 #include <fstream>
 #include <iostream>
 
+#include <vector>
+
 #include "BasicStringDefinitions.h"
 #include "Log.h"
 
 #include "VRAbstractObject.h"
+#include "VRDatabaseController.h"
+
 #include "VRScene.h"
 
 using namespace VR;
@@ -32,6 +36,23 @@ const char* Scene::className() const	{
 
 //-----------------------------------------------------------------------
 
+Scene * Scene::getScene(const std::string & astrSceneName)	{
+	if (astrSceneName.empty())	{
+		return 0;
+	}
+	int nI;
+	Scene * pScene = 0;
+	for (nI=0; nI < m_pvecScene.size(); nI++)	{
+		pScene = m_pvecScene[nI];
+		if (pScene->getName() == astrSceneName)	{
+			return m_pvecScene[nI];
+		}
+	}
+	return 0;
+}
+
+//-----------------------------------------------------------------------
+
 Node * Scene::getChild(const string & astrChildName)	{
 	Node * pChild = 0;
 	if (astrChildName.empty())	{
@@ -40,7 +61,7 @@ Node * Scene::getChild(const string & astrChildName)	{
 
 	NodeList::iterator it = _children.begin();
 	for (it; it != _children.end(); it++)	{
-		string strChild = it->get()->getName();
+		const string & strChild = it->get()->getName();
 		if (strChild == astrChildName)	{
 			pChild = dynamic_cast<Node*>(it->get());
 
@@ -53,8 +74,30 @@ Node * Scene::getChild(const string & astrChildName)	{
 //--------------------------------------------------------------
 
 bool Scene::addChild(Node *child)	{
-	bool bRes = Group::addChild(child);
-	setSceneHierarchy();
+	bool bRes = true;
+	AbstractObject * pChild = dynamic_cast<AbstractObject*>(child);
+	if(pChild == 0)	{
+		bRes = Group::addChild(child);
+		return bRes;
+	}
+
+	//If "Child" is a Scene, then only fill the vector of "scenes"
+	//Can be put into a separate function
+	if (pChild->className() == "Scene")	{
+		m_pvecScene.push_back(dynamic_cast<Scene*>(pChild));
+		return bRes;
+	}
+
+	//New child is an "Object"
+	bRes = Group::addChild(child);
+
+	//INSERT AN OBJECT (along with its children) into the SCENE
+	const string * pstrScene = &getName();
+	vector<string> vecstrData;
+	pChild->addChild2DB(vecstrData);
+
+	DatabaseController dbController(pstrScene,&vecstrData,DatabaseController::ADD);
+
 	return bRes;
 }
 
@@ -62,7 +105,7 @@ bool Scene::addChild(Node *child)	{
 
 bool Scene::removeChild(Node *child)	{
 	bool bRes = Group::removeChild(child);
-	setSceneHierarchy();
+
 	return bRes;
 }
 
@@ -120,10 +163,13 @@ void Scene::print()	{
 	
 
 	ref_ptr<VR::AbstractObject> pObject;
-	for (it = _children.begin() + 2; it != _children.end(); it++)	{
+	for (it = _children.begin(); it != _children.end(); it++)	{
 		nI = it - _children.begin();
 		pObject = dynamic_cast<VR::AbstractObject*>(this->getChild(nI));
-		pObject->print(output);
+		if (!pObject.valid())
+			continue;
+		else
+			pObject->print(output);
 	}
 	output << "========================================================End Scene" << endl;
 
@@ -133,3 +179,8 @@ void Scene::print()	{
 }
 
 //----------------------------------------------------------------------
+
+string m_strSQLFormat =
+	"CREATE TABLE IF NOT EXISTS Scene \
+	(SceneID INTEGER PRIMARY KEY AUTOINCREMENT,\
+	SceneName TEXT);";

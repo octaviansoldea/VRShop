@@ -12,13 +12,13 @@ using namespace osg;
 using namespace VR;
 
 string Plate3D::m_strSQLFormat =
-	"CREATE TABLE IF NOT EXISTS Plate3D "
-	"(Plate3DID INTEGER PRIMARY KEY AUTOINCREMENT,"
-	"Plate3DMatrix TEXT,"
-	"Plate3DColor TEXT,"
-	"Plate3DTexture TEXT,"
-	"PrimitiveID INTEGER, "
-	"FOREIGN KEY (PrimitiveID) REFERENCES Primitive(PrimitiveID));";
+	"CREATE TABLE IF NOT EXISTS Plate3D \
+	(Plate3DID INTEGER PRIMARY KEY AUTOINCREMENT,\
+	Plate3DMatrix TEXT,\
+	Plate3DColor TEXT,\
+	Plate3DTexture TEXT,\
+	PrimitiveID INTEGER, \
+	FOREIGN KEY (PrimitiveID) REFERENCES Primitive(PrimitiveID));";
 
 //-----------------------------------------------------------------------
 
@@ -96,7 +96,7 @@ string Plate3D::getSQLFormat() const {
 
 //----------------------------------------------------------------------
 
-std::string Plate3D::getSQLCommand() const	{
+string Plate3D::getSQLCommand() const	{
 	Plate3DParams plate3DParams;
 	getParams(plate3DParams);
 
@@ -109,9 +109,9 @@ std::string Plate3D::getSQLCommand() const	{
 	strPlate3DParams += to_string((long double)plate3DParams.m_flLenY) + "_";
 	strPlate3DParams += to_string((long double)plate3DParams.m_flLenZ) + "_";
 
-	strPlate3DParams += to_string((long double)plate3DParams.m_flAngleXY) + "_";
+	strPlate3DParams += to_string((long double)plate3DParams.m_flAngleYZ) + "_";
 	strPlate3DParams += to_string((long double)plate3DParams.m_flAngleXZ) + "_";
-	strPlate3DParams += to_string((long double)plate3DParams.m_flAngleYZ);
+	strPlate3DParams += to_string((long double)plate3DParams.m_flAngleXY);
 
 
 	int nI;
@@ -147,7 +147,6 @@ void Plate3D::initFromSQLData(const string & astrSQLData)	{
 	}
 
 	if (arrstrColor.size()!=0)	{
-		vector < float > arrflColor;
 		for (nI=0;nI<4;nI++)	{
 			plate3DParams.m_arrflRGBA[nI] = stof(arrstrColor[nI]);
 		}
@@ -161,6 +160,10 @@ void Plate3D::initFromSQLData(const string & astrSQLData)	{
 	plate3DParams.m_flLenY = arrflMatrix[4];
 	plate3DParams.m_flLenZ = arrflMatrix[5];
 
+	plate3DParams.m_flAngleYZ = arrflMatrix[6];
+	plate3DParams.m_flAngleXZ = arrflMatrix[7];
+	plate3DParams.m_flAngleXY = arrflMatrix[8];
+
 	plate3DParams.m_strFileNameTexture = arrstrPlateParams[3];
 
 	init(plate3DParams);
@@ -172,4 +175,39 @@ void Plate3D::predefinedObject()	{
 	Plate3DParams plate3DParams;
 	init(plate3DParams);
 	setIsTargetPick(true);
+}
+
+
+//=====================================================================
+
+string Plate3D::SQLFieldValues()	{
+	Plate3DParams plate3DParams;
+	getParams(plate3DParams);
+
+	string strPlate3DParams;
+	strPlate3DParams = to_string((long double)plate3DParams.m_flPosX) + "_";
+	strPlate3DParams += to_string((long double)plate3DParams.m_flPosY) + "_";
+	strPlate3DParams += to_string((long double)plate3DParams.m_flPosZ) + "_";
+
+	strPlate3DParams += to_string((long double)plate3DParams.m_flLenX) + "_";
+	strPlate3DParams += to_string((long double)plate3DParams.m_flLenY) + "_";
+	strPlate3DParams += to_string((long double)plate3DParams.m_flLenZ) + "_";
+
+	strPlate3DParams += to_string((long double)plate3DParams.m_flAngleYZ) + "_";
+	strPlate3DParams += to_string((long double)plate3DParams.m_flAngleXZ) + "_";
+	strPlate3DParams += to_string((long double)plate3DParams.m_flAngleXY) + ";";
+
+
+	int nI;
+	string strColor;
+	for (nI=0;nI<3;nI++)	{
+		strColor += to_string((long double)plate3DParams.m_arrflRGBA[nI]) + "_";
+	}
+	strColor += to_string((long double)plate3DParams.m_arrflRGBA[3]) + ";";
+
+	strPlate3DParams += strColor;
+
+	strPlate3DParams += plate3DParams.m_strFileNameTexture + ";";
+
+	return strPlate3DParams;
 }

@@ -27,8 +27,8 @@ PrismParams::PrismParams() : AbstractGeomShapeParams()	{
 //-----------------------------------------------------------------------
 
 Prism::Prism(const PrismParams & aPrismParams) : AbstractGeomShape(aPrismParams)	{
-	m_pUntransformedPolygon3D = new UntransformedPolygon3D();
-	addChild(m_pUntransformedPolygon3D);
+	m_pUntransformedPolyhedron = new UntransformedPolyhedron();
+	addChild(m_pUntransformedPolyhedron);
 
 	init(aPrismParams);
 }
@@ -65,7 +65,7 @@ Object* Prism::clone(const osg::CopyOp& copyop) const	{
 void Prism::init(const PrismParams & aPrismParams)	{
 	setParams(aPrismParams);
 
-	m_pUntransformedPolygon3D->init(aPrismParams);
+	m_pUntransformedPolyhedron->init(aPrismParams);
 
 	Matrix matrix;
 	matrix.set(aPrismParams.m_flRadius,	0,						0,						0,
@@ -96,13 +96,13 @@ void Prism::init(const PrismParams & aPrismParams)	{
 //----------------------------------------------------------------------
 
 void Prism::setColor(const vector < float > & aarrflColor) {
-	m_pUntransformedPolygon3D->setColor(aarrflColor);
+	m_pUntransformedPolyhedron->setColor(aarrflColor);
 }
 
 //----------------------------------------------------------------------
 
 void Prism::setTexture(const string & astrFileName) {
-	m_pUntransformedPolygon3D->setTexture(astrFileName);
+	m_pUntransformedPolyhedron->setTexture(astrFileName);
 }
 
 //----------------------------------------------------------------------
@@ -193,7 +193,6 @@ void Prism::initFromSQLData(const std::string & astrSQLData)	{
 
 void Prism::predefinedObject()	{
 	PrismParams prismParams;
-//	getParams(prismParams);
 	init(prismParams);
 	setIsTargetPick(true);
 }
@@ -208,4 +207,40 @@ void Prism::setParams(const PrismParams & aPrismParams) {
 
 void Prism::getParams(PrismParams & aPrismParams) const {
 	AbstractGeomShape::getParams(aPrismParams);
+}
+
+//----------------------------------------------------------------------
+
+string Prism::SQLFieldValues()	{
+	PrismParams prismParams;
+	getParams(prismParams);
+	string strPrismParams;
+
+	strPrismParams= to_string((long double)prismParams.m_flRadius) + "_";
+	strPrismParams+= to_string((long double)prismParams.m_flHeight) + "_";
+
+	strPrismParams+= to_string((long double)prismParams.m_flPosX) + "_";
+	strPrismParams+= to_string((long double)prismParams.m_flPosY) + "_";
+	strPrismParams+= to_string((long double)prismParams.m_flPosZ) + "_";
+
+	strPrismParams += to_string((long double)prismParams.m_flLenX) + "_";
+	strPrismParams += to_string((long double)prismParams.m_flLenY) + "_";
+	strPrismParams += to_string((long double)prismParams.m_flLenZ) + "_";
+
+	strPrismParams+= to_string((long double)prismParams.m_flAngleXY) + "_";
+	strPrismParams+= to_string((long double)prismParams.m_flAngleXZ) + "_";
+	strPrismParams+= to_string((long double)prismParams.m_flAngleYZ) + ";";	
+
+	int nI;
+	string strColor;
+	for (nI=0;nI<3;nI++)	{
+		strColor += to_string((long double)prismParams.m_arrflRGBA[nI]) + "_";
+	}
+	strColor += to_string((long double)prismParams.m_arrflRGBA[3]) + ";";
+
+	strPrismParams += strColor;
+
+	strPrismParams += prismParams.m_strFileNameTexture + ";";
+
+	return strPrismParams;
 }

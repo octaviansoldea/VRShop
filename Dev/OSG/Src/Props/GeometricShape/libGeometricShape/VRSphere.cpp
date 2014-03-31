@@ -202,3 +202,38 @@ void VR::Sphere::predefinedObject()	{
 	init(sphereParams);
 	setIsTargetPick(true);
 }
+
+//----------------------------------------------------------------------
+
+string VR::Sphere::SQLFieldValues()	{
+	SphereParams sphereParams;
+	getParams(sphereParams);
+
+	string strSphereParams;
+	strSphereParams = to_string((long double)sphereParams.m_flRadius) + "_";
+
+	strSphereParams += to_string((long double)sphereParams.m_flPosX) + "_";
+	strSphereParams += to_string((long double)sphereParams.m_flPosY) + "_";
+	strSphereParams += to_string((long double)sphereParams.m_flPosZ) + "_";
+											
+	strSphereParams += to_string((long double)sphereParams.m_flLenX) + "_";
+	strSphereParams += to_string((long double)sphereParams.m_flLenY) + "_";
+	strSphereParams += to_string((long double)sphereParams.m_flLenZ) + "_";
+										
+	strSphereParams += to_string((long double)sphereParams.m_flAngleXY) + "_";
+	strSphereParams += to_string((long double)sphereParams.m_flAngleXZ) + "_";
+	strSphereParams += to_string((long double)sphereParams.m_flAngleYZ) + ";";
+
+	int nI;
+	string strColor;
+	for (nI=0;nI<3;nI++)	{
+		strColor += to_string((long double)sphereParams.m_arrflRGBA[nI]) + "_";
+	}
+	strColor += to_string((long double)sphereParams.m_arrflRGBA[3]) + ";";
+
+	strSphereParams += strColor;
+
+	strSphereParams += sphereParams.m_strFileNameTexture + ";";
+
+	return strSphereParams;
+}

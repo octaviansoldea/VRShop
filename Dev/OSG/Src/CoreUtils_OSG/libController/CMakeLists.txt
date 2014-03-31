@@ -33,6 +33,7 @@ IF(Qt5_FOUND)
    QT5_WRAP_CPP(MOC_SRCS
    VRCameraController.h
    VRPickAndDragController.h
+   VRDatabaseController.h
    VRSearchListController.h
    VRSceneHierarchyController.h
    )
@@ -40,6 +41,7 @@ ELSE()
   QT4_WRAP_CPP(MOC_SRCS
   VRCameraController.h
   VRPickAndDragController.h
+  VRDatabaseController.h
   VRSearchListController.h
   VRSceneHierarchyController.h
   )
@@ -51,12 +53,14 @@ INCLUDE_DIRECTORIES(
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCamera
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libPicker
 	${CMAKE_SOURCE_DIR}/Props/Scene/libScene
+	${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabase
 	${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
 )
 
 SET(SRCS
 	VRCameraController.h VRCameraController.cpp
 	VRPickAndDragController.h VRPickAndDragController.cpp
+	VRDatabaseController.h VRDatabaseController.cpp
 	VRSearchListController.h VRSearchListController.cpp
 	VRSceneHierarchyController.h VRSceneHierarchyController.cpp
 )

@@ -287,13 +287,16 @@ void PickAndDragHandlerShopEditor::duplicateSelection(ref_ptr<Scene> apScene)	{
 		pDuplicateItem_GUI->m_pLineEditScaleY->text().toFloat(),
 		pDuplicateItem_GUI->m_pLineEditScaleZ->text().toFloat());
 
-	vector<osg::ref_ptr<AbstractObject>>::iterator it = m_pvecPickedObjects.begin();
+	vector<osg::ref_ptr<AbstractObject>>::iterator it;
 
 	ref_ptr<AbstractObject> pObject = 0;
-	for (it; it != m_pvecPickedObjects.end(); it++)	{
-		//An open issue with the matrix
-		pObject = dynamic_cast<AbstractObject*>(it->get()->clone(CopyOp::DEEP_COPY_ALL));
-		apScene->addChild(pObject);
+	int nI;
+	for (nI=0;nI<nNumberOfCopies;nI++)	{
+		for (it = m_pvecPickedObjects.begin(); it != m_pvecPickedObjects.end(); it++)	{
+			//An open issue with the matrix
+			pObject = dynamic_cast<AbstractObject*>(it->get()->clone(CopyOp::DEEP_COPY_ALL));
+			apScene->addChild(pObject);
+		}
 	}
 	clearList();
 	delete pDuplicateItem_GUI;
@@ -311,7 +314,7 @@ void PickAndDragHandlerShopEditor::removeSelection(ref_ptr<Scene> apScene)	{
 	RemoveSelection_GUI removeSelection_GUI;
 	removeSelection_GUI.setWindowFlags(Qt::FramelessWindowHint);
 
-	QStringListModel * pModel = new QStringListModel();
+	QStringListModel model;
 	QStringList list;
 
 	vector<ref_ptr<AbstractObject>>::iterator it;
@@ -319,20 +322,15 @@ void PickAndDragHandlerShopEditor::removeSelection(ref_ptr<Scene> apScene)	{
 		list.push_back(string("- " + it->get()->getName()).c_str());
 	}
 
-	pModel->setStringList(list);
-	removeSelection_GUI.m_pListView->setModel(pModel);
+	model.setStringList(list);
+	removeSelection_GUI.m_pListView->setModel(&model);
 
 	bool bRes = removeSelection_GUI.exec();
-	if (bRes == 0)	{
-		clearList();
-		delete pModel;
-		return;
-	}
-
-	for (it = m_pvecPickedObjects.begin(); it != m_pvecPickedObjects.end(); it++)	{
-		apScene->removeChild(*it);
+	if (bRes == true)	{
+		for (it = m_pvecPickedObjects.begin(); it != m_pvecPickedObjects.end(); it++)	{
+			apScene->removeChild(*it);
+		}
 	}
 	clearList();
-	delete pModel;
 }
 

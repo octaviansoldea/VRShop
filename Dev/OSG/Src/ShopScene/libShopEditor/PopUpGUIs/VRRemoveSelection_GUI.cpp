@@ -1,9 +1,3 @@
-#include <string>
-#include <fstream>
-
-#include <QString>
-#include <QFileDialog>
-#include <QMessageBox>
 
 #include "VRRemoveSelection_GUI.h"
 

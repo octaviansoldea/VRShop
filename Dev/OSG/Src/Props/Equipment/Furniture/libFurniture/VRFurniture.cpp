@@ -1,3 +1,4 @@
+#include <iostream>
 #include <QVariant>
 
 #include "VRAbstractGeomShape.h"
@@ -48,7 +49,7 @@ const char* Furniture::className() const	{
 void Furniture::addPart(ref_ptr < AbstractObject > apAbstractObject) {
 	addChild(apAbstractObject);
 
-	string strCommand = apAbstractObject->getSQLCommand();
+	string & strCommand = apAbstractObject->getSQLCommand();
 
 	m_arrSQLCommandLines.push_back(strCommand);
 }
@@ -107,3 +108,49 @@ void Furniture::loadAllFurnitures(ref_ptr<Group> apScene, const string & astrDat
 	}
 }
 
+//-----------------------------------------------------------------------
+
+void Furniture::addChild2DB(vector<string> &avecItems)	{
+	Furniture * pFurniture = dynamic_cast<Furniture*>(this);
+
+	vector<string> * pvecItems = &avecItems;
+
+	string strClassName = pFurniture->className();
+	const string * pstrObjectName = &pFurniture->getName();
+	string strItem = (strClassName + ";" + *pstrObjectName + ";" + pFurniture->SQLFieldValues());
+	pvecItems->push_back(strItem);
+
+	AbstractObject * pChild = 0;
+	NodeList::iterator it;
+	for (it = pFurniture->_children.begin(); it != pFurniture->_children.end(); it++)	{
+		pChild = dynamic_cast<AbstractObject*>(it->get());
+
+		strClassName = pChild->className();
+		pstrObjectName = &pChild->getName();
+		strItem = (strClassName + ";" + *pstrObjectName + ";" + pChild->SQLFieldValues());
+
+		pvecItems->push_back("  " + strItem);
+	}
+}
+
+//-----------------------------------------------------------------------
+
+string Furniture::SQLFieldValues()	{
+	FurnitureParams furnitureParams;
+	getParams(furnitureParams);
+
+	string strfurnitureParams;
+	strfurnitureParams = to_string((long double)furnitureParams.m_flPosX) + "_";
+	strfurnitureParams += to_string((long double)furnitureParams.m_flPosY) + "_";
+	strfurnitureParams += to_string((long double)furnitureParams.m_flPosZ) + "_";
+
+	strfurnitureParams += to_string((long double)furnitureParams.m_flLenX) + "_";
+	strfurnitureParams += to_string((long double)furnitureParams.m_flLenY) + "_";
+	strfurnitureParams += to_string((long double)furnitureParams.m_flLenZ) + "_";
+
+	strfurnitureParams += to_string((long double)furnitureParams.m_flAngleYZ) + "_";
+	strfurnitureParams += to_string((long double)furnitureParams.m_flAngleXZ) + "_";
+	strfurnitureParams += to_string((long double)furnitureParams.m_flAngleXY) + ";";
+
+	return strfurnitureParams;
+}

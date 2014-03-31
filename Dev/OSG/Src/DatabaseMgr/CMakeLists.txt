@@ -3,6 +3,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
 SET(CMAKE_DEBUG_POSTFIX "D")
 
 SUBDIRS(
+  libDatabase
   libDatabaseMgr
   Test_libDatabaseMgr
 )

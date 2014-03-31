@@ -2,13 +2,12 @@
 #define VR_PRISM_H
 
 #include "VRAbstractGeomShape.h"
-
-#include "VRUntransformedPolygon3D.h"
+#include "VRUntransformedPolyhedron.h"
 
 class ostream;
 
 namespace VR {
-	struct PrismParams : public AbstractGeomShapeParams, public UntransformedPolygon3DParams {
+	struct PrismParams : public AbstractGeomShapeParams, public UntransformedPolyhedronParams {
 		PrismParams();
 	};
 
@@ -32,7 +31,10 @@ namespace VR {
 
 		virtual void initFromSQLData(const std::string & astrSQLData);
 
-		osg::ref_ptr <UntransformedPolygon3D> m_pUntransformedPolygon3D;
+		osg::ref_ptr <UntransformedPolyhedron> m_pUntransformedPolyhedron;
+
+		virtual std::string SQLFieldValues();
+
 
 	private:
 		static std::string m_strSQLFormat;

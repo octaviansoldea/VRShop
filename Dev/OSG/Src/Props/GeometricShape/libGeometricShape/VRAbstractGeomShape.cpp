@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "VRAbstractGeomShape.h"
 
 using namespace VR;
@@ -42,3 +44,33 @@ const char* AbstractGeomShape::className() const	{
 }
 
 //--------------------------------------------------------------------------
+
+void AbstractGeomShape::addChild2DB(vector<string> &avecItems)	{
+	AbstractGeomShape * pAbstractGeomShape = dynamic_cast<AbstractGeomShape*>(this);
+
+	vector<string> * pvecItems = &avecItems;
+	const string & strClassName = pAbstractGeomShape->className();
+	const string * pstrObjectName = &pAbstractGeomShape->getName();
+	string strItem = (strClassName + ";" + *pstrObjectName + ";" + pAbstractGeomShape->SQLFieldValues());
+
+	pvecItems->push_back(strItem);
+}
+
+
+//--------------------------------------------------------------------------
+
+void AbstractGeomShape::setParams(const AbstractGeomShapeParams & aAbstractGeomShapeParams) {
+	AbstractObject::setParams(aAbstractGeomShapeParams);
+
+	m_arrflRGBA = aAbstractGeomShapeParams.m_arrflRGBA;
+	m_strFileNameTexture = aAbstractGeomShapeParams.m_strFileNameTexture;
+}
+
+//--------------------------------------------------------------------------
+
+void AbstractGeomShape::getParams(AbstractGeomShapeParams & aAbstractGeomShapeParams) const {
+	AbstractObject::getParams(aAbstractGeomShapeParams);
+
+	aAbstractGeomShapeParams.m_arrflRGBA = m_arrflRGBA;
+	aAbstractGeomShapeParams.m_strFileNameTexture = m_strFileNameTexture;
+}

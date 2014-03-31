@@ -35,7 +35,7 @@ QModelIndex DataStructureModel::index(int row, int column, const QModelIndex &pa
 	DataStructureItem *parentItem;
 
 	if (parent == QModelIndex::QModelIndex())	//The root
-		parentItem = static_cast<DataStructureItem*>(m_pRootItem);
+		parentItem = m_pRootItem;
 	else
 		parentItem = static_cast<DataStructureItem*>(parent.internalPointer());
 
@@ -49,6 +49,7 @@ QModelIndex DataStructureModel::index(int row, int column, const QModelIndex &pa
 //--------------------------------------------------------------------
 
 QModelIndex DataStructureModel::parent(const QModelIndex &index) const	{
+	//Retrieve parent's index from a child
 	if (index == QModelIndex::QModelIndex())	//Root doesn't have a parent
 		return QModelIndex();
 
@@ -73,7 +74,7 @@ QVariant DataStructureModel::headerData(int section, Qt::Orientation orientation
 //--------------------------------------------------------------------
 
 int DataStructureModel::rowCount(const QModelIndex &parent) const	{
-	//Rows equals to the number of children
+	//Rows equal to the number of children
 	DataStructureItem *parentItem;
 
 	if (parent == QModelIndex::QModelIndex())	//Root
@@ -132,6 +133,42 @@ Qt::ItemFlags DataStructureModel::flags(const QModelIndex& index) const {
 
 //--------------------------------------------------------------------
 
+bool DataStructureModel::insertRows(int position, int rows, const QModelIndex &parent)	{
+	bool bOk = false;
+
+	if (!parent.isValid())
+		return bOk;
+
+	//From the index retreive the parent item
+	DataStructureItem *parentItem = static_cast<DataStructureItem*>(parent.internalPointer());
+
+	beginInsertRows(parent, position, position + rows - 1);
+	bOk = parentItem->insertChildren(position,rows);
+	endInsertRows();
+
+	return bOk;
+}
+
+//--------------------------------------------------------------------
+
+bool DataStructureModel::removeRows(int position, int rows, const QModelIndex &parent)	{
+	bool bOk = false;
+
+	if (!parent.isValid())
+		return bOk;
+
+	//From the index retreive the parent item
+	DataStructureItem *parentItem = static_cast<DataStructureItem*>(parent.internalPointer());
+
+	beginRemoveRows(parent, position, position + rows - 1);
+	bOk = parentItem->removeChildren(position, rows);
+	endRemoveRows();
+
+	return bOk;
+}
+
+//--------------------------------------------------------------------
+
 QVariant DataStructureModel::getPrevValue() const	{
 	return m_PreviousValue;
 }
@@ -140,7 +177,7 @@ QVariant DataStructureModel::getPrevValue() const	{
 
 void DataStructureModel::setupDataElements(const QList <QString> & aarrstrSceneData, DataStructureItem *apParent)	{
 	string strElementDataLine;
-    QList <DataStructureItem*> parents;
+	QList <DataStructureItem*> parents;
 	parents.append(apParent);
 	QList <int> lstnLayer;
 	lstnLayer.push_back(0);

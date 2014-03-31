@@ -31,7 +31,7 @@ namespace VR	{
 		virtual QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
 		virtual QModelIndex parent(const QModelIndex &index) const;
 
-		QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+		virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 		
 		virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
 		virtual int columnCount(const QModelIndex &parent = QModelIndex()) const;
@@ -41,6 +41,11 @@ namespace VR	{
 		//reimplementation of setData() & flags() required to let editing
 		virtual bool setData(const QModelIndex& index, const QVariant& value,int role = Qt::EditRole);
 		virtual Qt::ItemFlags flags(const QModelIndex& index) const;
+
+		//reimplemented for the sake of insertion/removal
+		virtual bool insertRows(int position, int rows, const QModelIndex &parent);
+		virtual bool removeRows(int position, int rows, const QModelIndex &parent = QModelIndex());
+
 
 		void setupDataElements(const QList <QString> & aarrstrSceneData, DataStructureItem *apParent);
 

@@ -9,13 +9,13 @@
 #include <osg/MatrixTransform>
 #include <osg/Geometry>
 
-#include "VRUntransformedPolygon3D.h"
+#include "VRUntransformedPolyhedron.h"
 
 using namespace osg;
 using namespace VR;
 using namespace std;
 
-UntransformedPolygon3DParams::UntransformedPolygon3DParams() :
+UntransformedPolyhedronParams::UntransformedPolyhedronParams() :
 m_flRadius(1.0),
 m_flHeight(1.0),
 m_nResolution(5)	{
@@ -23,19 +23,19 @@ m_nResolution(5)	{
 
 //==========================================================================
 
-UntransformedPolygon3D::UntransformedPolygon3D()	{
+UntransformedPolyhedron::UntransformedPolyhedron()	{
 }
 
 //--------------------------------------------------------------------------
 
-UntransformedPolygon3D::UntransformedPolygon3D(const UntransformedPolygon3DParams & aUntransformedPolygon3DParams)	{
-	m_UntransformedPolygon3DParams = aUntransformedPolygon3DParams;
-	init(m_UntransformedPolygon3DParams);
+UntransformedPolyhedron::UntransformedPolyhedron(const UntransformedPolyhedronParams & aUntransformedPolyhedronParams)	{
+	m_UntransformedPolyhedronParams = aUntransformedPolyhedronParams;
+	init(m_UntransformedPolyhedronParams);
 }
 
 //--------------------------------------------------------------------------
 
-void UntransformedPolygon3D::setColor(const vector < float > & aarrflColor)	{
+void UntransformedPolyhedron::setColor(const vector < float > & aarrflColor)	{
 	Vec4 vec4(aarrflColor[0], aarrflColor[1], aarrflColor[2], aarrflColor[3]);
 	int nI;
 	int nGeodesNr = this->getNumChildren();
@@ -57,7 +57,8 @@ void UntransformedPolygon3D::setColor(const vector < float > & aarrflColor)	{
 }
 
 //-----------------------------------------------------------------------------
-void UntransformedPolygon3D::setTexture(const std::string & astrFileName) {
+
+void UntransformedPolyhedron::setTexture(const std::string & astrFileName) {
 	ref_ptr<Image> pImage = osgDB::readImageFile(astrFileName);
 	ref_ptr<TextureRectangle> pTexture = new TextureRectangle(pImage);
 	ref_ptr<TexMat> pTexMat = new TexMat;
@@ -119,16 +120,16 @@ void UntransformedPolygon3D::setTexture(const std::string & astrFileName) {
 
 //-----------------------------------------------------------------------------
 
-void UntransformedPolygon3D::setResolution(int anResolution) {
-	m_UntransformedPolygon3DParams.m_nResolution = anResolution;
+void UntransformedPolyhedron::setResolution(int anResolution) {
+	m_UntransformedPolyhedronParams.m_nResolution = anResolution;
 }
 
 //-----------------------------------------------------------------------------
 
-void UntransformedPolygon3D::init(const UntransformedPolygon3DParams & aUntransformedPolygon3DParams)	{
-	m_UntransformedPolygon3DParams = aUntransformedPolygon3DParams;
+void UntransformedPolyhedron::init(const UntransformedPolyhedronParams & aUntransformedPolyhedronParams)	{
+	m_UntransformedPolyhedronParams = aUntransformedPolyhedronParams;
 
-	int anSidesNr = m_UntransformedPolygon3DParams.m_nResolution;
+	int anSidesNr = m_UntransformedPolyhedronParams.m_nResolution;
 
 	int nPointsNr = 2*anSidesNr+2;
 	ref_ptr<Vec3Array> m_pPoints = new Vec3Array(nPointsNr);

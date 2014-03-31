@@ -193,7 +193,7 @@ QSpinBox::down-arrow:off {border-left: 17px solid none; border-right: 17px solid
      <number>0</number>
     </property>
     <item>
-     <widget class="QSplitter" name="splitter">
+     <widget class="QSplitter" name="splitterLColumn">
       <property name="frameShape">
        <enum>QFrame::NoFrame</enum>
       </property>
@@ -2602,7 +2602,7 @@ QToolButton:!checked {
      </widget>
     </item>
     <item>
-     <widget class="QSplitter" name="splitter_4">
+     <widget class="QSplitter" name="splitterRColumn">
       <property name="orientation">
        <enum>Qt::Vertical</enum>
       </property>
@@ -3657,7 +3657,7 @@ QTreeView::item:hover,QTreeView::item:selected {
              <x>0</x>
              <y>0</y>
              <width>367</width>
-             <height>270</height>
+             <height>257</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_16">
@@ -4154,9 +4154,9 @@ background-color: rgb(191,193,194);</string>
    <zorder>splitter_2</zorder>
    <zorder>m_pOSGQTWidget</zorder>
    <zorder>horizontalLayoutWidget</zorder>
-   <zorder>splitter</zorder>
+   <zorder>splitterLColumn</zorder>
    <zorder>CentralFrame</zorder>
-   <zorder>splitter_4</zorder>
+   <zorder>splitterRColumn</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -4443,14 +4443,14 @@ background-color: rgb(191,193,194);</string>
    </hints>
   </connection>
   <connection>
-   <sender>m_p_PushButton_CameraHeadingDirection</sender>
+   <sender>m_pPushButton_Header_CameraHeadingDirection</sender>
    <signal>clicked(bool)</signal>
    <receiver>m_pCameraDirectionWidget</receiver>
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>176</x>
-     <y>876</y>
+     <x>119</x>
+     <y>744</y>
     </hint>
     <hint type="destinationlabel">
      <x>126</x>

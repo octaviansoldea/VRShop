@@ -12,7 +12,7 @@
 #include "VRUntransformedPlate2D.h"
 #include "VRUntransformedPlate3D.h"
 #include "VRUntransformedPolygon2D.h"
-#include "VRUntransformedPolygon3D.h"
+#include "VRUntransformedPolyhedron.h"
 #include "VRUntransformedSphere.h"
 
 #include "VRPlate3D.h"
@@ -134,26 +134,26 @@ void main_UntransformedPolygon2D_Color(ref_ptr<Group> pScene)
 
 //----------------------------------------------------------------------
 
-void main_UntransformedPolygon3D_Color(ref_ptr<Group> pScene)	{
-	ref_ptr<UntransformedPolygon3D> pUntransformedPolygon3D = new UntransformedPolygon3D();
-	pUntransformedPolygon3D->setResolution(10);
+void main_UntransformedPolyhedron_Color(ref_ptr<Group> pScene)	{
+	ref_ptr<UntransformedPolyhedron> pUntransformedPolyhedron = new UntransformedPolyhedron();
+	pUntransformedPolyhedron->setResolution(10);
 	vector < float > arrflColor;
 	arrflColor.push_back(1.0);
 	arrflColor.push_back(0.0);
 	arrflColor.push_back(0.0);
 	arrflColor.push_back(1.0);
-	pUntransformedPolygon3D->setColor(arrflColor);
-	pScene->addChild(pUntransformedPolygon3D);
+	pUntransformedPolyhedron->setColor(arrflColor);
+	pScene->addChild(pUntransformedPolyhedron);
 }
 
 //----------------------------------------------------------------------
 
-void main_UntransformedPolygon3D_Texture(ref_ptr<Group> pScene)	{
-	UntransformedPolygon3DParams uPP;
-	ref_ptr<UntransformedPolygon3D> pUntransformedPolygon3D = new UntransformedPolygon3D(uPP);
-	pUntransformedPolygon3D->setTexture("../../../../Resources/Textures/lz.rgb");
+void main_UntransformedPolyhedron_Texture(ref_ptr<Group> pScene)	{
+	UntransformedPolyhedronParams uPP;
+	ref_ptr<UntransformedPolyhedron> pUntransformedPolyhedron = new UntransformedPolyhedron(uPP);
+	pUntransformedPolyhedron->setTexture("../../../../Resources/Textures/lz.rgb");
 
-	pScene->addChild(pUntransformedPolygon3D);
+	pScene->addChild(pUntransformedPolyhedron);
 }
 
 //----------------------------------------------------------------------
@@ -312,8 +312,8 @@ int main(int argc, char * argv[])	{
 	case 6: main_Plate3D(pScene); break;
 	case 7: main_UntransformedPolygon2D(pScene); break;
 	case 8: main_UntransformedPolygon2D_Color(pScene); break;
-	case 9: main_UntransformedPolygon3D_Color(pScene); break;
-	case 10: main_UntransformedPolygon3D_Texture(pScene); break;
+	case 9: main_UntransformedPolyhedron_Color(pScene); break;
+	case 10: main_UntransformedPolyhedron_Texture(pScene); break;
 	case 11: main_Cylinder(pScene); break;
 	case 12: main_Prism(pScene); break;
 	case 13: main_Sphere_Color(pScene); break;

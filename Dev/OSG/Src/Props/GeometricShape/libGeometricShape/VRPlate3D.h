@@ -36,6 +36,9 @@ namespace VR	{
 
 		virtual void setColor(const std::vector < float > & aarrflColor);
 		virtual void setTexture(const std::string & astrFileName);
+
+
+		virtual std::string SQLFieldValues();
 	};
 }
 #endif //VR_PLATE_3D_H

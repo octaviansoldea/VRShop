@@ -15,7 +15,7 @@
 #include "VRUntransformedPlate2D.h"
 #include "VRUntransformedPlate3D.h"
 #include "VRUntransformedPolygon2D.h"
-#include "VRUntransformedPolygon3D.h"
+#include "VRUntransformedPolyhedron.h"
 #include "VRUntransformedSphere.h"
 #include "VRPlate3D.h"
 #include "VRSphere.h"

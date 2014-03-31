@@ -40,6 +40,7 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/View
   ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs
   ${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabaseMgr
+  ${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabase
   ${CMAKE_SOURCE_DIR}/Props/Scene/libScene
   ${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
   ${CMAKE_SOURCE_DIR}/Props/Equipment/GeometricShape/libGeometricShape
@@ -55,6 +56,7 @@ SET(LIBS_COMMON
 	${OSGVIEWER_LIBRARIES}
 	${OPENTHREADS_LIBRARIES}
 	libDatabaseMgr
+	libDatabase
 	libAbstractObject
 	libGeometricShape
 	libShopEditor

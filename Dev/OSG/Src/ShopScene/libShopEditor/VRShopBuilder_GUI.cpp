@@ -41,7 +41,7 @@ ShopBuilder_GUI::ShopBuilder_GUI()	{
 
 	setWindowTitle("VR Shop Server Dialog");
 
-	m_pShopBuilder = new ShopBuilder(m_pOSGQTWidget, m_pTreeView);
+	m_pShopBuilder = new ShopBuilder(m_pOSGQTWidget);
 	ref_ptr<Scene> pScene = m_pShopBuilder->getScene();
 
 	KeyboardMouseManipulatorShopEditor * pKeyboardMouseManipulatorShopEditor = 
@@ -183,9 +183,8 @@ void ShopBuilder_GUI::slotNewProject()	{
 
 	//Result == 1 indicates that path+name are valid
 	if (newProject.result() == 1)	{
-		QString qstrFileName;
-		qstrFileName = newProject.m_pLineEditDirectory->text() + "/" + newProject.m_pLineEditFileName->text() + ".db";
-		m_pShopBuilder->newDB(qstrFileName.toStdString());
+		const string & strFileName = (newProject.m_pLineEditDirectory->text() + "/" + newProject.m_pLineEditFileName->text() + ".db").toStdString();
+		m_pShopBuilder->newDB(strFileName);
 	}
 	return;
 }

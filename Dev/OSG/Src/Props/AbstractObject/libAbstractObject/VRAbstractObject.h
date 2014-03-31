@@ -59,6 +59,9 @@ namespace VR	{
 		virtual void writeObjectHierarchy(std::vector<std::string> &avecstrHierarchy);
 		virtual void print(std::ostream & os) const;
 
+		virtual std::string SQLFieldValues() {return ("");};
+		virtual void addChild2DB(std::vector<std::string> &avecItems) {};
+
 	protected:
 		virtual void setParams(const AbstractObjectParams & aAbstractObjectParams);
 		virtual void getParams(AbstractObjectParams & aAbstractObjectParams) const;

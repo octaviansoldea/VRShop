@@ -205,14 +205,6 @@ void AbstractObject::print(std::ostream & os) const	{
 	os << "========================================Begin AbstractObject" << endl;
 	os << "Object name: " << getName() << endl;
 	int nI, nJ;
-	os << "GetMatrix()" << endl;
-	for (nI=0;nI<4;nI++)	{
-		for (nJ=0;nJ<4;nJ++)	{
-			os << getMatrix()(nI,nJ) << " ";
-		}
-		os << endl;
-	}
-	os << endl;
 	os << "calculateMatrix()" << endl;
 	for (nI=0;nI<4;nI++)	{
 		for (nJ=0;nJ<4;nJ++)	{
@@ -221,8 +213,6 @@ void AbstractObject::print(std::ostream & os) const	{
 		os << endl;
 	}
 	os << endl;
-
-	os << "Child index: " << getChildIndex(this) << endl;
 
 	os << "========================================End AbstractObject" << endl;
 }

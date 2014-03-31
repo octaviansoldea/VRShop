@@ -15,6 +15,7 @@
 #include "VRSceneObjectsSearchShopEditor.h"
 #include "VRDataStructureModel.h"
 
+#include "VRDatabaseManagerShopEditor.h"
 
 #include "VRShopBuilder.h"
 
@@ -30,10 +31,8 @@ ShopBuilder::ShopBuilder()	{
 
 //----------------------------------------------------------------------
 
-ShopBuilder::ShopBuilder(OSGQT_Widget * apOSGQTWidget, QTreeView * apQTreeView) :
-m_pOSGQTWidget(apOSGQTWidget),
-m_pQTreeView(apQTreeView),
-m_pDataStructureModel(0)	{
+ShopBuilder::ShopBuilder(OSGQT_Widget * apOSGQTWidget) :
+m_pOSGQTWidget(apOSGQTWidget)	{
 	m_pScene = new Scene;
 
 	m_pEventHandler = new PickAndDragHandlerShopEditor;
@@ -46,17 +45,11 @@ m_pDataStructureModel(0)	{
 	ref_ptr<Grid> pGrid = new Grid;
 	m_pScene->addChild(pAxes);
 	m_pScene->addChild(pGrid);
-
-	m_pScene->setSceneHierarchy();
 }
 
 //----------------------------------------------------------------------
 
 ShopBuilder::~ShopBuilder() {
-	delete m_pQTreeView;
-
-	if (m_pDataStructureModel)
-		delete m_pDataStructureModel;
 }
 
 //----------------------------------------------------------------------
@@ -81,6 +74,12 @@ void ShopBuilder::gridOnOff(bool abIndicator) {
 //----------------------------------------------------------------------
 
 void ShopBuilder::newDB(const string & astrDBFileName)	{
+	m_strDBFileName = astrDBFileName;
+
+	DatabaseManagerShopEditorParams dMngParams;
+	dMngParams.m_qstrDBName = m_strDBFileName.c_str();
+
+	DatabaseManagerShopEditor dMng(dMngParams);
 }
 
 //----------------------------------------------------------------------
@@ -115,33 +114,6 @@ bool ShopBuilder::searchScene(const string & astrSearchTerm, DataStructureModel 
 
 //----------------------------------------------------------------------
 
-bool ShopBuilder::setTreeStructure()	{
-	bool bRes = false;
-
-	unsigned int nSize = m_pScene->getSceneHierarchy().size();
-	if (nSize == 0)
-		return bRes;
-
-	DataStructureModelParams params;
-	QList<QString> data;
-	int nI;
-	for (nI=0; nI<nSize; nI++)	{
-		data.push_back(m_pScene->getSceneHierarchy()[nI].c_str());
-	}
-	params.data = data;
-//	params.aqvarRootHeader = "Scene";
-
-	m_pDataStructureModel = new DataStructureModel(params);
-
-	m_pQTreeView->setModel(m_pDataStructureModel);
-	m_pQTreeView->show();
-
-	bRes = true;
-	return bRes;
-}
-
-//----------------------------------------------------------------------
-
 ref_ptr<Scene> ShopBuilder::getScene() const	{
 	return m_pScene;
 }
@@ -153,7 +125,6 @@ void ShopBuilder::addNewItem(const string & astrObjectName)	{
 	pAbstractObject->predefinedObject();
 
 	m_pScene->addChild(pAbstractObject);
-	setTreeStructure();
 }
 
 //----------------------------------------------------------------------

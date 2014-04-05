@@ -41,7 +41,6 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_SOURCE_DIR}/ShopScene/libShoppingPlace/View
   ${CMAKE_SOURCE_DIR}/ShopScene/libShoppingPlace/PopUpDialogs
   ${CMAKE_BINARY_DIR}/ShopScene/libShoppingPlace
-  ${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabaseMgr
   ${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
   ${CMAKE_SOURCE_DIR}/Props/GeometricShape/libGeometricShape
   ${CMAKE_SOURCE_DIR}/Props/Equipment/Furniture/libFurniture

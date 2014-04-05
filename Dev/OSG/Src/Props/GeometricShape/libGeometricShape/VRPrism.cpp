@@ -211,7 +211,7 @@ void Prism::getParams(PrismParams & aPrismParams) const {
 
 //----------------------------------------------------------------------
 
-string Prism::SQLFieldValues(const string & astrParentName)	{
+string Prism::getObjectData(const string & astrParentName)	{
 	PrismParams prismParams;
 	getParams(prismParams);
 	string strPrismParams;

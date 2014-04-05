@@ -180,7 +180,7 @@ void Plate3D::predefinedObject()	{
 
 //=====================================================================
 
-string Plate3D::SQLFieldValues(const std::string & astrParentName)	{
+string Plate3D::getObjectData(const std::string & astrParentName)	{
 	Plate3DParams plate3DParams;
 	getParams(plate3DParams);
 

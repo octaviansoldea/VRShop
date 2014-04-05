@@ -40,7 +40,6 @@ INCLUDE_DIRECTORIES(
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCamera
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_OSG
 	${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
-	${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabaseMgr
 )
 
 ADD_EXECUTABLE(Test_libPicker
@@ -60,7 +59,6 @@ SET(LIBS_COMMON
 	libCamera
 	libCommon_OSG
 	libCommon
-	libDatabaseMgr
 )
 
 

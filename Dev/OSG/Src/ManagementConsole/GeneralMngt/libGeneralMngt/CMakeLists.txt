@@ -29,7 +29,6 @@ ENDIF(Qt5_FOUND)
 INCLUDE_DIRECTORIES(
 	${OPENSCENEGRAPH_INCLUDE_DIRS}
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProduct
-	${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabaseMgr
 )
 
 #Define sources to be later added into the library

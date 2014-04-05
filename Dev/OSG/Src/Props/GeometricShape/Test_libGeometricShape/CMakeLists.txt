@@ -31,7 +31,6 @@ INCLUDE_DIRECTORIES(
 	${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
 	${CMAKE_SOURCE_DIR}/Props/GeometricShape/libGeometricShape
 	${CMAKE_SOURCE_DIR}/Props/Equipment/Furniture/libFurniture
-	${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabaseMgr
 )
 
 SET(SRCS
@@ -47,7 +46,6 @@ SET(LIBS_COMMON
 	${OSGQT_LIBRARIES}
 	${OSGVIEWER_LIBRARIES}
 	${OPENTHREADS_LIBRARIES}
-	libDatabaseMgr
 	libFurniture
 	libGeometricShape
 	libAbstractObject

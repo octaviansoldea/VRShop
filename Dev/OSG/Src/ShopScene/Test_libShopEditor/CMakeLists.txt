@@ -30,6 +30,7 @@ INCLUDE_DIRECTORIES(
   ${OPENSCENEGRAPH_INCLUDE_DIRS}
   ${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_OSG
+  ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_QT
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCamera
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libPicker
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libItemModel
@@ -39,7 +40,6 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_BINARY_DIR}/ShopScene/libShopEditor
   ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/View
   ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs
-  ${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabaseMgr
   ${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabase
   ${CMAKE_SOURCE_DIR}/Props/Scene/libScene
   ${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
@@ -55,13 +55,13 @@ SET(LIBS_COMMON
 	${OSGUTIL_LIBRARIES}
 	${OSGVIEWER_LIBRARIES}
 	${OPENTHREADS_LIBRARIES}
-	libDatabaseMgr
 	libDatabase
 	libAbstractObject
 	libGeometricShape
 	libShopEditor
 	libCommon
 	libCommon_OSG
+	libCommon_QT
 	libItemModel
 	libSearch
 	libCamera

@@ -32,7 +32,7 @@ SET(src
 INCLUDE_DIRECTORIES(
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProduct
 	${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
-	${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabaseMgr
+#	${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabase
 )
 
 ADD_EXECUTABLE(Test_libProduct
@@ -41,7 +41,7 @@ ADD_EXECUTABLE(Test_libProduct
 SET(LIBS_COMMON
 	libProduct
 	libCommon
-	libDatabaseMgr
+#	libDatabase
 )
 
 IF(Qt5_FOUND)

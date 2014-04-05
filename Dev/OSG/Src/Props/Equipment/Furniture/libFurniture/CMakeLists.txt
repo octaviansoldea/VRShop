@@ -28,7 +28,6 @@ ENDIF(Qt5_FOUND)
 INCLUDE_DIRECTORIES(
 	${OPENSCENEGRAPH_INCLUDE_DIRS}
 	${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
-	${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabaseMgr
 	${CMAKE_SOURCE_DIR}/Props/GeometricShape/libGeometricShape
     ${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
 )

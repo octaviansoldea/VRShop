@@ -1,7 +1,5 @@
 #include <vector>
 
-#include "VRDatabaseMgr.h"
-
 #include "VRProduct.h"
 
 using namespace VR;
@@ -54,14 +52,14 @@ void Product::createProductDB() const	{
 	vecstrDBParams.push_back("Currency TEXT");
 	vecstrDBParams.push_back("FOREIGN KEY (ManufacturerID) REFERENCES Manufacturer(ManufacturerID)");
 
-	DatabaseMgrParams dMgrP;
-	dMgrP.m_strTableName = "Products";
-	dMgrP.m_arrstrParams = vecstrDBParams;
+	//DatabaseMgrParams dMgrP;
+	//dMgrP.m_strTableName = "Products";
+	//dMgrP.m_arrstrParams = vecstrDBParams;
 
-	string strDBName = "../../../Databases/Products.db";
+	//string strDBName = "../../../Databases/Products.db";
 
-	DatabaseMgr & database = VR::DatabaseMgr::Create(strDBName.c_str(),DatabaseMgr::QSQLITE);
-	database.createTable(dMgrP);
+	//DatabaseMgr & database = VR::DatabaseMgr::Create(strDBName.c_str(),DatabaseMgr::QSQLITE);
+	//database.createTable(dMgrP);
 }
 
 //------------------------------------------------------------------------------

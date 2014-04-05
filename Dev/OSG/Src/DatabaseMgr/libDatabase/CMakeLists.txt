@@ -31,6 +31,7 @@ ENDIF()
 
 INCLUDE_DIRECTORIES(
   ${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
+  ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_QT
 )
 
 #MOC according to the Qt version

@@ -7,7 +7,6 @@
 #include <osg/TextureRectangle>
 #include <osg/TexMat>
 
-#include "VRDatabaseMgr.h"
 
 #include "VRUntransformedPlate2D.h"
 #include "VRUntransformedPlate3D.h"
@@ -229,66 +228,21 @@ void main_UntransformedSphere_Texture(ref_ptr<Group> pScene)	{
 //====================================================================
 
 void initFromDB_Plate(ref_ptr<Group> pScene)	{
-	string strDatabase = "../../../../Databases/Temp.db";
-	DatabaseMgr & database = DatabaseMgr::Create(strDatabase.c_str(), DatabaseMgr::QSQLITE);
-
-	ref_ptr < Plate3D > pPlate3D;
-	string strSQLQuery = "SELECT * FROM Plate3D WHERE Plate3DID = 7";
-	string strSQLData = database.readFromDB(strSQLQuery);
-
-	Plate3DParams plate3DParams;
-	pPlate3D = new Plate3D(plate3DParams);
-	pPlate3D->initFromSQLData(strSQLData);
-
-	pScene->addChild(pPlate3D);
 }
 
 //--------------------------------------------------------------
 
 void initFromDB_Sphere(ref_ptr<Group> pScene)	{
-	string strDatabase = "../../../../Databases/Equipment.db";
-	DatabaseMgr & database = DatabaseMgr::Create(strDatabase.c_str(), DatabaseMgr::QSQLITE);
-
-	ref_ptr < VR::Sphere > pSphere;
-	string strSQLQuery = "SELECT * FROM Sphere WHERE SphereID = 7";
-	string strSQLData = database.readFromDB(strSQLQuery);
-	SphereParams sphereParams;
-	pSphere = new VR::Sphere(sphereParams);
-	pSphere->initFromSQLData(strSQLData);
-
-	pScene->addChild(pSphere);
 }
 
 //--------------------------------------------------------------
 
 void initFromDB_Prism(ref_ptr<Group> pScene)	{
-	string strDatabase = "../../../../Databases/Equipment.db";
-	DatabaseMgr & database = DatabaseMgr::Create(strDatabase.c_str(), DatabaseMgr::QSQLITE);
-
-	PrismParams prismParams;
-	ref_ptr < Prism > pPrism = new Prism(prismParams);
-
-	string strCommand = "SELECT * FROM Prism WHERE PrismID = 1";
-	string strSQLData = database.readFromDB(strCommand);
-	pPrism->initFromSQLData(strSQLData);
-
-	pScene->addChild(pPrism);
 }
 
 //--------------------------------------------------------------
 
 void initFromDB_Cylinder(ref_ptr<Group> pScene)	{
-	string strDatabase = "../../../../Databases/Equipment.db";
-	DatabaseMgr & database = DatabaseMgr::Create(strDatabase.c_str(), DatabaseMgr::QSQLITE);
-
-	ref_ptr < VR::Cylinder > pCylinder;
-	string strSQLQuery = "SELECT * FROM Cylinder WHERE CylinderID = 1";
-	string strSQLData = database.readFromDB(strSQLQuery);
-	CylinderParams cylinderParams;
-	pCylinder = new VR::Cylinder(cylinderParams);
-	pCylinder->initFromSQLData(strSQLData);
-
-	pScene->addChild(pCylinder);
 }
 
 
@@ -325,7 +279,6 @@ int main(int argc, char * argv[])	{
 	case 18: initFromDB_Cylinder(pScene); break;
 	
 	default:	{
-		printError("Error Message: Wrong test number set.");
 		exit(-1);
 				}
 	}

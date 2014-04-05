@@ -205,7 +205,7 @@ void VR::Sphere::predefinedObject()	{
 
 //----------------------------------------------------------------------
 
-string VR::Sphere::SQLFieldValues(const string & astrParentName)	{
+string VR::Sphere::getObjectData(const string & astrParentName)	{
 	SphereParams sphereParams;
 	getParams(sphereParams);
 

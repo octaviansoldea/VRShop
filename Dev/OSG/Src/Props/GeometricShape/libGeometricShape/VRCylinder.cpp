@@ -117,7 +117,7 @@ void VR::Cylinder::predefinedObject()	{
 
 //------------------------------------------------------------------------------------------
 
-string VR::Cylinder::SQLFieldValues(const string & astrParentName)	{
+string VR::Cylinder::getObjectData(const string & astrParentName)	{
 	CylinderParams cylinderParams;
 	getParams(cylinderParams);
 	string strCylinderParams;

@@ -27,7 +27,7 @@ namespace VR	{
 		virtual ~DatabaseManager();
 
 	protected:
-		bool createTable(const std::string & aqstrTableName, const std::string & astrTableStmt);
+		bool createTable(const std::string & astrTableName, const std::string & astrTableStmt);
 		bool removeTable(const QString& aqstrTableName);
 
 		void insertRow(const std::string & astrTableName, std::string &astrTblFieldValues);
@@ -41,12 +41,9 @@ namespace VR	{
 
 		bool dropDatabase(const QString & aqstrDBName);
 
-		DatabaseManagerParams m_DatabaseManagerParams;
+		DatabaseManagerParams m_DBMgrParams;
 
 	private:
-		void printError(const QString & aqstrMessage);
-		void printWarning(const QString & aqstrMessage);
-
 		bool containsTable(const QString & aqstrTableName);
 	};
 }

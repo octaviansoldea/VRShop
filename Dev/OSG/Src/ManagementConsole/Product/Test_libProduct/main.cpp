@@ -4,7 +4,6 @@
 #include <QString>
 #include <vector>
 
-#include "VRDatabaseMgr.h"
 
 #include "VRProduct.h"
 

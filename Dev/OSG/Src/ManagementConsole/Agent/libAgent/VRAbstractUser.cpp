@@ -1,5 +1,3 @@
-#include "VRDatabaseMgr.h"
-
 #include "VRAbstractUser.h"
 
 #include <string>

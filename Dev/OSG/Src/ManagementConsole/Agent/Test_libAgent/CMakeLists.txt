@@ -35,7 +35,6 @@ INCLUDE_DIRECTORIES(
     ${CMAKE_SOURCE_DIR}/Props/Avatar/libAvatar
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProduct
 	${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
-	${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabaseMgr
 )
 
 SET(LIBS_COMMON 
@@ -44,7 +43,6 @@ SET(LIBS_COMMON
     libAvatar
 	libProduct
 	libCommon
-	libDatabaseMgr
 )
 
 ADD_EXECUTABLE(Test_libAgent

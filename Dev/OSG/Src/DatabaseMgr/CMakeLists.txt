@@ -4,6 +4,4 @@ SET(CMAKE_DEBUG_POSTFIX "D")
 
 SUBDIRS(
   libDatabase
-  libDatabaseMgr
-  Test_libDatabaseMgr
 )

@@ -3,7 +3,6 @@
 
 #include "VRAbstractGeomShape.h"
 
-#include "VRDatabaseMgr.h"
 #include "VRCupboard.h"
 #include "VRContainer.h"
 
@@ -85,57 +84,32 @@ string Furniture::getSQLCommand() const {
 //-----------------------------------------------------------------------
 
 void Furniture::loadAllFurnitures(ref_ptr<Group> apScene, const string & astrDatabase) {
-	DatabaseMgr & database = DatabaseMgr::Create(astrDatabase.c_str(), DatabaseMgr::QSQLITE);
+	//DatabaseMgr & database = DatabaseMgr::Create(astrDatabase.c_str(), DatabaseMgr::QSQLITE);
 
-	QString qstrFurniture = "SELECT EquipmentItemName FROM EquipmentItem JOIN Equipment ON EquipmentName = 'Furniture'";
-	QSqlQuery qQuery(qstrFurniture);
+	//QString qstrFurniture = "SELECT EquipmentItemName FROM EquipmentItem JOIN Equipment ON EquipmentName = 'Furniture'";
+	//QSqlQuery qQuery(qstrFurniture);
 
-	vector<string> arrstrEquipmentItems;
-	while (qQuery.next())	{
-		arrstrEquipmentItems.push_back(qQuery.value(0).toString().toStdString());
-	}
+	//vector<string> arrstrEquipmentItems;
+	//while (qQuery.next())	{
+	//	arrstrEquipmentItems.push_back(qQuery.value(0).toString().toStdString());
+	//}
 
-	vector<string>::iterator it;
-	ref_ptr<Furniture> pFurniture;
-	for(it = arrstrEquipmentItems.begin(); it != arrstrEquipmentItems.end(); it++) {
-		pFurniture = static_cast<Furniture*>(Furniture::createInstance(*it).get());
-		
-		string strSQLQuery = "SELECT * FROM EquipmentItem WHERE EquipmentItemName = '" + *it + "'";
-		string strSQLData = database.readFromDB(strSQLQuery);
-		pFurniture->initFromSQLData(strSQLData);
+	//vector<string>::iterator it;
+	//ref_ptr<Furniture> pFurniture;
+	//for(it = arrstrEquipmentItems.begin(); it != arrstrEquipmentItems.end(); it++) {
+	//	pFurniture = static_cast<Furniture*>(Furniture::createInstance(*it).get());
+	//	
+	//	string strSQLQuery = "SELECT * FROM EquipmentItem WHERE EquipmentItemName = '" + *it + "'";
+	//	string strSQLData = database.readFromDB(strSQLQuery);
+	//	pFurniture->initFromSQLData(strSQLData);
 
-		apScene->addChild(pFurniture);
-	}
+	//	apScene->addChild(pFurniture);
+	//}
 }
 
 //-----------------------------------------------------------------------
 
-void Furniture::addChild2DB(vector<string> &avecItems, string & astrParent)	{
-	Furniture * pFurniture = dynamic_cast<Furniture*>(this);
-
-	vector<string> * pvecItems = &avecItems;
-
-	string strClassName = pFurniture->className();
-	const string * pstrObjectName = &pFurniture->getName();
-	string strItem = (strClassName + ";" + *pstrObjectName + ";" + pFurniture->SQLFieldValues(astrParent));
-	pvecItems->push_back(strItem);
-
-	AbstractObject * pChild = 0;
-	NodeList::iterator it;
-	for (it = pFurniture->_children.begin(); it != pFurniture->_children.end(); it++)	{
-		pChild = dynamic_cast<AbstractObject*>(it->get());
-
-		strClassName = pChild->className();
-		pstrObjectName = &pChild->getName();
-		strItem = (strClassName + ";" + *pstrObjectName + ";" + pChild->SQLFieldValues(pFurniture->getName()));
-
-		pvecItems->push_back("  " + strItem);
-	}
-}
-
-//-----------------------------------------------------------------------
-
-string Furniture::SQLFieldValues(const string & astrParentName)	{
+string Furniture::getObjectData(const string & astrParentName)	{
 	FurnitureParams furnitureParams;
 	getParams(furnitureParams);
 

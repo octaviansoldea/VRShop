@@ -37,7 +37,6 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_BINARY_DIR}/ShopScene/libShoppingPlace
   ${CMAKE_SOURCE_DIR}/ShopScene/libShoppingPlace/View
   ${CMAKE_SOURCE_DIR}/ShopScene/libShoppingPlace/PopUpDialogs
-  ${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabaseMgr
   ${CMAKE_SOURCE_DIR}/Props/Scene/libScene
   ${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
   ${CMAKE_SOURCE_DIR}/Props/Equipment/GeometricShape/libGeometricShape
@@ -53,7 +52,6 @@ SET(LIBS_COMMON
 	${OSGVIEWER_LIBRARIES}
 	${OPENTHREADS_LIBRARIES}
 	libAgent
-	libDatabaseMgr
 	libAbstractObject
 	libGeometricShape
 	libShoppingPlace

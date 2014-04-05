@@ -15,7 +15,6 @@
 #include <osgDB/ReadFile>
 
 #include "OSGQT_Widget.h"
-#include "VRDatabaseMgr.h"
 
 #include "VRShoppingPlace.h"
 

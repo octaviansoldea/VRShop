@@ -51,7 +51,7 @@ INCLUDE_DIRECTORIES(
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCamera
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libPicker
 	${CMAKE_SOURCE_DIR}/Props/Scene/libScene
-	${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabase
+#	${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabase
 	${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
 )
 
@@ -61,8 +61,6 @@ SET(SRCS
 	VRSearchListController.cpp
 	VRSceneHierarchyController.cpp
 )
-
-MESSAGE(STATUS "MOC_SRCS = " ${MOC_SRCS})
 
 ADD_LIBRARY(libController
   ${SRCS} ${MOC_SRCS}

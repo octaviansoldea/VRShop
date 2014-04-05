@@ -1,7 +1,5 @@
 #include <string>
 
-#include "VRDatabaseMgr.h"
-
 #include "VRGeneralMngt.h"
 
 using namespace VR;

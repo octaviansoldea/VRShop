@@ -219,6 +219,35 @@ void AbstractObject::print(std::ostream & os) const	{
 
 //--------------------------------------------------------------------------
 
+void AbstractObject::objectHierarchyData(std::vector<std::string> &avecItems, std::string & astrParent)	{
+	AbstractObject * pAbstractObject = dynamic_cast<AbstractObject*>(this);
+
+	vector<string> * pvecItems = &avecItems;
+
+	string strClassName = pAbstractObject->className();
+	const string * pstrObjectName = &pAbstractObject->getName();
+	string strItem = (strClassName + ";" + *pstrObjectName + ";" + pAbstractObject->getObjectData(astrParent));
+	pvecItems->push_back(strItem);
+
+	AbstractObject * pChild = 0;
+	NodeList::iterator it;
+	for (it = pAbstractObject->_children.begin(); it != pAbstractObject->_children.end(); it++)	{
+		pChild = dynamic_cast<AbstractObject*>(it->get());
+
+		if(pChild == NULL)	{
+			break;
+		}
+
+		strClassName = pChild->className();
+		pstrObjectName = &pChild->getName();
+		strItem = (strClassName + ";" + *pstrObjectName + ";" + pChild->getObjectData(pAbstractObject->getName()));
+
+		pvecItems->push_back("  " + strItem);
+	}
+}
+
+//--------------------------------------------------------------------------
+
 void AbstractObject::setParams(const AbstractObjectParams & aAbstractObjectParams) {
 	m_flPosX = aAbstractObjectParams.m_flPosX;
 	m_flPosY = aAbstractObjectParams.m_flPosY;

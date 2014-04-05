@@ -12,11 +12,10 @@ namespace VR	{
 	class Scene : public osg::Group	{
 	public:
 		Scene();
+		Scene(const std::string & astrDBFileName);
 		~Scene();
 
 		virtual const char* className() const;
-
-		Scene * getScene(const std::string & astrSceneName);
 
 		Node * getChild(const std::string & astrChildName);
         inline Node* getChild( unsigned  int i ) { return _children[i].get(); }
@@ -26,17 +25,12 @@ namespace VR	{
 		virtual bool removeChild(Node *child);
 		void clearScene();
 
-		void setSceneHierarchy();
-		void updateSceneHierarchy() {};
-		std::vector<std::string> getSceneHierarchy();
-
+		std::string SQLFieldValues(const std::string & astrParentName="");
 		virtual void print();
 
 	private:
 		int m_nIteration;
-
-		std::vector<Scene *> m_pvecScene;
-		std::vector<std::string> m_vecstrSceneHierarchy;
+		std::string m_strDBFileName;
 	};
 }
 #endif //VR_SCENE_H

@@ -19,7 +19,6 @@
 #include "VRCameraController.h"
 #include "VRPickAndDragController.h"
 #include "VRSearchListController.h"
-#include "VRSceneHierarchyController.h"
 
 #include "VRKeyboardMouseManipulatorShopEditor.h"
 #include "VRPickAndDragHandlerShopEditor.h"
@@ -98,11 +97,6 @@ ShopBuilder_GUI::ShopBuilder_GUI()	{
 		pScene);
 
 
-	m_pSceneHierarchyController = new SceneHierarchyController(
-		m_pTreeView,
-		pPickAndDragHandlerShopEditor,
-		pScene);
-
 	m_pOSGQTWidget->show();
 
 	buildConnections();
@@ -113,7 +107,6 @@ ShopBuilder_GUI::ShopBuilder_GUI()	{
 ShopBuilder_GUI::~ShopBuilder_GUI() {
 	delete m_pCameraController;
 	delete m_pPickAndDragController;
-	delete m_pSceneHierarchyController;
 	delete m_pOSGQTWidget;
 
 	delete m_pShopBuilder;
@@ -183,7 +176,28 @@ void ShopBuilder_GUI::slotNewProject()	{
 
 	//Result == 1 indicates that path+name are valid
 	if (newProject.result() == 1)	{
-		const string & strFileName = (newProject.m_pLineEditDirectory->text() + "/" + newProject.m_pLineEditFileName->text() + ".db").toStdString();
+		string & strFileName = 
+			(newProject.m_pLineEditDirectory->text() + "/" + newProject.m_pLineEditFileName->text()).toStdString();
+		strFileName += (isAtEndOfString(strFileName, ".db")) ? "" : ".db";
+		replace(strFileName.begin(), strFileName.end(), '/', '\\');
+
+		QDir dir(strFileName.c_str());
+		if(dir.exists(strFileName.c_str()))	{
+			QMessageBox msgBox;
+			string strText = "File " + strFileName + " already exists. \n Press OK to overwrite it, else press NO.";
+			msgBox.setText(strText.c_str());
+			msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::No);
+			msgBox.setWindowTitle("Warning window");
+			int nRes = msgBox.exec();
+
+			if (nRes == QMessageBox::Ok)	{
+				dir.remove(strFileName.c_str());
+				m_pShopBuilder->newDB(strFileName);
+			} else {
+				newProject.close();
+				slotNewProject();
+			}
+		}
 		m_pShopBuilder->newDB(strFileName);
 	}
 	return;

@@ -29,7 +29,7 @@ namespace VR {
 
 		virtual void predefinedObject();
 
-		virtual std::string SQLFieldValues();
+		virtual std::string SQLFieldValues(const std::string & astrParentName="");
 
 	};
 }

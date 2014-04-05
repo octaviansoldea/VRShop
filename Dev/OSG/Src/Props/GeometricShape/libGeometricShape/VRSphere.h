@@ -38,7 +38,7 @@ namespace VR	{
 		virtual void setTexture(const std::string & astrFileName);
 		void setResolution(int anRes);
 
-		virtual std::string SQLFieldValues();
+		virtual std::string SQLFieldValues(const std::string & astrParentName="");
 
 	};
 }

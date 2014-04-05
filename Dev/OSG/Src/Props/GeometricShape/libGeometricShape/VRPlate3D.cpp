@@ -180,7 +180,7 @@ void Plate3D::predefinedObject()	{
 
 //=====================================================================
 
-string Plate3D::SQLFieldValues()	{
+string Plate3D::SQLFieldValues(const std::string & astrParentName)	{
 	Plate3DParams plate3DParams;
 	getParams(plate3DParams);
 
@@ -195,7 +195,7 @@ string Plate3D::SQLFieldValues()	{
 
 	strPlate3DParams += to_string((long double)plate3DParams.m_flAngleYZ) + "_";
 	strPlate3DParams += to_string((long double)plate3DParams.m_flAngleXZ) + "_";
-	strPlate3DParams += to_string((long double)plate3DParams.m_flAngleXY) + ";";
+	strPlate3DParams += to_string((long double)plate3DParams.m_flAngleXY) + ":";
 
 
 	int nI;
@@ -203,11 +203,13 @@ string Plate3D::SQLFieldValues()	{
 	for (nI=0;nI<3;nI++)	{
 		strColor += to_string((long double)plate3DParams.m_arrflRGBA[nI]) + "_";
 	}
-	strColor += to_string((long double)plate3DParams.m_arrflRGBA[3]) + ";";
+	strColor += to_string((long double)plate3DParams.m_arrflRGBA[3]) + ":";
 
 	strPlate3DParams += strColor;
 
 	strPlate3DParams += plate3DParams.m_strFileNameTexture + ";";
+
+	strPlate3DParams += astrParentName;
 
 	return strPlate3DParams;
 }

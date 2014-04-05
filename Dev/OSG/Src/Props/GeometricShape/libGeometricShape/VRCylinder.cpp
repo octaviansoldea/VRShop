@@ -117,7 +117,7 @@ void VR::Cylinder::predefinedObject()	{
 
 //------------------------------------------------------------------------------------------
 
-string VR::Cylinder::SQLFieldValues()	{
+string VR::Cylinder::SQLFieldValues(const string & astrParentName)	{
 	CylinderParams cylinderParams;
 	getParams(cylinderParams);
 	string strCylinderParams;
@@ -147,6 +147,8 @@ string VR::Cylinder::SQLFieldValues()	{
 	strCylinderParams += strColor;
 
 	strCylinderParams += cylinderParams.m_strFileNameTexture + ";";
+
+	strCylinderParams += astrParentName + ";";
 
 	return strCylinderParams;
 }

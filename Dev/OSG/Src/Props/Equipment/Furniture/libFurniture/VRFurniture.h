@@ -27,8 +27,8 @@ namespace VR	{
 
 		static void loadAllFurnitures(osg::ref_ptr<osg::Group> pScene, const std::string & astrDatabase);
 
-		virtual void addChild2DB(std::vector<std::string> &avecItems);
-		virtual std::string SQLFieldValues();
+		virtual void addChild2DB(std::vector<std::string> &avecItems, std::string & astrParent);
+		virtual std::string SQLFieldValues(const std::string & astrParentName="");
 
 	protected:
 		std::vector < std::string > m_arrSQLCommandLines;

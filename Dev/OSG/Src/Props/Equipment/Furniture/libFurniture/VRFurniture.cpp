@@ -110,14 +110,14 @@ void Furniture::loadAllFurnitures(ref_ptr<Group> apScene, const string & astrDat
 
 //-----------------------------------------------------------------------
 
-void Furniture::addChild2DB(vector<string> &avecItems)	{
+void Furniture::addChild2DB(vector<string> &avecItems, string & astrParent)	{
 	Furniture * pFurniture = dynamic_cast<Furniture*>(this);
 
 	vector<string> * pvecItems = &avecItems;
 
 	string strClassName = pFurniture->className();
 	const string * pstrObjectName = &pFurniture->getName();
-	string strItem = (strClassName + ";" + *pstrObjectName + ";" + pFurniture->SQLFieldValues());
+	string strItem = (strClassName + ";" + *pstrObjectName + ";" + pFurniture->SQLFieldValues(astrParent));
 	pvecItems->push_back(strItem);
 
 	AbstractObject * pChild = 0;
@@ -127,7 +127,7 @@ void Furniture::addChild2DB(vector<string> &avecItems)	{
 
 		strClassName = pChild->className();
 		pstrObjectName = &pChild->getName();
-		strItem = (strClassName + ";" + *pstrObjectName + ";" + pChild->SQLFieldValues());
+		strItem = (strClassName + ";" + *pstrObjectName + ";" + pChild->SQLFieldValues(pFurniture->getName()));
 
 		pvecItems->push_back("  " + strItem);
 	}
@@ -135,22 +135,24 @@ void Furniture::addChild2DB(vector<string> &avecItems)	{
 
 //-----------------------------------------------------------------------
 
-string Furniture::SQLFieldValues()	{
+string Furniture::SQLFieldValues(const string & astrParentName)	{
 	FurnitureParams furnitureParams;
 	getParams(furnitureParams);
 
-	string strfurnitureParams;
-	strfurnitureParams = to_string((long double)furnitureParams.m_flPosX) + "_";
-	strfurnitureParams += to_string((long double)furnitureParams.m_flPosY) + "_";
-	strfurnitureParams += to_string((long double)furnitureParams.m_flPosZ) + "_";
+	string strFurnitureParams;
+	strFurnitureParams = to_string((long double)furnitureParams.m_flPosX) + "_";
+	strFurnitureParams += to_string((long double)furnitureParams.m_flPosY) + "_";
+	strFurnitureParams += to_string((long double)furnitureParams.m_flPosZ) + "_";
 
-	strfurnitureParams += to_string((long double)furnitureParams.m_flLenX) + "_";
-	strfurnitureParams += to_string((long double)furnitureParams.m_flLenY) + "_";
-	strfurnitureParams += to_string((long double)furnitureParams.m_flLenZ) + "_";
+	strFurnitureParams += to_string((long double)furnitureParams.m_flLenX) + "_";
+	strFurnitureParams += to_string((long double)furnitureParams.m_flLenY) + "_";
+	strFurnitureParams += to_string((long double)furnitureParams.m_flLenZ) + "_";
 
-	strfurnitureParams += to_string((long double)furnitureParams.m_flAngleYZ) + "_";
-	strfurnitureParams += to_string((long double)furnitureParams.m_flAngleXZ) + "_";
-	strfurnitureParams += to_string((long double)furnitureParams.m_flAngleXY) + ";";
+	strFurnitureParams += to_string((long double)furnitureParams.m_flAngleYZ) + "_";
+	strFurnitureParams += to_string((long double)furnitureParams.m_flAngleXZ) + "_";
+	strFurnitureParams += to_string((long double)furnitureParams.m_flAngleXY) + ";";
 
-	return strfurnitureParams;
+	strFurnitureParams += astrParentName;
+
+	return strFurnitureParams;
 }

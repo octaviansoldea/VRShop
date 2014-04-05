@@ -30,16 +30,16 @@ namespace VR	{
 		bool createTable(const std::string & aqstrTableName, const std::string & astrTableStmt);
 		bool removeTable(const QString& aqstrTableName);
 
-		void insertRow(const std::string & astrTableName, std::vector<std::string> &aarrstrTblFieldValues);
+		void insertRow(const std::string & astrTableName, std::string &astrTblFieldValues);
 		void deleteRow(const std::string & astrTableName, const std::string & astrObjectName);
 		void updateDB();
 
 		bool execute(const std::string & astrQuery);
 
-		bool createConnection(const DatabaseManagerParams & aDMngParams);
+		bool createConnection(const DatabaseManagerParams & aDBMgrParams);
 		bool removeConnection();
 
-		bool dropDatabase(const QString & astrDBName);
+		bool dropDatabase(const QString & aqstrDBName);
 
 		DatabaseManagerParams m_DatabaseManagerParams;
 
@@ -47,7 +47,7 @@ namespace VR	{
 		void printError(const QString & aqstrMessage);
 		void printWarning(const QString & aqstrMessage);
 
-		bool containsTable(const QString & astrTableName);
+		bool containsTable(const QString & aqstrTableName);
 	};
 }
 #endif //DATABASE_MANAGER_H

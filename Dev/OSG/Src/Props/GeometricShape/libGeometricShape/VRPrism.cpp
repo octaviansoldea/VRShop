@@ -211,7 +211,7 @@ void Prism::getParams(PrismParams & aPrismParams) const {
 
 //----------------------------------------------------------------------
 
-string Prism::SQLFieldValues()	{
+string Prism::SQLFieldValues(const string & astrParentName)	{
 	PrismParams prismParams;
 	getParams(prismParams);
 	string strPrismParams;
@@ -242,5 +242,6 @@ string Prism::SQLFieldValues()	{
 
 	strPrismParams += prismParams.m_strFileNameTexture + ";";
 
+	strPrismParams += astrParentName + ";";
 	return strPrismParams;
 }

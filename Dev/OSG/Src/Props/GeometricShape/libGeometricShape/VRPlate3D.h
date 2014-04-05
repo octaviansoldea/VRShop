@@ -38,7 +38,7 @@ namespace VR	{
 		virtual void setTexture(const std::string & astrFileName);
 
 
-		virtual std::string SQLFieldValues();
+		virtual std::string SQLFieldValues(const std::string & astrParentName="");
 	};
 }
 #endif //VR_PLATE_3D_H

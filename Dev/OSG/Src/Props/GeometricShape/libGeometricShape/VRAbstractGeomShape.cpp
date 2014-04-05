@@ -45,13 +45,13 @@ const char* AbstractGeomShape::className() const	{
 
 //--------------------------------------------------------------------------
 
-void AbstractGeomShape::addChild2DB(vector<string> &avecItems)	{
+void AbstractGeomShape::addChild2DB(vector<string> &avecItems, string & astrParent)	{
 	AbstractGeomShape * pAbstractGeomShape = dynamic_cast<AbstractGeomShape*>(this);
 
 	vector<string> * pvecItems = &avecItems;
 	const string & strClassName = pAbstractGeomShape->className();
 	const string * pstrObjectName = &pAbstractGeomShape->getName();
-	string strItem = (strClassName + ";" + *pstrObjectName + ";" + pAbstractGeomShape->SQLFieldValues());
+	string strItem = (strClassName + ";" + *pstrObjectName + ";" + pAbstractGeomShape->SQLFieldValues(astrParent));
 
 	pvecItems->push_back(strItem);
 }

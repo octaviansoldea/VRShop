@@ -12,13 +12,15 @@
 
 #include <QString>
 
+#include "BasicStringDefinitions.h"
+
 #include "VRDatabaseManager.h"
 
 using namespace std;
 using namespace VR;
 
 DatabaseManagerParams::DatabaseManagerParams() :	
-m_qstrDBName("../Default.db"),
+m_qstrDBName("../../../Databases/Default.db"),
 m_qstrConnectionName("")
 {
 }
@@ -139,8 +141,8 @@ bool DatabaseManager::createTable(const string & aqstrTableName, const string & 
 
 bool DatabaseManager::removeTable(const QString& aqstrTableName)	{
 	bool bRes = false;	
-	const QString * pTableName = &aqstrTableName;
-	if (pTableName->isEmpty())	{
+	const QString * pqstrTableName = &aqstrTableName;
+	if (pqstrTableName->isEmpty())	{
 		return bRes;
 	}
 
@@ -148,16 +150,16 @@ bool DatabaseManager::removeTable(const QString& aqstrTableName)	{
 	QSqlQuery q(*pDb);
 	
 	QStringList & lstDBtables = pDb->tables();
-	if (lstDBtables.contains(*pTableName, Qt::CaseInsensitive))	{
-		q.exec( "DROP TABLE " + *pTableName);
+	if (lstDBtables.contains(*pqstrTableName, Qt::CaseInsensitive))	{
+		q.exec( "DROP TABLE " + *pqstrTableName);
 	} else {
 		QString * pqstrError = &QSqlDatabase::database().lastError().text();
-		printWarning("Unable to drop table " + *pTableName + " - " + *pqstrError);
+		printWarning("Unable to drop table " + *pqstrTableName + " - " + *pqstrError);
 
 		return bRes;
 	}
 
-	bRes = containsTable(*pTableName) ? false : true;
+	bRes = containsTable(*pqstrTableName) ? false : true;
 
 	return bRes;
 }
@@ -200,12 +202,12 @@ bool DatabaseManager::execute(const string & astrQuery)	{
 
 //-----------------------------------------------------------------------------------------
 
-void DatabaseManager::insertRow(const string & astrTableName, vector<string> &aarrstrTblFieldValues)	{
+void DatabaseManager::insertRow(const string & astrTableName, string &astrTblFieldValues)	{
 	QSqlDatabase * pDb = &QSqlDatabase::database(m_DatabaseManagerParams.m_qstrConnectionName);
 	QSqlTableModel model(this,*pDb);
 
 	const string * pstrTableName = &astrTableName;
-	vector<string> * pFieldValues = &aarrstrTblFieldValues;
+	vector<string> fieldValues = splitString(astrTblFieldValues,";");
 
 	if (!containsTable(pstrTableName->c_str()))	{
 		printError("Requested table not part of the database: " + pDb->databaseName());
@@ -220,8 +222,8 @@ void DatabaseManager::insertRow(const string & astrTableName, vector<string> &aa
 
 	int nI;
 	vector<string>::iterator it;
-	for (it = pFieldValues->begin(); it != pFieldValues->end(); it++)	{
-		nI = it - pFieldValues->begin();
+	for (it = fieldValues.begin(); it != fieldValues.end(); it++)	{
+		nI = it - fieldValues.begin();
 		if (pRec->field(nI).isAutoValue())	{
 			continue;
 		} else {
@@ -262,7 +264,7 @@ void DatabaseManager::deleteRow(const string & astrTableName, const string & ast
 	QSqlQuery q(("SELECT * FROM " + *pstrTableName).c_str(),*pDb);
 	QSqlRecord * pRec = &q.record();
 	
-	const int & nRow = pRec->value(0).toInt();
+	const int nRow = pRec->value(0).toInt();
 
 	model.removeRow(nRow);
 

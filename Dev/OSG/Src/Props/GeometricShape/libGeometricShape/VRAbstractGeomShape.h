@@ -23,7 +23,7 @@ namespace VR {
 		virtual void setColor(const std::vector < float > & aarrflColor) = 0;
 		virtual void setTexture(const std::string & astrFileName) = 0;
 
-		virtual void addChild2DB(std::vector<std::string> &avecItems);
+		virtual void addChild2DB(std::vector<std::string> &avecItems, std::string & astrParent);
 
 
 	protected:

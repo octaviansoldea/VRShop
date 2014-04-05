@@ -33,7 +33,7 @@ namespace VR {
 
 		osg::ref_ptr <UntransformedPolyhedron> m_pUntransformedPolyhedron;
 
-		virtual std::string SQLFieldValues();
+		virtual std::string SQLFieldValues(const std::string & astrParentName="");
 
 
 	private:

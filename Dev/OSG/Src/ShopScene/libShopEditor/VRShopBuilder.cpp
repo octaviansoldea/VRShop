@@ -26,14 +26,22 @@ using namespace std;
 
 //----------------------------------------------------------------------
 
-ShopBuilder::ShopBuilder()	{	
+ShopBuilder::ShopBuilder() :
+m_strDBFileName("")	{
 }
 
 //----------------------------------------------------------------------
 
 ShopBuilder::ShopBuilder(OSGQT_Widget * apOSGQTWidget) :
-m_pOSGQTWidget(apOSGQTWidget)	{
-	m_pScene = new Scene;
+m_pOSGQTWidget(apOSGQTWidget),
+m_strDBFileName("../../../Databases/Untitled.db")	{
+
+	newDB(m_strDBFileName);
+
+	m_pScene = new Scene();
+	addScene(m_pScene);	//Adds the Scene into the vector of scenes
+	string & strScene = m_pScene->SQLFieldValues();
+	m_pdbMgr->insertScene(strScene);
 
 	m_pEventHandler = new PickAndDragHandlerShopEditor;
 
@@ -50,6 +58,8 @@ m_pOSGQTWidget(apOSGQTWidget)	{
 //----------------------------------------------------------------------
 
 ShopBuilder::~ShopBuilder() {
+	if (m_pdbMgr)
+		delete m_pdbMgr;
 }
 
 //----------------------------------------------------------------------
@@ -74,12 +84,13 @@ void ShopBuilder::gridOnOff(bool abIndicator) {
 //----------------------------------------------------------------------
 
 void ShopBuilder::newDB(const string & astrDBFileName)	{
+	//Calling this function creates new file
 	m_strDBFileName = astrDBFileName;
 
-	DatabaseManagerShopEditorParams dMngParams;
-	dMngParams.m_qstrDBName = m_strDBFileName.c_str();
+	DatabaseManagerShopEditorParams dbMgrParams;
+	dbMgrParams.m_qstrDBName = m_strDBFileName.c_str();
 
-	DatabaseManagerShopEditor dMng(dMngParams);
+	m_pdbMgr = new DatabaseManagerShopEditor(dbMgrParams);
 }
 
 //----------------------------------------------------------------------
@@ -121,10 +132,59 @@ ref_ptr<Scene> ShopBuilder::getScene() const	{
 //----------------------------------------------------------------------
 
 void ShopBuilder::addNewItem(const string & astrObjectName)	{
-	ref_ptr < AbstractObject > pAbstractObject = dynamic_cast<AbstractObject*>(AbstractObject::createInstance(astrObjectName).get());
+	ref_ptr < AbstractObject > pAbstractObject = 
+		dynamic_cast<AbstractObject*>(AbstractObject::createInstance(astrObjectName).get());
 	pAbstractObject->predefinedObject();
 
 	m_pScene->addChild(pAbstractObject);
+
+	string strSceneName = m_pScene->getName();
+	//Call DB here
+	vector<string> vecstrData;
+	pAbstractObject->addChild2DB(vecstrData,strSceneName);
+
+	m_pdbMgr->insertObject(strSceneName,vecstrData);
 }
 
-//----------------------------------------------------------------------
+//-----------------------------------------------------------------------
+
+ref_ptr<Scene> ShopBuilder::getScene(const string & astrSceneName)	{
+	if (astrSceneName.empty())	{
+		return 0;
+	}
+	int nI;
+	Scene * pScene = 0;
+	for (nI=0; nI < m_pvecScenes.size(); nI++)	{
+		pScene = m_pvecScenes[nI];
+		if (pScene->getName() == astrSceneName)	{
+			return m_pvecScenes[nI];
+		}
+	}
+	return 0;
+}
+
+//-----------------------------------------------------------------------
+
+const string ShopBuilder::getSceneName(Scene * apScene)	{
+	return apScene->getName();
+}
+
+//-----------------------------------------------------------------------
+
+const string ShopBuilder::getSceneName(unsigned int i)	{
+	return (i<m_pvecScenes.size()) ? m_pvecScenes[i]->getName() : "";
+}
+
+//-----------------------------------------------------------------------
+
+void ShopBuilder::addScene(Scene * apScene)	{
+	m_pvecScenes.push_back(apScene);
+}
+
+//-----------------------------------------------------------------------
+
+void ShopBuilder::removeScene(Scene * apScene)	{
+	Scene * pScene = apScene;
+	m_pvecScenes.erase(remove(m_pvecScenes.begin(), m_pvecScenes.end(), pScene),
+		m_pvecScenes.end());
+}

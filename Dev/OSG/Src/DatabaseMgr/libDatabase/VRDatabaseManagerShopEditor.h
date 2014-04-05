@@ -18,6 +18,7 @@ namespace VR {
 
 		virtual ~DatabaseManagerShopEditor();
 
+		void insertScene(const std::string & astrScene);
 		void insertObject(const std::string & astrScene, std::vector<std::string> & avecstrData);
 	};
 }

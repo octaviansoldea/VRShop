@@ -33,7 +33,6 @@ IF(Qt5_FOUND)
    QT5_WRAP_CPP(MOC_SRCS
    VRCameraController.h
    VRPickAndDragController.h
-   VRDatabaseController.h
    VRSearchListController.h
    VRSceneHierarchyController.h
    )
@@ -41,7 +40,6 @@ ELSE()
   QT4_WRAP_CPP(MOC_SRCS
   VRCameraController.h
   VRPickAndDragController.h
-  VRDatabaseController.h
   VRSearchListController.h
   VRSceneHierarchyController.h
   )
@@ -58,12 +56,13 @@ INCLUDE_DIRECTORIES(
 )
 
 SET(SRCS
-	VRCameraController.h VRCameraController.cpp
-	VRPickAndDragController.h VRPickAndDragController.cpp
-	VRDatabaseController.h VRDatabaseController.cpp
-	VRSearchListController.h VRSearchListController.cpp
-	VRSceneHierarchyController.h VRSceneHierarchyController.cpp
+	VRCameraController.cpp
+	VRPickAndDragController.cpp
+	VRSearchListController.cpp
+	VRSceneHierarchyController.cpp
 )
+
+MESSAGE(STATUS "MOC_SRCS = " ${MOC_SRCS})
 
 ADD_LIBRARY(libController
   ${SRCS} ${MOC_SRCS}

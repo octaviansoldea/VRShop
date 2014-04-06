@@ -109,7 +109,7 @@ void Furniture::loadAllFurnitures(ref_ptr<Group> apScene, const string & astrDat
 
 //-----------------------------------------------------------------------
 
-string Furniture::getObjectData(const string & astrParentName)	{
+string Furniture::prepareRowData(const string & astrParentName)	{
 	FurnitureParams furnitureParams;
 	getParams(furnitureParams);
 

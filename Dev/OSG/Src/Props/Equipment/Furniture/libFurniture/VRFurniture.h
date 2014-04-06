@@ -27,7 +27,7 @@ namespace VR	{
 
 		static void loadAllFurnitures(osg::ref_ptr<osg::Group> pScene, const std::string & astrDatabase);
 
-		virtual std::string getObjectData(const std::string & astrParentName="");
+		virtual std::string prepareRowData(const std::string & astrParentName="");
 
 	protected:
 		std::vector < std::string > m_arrSQLCommandLines;

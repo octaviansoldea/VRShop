@@ -22,6 +22,7 @@
 
 namespace VR {
 	class Scene;
+	class EditItem_GUI;
 
 	class PickAndDragHandlerShopEditor : public QObject, public PickAndDragHandler	{
 
@@ -29,6 +30,7 @@ namespace VR {
 
 	public:
 		PickAndDragHandlerShopEditor();
+		~PickAndDragHandlerShopEditor();
 		virtual bool handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa);
 
 		void setPropertiesPosition(const osg::Vec3d & avec3dPosition);
@@ -39,6 +41,7 @@ namespace VR {
 		void splitSelection(osg::ref_ptr<Scene> apScene);
 		void duplicateSelection(osg::ref_ptr<Scene> apScene);
 		void removeSelection(osg::ref_ptr<Scene> apScene);
+		void editItem(osg::ref_ptr<Scene> apScene);
 
 	public slots:
 		void slotSetTransformParams(const QString & astrText);
@@ -52,6 +55,8 @@ namespace VR {
 		void clearList();
 
 		std::vector<osg::ref_ptr<AbstractObject>> m_pvecPickedObjects;
+
+		EditItem_GUI * m_pEditItem_GUI;
 	};
 }
 #endif //VR_PICK_AND_DRAG_HANDLER_SHOP_EDITOR_H

@@ -50,7 +50,6 @@ namespace VR {
 			QPushButton * a_pPushButton_ModifyScene_DeleteSelection,
 			QPushButton * a_pPushButton_ModifyScene_SplitItem,
 			QPushButton * a_pPushButton_ModifyScene_GroupItems,
-			QPushButton * a_pPushButton_ModifyScene_EditItem,
 
 			PickAndDragHandlerShopEditor * a_pPickAndDragHandlerShopEditor,
 			osg::ref_ptr<Scene> a_pScene);	//End of constructor
@@ -66,7 +65,6 @@ namespace VR {
 		void slotSplitItem();
 		void slotDuplicateSelection();
 		void slotRemoveSelection();
-		void slotEditItem();
 
 	private:
 		Q_OBJECT
@@ -89,7 +87,6 @@ namespace VR {
 		QPushButton * mp_PushButton_ModifyScene_DeleteSelection;
 		QPushButton * mp_PushButton_ModifyScene_SplitItem;
 		QPushButton * mp_PushButton_ModifyScene_GroupItems;
-		QPushButton * mp_PushButton_ModifyScene_EditItem;
 
 		PickAndDragHandlerShopEditor * mpPickAndDragHandlerShopEditor;
 

@@ -38,7 +38,7 @@ namespace VR	{
 		virtual void setTexture(const std::string & astrFileName);
 
 
-		virtual std::string getObjectData(const std::string & astrParentName="");
+		virtual std::string prepareRowData(const std::string & astrParentName="");
 	};
 }
 #endif //VR_PLATE_3D_H

@@ -33,7 +33,7 @@ namespace VR {
 
 		osg::ref_ptr <UntransformedPolyhedron> m_pUntransformedPolyhedron;
 
-		virtual std::string getObjectData(const std::string & astrParentName="");
+		virtual std::string prepareRowData(const std::string & astrParentName="");
 
 
 	private:

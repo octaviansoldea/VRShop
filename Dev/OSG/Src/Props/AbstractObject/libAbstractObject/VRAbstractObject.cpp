@@ -219,14 +219,14 @@ void AbstractObject::print(std::ostream & os) const	{
 
 //--------------------------------------------------------------------------
 
-void AbstractObject::objectHierarchyData(std::vector<std::string> &avecItems, std::string & astrParent)	{
+void AbstractObject::preparedObjectData(std::vector<std::string> &avecItems, std::string & astrParent)	{
 	AbstractObject * pAbstractObject = dynamic_cast<AbstractObject*>(this);
 
 	vector<string> * pvecItems = &avecItems;
 
 	string strClassName = pAbstractObject->className();
 	const string * pstrObjectName = &pAbstractObject->getName();
-	string strItem = (strClassName + ";" + *pstrObjectName + ";" + pAbstractObject->getObjectData(astrParent));
+	string strItem = (strClassName + ";" + *pstrObjectName + ";" + pAbstractObject->prepareRowData(astrParent));
 	pvecItems->push_back(strItem);
 
 	AbstractObject * pChild = 0;
@@ -240,7 +240,7 @@ void AbstractObject::objectHierarchyData(std::vector<std::string> &avecItems, st
 
 		strClassName = pChild->className();
 		pstrObjectName = &pChild->getName();
-		strItem = (strClassName + ";" + *pstrObjectName + ";" + pChild->getObjectData(pAbstractObject->getName()));
+		strItem = (strClassName + ";" + *pstrObjectName + ";" + pChild->prepareRowData(pAbstractObject->getName()));
 
 		pvecItems->push_back("  " + strItem);
 	}

@@ -93,6 +93,7 @@ ShopBuilder_GUI::ShopBuilder_GUI()	{
 		m_p_PushButton_ModifyScene_DeleteSelection,
 		m_p_PushButton_ModifyScene_SplitItem,
 		m_p_PushButton_ModifyScene_GroupItems,
+		m_p_PushButton_ModifyScene_EditItem,
 		pPickAndDragHandlerShopEditor,
 		pScene);
 
@@ -134,7 +135,6 @@ void ShopBuilder_GUI::buildConnections() {
 	connect(m_p_ComboBox_DefineDragAxis, SIGNAL(currentTextChanged(const QString &)),this,SLOT(slotDefineDragAxis(const QString &)));
 
 	connect(m_p_PushButton_ModifyScene_AddNewItem,SIGNAL(clicked()),this,SLOT(slotModifySceneActions()));
-	connect(m_p_PushButton_ModifyScene_EditItem,SIGNAL(clicked()),this,SLOT(slotModifySceneActions()));
 
 	connect(m_p_PushButton_ProductSettings_AddNewProduct,SIGNAL(clicked()),this,SLOT(slotModifyProductSettings()));
 	connect(m_p_PushButton_ProductSettings_RemoveProduct,SIGNAL(clicked()),this,SLOT(slotModifyProductSettings()));
@@ -354,11 +354,6 @@ void ShopBuilder_GUI::slotModifySceneActions()	{
 		delete pInsertNewItem_GUI;
 		return;
 	}
-	if	(pPushButton == m_p_PushButton_ModifyScene_EditItem)	{
-		std::cout << "Edit item" << std::endl;
-		// void editItemWidget();
-		return;
-	}
 	else	{
 		return;
 	}
@@ -446,6 +441,5 @@ void ShopBuilder_GUI::slotModifyProductButtons()	{
 void ShopBuilder_GUI::slotAddNewItem(const QString & aqstrItemName)	{
 	m_pShopBuilder->addNewItem(aqstrItemName.toStdString());
 }
-
 
 //=======================================================================================

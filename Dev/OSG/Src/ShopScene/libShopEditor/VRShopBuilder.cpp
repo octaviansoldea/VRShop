@@ -141,7 +141,7 @@ void ShopBuilder::addNewItem(const string & astrObjectName)	{
 	string strSceneName = m_pScene->getName();
 	//Call DB here
 	vector<string> vecstrData;
-	pAbstractObject->objectHierarchyData(vecstrData,strSceneName);
+	pAbstractObject->preparedObjectData(vecstrData,strSceneName);
 
 	m_pdbMgr->insertObject(strSceneName,vecstrData);
 }

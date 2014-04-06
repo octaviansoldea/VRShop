@@ -205,7 +205,7 @@ void VR::Sphere::predefinedObject()	{
 
 //----------------------------------------------------------------------
 
-string VR::Sphere::getObjectData(const string & astrParentName)	{
+string VR::Sphere::prepareRowData(const string & astrParentName)	{
 	SphereParams sphereParams;
 	getParams(sphereParams);
 

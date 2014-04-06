@@ -117,7 +117,7 @@ void VR::Cylinder::predefinedObject()	{
 
 //------------------------------------------------------------------------------------------
 
-string VR::Cylinder::getObjectData(const string & astrParentName)	{
+string VR::Cylinder::prepareRowData(const string & astrParentName)	{
 	CylinderParams cylinderParams;
 	getParams(cylinderParams);
 	string strCylinderParams;

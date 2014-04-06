@@ -84,7 +84,6 @@ QPushButton * a_pPushButton_ModifyScene_DuplicateSelection,
 QPushButton * a_pPushButton_ModifyScene_DeleteSelection,
 QPushButton * a_pPushButton_ModifyScene_SplitItem,
 QPushButton * a_pPushButton_ModifyScene_GroupItems,
-QPushButton * a_pPushButton_ModifyScene_EditItem,
 PickAndDragHandlerShopEditor * a_pPickAndDragHandlerShopEditor,
 ref_ptr<Scene> a_pScene)	{
 
@@ -92,7 +91,6 @@ ref_ptr<Scene> a_pScene)	{
 	mp_PushButton_ModifyScene_DeleteSelection = a_pPushButton_ModifyScene_DeleteSelection;
 	mp_PushButton_ModifyScene_SplitItem = a_pPushButton_ModifyScene_SplitItem;
 	mp_PushButton_ModifyScene_GroupItems = a_pPushButton_ModifyScene_GroupItems;
-	mp_PushButton_ModifyScene_EditItem = a_pPushButton_ModifyScene_EditItem;
 
 	mpPickAndDragHandlerShopEditor = dynamic_cast<PickAndDragHandlerShopEditor*>(a_pPickAndDragHandlerShopEditor);
 
@@ -106,8 +104,6 @@ ref_ptr<Scene> a_pScene)	{
 		this,SLOT(slotGroupItems()));
 	connect(mp_PushButton_ModifyScene_DuplicateSelection,SIGNAL(clicked()),
 		this,SLOT(slotDuplicateSelection()));
-	connect(mp_PushButton_ModifyScene_EditItem,SIGNAL(clicked()),
-		this,SLOT(slotEditItem()));
 }
 
 //======================================================================================
@@ -234,10 +230,4 @@ void PickAndDragController::slotDuplicateSelection()	{
 
 void PickAndDragController::slotRemoveSelection()	{
 	mpPickAndDragHandlerShopEditor->removeSelection(mp_Scene);
-}
-
-//--------------------------------------------------------------------------------------
-
-void PickAndDragController::slotEditItem()	{
-	mpPickAndDragHandlerShopEditor->editItem(mp_Scene);
 }

@@ -211,7 +211,7 @@ void Prism::getParams(PrismParams & aPrismParams) const {
 
 //----------------------------------------------------------------------
 
-string Prism::getObjectData(const string & astrParentName)	{
+string Prism::prepareRowData(const string & astrParentName)	{
 	PrismParams prismParams;
 	getParams(prismParams);
 	string strPrismParams;

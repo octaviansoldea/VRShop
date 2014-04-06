@@ -39,6 +39,7 @@ namespace VR	{
 		virtual QVariant data(const QModelIndex &index, int role = Qt::EditRole) const;
 
 		//reimplementation of setData() & flags() required to let editing
+		//called each time the a cell is edited
 		virtual bool setData(const QModelIndex& index, const QVariant& value,int role = Qt::EditRole);
 		virtual Qt::ItemFlags flags(const QModelIndex& index) const;
 

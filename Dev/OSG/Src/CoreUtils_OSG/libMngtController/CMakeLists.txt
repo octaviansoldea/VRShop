@@ -1,4 +1,4 @@
-PROJECT(libController)
+PROJECT(libMngtController)
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
 SET(CMAKE_DEBUG_POSTFIX "D")
@@ -31,39 +31,30 @@ ENDIF(Qt5_FOUND)
 #MOC according to the Qt version
 IF(Qt5_FOUND)
    QT5_WRAP_CPP(MOC_SRCS
-   VRCameraController.h
-   VRPickAndDragController.h
-   VRSearchListController.h
-   VRSceneHierarchyController.h
+   VRProductController.h
    )
 ELSE()
   QT4_WRAP_CPP(MOC_SRCS
-  VRCameraController.h
-  VRPickAndDragController.h
-  VRSearchListController.h
-  VRSceneHierarchyController.h
+   VRProductController.h
   )
 ENDIF()
 
 INCLUDE_DIRECTORIES(
 	${OPENSCENEGRAPH_INCLUDE_DIRS}
 	${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
-	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCamera
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libPicker
 	${CMAKE_SOURCE_DIR}/Props/Scene/libScene
 #	${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabase
 	${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
+	${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProduct
 )
 
 SET(SRCS
-	VRCameraController.h VRCameraController.cpp
-	VRPickAndDragController.h VRPickAndDragController.cpp
-	VRSearchListController.h VRSearchListController.cpp
-	VRSceneHierarchyController.h VRSceneHierarchyController.cpp
+	VRProductController.h VRProductController.cpp
 )
 
-ADD_LIBRARY(libController
+ADD_LIBRARY(libMngtController
   ${SRCS} ${MOC_SRCS}
 )
 
-SET_PROPERTY(TARGET libController PROPERTY FOLDER Utils)
+SET_PROPERTY(TARGET libMngtController PROPERTY FOLDER Utils)

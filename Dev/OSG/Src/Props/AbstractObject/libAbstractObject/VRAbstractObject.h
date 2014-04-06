@@ -59,8 +59,8 @@ namespace VR	{
 		virtual void writeObjectHierarchy(std::vector<std::string> &avecstrHierarchy);
 		virtual void print(std::ostream & os) const;
 
-		virtual std::string getObjectData(const std::string & astrParentName="") = 0;
-		virtual void objectHierarchyData(std::vector<std::string> &avecItems, std::string & astrParent);
+		virtual std::string prepareRowData(const std::string & astrParentName="") = 0;
+		virtual void preparedObjectData(std::vector<std::string> &avecItems, std::string & astrParent);
 
 	protected:
 		virtual void setParams(const AbstractObjectParams & aAbstractObjectParams);

@@ -31,6 +31,7 @@
 
 #include "VRDuplicateItem_GUI.h"
 #include "VRRemoveSelection_GUI.h"
+#include "VREditItem_GUI.h"
 
 
 #include "VRPickAndDragHandlerShopEditor.h"
@@ -41,9 +42,14 @@ using namespace osg;
 using namespace osgGA;
 
 
+PickAndDragHandlerShopEditor::PickAndDragHandlerShopEditor()	{
+}
+
 //-------------------------------------------------------------------------------
 
-PickAndDragHandlerShopEditor::PickAndDragHandlerShopEditor()	{
+PickAndDragHandlerShopEditor::~PickAndDragHandlerShopEditor()	{
+	if(m_pEditItem_GUI)
+		delete m_pEditItem_GUI;
 }
 
 //-------------------------------------------------------------------------------
@@ -334,3 +340,21 @@ void PickAndDragHandlerShopEditor::removeSelection(ref_ptr<Scene> apScene)	{
 	clearList();
 }
 
+//-----------------------------------------------------------------------------------
+
+void PickAndDragHandlerShopEditor::editItem(ref_ptr<Scene> apScene)	{
+	if(m_pvecPickedObjects.size() < 1)	{
+		cout << "No items selected for editing" << endl;
+		return;
+	}
+
+	AbstractObject * pAbstractObject = m_pvecPickedObjects[0];
+
+	//If selection not empty, open the dialog
+	m_pEditItem_GUI = new EditItem_GUI(pAbstractObject);
+	m_pEditItem_GUI->setWindowFlags(Qt::FramelessWindowHint);
+
+	m_pEditItem_GUI->exec();
+
+	clearList();
+}

@@ -29,7 +29,7 @@ namespace VR {
 
 		virtual void predefinedObject();
 
-		virtual std::string getObjectData(const std::string & astrParentName="");
+		virtual std::string prepareRowData(const std::string & astrParentName="");
 
 	};
 }

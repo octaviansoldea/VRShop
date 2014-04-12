@@ -3,31 +3,34 @@
 
 #include <QDialog>
 
-#include <osg/Node>
-
 #include "ui_VRProductSettings_GUI.h"
 
 namespace VR	{
 	class ProductController;
+	class Product;
 
 	class ProductSettings_GUI : public QDialog, public Ui::ProductSettings {
 	public:
 		ProductSettings_GUI();
+		ProductSettings_GUI(Product * apProduct);
+
 		~ProductSettings_GUI();
 
 	public slots:
-		void slotSaveProductChanges();
-
-		void slotInsertProduct();
-		void slotModifyProduct();
-		void slotRemoveProduct();
+		void slotSetTexture();
+		void slotCreateRepresentation(const QString & aqstrFrameName);
+		virtual void accept();
+		virtual void close();
 
 	private:
 		Q_OBJECT
 
 		void buildConnections();
+		void initGUI(Product * apProduct);
 
-		ProductController * m_pProductController;
+		QString m_qstrFileName;
+
+		Product * m_pProduct;
 	};
 }
 #endif //VR_PRODUCT_SETTINGS_GUI_H

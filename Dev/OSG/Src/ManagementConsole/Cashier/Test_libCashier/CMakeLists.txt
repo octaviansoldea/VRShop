@@ -9,6 +9,7 @@ SET(src
 
 INCLUDE_DIRECTORIES(
 	${OPENSCENEGRAPH_INCLUDE_DIRS}
+	${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Cashier/libCashier
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProduct
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgent
@@ -19,6 +20,7 @@ ADD_EXECUTABLE(Test_libCashier
 
 TARGET_LINK_LIBRARIES(Test_libCashier
 	${OSG_LIBRARIES}
+	libAbstractObject
 	libCashier
 	libProduct
 	libAgent

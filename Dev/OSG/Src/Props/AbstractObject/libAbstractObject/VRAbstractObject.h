@@ -62,6 +62,10 @@ namespace VR	{
 		virtual std::string prepareRowData(const std::string & astrParentName="") = 0;
 		virtual void preparedObjectData(std::vector<std::string> &avecItems, std::string & astrParent);
 
+
+		virtual void setColor(const std::vector < float > & aarrflColor) = 0;
+		virtual void setTexture(const std::string & astrFileName) = 0;
+
 	protected:
 		virtual void setParams(const AbstractObjectParams & aAbstractObjectParams);
 		virtual void getParams(AbstractObjectParams & aAbstractObjectParams) const;

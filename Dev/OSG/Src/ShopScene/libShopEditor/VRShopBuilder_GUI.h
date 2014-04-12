@@ -8,6 +8,7 @@
 class ShopBuilder;
 class CameraController;
 class PickAndDragController;
+class ProductController;
 class Grid;
 
 namespace VR	{
@@ -27,6 +28,7 @@ namespace VR	{
 
 		CameraController * m_pCameraController;
 		PickAndDragController * m_pPickAndDragController;
+		ProductController * m_pProductController;
 
 	public slots:
 		void slotNewProject();
@@ -47,10 +49,7 @@ namespace VR	{
 		void slotDefineDragAxis(const QString & astrAxis);
 
 		void slotModifySceneActions();
-		void slotModifyProductSettings();
-		void slotSetProductSettings(const QString & astrSelectedProduct);
 		void slotSetNewPriceQuantity();
-		void slotModifyProductButtons();
 
 		void slotAddNewItem(const QString & aqstrItemName);
 	};

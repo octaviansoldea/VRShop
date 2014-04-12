@@ -30,18 +30,24 @@ SET(src
 )
 
 INCLUDE_DIRECTORIES(
-	${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProduct
+	${CMAKE_BINARY_DIR}/CoreUtils_OSG/libMngtController
 	${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
-#	${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabase
+	${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabase
+	${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
+	${CMAKE_SOURCE_DIR}/Props/GeometricShape/libGeometricShape
+	${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProduct
 )
 
 ADD_EXECUTABLE(Test_libProduct
 	main.cpp)
 
 SET(LIBS_COMMON
+	libMngtController
+	libAbstractObject
 	libProduct
 	libCommon
-#	libDatabase
+	libDatabase
+	libGeometricShape
 )
 
 IF(Qt5_FOUND)

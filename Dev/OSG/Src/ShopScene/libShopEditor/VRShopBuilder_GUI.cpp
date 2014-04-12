@@ -6,8 +6,6 @@
 #include <QFileDialog>
 #include <QMessageBox>
 
-#include "VRProductSettings_GUI.h"
-#include "VRRemoveProduct_GUI.h"
 
 #include "VRNewProject_GUI.h"
 #include "VRInsertNewItem_GUI.h"
@@ -15,14 +13,17 @@
 
 #include "VRShopBuilder.h"
 #include "VRScene.h"
+#include "VRProductManager.h"
 
 #include "VRCameraController.h"
 #include "VRPickAndDragController.h"
 #include "VRSearchListController.h"
+#include "VRProductController.h"
 
 #include "VRKeyboardMouseManipulatorShopEditor.h"
 #include "VRPickAndDragHandlerShopEditor.h"
 #include "VRSceneObjectsSearchShopEditor.h"
+#include "VRProductManager.h"
 
 #include "VRDataStructureModel.h"
 
@@ -42,6 +43,7 @@ ShopBuilder_GUI::ShopBuilder_GUI()	{
 
 	m_pShopBuilder = new ShopBuilder(m_pOSGQTWidget);
 	ref_ptr<Scene> pScene = m_pShopBuilder->getScene();
+	ref_ptr<ProductManager> pProductMgr = m_pShopBuilder->getProducts();
 
 	KeyboardMouseManipulatorShopEditor * pKeyboardMouseManipulatorShopEditor = 
 		dynamic_cast<KeyboardMouseManipulatorShopEditor *>(m_pOSGQTWidget->getCameraManipulator());
@@ -98,6 +100,21 @@ ShopBuilder_GUI::ShopBuilder_GUI()	{
 		pScene);
 
 
+	m_pProductController = new ProductController(
+		m_p_PushButton_ProductSettings_AddNewProduct,
+		m_p_PushButton_ProductSettings_RemoveProduct,
+		m_p_PushButton_ProductSettings_Apply,
+		m_p_PushButton_ProductSettings_Cancel,
+		m_p_PushButton_ProductSettings_MoreSettings,
+		m_p_ComboBox_ProductSettings_ProductName,
+		m_p_LineEdit_ProductSettings_NewPrice,
+		m_p_LineEdit_ProductSettings_NewQuantity,
+		m_p_LineEdit_ProductSettings_Price,
+		m_p_LineEdit_ProductSettings_Quantity,
+		pProductMgr,
+		pPickAndDragHandlerShopEditor
+	);
+
 	m_pOSGQTWidget->show();
 
 	buildConnections();
@@ -108,6 +125,8 @@ ShopBuilder_GUI::ShopBuilder_GUI()	{
 ShopBuilder_GUI::~ShopBuilder_GUI() {
 	delete m_pCameraController;
 	delete m_pPickAndDragController;
+	delete m_pProductController;
+
 	delete m_pOSGQTWidget;
 
 	delete m_pShopBuilder;
@@ -135,15 +154,6 @@ void ShopBuilder_GUI::buildConnections() {
 	connect(m_p_ComboBox_DefineDragAxis, SIGNAL(currentTextChanged(const QString &)),this,SLOT(slotDefineDragAxis(const QString &)));
 
 	connect(m_p_PushButton_ModifyScene_AddNewItem,SIGNAL(clicked()),this,SLOT(slotModifySceneActions()));
-
-	connect(m_p_PushButton_ProductSettings_AddNewProduct,SIGNAL(clicked()),this,SLOT(slotModifyProductSettings()));
-	connect(m_p_PushButton_ProductSettings_RemoveProduct,SIGNAL(clicked()),this,SLOT(slotModifyProductSettings()));
-
-	connect(m_p_ComboBox_ProductSettings_ProductName,SIGNAL(currentTextChanged(const QString &)),this,SLOT(slotSetProductSettings(const QString &)));
-
-	connect(m_p_PushButton_ProductSettings_Apply,SIGNAL(clicked()),this,SLOT(slotModifyProductButtons()));
-	connect(m_p_PushButton_ProductSettings_Cancel,SIGNAL(clicked()),this,SLOT(slotModifyProductButtons()));
-	connect(m_p_PushButton_ProductSettings_MoreSettings,SIGNAL(clicked()),this,SLOT(slotModifyProductButtons()));
 }
 
 //=========================================================================================
@@ -361,79 +371,12 @@ void ShopBuilder_GUI::slotModifySceneActions()	{
 
 //---------------------------------------------------------------------------------------
 
-void ShopBuilder_GUI::slotModifyProductSettings()	{
-	QPushButton * pPushButton = dynamic_cast<QPushButton*>(sender());
-	if(pPushButton == m_p_PushButton_ProductSettings_AddNewProduct)	{
-		ProductSettings_GUI productSettings;
-		
-		//To get a widget without a "TitleBar"
-		productSettings.setWindowFlags(Qt::FramelessWindowHint);
-		productSettings.exec();
-		return;
-	}
-	if	(pPushButton == m_p_PushButton_ProductSettings_RemoveProduct)	{
-		RemoveProduct_GUI rProduct;
-		
-		//To get a widget without a "TitleBar"
-		rProduct.setWindowFlags(Qt::FramelessWindowHint);
-		rProduct.exec();
-		return;
-	}
-	else	{
-		return;
-	}
-}
-
-//---------------------------------------------------------------------------------------
-
-void ShopBuilder_GUI::slotSetProductSettings(const QString & astrSelectedProduct)	{
-	QString strSelectedproduct = astrSelectedProduct;
-
-	QString strPrice = strSelectedproduct + " 10.1";
-	QString strQuantity = strSelectedproduct + " 10";
-
-	m_p_LineEdit_ProductSettings_Price->setText(strPrice);
-	m_p_LineEdit_ProductSettings_Quantity->setText(strQuantity);
-
-	m_p_LineEdit_ProductSettings_NewPrice->setEnabled(true);
-	m_p_LineEdit_ProductSettings_NewQuantity->setEnabled(true);
-
-}
-
-//---------------------------------------------------------------------------------------
-
 void ShopBuilder_GUI::slotSetNewPriceQuantity()	{
 	//Update database with new data
 	//Perhaps open a new "confirmation" widget
 
 	m_p_LineEdit_ProductSettings_NewPrice;
 	m_p_LineEdit_ProductSettings_NewQuantity;
-}
-
-//---------------------------------------------------------------------------------------
-
-void ShopBuilder_GUI::slotModifyProductButtons()	{
-	QPushButton * pPushButton = dynamic_cast<QPushButton*>(sender());
-	if(pPushButton == m_p_PushButton_ProductSettings_Apply)	{
-		std::cout << "Apply button clicked" << std::endl;
-		// void applyProductSettingstWidget();
-		return;
-	}
-
-	if(pPushButton == m_p_PushButton_ProductSettings_Cancel)	{
-		m_p_LineEdit_ProductSettings_NewPrice->clear();
-		m_p_LineEdit_ProductSettings_NewQuantity->clear();
-		m_p_ComboBox_ProductSettings_ProductName->clearEditText();
-		m_p_LineEdit_ProductSettings_Price->clear();
-		m_p_LineEdit_ProductSettings_Quantity->clear();
-
-		return;
-	}
-	if(pPushButton == m_p_PushButton_ProductSettings_MoreSettings)	{
-		std::cout << "More settings button clicked" << std::endl;
-		// void applyProductSettingstWidget();
-		return;
-	}
 }
 
 //---------------------------------------------------------------------------------------

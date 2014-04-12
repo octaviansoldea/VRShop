@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>EditItem</class>
- <widget class="QDialog" name="EditItem">
+ <class>EditPrism</class>
+ <widget class="QDialog" name="EditPrism">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -336,7 +336,7 @@
                 </widget>
                </item>
                <item>
-                <widget class="QSpinBox" name="spinBox_3">
+                <widget class="QSpinBox" name="m_pSpinBoxResolution">
                  <property name="maximumSize">
                   <size>
                    <width>80</width>
@@ -369,7 +369,7 @@
                 </widget>
                </item>
                <item>
-                <widget class="QLineEdit" name="lineEdit_35">
+                <widget class="QLineEdit" name="m_pLineEditRadius">
                  <property name="maximumSize">
                   <size>
                    <width>16777215</width>
@@ -402,7 +402,7 @@
                 </widget>
                </item>
                <item>
-                <widget class="QLineEdit" name="lineEdit_36">
+                <widget class="QLineEdit" name="m_pLineEditHeight">
                  <property name="maximumSize">
                   <size>
                    <width>16777215</width>
@@ -500,7 +500,7 @@
                     </size>
                    </property>
                    <property name="frameShape">
-                    <enum>QFrame::Box</enum>
+                    <enum>QFrame::StyledPanel</enum>
                    </property>
                    <property name="text">
                     <string/>
@@ -522,7 +522,7 @@
                     </size>
                    </property>
                    <property name="frameShape">
-                    <enum>QFrame::Box</enum>
+                    <enum>QFrame::StyledPanel</enum>
                    </property>
                    <property name="text">
                     <string/>
@@ -546,7 +546,7 @@
                   </size>
                  </property>
                  <property name="frameShape">
-                  <enum>QFrame::Box</enum>
+                  <enum>QFrame::StyledPanel</enum>
                  </property>
                  <property name="text">
                   <string/>
@@ -583,7 +583,7 @@
                 </widget>
                </item>
                <item row="0" column="1">
-                <widget class="QLineEdit" name="lineEdit_39">
+                <widget class="QLineEdit" name="m_pLineEditColorR">
                  <property name="maximumSize">
                   <size>
                    <width>16777215</width>
@@ -600,7 +600,7 @@
                 </widget>
                </item>
                <item row="1" column="1">
-                <widget class="QLineEdit" name="lineEdit_38">
+                <widget class="QLineEdit" name="m_pLineEditColorG">
                  <property name="maximumSize">
                   <size>
                    <width>16777215</width>
@@ -617,7 +617,7 @@
                 </widget>
                </item>
                <item row="2" column="1">
-                <widget class="QLineEdit" name="lineEdit_47">
+                <widget class="QLineEdit" name="m_pLineEditColorB">
                  <property name="maximumSize">
                   <size>
                    <width>16777215</width>
@@ -634,7 +634,7 @@
                 </widget>
                </item>
                <item row="3" column="1">
-                <widget class="QLineEdit" name="lineEdit_46">
+                <widget class="QLineEdit" name="m_pLineEditColorA">
                  <property name="maximumSize">
                   <size>
                    <width>16777215</width>
@@ -696,7 +696,7 @@
               <number>5</number>
              </property>
              <item>
-              <widget class="QLabel" name="label_7">
+              <widget class="QLabel" name="m_pLabelTexture">
                <property name="maximumSize">
                 <size>
                  <width>100</width>
@@ -704,7 +704,7 @@
                 </size>
                </property>
                <property name="frameShape">
-                <enum>QFrame::Box</enum>
+                <enum>QFrame::StyledPanel</enum>
                </property>
                <property name="text">
                 <string/>
@@ -756,7 +756,7 @@
                 </widget>
                </item>
                <item row="1" column="1">
-                <widget class="QToolButton" name="toolButton">
+                <widget class="QToolButton" name="m_pToolButtonTexture">
                  <property name="font">
                   <font>
                    <pointsize>8</pointsize>
@@ -835,7 +835,7 @@
          <number>0</number>
         </property>
         <item>
-         <widget class="OSGQT_Widget" name="OSGQT_Widget" native="true">
+         <widget class="OSGQT_Widget" name="m_pOSGQT_Widget" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
             <horstretch>0</horstretch>
@@ -890,12 +890,12 @@
   <tabstop>scrollArea</tabstop>
   <tabstop>lineEdit_33</tabstop>
   <tabstop>lineEdit_32</tabstop>
-  <tabstop>lineEdit_39</tabstop>
-  <tabstop>lineEdit_38</tabstop>
-  <tabstop>lineEdit_47</tabstop>
-  <tabstop>lineEdit_46</tabstop>
+  <tabstop>m_pLineEditColorR</tabstop>
+  <tabstop>m_pLineEditColorG</tabstop>
+  <tabstop>m_pLineEditColorB</tabstop>
+  <tabstop>m_pLineEditColorA</tabstop>
   <tabstop>comboBox</tabstop>
-  <tabstop>toolButton</tabstop>
+  <tabstop>m_pToolButtonTexture</tabstop>
   <tabstop>m_pPushButtonApply</tabstop>
   <tabstop>m_pPushButtonCancel</tabstop>
  </tabstops>

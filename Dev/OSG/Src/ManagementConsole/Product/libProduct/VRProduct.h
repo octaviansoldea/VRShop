@@ -2,6 +2,9 @@
 #define VR_PRODUCT_H
 
 #include <string>
+#include <vector>
+
+#include "VRAbstractObject.h"
 
 namespace VR	{
 	struct ProductParams	{
@@ -14,7 +17,7 @@ namespace VR	{
 		std::string m_strManufacturerOrigin;
 		std::string m_strDateAdded;
 		std::string m_strDateLastModified;
-		int m_nProductUnit;
+		std::string m_strProductUnit;
 		float m_flPricePerUnit;
 		float m_flQuantity;
 		float m_flTaxRate;
@@ -26,22 +29,35 @@ namespace VR	{
 		ProductParams();
 	};
 
-
 	class Product	{
 	public:
 		Product();
-		Product(const ProductParams & aProductParams);
+		Product(osg::ref_ptr <AbstractObject> apRepresentation, const ProductParams & aProductParams);
+		~Product();
 
-		void createProductDB() const;	//Let be Manufacturers in a separate table
+		const char* className() const;
 
-		void newProduct(const Product & aProduct);
-		void getProduct(const Product & aProduct);
-		void removeProduct(const Product & aProduct);
-		void modifyProduct(const Product & aProduct);
+		void createRepresentation(const std::string & astrRepresentation);
+		osg::ref_ptr<AbstractObject> getRepresentation() const;
+
+		void setColor(const std::vector < float > & aarrflColor);
+		void setTexture(const std::string & astrFileName);
+
+		void setParams(const VR::ProductParams & aProductParams);
+		void getParams(VR::ProductParams & aProductParams) const;
+
+		std::string prepareRowData(const std::string & astrParentName="");
+
+		void initFromSQLData(const std::string & astrSQLData) {};
+		void predefinedObject() {};
+
+
+	private:
+		void createDBTableProduct() const;	//Let be Manufacturers in a separate table
 
 		void productViewed(const Product & aProduct /* User & aUser*/);
 
-	private:
+		osg::ref_ptr<AbstractObject> m_pRepresentation;
 		ProductParams m_ProductParams;
 	};
 }

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>EditItem</class>
- <widget class="QDialog" name="EditItem">
+ <class>EditFurniture</class>
+ <widget class="QDialog" name="EditFurniture">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
     <width>820</width>
-    <height>487</height>
+    <height>497</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -31,9 +31,6 @@
    </property>
    <property name="rightMargin">
     <number>0</number>
-   </property>
-   <property name="bottomMargin">
-    <number>10</number>
    </property>
    <item>
     <widget class="QFrame" name="frame_2">
@@ -64,7 +61,7 @@
          </font>
         </property>
         <property name="text">
-         <string>Edit Circle</string>
+         <string>Edit Furniture</string>
         </property>
        </widget>
       </item>
@@ -104,10 +101,7 @@
        <item>
         <widget class="QScrollArea" name="scrollArea">
          <property name="verticalScrollBarPolicy">
-          <enum>Qt::ScrollBarAlwaysOff</enum>
-         </property>
-         <property name="horizontalScrollBarPolicy">
-          <enum>Qt::ScrollBarAlwaysOff</enum>
+          <enum>Qt::ScrollBarAsNeeded</enum>
          </property>
          <property name="widgetResizable">
           <bool>true</bool>
@@ -117,8 +111,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>464</width>
-            <height>385</height>
+            <width>436</width>
+            <height>396</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -175,7 +169,7 @@
             </widget>
            </item>
            <item>
-            <layout class="QGridLayout" name="gridLayout" columnstretch="0,0,0,0,0,0,0">
+            <layout class="QGridLayout" name="gridLayout">
              <property name="leftMargin">
               <number>5</number>
              </property>
@@ -185,15 +179,8 @@
              <property name="horizontalSpacing">
               <number>6</number>
              </property>
-             <item row="2" column="3">
-              <widget class="QLabel" name="label_35">
-               <property name="text">
-                <string>Y:</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="6">
-              <widget class="QLineEdit" name="lineEdit_30">
+             <item row="1" column="4">
+              <widget class="QLineEdit" name="m_pLineEditLocationY">
                <property name="maximumSize">
                 <size>
                  <width>16777215</width>
@@ -202,8 +189,66 @@
                </property>
               </widget>
              </item>
-             <item row="2" column="4">
-              <widget class="QLineEdit" name="lineEdit_31">
+             <item row="0" column="1">
+              <widget class="QLabel" name="label_34">
+               <property name="text">
+                <string>X:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="5">
+              <widget class="QLabel" name="label_41">
+               <property name="text">
+                <string>Z:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="6">
+              <widget class="QLineEdit" name="m_pLineEditLocationZ">
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="4">
+              <widget class="QLineEdit" name="m_pLineEditScaleY">
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="2">
+              <widget class="QLineEdit" name="m_pLineEditScaleX">
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="3">
+              <widget class="QLabel" name="label_35">
+               <property name="text">
+                <string>Y:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QLabel" name="label_33">
+               <property name="text">
+                <string>X:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="2">
+              <widget class="QLineEdit" name="m_pLineEditLocationX">
                <property name="maximumSize">
                 <size>
                  <width>16777215</width>
@@ -219,80 +264,20 @@
                </property>
               </widget>
              </item>
-             <item row="1" column="2">
-              <widget class="QLineEdit" name="lineEdit_33">
-               <property name="maximumSize">
-                <size>
-                 <width>16777215</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="6">
-              <widget class="QLineEdit" name="lineEdit_34">
-               <property name="maximumSize">
-                <size>
-                 <width>16777215</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="4">
-              <widget class="QLineEdit" name="lineEdit_32">
-               <property name="maximumSize">
-                <size>
-                 <width>16777215</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="3">
-              <widget class="QLabel" name="label_38">
+             <item row="0" column="3">
+              <widget class="QLabel" name="label_36">
                <property name="text">
                 <string>Y:</string>
                </property>
               </widget>
              </item>
-             <item row="1" column="1">
-              <widget class="QLabel" name="label_39">
-               <property name="text">
-                <string>X:</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="0">
-              <widget class="QLabel" name="label_10">
-               <property name="text">
-                <string>Rotation</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="0">
-              <widget class="QLabel" name="label_18">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
+             <item row="0" column="6">
+              <widget class="QLineEdit" name="m_pLineEditScaleZ">
                <property name="maximumSize">
                 <size>
-                 <width>22</width>
+                 <width>16777215</width>
                  <height>20</height>
                 </size>
-               </property>
-               <property name="text">
-                <string>Size</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="5">
-              <widget class="QLabel" name="label_40">
-               <property name="text">
-                <string>Z:</string>
                </property>
               </widget>
              </item>
@@ -303,8 +288,29 @@
                </property>
               </widget>
              </item>
+             <item row="0" column="0">
+              <widget class="QLabel" name="label_8">
+               <property name="text">
+                <string>Size</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QLabel" name="label_10">
+               <property name="text">
+                <string>Rotation</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QLabel" name="label_39">
+               <property name="text">
+                <string>X:</string>
+               </property>
+              </widget>
+             </item>
              <item row="2" column="2">
-              <widget class="QLineEdit" name="lineEdit_27">
+              <widget class="QLineEdit" name="m_pLineEditRotationX">
                <property name="maximumSize">
                 <size>
                  <width>16777215</width>
@@ -313,78 +319,39 @@
                </property>
               </widget>
              </item>
-             <item row="2" column="1">
-              <widget class="QLabel" name="label_33">
-               <property name="text">
-                <string>X:</string>
+             <item row="2" column="4">
+              <widget class="QLineEdit" name="m_pLineEditRotationY">
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>20</height>
+                </size>
                </property>
               </widget>
              </item>
-             <item row="0" column="1" colspan="2">
-              <layout class="QHBoxLayout" name="horizontalLayout_10">
-               <property name="spacing">
-                <number>0</number>
+             <item row="2" column="6">
+              <widget class="QLineEdit" name="m_pLineEditRotationZ">
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>20</height>
+                </size>
                </property>
-               <property name="leftMargin">
-                <number>0</number>
-               </property>
-               <item>
-                <widget class="QLabel" name="label_19">
-                 <property name="text">
-                  <string>Resolution:</string>
-                 </property>
-                 <property name="margin">
-                  <number>0</number>
-                 </property>
-                 <property name="indent">
-                  <number>0</number>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QSpinBox" name="spinBox_3">
-                 <property name="maximumSize">
-                  <size>
-                   <width>80</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </widget>
-               </item>
-              </layout>
+              </widget>
              </item>
-             <item row="0" column="3" colspan="2">
-              <layout class="QHBoxLayout" name="horizontalLayout_11">
-               <property name="spacing">
-                <number>5</number>
+             <item row="2" column="5">
+              <widget class="QLabel" name="label_40">
+               <property name="text">
+                <string>Z:</string>
                </property>
-               <property name="leftMargin">
-                <number>0</number>
+              </widget>
+             </item>
+             <item row="2" column="3">
+              <widget class="QLabel" name="label_38">
+               <property name="text">
+                <string>Y:</string>
                </property>
-               <item>
-                <widget class="QLabel" name="label_20">
-                 <property name="text">
-                  <string>Radius:</string>
-                 </property>
-                 <property name="margin">
-                  <number>0</number>
-                 </property>
-                 <property name="indent">
-                  <number>0</number>
-                 </property>
-                </widget>
-               </item>
-               <item>
-                <widget class="QLineEdit" name="lineEdit_35">
-                 <property name="maximumSize">
-                  <size>
-                   <width>16777215</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </widget>
-               </item>
-              </layout>
+              </widget>
              </item>
             </layout>
            </item>
@@ -456,7 +423,7 @@
                <item>
                 <layout class="QHBoxLayout" name="horizontalLayout_4">
                  <item>
-                  <widget class="QLabel" name="label_13">
+                  <widget class="QLabel" name="m_pLabelColorFactory">
                    <property name="enabled">
                     <bool>true</bool>
                    </property>
@@ -481,7 +448,7 @@
                   </widget>
                  </item>
                  <item>
-                  <widget class="QLabel" name="label_4">
+                  <widget class="QLabel" name="m_pLabelColorTag">
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                      <horstretch>0</horstretch>
@@ -505,7 +472,7 @@
                 </layout>
                </item>
                <item>
-                <widget class="QLabel" name="label_5">
+                <widget class="QLabel" name="m_pLabelColorSample">
                  <property name="minimumSize">
                   <size>
                    <width>100</width>
@@ -556,7 +523,7 @@
                 </widget>
                </item>
                <item row="0" column="1">
-                <widget class="QLineEdit" name="lineEdit_39">
+                <widget class="QLineEdit" name="m_pLineEditColorR">
                  <property name="maximumSize">
                   <size>
                    <width>16777215</width>
@@ -573,7 +540,7 @@
                 </widget>
                </item>
                <item row="1" column="1">
-                <widget class="QLineEdit" name="lineEdit_38">
+                <widget class="QLineEdit" name="m_pLineEditColorG">
                  <property name="maximumSize">
                   <size>
                    <width>16777215</width>
@@ -590,7 +557,7 @@
                 </widget>
                </item>
                <item row="2" column="1">
-                <widget class="QLineEdit" name="lineEdit_47">
+                <widget class="QLineEdit" name="m_pLineEditColorB">
                  <property name="maximumSize">
                   <size>
                    <width>16777215</width>
@@ -607,7 +574,7 @@
                 </widget>
                </item>
                <item row="3" column="1">
-                <widget class="QLineEdit" name="lineEdit_46">
+                <widget class="QLineEdit" name="m_pLineEditColorA">
                  <property name="maximumSize">
                   <size>
                    <width>16777215</width>
@@ -669,7 +636,7 @@
               <number>5</number>
              </property>
              <item>
-              <widget class="QLabel" name="label_7">
+              <widget class="QLabel" name="m_pLabelTexture">
                <property name="maximumSize">
                 <size>
                  <width>100</width>
@@ -681,6 +648,12 @@
                </property>
                <property name="text">
                 <string/>
+               </property>
+               <property name="scaledContents">
+                <bool>true</bool>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
                </property>
               </widget>
              </item>
@@ -706,7 +679,7 @@
                 </widget>
                </item>
                <item row="0" column="1">
-                <widget class="QComboBox" name="comboBox">
+                <widget class="QComboBox" name="m_pComboBoxTexture">
                  <property name="acceptDrops">
                   <bool>true</bool>
                  </property>
@@ -729,7 +702,7 @@
                 </widget>
                </item>
                <item row="1" column="1">
-                <widget class="QToolButton" name="toolButton">
+                <widget class="QToolButton" name="m_pToolButtonTexture">
                  <property name="font">
                   <font>
                    <pointsize>8</pointsize>
@@ -861,14 +834,21 @@
  </customwidgets>
  <tabstops>
   <tabstop>scrollArea</tabstop>
-  <tabstop>lineEdit_33</tabstop>
-  <tabstop>lineEdit_32</tabstop>
-  <tabstop>lineEdit_39</tabstop>
-  <tabstop>lineEdit_38</tabstop>
-  <tabstop>lineEdit_47</tabstop>
-  <tabstop>lineEdit_46</tabstop>
-  <tabstop>comboBox</tabstop>
-  <tabstop>toolButton</tabstop>
+  <tabstop>m_pLineEditScaleX</tabstop>
+  <tabstop>m_pLineEditScaleY</tabstop>
+  <tabstop>m_pLineEditScaleZ</tabstop>
+  <tabstop>m_pLineEditLocationX</tabstop>
+  <tabstop>m_pLineEditLocationY</tabstop>
+  <tabstop>m_pLineEditLocationZ</tabstop>
+  <tabstop>m_pLineEditRotationX</tabstop>
+  <tabstop>m_pLineEditRotationY</tabstop>
+  <tabstop>m_pLineEditRotationZ</tabstop>
+  <tabstop>m_pLineEditColorR</tabstop>
+  <tabstop>m_pLineEditColorG</tabstop>
+  <tabstop>m_pLineEditColorB</tabstop>
+  <tabstop>m_pLineEditColorA</tabstop>
+  <tabstop>m_pComboBoxTexture</tabstop>
+  <tabstop>m_pToolButtonTexture</tabstop>
   <tabstop>m_pPushButtonApply</tabstop>
   <tabstop>m_pPushButtonCancel</tabstop>
  </tabstops>

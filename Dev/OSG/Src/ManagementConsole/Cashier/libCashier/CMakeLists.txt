@@ -28,6 +28,7 @@ ENDIF(Qt5_FOUND)
 #General includes, irrespective of the Qt version
 INCLUDE_DIRECTORIES(
 	${OPENSCENEGRAPH_INCLUDE_DIRS}
+	${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProduct
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgent
     ${CMAKE_SOURCE_DIR}/Props/Avatar/libAvatar

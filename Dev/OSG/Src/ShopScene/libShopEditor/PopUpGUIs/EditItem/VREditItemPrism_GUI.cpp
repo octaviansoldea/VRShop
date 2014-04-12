@@ -6,7 +6,9 @@
 
 #include "VRKeyboardMouseManipulatorShopEditor.h"
 
-#include "VREditItem_GUI.h"
+#include "VRPrism.h"
+
+#include "VREditItemPrism_GUI.h"
 
 using namespace Ui;
 using namespace VR;
@@ -15,7 +17,7 @@ using namespace std;
 
 //----------------------------------------------------------------------
 
-EditItem_GUI::EditItem_GUI(AbstractObject * apAbstractObject) :
+EditItemPrism_GUI::EditItemPrism_GUI(AbstractObject * apAbstractObject) :
 EditItem_GUIBase(apAbstractObject)	{
 	setupUi(this);
 	
@@ -33,6 +35,9 @@ EditItem_GUIBase(apAbstractObject)	{
 	connect(m_pLineEditColorB, SIGNAL(returnPressed()), this, SLOT(slotSetColor()));
 	connect(m_pLineEditColorA, SIGNAL(returnPressed()), this, SLOT(slotSetColor()));
 
+	connect(m_pSpinBoxResolution, SIGNAL(editingFinished()), this, SLOT(slotSetResolution()));
+
+
 	m_pOSGQT_Widget->show();
 
 	m_pLineEditColorR->setText("0");
@@ -43,7 +48,7 @@ EditItem_GUIBase(apAbstractObject)	{
 
 //----------------------------------------------------------------------
 
-EditItem_GUI::~EditItem_GUI()	{
+EditItemPrism_GUI::~EditItemPrism_GUI()	{
 	if (m_pOSGQT_Widget)
 		delete m_pOSGQT_Widget;
 }
@@ -51,7 +56,7 @@ EditItem_GUI::~EditItem_GUI()	{
 
 //----------------------------------------------------------------------
 
-void EditItem_GUI::previewTexture(QString & aqstrFileName)	{
+void EditItemPrism_GUI::previewTexture(QString & aqstrFileName)	{
 	QImageReader image(aqstrFileName);
 	QPixmap p(QPixmap::fromImageReader(&image));
 	QPixmap p1(p.scaled ( m_pLabelTexture->width(),m_pLabelTexture->height(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation ));
@@ -60,7 +65,7 @@ void EditItem_GUI::previewTexture(QString & aqstrFileName)	{
 
 //----------------------------------------------------------------------
 
-void EditItem_GUI::slotSetColor()	{
+void EditItemPrism_GUI::slotSetColor()	{
 	m_pAbstractObject->setTexture("");
 	vector<float> vecflColor;
 	vecflColor.push_back(m_pLineEditColorR->text().toFloat());
@@ -70,3 +75,7 @@ void EditItem_GUI::slotSetColor()	{
 	m_pAbstractObject->setColor(vecflColor);
 }
 
+//----------------------------------------------------------------------
+
+void EditItemPrism_GUI::slotSetResolution()	{
+}

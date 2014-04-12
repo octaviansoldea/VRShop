@@ -28,12 +28,25 @@ ENDIF(Qt5_FOUND)
 
 #General includes, irrespective of the Qt version
 INCLUDE_DIRECTORIES(
-#	${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabase
+	${OPENSCENEGRAPH_INCLUDE_DIRS}
+	${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
+	${CMAKE_SOURCE_DIR}/Props/GeometricShape/libGeometricShape
+	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libMngtController
+	${CMAKE_SOURCE_DIR}/Props/Scene/libScene
+	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_OSG
+	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_QT
+    ${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
+	${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs
+	${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/ProductItem
+	${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/View
+	${CMAKE_BINARY_DIR}/ShopScene/libShopEditor
+	${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabase
 )
 
 #Define sources to be later added into the library
 SET(SRCS
 	VRProduct.h VRProduct.cpp
+	VRProductManager.h VRProductManager.cpp
 )
 
 #Library to be later used in the main

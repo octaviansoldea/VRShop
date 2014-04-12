@@ -6,7 +6,7 @@
 
 #include "VRKeyboardMouseManipulatorShopEditor.h"
 
-#include "VREditItem_GUI.h"
+#include "VREditItemFurniture_GUI.h"
 
 using namespace Ui;
 using namespace VR;
@@ -15,7 +15,7 @@ using namespace std;
 
 //----------------------------------------------------------------------
 
-EditItem_GUI::EditItem_GUI(AbstractObject * apAbstractObject) :
+EditItemFurniture_GUI::EditItemFurniture_GUI(AbstractObject * apAbstractObject) :
 EditItem_GUIBase(apAbstractObject)	{
 	setupUi(this);
 	
@@ -43,7 +43,7 @@ EditItem_GUIBase(apAbstractObject)	{
 
 //----------------------------------------------------------------------
 
-EditItem_GUI::~EditItem_GUI()	{
+EditItemFurniture_GUI::~EditItemFurniture_GUI()	{
 	if (m_pOSGQT_Widget)
 		delete m_pOSGQT_Widget;
 }
@@ -51,7 +51,7 @@ EditItem_GUI::~EditItem_GUI()	{
 
 //----------------------------------------------------------------------
 
-void EditItem_GUI::previewTexture(QString & aqstrFileName)	{
+void EditItemFurniture_GUI::previewTexture(QString & aqstrFileName)	{
 	QImageReader image(aqstrFileName);
 	QPixmap p(QPixmap::fromImageReader(&image));
 	QPixmap p1(p.scaled ( m_pLabelTexture->width(),m_pLabelTexture->height(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation ));
@@ -60,7 +60,7 @@ void EditItem_GUI::previewTexture(QString & aqstrFileName)	{
 
 //----------------------------------------------------------------------
 
-void EditItem_GUI::slotSetColor()	{
+void EditItemFurniture_GUI::slotSetColor()	{
 	m_pAbstractObject->setTexture("");
 	vector<float> vecflColor;
 	vecflColor.push_back(m_pLineEditColorR->text().toFloat());

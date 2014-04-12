@@ -7,30 +7,6 @@
 using namespace VR;
 using namespace std;
 
-//-------------------------------------------------------------------------------
-
-void systemOfTables(vector<pair<string,string>> & avecStmtPairs)	{
-	string strSQLFormat =
-		"CREATE TABLE IF NOT EXISTS Scene ( \
-		SceneName TEXT);";
-	avecStmtPairs.push_back(make_pair("Scene", strSQLFormat));
-
-	strSQLFormat =
-		"CREATE TABLE IF NOT EXISTS SceneObject ( \
-		ClassName TEXT, \
-		SceneObjectName TEXT, \
-		SceneObjectParams TEXT, \
-		SceneName INTEGER);";
-	avecStmtPairs.push_back(make_pair("SceneObject", strSQLFormat));
-
-	strSQLFormat =
-		"CREATE TABLE IF NOT EXISTS SceneObjectPrimitive ( \
-		ClassName TEXT, \
-		SceneObjectPrimitiveName TEXT, \
-		SceneObjectPrimitiveParams TEXT, \
-		SceneObjectName TEXT);";
-	avecStmtPairs.push_back(make_pair("SceneObjectPrimitive", strSQLFormat));
-}
 
 //==================================================================================
 
@@ -63,6 +39,31 @@ DatabaseManagerShopEditor::~DatabaseManagerShopEditor()	{
 }
 
 //===============================================================================
+
+void DatabaseManagerShopEditor::systemOfTables(vector<pair<string,string>> & avecStmtPairs)	{
+	string strSQLFormat =
+		"CREATE TABLE IF NOT EXISTS Scene ( \
+		SceneName TEXT);";
+	avecStmtPairs.push_back(make_pair("Scene", strSQLFormat));
+
+	strSQLFormat =
+		"CREATE TABLE IF NOT EXISTS SceneObject ( \
+		ClassName TEXT, \
+		SceneObjectName TEXT, \
+		SceneObjectParams TEXT, \
+		SceneName INTEGER);";
+	avecStmtPairs.push_back(make_pair("SceneObject", strSQLFormat));
+
+	strSQLFormat =
+		"CREATE TABLE IF NOT EXISTS SceneObjectPrimitive ( \
+		ClassName TEXT, \
+		SceneObjectPrimitiveName TEXT, \
+		SceneObjectPrimitiveParams TEXT, \
+		SceneObjectName TEXT);";
+	avecStmtPairs.push_back(make_pair("SceneObjectPrimitive", strSQLFormat));
+}
+
+//-------------------------------------------------------------------------------
 
 void DatabaseManagerShopEditor::insertScene(const string & astrScene)	{
 	string strValues = astrScene;

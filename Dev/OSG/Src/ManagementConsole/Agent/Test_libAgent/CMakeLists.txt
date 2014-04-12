@@ -31,6 +31,7 @@ SET(src
 
 INCLUDE_DIRECTORIES(
 	${OPENSCENEGRAPH_INCLUDE_DIRS}
+	${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgent
     ${CMAKE_SOURCE_DIR}/Props/Avatar/libAvatar
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProduct
@@ -39,6 +40,7 @@ INCLUDE_DIRECTORIES(
 
 SET(LIBS_COMMON 
 	${OSG_LIBRARIES}
+	libAbstractObject
 	libAgent
     libAvatar
 	libProduct

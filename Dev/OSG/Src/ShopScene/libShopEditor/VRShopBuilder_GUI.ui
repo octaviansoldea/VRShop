@@ -141,7 +141,7 @@ QSpinBox::up-arrow, QSpinBox::down-arrow {
 }
 
 QSpinBox::up-button:off, QSpinBox::down-button:off {
-	background-color: lightgrey;
+	background-color: lightgray;
 	color: #eeeeee;
 }
 
@@ -3966,18 +3966,8 @@ QTreeView::item:hover,QTreeView::item:selected {
                <item row="0" column="1" colspan="3">
                 <widget class="QComboBox" name="m_p_ComboBox_ProductSettings_ProductName">
                  <property name="currentText">
-                  <string>New Item</string>
+                  <string/>
                  </property>
-                 <item>
-                  <property name="text">
-                   <string>New Item</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>New Item1</string>
-                  </property>
-                 </item>
                 </widget>
                </item>
                <item row="1" column="1">
@@ -4096,7 +4086,7 @@ QTreeView::item:hover,QTreeView::item:selected {
                    <property name="minimumSize">
                     <size>
                      <width>0</width>
-                     <height>20</height>
+                     <height>22</height>
                     </size>
                    </property>
                    <property name="maximumSize">
@@ -4112,9 +4102,17 @@ QTreeView::item:hover,QTreeView::item:selected {
                     <bool>false</bool>
                    </property>
                    <property name="styleSheet">
-                    <string notr="true">color: rgb(132, 132, 130);
-border: 0px;
-background-color: rgb(191,193,194);</string>
+                    <string notr="true">QToolButton {
+	color: rgb(132, 132, 130);
+	border: 0px;
+	background-color: rgb(191,193,194);
+}
+
+QToolButton:hover {
+	background-color: gray;
+	border-radius: 0px;
+}
+</string>
                    </property>
                    <property name="text">
                     <string>More Settings</string>
@@ -4151,12 +4149,6 @@ background-color: rgb(191,193,194);</string>
      </widget>
     </item>
    </layout>
-   <zorder>splitter_2</zorder>
-   <zorder>m_pOSGQTWidget</zorder>
-   <zorder>horizontalLayoutWidget</zorder>
-   <zorder>splitterLColumn</zorder>
-   <zorder>CentralFrame</zorder>
-   <zorder>splitterRColumn</zorder>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">

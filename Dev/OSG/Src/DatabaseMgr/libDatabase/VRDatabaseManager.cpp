@@ -20,6 +20,9 @@
 using namespace std;
 using namespace VR;
 
+
+//===========================================================================
+
 DatabaseManagerParams::DatabaseManagerParams() :	
 m_qstrDBName("../../../Databases/Default.db"),
 m_qstrConnectionName("")
@@ -255,4 +258,9 @@ void DatabaseManager::deleteRow(const string & astrTableName, const string & ast
 //-----------------------------------------------------------------------------------------
 
 void DatabaseManager::updateDB() {
+}
+
+//-----------------------------------------------------------------------------------------
+
+void DatabaseManager::systemOfTables(std::vector<std::pair<std::string,std::string>> & avecStmtPairs)	{
 }

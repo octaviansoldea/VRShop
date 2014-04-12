@@ -43,13 +43,14 @@ using namespace osgGA;
 
 
 PickAndDragHandlerShopEditor::PickAndDragHandlerShopEditor()	{
+	m_pEditItem_GUIBase = 0;
 }
 
 //-------------------------------------------------------------------------------
 
 PickAndDragHandlerShopEditor::~PickAndDragHandlerShopEditor()	{
-	if(m_pEditItem_GUI)
-		delete m_pEditItem_GUI;
+	if(m_pEditItem_GUIBase)
+		delete m_pEditItem_GUIBase;
 }
 
 //-------------------------------------------------------------------------------
@@ -85,6 +86,20 @@ bool PickAndDragHandlerShopEditor::handle(const GUIEventAdapter& ea, GUIActionAd
 		bool bRes = addPart(pPickedObject);
 		if (bRes==false)	{
 			removePart(pPickedObject);
+		}
+	}
+
+	//Pick a product
+	if(nEventType == osgGA::GUIEventAdapter::LEFT_MOUSE_BUTTON && ea.getModKeyMask()&osgGA::GUIEventAdapter::MODKEY_LEFT_ALT)	{
+		ref_ptr< AbstractObject> pPickedObject = dynamic_cast<AbstractObject*>(m_pPickedObject.get());
+
+		//Only first parent is checked if it's a product or not
+		int nParent = pPickedObject->getParentalNodePaths().size()-1;
+		const string & strParentName = pPickedObject->getParents()[nParent]->className();
+		if (strParentName == "ProductManager")	{
+			emit signalProductPicked(pPickedObject);
+		} else {
+			//Picked object was not a product
 		}
 	}
 
@@ -344,17 +359,18 @@ void PickAndDragHandlerShopEditor::removeSelection(ref_ptr<Scene> apScene)	{
 
 void PickAndDragHandlerShopEditor::editItem(ref_ptr<Scene> apScene)	{
 	if(m_pvecPickedObjects.size() < 1)	{
-		cout << "No items selected for editing" << endl;
 		return;
 	}
 
-	AbstractObject * pAbstractObject = m_pvecPickedObjects[0];
+	AbstractObject * pAbstractObject = m_pvecPickedObjects[0];	//Only first item is edited
 
 	//If selection not empty, open the dialog
-	m_pEditItem_GUI = new EditItem_GUI(pAbstractObject);
-	m_pEditItem_GUI->setWindowFlags(Qt::FramelessWindowHint);
+	m_pEditItem_GUIBase = EditItem_GUIBase::createInstance(pAbstractObject);
+	m_pEditItem_GUIBase->setWindowFlags(Qt::FramelessWindowHint);
 
-	m_pEditItem_GUI->exec();
+	m_pEditItem_GUIBase->exec();
 
 	clearList();
 }
+
+//-----------------------------------------------------------------------------------

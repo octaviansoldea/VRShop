@@ -20,6 +20,9 @@ namespace VR {
 
 		void insertScene(const std::string & astrScene);
 		void insertObject(const std::string & astrScene, std::vector<std::string> & avecstrData);
+
+	private:
+		virtual void systemOfTables(std::vector<std::pair<std::string,std::string>> & avecStmtPairs);
 	};
 }
 #endif //VR_DATABASE_MANAGER_SHOP_EDITOR_H

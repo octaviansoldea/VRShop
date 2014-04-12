@@ -440,7 +440,7 @@
                     </size>
                    </property>
                    <property name="frameShape">
-                    <enum>QFrame::Box</enum>
+                    <enum>QFrame::StyledPanel</enum>
                    </property>
                    <property name="text">
                     <string/>
@@ -462,7 +462,7 @@
                     </size>
                    </property>
                    <property name="frameShape">
-                    <enum>QFrame::Box</enum>
+                    <enum>QFrame::StyledPanel</enum>
                    </property>
                    <property name="text">
                     <string/>
@@ -486,7 +486,7 @@
                   </size>
                  </property>
                  <property name="frameShape">
-                  <enum>QFrame::Box</enum>
+                  <enum>QFrame::StyledPanel</enum>
                  </property>
                  <property name="text">
                   <string/>
@@ -644,10 +644,16 @@
                 </size>
                </property>
                <property name="frameShape">
-                <enum>QFrame::Box</enum>
+                <enum>QFrame::StyledPanel</enum>
                </property>
                <property name="text">
                 <string/>
+               </property>
+               <property name="scaledContents">
+                <bool>true</bool>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
                </property>
               </widget>
              </item>

@@ -9,7 +9,9 @@ class OSGQT_Widget;
 class Grid;
 
 namespace VR	{
+	class AbstractObject;
 	class Scene;
+	class ProductManager;
 	class DataStructureModel;
 	class DatabaseManagerShopEditor;
 
@@ -28,6 +30,7 @@ namespace VR	{
 		bool searchScene(const std::string & astrSearchTerm, DataStructureModel ** appDataStructureModel);
 
 		void addNewItem(const std::string & astrObjectName);
+		void addNewItem(osg::ref_ptr<AbstractObject> apAbstractObject);
 
 		osgGA::GUIEventHandler * m_pEventHandler;
 
@@ -36,10 +39,12 @@ namespace VR	{
 		const std::string getSceneName(Scene * apScene);
 		const std::string getSceneName(unsigned int i);
 
+		osg::ref_ptr<ProductManager> getProducts() const;
 
 	private:
 		OSGQT_Widget * m_pOSGQTWidget;
 		osg::ref_ptr<Scene> m_pScene;
+		osg::ref_ptr<ProductManager> m_pProductMgr;
 
 		std::string m_strDBFileName;
 

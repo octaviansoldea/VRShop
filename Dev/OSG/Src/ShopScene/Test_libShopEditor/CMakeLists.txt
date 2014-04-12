@@ -41,11 +41,13 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_BINARY_DIR}/ShopScene/libShopEditor
   ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/View
   ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs
+  ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/ProductItem
   ${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabase
   ${CMAKE_SOURCE_DIR}/Props/Scene/libScene
   ${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
-  ${CMAKE_SOURCE_DIR}/Props/Equipment/GeometricShape/libGeometricShape
+  ${CMAKE_SOURCE_DIR}/Props/GeometricShape/libGeometricShape
   ${CMAKE_SOURCE_DIR}/Props/Equipment/Furniture/libFurniture
+  ${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProduct
 )
 
 SET(LIBS_COMMON 
@@ -71,6 +73,7 @@ SET(LIBS_COMMON
 	libMngtController
 	libFurniture
 	libScene
+	libProduct
 )
 
 SET(SRCS

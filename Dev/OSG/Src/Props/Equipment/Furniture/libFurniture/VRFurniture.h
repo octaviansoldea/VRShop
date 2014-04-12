@@ -29,6 +29,9 @@ namespace VR	{
 
 		virtual std::string prepareRowData(const std::string & astrParentName="");
 
+		virtual void setColor(const std::vector < float > & aarrflColor);
+		virtual void setTexture(const std::string & astrFileName);
+
 	protected:
 		std::vector < std::string > m_arrSQLCommandLines;
 	};

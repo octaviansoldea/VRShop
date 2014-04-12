@@ -43,6 +43,8 @@ namespace VR	{
 
 		DatabaseManagerParams m_DBMgrParams;
 
+		virtual void systemOfTables(std::vector<std::pair<std::string,std::string>> & avecStmtPairs);
+
 	private:
 		bool containsTable(const QString & aqstrTableName);
 	};

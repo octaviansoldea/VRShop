@@ -42,6 +42,7 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/View
   ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs
   ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/EditItem
+  ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/ProductItem
   ${CMAKE_BINARY_DIR}/ShopScene/libShopEditor
   ${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabase
   ${CMAKE_SOURCE_DIR}/Props/Scene/libScene
@@ -50,6 +51,7 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_SOURCE_DIR}/Props/Equipment/Furniture/libFurniture
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libController
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libMngtController
+  ${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProduct
 )
 
 
@@ -59,8 +61,10 @@ IF(Qt5_FOUND)
 						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRInsertNewItem_GUI.ui
 						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRDuplicateItem_GUI.ui
 						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/EditItem/VREditItem_GUI.ui
-						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRProductSettings_GUI.ui
-						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRRemoveProduct_GUI.ui
+						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/EditItem/VREditItemPrism_GUI.ui
+						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/EditItem/VREditItemFurniture_GUI.ui
+						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/ProductItem/VRProductSettings_GUI.ui
+						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/ProductItem/VRRemoveProduct_GUI.ui
 						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRRemoveSelection_GUI.ui
 						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRNewProject_GUI.ui
 						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRSaveAs_GUI.ui
@@ -69,9 +73,12 @@ IF(Qt5_FOUND)
 						VRShopBuilder_GUI.h
 						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRInsertNewItem_GUI.h
 						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRDuplicateItem_GUI.h
+						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/EditItem/VREditItem_GUIBase.h
 						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/EditItem/VREditItem_GUI.h
-						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRProductSettings_GUI.h
-						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRRemoveProduct_GUI.h
+						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/EditItem/VREditItemPrism_GUI.h
+						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/EditItem/VREditItemFurniture_GUI.h
+						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/ProductItem/VRProductSettings_GUI.h
+						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/ProductItem/VRRemoveProduct_GUI.h
 						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRRemoveSelection_GUI.h
 						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRNewProject_GUI.h
 						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRSaveAs_GUI.h
@@ -82,8 +89,10 @@ ELSE()
 						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRInsertNewItem_GUI.ui
 						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRDuplicateItem_GUI.ui
 						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/EditItem/VREditItem_GUI.ui
-						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRProductSettings_GUI.ui
-						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRRemoveProduct_GUI.ui
+						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/EditItem/VREditItemPrism_GUI.ui
+						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/EditItem/VREditItemFurniture_GUI.ui
+						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/ProductItem/VRProductSettings_GUI.ui
+						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/ProductItem/VRRemoveProduct_GUI.ui
 						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRRemoveSelection_GUI.ui
 						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRNewProject_GUI.ui
 						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRSaveAs_GUI.ui
@@ -92,9 +101,12 @@ ELSE()
 						VRShopBuilder_GUI.h
 						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRInsertNewItem_GUI.h
 						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRDuplicateItem_GUI.h
+						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/EditItem/VREditItem_GUIBase.h
 						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/EditItem/VREditItem_GUI.h
-						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRProductSettings_GUI.h
-						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRRemoveProduct_GUI.h
+						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/EditItem/VREditItemPrism_GUI.h
+						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/EditItem/VREditItemFurniture_GUI.h
+						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/ProductItem/VRProductSettings_GUI.h
+						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/ProductItem/VRRemoveProduct_GUI.h
 						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRRemoveSelection_GUI.h
 						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRNewProject_GUI.h
 						${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRSaveAs_GUI.h
@@ -109,9 +121,12 @@ SET(SRCS ${SRCS} ${MOC_SRCS} ${UI_SRCS}
 	VRShopBuilder_GUI.h VRShopBuilder_GUI.cpp
 	${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRInsertNewItem_GUI.h ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRInsertNewItem_GUI.cpp
 	${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRDuplicateItem_GUI.h ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRDuplicateItem_GUI.cpp
+	${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/EditItem/VREditItem_GUIBase.h ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/EditItem/VREditItem_GUIBase.cpp
 	${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/EditItem/VREditItem_GUI.h ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/EditItem/VREditItem_GUI.cpp
-	${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRProductSettings_GUI.h ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRProductSettings_GUI.cpp
-	${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRRemoveProduct_GUI.h ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRRemoveProduct_GUI.cpp
+	${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/EditItem/VREditItemPrism_GUI.h ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/EditItem/VREditItemPrism_GUI.cpp
+	${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/EditItem/VREditItemFurniture_GUI.h ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/EditItem/VREditItemFurniture_GUI.cpp
+	${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/ProductItem/VRProductSettings_GUI.h ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/ProductItem/VRProductSettings_GUI.cpp
+	${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/ProductItem/VRRemoveProduct_GUI.h ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/ProductItem/VRRemoveProduct_GUI.cpp
 	${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRRemoveSelection_GUI.h ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRRemoveSelection_GUI.cpp
 	${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRNewProject_GUI.h ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRNewProject_GUI.cpp
 	${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRSaveAs_GUI.h ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/VRSaveAs_GUI.cpp

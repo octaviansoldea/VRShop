@@ -9,6 +9,7 @@
 #include "OSGQT_Widget.h"
 #include "VRGrid.h"
 #include "VRScene.h"
+#include "VRProductManager.h"
 
 #include "VRPickAndDragHandlerShopEditor.h"
 #include "VRKeyboardMouseManipulatorShopEditor.h"
@@ -53,6 +54,10 @@ m_strDBFileName("../../../Databases/Untitled.db")	{
 	ref_ptr<Grid> pGrid = new Grid;
 	m_pScene->addChild(pAxes);
 	m_pScene->addChild(pGrid);
+
+	//A pointer to products sent to the scene
+	m_pProductMgr = new ProductManager;
+	m_pScene->addChild(m_pProductMgr);
 }
 
 //----------------------------------------------------------------------
@@ -131,17 +136,31 @@ ref_ptr<Scene> ShopBuilder::getScene() const	{
 
 //----------------------------------------------------------------------
 
+ref_ptr<ProductManager> ShopBuilder::getProducts() const	{
+	return m_pProductMgr;
+}
+
+//----------------------------------------------------------------------
+
 void ShopBuilder::addNewItem(const string & astrObjectName)	{
 	ref_ptr < AbstractObject > pAbstractObject = 
 		dynamic_cast<AbstractObject*>(AbstractObject::createInstance(astrObjectName).get());
 	pAbstractObject->predefinedObject();
+	addNewItem(pAbstractObject);
+}
 
-	m_pScene->addChild(pAbstractObject);
+//-----------------------------------------------------------------------
+
+void ShopBuilder::addNewItem(ref_ptr<VR::AbstractObject> apAbstractObject)	{
+	if (apAbstractObject == 0)
+		return;
+
+	m_pScene->addChild(apAbstractObject);
 
 	string strSceneName = m_pScene->getName();
 	//Call DB here
 	vector<string> vecstrData;
-	pAbstractObject->preparedObjectData(vecstrData,strSceneName);
+	apAbstractObject->preparedObjectData(vecstrData,strSceneName);
 
 	m_pdbMgr->insertObject(strSceneName,vecstrData);
 }

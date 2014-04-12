@@ -388,21 +388,12 @@ border:0px;</string>
       </layout>
      </item>
      <item>
-      <widget class="QLabel" name="m_pImage">
+      <widget class="OSGQT_Widget" name="m_pOSGQT_Widget" native="true">
        <property name="minimumSize">
         <size>
          <width>200</width>
          <height>0</height>
         </size>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color:rgb(137,137,137);</string>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::NoFrame</enum>
-       </property>
-       <property name="text">
-        <string/>
        </property>
       </widget>
      </item>
@@ -410,39 +401,14 @@ border:0px;</string>
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>OSGQT_Widget</class>
+   <extends>QWidget</extends>
+   <header location="global">osgqt_widget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
- <connections>
-  <connection>
-   <sender>m_pPushButtonCancel</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>RemoveProduct</receiver>
-   <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>227</x>
-     <y>241</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>259</x>
-     <y>132</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>m_pToolButtonCancel</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>RemoveProduct</receiver>
-   <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>500</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>259</x>
-     <y>132</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

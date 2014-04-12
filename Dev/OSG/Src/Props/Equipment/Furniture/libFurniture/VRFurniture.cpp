@@ -130,3 +130,25 @@ string Furniture::prepareRowData(const string & astrParentName)	{
 
 	return strFurnitureParams;
 }
+
+//-----------------------------------------------------------------------
+
+void Furniture::setTexture(const std::string & astrFileName)	{
+	int nI;
+	AbstractObject * pAbstractObject = 0;
+	for (nI=0; nI<this->getNumChildren();nI++)	{
+		pAbstractObject = dynamic_cast<VR::AbstractObject*>(getChild(nI));
+		pAbstractObject->setTexture(astrFileName);
+	}
+}
+
+//-----------------------------------------------------------------------
+
+void Furniture::setColor(const std::vector < float > & aarrflColor)	{
+	int nI;
+	AbstractObject * pAbstractObject = 0;
+	for (nI=0; nI<this->getNumChildren();nI++)	{
+		pAbstractObject = dynamic_cast<VR::AbstractObject*>(getChild(nI));
+		pAbstractObject->setColor(aarrflColor);
+	}
+}

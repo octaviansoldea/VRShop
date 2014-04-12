@@ -22,7 +22,8 @@
 
 namespace VR {
 	class Scene;
-	class EditItem_GUI;
+	class EditItem_GUIBase;
+	
 
 	class PickAndDragHandlerShopEditor : public QObject, public PickAndDragHandler	{
 
@@ -43,20 +44,22 @@ namespace VR {
 		void removeSelection(osg::ref_ptr<Scene> apScene);
 		void editItem(osg::ref_ptr<Scene> apScene);
 
+		void clearList();
+
 	public slots:
 		void slotSetTransformParams(const QString & astrText);
 
 	signals:
 		void signalPropertiesSettingsChanged();
+		void signalProductPicked(const AbstractObject * apAO);
 
 	private:
 		bool addPart(osg::ref_ptr < AbstractObject > apAbstractObject);
 		bool removePart(osg::ref_ptr < AbstractObject > apAbstractObject);
-		void clearList();
 
 		std::vector<osg::ref_ptr<AbstractObject>> m_pvecPickedObjects;
 
-		EditItem_GUI * m_pEditItem_GUI;
+		EditItem_GUIBase * m_pEditItem_GUIBase;
 	};
 }
 #endif //VR_PICK_AND_DRAG_HANDLER_SHOP_EDITOR_H

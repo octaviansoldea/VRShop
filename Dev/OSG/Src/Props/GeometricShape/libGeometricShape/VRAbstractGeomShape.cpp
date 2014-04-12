@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include "VRAbstractGeomShape.h"
 
 using namespace VR;

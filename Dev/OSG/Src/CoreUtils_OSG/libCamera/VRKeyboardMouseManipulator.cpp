@@ -131,7 +131,7 @@ bool KeyboardMouseManipulator::keyDown(const osgGA::GUIEventAdapter &ea, osgGA::
 	}
 
 	if (nResKey == osgGA::GUIEventAdapter::KEY_Right)	{
-		if(m_bCtrl)	{	//Translate camera right
+		if (m_bCtrl)	{	//Translate camera right
 			m_dbTranslationFactorZ = m_cdbRotationFactor * 
 				(m_bShift ? (m_dbDefaultMoveSpeed*=1.1) : m_dbDefaultMoveSpeed);
 			panModel(m_dbTranslationFactorZ,0.0);
@@ -151,12 +151,11 @@ bool KeyboardMouseManipulator::keyDown(const osgGA::GUIEventAdapter &ea, osgGA::
 	}
 
 	if (nResKey == osgGA::GUIEventAdapter::KEY_Left)	{
-		if(m_bCtrl)	{	//Translate camera to the left.
+		if (m_bCtrl)	{	//Translate camera to the left.
 			m_dbTranslationFactorZ = -m_cdbRotationFactor * 
 				(m_bShift ? (m_dbDefaultMoveSpeed*=1.1) : m_dbDefaultMoveSpeed);
 			panModel(m_dbTranslationFactorZ,0.0);
-		}
-		else	{	//Rotate camera to the left
+		} else {	//Rotate camera to the left
 			m_dbDirectionRotationRate = m_cdbRotationFactor * 
 				(m_bShift ? (m_dbDefaultMoveSpeed*=1.1) : m_dbDefaultMoveSpeed);
 

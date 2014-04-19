@@ -56,10 +56,6 @@ PickAndDragHandlerShopEditor::~PickAndDragHandlerShopEditor()	{
 //-------------------------------------------------------------------------------
 
 bool PickAndDragHandlerShopEditor::handle(const GUIEventAdapter& ea, GUIActionAdapter& aa) {
-	osgViewer::Viewer * pViewer = dynamic_cast<osgViewer::Viewer*>(&aa);
-
-	ref_ptr<Scene > pScene = dynamic_cast<VR::Scene*>(pViewer->getSceneData());
-
 	bool bRes = true;
 
 	if((PickAndDragHandler::handle(ea, aa) == false) || 
@@ -71,17 +67,14 @@ bool PickAndDragHandlerShopEditor::handle(const GUIEventAdapter& ea, GUIActionAd
 	int nEventType = ea.getEventType();
 	if ((nEventType == GUIEventAdapter::DRAG)) {
 		emit signalPropertiesSettingsChanged();
-
-		pScene->print();
 	}
 	if ((nEventType == GUIEventAdapter::LEFT_MOUSE_BUTTON)) {		
 		emit signalPropertiesSettingsChanged();
-
-		pScene->print();
 	}
 
+	AbstractObject * pPickedObject = dynamic_cast<AbstractObject*>(m_pPickedObject.get());
+
 	if(nEventType == osgGA::GUIEventAdapter::LEFT_MOUSE_BUTTON && ea.getModKeyMask()&osgGA::GUIEventAdapter::MODKEY_CTRL)	{
-		ref_ptr< AbstractObject> pPickedObject = dynamic_cast<AbstractObject*>(m_pPickedObject.get());
 
 		bool bRes = addPart(pPickedObject);
 		if (bRes==false)	{
@@ -91,8 +84,6 @@ bool PickAndDragHandlerShopEditor::handle(const GUIEventAdapter& ea, GUIActionAd
 
 	//Pick a product
 	if(nEventType == osgGA::GUIEventAdapter::LEFT_MOUSE_BUTTON && ea.getModKeyMask()&osgGA::GUIEventAdapter::MODKEY_LEFT_ALT)	{
-		ref_ptr< AbstractObject> pPickedObject = dynamic_cast<AbstractObject*>(m_pPickedObject.get());
-
 		//Only first parent is checked if it's a product or not
 		int nParent = pPickedObject->getParentalNodePaths().size()-1;
 		const string & strParentName = pPickedObject->getParents()[nParent]->className();

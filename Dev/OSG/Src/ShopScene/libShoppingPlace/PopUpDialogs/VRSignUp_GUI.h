@@ -11,8 +11,9 @@ namespace VR	{
 	public:
 		SignUp_GUI();
 
-	private slots:
-		void slotSignUpUser();
+	public slots:
+		virtual void accept();
+
 	};
 }
 #endif //VR_SIGN_UP_GUI_H

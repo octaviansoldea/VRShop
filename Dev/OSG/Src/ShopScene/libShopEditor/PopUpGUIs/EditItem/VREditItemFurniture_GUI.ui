@@ -781,7 +781,7 @@
          <number>0</number>
         </property>
         <item>
-         <widget class="OSGQT_Widget" name="m_pOSGQT_Widget" native="true">
+         <widget class="VR::OSGQT_Widget" name="m_pOSGQT_Widget" native="true">
           <property name="sizePolicy">
            <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
             <horstretch>0</horstretch>
@@ -826,7 +826,7 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>OSGQT_Widget</class>
+   <class>VR::OSGQT_Widget</class>
    <extends>QWidget</extends>
    <header location="global">osgqt_widget.h</header>
    <container>1</container>

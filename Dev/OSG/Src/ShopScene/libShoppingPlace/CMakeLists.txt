@@ -38,13 +38,14 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libPicker
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_OSG
   ${CMAKE_SOURCE_DIR}/ShopScene/libShoppingPlace
-  ${CMAKE_SOURCE_DIR}/ShopScene/libShoppingPlace/View
   ${CMAKE_SOURCE_DIR}/ShopScene/libShoppingPlace/PopUpDialogs
   ${CMAKE_BINARY_DIR}/ShopScene/libShoppingPlace
   ${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
   ${CMAKE_SOURCE_DIR}/Props/GeometricShape/libGeometricShape
   ${CMAKE_SOURCE_DIR}/Props/Equipment/Furniture/libFurniture
   ${CMAKE_SOURCE_DIR}/Props/Scene/libScene
+  ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libOSGQTViewer
+  ${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProductInterface
 )
 
 
@@ -54,8 +55,7 @@ IF(Qt5_FOUND)
   QT5_WRAP_UI(UI_SRCS	VRShoppingPlace_GUI.ui 
 						${CMAKE_SOURCE_DIR}/ShopScene/libShoppingPlace/PopUpDialogs/VRSignUp_GUI.ui
 						)
-  QT5_WRAP_CPP(MOC_SRCS ${CMAKE_SOURCE_DIR}/ShopScene/libShoppingPlace/View/OSGQT_Widget.h 
-						${CMAKE_SOURCE_DIR}/ShopScene/libShoppingPlace/PopUpDialogs/VRSignUp_GUI.h
+  QT5_WRAP_CPP(MOC_SRCS ${CMAKE_SOURCE_DIR}/ShopScene/libShoppingPlace/PopUpDialogs/VRSignUp_GUI.h
 						VRShoppingPlace_GUI.h
 						)
 
@@ -63,15 +63,13 @@ ELSE()
   QT4_WRAP_UI(UI_SRCS	VRShoppingPlace_GUI.ui
 						${CMAKE_SOURCE_DIR}/ShopScene/libShoppingPlace/PopUpDialogs/VRSignUp_GUI.ui
 						)
-  QT4_WRAP_CPP(MOC_SRCS ${CMAKE_SOURCE_DIR}/ShopScene/libShoppingPlace/View/OSGQT_Widget.h 
-						VRShoppingPlace_GUI.h
+  QT4_WRAP_CPP(MOC_SRCS VRShoppingPlace_GUI.h
 						)
 ENDIF()
 
 
 #Define sources to be later added into the library
 SET(SRCS ${SRCS} ${MOC_SRCS} ${UI_SRCS}
-	${CMAKE_SOURCE_DIR}/ShopScene/libShoppingPlace/View/OSGQT_Widget.h ${CMAKE_SOURCE_DIR}/ShopScene/libShoppingPlace/View/OSGQT_Widget.cpp
 	${CMAKE_SOURCE_DIR}/ShopScene/libShoppingPlace/PopUpDialogs/VRSignUp_GUI.h ${CMAKE_SOURCE_DIR}/ShopScene/libShoppingPlace/PopUpDialogs/VRSignUp_GUI.cpp
 	VRShoppingPlace.h VRShoppingPlace.cpp
 	VRShoppingPlace_GUI.h VRShoppingPlace_GUI.cpp

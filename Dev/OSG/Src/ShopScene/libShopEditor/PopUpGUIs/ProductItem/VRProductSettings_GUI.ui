@@ -200,7 +200,7 @@ QToolButton {
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-463</y>
+        <y>-461</y>
         <width>516</width>
         <height>1083</height>
        </rect>
@@ -924,7 +924,7 @@ QComboBox QAbstractItemView {
        <item row="17" column="1">
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
-          <widget class="OSGQT_Widget" name="m_pOSGQT_Widget" native="true">
+          <widget class="VR::OSGQT_Widget" name="m_pOSGQT_Widget" native="true">
            <property name="minimumSize">
             <size>
              <width>150</width>
@@ -1036,7 +1036,7 @@ QComboBox QAbstractItemView {
  </widget>
  <customwidgets>
   <customwidget>
-   <class>OSGQT_Widget</class>
+   <class>VR::OSGQT_Widget</class>
    <extends>QWidget</extends>
    <header location="global">osgqt_widget.h</header>
    <container>1</container>

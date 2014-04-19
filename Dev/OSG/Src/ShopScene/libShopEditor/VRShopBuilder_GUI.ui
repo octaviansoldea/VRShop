@@ -2228,7 +2228,7 @@ QSpinBox::down-arrow:off {border-left: 17px solid none; border-right: 17px solid
         <number>0</number>
        </property>
        <item>
-        <widget class="OSGQT_Widget" name="m_pOSGQTWidget" native="true">
+        <widget class="VR::OSGQT_Widget" name="m_pOSGQTWidget" native="true">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
            <horstretch>0</horstretch>
@@ -4320,7 +4320,7 @@ QToolButton:hover {
  </widget>
  <customwidgets>
   <customwidget>
-   <class>OSGQT_Widget</class>
+   <class>VR::OSGQT_Widget</class>
    <extends>QWidget</extends>
    <header location="global">osgqt_widget.h</header>
    <container>1</container>

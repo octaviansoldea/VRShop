@@ -1,26 +1,30 @@
 #ifndef VR_SHOPPING_PLACE_H
 #define VR_SHOPPING_PLACE_H
 
-#include <osg/Group>
+#include <QString>
+#include <osg/ref_ptr>
 
-#include "VRGrid.h"
-
-class OSGQT_Widget;
 
 namespace VR	{
+	class OSGQT_Widget;
+	class Scene;
+	class Grid;
+
 	struct ShoppingPlace {
-		ShoppingPlace();
+		ShoppingPlace(OSGQT_Widget * apOSGQTWidget);
+
 		~ShoppingPlace();
 
 		void gridOnOff(bool abIndicator);
-		void init(OSGQT_Widget * apOSGQTWidget);
+
+		osg::ref_ptr<Scene> getScene() const;
 
 	private:
 		OSGQT_Widget * m_pOSGQTWidget;
-		osg::ref_ptr<osg::Group> m_pScene;
-		osg::ref_ptr < osg::Group > m_pObjects;
 
-		QString m_qstrFileName;
+		osg::ref_ptr<Scene> m_pScene;
+
+		QString m_strDBFileName;
 
 		osg::ref_ptr<Grid> m_pGridlines;
 	};

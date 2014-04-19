@@ -1,16 +1,14 @@
 #ifndef VR_SHOP_BUILDER_H
 #define VR_SHOP_BUILDER_H
 
-#include <QTreeView>
-
+#include <osg/ref_ptr>
 #include <osgGA/GUIEventHandler>
 
-class OSGQT_Widget;
-class Grid;
-
 namespace VR	{
+	class OSGQT_Widget;
 	class AbstractObject;
 	class Scene;
+	class Grid;
 	class ProductManager;
 	class DataStructureModel;
 	class DatabaseManagerShopEditor;

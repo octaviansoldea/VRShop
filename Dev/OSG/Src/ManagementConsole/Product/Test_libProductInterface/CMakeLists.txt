@@ -1,5 +1,5 @@
-project(Test_libProduct)
-cmake_minimum_required( VERSION 2.8 )
+PROJECT(Test_libProductInterface)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
 SET(CMAKE_DEBUG_POSTFIX "D")
 
@@ -11,6 +11,7 @@ IF(Qt5_FOUND)
     ${Qt5OpenGL_INCLUDE_DIRS}
   )
 ELSE(Qt5_FOUND)
+  #Assume Qt4_FOUND, if we are here
   IF(QT_USE_FILE)
     INCLUDE(${QT_USE_FILE})
   ELSE(QT_USE_FILE)
@@ -24,34 +25,37 @@ ELSE(Qt5_FOUND)
   )
 ENDIF(Qt5_FOUND)
 
-
-SET(src
-	main.cpp
-)
-
+#General includes, irrespective of the Qt version
 INCLUDE_DIRECTORIES(
-	${CMAKE_BINARY_DIR}/CoreUtils_OSG/libMngtController
-	${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
-	${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabase
+	${OPENSCENEGRAPH_INCLUDE_DIRS}
+	${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProductInterface
+	${CMAKE_BINARY_DIR}/ManagementConsole/Product/libProductInterface
+	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libOSGQTViewer
 	${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
-	${CMAKE_SOURCE_DIR}/Props/GeometricShape/libGeometricShape
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProduct
 )
 
-ADD_EXECUTABLE(Test_libProduct
-	main.cpp)
+SET(SRCS
+  main.cpp
+)
+
+ADD_EXECUTABLE(Test_libProductInterface ${SRCS})
 
 SET(LIBS_COMMON
-	libMngtController
+	${OSG_LIBRARIES}
+	${OSGDB_LIBRARIES}
+	${OSGGA_LIBRARIES}
+	${OSGQT_LIBRARIES}
+	${OSGVIEWER_LIBRARIES}
+	${OPENTHREADS_LIBRARIES}
+	libOSGQTViewer
+	libProductInterface
 	libAbstractObject
 	libProduct
-	libCommon
-	libDatabase
-	libGeometricShape
 )
 
 IF(Qt5_FOUND)
-  TARGET_LINK_LIBRARIES(Test_libProduct
+  TARGET_LINK_LIBRARIES(Test_libProductInterface
 	${Qt5Core_LIBRARIES}
     ${Qt5Gui_LIBRARIES}
     ${Qt5Widgets_LIBRARIES}
@@ -59,11 +63,11 @@ IF(Qt5_FOUND)
 	${LIBS_COMMON}
   )
 ELSEIF(NOT Qt5_FOUND AND Qt4_FOUND)
-  TARGET_LINK_LIBRARIES(Test_libProduct
+  TARGET_LINK_LIBRARIES(Test_libProductInterface
   	${QT_LIBRARIES}
     ${QT_QTSQL_LIBRARY}
 	${LIBS_COMMON}
   )
 ENDIF(Qt5_FOUND)
 
-SET_PROPERTY(TARGET Test_libProduct PROPERTY FOLDER Management)
+SET_PROPERTY(TARGET Test_libProductInterface PROPERTY FOLDER Management)

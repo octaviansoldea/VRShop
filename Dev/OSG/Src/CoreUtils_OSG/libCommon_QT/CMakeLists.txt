@@ -10,8 +10,7 @@ IF(Qt5_FOUND)
     ${Qt5Core_INCLUDE_DIRS}
     ${Qt5Gui_INCLUDE_DIRS}
     ${Qt5Widgets_INCLUDE_DIRS}
-#    ${Qt5OpenGL_INCLUDE_DIRS}
-#    ${Qt5Sql_INCLUDE_DIRS}
+    ${Qt5OpenGL_INCLUDE_DIRS}
   )
 ELSE(Qt5_FOUND)
   #Assume Qt4_FOUND, if we are here
@@ -23,29 +22,16 @@ ELSE(Qt5_FOUND)
 
   INCLUDE_DIRECTORIES(
        ${QT_INCLUDE_DIR}
-#	   ${QT_QTSQL_INCLUDE_DIR}
   )
 ENDIF(Qt5_FOUND)
 #end Qt
-
-#MOC according to the Qt version
-IF(Qt5_FOUND)
-   QT5_WRAP_CPP(MOC_SRCS
-   )
-ELSE()
-  QT4_WRAP_CPP(MOC_SRCS
-  )
-ENDIF()
-
-INCLUDE_DIRECTORIES(
-)
 
 SET(SRCS
 	VRBasicQTOperations.h VRBasicQTOperations.cpp
 )
 
 ADD_LIBRARY(libCommon_QT
-  ${SRCS} ${MOC_SRCS}
+  ${SRCS}
 )
 
 SET_PROPERTY(TARGET libCommon_QT PROPERTY FOLDER Utils)

@@ -11,6 +11,7 @@ SUBDIRS(
 	libSearch
 	libItemModel
 	libMngtController
+	libOSGQTViewer
 	libPicker
 	libController
 	Test_libCamera

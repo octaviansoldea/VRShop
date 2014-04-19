@@ -20,7 +20,8 @@ using namespace std;
 
 //----------------------------------------------------------------------
 
-ProductSettings_GUI::ProductSettings_GUI()	{
+ProductSettings_GUI::ProductSettings_GUI() :
+m_pProduct(0)	{
 	setupUi(this);
 
 	buildConnections();

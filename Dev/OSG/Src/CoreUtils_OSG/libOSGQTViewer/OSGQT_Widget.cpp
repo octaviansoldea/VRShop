@@ -1,13 +1,16 @@
-#include "OSGQT_Widget.h"
+#include <QWidget>
+#include <QPaintEvent>
+#include <QTimerEvent>
+#include <QGridLayout>
+#include <QFrame>
 
 #include <osgQt/GraphicsWindowQt>
 #include <osgGA/CameraManipulator>
 
-
-#include <QGridLayout>
-#include <QFrame>
+#include "OSGQT_Widget.h"
 
 using namespace osg;
+using namespace VR;
 
 //--------------------------------------------------------------------
 
@@ -42,12 +45,14 @@ OSGQT_Widget::OSGQT_Widget(QWidget * apQWidget, Qt::WindowFlags f) : QWidget(apQ
 
 void OSGQT_Widget::paintEvent(QPaintEvent* event)	{
 	m_viewer.frame();
+	QWidget::paintEvent(event);
 }
 
 //--------------------------------------------------------------------
 
 void OSGQT_Widget::timerEvent(QTimerEvent* event)	{
 	m_viewer.frame();
+	QWidget::timerEvent(event);
 }
 
 //--------------------------------------------------------------------
@@ -60,6 +65,12 @@ void OSGQT_Widget::setSceneData(osg::Node* apNode)	{
 
 void OSGQT_Widget::setCameraManipulator(osgGA::CameraManipulator* manipulator, bool resetPosition)	{
 	m_viewer.setCameraManipulator(manipulator, resetPosition);
+}
+
+//--------------------------------------------------------------------
+
+osgGA::CameraManipulator* OSGQT_Widget::getCameraManipulator()	{
+	return(m_viewer.getCameraManipulator());
 }
 
 //--------------------------------------------------------------------

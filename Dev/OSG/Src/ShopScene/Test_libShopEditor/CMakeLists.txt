@@ -37,9 +37,9 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libSearch
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libController
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libMngtController
+  ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libOSGQTViewer
   ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor
   ${CMAKE_BINARY_DIR}/ShopScene/libShopEditor
-  ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/View
   ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs
   ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/ProductItem
   ${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabase
@@ -74,6 +74,7 @@ SET(LIBS_COMMON
 	libFurniture
 	libScene
 	libProduct
+	libOSGQTViewer
 )
 
 SET(SRCS

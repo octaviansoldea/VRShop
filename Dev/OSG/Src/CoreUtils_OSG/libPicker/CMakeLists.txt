@@ -33,12 +33,14 @@ IF(Qt5_FOUND)
   )
   QT5_WRAP_CPP(MOC_SRCS 
 	VRPickAndDragHandlerShopEditor.h
+	VRPickAndDragHandlerShopClient.h
   )
 ELSE()
   QT4_WRAP_UI(UI_SRCS
   )
   QT4_WRAP_CPP(MOC_SRCS
 	VRPickAndDragHandlerShopEditor.h
+	VRPickAndDragHandlerShopClient.h
 )
 ENDIF()
 
@@ -53,14 +55,16 @@ INCLUDE_DIRECTORIES(
     ${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
 	${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs
 	${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/EditItem
-	${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/View
+	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libOSGQTViewer
 	${CMAKE_BINARY_DIR}/ShopScene/libShopEditor
+	${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProduct
 )
 
 #Define sources to be later added into the library
 SET(SRCS
 	VRPickAndDragHandler.h VRPickAndDragHandler.cpp
 	VRPickAndDragHandlerShopEditor.h VRPickAndDragHandlerShopEditor.cpp
+	VRPickAndDragHandlerShopClient.h VRPickAndDragHandlerShopClient.cpp
 )
 
 ADD_LIBRARY(libPicker

@@ -166,6 +166,7 @@ void ProductManager::modifyProduct(Product * apProduct)	{
 	m_pProduct = apProduct;
 	m_pProductSettings_GUI = new ProductSettings_GUI(m_pProduct);
 
+	AbstractObject * pAO = m_pProduct->getRepresentation();
 	m_pProductSettings_GUI->setWindowFlags(Qt::FramelessWindowHint);
 	bool bRes = m_pProductSettings_GUI->exec();
 

@@ -35,12 +35,13 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libPicker
   ${CMAKE_SOURCE_DIR}/ShopScene/libShoppingPlace
   ${CMAKE_BINARY_DIR}/ShopScene/libShoppingPlace
-  ${CMAKE_SOURCE_DIR}/ShopScene/libShoppingPlace/View
   ${CMAKE_SOURCE_DIR}/ShopScene/libShoppingPlace/PopUpDialogs
   ${CMAKE_SOURCE_DIR}/Props/Scene/libScene
   ${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
   ${CMAKE_SOURCE_DIR}/Props/Equipment/GeometricShape/libGeometricShape
   ${CMAKE_SOURCE_DIR}/Props/Equipment/Furniture/libFurniture
+  ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libOSGQTViewer
+  ${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProductInterface
 )
 
 SET(LIBS_COMMON 
@@ -61,6 +62,8 @@ SET(LIBS_COMMON
 	libPicker
 	libFurniture
 	libScene
+	libOSGQTViewer
+	libProductInterface
 )
 
 SET(SRCS

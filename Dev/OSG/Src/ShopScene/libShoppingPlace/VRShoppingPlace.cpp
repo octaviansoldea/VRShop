@@ -4,16 +4,19 @@
 #include <QVariant>
 #include <QVBoxLayout>
 
+#include "VRScene.h"
+
 #include "VRFurniture.h"
 #include "VRPlate3D.h"
 #include "VRCylinder.h"
 #include "VRUntransformedSphere.h"
 
-#include "VRPickAndDragHandler.h"
-#include "VRKeyboardMouseManipulator.h"
+#include "VRPickAndDragHandlerShopClient.h"
+#include "VRKeyboardMouseManipulatorShopClient.h"
 
 #include <osgDB/ReadFile>
 
+#include "VRGrid.h"
 #include "OSGQT_Widget.h"
 
 #include "VRShoppingPlace.h"
@@ -24,36 +27,34 @@ using namespace std;
 
 //----------------------------------------------------------------------
 
-ShoppingPlace::ShoppingPlace() {	
-
-	m_qstrFileName = "../../../Databases/Temp.db";
+ShoppingPlace::ShoppingPlace(OSGQT_Widget * apOSGQTWidget) :
+m_pOSGQTWidget(apOSGQTWidget),
+m_strDBFileName("../../../Databases/Untitled.db")	{	
 
 	//Define a scene as a group
-	m_pScene = new Group;
-	m_pObjects = new Group;
+	m_pScene = new Scene();
 
-	ref_ptr<Node> pAxes = osgDB::readNodeFile("../../../Resources/Models3D/axes.osgt");
-	m_pScene->addChild(pAxes);
-
-	m_pGridlines = new Grid;	
-}
-
-//----------------------------------------------------------------------
-
-ShoppingPlace::~ShoppingPlace() {	
-}
-
-//----------------------------------------------------------------------
-
-void ShoppingPlace::init(OSGQT_Widget * apOSGQTWidget) {
-	m_pOSGQTWidget = apOSGQTWidget;
-
+	
 	//Send scene to the Widget
 	m_pOSGQTWidget->setSceneData(m_pScene);
-	m_pOSGQTWidget->setCameraManipulator(new VR::KeyboardMouseManipulator);
-	m_pOSGQTWidget->addEventHandler(new VR::PickAndDragHandler);
-	
- 	m_pScene->addChild(m_pGridlines);
+	m_pOSGQTWidget->setCameraManipulator(new KeyboardMouseManipulatorShopClient);
+	m_pOSGQTWidget->addEventHandler(new PickAndDragHandlerShopClient);
+
+	ref_ptr<Node> pAxes = osgDB::readNodeFile("../../../Resources/Models3D/axes.osgt");
+	ref_ptr<Grid> pGrid = new Grid();
+	m_pScene->addChild(pAxes);
+	m_pScene->addChild(pGrid);
+}
+
+//----------------------------------------------------------------------
+
+ShoppingPlace::~ShoppingPlace() {
+}
+
+//----------------------------------------------------------------------
+
+ref_ptr<Scene> ShoppingPlace::getScene() const	{
+	return m_pScene;
 }
 
 //----------------------------------------------------------------------

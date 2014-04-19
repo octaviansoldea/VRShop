@@ -38,7 +38,7 @@ INCLUDE_DIRECTORIES(
     ${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
 	${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs
 	${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/ProductItem
-	${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/View
+	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libOSGQTViewer
 	${CMAKE_BINARY_DIR}/ShopScene/libShopEditor
 	${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabase
 )

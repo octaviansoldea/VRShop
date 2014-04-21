@@ -402,7 +402,7 @@ QPushButton:hover {
         <string/>
        </property>
        <property name="checkable">
-        <bool>false</bool>
+        <bool>true</bool>
        </property>
       </widget>
       <widget class="QToolButton" name="m_pToolButton3View">
@@ -811,6 +811,9 @@ padding: 2px;</string>
           <height>16777215</height>
          </size>
         </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
         <property name="autoFillBackground">
          <bool>false</bool>
         </property>
@@ -822,12 +825,12 @@ padding: 2px;</string>
 }</string>
         </property>
         <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
+         <enum>QFrame::Panel</enum>
         </property>
         <property name="frameShadow">
          <enum>QFrame::Raised</enum>
         </property>
-        <widget class="QLabel" name="m_pLabelProductInterfaceInfo">
+        <widget class="QLabel" name="m_pLabelProductInfo">
          <property name="geometry">
           <rect>
            <x>1</x>
@@ -956,7 +959,7 @@ padding: 2px;</string>
          <property name="frameShadow">
           <enum>QFrame::Raised</enum>
          </property>
-         <widget class="QPushButton" name="m_pPushButtonHoverDetails1">
+         <widget class="QPushButton" name="m_pPushButtonHoverDetails">
           <property name="geometry">
            <rect>
             <x>0</x>
@@ -1007,7 +1010,7 @@ QPushButton:hover {
            <string>Details</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="m_pPushButtonHoverRemove1">
+         <widget class="QPushButton" name="m_pPushButtonHoverRemove">
           <property name="geometry">
            <rect>
             <x>0</x>
@@ -1216,7 +1219,7 @@ rgb(102,102,102);
          <x>580</x>
          <y>220</y>
          <width>121</width>
-         <height>211</height>
+         <height>193</height>
         </rect>
        </property>
        <property name="styleSheet">
@@ -1226,8 +1229,7 @@ rgb(102,102,102);
 
 	border-radius: 10px;
 	padding: 2px;
-}
-</string>
+}</string>
        </property>
        <property name="frameShape">
         <enum>QFrame::StyledPanel</enum>
@@ -1263,7 +1265,7 @@ background-color:rgb(102,102,102);</string>
         <property name="geometry">
          <rect>
           <x>5</x>
-          <y>180</y>
+          <y>166</y>
           <width>50</width>
           <height>22</height>
          </rect>
@@ -1316,7 +1318,7 @@ QPushButton:hover {
         <property name="geometry">
          <rect>
           <x>65</x>
-          <y>180</y>
+          <y>166</y>
           <width>50</width>
           <height>22</height>
          </rect>
@@ -1370,13 +1372,13 @@ basket</string>
          <bool>true</bool>
         </property>
        </widget>
-       <widget class="QLabel" name="m_pLabelproductInterfaceInfo">
+       <widget class="QLabel" name="m_pLabelProductInterfaceInfo">
         <property name="geometry">
          <rect>
           <x>5</x>
           <y>120</y>
           <width>111</width>
-          <height>51</height>
+          <height>41</height>
          </rect>
         </property>
         <property name="font">
@@ -1401,7 +1403,7 @@ basket</string>
 }</string>
         </property>
         <property name="text">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Samsung Galaxy Tab (R) 3 8.0 (Wi-Fi) White &lt;/p&gt;&lt;span style=&quot; font-weight:400; font-style:italic;&quot;&gt;Samsung Corp.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;span style=&quot; font-size:10px; font-style:bold;&quot;&gt;Samsung Galaxy Tab (R) 3 8.0 (Wi-Fi) White &lt;/span&gt;&lt;br&gt;&lt;span style=&quot;font-size:8px; font-style:italic;color:white;&quot;&gt;Samsung Corp.&lt;/span&gt;&lt;/br&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>

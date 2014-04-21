@@ -10,6 +10,7 @@ class QLineEdit;
 class QComboBox;
 class QPushButton;
 
+
 namespace VR {
 	
 	class PickAndDragHandlerShopEditor;
@@ -33,6 +34,7 @@ namespace VR {
 			PickAndDragHandlerShopEditor * apPickAndDragHandlerShopEditor
 		);	//End of constructor
 
+		
 		~ProductController();
 
 	public slots:

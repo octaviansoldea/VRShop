@@ -1,9 +1,12 @@
 #include <QComboBox>
 #include <QPushButton>
 #include <QDoubleSpinBox>
+#include <QToolButton>
 
 
 #include "VRKeyboardMouseManipulatorShopEditor.h"
+#include "VRKeyboardMouseManipulatorShopClient.h"
+
 #include "VRCameraController.h"
 
 using namespace VR;
@@ -126,4 +129,46 @@ void CameraController::slotSetCameraHeadingDirectionDefault() {
 	vec3dCenter[1] = m_p_DoubleSpinBox_CameraHeadingDirectionY->value();
 	vec3dCenter[2] = m_p_DoubleSpinBox_CameraHeadingDirectionZ->value();
 	m_pKeyboardMouseManipulatorShopEditor->setHomePosition(vec3dEye, vec3dCenter, vec3dUp);
+}
+
+
+
+//===============================================================================================
+
+CameraController::CameraController(
+QToolButton * apToolButton1View,
+QToolButton * apToolButton3View,
+KeyboardMouseManipulatorShopClient * apKeyboardMouseManipulatorShopClient)	{
+
+	m_pToolButton1View = apToolButton1View;
+	m_pToolButton3View = apToolButton3View;
+	m_pKeyboardMouseManipulatorShopClient = apKeyboardMouseManipulatorShopClient;
+
+	//connect(m_pToolButton1View,SIGNAL(toggled(bool)),this,SLOT(slotSetCameraPerspective(bool)));
+	//connect(m_pToolButton3View,SIGNAL(toggled(bool)),this,SLOT(slotSetCameraPerspective(bool)));
+
+	slotSetCameraPerspective(m_pToolButton1View->isChecked());
+}
+
+//----------------------------------------------------------------------------
+
+void CameraController::slotSetCameraPerspective(bool abIndicator)	{
+	QToolButton * pToolButton = dynamic_cast<QToolButton*>(sender());
+	if(pToolButton == 0) {
+		return;
+	}
+
+	disconnect(m_pToolButton1View,SIGNAL(toggled(bool)),this,SLOT(slotSetCameraPerspective(bool)));
+	disconnect(m_pToolButton3View,SIGNAL(toggled(bool)),this,SLOT(slotSetCameraPerspective(bool)));
+
+	if(pToolButton == m_pToolButton1View)	{
+		m_pToolButton3View->setChecked(!abIndicator);
+	} else if (pToolButton == m_pToolButton3View)	{
+		m_pToolButton1View->setChecked(!abIndicator);
+	}
+	bool bViewPerspective = (m_pToolButton1View->isChecked()) ? true : false;
+	m_pKeyboardMouseManipulatorShopClient->setViewPerspective(bViewPerspective);
+
+	connect(m_pToolButton1View,SIGNAL(toggled(bool)),this,SLOT(slotSetCameraPerspective(bool)));
+	connect(m_pToolButton3View,SIGNAL(toggled(bool)),this,SLOT(slotSetCameraPerspective(bool)));
 }

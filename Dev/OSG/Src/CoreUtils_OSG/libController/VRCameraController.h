@@ -18,9 +18,11 @@
 class QComboBox;
 class QPushButton;
 class QDoubleSpinBox;
+class QToolButton;
 
 namespace VR {
 	class KeyboardMouseManipulatorShopEditor;
+	class KeyboardMouseManipulatorShopClient;
 
 	struct CameraController : public QObject {
 		CameraController(
@@ -36,6 +38,13 @@ namespace VR {
 			QPushButton * ap_PushButton_SetCameraHeadingDirectionDefault,
 			QPushButton * ap_PushButton_CameraHeadingDirection,
 			VR::KeyboardMouseManipulatorShopEditor * aKeyboardMouseManipulatorShopEditor);
+
+		//Client camera perspective
+		CameraController(
+			QToolButton * apToolButton1View,
+			QToolButton * apToolButton3View,
+			KeyboardMouseManipulatorShopClient * apKeyboardMouseManipulatorShopClient);
+
 
 		public slots:
 			void slotUpdateCameraGUI();
@@ -66,6 +75,14 @@ namespace VR {
 		QPushButton *  m_p_PushButton_CameraHeadingDirection;
 
 		KeyboardMouseManipulatorShopEditor * m_pKeyboardMouseManipulatorShopEditor;
+
+		//Client camera
+		QToolButton * m_pToolButton1View;
+		QToolButton * m_pToolButton3View;
+		KeyboardMouseManipulatorShopClient * m_pKeyboardMouseManipulatorShopClient;
+
+		private slots:
+			void slotSetCameraPerspective(bool abIndicator);
 	};
 }
 #endif //VR_CAMERA_CONTROLLER_H

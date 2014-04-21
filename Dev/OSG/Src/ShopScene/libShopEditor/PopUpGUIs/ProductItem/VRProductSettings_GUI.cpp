@@ -66,7 +66,7 @@ void ProductSettings_GUI::initGUI(Product * apProduct)	{
 
 	m_pComboBoxProductCategory->setCurrentText(prodParams.m_strProductCategory.c_str());
 	m_pLineEditProductName->setText(prodParams.m_strProductName.c_str());
-	m_pLineEditProductCode->setText(itostr((int)prodParams.m_nProductCode).c_str());
+	m_pLineEditProductCode->setText(tostr((int)prodParams.m_nProductCode).c_str());
 	m_pTextEditProductDescription->setText(prodParams.m_strProductDescription.c_str());
 	m_pLineEditShortDescription->setText(prodParams.m_strProductShortDescription.c_str());
 	m_pLineEditProductURL->setText("NA");

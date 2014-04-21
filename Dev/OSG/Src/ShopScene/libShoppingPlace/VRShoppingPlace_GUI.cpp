@@ -3,9 +3,14 @@
 
 #include "VRScene.h"
 #include "VRShoppingPlace.h"
-#include "VRSignUp_GUI.h"
+
+#include "VRProductInterface.h"
+#include "VRAgentInterface.h"
+#include "VRProductBasketInterface.h"
+#include "VRCameraController.h"
 
 #include "VRKeyboardMouseManipulatorShopClient.h"
+#include "VRPickAndDragHandlerShopClient.h"
 
 #include "VRShoppingPlace_GUI.h"
 
@@ -20,7 +25,9 @@ ShoppingPlace_GUI::ShoppingPlace_GUI()	{
 	setupUi(this);
 	setWindowTitle("Shop Client");
 
-	m_pShoppingPlace = new ShoppingPlace(m_pOSGQTWidget);
+	m_pPickAndDragHandlerShopClient = new PickAndDragHandlerShopClient;
+
+	m_pShoppingPlace = new ShoppingPlace(m_pOSGQTWidget,m_pPickAndDragHandlerShopClient);
 	KeyboardMouseManipulatorShopClient * pCameraManipulator = 
 		dynamic_cast<KeyboardMouseManipulatorShopClient *>(m_pOSGQTWidget->getCameraManipulator());
 
@@ -33,8 +40,48 @@ ShoppingPlace_GUI::ShoppingPlace_GUI()	{
 	m_pOSGQTWidgetMap->setSceneData(pScene);
 	m_pOSGQTWidgetMap->show();
 
-	m_pOSGQTWidget->show();
+	//ProductInterface
+	m_pProductInterface = new ProductInterface(
+		m_pFrameProductInterface,
+		m_pLabelProductInterfaceImage,
+		m_pLabelProductInterfaceInfo,
+		m_pPushButtonProductInterface2Basket,
+		m_pPushButtonProductInterfaceDetails,
+		m_pLabelProductInterfacePrice);
 
+	//Agent Interface
+	m_pAgentInterface = new AgentInterface(
+		m_pFrameSettings,
+		m_pToolButtonUser,
+		m_pLineEditPassword,
+		m_pLineEditUserName,
+		m_pPushButtonSignIn);
+
+
+	//Basket Interface
+	m_pProductBasketInterface = new ProductBasketInterface(
+		m_pToolButtonMyBasket,
+		m_pLabelBasketCase,
+		m_pFrameItemsBasket,
+		m_pFrameProductItem,
+		m_pFrameProductItemHover,
+		m_pDoubleSpinBoxQuantity,
+		m_pPushButtonHoverDetails,
+		m_pPushButtonHoverRemove,
+		m_pLabelProductImage,
+		m_pLabelProductInfo,
+		m_pLabelBasketProductPrice,
+		m_pPushButtonBasketBack,
+		m_pPushButtonBasketForward);
+
+
+	//Client Camera
+	m_pCameraController = new CameraController(
+		m_pToolButton1View,
+		m_pToolButton3View,
+		pCameraManipulator);
+
+	m_pOSGQTWidget->show();
 	buildConnections();
 
 }
@@ -42,15 +89,23 @@ ShoppingPlace_GUI::ShoppingPlace_GUI()	{
 //-----------------------------------------------------------------------------------------
 
 ShoppingPlace_GUI::~ShoppingPlace_GUI()	{
+	delete m_pProductInterface;
+	delete m_pAgentInterface;
+	delete m_pProductBasketInterface;
+	delete m_pCameraController;
+
 	delete m_pShoppingPlace;
 }
 
 //=========================================================================================
 
 void ShoppingPlace_GUI::buildConnections() {
-	connect(m_pPushButtonSignIn,SIGNAL(clicked()),this,SLOT(slotSignUp()));
-	connect(m_pToolButtonMyBasket,SIGNAL(toggled(bool)),m_pFrameItemsBasket,SLOT(setVisible(bool)));
-	connect(m_pToolButtonMyBasket,SIGNAL(toggled(bool)),m_pLabelBasketCase,SLOT(setVisible(bool)));
+
+	connect(m_pPickAndDragHandlerShopClient,SIGNAL(signalProductPicked()),this,SLOT(slotProductClicked()));
+
+//	connect(m_pFrameProductItem_2,SIGNAL(hovered()),this,SLOT(slotProductClicked()));
+
+	
 }
 
 //-----------------------------------------------------------------------------------------
@@ -74,24 +129,10 @@ void ShoppingPlace_GUI::updateGeometry()	{
 
 //=========================================================================================
 
-void ShoppingPlace_GUI::slotSignUp()	{
-	SignUp_GUI signUp;
-		
-	//To get a widget without a "TitleBar"
-	signUp.setWindowFlags(Qt::FramelessWindowHint);
-	bool bRes = signUp.exec();
-
-	if (bRes = QDialog::Accepted)	{
-
-	}
-}
-
-//-----------------------------------------------------------------------------------------
-
-void ShoppingPlace_GUI::slotSignIn()	{
-	string strUserName = m_pLineEditUserName->text().toStdString();
-	string strPassword = m_pLineEditPassword->text().toStdString();
-
+void ShoppingPlace_GUI::slotProductClicked()	{
+//	Product * pProduct = m_pPickAndDragHandlerShopClient->m_pPickedObject->get;
+//	m_pProductInterface->initProductInterface();
+	std::cout << "It's working" << std::endl;
 }
 
 //-----------------------------------------------------------------------------------------

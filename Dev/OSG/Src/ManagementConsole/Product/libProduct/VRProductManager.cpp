@@ -19,14 +19,17 @@ using namespace osg;
 ProductManager::ProductManager() :
 m_pProduct(0)	{
 	setName("Products");
+
+	m_pProductSettings_GUI = 0;
+	m_pRemoveProduct_GUI = 0;
 }
 
 //-----------------------------------------------------------------------------
 
 ProductManager::~ProductManager()	{
-	if (m_pProductSettings_GUI)
+	if (m_pProductSettings_GUI !=0)
 		delete m_pProductSettings_GUI;
-	if (m_pRemoveProduct_GUI)
+	if (m_pRemoveProduct_GUI != 0)
 		delete m_pRemoveProduct_GUI;
 	if (m_pProduct)
 		delete m_pProduct;

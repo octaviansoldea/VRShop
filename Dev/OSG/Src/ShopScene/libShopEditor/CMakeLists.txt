@@ -44,7 +44,6 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs
   ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/EditItem
   ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/ProductItem
-  ${CMAKE_BINARY_DIR}/ShopScene/libShopEditor
   ${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabase
   ${CMAKE_SOURCE_DIR}/Props/Scene/libScene
   ${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject

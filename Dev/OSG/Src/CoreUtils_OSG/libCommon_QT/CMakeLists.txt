@@ -26,12 +26,21 @@ ELSE(Qt5_FOUND)
 ENDIF(Qt5_FOUND)
 #end Qt
 
+#MOC according to the Qt version
+IF(Qt5_FOUND)
+  QT5_WRAP_CPP(MOC_SRCS VRQFrame.h)
+ELSE()
+  QT4_WRAP_CPP(MOC_SRCS VRQFrame.h)
+ENDIF()
+
+
 SET(SRCS
 	VRBasicQTOperations.h VRBasicQTOperations.cpp
+	VRQFrame.h VRQFrame.cpp
 )
 
 ADD_LIBRARY(libCommon_QT
-  ${SRCS}
+  ${SRCS} ${MOC_SRCS}
 )
 
 SET_PROPERTY(TARGET libCommon_QT PROPERTY FOLDER Utils)

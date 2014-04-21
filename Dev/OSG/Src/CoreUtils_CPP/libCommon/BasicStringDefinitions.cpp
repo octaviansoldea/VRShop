@@ -9,14 +9,6 @@
 
 using namespace std;
 
-std::string itostr(int anVal) {
-	
-   stringstream ss;//create a stringstream
-   ss << anVal;//add number to the stream
-   return ss.str();//return a string with the contents of the stream
-
-}
-
 #ifdef _WIN32
 std::string GetLastErrorString() {
 	LPVOID lpMsgBuf;

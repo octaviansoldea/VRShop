@@ -30,9 +30,9 @@ INCLUDE_DIRECTORIES(
 	${OPENSCENEGRAPH_INCLUDE_DIRS}
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProductInterface
 	${CMAKE_BINARY_DIR}/ManagementConsole/Product/libProductInterface
-	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libOSGQTViewer
 	${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProduct
+	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_QT
 )
 
 SET(SRCS
@@ -48,10 +48,10 @@ SET(LIBS_COMMON
 	${OSGQT_LIBRARIES}
 	${OSGVIEWER_LIBRARIES}
 	${OPENTHREADS_LIBRARIES}
-	libOSGQTViewer
 	libProductInterface
 	libAbstractObject
 	libProduct
+	libCommon_QT
 )
 
 IF(Qt5_FOUND)

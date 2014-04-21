@@ -31,17 +31,20 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgent
   ${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_OSG
+  ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_QT
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCamera
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libPicker
   ${CMAKE_SOURCE_DIR}/ShopScene/libShoppingPlace
   ${CMAKE_BINARY_DIR}/ShopScene/libShoppingPlace
-  ${CMAKE_SOURCE_DIR}/ShopScene/libShoppingPlace/PopUpDialogs
+  ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/ProductItem
   ${CMAKE_SOURCE_DIR}/Props/Scene/libScene
   ${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
   ${CMAKE_SOURCE_DIR}/Props/Equipment/GeometricShape/libGeometricShape
   ${CMAKE_SOURCE_DIR}/Props/Equipment/Furniture/libFurniture
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libOSGQTViewer
+  ${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProduct
   ${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProductInterface
+  ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libController
 )
 
 SET(LIBS_COMMON 
@@ -55,15 +58,19 @@ SET(LIBS_COMMON
 	libAgent
 	libAbstractObject
 	libGeometricShape
+	libShopEditor
 	libShoppingPlace
 	libCommon
 	libCommon_OSG
+	libCommon_QT
 	libCamera
 	libPicker
 	libFurniture
 	libScene
 	libOSGQTViewer
+	libProduct
 	libProductInterface
+	libController
 )
 
 SET(SRCS

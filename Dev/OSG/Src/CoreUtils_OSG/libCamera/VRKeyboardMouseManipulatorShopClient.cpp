@@ -55,16 +55,6 @@ bool KeyboardMouseManipulatorShopClient::handle(const osgGA::GUIEventAdapter& ea
 		return(bRes);
 	}
 
-	if (ea.getKey() == '1')	{
-		m_bFirstPerson = true;
-		setViewPerspective(m_bFirstPerson);
-	}
-
-	if (ea.getKey() == '3')	{
-		m_bFirstPerson = false;
-		setViewPerspective(m_bFirstPerson);
-	}
-
 	return(bRes);
 }
 
@@ -74,20 +64,14 @@ void KeyboardMouseManipulatorShopClient::setViewPerspective(bool abFirstPerson) 
 	Vec3d vec3dEye, vec3dCenter, vec3dUp;
 	getTransformation(vec3dEye, vec3dCenter, vec3dUp);
 
+	m_bFirstPerson = abFirstPerson;
+
 	const Vec3d & vec3dDiff = (vec3dCenter - vec3dEye);
 	if (m_bFirstPerson == false)	{
 		//3. person
-		vec3dEye[0] = 
-			(vec3dDiff[0] < 0) ? (vec3dEye[0]+sin(vec3dDiff[0])) : (vec3dEye[0]-sin(vec3dDiff[0]));
-		vec3dEye[1] = 
-			(vec3dDiff[1] < 0) ? (vec3dEye[1]+cos(vec3dDiff[0])) : (vec3dEye[1]-cos(vec3dDiff[0]));
 		vec3dEye[2] = 3.5;
 	} else {
 		//1. person
-		vec3dEye[0] = 
-			(vec3dDiff[0] < 0) ? (vec3dEye[0]-sin(vec3dDiff[0])) : (vec3dEye[0]+sin(vec3dDiff[0]));
-		vec3dEye[1] = 
-			(vec3dDiff[1] < 0) ? (vec3dEye[1]-cos(vec3dDiff[0])) : (vec3dEye[1]+cos(vec3dDiff[0]));
 		vec3dEye[2] = 1.5;
 	}
 

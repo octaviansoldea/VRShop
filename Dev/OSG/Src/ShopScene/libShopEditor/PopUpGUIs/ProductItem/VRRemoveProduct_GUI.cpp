@@ -36,7 +36,7 @@ m_pProduct(apProduct)	{
 	m_pProduct->getParams(pParams);
 	m_pComboBoxCategory->insertItem(0,pParams.m_strProductCategory.c_str());
 	m_pComboBoxProduct->insertItem(0,pParams.m_strProductName.c_str());
-	m_pComboBoxID->insertItem(0,itostr(pParams.m_nProductCode).c_str());
+	m_pComboBoxID->insertItem(0,tostr(pParams.m_nProductCode).c_str());
 }
 
 //----------------------------------------------------------------------

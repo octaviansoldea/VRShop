@@ -70,7 +70,7 @@ void ProductSettings_GUI::initGUI(Product * apProduct)	{
 	m_pTextEditProductDescription->setText(prodParams.m_strProductDescription.c_str());
 	m_pLineEditShortDescription->setText(prodParams.m_strProductShortDescription.c_str());
 	m_pLineEditProductURL->setText("NA");
-	m_pComboBoxProducer->setCurrentText(to_string(_Longlong(prodParams.m_nManufacturerID)).c_str());
+	m_pComboBoxProducer->setCurrentText(prodParams.m_strManufacturerName.c_str());
 	m_pTextEditProducerAddress->setText("NA");
 	m_pComboBoxProducerURL->setCurrentText("NA");
 	m_pComboBoxPlaceOfOrigin->setCurrentText(prodParams.m_strManufacturerOrigin.c_str());

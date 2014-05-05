@@ -4,9 +4,13 @@
 #include "VRAbstractUser.h"
 
 namespace VR {
+	//NOT TO BE IMPLEMENTED IN TEH FIRST VERSION
 	class Administrator : public AbstractUser	{
 	public:
 		Administrator();
+
+		virtual const char* className() const;
+
 		void addProduct2Database(const Product & aProduct);
 		void removeProductFromDatabase(const Product & aProduct);
 		void modifyProductInDatabase(const Product & aProduct);

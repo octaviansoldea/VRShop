@@ -32,6 +32,7 @@ INCLUDE_DIRECTORIES(
 	${OPENSCENEGRAPH_INCLUDE_DIRS}
 	${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_QT
+	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libPicker
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProductInterface
 	${CMAKE_BINARY_DIR}/ManagementConsole/Product/libProductInterface
 	${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject

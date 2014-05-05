@@ -7,6 +7,7 @@
 
 #include "VRDatabaseManagerShopEditor.h"
 
+#include "BasicStringDefinitions.h"
 #include "VRProduct.h"
 
 using namespace VR;
@@ -19,7 +20,7 @@ m_strProductName(""),
 m_nProductCode(NULL),
 m_strProductDescription(""),
 m_strProductShortDescription(""),
-m_nManufacturerID(NULL),
+m_strManufacturerName(""),
 m_strManufacturerOrigin(""),
 m_strDateAdded(""),
 m_strDateLastModified(""),
@@ -90,7 +91,7 @@ void Product::setParams(const ProductParams & aProductParams)	{
 	m_ProductParams.m_nProductCode = aProductParams.m_nProductCode;
 	m_ProductParams.m_strProductDescription = aProductParams.m_strProductDescription;
 	m_ProductParams.m_strProductShortDescription = aProductParams.m_strProductShortDescription;
-	m_ProductParams.m_nManufacturerID = aProductParams.m_nManufacturerID;
+	m_ProductParams.m_strManufacturerName = aProductParams.m_strManufacturerName;
 	m_ProductParams.m_strManufacturerOrigin = aProductParams.m_strManufacturerOrigin;
 	m_ProductParams.m_strDateAdded = aProductParams.m_strDateAdded;
 	m_ProductParams.m_strDateLastModified = aProductParams.m_strDateLastModified;
@@ -109,7 +110,7 @@ void Product::getParams(ProductParams & aProductParams) const	{
 	aProductParams.m_nProductCode = m_ProductParams.m_nProductCode;
 	aProductParams.m_strProductDescription = m_ProductParams.m_strProductDescription;
 	aProductParams.m_strProductShortDescription = m_ProductParams.m_strProductShortDescription;
-	aProductParams.m_nManufacturerID = m_ProductParams.m_nManufacturerID;
+	aProductParams.m_strManufacturerName = m_ProductParams.m_strManufacturerName;
 	aProductParams.m_strManufacturerOrigin = m_ProductParams.m_strManufacturerOrigin;
 	aProductParams.m_strDateAdded = m_ProductParams.m_strDateAdded;
 	aProductParams.m_strDateLastModified = m_ProductParams.m_strDateLastModified;
@@ -127,6 +128,21 @@ string Product::prepareRowData(const string & astrParentName)	{
 	getParams(productParams);
 
 	string strProductParams;
+
+	strProductParams += productParams.m_strProductCategory + ";";
+	strProductParams += productParams.m_strProductName + ";";
+	strProductParams += productParams.m_nProductCode + ";";
+	strProductParams += productParams.m_strProductDescription + ";";
+	strProductParams += productParams.m_strProductShortDescription + ";";
+	strProductParams += productParams.m_strManufacturerName + ";";
+	strProductParams += productParams.m_strManufacturerOrigin + ";";
+	strProductParams += productParams.m_strDateAdded + ";";
+	strProductParams += productParams.m_strDateLastModified + ";";
+	strProductParams += productParams.m_strProductUnit + ";";
+	strProductParams += tostr(productParams.m_flPricePerUnit) + ";";
+	strProductParams += tostr(productParams.m_flQuantity) + ";";
+	strProductParams += tostr(productParams.m_flTaxRate) + ";";
+	strProductParams += productParams.m_nCurrency + ";";
 
 	return strProductParams;
 }

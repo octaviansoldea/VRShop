@@ -9,6 +9,7 @@ class QPushButton;
 
 namespace VR	{
 	class Product;
+	class PickAndDragHandlerShopClient;
 
 	class ProductInterface : public QObject	{
 		Q_OBJECT
@@ -19,14 +20,13 @@ namespace VR	{
 			QLabel * apLabelProductInterfaceInfo,
 			QPushButton * apPushButtonProductInterface2Basket,
 			QPushButton * apPushButtonProductInterfaceDetails,
-			QLabel * apLabelProductInterfacePrice
+			QLabel * apLabelProductInterfacePrice,
+			PickAndDragHandlerShopClient * apPickAndDragHandlerShopClient
 		);	//End of constructor
 
 		~ProductInterface();
 
 		void initProductInterface(const Product * apProduct);
-
-	private slots:
 
 	private:
 		QFrame * m_pFrameProductInterface;
@@ -35,9 +35,13 @@ namespace VR	{
 		QPushButton * m_pPushButtonProductInterface2Basket;
 		QPushButton * m_pPushButtonProductInterfaceDetails;
 		QLabel * m_pLabelProductInterfacePrice;
-
+		PickAndDragHandlerShopClient * m_pPickAndDragHandlerShopClient;
 
 		Product * m_pProduct;
+
+	private slots:
+		void slotAdd2Basket();
+		void slotProductDetails();
 	};
 }
 #endif //VR_PRODUCT_INTERFACE_H

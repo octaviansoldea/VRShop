@@ -7,13 +7,12 @@
 
 namespace VR	{
 	struct ShoppingPlace;
+	class AbstractObject;
 	class Grid;
 	class ProductInterface;
 	class AgentInterface;
 	class ProductBasketInterface;
-	class KeyboardMouseManipulatorShopClient;
-	class PickAndDragHandlerShopClient;
-	class CameraController;
+	struct CameraController;
 
 	class ShoppingPlace_GUI : public QMainWindow, public Ui::MainWindow	{
 		Q_OBJECT
@@ -28,16 +27,13 @@ namespace VR	{
 		ProductBasketInterface * m_pProductBasketInterface;
 		CameraController * m_pCameraController;
 
-		PickAndDragHandlerShopClient * m_pPickAndDragHandlerShopClient;
-
-		void buildConnections();
 		void updateGeometry();
 
 	protected:
 		virtual void resizeEvent(QResizeEvent *event);
 
 	private slots:
-		void slotProductClicked();
+		void slotProductClicked(const VR::AbstractObject * apAbstractObject);
 	};
 }
 #endif //VR_SHOPPING_PLACE_GUI_H

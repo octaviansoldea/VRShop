@@ -9,10 +9,11 @@ namespace VR	{
 	public:
 		VRQFrame(QWidget * parent = 0);
 
+	protected:
 		virtual void mouseMoveEvent(QMouseEvent *event);
-
+		
 	signals:
-		void hovered();
+		void hovered(bool);
 	};
 }
 #endif //VR_QFRAME_H

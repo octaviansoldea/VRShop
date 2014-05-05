@@ -45,11 +45,12 @@ KeyboardMouseManipulator(cm, copyOp) {
 bool KeyboardMouseManipulatorShopClient::handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa) {
 	bool bRes = false;
 
-	int nEventType = ea.getEventType();
+/*	int nEventType = ea.getEventType();
 	if ((nEventType != GUIEventAdapter::KEYDOWN) &&
 		(nEventType != GUIEventAdapter::KEYUP)) {
 			return bRes;
-	} 
+	}
+*/
 	bRes = KeyboardMouseManipulator::handle(ea, aa);
 	if(bRes == false) {
 		return(bRes);
@@ -69,9 +70,17 @@ void KeyboardMouseManipulatorShopClient::setViewPerspective(bool abFirstPerson) 
 	const Vec3d & vec3dDiff = (vec3dCenter - vec3dEye);
 	if (m_bFirstPerson == false)	{
 		//3. person
+		vec3dEye[0] = 
+			(vec3dDiff[0] < 0) ? (vec3dEye[0]+sin(vec3dDiff[0])) : (vec3dEye[0]-sin(vec3dDiff[0]));
+		vec3dEye[1] = 
+			(vec3dDiff[1] < 0) ? (vec3dEye[1]+cos(vec3dDiff[0])) : (vec3dEye[1]-cos(vec3dDiff[0]));
 		vec3dEye[2] = 3.5;
 	} else {
 		//1. person
+		vec3dEye[0] = 
+			(vec3dDiff[0] < 0) ? (vec3dEye[0]-sin(vec3dDiff[0])) : (vec3dEye[0]+sin(vec3dDiff[0]));
+		vec3dEye[1] = 
+			(vec3dDiff[1] < 0) ? (vec3dEye[1]-cos(vec3dDiff[0])) : (vec3dEye[1]+cos(vec3dDiff[0]));
 		vec3dEye[2] = 1.5;
 	}
 

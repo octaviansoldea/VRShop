@@ -21,9 +21,6 @@
 #include "VRAbstractObject.h"
 
 namespace VR {
-	class Scene;
-	class Product;
-
 	class PickAndDragHandlerShopClient : public QObject, public PickAndDragHandler	{
 
 		Q_OBJECT
@@ -34,7 +31,7 @@ namespace VR {
 		virtual bool handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa);
 
 	signals:
-		void signalProductPicked();
+		void signalProductPicked(const VR::AbstractObject * apAbstractObject);
 	};
 }
 #endif //VR_PICK_AND_DRAG_HANDLER_SHOP_CLIENT_H

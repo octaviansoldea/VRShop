@@ -1,12 +1,7 @@
-#include "VRUserAccount.h"
-
-#include <string>
-
 #include "VRSignUp_GUI.h"
 
 using namespace Ui;
 using namespace VR;
-using namespace std;
 
 //----------------------------------------------------------------------
 
@@ -33,14 +28,6 @@ void SignUp_GUI::accept()	{
 	if (m_pLineEditPassword->text() != m_pLineEditRetypePassword->text())	{
 		return;
 	}
-
-	string & strUserName = m_pLineEditFirstName->text().toStdString();
-	string & strPassword = m_pLineEditPassword->text().toStdString();
-	string & strEMail = m_pLineEditEMail->text().toStdString();
-
-	UserAccount userAccount(strUserName,strPassword);
-
-	userAccount.addUserAccount();
 
 	QDialog::accept();
 }

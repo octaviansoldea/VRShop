@@ -184,7 +184,6 @@ void PickAndDragController::slotSetPropertiesPosition()	{
 	vec3dPosition[2] = mp_DoubleSpinBox_TranslationZ->value();
 
 	mpPickAndDragHandlerShopEditor->setPropertiesPosition(vec3dPosition);
-	mp_Scene->print();
 }
 
 //--------------------------------------------------------------------------------------
@@ -221,7 +220,6 @@ void PickAndDragController::slotGroupItems()	{
 
 void PickAndDragController::slotSplitItem()	{
 	mpPickAndDragHandlerShopEditor->splitSelection(mp_Scene);
-	mp_Scene->print();
 }
 
 //--------------------------------------------------------------------------------------

@@ -57,7 +57,6 @@ SET(SRCS
 	VRVisitor.h VRVisitor.cpp
 	VRUserAccount.h VRUserAccount.cpp
 	VRAdministrator.h VRAdministrator.cpp
-	VRClient.h VRClient.cpp
 	VRCustomerSupportOfficer.h VRCustomerSupportOfficer.cpp
 	VRAgentInterface.h VRAgentInterface.cpp
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgent/View/VRSignUp_GUI.h ${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgent/View/VRSignUp_GUI.cpp

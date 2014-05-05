@@ -10,6 +10,7 @@ class Customer;
 class Receipt;
 
 namespace VR	{
+	class Avatar;
 
 	class Cashier	{
 	public:

@@ -28,6 +28,9 @@ namespace VR	{
 		std::string SQLFieldValues(const std::string & astrParentName="");
 		virtual void print();
 
+		//NOT YET IN USE - POTENTIALLY USEFUL IN NODE SEARCHES
+		Node * findNamedNode(const std::string& searchName, osg::Node* currNode);
+
 	private:
 		int m_nIteration;
 		std::string m_strDBFileName;

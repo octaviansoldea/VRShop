@@ -77,6 +77,20 @@ Product * ProductManager::getProduct(const AbstractObject * apAbstractObject)	{
 
 //-----------------------------------------------------------------------------
 
+void ProductManager::addNewProduct(Product * apProduct)	{
+	m_pProduct = dynamic_cast<VR::Product*>(apProduct);
+	if (m_pProduct != 0)	{
+		m_pvecProducts.push_back(m_pProduct);
+
+		//Fill osg group whose pointer is sent to the scene 
+		//with the 3D representation of the product
+		ref_ptr<AbstractObject> pProduct = m_pProduct->getRepresentation();
+		addChild(pProduct);
+	}
+}
+
+//-----------------------------------------------------------------------------
+
 void ProductManager::addNewProduct()	{
 	m_pProduct = new Product();
 	modifyProduct(m_pProduct);
@@ -89,48 +103,6 @@ void ProductManager::addNewProduct()	{
 		ref_ptr<AbstractObject> pProduct = m_pProduct->getRepresentation();
 		addChild(pProduct);
 	}
-
-/*
-	m_pProductSettings_GUI = new ProductSettings_GUI(m_pProduct);
-
-	m_pProductSettings_GUI->setWindowFlags(Qt::FramelessWindowHint);
-	bool bRes = m_pProductSettings_GUI->exec();
-
-	//If SAVE is clicked in the PROD.SETTINGS_GUI
-	if (bRes == QDialog::Accepted)	{
-		//Fill vector of products
-		m_pvecProducts.push_back(m_pProduct);
-
-		//Fill osg group whose pointer is sent to the scene 
-		//with the 3D representation of the product
-		ref_ptr<AbstractObject> pProduct = m_pProduct->getRepresentation();
-		addChild(pProduct);
-
-		ProductParams productParams;
-		productParams.m_flQuantity = m_pProductSettings_GUI->m_pLineEditQuantity->text().toFloat();
-		productParams.m_strProductCategory = m_pProductSettings_GUI->m_pComboBoxProductCategory->currentText().toStdString();
-		productParams.m_strProductName = m_pProductSettings_GUI->m_pLineEditProductName->text().toStdString();
-		productParams.m_nProductCode = m_pProductSettings_GUI->m_pLineEditProductCode->text().toInt();
-		productParams.m_strProductDescription = m_pProductSettings_GUI->m_pTextEditProductDescription->toPlainText().toStdString();
-		productParams.m_strProductShortDescription = m_pProductSettings_GUI->m_pLineEditShortDescription->text().toStdString();
-
-	////	m_pProductParams->m_nManufacturerID = m_pProductSettings_GUI-> ;
-	////	m_pProductParams->m_strManufacturerOrigin = m_pProductSettings_GUI-> ;
-	////	m_pProductParams->m_strDateAdded = m_pProductSettings_GUI-> ;
-	////	m_pProductParams->m_strDateLastModified = m_pProductSettings_GUI-> ;
-		productParams.m_strProductUnit = m_pProductSettings_GUI->m_pComboBoxProductUnit->currentText().toStdString();
-		productParams.m_flPricePerUnit = m_pProductSettings_GUI->m_pLineEditPrice->text().toFloat();
-		productParams.m_flQuantity = m_pProductSettings_GUI->m_pLineEditQuantity->text().toFloat();
-		productParams.m_flTaxRate = m_pProductSettings_GUI->m_pComboBoxTaxRate->currentText().remove("%").toFloat();
-	////	m_pProductParams->m_nCurrency = m_pProductSettings_GUI-> ;
-
-
-		m_pProduct->setParams(productParams);
-
-	} else {
-		m_pProduct = 0;
-	}
-*/
 }
 
 //-----------------------------------------------------------------------------
@@ -188,7 +160,7 @@ void ProductManager::modifyProduct(Product * apProduct)	{
 		productParams.m_strProductDescription = m_pProductSettings_GUI->m_pTextEditProductDescription->toPlainText().toStdString();
 		productParams.m_strProductShortDescription = m_pProductSettings_GUI->m_pLineEditShortDescription->text().toStdString();
 
-	////	m_pProductParams->m_nManufacturerID = m_pProductSettings_GUI-> ;
+	////	m_pProductParams->m_strManufacturerName = m_pProductSettings_GUI-> ;
 	////	m_pProductParams->m_strManufacturerOrigin = m_pProductSettings_GUI-> ;
 	////	m_pProductParams->m_strDateAdded = m_pProductSettings_GUI-> ;
 	////	m_pProductParams->m_strDateLastModified = m_pProductSettings_GUI-> ;

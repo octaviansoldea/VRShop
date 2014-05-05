@@ -27,6 +27,7 @@ namespace VR	{
 		Product * getProduct(const AbstractObject * apAbstractObject);
 
 		void addNewProduct();
+		void addNewProduct(Product * apProduct);
 		void removeProduct();
 		void removeProduct(Product * apProduct);
 

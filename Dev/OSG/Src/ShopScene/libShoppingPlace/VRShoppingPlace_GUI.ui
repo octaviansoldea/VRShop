@@ -247,6 +247,12 @@ QToolButton:hover {
          <height>18</height>
         </rect>
        </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>18</height>
+        </size>
+       </property>
        <property name="maximumSize">
         <size>
          <width>16777215</width>
@@ -283,6 +289,12 @@ QToolButton:hover {
          <width>186</width>
          <height>18</height>
         </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>18</height>
+        </size>
        </property>
        <property name="maximumSize">
         <size>
@@ -322,8 +334,14 @@ QToolButton:hover {
        </property>
        <property name="minimumSize">
         <size>
-         <width>40</width>
+         <width>60</width>
          <height>40</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>60</width>
+         <height>16777215</height>
         </size>
        </property>
        <property name="font">
@@ -422,8 +440,8 @@ QPushButton:hover {
        </property>
        <property name="maximumSize">
         <size>
-         <width>20</width>
-         <height>20</height>
+         <width>30</width>
+         <height>30</height>
         </size>
        </property>
        <property name="font">
@@ -436,8 +454,6 @@ QPushButton:hover {
        </property>
        <property name="styleSheet">
         <string notr="true">QToolButton {
-	height: 40px;
-	width: 40px;
 	border: 1px solid rgb(67,67,67);
 	color:rgb(102,102,102);
 	background-color:rgb(70,70,70);
@@ -501,8 +517,6 @@ QToolButton:checked {
        </property>
        <property name="styleSheet">
         <string notr="true">QToolButton {
-	height: 40px;
-	width: 40px;
 	border: 1px solid rgb(67,67,67);
 	color:rgb(102,102,102);
 	background-color:rgb(70,70,70);
@@ -727,7 +741,7 @@ border-radius: 10px;
 padding: 2px;</string>
        </property>
        <property name="frameShape">
-        <enum>QFrame::NoFrame</enum>
+        <enum>QFrame::Panel</enum>
        </property>
        <property name="frameShadow">
         <enum>QFrame::Raised</enum>
@@ -796,7 +810,7 @@ padding: 2px;</string>
          <bool>true</bool>
         </property>
        </widget>
-       <widget class="QFrame" name="m_pFrameProductItem">
+       <widget class="VR::VRQFrame" name="m_pVRQFrameProductItem">
         <property name="geometry">
          <rect>
           <x>44</x>
@@ -825,7 +839,7 @@ padding: 2px;</string>
 }</string>
         </property>
         <property name="frameShape">
-         <enum>QFrame::Panel</enum>
+         <enum>QFrame::StyledPanel</enum>
         </property>
         <property name="frameShadow">
          <enum>QFrame::Raised</enum>
@@ -895,6 +909,9 @@ padding: 2px;</string>
            <height>79</height>
           </rect>
          </property>
+         <property name="mouseTracking">
+          <bool>true</bool>
+         </property>
          <property name="styleSheet">
           <string notr="true">QLabel	{
 	border: 1px solid rgb(29,29,29);
@@ -959,7 +976,7 @@ padding: 2px;</string>
          <property name="frameShadow">
           <enum>QFrame::Raised</enum>
          </property>
-         <widget class="QPushButton" name="m_pPushButtonHoverDetails">
+         <widget class="QPushButton" name="m_pPushButtonDetails">
           <property name="geometry">
            <rect>
             <x>0</x>
@@ -1010,7 +1027,7 @@ QPushButton:hover {
            <string>Details</string>
           </property>
          </widget>
-         <widget class="QPushButton" name="m_pPushButtonHoverRemove">
+         <widget class="QPushButton" name="m_pPushButtonRemove">
           <property name="geometry">
            <rect>
             <x>0</x>
@@ -1229,7 +1246,8 @@ rgb(102,102,102);
 
 	border-radius: 10px;
 	padding: 2px;
-}</string>
+}
+</string>
        </property>
        <property name="frameShape">
         <enum>QFrame::StyledPanel</enum>
@@ -1459,6 +1477,12 @@ basket</string>
    <class>VR::OSGQT_Widget</class>
    <extends>QWidget</extends>
    <header location="global">osgqt_widget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>VR::VRQFrame</class>
+   <extends>QFrame</extends>
+   <header location="global">vrqframe.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

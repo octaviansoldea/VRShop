@@ -28,14 +28,15 @@ ENDIF(Qt5_FOUND)
 
 #MOC according to the Qt version
 IF(Qt5_FOUND)
-  QT5_WRAP_CPP(MOC_SRCS VRQFrame.h)
+  QT5_WRAP_CPP(MOC_SRCS VRQFrame.h VRFileManager.h)
 ELSE()
-  QT4_WRAP_CPP(MOC_SRCS VRQFrame.h)
+  QT4_WRAP_CPP(MOC_SRCS VRQFrame.h VRFileManager.h)
 ENDIF()
 
 
 SET(SRCS
 	VRBasicQTOperations.h VRBasicQTOperations.cpp
+	VRFileManager.h VRFileManager.cpp
 	VRQFrame.h VRQFrame.cpp
 )
 

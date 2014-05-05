@@ -1,3 +1,10 @@
+#include <iostream>
+
+#include <QMouseEvent>
+#include <QHoverEvent>
+
+#include <QEvent>
+
 #include "VRQFrame.h"
 
 using namespace VR;
@@ -11,5 +18,10 @@ QFrame(parent)	{
 
 void VRQFrame::mouseMoveEvent(QMouseEvent *event)	{
 	QFrame::mouseMoveEvent(event);
-	emit hovered();
+
+	int nEvent = event->type();
+
+	if (nEvent == QEvent::MouseMove)	{
+		emit hovered(true);
+	}
 }

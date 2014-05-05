@@ -11,10 +11,11 @@ namespace VR	{
 		UserAccount(const std::string & astrUserName, const std::string & astrPassword);
 		
 		//If cells are not filled correctly, report warning for mandatory fields
-		void addUserAccount();		//userName should be different than those already in the DB
-		void modifyUserAccount();	//Open user's profile filled with his data (password hidden)
-		void removeUserAccount();	//Make sure to offer him a confirmation dialog
-		void resetUserAccount() {};	//If the user forgot password
+		void addUserAccount();				//userName should be different than those already in the DB
+		void modifyUserAccount();			//Open user's profile filled with his data (password hidden)
+		void removeUserAccount();			//Make sure to offer him a confirmation dialog
+		bool checkUserAccountValidity();
+		void resetUserAccount() {};			//If the user forgot password
 
 		void createUserAccountDB() const;
 

@@ -2,5 +2,6 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
 SUBDIRS(
 	libAgent
+	libAgentManager
 	Test_libAgent
 )

@@ -1,10 +1,14 @@
 #include <string>
+#include "BasicStringDefinitions.h"
 
 #include <QString>
 #include <QVariant>
 #include <QVBoxLayout>
+#include <QMessageBox>
 
 #include <osgDB/ReadFile>
+#include <QFileDialog>
+#include "VRNewProject_GUI.h"
 
 #include "OSGQT_Widget.h"
 #include "VRGrid.h"
@@ -28,28 +32,18 @@ using namespace std;
 //----------------------------------------------------------------------
 
 ShopBuilder::ShopBuilder() :
-m_strDBFileName("")	{
+m_strDBFileName("../../../Databases/SysTemp.db")	{
 }
 
 //----------------------------------------------------------------------
 
 ShopBuilder::ShopBuilder(OSGQT_Widget * apOSGQTWidget) :
 m_pOSGQTWidget(apOSGQTWidget),
-m_strDBFileName("../../../Databases/Untitled.db")	{
-
-	newDB(m_strDBFileName);
+m_strDBFileName("../../../Databases/SysTemp.db")	{
 
 	m_pScene = new Scene();
-	addScene(m_pScene);	//Adds the Scene into the vector of scenes
-	string & strScene = m_pScene->SQLFieldValues();
-	m_pdbMgr->insertScene(strScene);
 
-	m_pEventHandler = new PickAndDragHandlerShopEditor;
-
-	m_pOSGQTWidget->setSceneData(m_pScene);
-	m_pOSGQTWidget->setCameraManipulator(new KeyboardMouseManipulatorShopEditor);
-	m_pOSGQTWidget->addEventHandler(m_pEventHandler);
-
+	//These are necessary parts of any file
 	ref_ptr<Node> pAxes = osgDB::readNodeFile("../../../Resources/Models3D/axes.osgt");
 	ref_ptr<Grid> pGrid = new Grid;
 	m_pScene->addChild(pAxes);
@@ -58,6 +52,16 @@ m_strDBFileName("../../../Databases/Untitled.db")	{
 	//A pointer to products sent to the scene
 	m_pProductMgr = new ProductManager;
 	m_pScene->addChild(m_pProductMgr);
+
+	addScene(m_pScene);	//Adds the Scene into the vector of scenes
+	string & strScene = m_pScene->SQLFieldValues();
+//	m_pdbMgr->insertScene(strScene);
+
+	m_pEventHandler = new PickAndDragHandlerShopEditor;
+
+	m_pOSGQTWidget->setSceneData(m_pScene);
+	m_pOSGQTWidget->setCameraManipulator(new KeyboardMouseManipulatorShopEditor);
+	m_pOSGQTWidget->addEventHandler(m_pEventHandler);
 }
 
 //----------------------------------------------------------------------
@@ -88,24 +92,138 @@ void ShopBuilder::gridOnOff(bool abIndicator) {
 
 //----------------------------------------------------------------------
 
-void ShopBuilder::newDB(const string & astrDBFileName)	{
-	//Calling this function creates new file
-	m_strDBFileName = astrDBFileName;
+void ShopBuilder::newDB()	{
+	//Before creating new file, check if any still opened.
+	if (getCurrentFileName().c_str())	{
+		QMessageBox msgBox;
+		string strText = "Changes to the current file will be lost if not saved. \n\nDo you want to save them?";
+		msgBox.setText(strText.c_str());
+		msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::No);
+		msgBox.setWindowTitle("Warning window");
+		int nRes = msgBox.exec();
 
+		if (nRes == QMessageBox::Ok)	{
+			saveDB(m_strDBFileName.c_str());
+		}
+	}
+
+	m_pScene->clearScene();
+
+	NewProject_GUI newProject;
+	//To get a widget without a "TitleBar"
+	newProject.setWindowFlags(Qt::FramelessWindowHint);
+	newProject.exec();
+
+	//Result == 1 indicates that path+name are valid
+	if (newProject.result() == 1)	{
+		string & strFileName = 
+			(newProject.m_pLineEditDirectory->text() + "/" + newProject.m_pLineEditFileName->text()).toStdString();
+		strFileName += (isAtEndOfString(strFileName, ".db")) ? "" : ".db";
+		replace(strFileName.begin(), strFileName.end(), '/', '\\');
+
+		QDir dir(strFileName.c_str());
+		if(dir.exists(strFileName.c_str()))	{
+			QMessageBox msgBox;
+			string strText = "File " + strFileName + " already exists. \n Press OK to overwrite it, else press NO.";
+			msgBox.setText(strText.c_str());
+			msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::No);
+			msgBox.setWindowTitle("Warning window");
+			int nRes = msgBox.exec();
+
+			if (nRes == QMessageBox::No)	{
+//				newProject.close();
+				newProject.show();
+			} else {
+				dir.remove(strFileName.c_str());
+				m_strDBFileName = strFileName;
+			}
+		}
+	}	//End "if (newProject.result())"
 	DatabaseManagerShopEditorParams dbMgrParams;
 	dbMgrParams.m_qstrDBName = m_strDBFileName.c_str();
 
 	m_pdbMgr = new DatabaseManagerShopEditor(dbMgrParams);
+
+	//These are necessary parts of any file
+	ref_ptr<Node> pAxes = osgDB::readNodeFile("../../../Resources/Models3D/axes.osgt");
+	ref_ptr<Grid> pGrid = new Grid;
+	m_pScene->addChild(pAxes);
+	m_pScene->addChild(pGrid);
+
+	//A pointer to products sent to the scene
+	m_pProductMgr = new ProductManager;
+	m_pScene->addChild(m_pProductMgr);
 }
 
 //----------------------------------------------------------------------
 
 void ShopBuilder::readDB(const string & astrDBFileName)	{
+	//Before creating new file, check if any still opened.
+	if (getCurrentFileName().c_str())	{
+		QMessageBox msgBox;
+		string strText = "Changes to the current file will be lost if not saved. \n\nDo you want to save them?";
+		msgBox.setText(strText.c_str());
+		msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::No);
+		msgBox.setWindowTitle("Warning window");
+		int nRes = msgBox.exec();
+
+		if (nRes == QMessageBox::Ok)	{
+			saveDB(m_strDBFileName.c_str());
+		}
+	}
+
+	m_pScene->clearScene();
+
+
+	m_strDBFileName = astrDBFileName;
+
+
+	ref_ptr<Node> pAxes = osgDB::readNodeFile("../../../Resources/Models3D/axes.osgt");
+	ref_ptr<Grid> pGrid = new Grid;
+	if(!m_pProductMgr)
+		m_pProductMgr = new ProductManager;
+
+	m_pScene->addChild(pAxes);
+	m_pScene->addChild(pGrid);
+	m_pScene->addChild(m_pProductMgr);
 }
 
 //----------------------------------------------------------------------
 
+void ShopBuilder::closeDB(const std::string & astrDBFileName)	{
+	//Before creating new file, check if any still opened.
+	if (getCurrentFileName().c_str())	{
+		QMessageBox msgBox;
+		string strText = "Changes to the current file will be lost if not saved. \n\nDo you want to save them?";
+		msgBox.setText(strText.c_str());
+		msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::No);
+		msgBox.setWindowTitle("Warning window");
+		int nRes = msgBox.exec();
+
+		if (nRes == QMessageBox::Ok)	{
+			saveDB(m_strDBFileName.c_str());
+		}
+		m_pScene->clearScene();
+		m_strDBFileName = "";
+	}
+}
+
+//----------------------------------------------------------------------
+
+void ShopBuilder::saveDB()	{
+	const string & strCurrentFile = getCurrentFileName();
+	if (strCurrentFile == "../../../Databases/SysTemp.db")	{
+		saveAsDB();
+	} else {
+		//Implement save method;
+	}
+}
+
 void ShopBuilder::saveDB(const string & astrDBFileName)	{
+}
+
+
+void ShopBuilder::saveAsDB()	{
 }
 
 //----------------------------------------------------------------------
@@ -138,6 +256,12 @@ ref_ptr<Scene> ShopBuilder::getScene() const	{
 
 ref_ptr<ProductManager> ShopBuilder::getProducts() const	{
 	return m_pProductMgr;
+}
+
+//----------------------------------------------------------------------
+
+std::string ShopBuilder::getCurrentFileName() const	{
+	return m_strDBFileName;
 }
 
 //----------------------------------------------------------------------

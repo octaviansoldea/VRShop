@@ -12,6 +12,7 @@ namespace VR	{
 	class ProductManager;
 	class DataStructureModel;
 	class DatabaseManagerShopEditor;
+	class FileManager;
 
 	struct ShopBuilder {
 		ShopBuilder();
@@ -21,10 +22,19 @@ namespace VR	{
 
 		void gridOnOff(bool abIndicator);
 
-		void newDB(const std::string & astrDBFileName);
+		void newDB(const std::string & astrDBFileName) {};
 		void readDB(const std::string & astrDBFileName);
+		void closeDB(const std::string & astrDBFileName);
 		void saveDB(const std::string & astrDBFileName);
 
+//
+		void newDB();
+		void readDB() {};
+		void closeDB();
+		void saveDB();
+		void saveAsDB();
+
+//
 		bool searchScene(const std::string & astrSearchTerm, DataStructureModel ** appDataStructureModel);
 
 		void addNewItem(const std::string & astrObjectName);
@@ -39,6 +49,8 @@ namespace VR	{
 
 		osg::ref_ptr<ProductManager> getProducts() const;
 
+		std::string getCurrentFileName() const;
+
 	private:
 		OSGQT_Widget * m_pOSGQTWidget;
 		osg::ref_ptr<Scene> m_pScene;
@@ -51,6 +63,7 @@ namespace VR	{
 		std::vector<Scene*> m_pvecScenes;
 
 		DatabaseManagerShopEditor * m_pdbMgr;
+
 	};
 }
 #endif //VR_SHOP_BUILDER_H

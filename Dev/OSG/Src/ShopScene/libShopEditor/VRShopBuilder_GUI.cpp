@@ -7,13 +7,11 @@
 #include <QMessageBox>
 
 
-#include "VRNewProject_GUI.h"
 #include "VRInsertNewItem_GUI.h"
 //#include "VRSaveAs_GUI.h"
 
 #include "VRShopBuilder.h"
 #include "VRScene.h"
-#include "VRProductManager.h"
 
 #include "VRCameraController.h"
 #include "VRPickAndDragController.h"
@@ -44,6 +42,7 @@ ShopBuilder_GUI::ShopBuilder_GUI()	{
 	m_pShopBuilder = new ShopBuilder(m_pOSGQTWidget);
 	ref_ptr<Scene> pScene = m_pShopBuilder->getScene();
 	ref_ptr<ProductManager> pProductMgr = m_pShopBuilder->getProducts();
+	string strFileName = m_pShopBuilder->getCurrentFileName();
 
 	KeyboardMouseManipulatorShopEditor * pKeyboardMouseManipulatorShopEditor = 
 		dynamic_cast<KeyboardMouseManipulatorShopEditor *>(m_pOSGQTWidget->getCameraManipulator());
@@ -178,62 +177,38 @@ QString ShopBuilder_GUI::saveDialog(const char * apchDBName) {
 //=========================================================================================
 
 void ShopBuilder_GUI::slotNewProject()	{
-	NewProject_GUI newProject;
-		
-	//To get a widget without a "TitleBar"
-	newProject.setWindowFlags(Qt::FramelessWindowHint);
-	newProject.exec();
-
-	//Result == 1 indicates that path+name are valid
-	if (newProject.result() == 1)	{
-		string & strFileName = 
-			(newProject.m_pLineEditDirectory->text() + "/" + newProject.m_pLineEditFileName->text()).toStdString();
-		strFileName += (isAtEndOfString(strFileName, ".db")) ? "" : ".db";
-		replace(strFileName.begin(), strFileName.end(), '/', '\\');
-
-		QDir dir(strFileName.c_str());
-		if(dir.exists(strFileName.c_str()))	{
-			QMessageBox msgBox;
-			string strText = "File " + strFileName + " already exists. \n Press OK to overwrite it, else press NO.";
-			msgBox.setText(strText.c_str());
-			msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::No);
-			msgBox.setWindowTitle("Warning window");
-			int nRes = msgBox.exec();
-
-			if (nRes == QMessageBox::Ok)	{
-				dir.remove(strFileName.c_str());
-				m_pShopBuilder->newDB(strFileName);
-			} else {
-				newProject.close();
-				slotNewProject();
-			}
-		}
-		m_pShopBuilder->newDB(strFileName);
-	}
-	return;
+	m_pShopBuilder->newDB();
 }
 
 //---------------------------------------------------------------------------------------
 
 void ShopBuilder_GUI::slotOpenDB() {
-	QString qstrFileName = openDialog("*.db");
+	m_pShopBuilder->readDB();
 
-	if(isAtEndOfString(qstrFileName.toStdString(), ".db") == false)	{
-		QMessageBox msgBox;
-		msgBox.setText(qstrFileName + " Could not open file");
-		msgBox.setStandardButtons(QMessageBox::Ok);
-		msgBox.setWindowTitle("Error window");
-		int nRes = msgBox.exec();
-		return;
-	}
-	m_pShopBuilder->readDB(qstrFileName.toStdString());
+	//QString qstrFileName = openDialog("*.db");
+
+	//if(isAtEndOfString(qstrFileName.toStdString(), ".db") == false)	{
+	//	QMessageBox msgBox;
+	//	msgBox.setText(qstrFileName + " Could not open file");
+	//	msgBox.setStandardButtons(QMessageBox::Ok);
+	//	msgBox.setWindowTitle("Error window");
+	//	int nRes = msgBox.exec();
+	//	return;
+	//}
+	//m_pShopBuilder->readDB(qstrFileName.toStdString());
 }
 
 //=========================================================================================
 
 void ShopBuilder_GUI::slotSaveDB() {
+	m_pShopBuilder->saveDB();
+}
+
+//---------------------------------------------------------------------------------------
+
+void ShopBuilder_GUI::slotSaveAsDB()	{
 	QString qstrFileName = saveDialog("*.db");
-	if(qstrFileName != "") {
+	if(isAtEndOfString(qstrFileName.toStdString(), ".db") == false)	{
 		QMessageBox msgBox;
 		msgBox.setText(qstrFileName + "Save");
 		msgBox.setStandardButtons(QMessageBox::Ok);
@@ -246,26 +221,11 @@ void ShopBuilder_GUI::slotSaveDB() {
 
 //---------------------------------------------------------------------------------------
 
-void ShopBuilder_GUI::slotSaveAsDB()	{
-	//SaveAs_GUI saveAsGUI;
-
-	////To get a widget without a "TitleBar"
-	//saveAsGUI.setWindowFlags(Qt::FramelessWindowHint);
-	//saveAsGUI.exec();
-	//return;
-}
-
-//---------------------------------------------------------------------------------------
-
 void ShopBuilder_GUI::slotCloseDB()	{
-	/* Close if no unsaved changes are done to the project
-	If the project has been modified, then write a warning message admonishing to the changes
-	done which will be lost if not saved.
-	If YES pressed, open Save As dialog
-	*/
-
-	std::cout << "slot Close entered" << std::endl;
-	return;
+	slotSaveDB();
+	
+	const string & strCurrentFile = m_pShopBuilder->getCurrentFileName();
+	m_pShopBuilder->closeDB(strCurrentFile);
 }
 
 //---------------------------------------------------------------------------------------
@@ -386,3 +346,4 @@ void ShopBuilder_GUI::slotAddNewItem(const QString & aqstrItemName)	{
 }
 
 //=======================================================================================
+

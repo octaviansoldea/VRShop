@@ -1,16 +1,20 @@
 #ifndef VR_CUSTOMER_H
 #define VR_CUSTOMER_H
 
-#include "VRClient.h"
+#include "VRVisitor.h"
 #include "VRUserAccount.h"
 
 namespace VR	{
+	class Avatar;
 
-	class Customer : public Client {
+	class Customer : public Visitor {
 	public:
 		Customer();
+		~Customer();
 
-		virtual void trySignIn();
+		virtual const char* className() const;
+
+		virtual bool trySignIn();
 
 	protected:
 		UserAccount m_UserAccount;

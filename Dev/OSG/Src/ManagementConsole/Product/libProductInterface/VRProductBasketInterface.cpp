@@ -6,7 +6,7 @@
 #include <QPushButton>
 #include <QToolButton>
 
-#include <QEvent>
+#include "VRQFrame.h"
 
 #include "VRProductBasketInterface.h"
 
@@ -18,11 +18,12 @@ ProductBasketInterface::ProductBasketInterface(
 QToolButton * apToolButtonMyBasket,
 QLabel * apLabelBasketCase,
 QFrame * apFrameItemsBasket,
-QFrame * apFrameProductItem,
+//QFrame * apFrameProductItem,
+VRQFrame * apVRQFrameProductItem,
 QFrame * apFrameProductItemHover,
 QDoubleSpinBox * apDoubleSpinBoxQuantity,
-QPushButton * apPushButtonHoverDetails,
-QPushButton * apPushButtonHoverRemove,
+QPushButton * apPushButtonDetails,
+QPushButton * apPushButtonRemove,
 QLabel * apLabelProductImage,
 QLabel * apLabelProductInfo,
 QLabel * apLabelBasketProductPrice,
@@ -32,11 +33,12 @@ QPushButton * apPushButtonBasketForward)	{
 	m_pToolButtonMyBasket = apToolButtonMyBasket;
 	m_pLabelBasketCase = apLabelBasketCase;
 	m_pFrameItemsBasket = apFrameItemsBasket;
-	m_pFrameProductItem = apFrameProductItem;
+//	m_pFrameProductItem = apFrameProductItem;
+	m_pVRQFrameProductItem = apVRQFrameProductItem;
 	m_pFrameProductItemHover = apFrameProductItemHover;
 	m_pDoubleSpinBoxQuantity = apDoubleSpinBoxQuantity;
-	m_pPushButtonHoverDetails = apPushButtonHoverDetails;
-	m_pPushButtonHoverRemove = apPushButtonHoverRemove;
+	m_pPushButtonDetails = apPushButtonDetails;
+	m_pPushButtonRemove = apPushButtonRemove;
 	m_pLabelProductImage = apLabelProductImage;
 	m_pLabelProductInfo = apLabelProductInfo;
 	m_pLabelBasketProductPrice = apLabelBasketProductPrice;
@@ -44,16 +46,17 @@ QPushButton * apPushButtonBasketForward)	{
 	m_pPushButtonBasketForward = apPushButtonBasketForward;
 
 	connect(m_pToolButtonMyBasket,SIGNAL(toggled(bool)),this,SLOT(slotMyBasket(bool)));
-	connect(m_pToolButtonMyBasket,SIGNAL(toggled(bool)),this,SLOT(slotMyBasket(bool)));
 
-	connect(m_pPushButtonHoverDetails,SIGNAL(clicked(bool)),this,SLOT(slotHoverDetails()));
-	connect(m_pPushButtonHoverRemove,SIGNAL(clicked(bool)),this,SLOT(slotHoverRemove()));
+	connect(m_pPushButtonDetails,SIGNAL(clicked(bool)),this,SLOT(slotProductDetails()));
+	connect(m_pPushButtonRemove,SIGNAL(clicked(bool)),this,SLOT(slotProductRemove()));
 	connect(m_pDoubleSpinBoxQuantity,SIGNAL(editingFinished()),this,SLOT(slotSetQuantity()));
 
 	connect(m_pPushButtonBasketBack,SIGNAL(clicked(bool)),this,SLOT(slotBasketBack()));
 	connect(m_pPushButtonBasketForward,SIGNAL(clicked(bool)),this,SLOT(slotBasketForward()));
 
 	m_pFrameProductItemHover->setVisible(false);
+
+	connect(m_pVRQFrameProductItem,SIGNAL(hovered(bool)),this,SLOT(slotProductItemHovered(bool)));
 }
 
 //----------------------------------------------------------------------
@@ -71,18 +74,18 @@ void ProductBasketInterface::slotMyBasket(bool abIndicator)	{
 
 //-----------------------------------------------------------------------------------------
 
-void ProductBasketInterface::slotProductItemHovered()	{
-	m_pFrameProductItemHover->setVisible(true);
+void ProductBasketInterface::slotProductItemHovered(bool abIndicator)	{
+	m_pFrameProductItemHover->setVisible(abIndicator);
 }
 
 //-----------------------------------------------------------------------------------------
 
-void ProductBasketInterface::slotHoverDetails()	{
+void ProductBasketInterface::slotProductDetails()	{
 }
 
 //-----------------------------------------------------------------------------------------
 
-void ProductBasketInterface::slotHoverRemove()	{
+void ProductBasketInterface::slotProductRemove()	{
 }
 
 //-----------------------------------------------------------------------------------------

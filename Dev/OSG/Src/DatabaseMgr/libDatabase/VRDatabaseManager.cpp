@@ -108,12 +108,12 @@ bool DatabaseManager::createTable(const string & astrTableName, const string & a
 	const string * pstrTableName = &astrTableName;
 	if (pstrTableName->empty())	{
 		printError("Table name not given");
-		return (0);
+		return false;
 	}
 	
 	if (containsTable(pstrTableName->c_str()))	{
 		printWarning(("Table " + *pstrTableName + " already exists and is not created.").c_str());
-		return (0);
+		return false;
 	}
 
 	const string * pSql = &astrTableStmt;

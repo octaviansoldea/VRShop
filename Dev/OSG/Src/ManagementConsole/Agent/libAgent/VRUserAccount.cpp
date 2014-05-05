@@ -85,6 +85,15 @@ void UserAccount::removeUserAccount()	{
 
 //------------------------------------------------------------------------------
 
+bool UserAccount::checkUserAccountValidity()	{
+	bool bRes = false;
+
+
+	return bRes;
+}
+
+//------------------------------------------------------------------------------
+
 void UserAccount::createUserAccountDB() const	{
 }
 

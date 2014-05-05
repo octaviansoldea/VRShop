@@ -13,7 +13,7 @@ namespace VR	{
 		unsigned long m_nProductCode;
 		std::string m_strProductDescription;
 		std::string m_strProductShortDescription;
-		unsigned long m_nManufacturerID;
+		std::string m_strManufacturerName;
 		std::string m_strManufacturerOrigin;
 		std::string m_strDateAdded;
 		std::string m_strDateLastModified;

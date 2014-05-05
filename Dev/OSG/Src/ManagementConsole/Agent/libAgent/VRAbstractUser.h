@@ -1,23 +1,24 @@
 #ifndef VR_ABSTRACT_USER_H
 #define VR_ABSTRACT_USER_H
 
-#include <list>
-
-#include "VRProduct.h"
+#include <vector>
 #include "VRAvatar.h"
+#include "VRProduct.h"
 
 namespace VR {
-	class AbstractUser : public Avatar {
+	class AbstractUser	{
 	public:
 		AbstractUser();
 		virtual ~AbstractUser() = 0;
+		virtual const char* className() const;
 
-		virtual void trySignIn() = 0;
+		virtual bool trySignIn() = 0;
 
 		void findProductInShop(const Product & aProduct) const;
 
 	protected:
-		std::list<Product> m_Basket;
+		Avatar m_Avatar;
+		std::vector<Product> m_Basket;
 	};
 }
 #endif //VR_ABSTRACT_USER_H

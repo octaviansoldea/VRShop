@@ -7,4 +7,5 @@ SUBDIRS(
   Cashier
   Product
   Agent
+  ServerClient
 )

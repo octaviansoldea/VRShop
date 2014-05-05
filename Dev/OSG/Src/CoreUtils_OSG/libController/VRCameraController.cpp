@@ -144,8 +144,8 @@ KeyboardMouseManipulatorShopClient * apKeyboardMouseManipulatorShopClient)	{
 	m_pToolButton3View = apToolButton3View;
 	m_pKeyboardMouseManipulatorShopClient = apKeyboardMouseManipulatorShopClient;
 
-	//connect(m_pToolButton1View,SIGNAL(toggled(bool)),this,SLOT(slotSetCameraPerspective(bool)));
-	//connect(m_pToolButton3View,SIGNAL(toggled(bool)),this,SLOT(slotSetCameraPerspective(bool)));
+	connect(m_pToolButton1View,SIGNAL(toggled(bool)),this,SLOT(slotSetCameraPerspective(bool)));
+	connect(m_pToolButton3View,SIGNAL(toggled(bool)),this,SLOT(slotSetCameraPerspective(bool)));
 
 	slotSetCameraPerspective(m_pToolButton1View->isChecked());
 }

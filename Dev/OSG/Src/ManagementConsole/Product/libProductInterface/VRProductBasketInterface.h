@@ -10,6 +10,8 @@ class QPushButton;
 class QToolButton;
 
 namespace VR	{
+	class VRQFrame;
+
 	class ProductBasketInterface : public QObject	{
 		Q_OBJECT
 	public:
@@ -17,11 +19,12 @@ namespace VR	{
 			QToolButton * apToolButtonMyBasket,
 			QLabel * apLabelBasketCase,
 			QFrame * apFrameItemsBasket,
-			QFrame * apFrameProductItem,
+//			QFrame * apFrameProductItem,
+			VRQFrame * apVRQFrameProductItem,
 			QFrame * apFrameProductItemHover,
 			QDoubleSpinBox * apDoubleSpinBoxQuantity,
-			QPushButton * apPushButtonHoverDetails,
-			QPushButton * apPushButtonHoverRemove,
+			QPushButton * apPushButtonDetails,
+			QPushButton * apPushButtonRemove,
 			QLabel * apLabelProductImage,
 			QLabel * m_pLabelProductInfo,
 			QLabel * apLabelBasketProductPrice,
@@ -35,11 +38,12 @@ namespace VR	{
 		QToolButton * m_pToolButtonMyBasket;
 		QLabel * m_pLabelBasketCase;
 		QFrame * m_pFrameItemsBasket;
-		QFrame * m_pFrameProductItem;
+//		QFrame * m_pFrameProductItem;
+		VRQFrame * m_pVRQFrameProductItem;
 		QFrame * m_pFrameProductItemHover;
 		QDoubleSpinBox * m_pDoubleSpinBoxQuantity;
-		QPushButton * m_pPushButtonHoverDetails;
-		QPushButton * m_pPushButtonHoverRemove;
+		QPushButton * m_pPushButtonDetails;
+		QPushButton * m_pPushButtonRemove;
 		QLabel * m_pLabelProductImage;
 		QLabel * m_pLabelProductInfo;
 		QLabel * m_pLabelBasketProductPrice;
@@ -49,10 +53,10 @@ namespace VR	{
 
 	private slots:
 		void slotMyBasket(bool abIndicator);
-		void slotProductItemHovered();
+		void slotProductItemHovered(bool abIndicator);
 
-		void slotHoverDetails();
-		void slotHoverRemove();
+		void slotProductDetails();
+		void slotProductRemove();
 		void slotSetQuantity();
 
 		void slotBasketBack();

@@ -5,6 +5,7 @@
 #include <QVBoxLayout>
 
 #include "VRScene.h"
+#include "VRProduct.h"
 #include "VRProductManager.h"
 
 #include "VRFurniture.h"
@@ -30,32 +31,51 @@ using namespace std;
 
 ShoppingPlace::ShoppingPlace(
 OSGQT_Widget * apOSGQTWidget,
-PickAndDragHandlerShopClient * apPickAndDragHandlerShopClient) :
+OSGQT_Widget * apOSGQTWidgetMap) :
 m_pOSGQTWidget(apOSGQTWidget),
-m_strDBFileName("../../../Databases/Untitled.db")	{	
+m_pOSGQTWidgetMap(apOSGQTWidgetMap),
+m_strDBFileName("")	{	
 
 	//Define a scene as a group
 	m_pScene = new Scene();
 
-	PickAndDragHandlerShopClient * pPickAndDragHandlerShopClient = apPickAndDragHandlerShopClient;
-	
+	//Ref_ptr
+	m_pPickAndDragHandlerShopClient = new PickAndDragHandlerShopClient;
+
+	KeyboardMouseManipulatorShopClient *pKeyboardMouseManipulatorShopClient =
+		new KeyboardMouseManipulatorShopClient;
+
 	//Send scene to the Widget
 	m_pOSGQTWidget->setSceneData(m_pScene);
-	m_pOSGQTWidget->setCameraManipulator(new KeyboardMouseManipulatorShopClient);
-	m_pOSGQTWidget->addEventHandler(pPickAndDragHandlerShopClient);
+	m_pOSGQTWidget->setCameraManipulator(pKeyboardMouseManipulatorShopClient);
+	m_pOSGQTWidget->addEventHandler(m_pPickAndDragHandlerShopClient);
+	m_pOSGQTWidget->show();
+
+	//Map of the Scene
+	QGridLayout * pLayoutMap = dynamic_cast<QGridLayout *>(m_pOSGQTWidgetMap->layout());
+	pLayoutMap->setMargin(2);
+
+	m_pOSGQTWidgetMap->setCameraManipulator(pKeyboardMouseManipulatorShopClient);
+	m_pOSGQTWidgetMap->setSceneData(m_pScene);
+	m_pOSGQTWidgetMap->show();
+
 
 	ref_ptr<Node> pAxes = osgDB::readNodeFile("../../../Resources/Models3D/axes.osgt");
 	ref_ptr<Grid> pGrid = new Grid();
 	m_pScene->addChild(pAxes);
 	m_pScene->addChild(pGrid);
 
-	m_pProductMgr = new ProductManager();
+	//A pointer to products sent to the scene
+	m_pProductMgr = new ProductManager;
+	m_pScene->addChild(m_pProductMgr);
+
+	insertProducts();
 }
 
 //----------------------------------------------------------------------
 
 ShoppingPlace::~ShoppingPlace() {
-	
+
 }
 
 //----------------------------------------------------------------------
@@ -69,6 +89,21 @@ ref_ptr<Scene> ShoppingPlace::getScene() const	{
 ref_ptr<ProductManager> ShoppingPlace::getProducts() const	{
 	return m_pProductMgr;
 }
+
+//----------------------------------------------------------------------
+
+PickAndDragHandlerShopClient * ShoppingPlace::getPicker() const	{
+	return m_pPickAndDragHandlerShopClient;
+}
+
+//----------------------------------------------------------------------
+
+bool ShoppingPlace::createClientScene()	{
+	// ../../../Databases/Untitled.db
+
+	return true;
+}
+
 //----------------------------------------------------------------------
 
 void ShoppingPlace::gridOnOff(bool abIndicator) {
@@ -83,3 +118,17 @@ void ShoppingPlace::gridOnOff(bool abIndicator) {
 }
 
 //----------------------------------------------------------------------
+
+void ShoppingPlace::insertProducts()	{
+	ref_ptr < AbstractObject > pAbstractObject = 
+		dynamic_cast<AbstractObject*>(AbstractObject::createInstance("Plate3D").get());
+	pAbstractObject->predefinedObject();
+
+	ProductParams pParams;
+	pParams.m_strProductName = "bla1 bla2 bla3 bla4 bla5 bla6 bla7 bla8";
+	pParams.m_flPricePerUnit = 0.85;
+	pParams.m_strManufacturerName = "Samsung Corp.";
+
+	Product * pProduct = new Product(pAbstractObject,pParams);
+	m_pProductMgr->addNewProduct(pProduct);
+}

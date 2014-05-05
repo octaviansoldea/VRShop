@@ -17,14 +17,20 @@ namespace VR	{
 			QToolButton * apToolButtonUser,
 			QLineEdit * apLineEditPassword,
 			QLineEdit * apLineEditUserName,
-			QPushButton * apPushButtonSignIn
+			QPushButton * apPushButtonSignIn,
+			QPushButton * apPushButtonSignOut,
+			QPushButton * apPushButtonRemoveAccount,
+			QPushButton * apPushButtonChangeSettings
 		);	//End of constructor
 
 		~AgentInterface();
 
 	private slots:
-		void slotUserClicked(bool abIndicator);
-		void slotSignUp();
+		void slotUserClicked(bool abIsProfileVisible);
+		void slotSignIn();
+		void slotSignOut();
+		void slotRemoveAccount();
+		void slotChangeSettings();
 
 	private:
 		QFrame * m_pFrameSettings;
@@ -32,6 +38,9 @@ namespace VR	{
 		QLineEdit * m_pLineEditPassword;
 		QLineEdit * m_pLineEditUserName;
 		QPushButton * m_pPushButtonSignIn;
+		QPushButton * m_pPushButtonSignOut;
+		QPushButton * m_pPushButtonRemoveAccount;
+		QPushButton * m_pPushButtonChangeSettings;
 	};
 }
 #endif //VR_AGENT_INTERFACE_H

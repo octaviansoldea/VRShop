@@ -195,7 +195,7 @@ string Plate3D::prepareRowData(const std::string & astrParentName)	{
 
 	strPlate3DParams += to_string((long double)plate3DParams.m_flAngleYZ) + "_";
 	strPlate3DParams += to_string((long double)plate3DParams.m_flAngleXZ) + "_";
-	strPlate3DParams += to_string((long double)plate3DParams.m_flAngleXY) + ":";
+	strPlate3DParams += to_string((long double)plate3DParams.m_flAngleXY) + ";";
 
 
 	int nI;
@@ -203,7 +203,7 @@ string Plate3D::prepareRowData(const std::string & astrParentName)	{
 	for (nI=0;nI<3;nI++)	{
 		strColor += to_string((long double)plate3DParams.m_arrflRGBA[nI]) + "_";
 	}
-	strColor += to_string((long double)plate3DParams.m_arrflRGBA[3]) + ":";
+	strColor += to_string((long double)plate3DParams.m_arrflRGBA[3]) + ";";
 
 	strPlate3DParams += strColor;
 

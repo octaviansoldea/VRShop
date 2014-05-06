@@ -1,6 +1,8 @@
 #ifndef VR_VISITOR_H
 #define VR_VISITOR_H
 
+#include "VRBasket.h"
+
 #include "VRAbstractUser.h"
 
 /*	
@@ -9,8 +11,6 @@
 */
 
 namespace VR	{
-	class Avatar;
-
 	struct VisitorParams	{
 		std::string m_strVisitorIP;
 	};
@@ -21,26 +21,22 @@ namespace VR	{
 
 		virtual const char* className() const;
 
+	protected:
 		virtual bool trySignIn();
+		bool openAccount();
 
 		// Track client's activity: client_ID, access_date/time, exit_date/time, products_observed
-
-		void pay();
-
-		void openAccount();
-
-		std::vector<Product> getBasket() const;
-
-		void addProduct2Basket(const Product & aProduct) const;//check if the shop can satisfy the request.
-		void removeProductFromBasket(const Product & aProduct) const;
-		void findProductInBasket(const Product & aProduct) const;
+		
+		bool addProduct2Basket(const Product & aProduct) const;//check if the shop can satisfy the request.
+		bool removeProductFromBasket(const Product & aProduct) const;
+		void listProductsInBasket() const;
+		void inspectProduct(const Product & aProduct) const;
 
 		void listProductComplements(std::list < Product > & alstProducts, const Product * apProduct);	//e.g. Milk => cereals
 		void listProductSubstitutes(std::list < Product > & alstProducts, const Product * apProduct);	//e.g. Milk1 => Mllk2 or Water => Juice
 
-		float calculateBasketValue() const;	//Calculate the value of the products in the basket
 
-
+		void requestHelp();
 
 	};
 }

@@ -32,6 +32,8 @@ INCLUDE_DIRECTORIES(
 
 SET(SRCS
   VRAvatar.h VRAvatar.cpp
+  VRAvatarAction.h VRAvatarAction.cpp
+  VRAnimationPath.h VRAnimationPath.cpp
 )
 
 ADD_LIBRARY(libAvatar

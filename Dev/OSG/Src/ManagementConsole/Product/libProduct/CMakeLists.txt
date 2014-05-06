@@ -47,6 +47,7 @@ INCLUDE_DIRECTORIES(
 SET(SRCS
 	VRProduct.h VRProduct.cpp
 	VRProductManager.h VRProductManager.cpp
+	VRBasket.h VRBasket.cpp
 )
 
 #Library to be later used in the main

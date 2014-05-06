@@ -42,7 +42,7 @@ m_strDBFileName("")	{
 	//Ref_ptr
 	m_pPickAndDragHandlerShopClient = new PickAndDragHandlerShopClient;
 
-	KeyboardMouseManipulatorShopClient *pKeyboardMouseManipulatorShopClient =
+	ref_ptr<KeyboardMouseManipulatorShopClient> pKeyboardMouseManipulatorShopClient =
 		new KeyboardMouseManipulatorShopClient;
 
 	//Send scene to the Widget

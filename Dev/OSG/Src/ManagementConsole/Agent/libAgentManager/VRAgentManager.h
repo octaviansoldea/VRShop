@@ -16,6 +16,9 @@ namespace VR {
 		void addUser(AbstractUser * apAbstractUser);
 		void removeUser(AbstractUser * apAbstractUser);
 
+		//user switching status between being a visitor and a customer
+		void userChangedStatus(AbstractUser * apAbstractUser);
+
 		long getNumberOfUsers() const;
 
 	private:

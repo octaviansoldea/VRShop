@@ -8,7 +8,6 @@
 #include <QString>
 
 #include "VRScene.h"
-#include "VRAgentManager.h"
 
 #include <QTcpSocket>
 

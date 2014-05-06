@@ -15,8 +15,18 @@ namespace VR	{
 		virtual const char* className() const;
 
 		virtual bool trySignIn();
+		bool trySignOut();
+		bool tryChangeSettings();
 
-	protected:
+		void pay();
+
+
+	private:
+		bool tryPay();
+
+		void adjustBasket();
+		void printError(std::string & astrmessage);
+
 		UserAccount m_UserAccount;
 	};
 }

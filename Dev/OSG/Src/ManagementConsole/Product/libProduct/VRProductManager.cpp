@@ -67,10 +67,11 @@ Product * ProductManager::getProduct(const AbstractObject * apAbstractObject)	{
 	if (apAbstractObject == NULL)
 		return 0;
 
-	vector<Product*>::iterator it;
-	for (it = m_pvecProducts.begin(); it != m_pvecProducts.end(); it++)	{
-		if ((*it)->getRepresentation() == apAbstractObject)
+	list<Product*>::iterator it;
+	for (it = m_lstProducts.begin(); it != m_lstProducts.end(); it++)	{
+		if ((*it)->getRepresentation() == apAbstractObject)	{
 			return *it;
+		}
 	}
 	return 0;
 }
@@ -80,7 +81,7 @@ Product * ProductManager::getProduct(const AbstractObject * apAbstractObject)	{
 void ProductManager::addNewProduct(Product * apProduct)	{
 	m_pProduct = dynamic_cast<VR::Product*>(apProduct);
 	if (m_pProduct != 0)	{
-		m_pvecProducts.push_back(m_pProduct);
+		m_lstProducts.push_back(m_pProduct);
 
 		//Fill osg group whose pointer is sent to the scene 
 		//with the 3D representation of the product
@@ -96,7 +97,7 @@ void ProductManager::addNewProduct()	{
 	modifyProduct(m_pProduct);
 
 	if (m_pProduct != 0)	{
-		m_pvecProducts.push_back(m_pProduct);
+		m_lstProducts.push_back(m_pProduct);
 
 		//Fill osg group whose pointer is sent to the scene 
 		//with the 3D representation of the product
@@ -125,8 +126,8 @@ void ProductManager::removeProduct(Product * apProduct)	{
 
 	if (bRes == QDialog::Accepted)	{	//Remove product confirmed
 		removeChild(m_pProduct->getRepresentation());	//remove 3D
-		m_pvecProducts.erase(remove(m_pvecProducts.begin(), m_pvecProducts.end(), m_pProduct),
-			m_pvecProducts.end());	//Remove from the vector of products
+		m_lstProducts.erase(remove(m_lstProducts.begin(), m_lstProducts.end(), m_pProduct),
+			m_lstProducts.end());	//Remove from the vector of products
 	} else {
 		m_pProduct = 0;
 		//Remove product cancelled
@@ -176,4 +177,51 @@ void ProductManager::modifyProduct(Product * apProduct)	{
 	} else {
 		m_pProduct = 0;
 	}
+}
+
+//-----------------------------------------------------------------------------
+
+void ProductManager::createDBTableProduct() const	{
+	vector<pair<string,string>> avecStmtPairs;
+	string strSQLFormat =
+		"CREATE TABLE IF NOT EXISTS Products ( \
+		ProductCode TEXT UNIQUE \
+		ProductCategory TEXT \
+		ProductName TEXT \
+		ProductDescription TEXT \
+		ProductShortDescription TEXT \
+		ManufacturerID INTEGER UNIQUE \
+		ManufacturerOrigin TEXT \
+		ProductUnit TEXT \
+		PricePerUnit TEXT \
+		Quantity TEXT \
+		TaxRate TEXT \
+		Currency TEXT \
+		ProductFrame TEXT \
+		ProductImage TEXT \
+		ProductSize TEXT \
+		FOREIGN KEY (ManufacturerID) REFERENCES Manufacturer(ManufacturerID)";
+	avecStmtPairs.push_back(make_pair("Products", strSQLFormat));
+
+	strSQLFormat =
+		"CREATE TABLE IF NOT EXISTS Manufacturer ( \
+		ManufacturerID INTEGER UNIQUE \
+		ManufacturerName TEXT \
+		ManufacturerAddress TEXT \
+		ManufacturerOrigin TEXT \
+		ManufacturerURL TEXT);";
+	avecStmtPairs.push_back(make_pair("Manufacturer", strSQLFormat));
+}
+
+//-----------------------------------------------------------------------------
+
+void ProductManager::productViewed(const Product & aProduct /*, User & aUser*/)	{
+
+	//When a product is viewed, update the database
+	string strSQLCommand;
+
+	strSQLCommand = "UPDATE " /* + PRODUCT_TABLE + */ 
+		"SET products_viewed = products_viewed+1"
+		"WHERE products_id = '" /*+ GET_PRODUCT_ID + */ "'";
+
 }

@@ -1,7 +1,7 @@
 #ifndef VR_AGENT_MANAGER_H
 #define VR_AGENT_MANAGER_H
 
-#include <vector>
+#include <list>
 
 namespace VR {
 	class AbstractUser;
@@ -13,8 +13,10 @@ namespace VR {
 
 		virtual const char* className() const;
 
+		bool newUserRequest();
 		void addUser(AbstractUser * apAbstractUser);
 		void removeUser(AbstractUser * apAbstractUser);
+		void updateUser(AbstractUser * apAbstractUser);
 
 		//user switching status between being a visitor and a customer
 		void userChangedStatus(AbstractUser * apAbstractUser);
@@ -22,7 +24,8 @@ namespace VR {
 		long getNumberOfUsers() const;
 
 	private:
-		std::vector<AbstractUser*> m_vecUsers;
+		std::list<AbstractUser*> m_lstUsers;
+		int m_nMaxNrOfAgents;
 	};
 }
 #endif //VR_AGENT_MANAGER_H

@@ -26,6 +26,7 @@ namespace VR	{
 		DatabaseManager(const DatabaseManagerParams & aDBMgrParams, QObject * parent = 0);
 		virtual ~DatabaseManager();
 
+
 	protected:
 		bool createTable(const std::string & astrTableName, const std::string & astrTableStmt);
 		bool removeTable(const QString& aqstrTableName);

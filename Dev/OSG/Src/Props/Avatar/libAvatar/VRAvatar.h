@@ -9,9 +9,14 @@
 namespace VR {
 	class AnimationPath;
 
-	class Avatar : public osg::MatrixTransform, QObject	{
+	class Avatar : public QObject, public osg::MatrixTransform	{
+		Q_OBJECT
+
 	public:
-		Avatar();
+		Avatar(QObject * parent=0);
+		~Avatar();
+
+		virtual const char* className() const;
 
 		void rotateHeadTo(const osg::Vec3d & avec3dOrientation, float aflSpeed);
 		void lookAround();	//Just moves the head in a predefined manner
@@ -30,15 +35,11 @@ namespace VR {
 		void animatePick();
 		void stopAnimation();
 
-	protected:
-		
-		Q_OBJECT
-
 	public slots:
 
-		void step();
+		void step() {};
 
-	
+	public:
 		typedef enum STATUS {
 			SITTING,
 			STANDING,

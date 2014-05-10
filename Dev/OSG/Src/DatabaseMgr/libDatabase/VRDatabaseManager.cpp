@@ -25,8 +25,7 @@ using namespace VR;
 
 DatabaseManagerParams::DatabaseManagerParams() :	
 m_qstrDBName("../../../Databases/Default.db"),
-m_qstrConnectionName("")
-{
+m_qstrConnectionName("")	{
 }
 
 //===========================================================================

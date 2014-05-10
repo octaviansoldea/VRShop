@@ -49,11 +49,16 @@ void UntransformedPlate2D::setColor(const vector < float > & aarrflColor) {
 
 void UntransformedPlate2D::setTexture(const string & astrFileName) {
     ref_ptr<Vec2Array> pTexCoords = new Vec2Array(4);
+    //(*pTexCoords)[0].set(0.0, 0.0);
+    //(*pTexCoords)[1].set(1.0, 0.0);
+    //(*pTexCoords)[2].set(1.0, 1.0);
+    //(*pTexCoords)[3].set(0.0, 1.0);
+
     (*pTexCoords)[0].set(0.0, 0.0);
-    (*pTexCoords)[1].set(1.0, 0.0);
+    (*pTexCoords)[1].set(0.0, 1.0);
     (*pTexCoords)[2].set(1.0, 1.0);
-    (*pTexCoords)[3].set(0.0, 1.0);
-    m_pGeometry->setTexCoordArray(0,pTexCoords);
+    (*pTexCoords)[3].set(1.0, 0.0);
+	m_pGeometry->setTexCoordArray(0,pTexCoords);
 
 	ref_ptr<Vec4Array> pColors = new Vec4Array(1);
     (*pColors)[0].set(1.0,1.0,1.0,1.0);

@@ -1,6 +1,5 @@
 #include "VRAgentManager.h"
 
-#include <vector>
 #include <string>
 
 using namespace VR;
@@ -24,21 +23,34 @@ const char* AgentManager::className() const	{
 
 //------------------------------------------------------------------------------
 
+bool AgentManager::newUserRequest()	{
+	bool bRes = false;
+
+	//If all steps pass, return true and proceed
+
+	// else send to the server a denial which is passed to the user
+
+	return bRes;
+}
+
+//------------------------------------------------------------------------------
+
 void AgentManager::addUser(AbstractUser * apAbstractUser)	{
 	if (apAbstractUser == 0)	{
 		return;
 	} else {
-		m_vecUsers.push_back(apAbstractUser);
+		m_lstUsers.push_back(apAbstractUser);
 	}
 }
 
 //------------------------------------------------------------------------------
 
 void AgentManager::removeUser(AbstractUser * apAbstractUser)	{
+	m_lstUsers.remove(apAbstractUser);
 }
 
 //------------------------------------------------------------------------------
 
 long AgentManager::getNumberOfUsers() const	{
-	return m_vecUsers.size();
+	return m_lstUsers.size();
 }

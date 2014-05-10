@@ -8,6 +8,7 @@
 namespace VR	{
 	struct ShoppingPlace;
 	class AbstractObject;
+	class Avatar;
 	class Grid;
 	class ProductInterface;
 	class AgentInterface;
@@ -34,6 +35,7 @@ namespace VR	{
 
 	private slots:
 		void slotProductClicked(const VR::AbstractObject * apAbstractObject);
+		void slotAvatarClicked(const Avatar * apAvatar);
 	};
 }
 #endif //VR_SHOPPING_PLACE_GUI_H

@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <list>
 
 #include <osg/Group>
 
@@ -38,7 +39,12 @@ namespace VR	{
 		RemoveProduct_GUI * m_pRemoveProduct_GUI;
 
 		Product * m_pProduct;
-		std::vector<Product*> m_pvecProducts;
+		std::list<Product*> m_lstProducts;
+
+
+		void createDBTableProduct() const;	//Let be Manufacturers in a separate table
+		void productViewed(const Product & aProduct /* User & aUser*/);
+
 	};
 }
 #endif //VR_PRODUCT_MANAGER_H

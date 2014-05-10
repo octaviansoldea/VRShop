@@ -55,7 +55,9 @@ m_strDBFileName("../../../Databases/SysTemp.db")	{
 
 	addScene(m_pScene);	//Adds the Scene into the vector of scenes
 	string & strScene = m_pScene->SQLFieldValues();
-//	m_pdbMgr->insertScene(strScene);
+
+	m_pdbMgr = new DatabaseManagerShopEditor();
+	m_pdbMgr->insertScene(strScene);
 
 	m_pEventHandler = new PickAndDragHandlerShopEditor;
 

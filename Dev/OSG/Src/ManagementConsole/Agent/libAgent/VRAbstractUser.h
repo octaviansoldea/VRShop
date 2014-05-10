@@ -1,11 +1,17 @@
 #ifndef VR_ABSTRACT_USER_H
 #define VR_ABSTRACT_USER_H
 
-#include "VRAvatar.h"
+#include <string>
 #include "VRBasket.h"
 
 namespace VR {
+	class Basket;
+	class Product;
+	class Avatar;
+
 	class PickAndDragHandlerShopClient;
+	class ShoppingPlace_GUI;
+
 	class AbstractUser	{
 	public:
 		AbstractUser();
@@ -13,6 +19,9 @@ namespace VR {
 		virtual const char* className() const;
 
 		void setPicker(PickAndDragHandlerShopClient * apPickAndDragHandlerShopClient);
+
+		Avatar * getAvatar();
+		Basket * getBasket();	//This basket is read by the "VRTransaction.h" before the payment
 	
 	protected:
 		virtual bool trySignIn() = 0;
@@ -26,10 +35,12 @@ namespace VR {
 		void sendMessage(std::string & astrMessage);
 		void receiveMessage(std::string & astrMessage);
 
-		Avatar m_Avatar;
+		Avatar * m_pAvatar;
 		Basket m_Basket;
 
 		PickAndDragHandlerShopClient * m_pPickAndDragHandlerShopClient;
+
+		ShoppingPlace_GUI * m_pShoppingPlace_GUI;
 	};
 }
 #endif //VR_ABSTRACT_USER_H

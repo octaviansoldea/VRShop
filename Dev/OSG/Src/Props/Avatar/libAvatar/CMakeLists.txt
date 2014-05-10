@@ -25,9 +25,22 @@ ELSE(Qt5_FOUND)
   )
 ENDIF(Qt5_FOUND)
 
+#MOC according to the Qt version
+IF(Qt5_FOUND)
+  QT5_WRAP_UI(UI_SRCS		)
+  QT5_WRAP_CPP(MOC_SRCS 	VRAvatar.h)
+ELSE(Qt5_FOUND)
+  QT4_WRAP_CPP(MOC_SRCS		VRAvatar.h)  
+  QT4_WRAP_UI(UI_SRCS		)
+ENDIF(Qt5_FOUND)
+
+
 INCLUDE_DIRECTORIES(
 	${OPENSCENEGRAPH_INCLUDE_DIRS}
     ${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
+	${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
+	${CMAKE_SOURCE_DIR}/Props/GeometricShape/libGeometricShape
+	${CMAKE_SOURCE_DIR}/Props/Equipment/Furniture/libFurniture
 )
 
 SET(SRCS
@@ -37,7 +50,7 @@ SET(SRCS
 )
 
 ADD_LIBRARY(libAvatar
-  ${SRCS}
+  ${SRCS} ${MOC_SRCS} ${UI_SRCS}
 )
 
 SET_PROPERTY(TARGET libAvatar PROPERTY FOLDER Avatar)

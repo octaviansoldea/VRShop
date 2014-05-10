@@ -1,4 +1,4 @@
-#include "VRProduct.h"
+#include "VRBasket.h"
 #include "VRAvatar.h"
 
 #include <string>
@@ -11,12 +11,19 @@ using namespace std;
 
 //==============================================================================
 
-AbstractUser::AbstractUser()	{
+AbstractUser::AbstractUser() :
+m_pShoppingPlace_GUI(0)	{
+
+	m_pAvatar = new Avatar();
 }
 
 //------------------------------------------------------------------------------
 
 AbstractUser::~AbstractUser()	{
+	if (m_pShoppingPlace_GUI)
+		delete m_pShoppingPlace_GUI;
+
+	delete m_pAvatar;
 }
 
 //------------------------------------------------------------------------------
@@ -26,3 +33,13 @@ const char* AbstractUser::className() const	{
 }
 
 //------------------------------------------------------------------------------
+
+Avatar * AbstractUser::getAvatar()	{
+	return m_pAvatar;
+}
+
+//------------------------------------------------------------------------------
+
+Basket * AbstractUser::getBasket()	{
+	return &m_Basket;
+}

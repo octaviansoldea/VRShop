@@ -53,10 +53,6 @@ namespace VR	{
 
 
 	private:
-		void createDBTableProduct() const;	//Let be Manufacturers in a separate table
-
-		void productViewed(const Product & aProduct /* User & aUser*/);
-
 		osg::ref_ptr<AbstractObject> m_pRepresentation;
 		ProductParams m_ProductParams;
 	};

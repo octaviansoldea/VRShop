@@ -51,7 +51,7 @@ void DatabaseManagerShopEditor::systemOfTables(vector<pair<string,string>> & ave
 		ClassName TEXT, \
 		SceneObjectName TEXT, \
 		SceneObjectParams TEXT, \
-		SceneName INTEGER);";
+		SceneName TEXT);";
 	avecStmtPairs.push_back(make_pair("SceneObject", strSQLFormat));
 
 	strSQLFormat =

@@ -1,6 +1,3 @@
-#include <vector>
-#include <string>
-
 #include "VRAbstractObject.h"
 #include "VRPlate3D.h"
 #include "VRPrism.h"
@@ -149,48 +146,3 @@ string Product::prepareRowData(const string & astrParentName)	{
 
 
 //------------------------------------------------------------------------------
-
-void Product::createDBTableProduct() const	{
-	vector<pair<string,string>> avecStmtPairs;
-	string strSQLFormat =
-		"CREATE TABLE IF NOT EXISTS Products ( \
-		ProductCode TEXT UNIQUE \
-		ProductCategory TEXT \
-		ProductName TEXT \
-		ProductDescription TEXT \
-		ProductShortDescription TEXT \
-		ManufacturerID INTEGER UNIQUE \
-		ManufacturerOrigin TEXT \
-		ProductUnit TEXT \
-		PricePerUnit TEXT \
-		Quantity TEXT \
-		TaxRate TEXT \
-		Currency TEXT \
-		ProductFrame TEXT \
-		ProductImage TEXT \
-		ProductSize TEXT \
-		FOREIGN KEY (ManufacturerID) REFERENCES Manufacturer(ManufacturerID)";
-	avecStmtPairs.push_back(make_pair("Products", strSQLFormat));
-
-	strSQLFormat =
-		"CREATE TABLE IF NOT EXISTS Manufacturer ( \
-		ManufacturerID INTEGER UNIQUE \
-		ManufacturerName TEXT \
-		ManufacturerAddress TEXT \
-		ManufacturerOrigin TEXT \
-		ManufacturerURL TEXT);";
-	avecStmtPairs.push_back(make_pair("Manufacturer", strSQLFormat));
-}
-
-//------------------------------------------------------------------------------
-
-void Product::productViewed(const Product & aProduct /*, User & aUser*/)	{
-
-	//When a product is viewed, update the database
-	string strSQLCommand;
-
-	strSQLCommand = "UPDATE " /* + PRODUCT_TABLE + */ 
-		"SET products_viewed = products_viewed+1"
-		"WHERE products_id = '" /*+ GET_PRODUCT_ID + */ "'";
-
-}

@@ -1,5 +1,3 @@
-#include "VRAvatar.h"
-
 #include "VRVisitor.h"
 
 using namespace VR;

@@ -174,3 +174,7 @@ void ShoppingPlace_GUI::slotProductClicked(const VR::AbstractObject * apAbstract
 		return;
 }
 
+//----------------------------------------------------------------------------------------
+
+void ShoppingPlace_GUI::slotAvatarClicked(const Avatar * apAvatar)	{
+}

@@ -3,11 +3,17 @@
 
 #include <QObject>
 
+#include "VRProductShopClient.h"
+#include "VRProductManagerClient.h"
+
 class QFrame;
 class QLabel;
 class QPushButton;
 
+#include <string>
+
 namespace VR	{
+//	class ProductShopClient;
 	class Product;
 	class PickAndDragHandlerShopClient;
 
@@ -26,7 +32,8 @@ namespace VR	{
 
 		~ProductInterface();
 
-		void initProductInterface(const Product * apProduct);
+		void init(const ProductShopClient * apProductShopClient);
+		void init(const std::string & astrProductName);
 
 	private:
 		QFrame * m_pFrameProductInterface;
@@ -37,11 +44,15 @@ namespace VR	{
 		QLabel * m_pLabelProductInterfacePrice;
 		PickAndDragHandlerShopClient * m_pPickAndDragHandlerShopClient;
 
-		Product * m_pProduct;
+		ProductShopClient * m_pProductShopClient;
+		ProductManagerClient m_ProductMgrClient;
 
 	private slots:
 		void slotAdd2Basket();
 		void slotProductDetails();
+		void slotGetProduct();
+
+		void slotCloseInterface();
 	};
 }
 #endif //VR_PRODUCT_INTERFACE_H

@@ -11,7 +11,7 @@ namespace VR {
 		AgentManager();
 		~AgentManager();
 
-		virtual const char* className() const;
+		const char* className() const;
 
 		bool newUserRequest();
 		void addUser(AbstractUser * apAbstractUser);

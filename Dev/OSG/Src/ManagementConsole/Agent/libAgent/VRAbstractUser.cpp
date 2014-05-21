@@ -11,8 +11,7 @@ using namespace std;
 
 //==============================================================================
 
-AbstractUser::AbstractUser() :
-m_pShoppingPlace_GUI(0)	{
+AbstractUser::AbstractUser()	{
 
 	m_pAvatar = new Avatar();
 }
@@ -20,9 +19,6 @@ m_pShoppingPlace_GUI(0)	{
 //------------------------------------------------------------------------------
 
 AbstractUser::~AbstractUser()	{
-	if (m_pShoppingPlace_GUI)
-		delete m_pShoppingPlace_GUI;
-
 	delete m_pAvatar;
 }
 

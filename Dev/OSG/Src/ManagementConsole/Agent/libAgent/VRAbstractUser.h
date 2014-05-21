@@ -10,7 +10,6 @@ namespace VR {
 	class Avatar;
 
 	class PickAndDragHandlerShopClient;
-	class ShoppingPlace_GUI;
 
 	class AbstractUser	{
 	public:
@@ -39,8 +38,6 @@ namespace VR {
 		Basket m_Basket;
 
 		PickAndDragHandlerShopClient * m_pPickAndDragHandlerShopClient;
-
-		ShoppingPlace_GUI * m_pShoppingPlace_GUI;
 	};
 }
 #endif //VR_ABSTRACT_USER_H

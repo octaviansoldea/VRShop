@@ -10,6 +10,7 @@ IF(Qt5_FOUND)
     ${Qt5Gui_INCLUDE_DIRS}
     ${Qt5Widgets_INCLUDE_DIRS}
     ${Qt5Sql_INCLUDE_DIRS}
+    ${Qt5Network_INCLUDE_DIRS}
   )
 ELSE(Qt5_FOUND)
   #Assume Qt4_FOUND, if we are here
@@ -45,6 +46,8 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProduct
   ${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProductInterface
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libController
+  ${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libServer
+  ${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libClient
 )
 
 SET(LIBS_COMMON 
@@ -71,6 +74,8 @@ SET(LIBS_COMMON
 	libProduct
 	libProductInterface
 	libController
+	libServer
+	libClient
 )
 
 SET(SRCS
@@ -85,6 +90,7 @@ IF(Qt5_FOUND)
     ${Qt5Gui_LIBRARIES}
     ${Qt5Widgets_LIBRARIES}
     ${Qt5Sql_LIBRARIES}
+    ${Qt5Network_LIBRARIES}
 	${LIBS_COMMON}
   )
 ELSEIF(NOT Qt5_FOUND AND Qt4_FOUND)

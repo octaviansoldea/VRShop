@@ -13,6 +13,7 @@ namespace VR	{
 	class ProductInterface;
 	class AgentInterface;
 	class ProductBasketInterface;
+	class ProductManagerClient;
 	struct CameraController;
 
 	class ShoppingPlace_GUI : public QMainWindow, public Ui::MainWindow	{
@@ -26,6 +27,7 @@ namespace VR	{
 		ProductInterface * m_pProductInterface;
 		AgentInterface * m_pAgentInterface;
 		ProductBasketInterface * m_pProductBasketInterface;
+		ProductManagerClient * m_pProductManagerClient;
 		CameraController * m_pCameraController;
 
 		void updateGeometry();

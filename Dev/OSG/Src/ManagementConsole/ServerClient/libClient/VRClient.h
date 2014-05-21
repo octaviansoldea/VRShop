@@ -1,26 +1,29 @@
 #ifndef VR_CLIENT_H
 #define VR_CLIENT_H
 
-//#include "VRSession.h"
-
 #include <QTcpSocket>
+#include <QObject>
+
+class QByteArray;
+class QDataStream;
 
 namespace VR	{
-	class Client : public QTcpSocket	{
+	class Client : public QObject	{
 		Q_OBJECT
 
 	public:
-		Client(const std::string & astrIPAddress, const int anPort, QTcpSocket *apParent=0);
+		Client(QObject *apParent=0);		
 		~Client();
 
-	private:
-		const std::string m_strIPAddress;
-		const int m_nPort;
+		void sendRequest(QByteArray & aarrRequest);
+		QByteArray getData();
+
+//	private:
+		QTcpSocket m_TcpSocket;
 
 		bool m_bIsFirstPackage;
-		unsigned int m_unPackageSize;
-
-//		Session m_Session;
+		quint64 m_unPackageSize;
+		QByteArray m_ReceivedData;
 
 	signals:
 		void done();
@@ -29,7 +32,7 @@ namespace VR	{
 		void slotReadReceivedData();
 		void slotError(QAbstractSocket::SocketError socketError);
 		void slotConnected();
-		void slotTransferSuccess();
+		void slotDisconnected();
 	};
 }
 #endif //VR_CLIENT_H

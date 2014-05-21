@@ -131,4 +131,18 @@ void ShoppingPlace::insertProducts()	{
 
 	Product * pProduct = new Product(pAbstractObject,pParams);
 	m_pProductMgr->addNewProduct(pProduct);
+
+
+//
+	pParams.m_strProductName = "bla1 bla2 bla3 bla4 bla5 bla6 bla7 bla8";
+	pParams.m_flPricePerUnit = 1.85;
+	pParams.m_strManufacturerName = "Nokia Corp.";
+
+	ref_ptr < AbstractObject > pAbstractObject1 = 
+		dynamic_cast<AbstractObject*>(AbstractObject::createInstance("Plate3D").get());
+	pAbstractObject1->predefinedObject();
+
+	Product * pProduct1 = new Product(pAbstractObject1,pParams);
+	m_pProductMgr->addNewProduct(pProduct1);
+
 }

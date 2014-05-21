@@ -1,6 +1,11 @@
 #include <iostream>
+
 #include <QMessageBox>
+#include <QHostAddress>
+
 #include <QFile>
+#include <QDataStream>
+#include <QByteArray>
 
 #include <QTcpSocket>
 
@@ -11,67 +16,72 @@ using namespace std;
 
 //----------------------------------------------------------------------
 
-Client::Client(const string & astrIPAddress, const int anPort, QTcpSocket *apParent) 
-: QTcpSocket(apParent), m_strIPAddress(astrIPAddress), m_nPort(anPort), m_bIsFirstPackage(true)	{
+Client::Client(QObject *apParent) : QObject(apParent)	{
 
-	connectToHost(m_strIPAddress.c_str(), m_nPort);
+	m_TcpSocket.connectToHost(QHostAddress::LocalHost, 20000);
 
-	connect(this, SIGNAL(readyRead()), this, SLOT(slotReadReceivedData()));
-	connect(this, SIGNAL(error(QAbstractSocket::SocketError)), 
+	connect(&m_TcpSocket, SIGNAL(readyRead()), this, SLOT(slotReadReceivedData()));
+	connect(&m_TcpSocket, SIGNAL(error(QAbstractSocket::SocketError)), 
 			this, SLOT(slotError(QAbstractSocket::SocketError)));
+	connect(&m_TcpSocket,SIGNAL(connected()),this,SLOT(slotConnected()));
+	connect(&m_TcpSocket,SIGNAL(disconnected()),this,SLOT(slotDisconnected()));
 
-	connect(this,SIGNAL(connected()),this,SLOT(slotConnected()));
-	connect(this,SIGNAL(done()),this,SLOT(slotTransferSuccess()));
-
+	m_TcpSocket.waitForConnected();
+	m_unPackageSize = 0;
 }
 
 //----------------------------------------------------------------------
 
 Client::~Client()	{
-	close();
-	disconnectFromHost();
 }
 
 //=====================================================================
 
+void Client::sendRequest(QByteArray & aarrRequest)	{
+	QDataStream out(&aarrRequest, QIODevice::WriteOnly);
+	out.setVersion(QDataStream::Qt_4_8);
+
+	bool bRes = out.device()->seek(0);
+	quint64 unWritten = 0;
+	quint64 unTotalToWrite = (quint64)(aarrRequest.size());
+	out << (quint64)(unTotalToWrite - sizeof(quint64));
+
+	//Check that everything is written
+	while (unTotalToWrite - unWritten > 0)	{
+		unWritten += m_TcpSocket.write(aarrRequest.data() + unWritten,unTotalToWrite-unWritten);
+	}
+}
+
+//---------------------------------------------------------------------
+
+QByteArray Client::getData()	{
+	return m_ReceivedData;
+}
+
+//---------------------------------------------------------------------
+
 void Client::slotReadReceivedData()	{
+	QDataStream in(&m_TcpSocket);
+	in.setVersion(QDataStream::Qt_4_8);
+	m_ReceivedData=0;
+	int nBytesAvailable = m_TcpSocket.bytesAvailable();
 
-	QFile file("C:/Matej/Images/Me_1.jpg");
-	if(!file.open(QIODevice::Append))	{
-		std::cout << "Error opening the file." << std::endl;
-		return;
+	if (m_unPackageSize == 0) {
+		if (m_TcpSocket.bytesAvailable() < sizeof(quint64))
+			return;
+		in >> m_unPackageSize;
 	}
 
-	QDataStream in(this);
-	in.setVersion(QDataStream::Qt_4_8);	//Version should equal Server's
-
-	if ((quint64)bytesAvailable() < (quint64)sizeof(quint64))
+	if (m_TcpSocket.bytesAvailable() < m_unPackageSize)
 		return;
 
-	if (m_bIsFirstPackage == true)	{
-		quint64 blockSize;
-		in >> blockSize;
-		m_unPackageSize = (unsigned int)blockSize;	//blockSize contains the size of the whole package
-
-		//int nBytes2Remove = (int)sizeof(data)-sizeof(quint64(0));
-		//data = data.remove(0,nBytes2Remove);
-	}
 	//Read the rest of the byte array
-	QByteArray & data = readAll();
+	QString qstrData;
+	in >> qstrData;
 
-	file.write(data);
-	file.close();
+	string strTest = qstrData.toStdString();
 
-	m_bIsFirstPackage = false;
-
-	//Deduct the size of each "chunk", m_unPackageSize = 0 => emit done()
-	m_unPackageSize -= data.size();
-	std::cout << "m_unPackageSize: " << m_unPackageSize << std::endl;
-
-	if (m_unPackageSize == 0)	{
-		emit done();
-		std::cout << "Emitted" << std::endl;
-	}
+	emit done();
 }
 
 //---------------------------------------------------------------------
@@ -92,7 +102,7 @@ void Client::slotError(QAbstractSocket::SocketError socketError)	{
 			Make sure the server is running,\n \
 			and check the host name and port number.";
 	} else {
-		qstrErrorMsg = "The following error occurred: " + errorString();
+		qstrErrorMsg = "The following error occurred: " + m_TcpSocket.errorString();
 	}
 
 	QMessageBox msg;
@@ -105,11 +115,11 @@ void Client::slotError(QAbstractSocket::SocketError socketError)	{
 //---------------------------------------------------------------------------
 
 void Client::slotConnected()	{
-	std::cout << "Connected" << std::endl;
+	std::cout << "Client: Connected" << std::endl;
 }
 
 //---------------------------------------------------------------------------
 
-void Client::slotTransferSuccess()	{
-	std::cout << "Data transfer accomplished." << std::endl;
+void Client::slotDisconnected()	{
+	std::cout << "Client: Disconnected" << std::endl;
 }

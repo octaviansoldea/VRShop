@@ -181,7 +181,37 @@ bool DatabaseManager::execute(const string & astrQuery)	{
 	return bRes;
 }
 
+//-----------------------------------------------------------------------------------------
 
+list<string> DatabaseManager::executeAndGetResult(const string & astrQuery)	{
+	QString * pqstrConnName = &m_DBMgrParams.m_qstrConnectionName;
+	const string * pstrQuery = &astrQuery;
+
+	QSqlDatabase * pDb = &QSqlDatabase::database(*pqstrConnName);
+	QSqlQuery query(*pDb);
+
+	bool bRes = query.exec(pstrQuery->c_str());
+
+	if (!bRes)	{
+		return list<string>();
+	} 
+
+	int nI;
+	list<string> lststrResult;
+	string strResult;
+	while(query.next())	{
+		QSqlRecord record = query.record();
+		int nSize = record.count();
+		strResult = "";
+		for (nI=0;nI<nSize;nI++)	{
+			strResult += (record.field(nI).value().toString().toStdString() + ";");
+		}
+		//Delete last semi-colon & put it into the list
+		strResult.pop_back();
+		lststrResult.push_back(strResult);
+	}
+	return lststrResult;
+}
 
 //-----------------------------------------------------------------------------------------
 

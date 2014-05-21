@@ -44,7 +44,6 @@ namespace VR	{
 
 		void createDBTableProduct() const;	//Let be Manufacturers in a separate table
 		void productViewed(const Product & aProduct /* User & aUser*/);
-
 	};
 }
 #endif //VR_PRODUCT_MANAGER_H

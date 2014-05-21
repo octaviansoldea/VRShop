@@ -1,4 +1,4 @@
-project(Test_libServer)
+project(Test_libDatabaseNetworkManager)
 cmake_minimum_required( VERSION 2.8 )
 
 SET(CMAKE_DEBUG_POSTFIX "D")
@@ -9,7 +9,7 @@ IF(Qt5_FOUND)
     ${Qt5Gui_INCLUDE_DIRS}
     ${Qt5Widgets_INCLUDE_DIRS}
     ${Qt5Network_INCLUDE_DIRS}
-	${Qt5Sql_INCLUDE_DIRS}
+    ${Qt5Sql_INCLUDE_DIRS}
   )
 ELSE(Qt5_FOUND)
   IF(QT_USE_FILE)
@@ -32,37 +32,28 @@ SET(src
 )
 
 INCLUDE_DIRECTORIES(
-	${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libServer
-#	${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libClient
 	${CMAKE_SOURCE_DIR}/ManagementConsole/DatabaseNetworkManager/libDatabaseNetworkManager
 	${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabase
-	${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
-	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_QT
 )
 
-ADD_EXECUTABLE(Test_libServer
+ADD_EXECUTABLE(Test_libDatabaseNetworkManager
 	main.cpp)
 
 SET(LIBS_COMMON
-	libServer
-#	libClient
-	libDatabase
 	libDatabaseNetworkManager
-	libCommon
-	libCommon_QT
 )
 
 IF(Qt5_FOUND)
-  TARGET_LINK_LIBRARIES(Test_libServer
+  TARGET_LINK_LIBRARIES(Test_libDatabaseNetworkManager
 	${Qt5Core_LIBRARIES}
     ${Qt5Gui_LIBRARIES}
     ${Qt5Widgets_LIBRARIES}
+    ${Qt5Sql_LIBRARIES}
     ${Qt5Network_LIBRARIES}	
-    ${Qt5Sql_LIBRARIES}	
 	${LIBS_COMMON}
   )
 ELSEIF(NOT Qt5_FOUND AND Qt4_FOUND)
-  TARGET_LINK_LIBRARIES(Test_libServer
+  TARGET_LINK_LIBRARIES(Test_libDatabaseNetworkManager
   	${QT_LIBRARIES}
 	${QT_QTNETWORK_INCLUDE_DIR}
     ${QT_QTSQL_LIBRARY}
@@ -70,4 +61,4 @@ ELSEIF(NOT Qt5_FOUND AND Qt4_FOUND)
   )
 ENDIF(Qt5_FOUND)
 
-SET_PROPERTY(TARGET Test_libServer PROPERTY FOLDER ServerClient)
+SET_PROPERTY(TARGET Test_libDatabaseNetworkManager PROPERTY FOLDER DatabaseNetworkManager)

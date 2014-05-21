@@ -36,9 +36,11 @@ INCLUDE_DIRECTORIES(
 
 #MOC according to the Qt version
 IF(Qt5_FOUND)
-  QT5_WRAP_CPP(MOC_SRCS VRDatabaseManager.h VRDatabaseManagerShopEditor.h)
+  QT5_WRAP_CPP(MOC_SRCS 
+	VRDatabaseManager.h VRDatabaseManagerShopEditor.h VRDatabaseManagerShopClient.h)
 ELSE()
-  QT4_WRAP_CPP(MOC_SRCS VRDatabaseManager.h VRDatabaseManagerShopEditor.h)
+  QT4_WRAP_CPP(MOC_SRCS 
+	VRDatabaseManager.h VRDatabaseManagerShopEditor.h VRDatabaseManagerShopClient.h)
 ENDIF()
 
 
@@ -46,6 +48,7 @@ ENDIF()
 SET(SRCS ${SRCS} ${MOC_SRCS}
   VRDatabaseManager.h VRDatabaseManager.cpp
   VRDatabaseManagerShopEditor.h VRDatabaseManagerShopEditor.cpp
+  VRDatabaseManagerShopClient.h VRDatabaseManagerShopClient.cpp
 )
 
 #Library to be later used in the main

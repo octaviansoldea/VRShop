@@ -2,6 +2,7 @@
 #include <iostream>
 
 #include <QPoint>
+#include <QMouseEvent>
 #include <QtWidgets/QSpacerItem>
 #include <QVBoxLayout>
 
@@ -12,6 +13,7 @@
 #include "VRProductInterface.h"
 #include "VRAgentInterface.h"
 #include "VRProductBasketInterface.h"
+#include "VRProductManagerClient.h"
 #include "VRCameraController.h"
 
 #include "VRKeyboardMouseManipulatorShopClient.h"
@@ -165,13 +167,8 @@ void ShoppingPlace_GUI::resizeEvent(QResizeEvent *event)	{
 //----------------------------------------------------------------------------------------
 
 void ShoppingPlace_GUI::slotProductClicked(const VR::AbstractObject * apAbstractObject)	{
-	ProductManager * pProductMgr = m_pShoppingPlace->getProducts();
-
-	Product * pProduct = pProductMgr->getProduct(apAbstractObject);
-	if (pProduct != 0)
-		m_pProductInterface->initProductInterface(pProduct);
-	else
-		return;
+	const string & strProductName = apAbstractObject->getName();
+	m_pProductInterface->init(strProductName);
 }
 
 //----------------------------------------------------------------------------------------

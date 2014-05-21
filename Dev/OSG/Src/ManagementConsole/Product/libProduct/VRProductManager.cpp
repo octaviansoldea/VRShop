@@ -225,3 +225,4 @@ void ProductManager::productViewed(const Product & aProduct /*, User & aUser*/)	
 		"WHERE products_id = '" /*+ GET_PRODUCT_ID + */ "'";
 
 }
+

@@ -9,6 +9,7 @@
 #include <QSqlField>
 
 #include <vector>
+#include <list>
 
 namespace VR	{
 	struct DatabaseManagerParams	{
@@ -26,6 +27,8 @@ namespace VR	{
 		DatabaseManager(const DatabaseManagerParams & aDBMgrParams, QObject * parent = 0);
 		virtual ~DatabaseManager();
 
+		bool execute(const std::string & astrQuery);
+		std::list<std::string> executeAndGetResult(const std::string & astrQuery);
 
 	protected:
 		bool createTable(const std::string & astrTableName, const std::string & astrTableStmt);
@@ -34,8 +37,6 @@ namespace VR	{
 		void insertRow(const std::string & astrTableName, std::string &astrTblFieldValues);
 		void deleteRow(const std::string & astrTableName, const std::string & astrObjectName);
 		void updateDB();
-
-		bool execute(const std::string & astrQuery);
 
 		bool createConnection(const DatabaseManagerParams & aDBMgrParams);
 		bool removeConnection();

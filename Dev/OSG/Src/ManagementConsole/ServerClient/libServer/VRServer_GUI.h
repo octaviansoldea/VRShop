@@ -3,8 +3,6 @@
 
 #include <QWidget>
 
-class QLabel;
-
 namespace VR	{
 	class Server;
 
@@ -19,12 +17,6 @@ namespace VR	{
 		void init(const std::string & astrIPAddress, const int & anPort);
 
 		Server * m_pServer;
-
-		QLabel * m_pConnection;
-
-	private slots:
-		void slotConnections();
-
 	};
 }
 #endif //VR_SERVER_GUI_H

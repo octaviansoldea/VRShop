@@ -1,12 +1,17 @@
 #include <string>
+#include <iostream>
 
 #include "VRProduct.h"
+#include "VRProductShopClient.h"
+#include "VRProductManagerClient.h"
+
 #include "VRPickAndDragHandlerShopClient.h"
 
 #include <QFrame>
 #include <QLabel>
 #include <QPushButton>
 #include <QImageReader>
+#include <QTimer>
 
 #include <osg/Group>
 #include "BasicStringDefinitions.h"
@@ -26,7 +31,7 @@ ProductInterface::ProductInterface(
 	QPushButton * apPushButtonProductInterface2Basket,
 	QPushButton * apPushButtonProductInterfaceDetails,
 	QLabel * apLabelProductInterfacePrice,
-	PickAndDragHandlerShopClient * apPickAndDragHandlerShopClient)	{
+	PickAndDragHandlerShopClient * apPickAndDragHandlerShopClient) : m_pProductShopClient(0)	{
 
 	m_pFrameProductInterface = apFrameProductInterface;
 	m_pLabelProductInterfaceImage = apLabelProductInterfaceImage;
@@ -47,30 +52,49 @@ ProductInterface::ProductInterface(
 //----------------------------------------------------------------------
 
 ProductInterface::~ProductInterface()	{
-
 }
 
 //=======================================================================
 
-void ProductInterface::initProductInterface(const Product * apProduct)	{
-	const Product * pProduct = apProduct;
-	ProductParams productParams;
+void ProductInterface::init(const ProductShopClient * apProductShopClient)	{
+	const ProductShopClient * pProduct = apProductShopClient;
+	ProductShopClientParams productParams;
 	pProduct->getParams(productParams);
 
-	m_pLabelProductInterfacePrice->setText(("EUR " + tostr(productParams.m_flPricePerUnit)).c_str());
+	string & strPrice = productParams.m_strCurrency + " " + tostr(productParams.m_flPricePerUnit).c_str();
+	m_pLabelProductInterfacePrice->setText(strPrice.c_str());
 
 	string strTextureFile = "../../../Resources/Textures/samsung-galaxy-s5.bmp";
 	QImageReader image(strTextureFile.c_str());
-	QPixmap ImageBasic(QPixmap::fromImageReader(&image));
-	QPixmap ImageScaled(ImageBasic.scaled ( m_pLabelProductInterfaceImage->width(),m_pLabelProductInterfaceImage->height(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation ));
-	m_pLabelProductInterfaceImage->setPixmap(ImageScaled);
+	QPixmap imageBasic(QPixmap::fromImageReader(&image));
+	QPixmap imageScaled(imageBasic.scaled ( m_pLabelProductInterfaceImage->width(),m_pLabelProductInterfaceImage->height(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation ));
+	m_pLabelProductInterfaceImage->setPixmap(imageScaled);
 
 	string & strProductName = productParams.m_strProductName;
 	string & strManufacturer = productParams.m_strManufacturerName;
-	m_pLabelProductInterfaceInfo->setText(string(strProductName + "\n" + strManufacturer).c_str());	//Product name and manufacturer
+	m_pLabelProductInterfaceInfo->setText((strProductName + strManufacturer).c_str());	//Product name and manufacturer
 
 	m_pFrameProductInterface->setVisible(true);
 	m_pLabelProductInterfacePrice->setVisible(true);
+
+	//This timer closes interface
+	QTimer::singleShot(2000,this,SLOT(slotCloseInterface()));
+}
+
+//-----------------------------------------------------------------------------------------
+
+void ProductInterface::init(const string & astrProductName)	{
+	m_ProductMgrClient.initProduct(astrProductName);
+	connect(&m_ProductMgrClient,SIGNAL(signalProductInitialized()),this,SLOT(slotGetProduct()));
+}
+
+//-----------------------------------------------------------------------------------------
+
+void ProductInterface::slotGetProduct()	{
+	m_pProductShopClient = m_ProductMgrClient.getProduct();
+	if (m_pProductShopClient==0)
+		return;
+	init(m_pProductShopClient);
 }
 
 //-----------------------------------------------------------------------------------------
@@ -86,3 +110,12 @@ void ProductInterface::slotAdd2Basket()	{
 
 void ProductInterface::slotProductDetails()	{
 }
+
+//-----------------------------------------------------------------------------------------
+
+void ProductInterface::slotCloseInterface()	{
+	m_pFrameProductInterface->setVisible(false);
+	m_pLabelProductInterfacePrice->setVisible(false);
+}
+
+//----------------------------------------------------------------------------------------

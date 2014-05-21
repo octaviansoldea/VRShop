@@ -12,7 +12,7 @@ Avatar::Avatar(QObject * parent): QObject(parent)	{
 	pParams.m_flLenX = 0.3;
 	pParams.m_flLenY = 0.05;
 	pParams.m_flLenZ = 0.5;
-	pParams.m_strFileNameTexture = "../../../../Resources/Textures/Avatar_1.bmp";
+	pParams.m_strFileNameTexture = "../../../../Resources/Textures/MetallicWood.png";
 	osg::ref_ptr<Plate3D> pAvatar = new Plate3D(pParams);
 
 	addChild(pAvatar);

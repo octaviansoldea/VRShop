@@ -2,6 +2,9 @@
 #define VR_PRODUCT_BASKET_INTERFACE_H
 
 #include <QObject>
+#include <list>
+
+#include "VRProductBasketInterfaceItem.h"
 
 class QDoubleSpinBox;
 class QFrame;
@@ -11,6 +14,7 @@ class QToolButton;
 
 namespace VR	{
 	class VRQFrame;
+	class ProductShopClient;
 
 	class ProductBasketInterface : public QObject	{
 		Q_OBJECT
@@ -26,7 +30,7 @@ namespace VR	{
 			QPushButton * apPushButtonDetails,
 			QPushButton * apPushButtonRemove,
 			QLabel * apLabelProductImage,
-			QLabel * m_pLabelProductInfo,
+			QLabel * apLabelProductInfo,
 			QLabel * apLabelBasketProductPrice,
 			QPushButton * apPushButtonBasketBack,
 			QPushButton * apPushButtonBasketForward
@@ -61,6 +65,13 @@ namespace VR	{
 
 		void slotBasketBack();
 		void slotBasketForward();
+
+	private:
+		ProductShopClient * m_pProductShopClient;
+		std::list<ProductShopClient*> * m_plstProducts;
+
+		void init();
+		void update();
 	};
 }
 #endif //VR_PRODUCT_BASKET_INTERFACE_H

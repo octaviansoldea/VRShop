@@ -4,12 +4,11 @@
 #include <string>
 #include <list>
 
-#include "VRProductShopEditor.h"
-#include "VRDatabaseManager.h"
-
 #include <QObject>
 
 namespace VR	{
+	class DatabaseManager;
+
 	class ProductManagerServer : public QObject	{
 		Q_OBJECT
 	public:

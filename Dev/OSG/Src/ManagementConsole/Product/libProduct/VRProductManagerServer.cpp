@@ -4,6 +4,8 @@
 
 #include "VRProductShopClient.h"
 
+#include "VRDatabaseManager.h"
+
 #include "VRProductManagerServer.h"
 
 using namespace VR;

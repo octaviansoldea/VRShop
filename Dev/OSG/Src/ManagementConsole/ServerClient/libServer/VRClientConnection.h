@@ -24,7 +24,7 @@ namespace VR	{
 		void done();
 
 	private:
-		void processRequest(QByteArray & data);
+		void processRequest(QByteArray & data /*QDataStream & in*/);
 		void writeToClient(QByteArray & data);
 
 		bool m_bIsFirstPackage;

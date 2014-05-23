@@ -28,6 +28,7 @@ Client::Client(QObject *apParent) : QObject(apParent)	{
 
 	m_TcpSocket.waitForConnected();
 	m_unPackageSize = 0;
+	m_ReceivedData = 0;
 }
 
 //----------------------------------------------------------------------
@@ -41,21 +42,25 @@ void Client::sendRequest(QByteArray & aarrRequest)	{
 	QDataStream out(&aarrRequest, QIODevice::WriteOnly);
 	out.setVersion(QDataStream::Qt_4_8);
 
-	bool bRes = out.device()->seek(0);
+	QTcpSocket * pSocket = static_cast<QTcpSocket*>(out.device());
+
+	bool bRes = pSocket->seek(0);
 	quint64 unWritten = 0;
 	quint64 unTotalToWrite = (quint64)(aarrRequest.size());
 	out << (quint64)(unTotalToWrite - sizeof(quint64));
 
 	//Check that everything is written
-	while (unTotalToWrite - unWritten > 0)	{
-		unWritten += m_TcpSocket.write(aarrRequest.data() + unWritten,unTotalToWrite-unWritten);
-	}
+	//while (unTotalToWrite - unWritten > 0)	{
+	//	unWritten += m_TcpSocket.write(aarrRequest.data() + unWritten,unTotalToWrite-unWritten);
+	//}
+	unWritten = m_TcpSocket.write(aarrRequest);
+	m_TcpSocket.waitForBytesWritten();
 }
 
 //---------------------------------------------------------------------
 
-QByteArray Client::getData()	{
-	return m_ReceivedData;
+QTcpSocket &  Client::getTcpSocket() {
+	return(m_TcpSocket);
 }
 
 //---------------------------------------------------------------------
@@ -63,25 +68,21 @@ QByteArray Client::getData()	{
 void Client::slotReadReceivedData()	{
 	QDataStream in(&m_TcpSocket);
 	in.setVersion(QDataStream::Qt_4_8);
-	m_ReceivedData=0;
-	int nBytesAvailable = m_TcpSocket.bytesAvailable();
+	
+	quint64 unBytesAvailable = in.device()->bytesAvailable();
+	std::cout << "Client (slotReadReceivedData()): " << unBytesAvailable << std::endl;
 
 	if (m_unPackageSize == 0) {
-		if (m_TcpSocket.bytesAvailable() < sizeof(quint64))
+		if (unBytesAvailable < sizeof(quint64))
 			return;
 		in >> m_unPackageSize;
 	}
 
-	if (m_TcpSocket.bytesAvailable() < m_unPackageSize)
+	if (unBytesAvailable < m_unPackageSize)
 		return;
 
-	//Read the rest of the byte array
-	QString qstrData;
-	in >> qstrData;
-
-	string strTest = qstrData.toStdString();
-
 	emit done();
+	m_unPackageSize=0;
 }
 
 //---------------------------------------------------------------------
@@ -123,3 +124,5 @@ void Client::slotConnected()	{
 void Client::slotDisconnected()	{
 	std::cout << "Client: Disconnected" << std::endl;
 }
+
+//---------------------------------------------------------------------------

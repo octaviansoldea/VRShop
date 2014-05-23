@@ -86,18 +86,6 @@ void ProductShopClient::getParams(ProductShopClientParams & aProductShopClientPa
 //------------------------------------------------------------------------------
 
 void ProductShopClient::initFromSQLData(std::string & astrSQLData)	{
-	astrSQLData = "m_strProductName;m_nProductCode;Manufacturer; \
-				m_strProductShortDescription; \
-				m_strProductDescription; \
-				m_strManufacturerName; \
-				m_strManufacturerOrigin; \
-				m_strProductUnit; \
-				m_strProductUnitMeasure; \
-				10; \
-				100; \
-				0; \
-				EUR";
-
 	string & strSqlData = astrSQLData;
 
 	if (strSqlData == "")	{

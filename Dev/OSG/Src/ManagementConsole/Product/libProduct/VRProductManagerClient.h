@@ -4,12 +4,11 @@
 #include <string>
 #include <list>
 
-#include "VRProductShopClient.h"
-
 #include <QObject>
 
 namespace VR	{
 	class Client;
+	class ProductShopClient;
 
 	class ProductManagerClient : public QObject	{
 		Q_OBJECT
@@ -26,7 +25,7 @@ namespace VR	{
 		
 	private:
 		std::list<ProductShopClient*> m_lstProducts;
-		ProductShopClient * m_Product;
+		ProductShopClient * m_pProduct;
 
 		Client * m_pClient;
 

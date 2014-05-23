@@ -42,14 +42,17 @@ void ClientConnection::slotReadClient()	{
 	QDataStream in(this);
 	in.setVersion(QDataStream::Qt_4_8);
 
+	int nBytesAvailable = this->bytesAvailable();
+	std::cout << "Server (slotReadClient()): " << nBytesAvailable << std::endl;
+
 	QByteArray qData;
 	if (m_unPackageSize == 0) {
-		if (bytesAvailable() < sizeof(quint64))
+		if (this->bytesAvailable() < sizeof(quint64))
 			return;
 		in >> m_unPackageSize;
 	}
 
-	if (bytesAvailable() < m_unPackageSize)
+	if (this->bytesAvailable() < m_unPackageSize)
 		return;
 
 /*
@@ -57,10 +60,14 @@ void ClientConnection::slotReadClient()	{
 	QString qstrData;
 	in >> unType >> qstrData;
 */
-	qData = //in.device()->
-		readAll();
+	qData = in.device()->readAll();
 
-	processRequest(qData);
+	string strTest(qData.begin(),qData.end());
+
+	std::cout << "Server: strTest: " << strTest << endl;
+
+	m_unPackageSize = 0;
+	processRequest(qData /*in*/);
 }
 
 //----------------------------------------------------------------------
@@ -70,7 +77,7 @@ void ClientConnection::slotTransferSuccess()	{
 
 //----------------------------------------------------------------------
 
-void ClientConnection::processRequest(QByteArray & data)	{
+void ClientConnection::processRequest(QByteArray & data /* QDataStream & in*/)	{
 	QDataStream in(&data,QIODevice::ReadOnly);
 	in.setVersion(QDataStream::Qt_4_8);
 
@@ -91,6 +98,9 @@ void ClientConnection::processRequest(QByteArray & data)	{
 	QDataStream out(&result, QIODevice::WriteOnly);
 	out.setVersion(QDataStream::Qt_4_8);
 	out << quint64(0);	//Size of the package
+
+	int nBytesAvailable = out.device()->bytesAvailable();
+	std::cout << "Server (processRequest()): " << nBytesAvailable << std::endl;
 
 	if (bRes)	{
 		QList<string > & lststrResult = QList<string>().fromStdList(m_pDatabaseNetworkManager->getResult());
@@ -115,7 +125,10 @@ void ClientConnection::writeToClient(QByteArray & data)	{
 	out << (quint64)(unTotalToWrite - sizeof(quint64));
 
 	//Check that everything is written
-	while (unTotalToWrite - unWritten > 0)	{
-		unWritten += write(data.data() + unWritten,unTotalToWrite-unWritten);
-	}
+	//while (unTotalToWrite - unWritten > 0)	{
+	//	unWritten += write(data.data() + unWritten,unTotalToWrite-unWritten);
+	//}
+
+	unWritten = this->write(data);
+	this->waitForBytesWritten();
 }

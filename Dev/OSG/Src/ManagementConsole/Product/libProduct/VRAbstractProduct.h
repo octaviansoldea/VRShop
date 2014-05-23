@@ -15,7 +15,7 @@ namespace VR	{
 		AbstractProduct();
 		virtual ~AbstractProduct() = 0;
 
-		const char* className() const;
+		virtual const char* className() const;
 		virtual void initFromSQLData(std::string & astrSQLData) = 0;
 
 	private:

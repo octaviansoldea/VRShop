@@ -29,7 +29,7 @@ std::list<std::string> DatabaseNetworkManager::getResult()	{
 
 bool DatabaseNetworkManager::requestDatabase(std::string & astrDatabaseRequest)	{
 	DatabaseManagerShopClientParams dbParams;
-	dbParams.m_qstrDBName = "../../../../../Databases/Products.db";
+	dbParams.m_qstrDBName = "../../../../Databases/Products.db";
 	
 	DatabaseManagerShopClient db(dbParams);
 	string strSqlQuery = "SELECT * FROM Products WHERE ProductName = '" + astrDatabaseRequest + "'";

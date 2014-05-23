@@ -52,6 +52,7 @@ ENDIF(Qt5_FOUND)
 #Define sources to be later added into the library
 SET(SRCS ${MOC_SRCS} ${UI_SRCS}
 	VRProductInterface.h VRProductInterface.cpp
+	VRProductBasketInterfaceItem.h VRProductBasketInterfaceItem.cpp
 	VRProductBasketInterface.h VRProductBasketInterface.cpp
 )
 

@@ -3,7 +3,6 @@
 
 #include <QObject>
 
-#include "VRProductShopClient.h"
 #include "VRProductManagerClient.h"
 
 class QFrame;
@@ -13,7 +12,7 @@ class QPushButton;
 #include <string>
 
 namespace VR	{
-//	class ProductShopClient;
+	class ProductShopClient;
 	class Product;
 	class PickAndDragHandlerShopClient;
 
@@ -46,6 +45,8 @@ namespace VR	{
 
 		ProductShopClient * m_pProductShopClient;
 		ProductManagerClient m_ProductMgrClient;
+
+		void setGeometry();
 
 	private slots:
 		void slotAdd2Basket();

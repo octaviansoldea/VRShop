@@ -8,9 +8,12 @@
 
 #include "VRQFrame.h"
 
+#include "VRProductShopClient.h"
+
 #include "VRProductBasketInterface.h"
 
 using namespace VR;
+using namespace std;
 
 //----------------------------------------------------------------------
 
@@ -28,7 +31,7 @@ QLabel * apLabelProductImage,
 QLabel * apLabelProductInfo,
 QLabel * apLabelBasketProductPrice,
 QPushButton * apPushButtonBasketBack,
-QPushButton * apPushButtonBasketForward)	{
+QPushButton * apPushButtonBasketForward) : m_pProductShopClient(0)	{
 
 	m_pToolButtonMyBasket = apToolButtonMyBasket;
 	m_pLabelBasketCase = apLabelBasketCase;
@@ -62,7 +65,6 @@ QPushButton * apPushButtonBasketForward)	{
 //----------------------------------------------------------------------
 
 ProductBasketInterface::~ProductBasketInterface()	{
-
 }
 
 //=======================================================================
@@ -86,6 +88,8 @@ void ProductBasketInterface::slotProductDetails()	{
 //-----------------------------------------------------------------------------------------
 
 void ProductBasketInterface::slotProductRemove()	{
+	ProductShopClient * pProductShopClient = m_pProductShopClient;
+	m_plstProducts->remove(pProductShopClient);
 }
 
 //-----------------------------------------------------------------------------------------
@@ -101,4 +105,14 @@ void ProductBasketInterface::slotBasketBack()	{
 //-----------------------------------------------------------------------------------------
 
 void ProductBasketInterface::slotBasketForward()	{		
+}
+
+//-----------------------------------------------------------------------------------------
+
+void ProductBasketInterface::init()	{
+}
+
+//-----------------------------------------------------------------------------------------
+
+void ProductBasketInterface::update()	{
 }

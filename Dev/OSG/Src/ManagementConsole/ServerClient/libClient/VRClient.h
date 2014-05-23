@@ -4,8 +4,7 @@
 #include <QTcpSocket>
 #include <QObject>
 
-class QByteArray;
-class QDataStream;
+#include <QDataStream>
 
 namespace VR	{
 	class Client : public QObject	{
@@ -16,13 +15,15 @@ namespace VR	{
 		~Client();
 
 		void sendRequest(QByteArray & aarrRequest);
-		QByteArray getData();
 
-//	private:
+		QTcpSocket & getTcpSocket();
+
+	private:
 		QTcpSocket m_TcpSocket;
 
 		bool m_bIsFirstPackage;
 		quint64 m_unPackageSize;
+
 		QByteArray m_ReceivedData;
 
 	signals:

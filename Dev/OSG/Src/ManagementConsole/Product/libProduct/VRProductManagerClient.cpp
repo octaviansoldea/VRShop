@@ -16,9 +16,8 @@ using namespace osg;
 
 //-----------------------------------------------------------------------------
 
-ProductManagerClient::ProductManagerClient() : m_pClient(0), m_Product(0)	{
+ProductManagerClient::ProductManagerClient() : m_pClient(0), m_pProduct(0)	{
 	m_pClient = new Client;
-
 	connect(m_pClient,SIGNAL(done()),this,SLOT(slotReceiveProductParams()));
 }
 
@@ -26,7 +25,7 @@ ProductManagerClient::ProductManagerClient() : m_pClient(0), m_Product(0)	{
 
 ProductManagerClient::~ProductManagerClient()	{
 	delete m_pClient;
-	delete m_Product;
+	delete m_pProduct;
 }
 
 //==============================================================================
@@ -38,7 +37,7 @@ const char* ProductManagerClient::className() const	{
 //--------------------------------------------------------------------------
 
 ProductShopClient * ProductManagerClient::getProduct()	{
-	return m_Product;
+	return m_pProduct;
 }
 
 //-----------------------------------------------------------------------------
@@ -53,9 +52,9 @@ void ProductManagerClient::requestProductParams(const std::string & astrProductN
 	out << quint64(0) << quint8('P') << aqstrProductName;
 
 	/*
-		SHEMA:	quint64(0) - size
-				quint8('P') - product
-				request
+		PATTERN:	quint64(0) - size
+					quint8('P') - product
+					request
 	*/
 
 	m_pClient->sendRequest(block);
@@ -64,21 +63,20 @@ void ProductManagerClient::requestProductParams(const std::string & astrProductN
 //-----------------------------------------------------------------------------
 
 void ProductManagerClient::slotReceiveProductParams()	{
+	QDataStream out(&m_pClient->getTcpSocket());
+	out.setVersion(QDataStream::Qt_4_8);
+	QTcpSocket * pSocket = static_cast<QTcpSocket*>(out.device());
 
-	QByteArray & data = m_pClient->getData();
+	int nBytesAvaliable = pSocket->bytesAvailable();
 
-	QDataStream in(&data,QIODevice::ReadOnly);
-	in.setVersion(QDataStream::Qt_4_8);
+	QString qstrTest;
+	out >> qstrTest;
 
-	quint64 nSize;
-	quint8 nType;
+	string strTest = qstrTest.toStdString();
+	std::cout << "strTest: " << strTest << endl;
 
-	in >> nSize >> nType;
-
-	string strSqlData(data.begin(),data.end());
-
-	m_Product = new ProductShopClient;
-	m_Product->initFromSQLData(strSqlData);
+	m_pProduct = new ProductShopClient;
+	m_pProduct->initFromSQLData(strTest);
 
 	emit signalProductInitialized();
 }

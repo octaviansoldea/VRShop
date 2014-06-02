@@ -178,6 +178,26 @@ int main_(int argc, char** argv)
     return viewer.run();
 }
 
+#include "osg/Group"
+
+void cutSimulation(osg::Node* apNode) {
+	osg::Group * pGroup = dynamic_cast<osg::Group *>(apNode);
+	if(pGroup != NULL) {
+		int nChildrenNr = pGroup->getNumChildren();
+		int nIndxChild;
+		for(nIndxChild = 0; nIndxChild < nChildrenNr; nIndxChild++) {
+			osg::Node* pNode = pGroup->getChild(nIndxChild);
+			cutSimulation(pNode);
+		}
+	} else {
+		osg::NodeVisitor * pNV = dynamic_cast<osg::NodeVisitor *>(apNode);
+		if(pNV != NULL) {
+			int indy = 1;
+		}
+	}
+}
+
+
 int main(int argc, char** argv)
 {
     osg::ArgumentParser arguments(&argc, argv);
@@ -211,6 +231,8 @@ int main(int argc, char** argv)
         std::cout << arguments.getApplicationName() <<": No data loaded" << std::endl;
         return 1;
     }
+
+	cutSimulation(node);
 
     // Set our Singleton's model.
     AnimationManagerFinder finder;

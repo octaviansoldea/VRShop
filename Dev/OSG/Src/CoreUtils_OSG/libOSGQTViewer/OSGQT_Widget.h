@@ -23,7 +23,7 @@ namespace VR	{
 
 	private:
 		osgViewer::Viewer m_viewer;
-		//QTimer            m_timer;
+//		QTimer m_Qtimer;
 	};
 }
 #endif //OSGQT_WIDGET_H

@@ -1,19 +1,14 @@
-#include "VRPlate3D.h"
-#include "VRCylinder.h"
+#include <osgDB/ReadFile>
 
 #include "VRAvatar.h"
 
 using namespace VR;
+using namespace osg;
 
 //==============================================================================
 
 Avatar::Avatar(QObject * parent): QObject(parent)	{
-	Plate3DParams pParams;
-	pParams.m_flLenX = 0.3;
-	pParams.m_flLenY = 0.05;
-	pParams.m_flLenZ = 0.5;
-	pParams.m_strFileNameTexture = "../../../../Resources/Textures/MetallicWood.png";
-	osg::ref_ptr<Plate3D> pAvatar = new Plate3D(pParams);
+	ref_ptr<Node> pAvatar = dynamic_cast<Group*>(osgDB::readNodeFile("C:/Matej/test_1.osg"));
 
 	addChild(pAvatar);
 }

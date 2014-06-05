@@ -23,7 +23,9 @@
 #include <osgWidget/WindowManager>
 #include <osgAnimation/EaseMotion>
 
-const std::string IMAGE_PATH = "D:/Programs64/OSG/Data/OpenSceneGraph-Data-3.0.0/osgWidget/";
+const std::string IMAGE_PATH = 
+//	"D:/Programs64/OSG/Data/OpenSceneGraph-Data-3.0.0/osgWidget/";	//Tavi
+	"C:/Programi/OSG/OpenSceneGraph-Data-3.0.0/osgWidget/";
 
 template <class T>
 struct Sampler: public osg::Drawable::UpdateCallback 

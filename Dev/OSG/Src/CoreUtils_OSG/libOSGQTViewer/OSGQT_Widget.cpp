@@ -22,9 +22,11 @@ OSGQT_Widget::OSGQT_Widget(QWidget * apQWidget, Qt::WindowFlags f) : QWidget(apQ
 
 	osgQt::GraphicsWindowQt* pGraphicsWindow = new osgQt::GraphicsWindowQt(pTraits.get());
 
-	QGridLayout* pLayout = new QGridLayout;
+//	QGridLayout* pLayout = new QGridLayout;
+//	pLayout->addWidget(pGraphicsWindow->getGraphWidget(), 0, 0);
+	QVBoxLayout* pLayout = new QVBoxLayout;
+	pLayout->addWidget(pGraphicsWindow->getGLWidget());
 	pLayout->setMargin(0);
-	pLayout->addWidget(pGraphicsWindow->getGraphWidget(), 0, 0);
 	setLayout(pLayout);
 
 	m_viewer.setThreadingModel(osgViewer::Viewer::SingleThreaded);
@@ -38,21 +40,21 @@ OSGQT_Widget::OSGQT_Widget(QWidget * apQWidget, Qt::WindowFlags f) : QWidget(apQ
 		(float)pCamera->getViewport()->width() / (float)pCamera->getViewport()->height(),
 		1.0, 10000.0 );
 
-	startTimer(10);
+	startTimer(40);
 }
 
 //--------------------------------------------------------------------
 
 void OSGQT_Widget::paintEvent(QPaintEvent* event)	{
 	m_viewer.frame();
-	QWidget::paintEvent(event);
+//	QWidget::paintEvent(event);
 }
 
 //--------------------------------------------------------------------
 
 void OSGQT_Widget::timerEvent(QTimerEvent* event)	{
 	m_viewer.frame();
-	QWidget::timerEvent(event);
+//	QWidget::timerEvent(event);
 }
 
 //--------------------------------------------------------------------

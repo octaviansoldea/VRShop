@@ -52,7 +52,7 @@ m_strDBFileName("")	{
 	m_pOSGQTWidget->show();
 
 	//Map of the Scene
-	QGridLayout * pLayoutMap = dynamic_cast<QGridLayout *>(m_pOSGQTWidgetMap->layout());
+	QLayout * pLayoutMap = dynamic_cast<QLayout *>(m_pOSGQTWidgetMap->layout());
 	pLayoutMap->setMargin(2);
 
 	m_pOSGQTWidgetMap->setCameraManipulator(pKeyboardMouseManipulatorShopClient);

@@ -10,6 +10,7 @@ int main_Avatar(int argc, char * argv[])	{
 	ref_ptr<Group> pScene = new Group;
 	
 	ref_ptr<Avatar> pAvatar = new Avatar;
+
 	pScene->addChild(pAvatar);
 
 	osgViewer::Viewer viewer;

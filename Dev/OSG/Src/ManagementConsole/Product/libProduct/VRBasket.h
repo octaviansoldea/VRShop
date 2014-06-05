@@ -3,27 +3,36 @@
 
 #include <list>
 
-namespace VR	{
-	class Product;
+#include <QObject>
 
-	class Basket {
+namespace VR	{
+	class ProductShopClient;
+
+	class Basket : public QObject {
+		Q_OBJECT
 	public:
 		Basket();
 		~Basket();
 
 		const char* className() const;
 
-		void addProduct(const Product & aProduct);
-		void removeProduct(const Product & aProduct);
-		void modifyQuantity(const Product & aProduct);
+		void addProduct(ProductShopClient * apProduct);
+		void removeProduct(ProductShopClient * apProduct);
+		void modifyQuantity(ProductShopClient * apProduct);
 
 		float calculateBasketValue() const;
 
 		Basket * getBasket() const;
-		Product * getProduct(std::string & astrProductName);
+
+		int count() const;
+		ProductShopClient * getProduct(std::string & astrProductName);
+		ProductShopClient * getProduct(int anProductNumber);
+
+	signals:
+		void signalBasketChanged(const int & anIndex, bool abIsAdded);		//Emit this signal when adding a product
 
 	private:
-		std::list<Product> m_lstBasket;
+		std::list<ProductShopClient*> m_lstBasket;
 	};
 }
 #endif //VR_BASKET_H

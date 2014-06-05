@@ -37,6 +37,9 @@ namespace VR	{
 		void setParams(const ProductShopClientParams & aProductShopClientParams);
 		void getParams(ProductShopClientParams & aProductShopClientParams) const;
 
+		void setQuantity(float aflQuantity);
+		float getQuantity() const;
+
 		virtual void initFromSQLData(std::string & astrSQLData);
 
 	private:

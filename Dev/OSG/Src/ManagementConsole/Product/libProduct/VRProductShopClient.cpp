@@ -85,6 +85,18 @@ void ProductShopClient::getParams(ProductShopClientParams & aProductShopClientPa
 
 //------------------------------------------------------------------------------
 
+void ProductShopClient::setQuantity(float aflQuantity)	{
+	m_ProductShopClientParams.m_flQuantity = aflQuantity;
+}
+
+//------------------------------------------------------------------------------
+
+float ProductShopClient::getQuantity() const	{
+	return m_ProductShopClientParams.m_flQuantity;
+}
+
+//------------------------------------------------------------------------------
+
 void ProductShopClient::initFromSQLData(std::string & astrSQLData)	{
 	string & strSqlData = astrSQLData;
 

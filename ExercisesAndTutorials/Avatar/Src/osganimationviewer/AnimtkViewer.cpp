@@ -30,6 +30,7 @@
 #include <osgGA/TrackballManipulator>
 #include <osgGA/StateSetManipulator>
 #include <osgDB/ReadFile>
+#include <osgDB/writeFile>
 #include <osgAnimation/AnimationManagerBase>
 #include <osgAnimation/Bone>
 
@@ -78,15 +79,45 @@ struct AnimationManagerFinder : public osg::NodeVisitor
             return;
         if (node.getUpdateCallback()) {
             osgAnimation::AnimationManagerBase* b = dynamic_cast<osgAnimation::AnimationManagerBase*>(node.getUpdateCallback());
-            if (b) {
-                _am = new osgAnimation::BasicAnimationManager(*b);
+			if (b) {
+				_am = new osgAnimation::BasicAnimationManager(*b);
+				const osgAnimation::AnimationList & pAL = b->getAnimationList();
+				for(osgAnimation::AnimationList::const_iterator citAL = pAL.begin();
+					citAL != pAL.end();
+					citAL++) {
+
+						osgAnimation::ChannelList & channelList = (*citAL)->getChannels();
+						for(osgAnimation::ChannelList::iterator itCL = channelList.begin();
+							itCL != channelList.end();
+							itCL++) {
+								osgAnimation::Sampler * pSampler = (*itCL)->getSampler();
+								osgAnimation::KeyframeContainer * pKFC = pSampler->getKeyframeContainer();
+
+								{
+									osgAnimation::TemplateKeyframeContainer<osg::Vec3f> *pTKFC_Vec3f =
+										dynamic_cast<osgAnimation::TemplateKeyframeContainer<osg::Vec3f> *>(pKFC);
+									if((pTKFC_Vec3f != 0) && (pTKFC_Vec3f->size() > 199)) {
+										pTKFC_Vec3f->erase(pTKFC_Vec3f->begin()+110, pTKFC_Vec3f->end());
+									}
+								}
+								{
+
+									osgAnimation::TemplateKeyframeContainer<osg::Quat> *pTKFC_Quat =
+										dynamic_cast<osgAnimation::TemplateKeyframeContainer<osg::Quat> *>(pKFC);
+									if((pTKFC_Quat != 0) && (pTKFC_Quat->size() > 199)) {
+										pTKFC_Quat->erase(pTKFC_Quat->begin()+110, pTKFC_Quat->end());
+									}
+								}
+						}		
+				}
+
+//				osgDB::writeNodeFile(node,"C:/Matej/test.osg");
                 return;
             }
         }
         traverse(node);
     }
 };
-
 
 struct AddHelperBone : public osg::NodeVisitor
 {
@@ -126,7 +157,8 @@ int main_(int argc, char** argv)
     osgViewer::Viewer viewer(arguments);
     osg::ref_ptr<osg::Group> group = new osg::Group();
 
-    osg::Group* node = dynamic_cast<osg::Group*>(osgDB::readNodeFiles(arguments)); //dynamic_cast<osgAnimation::AnimationManager*>(osgDB::readNodeFile(psr[1]));
+    osg::Group* node = dynamic_cast<osg::Group*>(osgDB::readNodeFile("C:/Matej/test.osg"));
+		//dynamic_cast<osg::Group*>(osgDB::readNodeFiles(arguments)); //dynamic_cast<osgAnimation::AnimationManager*>(osgDB::readNodeFile(psr[1]));
     if(!node)
     {
         std::cout << arguments.getApplicationName() <<": No data loaded" << std::endl;
@@ -190,10 +222,10 @@ void cutSimulation(osg::Node* apNode) {
 			cutSimulation(pNode);
 		}
 	} else {
-		osg::NodeVisitor * pNV = dynamic_cast<osg::NodeVisitor *>(apNode);
-		if(pNV != NULL) {
+		//osg::NodeVisitor * pNV = dynamic_cast<osg::NodeVisitor *>(apNode);
+		/*if(pNV != NULL) {
 			int indy = 1;
-		}
+		}*/
 	}
 }
 
@@ -218,14 +250,15 @@ int main(int argc, char** argv)
         return 1;
     }
 
-    bool drawBone = false;
+    bool drawBone = true;
     if (arguments.read("--drawbone"))
         drawBone = true;
 
     osgViewer::Viewer viewer(arguments);
     osg::ref_ptr<osg::Group> group = new osg::Group();
 
-    osg::Group* node = dynamic_cast<osg::Group*>(osgDB::readNodeFiles(arguments)); //dynamic_cast<osgAnimation::AnimationManager*>(osgDB::readNodeFile(psr[1]));
+    osg::Group* node = dynamic_cast<osg::Group*>(osgDB::readNodeFile("C:/Matej/test_1.osg"));
+		//dynamic_cast<osg::Group*>(osgDB::readNodeFiles(arguments)); //dynamic_cast<osgAnimation::AnimationManager*>(osgDB::readNodeFile(psr[1]));
     if(!node)
     {
         std::cout << arguments.getApplicationName() <<": No data loaded" << std::endl;
@@ -245,7 +278,7 @@ int main(int argc, char** argv)
 		const osgAnimation::AnimationList & lstAnimation = model->getAnimationList();
 		const osg::ref_ptr<osgAnimation::Animation> & canim = *(lstAnimation.begin());
 		osg::ref_ptr<osgAnimation::Animation> & anim = const_cast<osg::ref_ptr<osgAnimation::Animation> &>(canim);
-		//anim->setDuration(0.1);
+
 	} else {
         osg::notify(osg::WARN) << "no osgAnimation::AnimationManagerBase found in the subgraph, no animations available" << std::endl;
     }
@@ -309,7 +342,7 @@ int main(int argc, char** argv)
 	osg::ref_ptr<osg::AnimationPathCallback> APCallback = new osg::AnimationPathCallback(path.get() );
 	
 	// Update the matrix transform
-	mt->setUpdateCallback( APCallback.get() );
+//	mt->setUpdateCallback( APCallback.get() );
 
 	viewer.setSceneData(root.get());
 

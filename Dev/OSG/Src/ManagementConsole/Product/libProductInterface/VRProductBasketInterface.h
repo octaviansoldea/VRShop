@@ -4,17 +4,18 @@
 #include <QObject>
 #include <list>
 
-#include "VRProductBasketInterfaceItem.h"
-
 class QDoubleSpinBox;
 class QFrame;
 class QLabel;
 class QPushButton;
 class QToolButton;
 
+
 namespace VR	{
-	class VRQFrame;
+	class Basket;
 	class ProductShopClient;
+	class ProductBasketInterfaceItem_GUI;
+	class ProductBasketInterfaceController;
 
 	class ProductBasketInterface : public QObject	{
 		Q_OBJECT
@@ -23,55 +24,43 @@ namespace VR	{
 			QToolButton * apToolButtonMyBasket,
 			QLabel * apLabelBasketCase,
 			QFrame * apFrameItemsBasket,
-//			QFrame * apFrameProductItem,
-			VRQFrame * apVRQFrameProductItem,
-			QFrame * apFrameProductItemHover,
-			QDoubleSpinBox * apDoubleSpinBoxQuantity,
-			QPushButton * apPushButtonDetails,
-			QPushButton * apPushButtonRemove,
-			QLabel * apLabelProductImage,
-			QLabel * apLabelProductInfo,
-			QLabel * apLabelBasketProductPrice,
 			QPushButton * apPushButtonBasketBack,
 			QPushButton * apPushButtonBasketForward
 		);	//End of constructor
 
 		~ProductBasketInterface();
 
+		void setBasket(Basket * apBasket);
+
 	private:
 		QToolButton * m_pToolButtonMyBasket;
 		QLabel * m_pLabelBasketCase;
 		QFrame * m_pFrameItemsBasket;
-//		QFrame * m_pFrameProductItem;
-		VRQFrame * m_pVRQFrameProductItem;
-		QFrame * m_pFrameProductItemHover;
-		QDoubleSpinBox * m_pDoubleSpinBoxQuantity;
-		QPushButton * m_pPushButtonDetails;
-		QPushButton * m_pPushButtonRemove;
-		QLabel * m_pLabelProductImage;
-		QLabel * m_pLabelProductInfo;
-		QLabel * m_pLabelBasketProductPrice;
-
 		QPushButton * m_pPushButtonBasketBack;
 		QPushButton * m_pPushButtonBasketForward;
 
 	private slots:
 		void slotMyBasket(bool abIndicator);
-		void slotProductItemHovered(bool abIndicator);
-
-		void slotProductDetails();
-		void slotProductRemove();
-		void slotSetQuantity();
 
 		void slotBasketBack();
 		void slotBasketForward();
+		void slotUpdateItemView(const int & anIndex, bool abIsAdded);	//Called with the change of the basket size
 
 	private:
-		ProductShopClient * m_pProductShopClient;
-		std::list<ProductShopClient*> * m_plstProducts;
+		Basket * m_pBasket;
+		std::list<ProductBasketInterfaceItem_GUI*> m_lstProductItemGUI;
 
-		void init();
-		void update();
+		ProductBasketInterfaceController * m_pProductBasketInterfaceController;
+
+		ProductBasketInterfaceItem_GUI * getProductItemGUI(int anPosition);
+
+		void setData(ProductShopClient * apProduct, bool abAppend=true);
+
+		void initGeometry();
+		void setupBasketInterface();
+
+		int m_nHandlePosition;	//First item on the left
+		const int m_nItemsVisible;	//No of items shown in the Basket bar
 	};
 }
 #endif //VR_PRODUCT_BASKET_INTERFACE_H

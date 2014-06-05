@@ -22,4 +22,7 @@ SUBDIRS(
 	osganimationsolid
 	osganimationtimeline
 	osganimationviewer	
+	
+	libAvatar
+	Test_libAvatar
 )

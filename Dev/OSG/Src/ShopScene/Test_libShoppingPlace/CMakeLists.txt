@@ -35,9 +35,6 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_QT
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCamera
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libPicker
-  ${CMAKE_SOURCE_DIR}/ShopScene/libShoppingPlace
-  ${CMAKE_BINARY_DIR}/ShopScene/libShoppingPlace
-  ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/ProductItem
   ${CMAKE_SOURCE_DIR}/Props/Scene/libScene
   ${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
   ${CMAKE_SOURCE_DIR}/Props/Equipment/GeometricShape/libGeometricShape
@@ -48,6 +45,9 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libController
   ${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libServer
   ${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libClient
+  ${CMAKE_SOURCE_DIR}/ShopScene/libShoppingPlace
+  ${CMAKE_BINARY_DIR}/ShopScene/libShoppingPlace
+  ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/ProductItem
 )
 
 SET(LIBS_COMMON 

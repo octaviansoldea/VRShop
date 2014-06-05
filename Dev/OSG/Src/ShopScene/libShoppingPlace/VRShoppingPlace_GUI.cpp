@@ -66,15 +66,6 @@ ShoppingPlace_GUI::ShoppingPlace_GUI()	{
 		m_pToolButtonMyBasket,
 		m_pLabelBasketCase,
 		m_pFrameItemsBasket,
-//		m_pFrameProductItem,
-		m_pVRQFrameProductItem,
-		m_pFrameProductItemHover,
-		m_pDoubleSpinBoxQuantity,
-		m_pPushButtonDetails,
-		m_pPushButtonRemove,
-		m_pLabelProductImage,
-		m_pLabelProductInfo,
-		m_pLabelBasketProductPrice,
 		m_pPushButtonBasketBack,
 		m_pPushButtonBasketForward);
 

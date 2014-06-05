@@ -8,6 +8,7 @@ INCLUDE_DIRECTORIES(
 )
 
 SET(SRCS
+	VRAxes.h VRAxes.cpp
 	VRBoundingBox.h VRBoundingBox.cpp
 	VRGrid.h VRGrid.cpp
 	VRObjectTransformation.h VRObjectTransformation.cpp

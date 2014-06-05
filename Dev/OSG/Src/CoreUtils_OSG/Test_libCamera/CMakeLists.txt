@@ -38,6 +38,7 @@ INCLUDE_DIRECTORIES(
 	${OPENSCENEGRAPH_INCLUDE_DIRS}
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCamera
 	${CMAKE_SOURCE_DIR}/Props/GeometricShape/libGeometricShape
+	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_OSG
 )
 
 ADD_EXECUTABLE(Test_libCamera
@@ -58,6 +59,7 @@ IF(Qt5_FOUND)
 	${OPENTHREADS_LIBRARIES}
 	libCamera
 	libGeometricShape
+	libCommon_OSG
   )
 ELSEIF(NOT Qt5_FOUND AND Qt4_FOUND)
   TARGET_LINK_LIBRARIES(Test_libCamera

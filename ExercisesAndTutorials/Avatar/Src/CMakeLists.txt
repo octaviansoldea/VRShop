@@ -12,17 +12,5 @@ FIND_PACKAGE(OpenSceneGraph
 INCLUDE_DIRECTORIES(${OPENSCENEGRAPH_INCLUDE_DIRS})
 
 SUBDIRS(
-	osganimate
-	osganimationeasemotion
-	osganimationhardware
-	osganimationmakepath
-	osganimationmorph
-	osganimationnode
-	osganimationskinning
-	osganimationsolid
-	osganimationtimeline
 	osganimationviewer	
-	
-	libAvatar
-	Test_libAvatar
 )

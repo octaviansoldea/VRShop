@@ -157,7 +157,7 @@ int main_(int argc, char** argv)
     osgViewer::Viewer viewer(arguments);
     osg::ref_ptr<osg::Group> group = new osg::Group();
 
-    osg::Group* node = dynamic_cast<osg::Group*>(osgDB::readNodeFile("C:/Matej/test.osg"));
+    osg::Group* node = dynamic_cast<osg::Group*>(osgDB::readNodeFile("C:/Matej/test_1.osg"));
 		//dynamic_cast<osg::Group*>(osgDB::readNodeFiles(arguments)); //dynamic_cast<osgAnimation::AnimationManager*>(osgDB::readNodeFile(psr[1]));
     if(!node)
     {
@@ -244,11 +244,11 @@ int main(int argc, char** argv)
         return 0;
     }
 
-    if (arguments.argc()<=1)
-    {
-        arguments.getApplicationUsage()->write(std::cout, osg::ApplicationUsage::COMMAND_LINE_OPTION);
-        return 1;
-    }
+    //if (arguments.argc()<=1)
+    //{
+    //    arguments.getApplicationUsage()->write(std::cout, osg::ApplicationUsage::COMMAND_LINE_OPTION);
+    //    return 1;
+    //}
 
     bool drawBone = true;
     if (arguments.read("--drawbone"))
@@ -342,7 +342,7 @@ int main(int argc, char** argv)
 	osg::ref_ptr<osg::AnimationPathCallback> APCallback = new osg::AnimationPathCallback(path.get() );
 	
 	// Update the matrix transform
-//	mt->setUpdateCallback( APCallback.get() );
+	mt->setUpdateCallback( APCallback.get() );
 
 	viewer.setSceneData(root.get());
 

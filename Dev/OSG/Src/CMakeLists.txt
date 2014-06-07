@@ -6,7 +6,7 @@ SET_PROPERTY(GLOBAL PROPERTY USE_FOLDERS ON)
 SET(CMAKE_DEBUG_POSTFIX "D")
 
 FIND_PACKAGE(OpenSceneGraph 
-	REQUIRED osg osgDB osgGA osgQt osgUtil osgViewer OpenThreads
+	REQUIRED osg osgAnimation osgDB osgGA osgQt osgUtil osgViewer OpenThreads
 )
 
 FIND_PACKAGE(Qt5Core)

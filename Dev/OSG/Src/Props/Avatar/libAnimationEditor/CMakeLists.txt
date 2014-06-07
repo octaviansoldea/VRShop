@@ -1,0 +1,53 @@
+PROJECT(libAnimationEditor)
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+
+SET(CMAKE_DEBUG_POSTFIX "D")
+
+IF(Qt5_FOUND)
+  INCLUDE_DIRECTORIES(
+    ${Qt5Core_INCLUDE_DIRS}
+    ${Qt5Gui_INCLUDE_DIRS}
+    ${Qt5Widgets_INCLUDE_DIRS}
+    ${Qt5OpenGL_INCLUDE_DIRS}
+	${Qt5Sql_INCLUDE_DIRS}
+  )
+ELSE(Qt5_FOUND)
+  IF(QT_USE_FILE)
+    INCLUDE(${QT_USE_FILE})
+  ELSE(QT_USE_FILE)
+    SET(QT_LIBRARIES   ${QT_QT_LIBRARY})
+  ENDIF(QT_USE_FILE)
+
+  INCLUDE_DIRECTORIES(
+       ${QT_INCLUDE_DIR}
+       ${CMAKE_CURRENT_BINARY_DIR}
+       ${CMAKE_CURRENT_SOURCE_DIR}
+  )
+ENDIF(Qt5_FOUND)
+
+#MOC according to the Qt version
+IF(Qt5_FOUND)
+  QT5_WRAP_UI(UI_SRCS		)
+  QT5_WRAP_CPP(MOC_SRCS 	VRAnimationEditor.h)
+ELSE(Qt5_FOUND)
+  QT4_WRAP_CPP(MOC_SRCS		VRAnimationEditor.h)  
+  QT4_WRAP_UI(UI_SRCS		)
+ENDIF(Qt5_FOUND)
+
+
+INCLUDE_DIRECTORIES(
+	${OPENSCENEGRAPH_INCLUDE_DIRS}
+)
+
+SET(SRCS
+  VRAnimationEditor.h VRAnimationEditor.cpp
+  AnimtkViewerKeyHandler.h AnimtkViewerKeyHandler.cpp
+  AnimtkViewerGUI.h AnimtkViewerGUI.cpp
+  AnimtkViewer.h AnimtkViewer.cpp
+)
+
+ADD_LIBRARY(libAnimationEditor
+  ${SRCS} ${MOC_SRCS} ${UI_SRCS}
+)
+
+SET_PROPERTY(TARGET libAnimationEditor PROPERTY FOLDER Animation)

@@ -9,6 +9,8 @@
 #include "AnimtkViewerGUI.h"
 #include "AnimtkViewerKeyHandler.h"
 
+#include "VRAxes.h"
+
 #include <osgViewer/Viewer>
 
 using namespace std;
@@ -63,7 +65,16 @@ int main(int argc, char * argv[])	{
 	osg::ref_ptr<osg::Group> root = new osg::Group;
 	osg::ref_ptr<osg::MatrixTransform> mt = new osg::MatrixTransform;
 	mt->addChild(node);
-	root->addChild(mt);
+
+	osg::ref_ptr<osg::MatrixTransform> mtFixMT = new osg::MatrixTransform;
+	mtFixMT->addChild(mt);
+
+	osg::Matrix mtrxMt = mtFixMT->getMatrix();
+	mtrxMt.makeScale(0.1,1.0,1.0);
+	mtFixMT->setMatrix(mtrxMt);
+
+
+	root->addChild(mtFixMT);
 
 	// Create animation path
 	osg::ref_ptr<osg::AnimationPath> path = new osg::AnimationPath;
@@ -76,6 +87,10 @@ int main(int argc, char * argv[])	{
 	// Define animation path callback
 	osg::ref_ptr<osg::AnimationPathCallback> APCallback = new osg::AnimationPathCallback(path.get() );
 	mt->setUpdateCallback( APCallback.get() );
+	
+
+	osg::ref_ptr<VR::Axes> pAxes = new VR::Axes;
+	root->addChild(pAxes);
 
 	viewer.setSceneData(root.get());
 

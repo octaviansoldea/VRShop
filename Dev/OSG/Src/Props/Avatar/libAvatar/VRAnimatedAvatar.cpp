@@ -1,25 +1,21 @@
-#include <osgDB/ReadFile>
-
 #include "VRAvatar.h"
 
+#include "VRAnimatedAvatar.h"
+
 using namespace VR;
-using namespace osg;
 
 //==============================================================================
 
-Avatar::Avatar(QObject * parent): QObject(parent)	{
-	ref_ptr<Node> pAvatar = dynamic_cast<Group*>(osgDB::readNodeFile("C:/Matej/avatar.osg"));
-
-	addChild(pAvatar);
+AnimatedAvatar::AnimatedAvatar(QObject * parent): Avatar(parent)	{
 }
 
 //------------------------------------------------------------------------------
 
-Avatar::~Avatar()	{
+AnimatedAvatar::~AnimatedAvatar()	{
 }
 
 //==============================================================================
 
-const char* Avatar::className() const	{
-	return "Avatar";
+const char* AnimatedAvatar::className() const	{
+	return "AnimatedAvatar";
 }

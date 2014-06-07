@@ -42,7 +42,7 @@ INCLUDE_DIRECTORIES(
 SET(SRCS
   VRAnimationEditor.h VRAnimationEditor.cpp
   AnimtkViewerKeyHandler.h AnimtkViewerKeyHandler.cpp
-  AnimtkViewerGUI.h AnimtkViewerGUI.cpp
+#  AnimtkViewerGUI.h AnimtkViewerGUI.cpp
   AnimtkViewer.h AnimtkViewer.cpp
 )
 

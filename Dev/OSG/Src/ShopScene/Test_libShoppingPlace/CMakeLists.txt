@@ -48,6 +48,7 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_SOURCE_DIR}/ShopScene/libShoppingPlace
   ${CMAKE_BINARY_DIR}/ShopScene/libShoppingPlace
   ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/ProductItem
+  ${CMAKE_SOURCE_DIR}/Props/Avatar/libAvatar
 )
 
 SET(LIBS_COMMON 
@@ -76,6 +77,7 @@ SET(LIBS_COMMON
 	libController
 	libServer
 	libClient
+	libAvatar
 )
 
 SET(SRCS

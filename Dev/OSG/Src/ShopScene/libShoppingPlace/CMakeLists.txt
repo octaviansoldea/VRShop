@@ -49,6 +49,7 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProductInterface
   ${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProductInterface/View
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libController
+  ${CMAKE_SOURCE_DIR}/Props/Avatar/libAvatar
 )
 
 

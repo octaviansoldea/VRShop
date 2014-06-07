@@ -7,6 +7,7 @@
 #include "VRScene.h"
 #include "VRProduct.h"
 #include "VRProductManager.h"
+#include "VRAvatar.h"
 
 #include "VRFurniture.h"
 #include "VRPlate3D.h"
@@ -70,6 +71,10 @@ m_strDBFileName("")	{
 	m_pScene->addChild(m_pProductMgr);
 
 	insertProducts();
+
+	//Avatar
+	ref_ptr<Avatar> pAvatar = new Avatar();
+	m_pScene->addChild(pAvatar);
 }
 
 //----------------------------------------------------------------------

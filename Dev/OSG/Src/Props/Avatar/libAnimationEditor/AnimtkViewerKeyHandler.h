@@ -28,26 +28,13 @@
 
 #include <osgGA/GUIEventHandler>
 
-class AnimtkKeyEventHandler : public osgGA::GUIEventHandler
-{
+class AnimtkKeyEventHandler : public osgGA::GUIEventHandler	{
 public:
-    AnimtkKeyEventHandler();
-    bool handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa,
-                osg::Object*, osg::NodeVisitor*);
-    void printUsage() const;
+	AnimtkKeyEventHandler();
 
-protected:
+	virtual bool handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa,
+		osg::Object*, osg::NodeVisitor*);
 
-    enum Binding 
-    {
-        List,
-        Help,
-        Play,
-        Next,
-        Prev
-    };
-
-    std::map<Binding, int> _actionKeys;
+	bool moveForward(const osg::Vec3d avec3dCurrentPoint, const osg::Vec3d avec3dNewPoint);
 };
-
 #endif

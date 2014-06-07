@@ -30,51 +30,19 @@
 #include <osgWidget/ViewerEventHandlers>
 #include <osgGA/TrackballManipulator>
 #include <osgGA/StateSetManipulator>
-#include <osgDB/ReadFile>
-#include <osgDB/writeFile>
 #include <osgAnimation/AnimationManagerBase>
 #include <osgAnimation/Bone>
 
 using namespace std;
 using namespace osg;
 
-const int WIDTH  = 1440;
-const int HEIGHT = 900;
-
-
-osg::Geode* createAxis()
-{
-    osg::Geode*     geode    = new osg::Geode();
-    osg::Geometry*  geometry = new osg::Geometry();
-    osg::Vec3Array* vertices = new osg::Vec3Array();
-    osg::Vec4Array* colors   = new osg::Vec4Array();
-
-    vertices->push_back(osg::Vec3(0.0f, 0.0f, 0.0f));
-    vertices->push_back(osg::Vec3(1.0f, 0.0f, 0.0f));
-    vertices->push_back(osg::Vec3(0.0f, 0.0f, 0.0f));
-    vertices->push_back(osg::Vec3(0.0f, 1.0f, 0.0f));
-    vertices->push_back(osg::Vec3(0.0f, 0.0f, 0.0f));
-    vertices->push_back(osg::Vec3(0.0f, 0.0f, 1.0f));
-
-    colors->push_back(osg::Vec4(1.0f, 0.0f, 0.0f, 1.0f));
-    colors->push_back(osg::Vec4(1.0f, 0.0f, 0.0f, 1.0f));
-    colors->push_back(osg::Vec4(0.0f, 1.0f, 0.0f, 1.0f));
-    colors->push_back(osg::Vec4(0.0f, 1.0f, 0.0f, 1.0f));
-    colors->push_back(osg::Vec4(0.0f, 0.0f, 1.0f, 1.0f));
-    colors->push_back(osg::Vec4(0.0f, 0.0f, 1.0f, 1.0f));
-
-    geometry->setVertexArray(vertices);
-    geometry->setColorArray(colors, osg::Array::BIND_PER_VERTEX);
-    geometry->addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::LINES, 0, 6));
-    geometry->getOrCreateStateSet()->setMode(GL_LIGHTING, false);
-
-    geode->addDrawable(geometry);
-
-    return geode;
+AnimationManagerFinder::AnimationManagerFinder(int anKeyFrameFrom, int anKeyFrameTo) : 
+NodeVisitor(NodeVisitor::TRAVERSE_ALL_CHILDREN), m_nKeyFrameFrom(anKeyFrameFrom), m_nKeyFrameTo(anKeyFrameTo) {
 }
 
+//============================================================================
 
-void AnimationManagerFinder::apply(osg::Node& node)	{
+void AnimationManagerFinder::apply(Node& node)	{
 	if (_am.valid())
 	    return;
 	if (node.getUpdateCallback()) {
@@ -95,7 +63,8 @@ void AnimationManagerFinder::apply(osg::Node& node)	{
 								osgAnimation::TemplateKeyframeContainer<osg::Vec3f> *pTKFC_Vec3f =
 									dynamic_cast<osgAnimation::TemplateKeyframeContainer<osg::Vec3f> *>(pKFC);
 								if((pTKFC_Vec3f != 0) && (pTKFC_Vec3f->size() > 199)) {
-									pTKFC_Vec3f->erase(pTKFC_Vec3f->begin()+110, pTKFC_Vec3f->end());
+									pTKFC_Vec3f->erase(pTKFC_Vec3f->begin(), pTKFC_Vec3f->begin() + m_nKeyFrameFrom - 1);
+									pTKFC_Vec3f->erase(pTKFC_Vec3f->begin() + m_nKeyFrameTo + 1, pTKFC_Vec3f->end());
 								}
 							}
 
@@ -103,12 +72,13 @@ void AnimationManagerFinder::apply(osg::Node& node)	{
 								osgAnimation::TemplateKeyframeContainer<osg::Quat> *pTKFC_Quat =
 									dynamic_cast<osgAnimation::TemplateKeyframeContainer<osg::Quat> *>(pKFC);
 								if((pTKFC_Quat != 0) && (pTKFC_Quat->size() > 199)) {
-									pTKFC_Quat->erase(pTKFC_Quat->begin()+110, pTKFC_Quat->end());
+									pTKFC_Quat->erase(pTKFC_Quat->begin(), pTKFC_Quat->begin() + m_nKeyFrameFrom - 1);
+									pTKFC_Quat->erase(pTKFC_Quat->begin() + m_nKeyFrameTo + 1, pTKFC_Quat->end());
+
 								}
 							}
 					}		
 			}
-//			osgDB::writeNodeFile(node,"C:/Matej/test.osg");
 			return;
 	    }
         traverse(node);

@@ -21,14 +21,15 @@
 #define ANIMTKVIEWER_H
 
 #include <osg/Node>
-#include <osgDB/ReadFile>
 #include <osgAnimation/BasicAnimationManager>
 
 struct AnimationManagerFinder : public osg::NodeVisitor	{
     osg::ref_ptr<osgAnimation::BasicAnimationManager> _am;
-    AnimationManagerFinder() : osg::NodeVisitor(osg::NodeVisitor::TRAVERSE_ALL_CHILDREN) {}
+    AnimationManagerFinder(int anKeyFrameFrom, int anKeyFrameTo);
     void apply(osg::Node& node);
-
+private:
+	int m_nKeyFrameFrom;
+	int m_nKeyFrameTo;
 };
 
 class AnimtkViewerModelController 

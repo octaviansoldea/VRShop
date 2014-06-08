@@ -1,3 +1,6 @@
+#include <QApplication>
+#include "VRKeyboardMouseManipulator.h"
+
 #include <iostream>
 #include <string>
 
@@ -11,10 +14,14 @@
 
 #include "VRAxes.h"
 
+#include "VRAnimationEditorGUI.h"
+
 #include <osgViewer/Viewer>
 
 using namespace std;
 using namespace osg;
+using namespace Ui;
+using namespace VR;
 
 int main(int argc, char * argv[])	{
     if(argc != 5) {
@@ -22,11 +29,13 @@ int main(int argc, char * argv[])	{
 		exit(-1);
 	}
 
-	string strFileIn = argv[1];
-	const string strFileOut = argv[2];
-	int nKeyFrameFrom = atoi(argv[3]);
-	int nKeyFrameTo = atoi(argv[4]);
+	QApplication app(argc,argv);
+	AnimationEditorGUI animGUI;
 
+	int nRes = app.exec();
+	return nRes;
+	
+/*	
     osgViewer::Viewer viewer;
     osg::ref_ptr<osg::Group> group = new osg::Group();
 
@@ -102,6 +111,7 @@ int main(int argc, char * argv[])	{
 	pp->insert( dbAnimationDuration*2,CP2);
 
 	return viewer.run();
+*/
 }
 
 

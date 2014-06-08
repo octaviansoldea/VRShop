@@ -25,6 +25,7 @@
 
 struct AnimationManagerFinder : public osg::NodeVisitor	{
     osg::ref_ptr<osgAnimation::BasicAnimationManager> _am;
+	AnimationManagerFinder();
     AnimationManagerFinder(int anKeyFrameFrom, int anKeyFrameTo);
     void apply(osg::Node& node);
 private:

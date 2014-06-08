@@ -24,17 +24,33 @@ ELSE(Qt5_FOUND)
   )
 ENDIF(Qt5_FOUND)
 
+#MOC according to the Qt version
+IF(Qt5_FOUND)
+  QT5_WRAP_UI(UI_SRCS		VRAnimationEditorGUI.ui)
+  QT5_WRAP_CPP(MOC_SRCS 	VRAnimationEditorGUI.h)
+ELSE(Qt5_FOUND)
+  QT4_WRAP_CPP(MOC_SRCS		VRAnimationEditorGUI.h)  
+  QT4_WRAP_UI(UI_SRCS		VRAnimationEditorGUI.ui)
+ENDIF(Qt5_FOUND)
+
+
 INCLUDE_DIRECTORIES(
 	${OPENSCENEGRAPH_INCLUDE_DIRS}
+	${CMAKE_SOURCE_DIR}/Props/Avatar/AnimationEditor
+	${CMAKE_BINARY_DIR}/Props/Avatar/AnimationEditor
 	${CMAKE_SOURCE_DIR}/Props/Avatar/libAnimationEditor
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_OSG
+	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_QT
+	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCamera
+	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libOSGQTViewer
 )
 
 SET(SRCS
+  VRAnimationEditorGUI.h VRAnimationEditorGUI.cpp
   main.cpp
 )
 
-ADD_EXECUTABLE(AnimationEditor ${SRCS})
+ADD_EXECUTABLE(AnimationEditor ${SRCS} ${UI_SRCS} ${MOC_SRCS})
 
 SET(LIBS_COMMON
 	${OSG_LIBRARIES}
@@ -46,6 +62,9 @@ SET(LIBS_COMMON
 	${OPENTHREADS_LIBRARIES}
 	libAnimationEditor
 	libCommon_OSG
+	libCommon_QT
+	libCamera
+	libOSGQTViewer
 )
 
 IF(Qt5_FOUND)

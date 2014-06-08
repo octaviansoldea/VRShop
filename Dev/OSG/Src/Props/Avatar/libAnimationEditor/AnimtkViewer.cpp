@@ -36,6 +36,12 @@
 using namespace std;
 using namespace osg;
 
+AnimationManagerFinder::AnimationManagerFinder() : 
+NodeVisitor(NodeVisitor::TRAVERSE_ALL_CHILDREN), m_nKeyFrameFrom(0), m_nKeyFrameTo(0) {
+}
+
+//----------------------------------------------------------------------------------------
+
 AnimationManagerFinder::AnimationManagerFinder(int anKeyFrameFrom, int anKeyFrameTo) : 
 NodeVisitor(NodeVisitor::TRAVERSE_ALL_CHILDREN), m_nKeyFrameFrom(anKeyFrameFrom), m_nKeyFrameTo(anKeyFrameTo) {
 }
@@ -49,36 +55,6 @@ void AnimationManagerFinder::apply(Node& node)	{
 		osgAnimation::AnimationManagerBase* b = dynamic_cast<osgAnimation::AnimationManagerBase*>(node.getUpdateCallback());
 		if (b) {
 			_am = new osgAnimation::BasicAnimationManager(*b);
-			const osgAnimation::AnimationList & pAL = b->getAnimationList();
-			for(osgAnimation::AnimationList::const_iterator citAL = pAL.begin();
-				citAL != pAL.end();
-				citAL++) {
-					osgAnimation::ChannelList & channelList = (*citAL)->getChannels();
-					for(osgAnimation::ChannelList::iterator itCL = channelList.begin();
-						itCL != channelList.end();
-						itCL++) {
-							osgAnimation::Sampler * pSampler = (*itCL)->getSampler();
-							osgAnimation::KeyframeContainer * pKFC = pSampler->getKeyframeContainer();
-							{
-								osgAnimation::TemplateKeyframeContainer<osg::Vec3f> *pTKFC_Vec3f =
-									dynamic_cast<osgAnimation::TemplateKeyframeContainer<osg::Vec3f> *>(pKFC);
-								if((pTKFC_Vec3f != 0) && (pTKFC_Vec3f->size() > 199)) {
-									pTKFC_Vec3f->erase(pTKFC_Vec3f->begin(), pTKFC_Vec3f->begin() + m_nKeyFrameFrom - 1);
-									pTKFC_Vec3f->erase(pTKFC_Vec3f->begin() + m_nKeyFrameTo + 1, pTKFC_Vec3f->end());
-								}
-							}
-
-							{
-								osgAnimation::TemplateKeyframeContainer<osg::Quat> *pTKFC_Quat =
-									dynamic_cast<osgAnimation::TemplateKeyframeContainer<osg::Quat> *>(pKFC);
-								if((pTKFC_Quat != 0) && (pTKFC_Quat->size() > 199)) {
-									pTKFC_Quat->erase(pTKFC_Quat->begin(), pTKFC_Quat->begin() + m_nKeyFrameFrom - 1);
-									pTKFC_Quat->erase(pTKFC_Quat->begin() + m_nKeyFrameTo + 1, pTKFC_Quat->end());
-
-								}
-							}
-					}		
-			}
 			return;
 	    }
         traverse(node);

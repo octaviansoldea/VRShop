@@ -106,8 +106,14 @@ osg::Matrixd KeyboardMouseManipulatorShopClient::getCameraObjectModifier() const
 
 	vecDistance = vecCenter - vecEye;
 	vecDistance.normalize();
+	 
+	cout << endl;
+	cout << "KeyboardMouseManipulatorShopClient::getCameraObjectModifier()" << endl;
+	cout << vecEye[0] << " "  << vecEye[1] << " " << vecEye[2] << endl;
+	cout << vecCenter[0] << " "  << vecCenter[1] << " " << vecCenter[2] << endl;
+	cout << vecUp[0] << " "  << vecUp[1] << " " << vecUp[2] << endl;
 
-	mtrxTemp = getMatrix() * Matrix::translate(vecDistance * 100);
+	mtrxTemp = getMatrix() * Matrix::translate(vecDistance * 8);
 
 	return mtrxTemp;
 
@@ -148,8 +154,12 @@ void KeyboardMouseManipulatorShopClient::setCameraPosition2Object(osg::Node * ap
 	//3. person view
 	Vec3d vec3dPerson3Eye = Vec3d(flCenterX,4*bB.yMin()-3*bB.yMax(),1.3*bB.zMax());
 	Vec3d vec3dPerson3Center = Vec3d(vec3dPerson3Eye.x(),vec3dPerson3Eye.y()+5,0.0);
-//	Vec3d vec3dPerson3Center = Vec3d(0.0,0.0,0.0);
-	Vec3d vec3dPerson3Up = Vec3d(0,0,1);
+	//Vec3d vec3dPerson3Center = Vec3d(0.0,0.0,0.0);
+	Vec3d vec3dDiff = vec3dPerson3Center - vec3dPerson3Eye;
+	Vec3d vecPerp = Vec3d(0,0,1)^vec3dDiff;
+
+	Vec3d vec3dPerson3Up = vec3dDiff^vecPerp;
+	vec3dPerson3Up.normalize();
 
 	Matrixd mtrx3Person = setMatrixTransform(vec3dPerson3Eye, vec3dPerson3Center, vec3dPerson3Up);
 	m_lstPredefinedViews.push_back(mtrx3Person);

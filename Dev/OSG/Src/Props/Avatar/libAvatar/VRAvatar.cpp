@@ -125,24 +125,25 @@ void Avatar::slotUpdatePosition()	{
 
 	Matrix mtrxLocalOrientation =
 		matrix1.rotate(
-			degrees2Radians((float)90), osg::X_AXIS,
+			degrees2Radians((float)90), osg::X_AXIS,//90
 			degrees2Radians((float)0), osg::Y_AXIS,
-			degrees2Radians((float)180), osg::Z_AXIS);
+			degrees2Radians((float)180), osg::Z_AXIS);//180
 
 	ComputeBoundsVisitor cbv;
 	accept(cbv);
 	osg::BoundingBox & bB = cbv.getBoundingBox();
 	
 	Matrix matrix2(Matrix::identity());
-	Matrix mtrxLocalTranslation = matrix2.translate(0, -(bB.yMax() - bB.yMin()) * 0.9, 0);
-		
+	Matrix mtrxLocalTranslation = matrix2.translate(0, 0, -3 * 0.9);
+	
 	//Avatar put to the center of the camera
 	Matrixd & mtrxTransform = m_pKeyboardMouseManipulatorShopClient->getCameraObjectModifier();
 
 	//Avatar rotated so it's look is OK
 	mtrxTransform = 
-		mtrxLocalOrientation * 
 		mtrxLocalTranslation * 
+		mtrxLocalOrientation * 
+		
 		mtrxTransform;
 
 	setMatrix(mtrxTransform);

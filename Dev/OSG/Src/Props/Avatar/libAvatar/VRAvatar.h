@@ -3,69 +3,59 @@
 
 #include <QObject>
 #include <QTimer>
+#include <string>
 
 #include <osg/MatrixTransform>
+#include <osg/AnimationPath>
+
+class AnimationManagerFinder;
 
 namespace VR {
 	class AnimationPath;
+	class KeyboardMouseManipulatorShopClient;
 
-	class Avatar : public QObject, public osg::MatrixTransform	{
+	class Avatar : public QObject, public osg::MatrixTransform {
 		Q_OBJECT
 
 	public:
-		Avatar(QObject * parent=0);
+		Avatar(std::string & astrAvatarFile, QObject * parent=0);
+		Avatar(std::string & astrAvatarFile,
+			KeyboardMouseManipulatorShopClient *apKeyboardMouseManipulatorShopClient, 
+			QObject * parent=0);
+		
 		~Avatar();
 
 		virtual const char* className() const;
 
-		void rotateHeadTo(const osg::Vec3d & avec3dOrientation, float aflSpeed);
-		void lookAround();	//Just moves the head in a predefined manner
-
 		void pickProduct();		//Either from a shelf or a basket
-		void returnProduct();	//Either to a shelf or a basket
-		void communicate();
+		//void returnProduct();	//Either to a shelf or a basket
+		//void communicate();
 
-		//First turn to the destination
-		void moveTo(const osg::Vec3d & avec3dPosition, float aflSpeed, AnimationPath & aAP);
-		void bodyTurn(const osg::Vec3d & avec3dDirection, float aflSpeed);
+		////First turn to the destination
+		//void moveTo(const osg::Vec3d & avec3dPosition, float aflSpeed, AnimationPath & aAP);
+		//void bodyTurn(const osg::Vec3d & avec3dDirection, float aflSpeed);
 
-		void stretchHand(/*Left,right,both*/);
-		void bendHand(/*Left,right,both*/);
+		//void animatePick();
+		void startAnimation();
+		void stopAnimation();//clears all the actions
 
-		void animatePick();
-		void stopAnimation();
+		void setPosition(const osg::Vec3d & aVec3d);
+		void setOrientation(const osg::Vec3d & aVec3d);
+
+		void addAnimationPath(osg::AnimationPath & aAnimationPath);
+		osg::AnimationPath * getAnimationPath();
 
 	public slots:
+		void slotUpdatePosition();
 
-		void step() {};
+	private:
+		std::list<osg::ref_ptr<osg::AnimationPath>> m_plstAnimationPaths;
+		KeyboardMouseManipulatorShopClient * m_pKeyboardMouseManipulatorShopClient;
 
-	public:
-		typedef enum STATUS {
-			SITTING,
-			STANDING,
-			WALKING,
-			RUNNING,
-			OTHER
-		};
+		osg::ref_ptr<osg::AnimationPath> m_pAnimationPath;
+		osg::ref_ptr<osg::Group> m_pAvatar;
 
-		STATUS m_Status;
-		osg::Vec3d m_vec3dLocation;
-		osg::Vec3d m_vec3dOrientationBody;
-		osg::Vec3d m_vec3dOrientationHead;
-
-		osg::Vec3d m_From;
-		osg::Vec3d m_Towards;
-		osg::Vec3d m_CurrentLocation;
-		
-		int m_nTwoStepsFragmentsNr;
-		double m_dbStepFragmentLength;
-		
-		QTimer m_Timer;
-
-
-		double m_dbHeight;
-		bool m_bIsFemale;
-		bool m_bIsChild;
+		AnimationManagerFinder * m_pFinder;
 	};
 }
 #endif //VR_AVATAR_H

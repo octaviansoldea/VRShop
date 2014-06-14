@@ -13,7 +13,6 @@
 #include "AnimtkViewerGUI.h"
 #include "AnimtkViewerKeyHandler.h"
 
-
 #include <QString>
 #include <QFileDialog>
 #include <QMessageBox>
@@ -31,9 +30,6 @@ using namespace VR;
 AnimationEditorGUI::AnimationEditorGUI()	{
 	m_pScene = new Group();
 	m_pMt = new MatrixTransform();
-
-	ref_ptr<Axes > pAxes = new Axes;
-	m_pScene->addChild(pAxes);
 
 	setupUi(this);
 
@@ -167,8 +163,12 @@ void AnimationEditorGUI::cutAnimation(int & anFrom, int & anTo)	{
 						{
 							osgAnimation::TemplateKeyframeContainer<osg::Vec3f> *pTKFC_Vec3f =
 								dynamic_cast<osgAnimation::TemplateKeyframeContainer<osg::Vec3f> *>(pKFC);
+							
 							if(pTKFC_Vec3f != 0) {
-								pTKFC_Vec3f->erase(pTKFC_Vec3f->begin() + anTo - 1, pTKFC_Vec3f->end());
+								int nTo = pTKFC_Vec3f->end() - pTKFC_Vec3f->begin();	
+								nTo = (anTo > nTo) ? nTo : anTo;
+
+								pTKFC_Vec3f->erase(pTKFC_Vec3f->begin() + nTo - 1, pTKFC_Vec3f->end());
 								pTKFC_Vec3f->erase(pTKFC_Vec3f->begin(), pTKFC_Vec3f->begin() + anFrom);
 							}
 						}
@@ -176,13 +176,18 @@ void AnimationEditorGUI::cutAnimation(int & anFrom, int & anTo)	{
 						{
 							osgAnimation::TemplateKeyframeContainer<osg::Quat> *pTKFC_Quat =
 								dynamic_cast<osgAnimation::TemplateKeyframeContainer<osg::Quat> *>(pKFC);
+
 							if(pTKFC_Quat != 0) {
-								pTKFC_Quat->erase(pTKFC_Quat->begin() + anTo - 1, pTKFC_Quat->end());
+								int nTo = pTKFC_Quat->end() - pTKFC_Quat->begin();	
+								nTo = (anTo > nTo) ? nTo : anTo;
+
+								pTKFC_Quat->erase(pTKFC_Quat->begin() + nTo - 1, pTKFC_Quat->end());
 								pTKFC_Quat->erase(pTKFC_Quat->begin(), pTKFC_Quat->begin() + anFrom);
 							}
 						}
 				}
 				osgDB::writeNodeFile(*m_pNode,strOutFileName);
+//				osgDB::writeNodeFile(*m_pMt,strOutFileName);
 		}
 	}	
 }

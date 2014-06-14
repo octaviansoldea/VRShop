@@ -20,7 +20,7 @@ namespace VR {
 
 	class KeyboardMouseManipulator : public osgGA::OrbitManipulator
 	{
-		typedef osgGA::OrbitManipulator inherited;
+//		typedef osgGA::OrbitManipulator inherited;
 
     public:
 

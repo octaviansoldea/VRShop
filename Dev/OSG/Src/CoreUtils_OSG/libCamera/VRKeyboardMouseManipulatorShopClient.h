@@ -15,15 +15,15 @@
 #define VR_KEYBOARD_MOUSE_MANIPULATOR_SHOP_CLIENT_H
 
 #include <QObject>
+#include <osg/Node>
 
 #include "VRKeyboardMouseManipulator.h"
+#include <list>
 
 namespace VR {
 
 	class KeyboardMouseManipulatorShopClient : public QObject, public KeyboardMouseManipulator
 	{
-		typedef KeyboardMouseManipulator inherited;
-
 		Q_OBJECT
     public:
 
@@ -34,11 +34,20 @@ namespace VR {
 		virtual bool handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa);
 
 		void setViewPerspective(bool abFirstPerson);
+		bool getViewPerspective() const;
+
+		void setCameraPosition2Object(osg::Node * apNode);
+		std::list<osg::Matrixd> m_lstPredefinedViews;
+		osg::Matrixd getCameraObjectModifier() const;
 
 	private:
 		bool checkObstructionInFront(float aflDistance);
 
 		bool m_bFirstPerson;
+		osg::Matrixd setMatrixTransform(osg::Vec3d &avec3dEye,osg::Vec3d &avec3dCenter,osg::Vec3d &avec3dUp);
+
+	signals:
+		void signalCameraPositionOrHeadingDirectionChanged();
 	};
 }
 #endif //VR_KEYBOARD_MOUSE_MANIPULATOR_SHOP_CLIENT_H

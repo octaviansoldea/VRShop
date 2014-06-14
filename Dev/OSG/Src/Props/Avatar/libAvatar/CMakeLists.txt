@@ -37,11 +37,13 @@ ENDIF(Qt5_FOUND)
 
 INCLUDE_DIRECTORIES(
 	${OPENSCENEGRAPH_INCLUDE_DIRS}
+	${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
+	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCamera
+	${CMAKE_SOURCE_DIR}/Props/Avatar/libAnimationEditor
 )
 
 SET(SRCS
   VRAvatar.h VRAvatar.cpp
-  VRAnimatedAvatar.h VRAnimatedAvatar.cpp
   VRAvatarAction.h VRAvatarAction.cpp
   VRAnimationPath.h VRAnimationPath.cpp
 )

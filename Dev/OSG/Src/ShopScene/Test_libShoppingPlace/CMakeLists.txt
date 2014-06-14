@@ -49,10 +49,12 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_BINARY_DIR}/ShopScene/libShoppingPlace
   ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs/ProductItem
   ${CMAKE_SOURCE_DIR}/Props/Avatar/libAvatar
+  ${CMAKE_SOURCE_DIR}/Props/Avatar/libAnimationEditor
 )
 
 SET(LIBS_COMMON 
 	${OSG_LIBRARIES}
+	${OSGANIMATION_LIBRARIES}
 	${OSGDB_LIBRARIES}
 	${OSGGA_LIBRARIES}
 	${OSGQT_LIBRARIES}
@@ -78,6 +80,7 @@ SET(LIBS_COMMON
 	libServer
 	libClient
 	libAvatar
+	libAnimationEditor
 )
 
 SET(SRCS

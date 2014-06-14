@@ -13,7 +13,7 @@ using namespace std;
 
 AbstractUser::AbstractUser()	{
 
-	m_pAvatar = new Avatar();
+//	m_pAvatar = new Avatar();
 }
 
 //------------------------------------------------------------------------------

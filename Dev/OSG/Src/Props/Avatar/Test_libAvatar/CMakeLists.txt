@@ -27,10 +27,9 @@ ENDIF(Qt5_FOUND)
 INCLUDE_DIRECTORIES(
 	${OPENSCENEGRAPH_INCLUDE_DIRS}
     ${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
-	${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
-	${CMAKE_SOURCE_DIR}/Props/GeometricShape/libGeometricShape
-	${CMAKE_SOURCE_DIR}/Props/Equipment/Furniture/libFurniture
+	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCamera
 	${CMAKE_SOURCE_DIR}/Props/Avatar/libAvatar
+	${CMAKE_SOURCE_DIR}/Props/Avatar/libAnimationEditor
 )
 
 SET(SRCS
@@ -41,16 +40,16 @@ ADD_EXECUTABLE(Test_libAvatar ${SRCS})
 
 SET(LIBS_COMMON
 	${OSG_LIBRARIES}
+	${OSGANIMATION_LIBRARIES}
 	${OSGDB_LIBRARIES}
 	${OSGGA_LIBRARIES}
 	${OSGQT_LIBRARIES}
 	${OSGVIEWER_LIBRARIES}
 	${OPENTHREADS_LIBRARIES}
 	libCommon
-	libAbstractObject
-	libGeometricShape
-	libFurniture
+	libCamera
 	libAvatar
+	libAnimationEditor
 )
 
 IF(Qt5_FOUND)

@@ -1,21 +1,34 @@
+#include <iostream>
+
+#include <osgDB/readFile>
 #include <osgViewer/Viewer>
+#include "VRKeyboardMouseManipulatorShopClient.h"
 
 #include "VRAvatar.h"
 
 using namespace VR;
 using namespace osg;
+using namespace std;
 
 int main_Avatar(int argc, char * argv[])	{
-
+	osgViewer::Viewer viewer;
 	ref_ptr<Group> pScene = new Group;
-	
-	ref_ptr<Avatar> pAvatar = new Avatar;
 
+	string strAvatarFileName = "../../../../Resources/Models3D/avatar.osg";
+
+	ref_ptr<KeyboardMouseManipulatorShopClient> pCamera = new KeyboardMouseManipulatorShopClient;
+
+	ref_ptr<Avatar> pAvatar = new Avatar(strAvatarFileName, pCamera);
+	pCamera->setCameraPosition2Object(pAvatar);
+
+	ref_ptr<Node> pAxes = dynamic_cast<Group*>(osgDB::readNodeFile("C:/Projekti/VRShop/Dev/OSG/Resources/Models3D/axes.osgt"));
+
+	pScene->addChild(pAxes);
 	pScene->addChild(pAvatar);
 
-	osgViewer::Viewer viewer;
 	viewer.setSceneData(pScene);
-
+	viewer.setCameraManipulator(pCamera);
+	
 	return viewer.run();
 }
 

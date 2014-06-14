@@ -23,7 +23,8 @@ using namespace osg;
 using namespace osgGA;
 
 
-KeyboardMouseManipulator::KeyboardMouseManipulator(int flags) : inherited( flags ),
+KeyboardMouseManipulator::KeyboardMouseManipulator(int flags) : osgGA::OrbitManipulator( flags ),
+	//inherited( flags ),
 m_bCtrl(false),
 m_bShift(false),
 m_cdbRotationFactor(osg::PI*0.1)
@@ -35,13 +36,16 @@ m_cdbRotationFactor(osg::PI*0.1)
 	m_dbTranslationFactorX		= 0.0;
 
 	m_dbDefaultMoveSpeed = 1;
+	setAutoComputeHomePosition(false);
+	setHomePosition(Vec3d(0,-10,0),Vec3d(0,0,0),Vec3d(0,0,1));
 }
 
 //-------------------------------------------------------------------------------
 
 KeyboardMouseManipulator::KeyboardMouseManipulator(const KeyboardMouseManipulator& cm, const CopyOp& copyOp) :
 	Object(cm, copyOp),
-    inherited(cm, copyOp),
+	osgGA::OrbitManipulator(cm, copyOp),
+//    inherited(cm, copyOp),
 m_bCtrl(false),
 m_bShift(false),
 m_cdbRotationFactor(osg::PI*0.1)
@@ -52,6 +56,8 @@ m_cdbRotationFactor(osg::PI*0.1)
 	m_dbTranslationFactorX		= 0.0;
 
 	m_dbDefaultMoveSpeed = 1.0;
+	setAutoComputeHomePosition(false);
+	setHomePosition(Vec3d(0,-10,0),Vec3d(0,0,0),Vec3d(0,0,1));
 }
 
 //-------------------------------------------------------------------------------
@@ -111,7 +117,20 @@ bool KeyboardMouseManipulator::keyDown(const osgGA::GUIEventAdapter &ea, osgGA::
 	if (nResKey == osgGA::GUIEventAdapter::KEY_Up)	{
 		if(m_bCtrl)	{ //Move forward
 			m_dbForwardFactor = 0.01 * (m_bShift ? (m_dbDefaultMoveSpeed*=1.1) : m_dbDefaultMoveSpeed);
-			zoomModel(m_dbForwardFactor);
+
+			Vec3d prevCenter, prevEye, prevUp;
+			getTransformation(prevEye, prevCenter, prevUp);
+			Vec3d dbvecDirection = prevCenter-prevEye;
+			
+			float flvecStep = fabs(dbvecDirection.x())+fabs(dbvecDirection.y());
+			float deltaStepX = m_dbForwardFactor*(dbvecDirection.x() / flvecStep);
+			float deltaStepY = m_dbForwardFactor*(dbvecDirection.y() / flvecStep);
+
+			Vec3d newEye = prevEye+Vec3d(deltaStepX,deltaStepY,0.0);
+			Vec3d newCenter = prevCenter+Vec3d(deltaStepX,deltaStepY,0.0);
+
+			setTransformation(newEye, newCenter, prevUp);
+
 		} else { //Rotate view (but not direction of travel) up.
 			m_dbTranslationFactorX = m_cdbRotationFactor * 
 				(m_bShift ? (m_dbDefaultMoveSpeed*=1.1) : m_dbDefaultMoveSpeed);
@@ -121,8 +140,21 @@ bool KeyboardMouseManipulator::keyDown(const osgGA::GUIEventAdapter &ea, osgGA::
 
 	if (nResKey == osgGA::GUIEventAdapter::KEY_Down)	{
 		if(m_bCtrl)	{ //Move backwards
-			m_dbForwardFactor = -0.01 * (m_bShift ? (m_dbDefaultMoveSpeed*=1.1) : m_dbDefaultMoveSpeed);
-			zoomModel(m_dbForwardFactor);
+			m_dbForwardFactor = 0.01 * (m_bShift ? (m_dbDefaultMoveSpeed*=1.1) : m_dbDefaultMoveSpeed);
+
+			Vec3d prevCenter, prevEye, prevUp;
+			getTransformation(prevEye, prevCenter, prevUp);
+			Vec3d dbvecDirection = prevCenter-prevEye;
+			
+			float flvecStep = fabs(dbvecDirection.x())+fabs(dbvecDirection.y());
+			float deltaStepX = m_dbForwardFactor*(dbvecDirection.x() / flvecStep);
+			float deltaStepY = m_dbForwardFactor*(dbvecDirection.y() / flvecStep);
+
+			Vec3d newEye = prevEye-Vec3d(deltaStepX,deltaStepY,0.0);
+			Vec3d newCenter = prevCenter-Vec3d(deltaStepX,deltaStepY,0.0);
+
+			setTransformation(newEye, newCenter, prevUp);
+
 		} else { //Rotate view (but not direction of travel) down.
 			m_dbTranslationFactorX = -m_cdbRotationFactor * 
 				(m_bShift ? (m_dbDefaultMoveSpeed*=1.1) : m_dbDefaultMoveSpeed);
@@ -171,7 +203,7 @@ bool KeyboardMouseManipulator::keyDown(const osgGA::GUIEventAdapter &ea, osgGA::
 	}
 
 	if (nResKey == ' ')	{
-		home(ea.getTime());
+		home(0);
 	} else	{
 		bRes = false;
 	}

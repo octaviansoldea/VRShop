@@ -70,11 +70,14 @@ m_strDBFileName("")	{
 	m_pProductMgr = new ProductManager;
 	m_pScene->addChild(m_pProductMgr);
 
-	insertProducts();
+//	insertProducts();
 
 	//Avatar
-	ref_ptr<Avatar> pAvatar = new Avatar();
+	string strAvatarFileName = "../../../Resources/Models3D/avatarOut.osg";
+	ref_ptr<Avatar> pAvatar = new Avatar(strAvatarFileName, pKeyboardMouseManipulatorShopClient);
 	m_pScene->addChild(pAvatar);
+
+	pKeyboardMouseManipulatorShopClient->setCameraPosition2Object(pAvatar);
 }
 
 //----------------------------------------------------------------------

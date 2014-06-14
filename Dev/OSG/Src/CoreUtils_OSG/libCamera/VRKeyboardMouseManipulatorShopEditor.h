@@ -22,7 +22,7 @@ namespace VR {
 
 	class KeyboardMouseManipulatorShopEditor : public QObject, public KeyboardMouseManipulator
 	{
-		typedef KeyboardMouseManipulator inherited;
+	//	typedef KeyboardMouseManipulator inherited;
 
 		Q_OBJECT
     public:

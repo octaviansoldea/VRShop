@@ -8,6 +8,7 @@ namespace VR	{
 	class OSGQT_Widget;
 	class Scene;
 	class ProductManager;
+	class AvatarManagerClient;
 	class Grid;
 	class PickAndDragHandlerShopClient;
 
@@ -40,6 +41,8 @@ namespace VR	{
 		osg::ref_ptr<Grid> m_pGridlines;
 
 		void insertProducts();
+
+		AvatarManagerClient * m_pAvatarMgr;
 	};
 }
 #endif //VR_SHOPPING_PLACE_H

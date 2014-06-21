@@ -1,7 +1,3 @@
-#include <iostream>
-
-#include "BasicStringDefinitions.h"
-
 #include "VRDatabaseManagerShopClient.h"
 
 using namespace VR;

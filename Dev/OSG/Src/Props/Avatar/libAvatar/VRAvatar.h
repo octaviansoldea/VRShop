@@ -6,7 +6,7 @@
 #include <string>
 
 #include <osg/MatrixTransform>
-#include <osg/AnimationPath>
+#include "VRAnimationPath.h"
 
 class AnimationManagerFinder;
 
@@ -14,18 +14,27 @@ namespace VR {
 	class AnimationPath;
 	class KeyboardMouseManipulatorShopClient;
 
+	struct AvatarParams	{
+		AvatarParams();
+
+		std::string m_strAvatarFile;
+		std::string m_strAvatarName;
+		KeyboardMouseManipulatorShopClient * m_pKeyboardMouseManipulatorShopClient;
+		QObject * m_pParent;
+	};
+
 	class Avatar : public QObject, public osg::MatrixTransform {
 		Q_OBJECT
 
 	public:
 		Avatar(std::string & astrAvatarFile, QObject * parent=0);
-		Avatar(std::string & astrAvatarFile,
-			KeyboardMouseManipulatorShopClient *apKeyboardMouseManipulatorShopClient, 
-			QObject * parent=0);
+		Avatar(const AvatarParams * apAvatarParams);
 		
 		~Avatar();
 
 		virtual const char* className() const;
+
+		void setAnimation(const osg::Matrixd & amtrxOldMatrix, const osg::Matrixd & amtrxNewMatrix);
 
 		void pickProduct();		//Either from a shelf or a basket
 		//void returnProduct();	//Either to a shelf or a basket
@@ -42,20 +51,24 @@ namespace VR {
 		void setPosition(const osg::Vec3d & aVec3d);
 		void setOrientation(const osg::Vec3d & aVec3d);
 
-		void addAnimationPath(osg::AnimationPath & aAnimationPath);
-		osg::AnimationPath * getAnimationPath();
+		void addAnimationPath(VR::AnimationPath * apAnimationPath);
+		VR::AnimationPath * getAnimationPath();
 
 	public slots:
-		void slotUpdatePosition();
+		void slotUpdatePosition(bool abAnimation);
 
 	private:
-		std::list<osg::ref_ptr<osg::AnimationPath>> m_plstAnimationPaths;
+		std::list<osg::ref_ptr<VR::AnimationPath>> m_plstAnimationPaths;
 		KeyboardMouseManipulatorShopClient * m_pKeyboardMouseManipulatorShopClient;
 
-		osg::ref_ptr<osg::AnimationPath> m_pAnimationPath;
-		osg::ref_ptr<osg::Group> m_pAvatar;
+		osg::ref_ptr<VR::AnimationPath> m_pAnimationPath;
+		osg::ref_ptr<osg::AnimationPathCallback> m_pAPCallback;
+
+		osg::ref_ptr<osg::Group> m_p_LocalCoords_Avatar;
 
 		AnimationManagerFinder * m_pFinder;
+
+		osg::Matrixd setAvatar2Camera();
 	};
 }
 #endif //VR_AVATAR_H

@@ -12,6 +12,7 @@ IF(Qt5_FOUND)
     ${Qt5Widgets_INCLUDE_DIRS}
     ${Qt5OpenGL_INCLUDE_DIRS}
     ${Qt5Sql_INCLUDE_DIRS}
+	${Qt5Network_INCLUDE_DIRS}
   )
 ELSE(Qt5_FOUND)
   #Assume Qt4_FOUND, if we are here
@@ -50,6 +51,7 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProductInterface/View
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libController
   ${CMAKE_SOURCE_DIR}/Props/Avatar/libAvatar
+  ${CMAKE_SOURCE_DIR}/Props/Avatar/libAvatarManager
 )
 
 

@@ -18,7 +18,7 @@
 #include <osg/Node>
 
 #include "VRKeyboardMouseManipulator.h"
-#include <list>
+#include <vector>
 
 namespace VR {
 
@@ -33,21 +33,24 @@ namespace VR {
 
 		virtual bool handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa);
 
+		osg::BoundingBox getBoundingBox() const;
+
 		void setViewPerspective(bool abFirstPerson);
 		bool getViewPerspective() const;
+		osg::Vec3d cameraPerspectiveCorrector() const;
 
 		void setCameraPosition2Object(osg::Node * apNode);
-		std::list<osg::Matrixd> m_lstPredefinedViews;
-		osg::Matrixd getCameraObjectModifier() const;
+		std::vector<osg::Matrixd> m_vecPredefinedViews;
 
 	private:
 		bool checkObstructionInFront(float aflDistance);
 
 		bool m_bFirstPerson;
 		osg::Matrixd setMatrixTransform(osg::Vec3d &avec3dEye,osg::Vec3d &avec3dCenter,osg::Vec3d &avec3dUp);
+		osg::BoundingBox m_BoundingBox;
 
 	signals:
-		void signalCameraPositionOrHeadingDirectionChanged();
+		void signalCameraPositionOrHeadingDirectionChanged(bool abAnimation);
 	};
 }
 #endif //VR_KEYBOARD_MOUSE_MANIPULATOR_SHOP_CLIENT_H

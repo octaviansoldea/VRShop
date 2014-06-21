@@ -2743,9 +2743,10 @@ MatrixTransform {
                         cullingActive TRUE
                         num_drawables 1
                         Geometry {
+                          UniqueID Geometry_8
                           name "brow.r"
                           StateSet {
-                            UniqueID StateSet_8
+                            UniqueID StateSet_9
                             name "brow.l"
                             rendering_hint DEFAULT_BIN
                             renderBinMode INHERIT
@@ -2888,8 +2889,10 @@ MatrixTransform {
                         cullingActive TRUE
                         num_drawables 2
                         Geometry {
+                          UniqueID Geometry_10
                           name "nose"
                           StateSet {
+                            UniqueID StateSet_11
                             name "nose.001"
                             rendering_hint DEFAULT_BIN
                             renderBinMode INHERIT
@@ -3020,6 +3023,7 @@ MatrixTransform {
                           }
                         }
                         Geometry {
+                          UniqueID Geometry_12
                           name "nose"
                           Use StateSet_7
                           useDisplayList TRUE
@@ -3144,8 +3148,10 @@ MatrixTransform {
                         cullingActive TRUE
                         num_drawables 1
                         Geometry {
+                          UniqueID Geometry_13
                           name "mouth.001"
                           StateSet {
+                            UniqueID StateSet_14
                             name "Material.001"
                             rendering_hint DEFAULT_BIN
                             renderBinMode INHERIT
@@ -3312,9 +3318,10 @@ MatrixTransform {
                         cullingActive TRUE
                         num_drawables 1
                         Geometry {
+                          UniqueID Geometry_15
                           name "eye.r"
                           StateSet {
-                            UniqueID StateSet_9
+                            UniqueID StateSet_16
                             name "eye.l"
                             rendering_hint DEFAULT_BIN
                             renderBinMode INHERIT
@@ -3467,8 +3474,9 @@ MatrixTransform {
                         cullingActive TRUE
                         num_drawables 1
                         Geometry {
+                          UniqueID Geometry_17
                           name "brow.l"
-                          Use StateSet_8
+                          Use StateSet_9
                           useDisplayList TRUE
                           useVertexBufferObjects FALSE
                           PrimitiveSets 1
@@ -3576,8 +3584,10 @@ MatrixTransform {
                         cullingActive TRUE
                         num_drawables 1
                         Geometry {
+                          UniqueID Geometry_18
                           name "hair"
                           StateSet {
+                            UniqueID StateSet_19
                             name "Material.002"
                             rendering_hint DEFAULT_BIN
                             renderBinMode INHERIT
@@ -4067,8 +4077,9 @@ MatrixTransform {
                         cullingActive TRUE
                         num_drawables 1
                         Geometry {
+                          UniqueID Geometry_20
                           name "eye.l"
-                          Use StateSet_9
+                          Use StateSet_16
                           useDisplayList TRUE
                           useVertexBufferObjects FALSE
                           PrimitiveSets 1
@@ -4188,7 +4199,7 @@ MatrixTransform {
                     cullingActive TRUE
                     num_drawables 1
                     Geometry {
-                      UniqueID Geometry_10
+                      UniqueID Geometry_21
                       name "tube"
                       Use StateSet_7
                       useDisplayList TRUE
@@ -4790,7 +4801,7 @@ MatrixTransform {
           cullingActive TRUE
           num_drawables 1
           osgAnimation::RigGeometry {
-            UniqueID RigGeometry_11
+            UniqueID RigGeometry_22
             DataVariance DYNAMIC
             name "leg_l"
             num_influences 4
@@ -5022,7 +5033,7 @@ MatrixTransform {
             Geometry {
               name "leg_l"
               StateSet {
-                UniqueID StateSet_12
+                UniqueID StateSet_23
                 name "dark_grey"
                 rendering_hint DEFAULT_BIN
                 renderBinMode INHERIT
@@ -5383,7 +5394,7 @@ MatrixTransform {
                 -0.19864 0.7839 0.58821
                 0.19861 0.7839 0.58821
               }
-              TexCoordArray 0 UniqueID Vec2Array_13 Vec2Array 133
+              TexCoordArray 0 UniqueID Vec2Array_24 Vec2Array 133
               {
                 0.55532 0.15533
                 0.55532 0.20213
@@ -5520,7 +5531,7 @@ MatrixTransform {
                 0.52058 0.81249
               }
             }
-            Use StateSet_12
+            Use StateSet_23
             supportsDisplayList FALSE
             useDisplayList TRUE
             useVertexBufferObjects TRUE
@@ -5848,7 +5859,7 @@ MatrixTransform {
               -0.19864 0.783898 0.588209
               0.198608 0.783898 0.58821
             }
-            TexCoordArray 0 Use Vec2Array_13
+            TexCoordArray 0 Use Vec2Array_24
           }
         }
       }
@@ -5870,7 +5881,7 @@ MatrixTransform {
           cullingActive TRUE
           num_drawables 1
           osgAnimation::RigGeometry {
-            UniqueID RigGeometry_14
+            UniqueID RigGeometry_25
             DataVariance DYNAMIC
             name "torso"
             num_influences 8
@@ -7727,7 +7738,7 @@ MatrixTransform {
             Geometry {
               name "torso"
               StateSet {
-                UniqueID StateSet_15
+                UniqueID StateSet_26
                 name "red"
                 rendering_hint DEFAULT_BIN
                 renderBinMode INHERIT
@@ -9040,7 +9051,7 @@ MatrixTransform {
                 0.7123 0.66952 0.21055
                 0.69689 0.64815 0.30689
               }
-              TexCoordArray 0 UniqueID Vec2Array_16 Vec2Array 597
+              TexCoordArray 0 UniqueID Vec2Array_27 Vec2Array 597
               {
                 0.5 0.14087
                 0.69762 0.14087
@@ -9641,7 +9652,7 @@ MatrixTransform {
                 0.61979 0.47366
               }
             }
-            Use StateSet_15
+            Use StateSet_26
             supportsDisplayList FALSE
             useDisplayList TRUE
             useVertexBufferObjects TRUE
@@ -10921,7 +10932,7 @@ MatrixTransform {
               0.7123 0.66952 0.21055
               0.69689 0.64815 0.30689
             }
-            TexCoordArray 0 Use Vec2Array_16
+            TexCoordArray 0 Use Vec2Array_27
           }
         }
       }
@@ -10943,7 +10954,7 @@ MatrixTransform {
           cullingActive TRUE
           num_drawables 1
           osgAnimation::RigGeometry {
-            UniqueID RigGeometry_17
+            UniqueID RigGeometry_28
             DataVariance DYNAMIC
             name "leg_r"
             num_influences 8
@@ -12007,7 +12018,7 @@ MatrixTransform {
               }
             Geometry {
               name "leg_r"
-              Use StateSet_12
+              Use StateSet_23
               useDisplayList TRUE
               useVertexBufferObjects FALSE
               PrimitiveSets 2
@@ -12732,7 +12743,7 @@ MatrixTransform {
                 -0.5186 0.58669 0.62194
                 -0.67821 0.29063 0.67492
               }
-              TexCoordArray 0 UniqueID Vec2Array_18 Vec2Array 332
+              TexCoordArray 0 UniqueID Vec2Array_29 Vec2Array 332
               {
                 0 0
                 1 0
@@ -13068,7 +13079,7 @@ MatrixTransform {
                 1 0
               }
             }
-            Use StateSet_12
+            Use StateSet_23
             supportsDisplayList FALSE
             useDisplayList TRUE
             useVertexBufferObjects TRUE
@@ -13794,7 +13805,7 @@ MatrixTransform {
               -0.518597 0.586688 0.621941
               -0.678207 0.290629 0.674923
             }
-            TexCoordArray 0 Use Vec2Array_18
+            TexCoordArray 0 Use Vec2Array_29
           }
         }
       }
@@ -13816,7 +13827,7 @@ MatrixTransform {
           cullingActive TRUE
           num_drawables 1
           osgAnimation::RigGeometry {
-            UniqueID RigGeometry_19
+            UniqueID RigGeometry_30
             DataVariance DYNAMIC
             name "arm_r"
             num_influences 8
@@ -14676,7 +14687,7 @@ MatrixTransform {
               }
             Geometry {
               name "arm_r"
-              Use StateSet_15
+              Use StateSet_26
               useDisplayList TRUE
               useVertexBufferObjects FALSE
               PrimitiveSets 2
@@ -15464,7 +15475,7 @@ MatrixTransform {
                 -0.94879 -0.1832 0.25724
                 -0.8887 -0.2981 -0.34825
               }
-              TexCoordArray 0 UniqueID Vec2Array_20 Vec2Array 363
+              TexCoordArray 0 UniqueID Vec2Array_31 Vec2Array 363
               {
                 0 0
                 1 0
@@ -15831,7 +15842,7 @@ MatrixTransform {
                 0 0
               }
             }
-            Use StateSet_15
+            Use StateSet_26
             supportsDisplayList FALSE
             useDisplayList TRUE
             useVertexBufferObjects TRUE
@@ -16620,7 +16631,7 @@ MatrixTransform {
               -0.948788 -0.183202 0.257246
               -0.888699 -0.298107 -0.348248
             }
-            TexCoordArray 0 Use Vec2Array_20
+            TexCoordArray 0 Use Vec2Array_31
           }
         }
       }
@@ -16642,7 +16653,7 @@ MatrixTransform {
           cullingActive TRUE
           num_drawables 1
           osgAnimation::RigGeometry {
-            UniqueID RigGeometry_21
+            UniqueID RigGeometry_32
             DataVariance DYNAMIC
             name "arm_l"
             num_influences 5
@@ -17174,7 +17185,7 @@ MatrixTransform {
               }
             Geometry {
               name "arm_l"
-              Use StateSet_15
+              Use StateSet_26
               useDisplayList TRUE
               useVertexBufferObjects FALSE
               PrimitiveSets 2
@@ -17966,7 +17977,7 @@ MatrixTransform {
                 0.79318 0.40901 0.45116
                 0.84341 0.39616 0.3629
               }
-              TexCoordArray 0 UniqueID Vec2Array_22 Vec2Array 365
+              TexCoordArray 0 UniqueID Vec2Array_33 Vec2Array 365
               {
                 0 0
                 1 0
@@ -18335,7 +18346,7 @@ MatrixTransform {
                 1 0
               }
             }
-            Use StateSet_15
+            Use StateSet_26
             supportsDisplayList FALSE
             useDisplayList TRUE
             useVertexBufferObjects TRUE
@@ -19128,7 +19139,7 @@ MatrixTransform {
               0.793181 0.409009 0.451163
               0.84341 0.396162 0.362905
             }
-            TexCoordArray 0 Use Vec2Array_22
+            TexCoordArray 0 Use Vec2Array_33
           }
         }
       }

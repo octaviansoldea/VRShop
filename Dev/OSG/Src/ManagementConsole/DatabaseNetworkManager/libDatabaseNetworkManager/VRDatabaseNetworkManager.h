@@ -14,7 +14,8 @@ namespace VR	{
 		DatabaseNetworkManager(QObject *apParent=0);
 		~DatabaseNetworkManager();
 
-		bool requestDatabase(std::string & astrDatabaseRequest);
+		bool databaseRequest(int anOperationType, std::string & astrRequest);
+
 		std::list<std::string> getResult();
 
 	private:

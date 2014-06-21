@@ -5,6 +5,7 @@ SET(CMAKE_DEBUG_POSTFIX "D")
 SUBDIRS(
 	libAnimationEditor
 	libAvatar
+	libAvatarManager
 	AnimationEditor
 	Test_libAvatar
 )

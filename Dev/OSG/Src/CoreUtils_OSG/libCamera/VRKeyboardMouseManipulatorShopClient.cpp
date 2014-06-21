@@ -59,7 +59,7 @@ bool KeyboardMouseManipulatorShopClient::handle(const GUIEventAdapter& ea, GUIAc
 	for(iI = 0; iI < 4; iI++)	{
 		for(iJ = 0; iJ < 4; iJ++)	{
 			if (fabs(currentCameraMatrix(iI,iJ) - prevCameraMatrix(iI,iJ)) > EPS)	{
-				emit signalCameraPositionOrHeadingDirectionChanged();
+				emit signalCameraPositionOrHeadingDirectionChanged(true);
 				return true;
 			}
 		}
@@ -92,44 +92,21 @@ osg::Matrixd KeyboardMouseManipulatorShopClient::setMatrixTransform(Vec3d &avec3
 
 //-------------------------------------------------------------------------------
 
-osg::Matrixd KeyboardMouseManipulatorShopClient::getCameraObjectModifier() const	{
-	if (m_bFirstPerson)	{
-		return getMatrix();
-	}
+Vec3d KeyboardMouseManipulatorShopClient::cameraPerspectiveCorrector() const	{
+	//Repositions the camera and reports the change to the avatar to do its repositioning
+	const Matrixd & mtrxCamera1Person = m_vecPredefinedViews[0];
+	const Matrixd & mtrxCamera3Person = m_vecPredefinedViews[1];
 
-	Matrix 	mtrxCamera, mtrxTemp;
-	Vec3d vecDistance;
+	Vec3d vec3dCameraPerspectiveDiff;
 
-	//Coordinates of the camera
-	Vec3d vecEye, vecCenter, vecUp;
-	getTransformation(vecEye, vecCenter, vecUp);
+	//Calculate diff between both cameras eyes
+	vec3dCameraPerspectiveDiff = Vec3d(
+		mtrxCamera3Person(3,0) - mtrxCamera1Person(3,0),
+		mtrxCamera3Person(3,1) - mtrxCamera1Person(3,1),
+		mtrxCamera3Person(3,2) - mtrxCamera1Person(3,2)
+	);
 
-	vecDistance = vecCenter - vecEye;
-	vecDistance.normalize();
-	 
-	cout << endl;
-	cout << "KeyboardMouseManipulatorShopClient::getCameraObjectModifier()" << endl;
-	cout << vecEye[0] << " "  << vecEye[1] << " " << vecEye[2] << endl;
-	cout << vecCenter[0] << " "  << vecCenter[1] << " " << vecCenter[2] << endl;
-	cout << vecUp[0] << " "  << vecUp[1] << " " << vecUp[2] << endl;
-
-	mtrxTemp = getMatrix() * Matrix::translate(vecDistance * 8);
-
-	return mtrxTemp;
-
-//=========================
-
-	//mtrxCamera = 
-	//	mtrxTemp *
-	//	Matrix::translate(
-	//		Vec3d(
-	//			0.0,
-	//			0.0,
-	//			-1.35
-	//		)
-	//	);
-
-	//return mtrxCamera;
+	return vec3dCameraPerspectiveDiff;
 }
 
 //-------------------------------------------------------------------------------
@@ -138,46 +115,39 @@ void KeyboardMouseManipulatorShopClient::setCameraPosition2Object(osg::Node * ap
 	//Get BB of the avatar and position camera accordingly
 	ComputeBoundsVisitor cbv;
 	apNode->accept(cbv);
-	osg::BoundingBox & bB = cbv.getBoundingBox();
+	m_BoundingBox = cbv.getBoundingBox();
 
-	float flCenterX = (bB.xMax()+bB.xMin())/2;
+	float flCenterX = (m_BoundingBox.xMax()+m_BoundingBox.xMin())/2;
 
 	//1. person view
-	Vec3d vec3dPerson1Eye = Vec3d(flCenterX,bB.yMax(),bB.zMax());
+	Vec3d vec3dPerson1Eye = Vec3d(flCenterX,m_BoundingBox.yMax(),m_BoundingBox.zMax());
 	Vec3d vec3dPerson1Center = Vec3d(vec3dPerson1Eye.x(),vec3dPerson1Eye.y()+5,0.0);
-	Vec3d vec3dPerson1Up = Vec3d(0,0,1);
+	Vec3d vec3dDiff1 = vec3dPerson1Center - vec3dPerson1Eye;
+	Vec3d vec3dPerp1 = Vec3d(0,0,1)^vec3dDiff1;
+	Vec3d vec3dPerson1Up = vec3dDiff1^vec3dPerp1;
+	vec3dPerson1Up.normalize();
 
 	Matrixd mtrx1Person = setMatrixTransform(vec3dPerson1Eye, vec3dPerson1Center, vec3dPerson1Up);
-	m_lstPredefinedViews.push_back(mtrx1Person);
+	m_vecPredefinedViews.push_back(mtrx1Person);
 
 
 	//3. person view
-	Vec3d vec3dPerson3Eye = Vec3d(flCenterX,4*bB.yMin()-3*bB.yMax(),1.3*bB.zMax());
+	Vec3d vec3dPerson3Eye = Vec3d(flCenterX,4*m_BoundingBox.yMin()-3*m_BoundingBox.yMax(),1.3*m_BoundingBox.zMax());
 	Vec3d vec3dPerson3Center = Vec3d(vec3dPerson3Eye.x(),vec3dPerson3Eye.y()+5,0.0);
-	//Vec3d vec3dPerson3Center = Vec3d(0.0,0.0,0.0);
-	Vec3d vec3dDiff = vec3dPerson3Center - vec3dPerson3Eye;
-	Vec3d vecPerp = Vec3d(0,0,1)^vec3dDiff;
-
-	Vec3d vec3dPerson3Up = vec3dDiff^vecPerp;
+	Vec3d vec3dDiff3 = vec3dPerson3Center - vec3dPerson3Eye;
+	Vec3d vec3dPerp3 = Vec3d(0,0,1)^vec3dDiff3;
+	Vec3d vec3dPerson3Up = vec3dDiff3^vec3dPerp3;
 	vec3dPerson3Up.normalize();
 
 	Matrixd mtrx3Person = setMatrixTransform(vec3dPerson3Eye, vec3dPerson3Center, vec3dPerson3Up);
-	m_lstPredefinedViews.push_back(mtrx3Person);
-
+	m_vecPredefinedViews.push_back(mtrx3Person);
 
 	//Also set the camera
-	list<Matrixd>::iterator it = m_lstPredefinedViews.begin();
-	Matrixd vecMatrix;
 	if (m_bFirstPerson)	{	//First person
-		vecMatrix = *it;
+		setTransformation(vec3dPerson1Eye, vec3dPerson1Center, vec3dPerson1Up);
 	} else {	//Third person
-		std::advance(it,1);
-		vecMatrix = *it;
+		setTransformation(vec3dPerson3Eye, vec3dPerson3Center, vec3dPerson3Up);
 	}
-
-	//Set current view
-	setTransformation(vec3dPerson3Eye, vec3dPerson3Center, vec3dPerson3Up);
-	emit signalCameraPositionOrHeadingDirectionChanged();
 }
 
 //-------------------------------------------------------------------------------
@@ -185,23 +155,35 @@ void KeyboardMouseManipulatorShopClient::setCameraPosition2Object(osg::Node * ap
 void KeyboardMouseManipulatorShopClient::setViewPerspective(bool abFirstPerson) {
 	m_bFirstPerson = abFirstPerson;
 
-	//Previous coordinates of the camera
-	Vec3d vecPrevEye, vecPrevCenter, vecPrevUp;
-	getTransformation(vecPrevEye, vecPrevCenter, vecPrevUp);
+	Matrixd mtrxCamera = getMatrix();
 
-	osg::Matrixd mtrxNewCamera;
-	list<Matrixd>::iterator it = m_lstPredefinedViews.begin();
+	Vec3d vec3dCameraPerspectiveDiff = cameraPerspectiveCorrector();
+
+	//Set camera according to the view perspective
 	if (m_bFirstPerson)	{	//First person
-		mtrxNewCamera = *it;
+		mtrxCamera = mtrxCamera *
+			Matrix::translate(Vec3d(
+				vec3dCameraPerspectiveDiff[0],
+				-vec3dCameraPerspectiveDiff[1],
+				-vec3dCameraPerspectiveDiff[2]));
 	} else {	//Third person
-		std::advance(it,1);
-		mtrxNewCamera = *it;
+		mtrxCamera = mtrxCamera *
+			Matrix::translate(Vec3d(
+				vec3dCameraPerspectiveDiff[0],
+				vec3dCameraPerspectiveDiff[1],
+				vec3dCameraPerspectiveDiff[2]));
 	}
 
-	setByMatrix(mtrxNewCamera);
+	setByMatrix(mtrxCamera);
 
 	//Emitting the signal will provoke matrix re-calculation
-	emit signalCameraPositionOrHeadingDirectionChanged();
+	emit signalCameraPositionOrHeadingDirectionChanged(false);
+}
+
+//-------------------------------------------------------------------------------
+
+osg::BoundingBox VR::KeyboardMouseManipulatorShopClient::getBoundingBox() const	{
+	return m_BoundingBox;
 }
 
 //-------------------------------------------------------------------------------

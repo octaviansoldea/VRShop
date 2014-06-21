@@ -22,17 +22,12 @@ ClientConnection::ClientConnection(QObject *parent) : QTcpSocket(parent), m_bIsF
 	connect(this, SIGNAL(readyRead()), this, SLOT(slotReadClient()));
 	connect(this, SIGNAL(disconnected()), this, SLOT(deleteLater()));
 
-	connect(this,SIGNAL(done()),this,SLOT(slotTransferSuccess()));
-
 	m_unPackageSize = 0;
-
-	m_pDatabaseNetworkManager = new DatabaseNetworkManager();
 }
 
 //----------------------------------------------------------------------
 
 ClientConnection::~ClientConnection()	{
-	delete m_pDatabaseNetworkManager;
 }
 
 //=====================================================================
@@ -43,7 +38,6 @@ void ClientConnection::slotReadClient()	{
 	in.setVersion(QDataStream::Qt_4_8);
 
 	int nBytesAvailable = this->bytesAvailable();
-	std::cout << "Server (slotReadClient()): " << nBytesAvailable << std::endl;
 
 	QByteArray qData;
 	if (m_unPackageSize == 0) {
@@ -55,29 +49,15 @@ void ClientConnection::slotReadClient()	{
 	if (this->bytesAvailable() < m_unPackageSize)
 		return;
 
-/*
-	quint8 unType;
-	QString qstrData;
-	in >> unType >> qstrData;
-*/
 	qData = in.device()->readAll();
 
-	string strTest(qData.begin(),qData.end());
-
-	std::cout << "Server: strTest: " << strTest << endl;
-
 	m_unPackageSize = 0;
-	processRequest(qData /*in*/);
+	processRequest(qData);
 }
 
 //----------------------------------------------------------------------
 
-void ClientConnection::slotTransferSuccess()	{
-}
-
-//----------------------------------------------------------------------
-
-void ClientConnection::processRequest(QByteArray & data /* QDataStream & in*/)	{
+void ClientConnection::processRequest(QByteArray & data)	{
 	QDataStream in(&data,QIODevice::ReadOnly);
 	in.setVersion(QDataStream::Qt_4_8);
 
@@ -89,10 +69,9 @@ void ClientConnection::processRequest(QByteArray & data /* QDataStream & in*/)	{
 	string & strRequest = qstrRequest.toStdString();
 	bool bRes=false;
 
-	if (nType == 'P')	{	//'P' - product
-		//Access the Database
-		bRes = m_pDatabaseNetworkManager->requestDatabase(strRequest);
-	}
+	//Access appropriate database
+	DatabaseNetworkManager DBNetworkManager;
+	bRes = DBNetworkManager.databaseRequest(nType,strRequest);
 
 	QByteArray result;
 	QDataStream out(&result, QIODevice::WriteOnly);
@@ -100,11 +79,18 @@ void ClientConnection::processRequest(QByteArray & data /* QDataStream & in*/)	{
 	out << quint64(0);	//Size of the package
 
 	int nBytesAvailable = out.device()->bytesAvailable();
-	std::cout << "Server (processRequest()): " << nBytesAvailable << std::endl;
 
 	if (bRes)	{
-		QList<string > & lststrResult = QList<string>().fromStdList(m_pDatabaseNetworkManager->getResult());
-		QString qstrTest = lststrResult.at(0).c_str();
+		list<string> & lstResult = DBNetworkManager.getResult();
+		list<string>::iterator it = lstResult.begin();
+		int nI;
+		string strResult;
+		for (it; it != lstResult.end(); it++)	{
+			strResult += (*it) + ";";
+		}
+		strResult.pop_back();
+
+		QString qstrTest = strResult.c_str();
 		out << qstrTest;
 	} else {
 		out << "Error: Database returns 0.";

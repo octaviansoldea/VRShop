@@ -8,6 +8,7 @@
 #include "VRProduct.h"
 #include "VRProductManager.h"
 #include "VRAvatar.h"
+#include "VRAvatarManagerClient.h"
 
 #include "VRFurniture.h"
 #include "VRPlate3D.h"
@@ -56,8 +57,8 @@ m_strDBFileName("")	{
 	QLayout * pLayoutMap = dynamic_cast<QLayout *>(m_pOSGQTWidgetMap->layout());
 	pLayoutMap->setMargin(2);
 
-	m_pOSGQTWidgetMap->setCameraManipulator(pKeyboardMouseManipulatorShopClient);
 	m_pOSGQTWidgetMap->setSceneData(m_pScene);
+	m_pOSGQTWidgetMap->setCameraManipulator(pKeyboardMouseManipulatorShopClient,false);
 	m_pOSGQTWidgetMap->show();
 
 
@@ -73,17 +74,26 @@ m_strDBFileName("")	{
 //	insertProducts();
 
 	//Avatar
-	string strAvatarFileName = "../../../Resources/Models3D/avatarOut.osg";
-	ref_ptr<Avatar> pAvatar = new Avatar(strAvatarFileName, pKeyboardMouseManipulatorShopClient);
+	AvatarParams avatarParams;
+	avatarParams.m_pKeyboardMouseManipulatorShopClient = pKeyboardMouseManipulatorShopClient;
+	avatarParams.m_strAvatarFile = "../../../Resources/Models3D/avatarOut.osg";
+	avatarParams.m_strAvatarName = "avatar";
+
+	ref_ptr<Avatar> pAvatar = new Avatar(&avatarParams);
 	m_pScene->addChild(pAvatar);
 
 	pKeyboardMouseManipulatorShopClient->setCameraPosition2Object(pAvatar);
+
+
+	//Other avatars
+	m_pAvatarMgr = new AvatarManagerClient(pAvatar);
+	m_pScene->addChild(m_pAvatarMgr->getAvatars());
 }
 
 //----------------------------------------------------------------------
 
 ShoppingPlace::~ShoppingPlace() {
-
+	delete m_pAvatarMgr;
 }
 
 //----------------------------------------------------------------------

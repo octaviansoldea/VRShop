@@ -2,11 +2,15 @@
 #define VR_ANIMATION_PATH_H
 
 #include <osg/AnimationPath>
+#include <osg/Matrix>
 
 namespace VR {
 	class AnimationPath : public osg::AnimationPath	{
 	public:
+		AnimationPath();
 		AnimationPath(const AnimationPath& ap, const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY);
+
+		VR::AnimationPath * createAnimationPath(const osg::Matrix & amtrxOldAvatar, const osg::Matrix & amtrxNewAvatar);
 
 		enum Animationtype {LINEAR, POLINOMIAL};
 

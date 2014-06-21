@@ -7,8 +7,6 @@
 
 
 namespace VR	{
-	class DatabaseNetworkManager;
-
 	class ClientConnection : public QTcpSocket	{
 		Q_OBJECT
 
@@ -18,19 +16,13 @@ namespace VR	{
 
 	private slots:
 		void slotReadClient();
-		void slotTransferSuccess();
-
-	signals:
-		void done();
 
 	private:
-		void processRequest(QByteArray & data /*QDataStream & in*/);
+		void processRequest(QByteArray & data);
 		void writeToClient(QByteArray & data);
 
 		bool m_bIsFirstPackage;
 		quint64 m_unPackageSize;
-
-		DatabaseNetworkManager * m_pDatabaseNetworkManager;
 	};
 }
 #endif //VR_CLIENT_CONNECTION_H

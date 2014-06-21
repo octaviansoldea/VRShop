@@ -12,6 +12,7 @@ SET(SRCS
 	VRBoundingBox.h VRBoundingBox.cpp
 	VRGrid.h VRGrid.cpp
 	VRObjectTransformation.h VRObjectTransformation.cpp
+	VRBasicOSGOperations.h VRBasicOSGOperations.cpp
 )
 
 ADD_LIBRARY(libCommon_OSG

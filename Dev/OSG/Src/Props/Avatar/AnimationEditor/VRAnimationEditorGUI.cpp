@@ -92,8 +92,6 @@ void AnimationEditorGUI::slotLoadNewAnimation()	{
 		m_pNode = dynamic_cast<osg::Group*>(osgDB::readNodeFile(strFileName));
 
 		m_pMt->addChild(m_pNode);
-
-//		m_pScene->addChild(m_pNode);
 		m_pScene->addChild(m_pMt);
 	}
 }
@@ -103,11 +101,17 @@ void AnimationEditorGUI::slotLoadNewAnimation()	{
 void AnimationEditorGUI::slotRunAnimationPressed()	{
 	// Set our Singleton's model.
     AnimationManagerFinder finder;
-    m_pNode->accept(finder);
+//    m_pNode->accept(finder);
 
-	double dbAnimationDuration = 0;
+	osg::Transform * pTransform = dynamic_cast<Transform*>(m_pMt.get());
+	osg::ref_ptr<Group> pGroup = dynamic_cast<Group*>(pTransform->getChild(0));
+
+	pGroup->accept(finder);
+
+
 	if (finder._am.valid()) {
-		m_pNode->setUpdateCallback(finder._am.get());
+//		m_pNode->setUpdateCallback(finder._am.get());
+		pGroup->setUpdateCallback(finder._am.get());
 		AnimtkViewerModelController::setModel(finder._am.get());
 
 		osgAnimation::BasicAnimationManager* model = finder._am.get();
@@ -115,7 +119,6 @@ void AnimationEditorGUI::slotRunAnimationPressed()	{
 		const osg::ref_ptr<osgAnimation::Animation> & canim = *(lstAnimation.begin());
 		osg::ref_ptr<osgAnimation::Animation> & anim = const_cast<osg::ref_ptr<osgAnimation::Animation> &>(canim);
 		anim->computeDuration();
-		dbAnimationDuration = anim->getDuration();
 		anim->setStartTime(0);
 		model->playAnimation(anim);
 	} else {
@@ -128,9 +131,6 @@ void AnimationEditorGUI::slotRunAnimationPressed()	{
 void AnimationEditorGUI::slotMatrixTransformChanged()	{
 	float flScale[3] = {m_pDoubleSpinBoxScaleX->value(),m_pDoubleSpinBoxScaleY->value(),m_pDoubleSpinBoxScaleZ->value()};
 	float flPosZ = m_pDoubleSpinBoxPosZ->value();
-
-	osg::ref_ptr<osg::MatrixTransform> pMt = new osg::MatrixTransform();
-	pMt->addChild(m_pNode);
 
 	osg::Matrix mtrxMt = m_pMt->getMatrix();
 	osg::Matrix & mtrxTransform =
@@ -186,8 +186,7 @@ void AnimationEditorGUI::cutAnimation(int & anFrom, int & anTo)	{
 							}
 						}
 				}
-				osgDB::writeNodeFile(*m_pNode,strOutFileName);
-//				osgDB::writeNodeFile(*m_pMt,strOutFileName);
+				osgDB::writeNodeFile(*m_pMt,strOutFileName);
 		}
 	}	
 }

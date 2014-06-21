@@ -61,5 +61,8 @@ vector<string> splitString(string & astrName, const string & astrDelimiters)	{
 		vecSplitString.push_back(astrName.substr(0,indexCh));
 		astrName.erase(0, indexCh+1);
 	}
+	if (vecSplitString.back().empty())
+		vecSplitString.pop_back();
+
 	return vecSplitString;
 }

@@ -51,6 +51,7 @@ NodeVisitor(NodeVisitor::TRAVERSE_ALL_CHILDREN), m_nKeyFrameFrom(anKeyFrameFrom)
 void AnimationManagerFinder::apply(Node& node)	{
 	if (_am.valid())
 	    return;
+	
 	if (node.getUpdateCallback()) {
 		osgAnimation::AnimationManagerBase* b = dynamic_cast<osgAnimation::AnimationManagerBase*>(node.getUpdateCallback());
 		if (b) {

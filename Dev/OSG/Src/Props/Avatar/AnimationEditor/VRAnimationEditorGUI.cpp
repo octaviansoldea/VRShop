@@ -1,4 +1,5 @@
 #include <fstream>
+#include <string>
 
 #include <osgDB/ReadFile>
 #include <osgDB/writeFile>
@@ -18,12 +19,13 @@
 #include <QMessageBox>
 
 #include "VRKeyboardMouseManipulator.h"
-
 #include "VRAnimationEditorGUI.h"
 
+using namespace std;
 using namespace osg;
-using namespace Ui;
 using namespace VR;
+
+using namespace Ui;
 
 //----------------------------------------------------------------------
 
@@ -33,11 +35,9 @@ AnimationEditorGUI::AnimationEditorGUI()	{
 
 	setupUi(this);
 
-	connect(m_pPushButtonSearchFile, SIGNAL(clicked(bool)), this, SLOT(slotBrowseDirectory()));
-	connect(m_pLineEditInputFile,SIGNAL(returnPressed()),this,SLOT(slotLoadNewAnimation()));
-	connect(m_pPushButtonRun, SIGNAL(clicked(bool)), this, SLOT(slotRunAnimationPressed()));
-	connect(m_pPushButtonLoadFile, SIGNAL(clicked(bool)), this, SLOT(slotLoadNewAnimation()));
-    connect(m_pPushButtonSave, SIGNAL(clicked(bool)), this, SLOT(slotSaveAnimationPressed()));
+	connect(m_pPushButtonLoadAvatar,SIGNAL(clicked(bool)),this,SLOT(slotLoadAvatar()));
+	connect(m_pPushButtonSaveAvatar,SIGNAL(clicked(bool)),this,SLOT(slotSaveAvatar()));
+    connect(m_pToolButtonPlay, SIGNAL(toggled(bool)), this, SLOT(slotPlay(bool)));
 
 	connect(m_pDoubleSpinBoxScaleX, SIGNAL(editingFinished()), this, SLOT(slotMatrixTransformChanged()));
 	connect(m_pDoubleSpinBoxScaleY, SIGNAL(editingFinished()), this, SLOT(slotMatrixTransformChanged()));
@@ -48,65 +48,148 @@ AnimationEditorGUI::AnimationEditorGUI()	{
 	m_pOSGQTWidget->setCameraManipulator(new KeyboardMouseManipulator()); 
 	m_pOSGQTWidget->show();
 
+	ref_ptr<Axes > pAxes = new Axes;
+	m_pScene->addChild(pAxes);
+
 	show();
 }
 
 //----------------------------------------------------------------------
 
-void AnimationEditorGUI::slotBrowseDirectory()	{
-	QString qstrFileName = QFileDialog::getOpenFileName(this);
+QString AnimationEditorGUI::openOrSaveDialog(const char * apchSuffix, bool bOpen) {
+	QString qstrFileName;
 
-	m_pLineEditInputFile->setText(qstrFileName);
+	QString qstrCurrentPath = QDir::currentPath();
+	QString qstrDir = qstrCurrentPath + "/../../../../Resources/Models3D/";
+
+	std::string strDir = qstrDir.toStdString();
+
+	if(bOpen == true) 
+		qstrFileName = QFileDialog::getOpenFileName(this, 
+			tr("Open File"),
+			tr(qstrDir.toStdString().c_str()),
+			apchSuffix);
+	else
+		qstrFileName = QFileDialog::getSaveFileName(this, 
+			tr("Save File"),
+			tr(qstrDir.toStdString().c_str()),
+			apchSuffix);
+	return(qstrFileName);
 }
 
 //----------------------------------------------------------------------
 
-void AnimationEditorGUI::slotSaveAnimationPressed()	{
-	QString qstrFileName;
-	if(m_pLineEditOutputFile->text().isEmpty())	{
-		qstrFileName = QFileDialog::getSaveFileName(this);
-		m_pLineEditOutputFile->setText(qstrFileName);
-	} else {
-		qstrFileName = m_pLineEditOutputFile->text();
-	}
+void AnimationEditorGUI::slotLoadAvatar() {
+	QString qstrFileName = openOrSaveDialog("Avatar (*.osg)", true);
+	if(qstrFileName != "") {
+		m_strNodeFileName = qstrFileName.toStdString();
+		if(m_strNodeFileName != "" && QFile::exists(m_strNodeFileName.c_str()))	{
+			m_pScene->removeChildren(0,m_pScene->getNumChildren());
+		
+			m_pGroup = dynamic_cast<osg::Group*>(osgDB::readNodeFile(m_strNodeFileName));
 
-	if (qstrFileName.isEmpty())	{
-		return;
+			osg::MatrixTransform * pMT = dynamic_cast<osg::MatrixTransform*>(m_pGroup.get());
+			if(pMT) {
+				m_pMt = pMT;
+				m_pGroup = dynamic_cast<osg::Group*>(m_pMt->getChild(0));
+			} else {
+				m_pMt->addChild(m_pGroup);
+			}
+			m_pScene->removeChildren(1,m_pScene->getNumChildren() - 1);
+			m_pScene->addChild(m_pMt);
+		}
 	}
+	setWindowTitle(qstrFileName.toStdString().c_str());
+
+	/*osgAnimation::AnimationManagerBase* b =
+		dynamic_cast<osgAnimation::AnimationManagerBase*>(m_pNode->getUpdateCallback());
+	if (b) {
+		osgAnimation::BasicAnimationManager * pBam = new osgAnimation::BasicAnimationManager(*b);
+		const osgAnimation::AnimationList & pAL = b->getAnimationList();
+		for(osgAnimation::AnimationList::const_iterator citAL = pAL.begin();
+			citAL != pAL.end();
+			citAL++) {
+				osgAnimation::ChannelList & channelList = (*citAL)->getChannels();
+				for(osgAnimation::ChannelList::iterator itCL = channelList.begin();
+					itCL != channelList.end();
+					itCL++) {
+						osgAnimation::Sampler * pSampler = (*itCL)->getSampler();
+						
+						osgAnimation::KeyframeContainer * pKFC = pSampler->getKeyframeContainer();
+						{
+							osgAnimation::TemplateKeyframeContainer<osg::Vec3f> *pTKFC_Vec3f =
+								dynamic_cast<osgAnimation::TemplateKeyframeContainer<osg::Vec3f> *>(pKFC);
+
+							osgAnimation::TemplateKeyframeContainer<osg::Vec3f> m_TKFC_Vec3f = *pTKFC_Vec3f;
+						}
+				}
+		}
+	}*/
+
+}
+
+//----------------------------------------------------------------------
+
+void AnimationEditorGUI::slotSaveAvatar() {
+	QString qstrFileName = openOrSaveDialog("*.osg", false);
 
 	int nKeyframeFrom = m_pSpinBoxFrameFrom->value();
 	int nKeyframeTo = m_pSpinBoxFrameTo->value();
 	cutAnimation(nKeyframeFrom,nKeyframeTo);
-}
 
-//----------------------------------------------------------------------
-
-void AnimationEditorGUI::slotLoadNewAnimation()	{
-	std::string strFileName = m_pLineEditInputFile->text().toStdString();
-	if(strFileName != "" && QFile::exists(strFileName.c_str()))	{
-		m_pScene->removeChildren(0,m_pScene->getNumChildren());
+	if(qstrFileName != "") {
+		string strOutFileName = qstrFileName.toStdString().c_str();
+		osgDB::writeNodeFile(*m_pMt,strOutFileName);
 		
-		ref_ptr<Axes > pAxes = new Axes;
-		m_pScene->addChild(pAxes);
-
-		m_pNode = dynamic_cast<osg::Group*>(osgDB::readNodeFile(strFileName));
-
-		m_pMt->addChild(m_pNode);
-		m_pScene->addChild(m_pMt);
 	}
 }
 
 //----------------------------------------------------------------------
 
-void AnimationEditorGUI::slotRunAnimationPressed()	{
+//void AnimationEditorGUI::slotLoadNewAnimation() {
+//	std::string strFileName = m_pLineEditInputFile->text().toStdString();
+//	if(strFileName != "" && QFile::exists(strFileName.c_str()))	{
+//		m_pScene->removeChildren(0,m_pScene->getNumChildren());
+//
+//		m_pNode = dynamic_cast<osg::Group*>(osgDB::readNodeFile(strFileName));
+//
+//		m_pMt->addChild(m_pNode);
+//		m_pScene->addChild(m_pMt);
+//	}
+//}
+
+//----------------------------------------------------------------------
+
+void AnimationEditorGUI::slotPlay(bool abPressed) {
 	// Set our Singleton's model.
     AnimationManagerFinder finder;
 //    m_pNode->accept(finder);
+
+	m_pScene->removeChild(0, m_pScene->getNumChildren());
+
+	m_pGroup = dynamic_cast<osg::Group*>(osgDB::readNodeFile(m_strNodeFileName));
+		
+	osg::MatrixTransform * pMT = dynamic_cast<osg::MatrixTransform*>(m_pGroup.get());
+	if(pMT) {
+			
+		m_pMt->removeChildren(0, m_pMt->getNumChildren());
+		m_pMt = pMT;
+		m_pGroup = dynamic_cast<osg::Group*>(m_pMt->getChild(0));
+	}
+	m_pScene->addChild(m_pMt);
+
+
+	m_pMt->removeChildren(0, m_pMt->getNumChildren());
+	m_pMt->addChild(m_pGroup);
 
 	osg::Transform * pTransform = dynamic_cast<Transform*>(m_pMt.get());
 	osg::ref_ptr<Group> pGroup = dynamic_cast<Group*>(pTransform->getChild(0));
 
 	pGroup->accept(finder);
+
+	int nKeyframeFrom = m_pSpinBoxFrameFrom->value();
+	int nKeyframeTo = m_pSpinBoxFrameTo->value();
+	cutAnimation(nKeyframeFrom,nKeyframeTo);
 
 
 	if (finder._am.valid()) {
@@ -120,7 +203,11 @@ void AnimationEditorGUI::slotRunAnimationPressed()	{
 		osg::ref_ptr<osgAnimation::Animation> & anim = const_cast<osg::ref_ptr<osgAnimation::Animation> &>(canim);
 		anim->computeDuration();
 		anim->setStartTime(0);
-		model->playAnimation(anim);
+		if(abPressed == true) {
+			model->playAnimation(anim);
+		} else {
+			model->stopAnimation(anim);
+		}
 	} else {
 		std::cerr << "no osgAnimation::AnimationManagerBase found in the subgraph, no animations available" << std::endl;
 	}
@@ -145,9 +232,7 @@ void AnimationEditorGUI::slotMatrixTransformChanged()	{
 //----------------------------------------------------------------------
 
 void AnimationEditorGUI::cutAnimation(int & anFrom, int & anTo)	{
-	std::string & strOutFileName = m_pLineEditOutputFile->text().toStdString();
-	
-	osgAnimation::AnimationManagerBase* b = dynamic_cast<osgAnimation::AnimationManagerBase*>(m_pNode->getUpdateCallback());
+	osgAnimation::AnimationManagerBase* b = dynamic_cast<osgAnimation::AnimationManagerBase*>(m_pGroup->getUpdateCallback());
 	if (b) {
 		osgAnimation::BasicAnimationManager * pBam = new osgAnimation::BasicAnimationManager(*b);
 		const osgAnimation::AnimationList & pAL = b->getAnimationList();
@@ -159,11 +244,12 @@ void AnimationEditorGUI::cutAnimation(int & anFrom, int & anTo)	{
 					itCL != channelList.end();
 					itCL++) {
 						osgAnimation::Sampler * pSampler = (*itCL)->getSampler();
+						
 						osgAnimation::KeyframeContainer * pKFC = pSampler->getKeyframeContainer();
 						{
 							osgAnimation::TemplateKeyframeContainer<osg::Vec3f> *pTKFC_Vec3f =
 								dynamic_cast<osgAnimation::TemplateKeyframeContainer<osg::Vec3f> *>(pKFC);
-							
+
 							if(pTKFC_Vec3f != 0) {
 								int nTo = pTKFC_Vec3f->end() - pTKFC_Vec3f->begin();	
 								nTo = (anTo > nTo) ? nTo : anTo;
@@ -186,7 +272,6 @@ void AnimationEditorGUI::cutAnimation(int & anFrom, int & anTo)	{
 							}
 						}
 				}
-				osgDB::writeNodeFile(*m_pMt,strOutFileName);
 		}
 	}	
 }

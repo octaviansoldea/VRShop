@@ -19,14 +19,14 @@ namespace VR	{
 
 		~ShoppingPlace();
 
-		void gridOnOff(bool abIndicator);
-
 		osg::ref_ptr<Scene> getScene() const;
-		osg::ref_ptr<ProductManager> getProducts() const;
+
+		osg::ref_ptr<osg::Node> getProducts();
+
 		PickAndDragHandlerShopClient * getPicker() const;
 
 	private:
-		bool createClientScene();
+		bool createClientScene(const std::string & astrSceneFileName);
 
 		OSGQT_Widget * m_pOSGQTWidget;
 		OSGQT_Widget * m_pOSGQTWidgetMap;
@@ -34,11 +34,10 @@ namespace VR	{
 		osg::ref_ptr<PickAndDragHandlerShopClient> m_pPickAndDragHandlerShopClient;
 
 		osg::ref_ptr<Scene> m_pScene;
-		osg::ref_ptr<ProductManager> m_pProductMgr;
+		
+		ProductManager * m_pProductMgr;
 
 		QString m_strDBFileName;
-
-		osg::ref_ptr<Grid> m_pGridlines;
 
 		void insertProducts();
 

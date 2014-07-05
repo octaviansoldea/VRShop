@@ -10,15 +10,22 @@
 #include "VRAvatar.h"
 #include "VRAvatarManagerClient.h"
 
+#include "VRDatabaseManagerShopClient.h"
+
+#include "VRFloor.h"
+#include "VRRoom.h"
+
 #include "VRFurniture.h"
 #include "VRPlate3D.h"
 #include "VRCylinder.h"
 #include "VRUntransformedSphere.h"
+#include "VRUntransformedPlate2D.h"
 
 #include "VRPickAndDragHandlerShopClient.h"
 #include "VRKeyboardMouseManipulatorShopClient.h"
 
 #include <osgDB/ReadFile>
+#include "VRReadAndSaveFileCallback.h"
 
 #include "VRGrid.h"
 #include "OSGQT_Widget.h"
@@ -41,6 +48,14 @@ m_strDBFileName("")	{
 	//Define a scene as a group
 	m_pScene = new Scene();
 
+	//Reuse of textures => memory optimization taken from "OSG Cookbook"
+	osgDB::Registry::instance()->setReadFileCallback(new VR::ReadAndSaveFileCallback);
+	osgDB::Registry::instance()->getOrCreateSharedStateManager();
+	osgDB::SharedStateManager* ssm = osgDB::Registry::instance()->getSharedStateManager();
+	if(ssm) {
+		ssm->share(m_pScene.get());
+	}
+
 	//Ref_ptr
 	m_pPickAndDragHandlerShopClient = new PickAndDragHandlerShopClient;
 
@@ -61,15 +76,18 @@ m_strDBFileName("")	{
 	m_pOSGQTWidgetMap->setCameraManipulator(pKeyboardMouseManipulatorShopClient,false);
 	m_pOSGQTWidgetMap->show();
 
-
+	//Insert axes
 	ref_ptr<Node> pAxes = osgDB::readNodeFile("../../../Resources/Models3D/axes.osgt");
-	ref_ptr<Grid> pGrid = new Grid();
 	m_pScene->addChild(pAxes);
-	m_pScene->addChild(pGrid);
+
+	//Insert Scene objects
+	m_strDBFileName = "../../../Databases/Shop.db";
+	createClientScene(m_strDBFileName.toStdString());
 
 	//A pointer to products sent to the scene
 	m_pProductMgr = new ProductManager;
-	m_pScene->addChild(m_pProductMgr);
+	Node * pProductsRepresentation = m_pProductMgr->getProductsRepresentation();
+	m_pScene->addChild(pProductsRepresentation);
 
 //	insertProducts();
 
@@ -88,11 +106,19 @@ m_strDBFileName("")	{
 	//Other avatars
 	m_pAvatarMgr = new AvatarManagerClient(pAvatar);
 	m_pScene->addChild(m_pAvatarMgr->getAvatars());
+
+
+	//Insert room
+	Room room;
+	ref_ptr<MatrixTransform> pMt = dynamic_cast<MatrixTransform*>(room.createRoom());
+	pMt->setMatrix(osg::Matrix::translate(-20,0,0));
+	m_pScene->addChild(pMt.get());
 }
 
 //----------------------------------------------------------------------
 
 ShoppingPlace::~ShoppingPlace() {
+	delete m_pProductMgr;
 	delete m_pAvatarMgr;
 }
 
@@ -104,8 +130,8 @@ ref_ptr<Scene> ShoppingPlace::getScene() const	{
 
 //----------------------------------------------------------------------
 
-ref_ptr<ProductManager> ShoppingPlace::getProducts() const	{
-	return m_pProductMgr;
+ref_ptr<Node> ShoppingPlace::getProducts()	{
+	return m_pProductMgr->getProductsRepresentation();
 }
 
 //----------------------------------------------------------------------
@@ -116,23 +142,37 @@ PickAndDragHandlerShopClient * ShoppingPlace::getPicker() const	{
 
 //----------------------------------------------------------------------
 
-bool ShoppingPlace::createClientScene()	{
-	// ../../../Databases/Untitled.db
+bool ShoppingPlace::createClientScene(const string & astrSceneFileName)	{
+	m_strDBFileName = astrSceneFileName.c_str();
+
+	DatabaseManagerShopClientParams dbParams;
+	dbParams.m_qstrDBName = m_strDBFileName;
+
+	DatabaseManagerShopClient db(dbParams);
+
+	//Get list of objects in the scene
+	list<string> lststrSceneObjects = db.getListOfObjects("Untitled");
+
+	ref_ptr<AbstractObject> pAO = 0;
+
+	list<string>::iterator it = lststrSceneObjects.begin();
+	for (it; it != lststrSceneObjects.end(); it++)	{
+		//Find class and object names
+		const int & nFindPos1 = it->find_first_of(";");
+		const int & nFindPos2 = it->find_first_of(";", nFindPos1+1);
+		string & strClassName = it->substr(nFindPos1+1,nFindPos2-nFindPos1-1);
+
+		pAO = AbstractObject::createInstance(strClassName);
+		pAO->setDataVariance(Object::STATIC);
+		vector<string> & vecstrObjectData = db.getObjectData(*it);
+
+		pAO->initFromSQLData(vecstrObjectData);
+		pAO->setIsTargetPick(false);
+
+		m_pScene->addChild(pAO);
+	}
 
 	return true;
-}
-
-//----------------------------------------------------------------------
-
-void ShoppingPlace::gridOnOff(bool abIndicator) {
-	//ToolButton checked && Grid not already a child
-	if (abIndicator) {
-		m_pGridlines = new Grid;
-		m_pScene->addChild(m_pGridlines);
-	}
-	else {
-		m_pScene->removeChild(m_pGridlines);
-	}
 }
 
 //----------------------------------------------------------------------

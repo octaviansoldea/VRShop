@@ -32,6 +32,8 @@ VR::Sphere::Sphere(const SphereParams & aSphereParams) : AbstractGeomShape(aSphe
 	m_pUntransformedSphere = new UntransformedSphere();
 	addChild(m_pUntransformedSphere);
 
+	setName("Sphere_"+tostr(getAbstractObjectNo()));
+
 	init(aSphereParams);
 }
 
@@ -41,6 +43,8 @@ VR::Sphere::Sphere(const VR::Sphere& sp,const osg::CopyOp& copyop) :
 AbstractGeomShape(sp,copyop)	{
 	SphereParams spP;
 	sp.getParams(spP);
+
+	setName("Sphere_"+tostr(getAbstractObjectNo()));
 	init(spP);
 }
 
@@ -92,8 +96,6 @@ void VR::Sphere::init(const SphereParams & aSphereParams)	{
 	setColor(aSphereParams.m_arrflRGBA);
 	if ((aSphereParams.m_strFileNameTexture != " ") && (aSphereParams.m_strFileNameTexture != ""))
 		setTexture(aSphereParams.m_strFileNameTexture);
-
-	setName("Sphere");
 }
 
 //----------------------------------------------------------------------

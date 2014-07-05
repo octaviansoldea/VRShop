@@ -1,3 +1,5 @@
+#include "BasicStringDefinitions.h"
+
 #include <fstream>
 
 #include "VRCylinder.h"
@@ -26,8 +28,8 @@ VR::Cylinder::Cylinder(const CylinderParams & aCylinderParams) : Prism(aCylinder
 	m_pUntransformedPolyhedron = new UntransformedPolyhedron();
 
 	init(aCylinderParams);
-	setName("Cylinder");
-
+	
+	setName("Cylinder_"+tostr(getAbstractObjectNo()));
 }
 
 //----------------------------------------------------------

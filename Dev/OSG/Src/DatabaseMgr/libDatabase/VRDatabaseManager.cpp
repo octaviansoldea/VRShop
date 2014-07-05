@@ -24,7 +24,7 @@ using namespace VR;
 //===========================================================================
 
 DatabaseManagerParams::DatabaseManagerParams() :	
-m_qstrDBName("../../../Databases/Default.db"),
+m_qstrDBName(""),
 m_qstrConnectionName("")	{
 }
 
@@ -44,6 +44,12 @@ QObject(parent) {
 }
 
 //===========================================================================
+
+void DatabaseManager::init(const DatabaseManagerParams & aDBMgrParams)	{
+	m_DBMgrParams = aDBMgrParams;
+}
+
+//---------------------------------------------------------------------------
 
 bool DatabaseManager::createConnection(const DatabaseManagerParams & aDBMgrParams)	{
 	if (!QSqlDatabase::isDriverAvailable("QSQLITE")) {
@@ -104,20 +110,22 @@ DatabaseManager::~DatabaseManager()	{
 //-----------------------------------------------------------------------------------------
 
 bool DatabaseManager::createTable(const string & astrTableName, const string & astrTableStmt)	{
+	bool bRes = false;
+
 	const string * pstrTableName = &astrTableName;
+
 	if (pstrTableName->empty())	{
 		printError("Table name not given");
 		return false;
 	}
 	
-	if (containsTable(pstrTableName->c_str()))	{
-		printWarning(("Table " + *pstrTableName + " already exists and is not created.").c_str());
-		return false;
+	if (!containsTable(pstrTableName->c_str()))	{
+		const string * pSql = &astrTableStmt;
+
+		return execute(*pSql);
 	}
-
-	const string * pSql = &astrTableStmt;
-
-	return execute(*pSql);
+	
+	return bRes;
 }
 
 //-----------------------------------------------------------------------------------------
@@ -167,6 +175,8 @@ bool DatabaseManager::containsTable(const QString & aqstrTableName)	{
 
 bool DatabaseManager::execute(const string & astrQuery)	{
 	QString * pqstrConnName = &m_DBMgrParams.m_qstrConnectionName;
+	string strTest = pqstrConnName->toStdString();
+
 	const string * pstrQuery = &astrQuery;
 
 	QSqlDatabase * pDb = &QSqlDatabase::database(*pqstrConnName);
@@ -215,8 +225,9 @@ list<string> DatabaseManager::executeAndGetResult(const string & astrQuery)	{
 
 //-----------------------------------------------------------------------------------------
 
-void DatabaseManager::insertRow(const string & astrTableName, string &astrTblFieldValues)	{
+int DatabaseManager::insertRow(const string & astrTableName, string &astrTblFieldValues)	{
 	QSqlDatabase * pDb = &QSqlDatabase::database(m_DBMgrParams.m_qstrConnectionName);
+
 	QSqlTableModel model(this,*pDb);
 
 	const string * pstrTableName = &astrTableName;
@@ -224,7 +235,7 @@ void DatabaseManager::insertRow(const string & astrTableName, string &astrTblFie
 
 	if (!containsTable(pstrTableName->c_str()))	{
 		printError("Requested table not part of the database: " + pDb->databaseName());
-		return;
+		return(-1);
 	}
 
 
@@ -233,15 +244,11 @@ void DatabaseManager::insertRow(const string & astrTableName, string &astrTblFie
 
 	QSqlRecord * pRec = &model.record();
 
-	int nI;
+	int nI=0;
 	vector<string>::iterator it;
-	for (it = fieldValues.begin(); it != fieldValues.end(); it++)	{
-		nI = it - fieldValues.begin();
-		if (pRec->field(nI).isAutoValue())	{
-			continue;
-		} else {
+	for (it = fieldValues.begin(); it != fieldValues.end(); it++,nI++)	{
+		nI = (pRec->field(nI).isAutoValue()) ? nI+1 : nI;
 			pRec->setValue(nI,it->c_str());
-		}
 	}
 
 	int row = model.rowCount();
@@ -252,8 +259,12 @@ void DatabaseManager::insertRow(const string & astrTableName, string &astrTblFie
 	} else {
 		model.revertAll();
 		printError("Failed to insert the record.");
-		return;
+		return(-1);
 	}
+
+	int nLastInsertedID = model.query().lastInsertId().toInt();
+
+	return nLastInsertedID;
 }
 
 //-----------------------------------------------------------------------------------------

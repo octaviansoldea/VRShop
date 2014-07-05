@@ -16,12 +16,12 @@ using namespace osg;
 
 //-----------------------------------------------------------------------------
 
-ProductManager::ProductManager() :
-m_pProduct(0)	{
-	setName("Products");
-
+ProductManager::ProductManager() {
 	m_pProductSettings_GUI = 0;
 	m_pRemoveProduct_GUI = 0;
+
+	m_pgrpProductsRepresentation = new Group();
+	m_pgrpProductsRepresentation->setName("Products");
 }
 
 //-----------------------------------------------------------------------------
@@ -31,8 +31,6 @@ ProductManager::~ProductManager()	{
 		delete m_pProductSettings_GUI;
 	if (m_pRemoveProduct_GUI != 0)
 		delete m_pRemoveProduct_GUI;
-	if (m_pProduct)
-		delete m_pProduct;
 }
 
 //==============================================================================
@@ -43,17 +41,25 @@ const char* ProductManager::className() const	{
 
 //--------------------------------------------------------------------------
 
+Node * ProductManager::getProductsRepresentation()	{
+	return m_pgrpProductsRepresentation;
+}
+
+//--------------------------------------------------------------------------
+
 Node * ProductManager::getChild(const string & astrChildName)	{
 	Node * pChild = 0;
 	if (astrChildName.empty())	{
 		return pChild;
 	}
 
-	NodeList::iterator it = _children.begin();
-	for (it; it != _children.end(); it++)	{
-		const string & strChild = it->get()->getName();
+	int nSize = m_pgrpProductsRepresentation->getNumChildren();
+	int nI;
+
+	for (nI=0; nI<nSize; nI++)	{
+		const string & strChild = m_pgrpProductsRepresentation->getChild(nI)->getName();
 		if (strChild == astrChildName)	{
-			pChild = dynamic_cast<Node*>(it->get());
+			pChild = dynamic_cast<Node*>(m_pgrpProductsRepresentation->getChild(nI));
 
 			return pChild;
 		}
@@ -79,58 +85,51 @@ Product * ProductManager::getProduct(const AbstractObject * apAbstractObject)	{
 //-----------------------------------------------------------------------------
 
 void ProductManager::addNewProduct(Product * apProduct)	{
-	m_pProduct = dynamic_cast<VR::Product*>(apProduct);
-	if (m_pProduct != 0)	{
-		m_lstProducts.push_back(m_pProduct);
+	Product * pProduct = dynamic_cast<VR::Product*>(apProduct);
+	if (pProduct != 0)	{
+		m_lstProducts.push_back(pProduct);
 
 		//Fill osg group whose pointer is sent to the scene 
 		//with the 3D representation of the product
-		ref_ptr<AbstractObject> pProduct = m_pProduct->getRepresentation();
-		addChild(pProduct);
+		ref_ptr<AbstractObject> pProd = pProduct->getRepresentation();
+		m_pgrpProductsRepresentation->addChild(pProd);
 	}
 }
 
 //-----------------------------------------------------------------------------
 
 void ProductManager::addNewProduct()	{
-	m_pProduct = new Product();
-	modifyProduct(m_pProduct);
+	Product * pProduct = new Product();
+	modifyProduct(pProduct);
 
-	if (m_pProduct != 0)	{
-		m_lstProducts.push_back(m_pProduct);
+	if (pProduct != 0)	{
+		m_lstProducts.push_back(pProduct);
 
 		//Fill osg group whose pointer is sent to the scene 
 		//with the 3D representation of the product
-		ref_ptr<AbstractObject> pProduct = m_pProduct->getRepresentation();
-		addChild(pProduct);
+		ref_ptr<AbstractObject> prefProduct = pProduct->getRepresentation();
+		m_pgrpProductsRepresentation->addChild(prefProduct);
 	}
 }
 
 //-----------------------------------------------------------------------------
 
-void ProductManager::removeProduct()	{
-	if (m_pProduct == 0)
-		m_pProduct = new Product;
-
-	removeProduct(m_pProduct);
-}
+//void ProductManager::removeProduct()	{
+//	removeProduct(m_pProduct);
+//}
 
 //-----------------------------------------------------------------------------
 
 void ProductManager::removeProduct(Product * apProduct)	{
-	m_pProduct = apProduct;
 
-	m_pRemoveProduct_GUI = new RemoveProduct_GUI(m_pProduct);
+	m_pRemoveProduct_GUI = new RemoveProduct_GUI(apProduct);
 	m_pRemoveProduct_GUI->setWindowFlags(Qt::FramelessWindowHint);
 	bool bRes = m_pRemoveProduct_GUI->exec();
 
 	if (bRes == QDialog::Accepted)	{	//Remove product confirmed
-		removeChild(m_pProduct->getRepresentation());	//remove 3D
-		m_lstProducts.erase(remove(m_lstProducts.begin(), m_lstProducts.end(), m_pProduct),
+		m_pgrpProductsRepresentation->removeChild(apProduct->getRepresentation());	//remove 3D
+		m_lstProducts.erase(remove(m_lstProducts.begin(), m_lstProducts.end(), apProduct),
 			m_lstProducts.end());	//Remove from the vector of products
-	} else {
-		m_pProduct = 0;
-		//Remove product cancelled
 	}
 
 	delete m_pRemoveProduct_GUI;
@@ -139,10 +138,9 @@ void ProductManager::removeProduct(Product * apProduct)	{
 //-----------------------------------------------------------------------------
 
 void ProductManager::modifyProduct(Product * apProduct)	{
-	m_pProduct = apProduct;
-	m_pProductSettings_GUI = new ProductSettings_GUI(m_pProduct);
+	m_pProductSettings_GUI = new ProductSettings_GUI(apProduct);
 
-	AbstractObject * pAO = m_pProduct->getRepresentation();
+	AbstractObject * pAO = apProduct->getRepresentation();
 	m_pProductSettings_GUI->setWindowFlags(Qt::FramelessWindowHint);
 	bool bRes = m_pProductSettings_GUI->exec();
 
@@ -152,7 +150,7 @@ void ProductManager::modifyProduct(Product * apProduct)	{
 //		m_pvecProducts.push_back(m_pProduct);
 
 		ProductParams productParams;
-		m_pProduct->getParams(productParams);
+		apProduct->getParams(productParams);
 
 		productParams.m_flQuantity = m_pProductSettings_GUI->m_pLineEditQuantity->text().toFloat();
 		productParams.m_strProductCategory = m_pProductSettings_GUI->m_pComboBoxProductCategory->currentText().toStdString();
@@ -172,10 +170,8 @@ void ProductManager::modifyProduct(Product * apProduct)	{
 	////	m_pProductParams->m_nCurrency = m_pProductSettings_GUI-> ;
 
 
-		m_pProduct->setParams(productParams);
+		apProduct->setParams(productParams);
 
-	} else {
-		m_pProduct = 0;
 	}
 }
 

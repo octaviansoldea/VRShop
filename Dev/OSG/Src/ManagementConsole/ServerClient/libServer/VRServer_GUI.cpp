@@ -16,9 +16,8 @@ using namespace std;
 
 //----------------------------------------------------------------------
 
-Server_GUI::Server_GUI(QWidget * parent) : QWidget(parent)	{
-	m_pServer = new Server(this);
-
+Server_GUI::Server_GUI(Server * apServer, QWidget * parent) 
+: m_pServer(apServer), QWidget(parent)	{
 	const string & strIP = m_pServer->serverAddress().toString().toStdString();
 	const int & nPort = m_pServer->serverPort();
 
@@ -52,4 +51,15 @@ void Server_GUI::init(const std::string & astrIPAddress, const int & anPort)	{
 	
 	setLayout(mainLayout);
 	setWindowTitle("Server");
+}
+
+//---------------------------------------------------------------
+
+void Server_GUI::close()	{
+	m_pServer->close();
+
+	bool bRes = m_pServer->isListening();
+
+	if (!bRes)
+		QWidget::close();
 }

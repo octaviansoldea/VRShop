@@ -30,7 +30,7 @@ QLineEdit * apLineEdit_ProductSettings_NewPrice,
 QLineEdit * apLineEdit_ProductSettings_NewQuantity,
 QLineEdit * apLineEdit_ProductSettings_Price,
 QLineEdit * apLineEdit_ProductSettings_Quantity,
-ref_ptr<ProductManager> apProductMgr,
+ProductManager * apProductMgr,
 PickAndDragHandlerShopEditor * apPickAndDragHandlerShopEditor)	{
 
 	m_pPushButton_ProductSettings_AddNewProduct = apPushButton_ProductSettings_AddNewProduct;
@@ -75,14 +75,14 @@ void ProductController::slotRemoveProduct()	{
 	AbstractObject *pAO = m_pPickAndDragHandlerShopEditor->m_pPickedObject;
 
 	if (pAO == 0)	{
-		m_pProductMgr->removeProduct();
+//		m_pProductMgr->removeProduct();
 	} else {
 		//Only first parent is checked
 		int nParent = pAO->getParentalNodePaths().size()-1;
 		const string & strParentName = pAO->getParents()[nParent]->className();
 		if (strParentName == "ProductManager")	{
 			Product * pProduct = m_pProductMgr->getProduct(pAO);
-			m_pProductMgr->removeProduct(pProduct);
+			m_pProductMgr-> removeProduct(pProduct);
 			m_pPickAndDragHandlerShopEditor->clearList();
 		} else {
 			//Picked object was not a product
@@ -125,8 +125,8 @@ void ProductController::slotSetModifyProduct(const VR::AbstractObject * apAbstra
 	m_pProduct->getParams(params);
 
 	m_pComboBox_ProductSettings_ProductName->insertItem(0,params.m_strProductName.c_str());
-	m_pLineEdit_ProductSettings_Price->setText(to_string(long double(params.m_flPricePerUnit)).c_str());
-	m_pLineEdit_ProductSettings_Quantity->setText(to_string(long double(params.m_flQuantity)).c_str());
+	m_pLineEdit_ProductSettings_Price->setText(tostr(params.m_flPricePerUnit).c_str());
+	m_pLineEdit_ProductSettings_Quantity->setText(tostr(params.m_flQuantity).c_str());
 
 	m_pLineEdit_ProductSettings_NewPrice->setEnabled(true);
 	m_pLineEdit_ProductSettings_NewQuantity->setEnabled(true);

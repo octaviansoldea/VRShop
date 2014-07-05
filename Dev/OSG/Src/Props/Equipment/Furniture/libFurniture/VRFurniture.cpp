@@ -1,3 +1,5 @@
+#include "BasicStringDefinitions.h"
+
 #include <iostream>
 #include <QVariant>
 
@@ -105,6 +107,75 @@ void Furniture::loadAllFurnitures(ref_ptr<Group> apScene, const string & astrDat
 
 	//	apScene->addChild(pFurniture);
 	//}
+}
+
+//-----------------------------------------------------------------------
+
+void Furniture::initFromSQLData(vector<string> & avecstrSQLData)	{
+//**********************************************
+//	HIERARCHY (how you get data inside)
+//		OBJECT1				Layer: 0
+//			|--PRIMITIVE1	Layer: 1
+//			|--PRIMITIVE2	Layer: 1
+//*******************************************/
+
+	const int & nNoOfElements = avecstrSQLData.size();
+	int nPos;	//Position of the indent
+
+	vector<string> vecstrSqlDataLine;
+	vector<string>::iterator it = avecstrSQLData.begin();
+	for (it; it != avecstrSQLData.end(); it++)	{
+		nPos = 0;
+
+		//Find the position of the first character & clear empty spaces
+		nPos = it->find_first_not_of(" ");
+		const int & nFindPos = it->find_first_of(";");	//This one deletes ID number
+		it->erase(0,nFindPos+1);
+
+		vecstrSqlDataLine = splitString(*it,";");
+
+		//Layer determines Parent/Child relations
+		nPos = nPos/2;	//Divided with 2 because 2 is the layer indent
+
+		string & strClass = vecstrSqlDataLine[0];
+		string & strObject = vecstrSqlDataLine[1];
+
+		ref_ptr<AbstractObject> pAOChild = 0;
+
+		if (nPos == 0)	{
+			string & strMtrx = vecstrSqlDataLine[2];
+
+			vector <string> arrstrFurnitureParams = splitString(strMtrx,"_");
+
+			FurnitureParams fP;
+			fP.m_flPosX = stof(arrstrFurnitureParams[0]);
+			fP.m_flPosY = stof(arrstrFurnitureParams[1]);
+			fP.m_flPosZ = stof(arrstrFurnitureParams[2]);
+
+			fP.m_flLenX = stof(arrstrFurnitureParams[3]);
+			fP.m_flLenY = stof(arrstrFurnitureParams[4]);
+			fP.m_flLenZ = stof(arrstrFurnitureParams[5]);
+
+			fP.m_flAngleXY = stof(arrstrFurnitureParams[6]);
+			fP.m_flAngleXZ = stof(arrstrFurnitureParams[7]);
+			fP.m_flAngleYZ = stof(arrstrFurnitureParams[8]);
+
+			setParams(fP);
+			Matrix & furnitureMatrix = calculateMatrix();
+
+			setMatrix(furnitureMatrix);
+			setName(strObject);
+			setIsTargetPick(true);
+
+		} else {
+			pAOChild = AbstractObject::createInstance(strClass);
+			pAOChild->initFromSQLData(vecstrSqlDataLine);
+
+			pAOChild->setName(strObject);
+
+			addPart(pAOChild);
+		}
+	}
 }
 
 //-----------------------------------------------------------------------

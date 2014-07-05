@@ -1,4 +1,7 @@
+#include <iostream>
+
 #include "BasicDefinitions.h"
+#include "BasicStringDefinitions.h"
 
 #include "VRCustomFurniture.h"
 #include "VRContainer.h"
@@ -14,6 +17,10 @@
 using namespace VR;
 using namespace osg;
 using namespace std;
+
+unsigned long AbstractObject::s_nAbstractObjectNo = 0;
+
+//------------------------------------------------------------
 
 string AbstractObject::m_strSQLFormat = "";
 
@@ -35,6 +42,8 @@ AbstractObjectParams::~AbstractObjectParams()	{
 AbstractObject::AbstractObject(const AbstractObjectParams & aAbstractObjectParams) :
 	MatrixTransform(), m_bIsTargetPick(false) {
 	setParams(aAbstractObjectParams);
+
+	s_nAbstractObjectNo += 1;
 }
 
 //--------------------------------------------------------------
@@ -45,6 +54,8 @@ MatrixTransform(ao,copyop) {
 	ao.getParams(aop);
 	setParams(aop);
 	m_bIsTargetPick = ao.m_bIsTargetPick;
+
+	s_nAbstractObjectNo += 1;
 }
 
 //--------------------------------------------------------------
@@ -63,22 +74,22 @@ const char * AbstractObject::className() const	{
 ref_ptr<AbstractObject> AbstractObject::createInstance(const string & astrClassName)	{
 	if (astrClassName == "Cupboard")	{
 		CupboardParams cP;
-		return (new Cupboard(cP));
+		return (new VR::Cupboard(cP));
 	} else if (astrClassName == "Container")	{
 		ContainerParams cP;
-		return (new Container(cP));
+		return (new VR::Container(cP));
 	} else if (astrClassName == "CustomFurniture")	{
 		CustomFurnitureParams cF;
-		return (new CustomFurniture(cF));
+		return (new VR::CustomFurniture(cF));
 	} else if (astrClassName == "Plate3D")	{
 		Plate3DParams p3DP;
-		return (new Plate3D(p3DP));
+		return (new VR::Plate3D(p3DP));
 	} else if (astrClassName == "Cylinder")	{
 		CylinderParams cP;
 		return (new VR::Cylinder(cP));
 	} else if (astrClassName == "Prism")	{
 		PrismParams pP;
-		return (new Prism(pP));
+		return (new VR::Prism(pP));
 	} else if (astrClassName == "Sphere")	{
 		SphereParams sP;
 		return (new VR::Sphere(sP));
@@ -89,6 +100,11 @@ ref_ptr<AbstractObject> AbstractObject::createInstance(const string & astrClassN
 
 string AbstractObject::getSQLFormat() const {
 	return(m_strSQLFormat);
+}
+
+//--------------------------------------------------------------
+
+void AbstractObject::initFromSQLData(vector<string> & avecstrSQLData)	{
 }
 
 //--------------------------------------------------------------
@@ -224,10 +240,14 @@ void AbstractObject::preparedObjectData(std::vector<std::string> &avecItems, std
 
 	vector<string> * pvecItems = &avecItems;
 
+	int nI=1;
+
 	string strClassName = pAbstractObject->className();
 	const string * pstrObjectName = &pAbstractObject->getName();
-	string strItem = (strClassName + ";" + *pstrObjectName + ";" + pAbstractObject->prepareRowData(astrParent));
+	string strItem = (string(2*nI,' ') + strClassName + ";" + *pstrObjectName + ";" + pAbstractObject->prepareRowData(astrParent));
 	pvecItems->push_back(strItem);
+
+	nI += 1;	//enlarge indent by 1 unit
 
 	AbstractObject * pChild = 0;
 	NodeList::iterator it;
@@ -242,7 +262,8 @@ void AbstractObject::preparedObjectData(std::vector<std::string> &avecItems, std
 		pstrObjectName = &pChild->getName();
 		strItem = (strClassName + ";" + *pstrObjectName + ";" + pChild->prepareRowData(pAbstractObject->getName()));
 
-		pvecItems->push_back("  " + strItem);
+//		pvecItems->push_back("  " + strItem);
+		pvecItems->push_back(string(2*nI,' ') + strItem);
 	}
 }
 
@@ -277,4 +298,10 @@ void AbstractObject::getParams(AbstractObjectParams & aAbstractObjectParams) con
 	aAbstractObjectParams.m_flAngleYZ = m_flAngleYZ;
 	aAbstractObjectParams.m_flAngleXZ = m_flAngleXZ;
 	aAbstractObjectParams.m_flAngleXY = m_flAngleXY;
+}
+
+//--------------------------------------------------------------------------
+
+unsigned long AbstractObject::getAbstractObjectNo() const	{
+	return s_nAbstractObjectNo;
 }

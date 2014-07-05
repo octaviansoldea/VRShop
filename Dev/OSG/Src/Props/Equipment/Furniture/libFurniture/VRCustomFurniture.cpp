@@ -12,6 +12,7 @@ using namespace VR;
 
 CustomFurniture::CustomFurniture(const CustomFurnitureParams & aCustomFurnitureParams) : Furniture(aCustomFurnitureParams)	{
 	setParams(aCustomFurnitureParams);
+	setName("CustomFurniture_"+tostr(getAbstractObjectNo()));
 }
 
 //-----------------------------------------------------------------------
@@ -20,6 +21,8 @@ CustomFurniture::CustomFurniture(const CustomFurniture& cf,const CopyOp& copyop)
 	CustomFurnitureParams aCf;
 	cf.getParams(aCf);
 	setParams(aCf);
+
+	setName("CustomFurniture_"+tostr(getAbstractObjectNo()));
 }
 
 //-----------------------------------------------------------------------

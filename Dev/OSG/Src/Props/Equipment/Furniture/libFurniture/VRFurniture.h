@@ -26,6 +26,7 @@ namespace VR	{
 		virtual std::string getSQLCommand() const;
 
 		static void loadAllFurnitures(osg::ref_ptr<osg::Group> pScene, const std::string & astrDatabase);
+		virtual void initFromSQLData(std::vector<std::string> & avecstrSQLData);
 
 		virtual std::string prepareRowData(const std::string & astrParentName="");
 

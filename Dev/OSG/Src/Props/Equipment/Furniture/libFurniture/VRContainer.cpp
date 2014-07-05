@@ -21,6 +21,8 @@ ContainerParams::ContainerParams() : FurnitureParams(),
 
 Container::Container(const ContainerParams & aContainerParams) : Furniture(aContainerParams)	{
 	setParams(aContainerParams);
+
+	setName("Container_"+tostr(getAbstractObjectNo()));
 }
 
 //-----------------------------------------------------------------------
@@ -30,6 +32,8 @@ VR::Furniture(cont, copyop)	{
 	ContainerParams aCont;
 	cont.getParams(aCont);
 	setParams(aCont);
+
+	setName("Container_"+tostr(getAbstractObjectNo()));
 }
 
 //-----------------------------------------------------------------------

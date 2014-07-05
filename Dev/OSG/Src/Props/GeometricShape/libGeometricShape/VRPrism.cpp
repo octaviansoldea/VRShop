@@ -30,6 +30,8 @@ Prism::Prism(const PrismParams & aPrismParams) : AbstractGeomShape(aPrismParams)
 	m_pUntransformedPolyhedron = new UntransformedPolyhedron();
 	addChild(m_pUntransformedPolyhedron);
 
+	setName("Prism_"+tostr(getAbstractObjectNo()));
+
 	init(aPrismParams);
 }
 
@@ -39,6 +41,8 @@ Prism::Prism(const Prism& pr,const CopyOp& copyop) : AbstractGeomShape(pr,copyop
 	PrismParams prP;
 	pr.getParams(prP);
 	init(prP);
+
+	setName("Prism_"+tostr(getAbstractObjectNo()));
 }
 
 //----------------------------------------------------------
@@ -89,8 +93,6 @@ void Prism::init(const PrismParams & aPrismParams)	{
 	setColor(aPrismParams.m_arrflRGBA);
 	if ((aPrismParams.m_strFileNameTexture != " ") && (aPrismParams.m_strFileNameTexture != ""))
 		setTexture(aPrismParams.m_strFileNameTexture);
-
-	setName("Prism");
 }
 
 //----------------------------------------------------------------------

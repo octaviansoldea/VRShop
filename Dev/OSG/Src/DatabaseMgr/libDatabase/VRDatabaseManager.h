@@ -27,6 +27,8 @@ namespace VR	{
 		DatabaseManager(const DatabaseManagerParams & aDBMgrParams, QObject * parent = 0);
 		virtual ~DatabaseManager();
 
+		virtual void init(const DatabaseManagerParams & aDBMgrParams);
+
 		bool execute(const std::string & astrQuery);
 		std::list<std::string> executeAndGetResult(const std::string & astrQuery);
 
@@ -34,7 +36,8 @@ namespace VR	{
 		bool createTable(const std::string & astrTableName, const std::string & astrTableStmt);
 		bool removeTable(const QString& aqstrTableName);
 
-		void insertRow(const std::string & astrTableName, std::string &astrTblFieldValues);
+		int insertRow(const std::string & astrTableName, std::string &astrTblFieldValues);
+
 		void deleteRow(const std::string & astrTableName, const std::string & astrObjectName);
 		void updateDB();
 

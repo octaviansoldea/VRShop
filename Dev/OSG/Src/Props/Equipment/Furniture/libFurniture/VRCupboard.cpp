@@ -15,6 +15,7 @@ using namespace std;
 using namespace osg;
 using namespace VR;
 
+
 CupboardParams::CupboardParams() : FurnitureParams()	{
 }
 
@@ -22,6 +23,8 @@ CupboardParams::CupboardParams() : FurnitureParams()	{
 
 Cupboard::Cupboard(const CupboardParams & aCupboardParams) : Furniture(aCupboardParams)	{
 	setParams(aCupboardParams);
+
+	setName("Cupboard_"+tostr(getAbstractObjectNo()));
 }
 
 //-----------------------------------------------------------------------
@@ -30,6 +33,8 @@ Cupboard::Cupboard(const Cupboard& cup,const CopyOp& copyop) : Furniture(cup, co
 	CupboardParams aCup;
 	cup.getParams(aCup);
 	setParams(aCup);
+
+	setName("Cupboard_"+tostr(getAbstractObjectNo()));
 }
 
 //-----------------------------------------------------------------------
@@ -58,8 +63,6 @@ void Cupboard::init(const CupboardParams & aCupboardParams)	{
 
 	Matrix & cupboardMatrix = calculateMatrix();
 	setMatrix(cupboardMatrix);
-
-	setName("Cupboard");
 }
 
 //-----------------------------------------------------------------------

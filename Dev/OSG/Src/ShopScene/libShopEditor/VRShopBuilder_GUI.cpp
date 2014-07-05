@@ -41,7 +41,7 @@ ShopBuilder_GUI::ShopBuilder_GUI()	{
 
 	m_pShopBuilder = new ShopBuilder(m_pOSGQTWidget);
 	ref_ptr<Scene> pScene = m_pShopBuilder->getScene();
-	ref_ptr<ProductManager> pProductMgr = m_pShopBuilder->getProducts();
+	ProductManager * pProductMgr = m_pShopBuilder->getProducts();
 	string strFileName = m_pShopBuilder->getCurrentFileName();
 
 	KeyboardMouseManipulatorShopEditor * pKeyboardMouseManipulatorShopEditor = 
@@ -183,19 +183,9 @@ void ShopBuilder_GUI::slotNewProject()	{
 //---------------------------------------------------------------------------------------
 
 void ShopBuilder_GUI::slotOpenDB() {
-	m_pShopBuilder->readDB();
+	QString qstrFileName = openDialog("*.db");
 
-	//QString qstrFileName = openDialog("*.db");
-
-	//if(isAtEndOfString(qstrFileName.toStdString(), ".db") == false)	{
-	//	QMessageBox msgBox;
-	//	msgBox.setText(qstrFileName + " Could not open file");
-	//	msgBox.setStandardButtons(QMessageBox::Ok);
-	//	msgBox.setWindowTitle("Error window");
-	//	int nRes = msgBox.exec();
-	//	return;
-	//}
-	//m_pShopBuilder->readDB(qstrFileName.toStdString());
+	m_pShopBuilder->readDB(qstrFileName.toStdString());
 }
 
 //=========================================================================================
@@ -311,22 +301,15 @@ void ShopBuilder_GUI::slotDefineDragAxis(const QString & astrAxis)	{
 //---------------------------------------------------------------------------------------
 
 void ShopBuilder_GUI::slotModifySceneActions()	{
-	QPushButton * pPushButton = dynamic_cast<QPushButton*>(sender());
-	if(pPushButton == m_p_PushButton_ModifyScene_AddNewItem)	{
-		InsertNewItem_GUI * pInsertNewItem_GUI = new InsertNewItem_GUI;
-		connect(pInsertNewItem_GUI, SIGNAL(signalNewItemRequested(const QString &)),
-				this, SLOT(slotAddNewItem(const QString & )));
+	InsertNewItem_GUI * pInsertNewItem_GUI = new InsertNewItem_GUI;
+	connect(pInsertNewItem_GUI, SIGNAL(signalNewItemRequested(const QString &)),
+			this, SLOT(slotAddNewItem(const QString & )));
 
-		//To get a widget without a "TitleBar"
-		pInsertNewItem_GUI->setWindowFlags(Qt::FramelessWindowHint);
-		pInsertNewItem_GUI->exec();
+	//To get a widget without a "TitleBar"
+	pInsertNewItem_GUI->setWindowFlags(Qt::FramelessWindowHint);
+	pInsertNewItem_GUI->exec();
 
-		delete pInsertNewItem_GUI;
-		return;
-	}
-	else	{
-		return;
-	}
+	delete pInsertNewItem_GUI;
 }
 
 //---------------------------------------------------------------------------------------

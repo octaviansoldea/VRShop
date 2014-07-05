@@ -17,6 +17,11 @@ namespace VR {
 		DatabaseManagerShopClient(const DatabaseManagerShopClientParams & aDBMgrParams, QObject * parent = 0);
 
 		virtual ~DatabaseManagerShopClient();
+
+		void loadScene(const std::string & astrScene);
+
+		std::list<std::string> getListOfObjects(const std::string & astrScene);
+		std::vector<std::string> getObjectData(std::string & strSceneObject);
 	};
 }
 #endif //VR_DATABASE_MANAGER_SHOP_CLIENT_H

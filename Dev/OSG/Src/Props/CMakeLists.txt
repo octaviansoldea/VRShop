@@ -5,6 +5,7 @@ SET(CMAKE_DEBUG_POSTFIX "D")
 SUBDIRS(
 	AbstractObject
 	Avatar
+	Building
 	Equipment
 	GeometricShape
 	Scene

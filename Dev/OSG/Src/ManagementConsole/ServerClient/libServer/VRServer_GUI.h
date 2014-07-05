@@ -10,13 +10,16 @@ namespace VR	{
 		Q_OBJECT
 
 	public:
-		Server_GUI(QWidget * parent =0);
+		Server_GUI(Server * apServer, QWidget * parent =0);
 		~Server_GUI();
 
 	private:
 		void init(const std::string & astrIPAddress, const int & anPort);
 
 		Server * m_pServer;
+
+	public slots:
+		virtual void close();
 	};
 }
 #endif //VR_SERVER_GUI_H

@@ -13,6 +13,7 @@ SET(SRCS
 	VRGrid.h VRGrid.cpp
 	VRObjectTransformation.h VRObjectTransformation.cpp
 	VRBasicOSGOperations.h VRBasicOSGOperations.cpp
+	VRReadAndSaveFileCallback.h VRReadAndSaveFileCallback.cpp
 )
 
 ADD_LIBRARY(libCommon_OSG

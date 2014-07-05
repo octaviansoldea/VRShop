@@ -34,6 +34,10 @@ namespace VR	{
 		void slotError(QAbstractSocket::SocketError socketError);
 		void slotConnected();
 		void slotDisconnected();
+
+	public slots:
+		void slotTryToConnect();
+		void close();
 	};
 }
 #endif //VR_CLIENT_H

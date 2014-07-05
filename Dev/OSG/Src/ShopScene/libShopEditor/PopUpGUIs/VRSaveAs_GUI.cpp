@@ -58,9 +58,11 @@ void SaveAs_GUI::slotApplyChanges()	{
 		return;
 	}
 
-	QString qstrPathName = m_pLineEditDirectory->text() + "/" + m_pLineEditFileName->text() + ".db";
+	done(1);
 
-	std::ofstream myfile(qstrPathName.toStdString());
-	myfile.close();
-	close();
+	//QString qstrPathName = m_pLineEditDirectory->text() + "/" + m_pLineEditFileName->text() + ".db";
+
+	//std::ofstream myfile(qstrPathName.toStdString());
+	//myfile.close();
+	//close();
 }

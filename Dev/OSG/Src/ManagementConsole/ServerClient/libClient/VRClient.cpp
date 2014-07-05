@@ -18,6 +18,27 @@ using namespace std;
 
 Client::Client(QObject *apParent) : QObject(apParent)	{
 
+	//m_TcpSocket.connectToHost(QHostAddress::LocalHost, 20000);
+
+	//connect(&m_TcpSocket, SIGNAL(readyRead()), this, SLOT(slotReadReceivedData()));
+	//connect(&m_TcpSocket, SIGNAL(error(QAbstractSocket::SocketError)), 
+	//		this, SLOT(slotError(QAbstractSocket::SocketError)));
+	//connect(&m_TcpSocket,SIGNAL(connected()),this,SLOT(slotConnected()));
+	//connect(&m_TcpSocket,SIGNAL(disconnected()),this,SLOT(slotDisconnected()));
+
+	//m_TcpSocket.waitForConnected();
+	//m_unPackageSize = 0;
+	//m_ReceivedData = 0;
+}
+
+//----------------------------------------------------------------------
+
+Client::~Client()	{
+}
+
+//=====================================================================
+
+void Client::slotTryToConnect()	{
 	m_TcpSocket.connectToHost(QHostAddress::LocalHost, 20000);
 
 	connect(&m_TcpSocket, SIGNAL(readyRead()), this, SLOT(slotReadReceivedData()));
@@ -31,12 +52,14 @@ Client::Client(QObject *apParent) : QObject(apParent)	{
 	m_ReceivedData = 0;
 }
 
-//----------------------------------------------------------------------
+//---------------------------------------------------------------------
 
-Client::~Client()	{
+void Client::close()	{
+//	m_TcpSocket.close();
+	m_TcpSocket.disconnectFromHost();
 }
 
-//=====================================================================
+//---------------------------------------------------------------------
 
 void Client::sendRequest(QByteArray & aarrRequest)	{
 	QDataStream out(&aarrRequest, QIODevice::WriteOnly);

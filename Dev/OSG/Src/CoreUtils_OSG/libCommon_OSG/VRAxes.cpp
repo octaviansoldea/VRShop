@@ -28,7 +28,7 @@ Axes::Axes()	{
 	pGeometry->setColorArray(pColors, Array::BIND_PER_VERTEX);
     pGeometry->addPrimitiveSet(new DrawArrays(PrimitiveSet::LINES, 0, 6));
     pGeometry->getOrCreateStateSet()->setMode(GL_LIGHTING, false);
-	//pGeometry->getOrCreateStateSet()->setAttributeAndModes(new osg::LineWidth(10.0f));
+	pGeometry->getOrCreateStateSet()->setAttributeAndModes(new osg::LineWidth(50.0));
 
 	addDrawable(pGeometry.get());
 

@@ -12,7 +12,6 @@ using namespace std;
 //----------------------------------------------------------------------
 
 Server::Server(QObject *parent) : QTcpServer(parent)	{
-	init();
 }
 
 //----------------------------------------------------------------------
@@ -33,7 +32,9 @@ void Server::incomingConnection(qintptr handle)	{
 
 //----------------------------------------------------------------------
 
-void Server::init()	{
+bool Server::init()	{
+	bool bRes=true;
+
 	string & strServerIP = QHostAddress(QHostAddress::LocalHost).toString().toStdString();
 	int nPort = 20000;
 	
@@ -45,8 +46,9 @@ void Server::init()	{
 		int nRes = msg.exec();
 
 		close();
-		return;
+		return(false);
 	}
+	return bRes;
 }
 
 //----------------------------------------------------------------------

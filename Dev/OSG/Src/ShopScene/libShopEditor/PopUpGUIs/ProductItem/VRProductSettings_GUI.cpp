@@ -41,8 +41,6 @@ ProductSettings_GUI::ProductSettings_GUI(Product * apProduct)	{
 //----------------------------------------------------------------------
 
 ProductSettings_GUI::~ProductSettings_GUI()	{
-	if (m_pOSGQT_Widget)
-		delete m_pOSGQT_Widget;
 }
 
 //=====================================================================
@@ -62,11 +60,11 @@ void ProductSettings_GUI::initGUI(Product * apProduct)	{
 	ProductParams prodParams;
 	apProduct->getParams(prodParams);
 	
-	m_pLineEditQuantity->setText((to_string(long double(prodParams.m_flQuantity)).c_str()));
+	m_pLineEditQuantity->setText((tostr(prodParams.m_flQuantity)).c_str());
 
 	m_pComboBoxProductCategory->setCurrentText(prodParams.m_strProductCategory.c_str());
 	m_pLineEditProductName->setText(prodParams.m_strProductName.c_str());
-	m_pLineEditProductCode->setText(tostr((int)prodParams.m_nProductCode).c_str());
+	m_pLineEditProductCode->setText(tostr(prodParams.m_nProductCode).c_str());
 	m_pTextEditProductDescription->setText(prodParams.m_strProductDescription.c_str());
 	m_pLineEditShortDescription->setText(prodParams.m_strProductShortDescription.c_str());
 	m_pLineEditProductURL->setText("NA");
@@ -76,10 +74,10 @@ void ProductSettings_GUI::initGUI(Product * apProduct)	{
 	m_pComboBoxPlaceOfOrigin->setCurrentText(prodParams.m_strManufacturerOrigin.c_str());
 	m_pComboBoxProductUnit->setCurrentText(prodParams.m_strProductUnit.c_str());
 	m_pComboBoxUnitQuantity->setCurrentText("NA");
-	m_pComboBoxTaxRate->setCurrentText(to_string(long double(prodParams.m_flTaxRate)).c_str() + QString("%"));
-	m_pLineEditQuantity->setText(to_string(long double(prodParams.m_flQuantity)).c_str());
+	m_pComboBoxTaxRate->setCurrentText(tostr(prodParams.m_flTaxRate).c_str() + QString("%"));
+	m_pLineEditQuantity->setText(tostr(prodParams.m_flQuantity).c_str());
 	m_pLineEditQuantLastChanged->setText("NA");
-	m_pLineEditPrice->setText(to_string(long double(prodParams.m_flPricePerUnit)).c_str());
+	m_pLineEditPrice->setText(tostr(prodParams.m_flPricePerUnit).c_str());
 	m_pLineEditPriceLastChanged->setText("NA");
 
 	m_pComboBoxFrame->setEditText(apProduct->className());

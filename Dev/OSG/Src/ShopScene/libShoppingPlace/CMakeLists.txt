@@ -44,6 +44,7 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
   ${CMAKE_SOURCE_DIR}/Props/GeometricShape/libGeometricShape
   ${CMAKE_SOURCE_DIR}/Props/Equipment/Furniture/libFurniture
+  ${CMAKE_SOURCE_DIR}/Props/Building/libBuilding
   ${CMAKE_SOURCE_DIR}/Props/Scene/libScene
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libOSGQTViewer
   ${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProduct
@@ -52,6 +53,7 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libController
   ${CMAKE_SOURCE_DIR}/Props/Avatar/libAvatar
   ${CMAKE_SOURCE_DIR}/Props/Avatar/libAvatarManager
+  ${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabase
 )
 
 

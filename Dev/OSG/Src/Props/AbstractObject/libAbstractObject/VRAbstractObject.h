@@ -41,6 +41,8 @@ namespace VR	{
 		virtual std::string getSQLCommand() const {return "";};
 
 		virtual void initFromSQLData(const std::string & astrSQLData) = 0;
+		virtual void initFromSQLData(std::vector<std::string> & avecstrSQLData);
+
 		virtual void predefinedObject() = 0;
 
 		virtual void setRotation(float aflAngleX, float aflAngleY, float aflAngleZ);
@@ -70,9 +72,13 @@ namespace VR	{
 		virtual void setParams(const AbstractObjectParams & aAbstractObjectParams);
 		virtual void getParams(AbstractObjectParams & aAbstractObjectParams) const;
 
+		unsigned long getAbstractObjectNo() const;
+
 	private:
 		bool m_bIsTargetPick;
 		static std::string m_strSQLFormat;
+
+		static unsigned long s_nAbstractObjectNo;
 
 	protected:
 		float m_flPosX;

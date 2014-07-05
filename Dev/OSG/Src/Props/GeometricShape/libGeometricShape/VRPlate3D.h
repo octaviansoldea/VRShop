@@ -30,6 +30,8 @@ namespace VR	{
 		virtual std::string getSQLCommand() const;
 
 		virtual void initFromSQLData(const std::string & astrSQLData);
+		virtual void initFromSQLData(std::vector<std::string> & avecstrSQLData);
+		
 		virtual void init(const Plate3DParams & aPlate3DParams);
 
 		virtual void predefinedObject();

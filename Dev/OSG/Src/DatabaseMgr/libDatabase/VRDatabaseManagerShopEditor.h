@@ -18,8 +18,13 @@ namespace VR {
 
 		virtual ~DatabaseManagerShopEditor();
 
+		virtual void init(const DatabaseManagerShopEditorParams & aDBMgrParams);
+
 		void insertScene(const std::string & astrScene);
 		void insertObject(const std::string & astrScene, std::vector<std::string> & avecstrData);
+
+		std::list<std::string> getListOfObjects(const std::string & astrScene);
+		std::vector<std::string> getObjectData(std::string & strSceneObject);
 
 	private:
 		virtual void systemOfTables(std::vector<std::pair<std::string,std::string>> & avecStmtPairs);

@@ -8,6 +8,7 @@ INCLUDE_DIRECTORIES(
 
 SET(SRCS
     VRScene.h VRScene.cpp
+	VRSceneManagerClient.h VRSceneManagerClient.cpp
 )
 
 ADD_LIBRARY(libScene ${SRCS})

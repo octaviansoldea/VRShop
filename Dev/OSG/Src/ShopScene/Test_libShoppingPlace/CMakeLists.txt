@@ -39,6 +39,7 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
   ${CMAKE_SOURCE_DIR}/Props/Equipment/GeometricShape/libGeometricShape
   ${CMAKE_SOURCE_DIR}/Props/Equipment/Furniture/libFurniture
+  ${CMAKE_SOURCE_DIR}/Props/Building/libBuilding
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libOSGQTViewer
   ${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProduct
   ${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProductInterface
@@ -51,6 +52,7 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_SOURCE_DIR}/Props/Avatar/libAvatar
   ${CMAKE_SOURCE_DIR}/Props/Avatar/libAvatarManager
   ${CMAKE_SOURCE_DIR}/Props/Avatar/libAnimationEditor
+  ${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabase
 )
 
 SET(LIBS_COMMON 
@@ -73,6 +75,7 @@ SET(LIBS_COMMON
 	libCamera
 	libPicker
 	libFurniture
+	libBuilding
 	libScene
 	libOSGQTViewer
 	libProduct
@@ -83,6 +86,7 @@ SET(LIBS_COMMON
 	libAvatar
 	libAvatarManager
 	libAnimationEditor
+	libDatabase
 )
 
 SET(SRCS

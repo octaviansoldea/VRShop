@@ -30,7 +30,7 @@ namespace VR {
 			QLineEdit * apLineEdit_ProductSettings_Price,
 			QLineEdit * apLineEdit_ProductSettings_Quantity,
 
-			osg::ref_ptr<ProductManager> apProductMgr,
+			ProductManager * apProductMgr,
 			PickAndDragHandlerShopEditor * apPickAndDragHandlerShopEditor
 		);	//End of constructor
 
@@ -59,7 +59,7 @@ namespace VR {
 		QLineEdit * m_pLineEdit_ProductSettings_Price;
 		QLineEdit * m_pLineEdit_ProductSettings_Quantity;
 
-		osg::ref_ptr<ProductManager> m_pProductMgr;
+		ProductManager * m_pProductMgr;
 		Product * m_pProduct;
 
 		PickAndDragHandlerShopEditor * m_pPickAndDragHandlerShopEditor;

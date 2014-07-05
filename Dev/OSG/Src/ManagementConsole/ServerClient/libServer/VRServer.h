@@ -11,8 +11,9 @@ namespace VR	{
 		Server(QObject *parent=0);
 		~Server();
 
+		bool init();
+
 	private:
-		void init();
 		virtual void incomingConnection(qintptr handle);
 
 	private slots:

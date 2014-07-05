@@ -4,7 +4,7 @@ SET(CMAKE_DEBUG_POSTFIX "D")
 
 SUBDIRS(
   DatabaseNetworkManager
-  GeneralMngt
+  Administrator
   Cashier
   Product
   Agent

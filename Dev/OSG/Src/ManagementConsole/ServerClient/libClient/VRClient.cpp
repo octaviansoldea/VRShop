@@ -149,3 +149,22 @@ void Client::slotDisconnected()	{
 }
 
 //---------------------------------------------------------------------------
+
+void Client::slotNewUserRequest()	{
+	slotTryToConnect();
+	if (m_TcpSocket.state() == QAbstractSocket::ConnectedState)	{
+
+		QByteArray block;
+		QDataStream out(&block, QIODevice::WriteOnly);
+		out.setVersion(QDataStream::Qt_4_8);
+	
+		out << quint64(0) << quint8('S');
+
+		/*
+			PATTERN:	quint64(0) - size
+						quint8('S') - Scene
+		*/
+
+		sendRequest(block);
+	}
+}

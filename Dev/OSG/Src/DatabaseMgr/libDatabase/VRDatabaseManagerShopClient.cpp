@@ -68,32 +68,32 @@ list<string> DatabaseManagerShopClient::getListOfObjects(const string & astrScen
 
 vector<string> DatabaseManagerShopClient::getObjectData(string & strSceneObject)	{
 	vector<string> vecstrResult;
-	vector<string> & vecstrSceneObject = splitString(strSceneObject,";");
+	vector<string> vecstrSceneObject = splitString(strSceneObject,";");
 		
-	const int & nObjectID = stoi(vecstrSceneObject[0]);
-	string & strClassName = vecstrSceneObject[1];
-	string & strObjectName = vecstrSceneObject[2];
+	const int nObjectID = stoi(vecstrSceneObject[0]);
+	string strClassName = vecstrSceneObject[1];
+	string strObjectName = vecstrSceneObject[2];
 
 	//Get data of the parent and add it to the result vector
-	string & strSqlQuery = 
+	string strSqlQuery = 
 		"SELECT * FROM " + strClassName + " WHERE ObjectName = '" + strObjectName + "'";
-	list<string> & lststrElements = executeAndGetResult(strSqlQuery);
+	list<string> lststrElements = executeAndGetResult(strSqlQuery);
 	vecstrResult.push_back(lststrElements.front());
 
 	//Get types of the parent's children
 	strSqlQuery = 
 		"SELECT DrawableClassName, DrawableName FROM SceneObjectDrawable WHERE SceneObjectID = '" + vecstrSceneObject[0] + "'";
-	list<string> & lststrSceneObjectElements = executeAndGetResult(strSqlQuery);
+	list<string> lststrSceneObjectElements = executeAndGetResult(strSqlQuery);
 
 
 	//Get data of the parent's children
 	list<string>::iterator itt = lststrSceneObjectElements.begin();
 	for (itt; itt != lststrSceneObjectElements.end(); itt++)	{
-		vector<string> & vecstrDrawable = splitString(*itt,";");
+		vector<string> vecstrDrawable = splitString(*itt,";");
 
 		strSqlQuery = 
 			"SELECT * FROM " + vecstrDrawable[0] + " WHERE ObjectName = '" + vecstrDrawable[1] + "'";
-		list<string> & lststrSceneObjectElements = executeAndGetResult(strSqlQuery);
+		list<string> lststrSceneObjectElements = executeAndGetResult(strSqlQuery);
 		vecstrResult.push_back("  " + lststrSceneObjectElements.front());
 	}
 

@@ -36,6 +36,7 @@ namespace VR	{
 		void slotDisconnected();
 
 	public slots:
+		void slotNewUserRequest();
 		void slotTryToConnect();
 		void close();
 	};

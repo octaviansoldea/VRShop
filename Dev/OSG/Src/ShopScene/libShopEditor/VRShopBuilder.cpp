@@ -176,8 +176,10 @@ void ShopBuilder::readDB()	{
 //----------------------------------------------------------------------
 
 void ShopBuilder::readDB(const string & astrDBFileName)	{
+	m_strDBFileName = astrDBFileName;
+
 	//Before creating new file, check if any still opened.
-	if (getCurrentFileName().c_str() || m_pScene->getNumChildren() > 3)	{
+	if (getCurrentFileName().c_str() == "" || m_pScene->getNumChildren() > 3)	{
 		QMessageBox msgBox;
 		string strText = "Changes to the current file will be lost if not saved. \n\nDo you want to save them?";
 		msgBox.setText(strText.c_str());
@@ -212,7 +214,7 @@ void ShopBuilder::readDB(const string & astrDBFileName)	{
 		string & strClassName = it->substr(nFindPos1+1,nFindPos2-nFindPos1-1);
 
 		pAO = AbstractObject::createInstance(strClassName);
-		vector<string> & vecstrObjectData = dbMgr.getObjectData(*it);
+		vector<string> vecstrObjectData = dbMgr.getObjectData(*it);
 
 		pAO->initFromSQLData(vecstrObjectData);
 
@@ -280,8 +282,11 @@ void ShopBuilder::saveDB(const string & astrDBFileName)	{
 	dbMgr.insertScene(strSceneName);
 
 	int nI;
-	for (nI=3; nI<nSize; nI++)	{
+	for (nI=0; nI<nSize; nI++)	{
 		pAO = dynamic_cast<AbstractObject*>(m_pScene->getChild(nI));
+
+		if (pAO == 0 || pAO->className() == "Grid")
+			continue;
 
 		//Call DB here
 		vector<string> vecstrData;

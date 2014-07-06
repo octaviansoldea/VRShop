@@ -69,6 +69,9 @@ void ClientConnection::processRequest(QByteArray & data)	{
 	string & strRequest = qstrRequest.toStdString();
 	bool bRes=false;
 
+	if (nType == 'S')	{
+	}
+
 	//Access appropriate database
 	DatabaseNetworkManager DBNetworkManager;
 	bRes = DBNetworkManager.databaseRequest(nType,strRequest);

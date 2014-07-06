@@ -142,12 +142,12 @@ void Plate3D::initFromSQLData(const string & astrSQLData)	{
 //----------------------------------------------------------------------
 
 void Plate3D::initFromSQLData(vector<string> & avecstrSQLData)	{
-	vector <string> & arrstrPlateParams = avecstrSQLData;
+	vector <string> arrstrPlateParams = splitString(avecstrSQLData[0],";");
 
 	Plate3DParams plate3DParams;
 
-	vector <string> arrstrMatrix = splitString(arrstrPlateParams[2],"_");
-	vector <string> arrstrColor = splitString(arrstrPlateParams[3],"_");
+	vector <string> arrstrMatrix = splitString(arrstrPlateParams[3],"_");
+	vector <string> arrstrColor = splitString(arrstrPlateParams[4],"_");
 
 	int nI;
 	vector < float > arrflMatrix;
@@ -173,7 +173,7 @@ void Plate3D::initFromSQLData(vector<string> & avecstrSQLData)	{
 	plate3DParams.m_flAngleXZ = arrflMatrix[7];
 	plate3DParams.m_flAngleXY = arrflMatrix[8];
 
-	plate3DParams.m_strFileNameTexture = arrstrPlateParams[4];
+	plate3DParams.m_strFileNameTexture = arrstrPlateParams[5];
 
 	init(plate3DParams);
 }

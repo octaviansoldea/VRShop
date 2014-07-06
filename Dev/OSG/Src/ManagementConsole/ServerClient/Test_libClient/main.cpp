@@ -24,7 +24,7 @@ int main(int argc, char * argv[])	{
 	QPushButton * m_pPushButtonEnter = new QPushButton("Enter");
 	QPushButton * m_pPushButtonClose = new QPushButton("Close");
 	
-	QObject::connect(m_pPushButtonEnter, SIGNAL(clicked()), &client, SLOT(slotTryToConnect()));
+	QObject::connect(m_pPushButtonEnter, SIGNAL(clicked()), &client, SLOT(slotNewUserRequest()));
 	QObject::connect(m_pPushButtonClose, SIGNAL(clicked()), &client, SLOT(close()));
 	
 	QHBoxLayout *buttonLayout = new QHBoxLayout;

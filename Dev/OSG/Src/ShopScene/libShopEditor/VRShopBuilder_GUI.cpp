@@ -197,16 +197,17 @@ void ShopBuilder_GUI::slotSaveDB() {
 //---------------------------------------------------------------------------------------
 
 void ShopBuilder_GUI::slotSaveAsDB()	{
-	QString qstrFileName = saveDialog("*.db");
-	if(isAtEndOfString(qstrFileName.toStdString(), ".db") == false)	{
-		QMessageBox msgBox;
-		msgBox.setText(qstrFileName + "Save");
-		msgBox.setStandardButtons(QMessageBox::Ok);
-		msgBox.setWindowTitle("Error window");
-		int nRes = msgBox.exec();
-		return;
-	}
-	m_pShopBuilder->saveDB(qstrFileName.toStdString());
+	m_pShopBuilder->saveAsDB();
+	//QString qstrFileName = saveDialog("*.db");
+	//if(isAtEndOfString(qstrFileName.toStdString(), ".db") == false)	{
+	//	QMessageBox msgBox;
+	//	msgBox.setText(qstrFileName + "Save");
+	//	msgBox.setStandardButtons(QMessageBox::Ok);
+	//	msgBox.setWindowTitle("Error window");
+	//	int nRes = msgBox.exec();
+	//	return;
+	//}
+	//m_pShopBuilder->saveDB(qstrFileName.toStdString());
 }
 
 //---------------------------------------------------------------------------------------

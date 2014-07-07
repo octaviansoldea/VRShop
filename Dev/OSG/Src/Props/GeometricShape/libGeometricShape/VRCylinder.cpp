@@ -35,6 +35,8 @@ VR::Cylinder::Cylinder(const CylinderParams & aCylinderParams) : Prism(aCylinder
 //----------------------------------------------------------
 
 VR::Cylinder::Cylinder(const VR::Cylinder& cyl,const CopyOp& copyop) : Prism(cyl,copyop)	{
+	m_pUntransformedPolyhedron = new UntransformedPolyhedron();
+
 	CylinderParams acp;
 	cyl.getParams(acp);
 	init(acp);

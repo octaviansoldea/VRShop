@@ -72,8 +72,6 @@ void Container::init(const ContainerParams & aContainerParams)	{
 	
 	Matrix & containerMatrix = calculateMatrix();
 	setMatrix(containerMatrix);
-
-	setName("Container");
 }
 
 //-----------------------------------------------------------------------
@@ -91,9 +89,9 @@ string Container::getSQLCommand() const {
 	strContainerParams += to_string((long double)containerParams.m_flLenY) + "_";
 	strContainerParams += to_string((long double)containerParams.m_flLenZ) + "_";
 
-	strContainerParams += to_string((long double)containerParams.m_flAngleXY) + "_";
+	strContainerParams += to_string((long double)containerParams.m_flAngleYZ) + "_";
 	strContainerParams += to_string((long double)containerParams.m_flAngleXZ) + "_";
-	strContainerParams += to_string((long double)containerParams.m_flAngleYZ);
+	strContainerParams += to_string((long double)containerParams.m_flAngleXY);
 
 	string strSQLCommand = "INSERT INTO EquipmentItem (EquipmentItemName, EquipmentItemParams, EquipmentID) "
 		"VALUES ('Container', '" + strContainerParams + "', (SELECT EquipmentID FROM Equipment WHERE EquipmentName = 'Furniture'));";
@@ -131,9 +129,9 @@ void Container::initFromSQLData(const string & astrSQLData)	{
 	containerParams.m_flLenY = arrflMatrix[4];
 	containerParams.m_flLenZ = arrflMatrix[5];
 
-	containerParams.m_flAngleXY = arrflMatrix[6];
+	containerParams.m_flAngleYZ = arrflMatrix[6];
 	containerParams.m_flAngleXZ = arrflMatrix[7];
-	containerParams.m_flAngleYZ = arrflMatrix[8];
+	containerParams.m_flAngleXY = arrflMatrix[8];
 
 	for (auto it = arrstrSQLData.begin()+1; it != arrstrSQLData.end()-1; it++)	{
 		Plate3DParams plate3DParams;

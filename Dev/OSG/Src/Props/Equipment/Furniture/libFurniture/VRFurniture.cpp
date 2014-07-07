@@ -156,9 +156,9 @@ void Furniture::initFromSQLData(vector<string> & avecstrSQLData)	{
 			fP.m_flLenY = stof(arrstrFurnitureParams[4]);
 			fP.m_flLenZ = stof(arrstrFurnitureParams[5]);
 
-			fP.m_flAngleXY = stof(arrstrFurnitureParams[6]);
+			fP.m_flAngleYZ = stof(arrstrFurnitureParams[6]);
 			fP.m_flAngleXZ = stof(arrstrFurnitureParams[7]);
-			fP.m_flAngleYZ = stof(arrstrFurnitureParams[8]);
+			fP.m_flAngleXY = stof(arrstrFurnitureParams[8]);
 
 			setParams(fP);
 			Matrix & furnitureMatrix = calculateMatrix();

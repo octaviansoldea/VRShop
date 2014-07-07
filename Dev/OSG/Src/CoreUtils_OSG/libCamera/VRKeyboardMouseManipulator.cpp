@@ -116,7 +116,7 @@ bool KeyboardMouseManipulator::keyDown(const osgGA::GUIEventAdapter &ea, osgGA::
 
 	if (nResKey == osgGA::GUIEventAdapter::KEY_Up)	{
 		if(m_bCtrl)	{ //Move forward
-			m_dbForwardFactor = 0.01 * (m_bShift ? (m_dbDefaultMoveSpeed*=1.1) : m_dbDefaultMoveSpeed);
+			m_dbForwardFactor = 0.5 * (m_bShift ? (m_dbDefaultMoveSpeed*=1.1) : m_dbDefaultMoveSpeed);
 
 			Vec3d prevCenter, prevEye, prevUp;
 			getTransformation(prevEye, prevCenter, prevUp);
@@ -140,7 +140,7 @@ bool KeyboardMouseManipulator::keyDown(const osgGA::GUIEventAdapter &ea, osgGA::
 
 	if (nResKey == osgGA::GUIEventAdapter::KEY_Down)	{
 		if(m_bCtrl)	{ //Move backwards
-			m_dbForwardFactor = 0.01 * (m_bShift ? (m_dbDefaultMoveSpeed*=1.1) : m_dbDefaultMoveSpeed);
+			m_dbForwardFactor = 0.5 * (m_bShift ? (m_dbDefaultMoveSpeed*=1.1) : m_dbDefaultMoveSpeed);
 
 			Vec3d prevCenter, prevEye, prevUp;
 			getTransformation(prevEye, prevCenter, prevUp);

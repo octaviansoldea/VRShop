@@ -11,6 +11,7 @@ InsertNewItem_GUI::InsertNewItem_GUI() {
 	connect(m_pToolButtonClose, SIGNAL(clicked()), this, SLOT(close()));
 	connect(m_pPushButtonCancel, SIGNAL(clicked()), this, SLOT(close()));
 	connect(m_pPushButtonInsert, SIGNAL(clicked()), this, SLOT(slotInsertNewItem()));
+	connect(m_pPushButtonReadFile, SIGNAL(clicked()), this, SLOT(slotInsertfromFile()));
 	connect(m_pListWidgetGroup, SIGNAL(itemClicked(QListWidgetItem *)), this, SLOT(slotDisplayWidgetItems(QListWidgetItem *)));
 	connect(m_pListWidgetItem, SIGNAL(itemDoubleClicked(QListWidgetItem *)), this, SLOT(slotInsertNewItem()));
 }
@@ -49,4 +50,9 @@ void InsertNewItem_GUI::slotInsertNewItem()	{
 	QString qstrSelectedItem = m_pListWidgetItem->currentItem()->text();
 	
 	emit signalNewItemRequested(qstrSelectedItem);
+}
+
+//----------------------------------------------------------------------
+
+void InsertNewItem_GUI::slotInsertfromFile()	{
 }

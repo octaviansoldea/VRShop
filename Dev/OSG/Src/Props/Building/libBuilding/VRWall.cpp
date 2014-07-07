@@ -35,15 +35,16 @@ void Wall::createWall()	{
 	//Left side
 	Plate3DParams p3DP;
 	p3DP.m_flLenX = 0.2;
-	p3DP.m_flLenY = 20.0;
+	p3DP.m_flLenY = 51.0;
 	p3DP.m_flLenZ = 5.0;
+	p3DP.m_flPosX = -25.5;
 	p3DP.m_strFileNameTexture = "../../../Resources/Textures/WallYellow.bmp";
 
 	ref_ptr<Plate3D> pPlateLeft = new Plate3D(p3DP);
 	addChild(pPlateLeft);
 
 	//Right side
-	p3DP.m_flPosX = 50.0;
+	p3DP.m_flPosX = 25.5;
 	p3DP.m_strFileNameTexture = "../../../Resources/Textures/WallBlue.bmp";
 
 	ref_ptr<Plate3D> pPlateRight = new Plate3D(p3DP);
@@ -51,25 +52,25 @@ void Wall::createWall()	{
 
 
 	//Left-front side
-	p3DP.m_flLenX = 3.0;
+	p3DP.m_flLenX = 10.0;
 	p3DP.m_flLenY = 0.2;
 	p3DP.m_flLenZ = 5.0;
-	p3DP.m_flPosX = 1.5;
-	p3DP.m_flPosY = -10.0;
+	p3DP.m_flPosX = -20.5;
+	p3DP.m_flPosY = -25.5;
 	ref_ptr<Plate3D> pPlateLeftFront = new Plate3D(p3DP);
 	addChild(pPlateLeftFront);
 
 
 	//Right-front side
-	p3DP.m_flPosX = 48.5;
-	p3DP.m_flPosY = -10.0;
+	p3DP.m_flPosX = 20.5;
+	p3DP.m_flPosY = -25.5;
 	ref_ptr<Plate3D> pPlateRightFront = new Plate3D(p3DP);
 	addChild(pPlateRightFront);
 
 	//Back side
-	p3DP.m_flLenX = 50.0;
-	p3DP.m_flPosX = 25.0;
-	p3DP.m_flPosY = 10.0;
+	p3DP.m_flLenX = 51.0;
+	p3DP.m_flPosX = 0.0;
+	p3DP.m_flPosY = 25.5;
 	p3DP.m_strFileNameTexture = "../../../Resources/Textures/WallLightGreen.bmp";
 	ref_ptr<Plate3D> pPlateBack = new Plate3D(p3DP);
 	addChild(pPlateBack);

@@ -80,9 +80,9 @@ string Cupboard::getSQLCommand() const {
 	strCupboardParams += to_string((long double)cupboardParams.m_flLenY) + "_";
 	strCupboardParams += to_string((long double)cupboardParams.m_flLenZ) + "_";
 
-	strCupboardParams += to_string((long double)cupboardParams.m_flAngleXY) + "_";
+	strCupboardParams += to_string((long double)cupboardParams.m_flAngleYZ) + "_";
 	strCupboardParams += to_string((long double)cupboardParams.m_flAngleXZ) + "_";
-	strCupboardParams += to_string((long double)cupboardParams.m_flAngleYZ);
+	strCupboardParams += to_string((long double)cupboardParams.m_flAngleXY);
 
 	string strSQLCommand = "INSERT INTO EquipmentItem (EquipmentItemName, EquipmentItemParams, EquipmentID) "
 		"VALUES ('Cupboard', '" + strCupboardParams + "', (SELECT EquipmentID FROM Equipment WHERE EquipmentName = 'Furniture'));";
@@ -119,9 +119,9 @@ void Cupboard::initFromSQLData(const string & astrSQLData)	{
 	cupboardParams.m_flLenY = arrflMatrix[4];
 	cupboardParams.m_flLenZ = arrflMatrix[5];
 
-	cupboardParams.m_flAngleXY = arrflMatrix[6];
+	cupboardParams.m_flAngleYZ = arrflMatrix[6];
 	cupboardParams.m_flAngleXZ = arrflMatrix[7];
-	cupboardParams.m_flAngleYZ = arrflMatrix[8];
+	cupboardParams.m_flAngleXY = arrflMatrix[8];
 
 	ref_ptr < AbstractGeomShape > pAbstractGeomShape;
 	for (auto it = arrstrSQLData.begin()+1; it != arrstrSQLData.end()-1; it++)	{

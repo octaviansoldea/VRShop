@@ -366,7 +366,7 @@ QPushButton:hover {
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="m_pPushButtonModify">
+       <widget class="QPushButton" name="m_pPushButtonReadFile">
         <property name="styleSheet">
          <string notr="true">QPushButton {
 	min-height: 20px;
@@ -383,7 +383,7 @@ QPushButton:hover {
 }</string>
         </property>
         <property name="text">
-         <string>Modify Settings</string>
+         <string>Read from File</string>
         </property>
        </widget>
       </item>

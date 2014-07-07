@@ -51,8 +51,6 @@ void CustomFurniture::init(const CustomFurnitureParams & aCustomFurnitureParams)
 
 	Matrix & customFurnitureMatrix = calculateMatrix();
 	setMatrix(customFurnitureMatrix);
-
-	setName("CustomFurniture");
 }
 
 //-----------------------------------------------------------------------

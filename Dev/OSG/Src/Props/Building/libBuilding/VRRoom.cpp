@@ -23,8 +23,8 @@ Node * Room::createRoom()	{
 	FloorParams fP;
 	fP.m_strTextureName = 
 		"../../../Resources/Textures/CeramicTileFloor.bmp";
-	fP.m_vec3dBottomLeft = Vec3d(0,-10,0);
-	fP.m_vec3dUpRight = Vec3d(50,10,0);
+	fP.m_vec3dBottomLeft = Vec3d(-25.5,-25.5,0);
+	fP.m_vec3dUpRight = Vec3d(25.5,25.5,0);
 	Floor floor(fP);
 	ref_ptr<Node> pNode = floor.createFloor();
 	pMt->addChild(pNode);

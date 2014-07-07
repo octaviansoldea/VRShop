@@ -38,6 +38,9 @@ Plate3D::Plate3D(const Plate3DParams & aPlate3DParams) : AbstractGeomShape(aPlat
 //-----------------------------------------------------------------------
 
 Plate3D::Plate3D(const Plate3D& p3D,const CopyOp& copyop) : AbstractGeomShape(p3D,copyop)	{
+	m_pUntransformedPlate3D = new UntransformedPlate3D();
+	this->addChild(m_pUntransformedPlate3D);
+
 	Plate3DParams p3DP;
 	p3D.getParams(p3DP);
 	setParams(p3DP);
@@ -142,12 +145,12 @@ void Plate3D::initFromSQLData(const string & astrSQLData)	{
 //----------------------------------------------------------------------
 
 void Plate3D::initFromSQLData(vector<string> & avecstrSQLData)	{
-	vector <string> arrstrPlateParams = splitString(avecstrSQLData[0],";");
+	vector <string> arrstrPlateParams = avecstrSQLData;
 
 	Plate3DParams plate3DParams;
 
-	vector <string> arrstrMatrix = splitString(arrstrPlateParams[3],"_");
-	vector <string> arrstrColor = splitString(arrstrPlateParams[4],"_");
+	vector <string> arrstrMatrix = splitString(arrstrPlateParams[2],"_");
+	vector <string> arrstrColor = splitString(arrstrPlateParams[3],"_");
 
 	int nI;
 	vector < float > arrflMatrix;
@@ -173,7 +176,7 @@ void Plate3D::initFromSQLData(vector<string> & avecstrSQLData)	{
 	plate3DParams.m_flAngleXZ = arrflMatrix[7];
 	plate3DParams.m_flAngleXY = arrflMatrix[8];
 
-	plate3DParams.m_strFileNameTexture = arrstrPlateParams[5];
+	plate3DParams.m_strFileNameTexture = arrstrPlateParams[4];
 
 	init(plate3DParams);
 }

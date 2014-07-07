@@ -81,7 +81,8 @@ m_strDBFileName("")	{
 	m_pScene->addChild(pAxes);
 
 	//Insert Scene objects
-	m_strDBFileName = "../../../Databases/Shop.db";
+	m_strDBFileName = "../../../Databases/ShopDemo.db";
+
 	createClientScene(m_strDBFileName.toStdString());
 
 	//A pointer to products sent to the scene
@@ -111,7 +112,6 @@ m_strDBFileName("")	{
 	//Insert room
 	Room room;
 	ref_ptr<MatrixTransform> pMt = dynamic_cast<MatrixTransform*>(room.createRoom());
-	pMt->setMatrix(osg::Matrix::translate(-20,0,0));
 	m_pScene->addChild(pMt.get());
 }
 
@@ -158,13 +158,13 @@ bool ShoppingPlace::createClientScene(const string & astrSceneFileName)	{
 	list<string>::iterator it = lststrSceneObjects.begin();
 	for (it; it != lststrSceneObjects.end(); it++)	{
 		//Find class and object names
-		const int & nFindPos1 = it->find_first_of(";");
-		const int & nFindPos2 = it->find_first_of(";", nFindPos1+1);
-		string & strClassName = it->substr(nFindPos1+1,nFindPos2-nFindPos1-1);
+		const int nFindPos1 = it->find_first_of(";");
+		const int nFindPos2 = it->find_first_of(";", nFindPos1+1);
+		string strClassName = it->substr(nFindPos1+1,nFindPos2-nFindPos1-1);
 
 		pAO = AbstractObject::createInstance(strClassName);
 		pAO->setDataVariance(Object::STATIC);
-		vector<string> & vecstrObjectData = db.getObjectData(*it);
+		vector<string> vecstrObjectData = db.getObjectData(*it);
 
 		pAO->initFromSQLData(vecstrObjectData);
 		pAO->setIsTargetPick(false);

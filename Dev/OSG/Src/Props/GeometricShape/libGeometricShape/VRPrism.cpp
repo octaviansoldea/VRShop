@@ -38,6 +38,9 @@ Prism::Prism(const PrismParams & aPrismParams) : AbstractGeomShape(aPrismParams)
 //----------------------------------------------------------
 
 Prism::Prism(const Prism& pr,const CopyOp& copyop) : AbstractGeomShape(pr,copyop)	{
+	m_pUntransformedPolyhedron = new UntransformedPolyhedron();
+	addChild(m_pUntransformedPolyhedron);
+
 	PrismParams prP;
 	pr.getParams(prP);
 	init(prP);

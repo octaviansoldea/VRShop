@@ -90,6 +90,15 @@ void DatabaseManagerShopEditor::systemOfTables(vector<pair<string,string>> & ave
 	avecStmtPairs.push_back(make_pair("Container", strSQLFormat));
 
 	strSQLFormat =
+		"CREATE TABLE IF NOT EXISTS CustomFurniture ( \
+		CustomFurnitureID INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, \
+		ClassName TEXT, \
+		ObjectName TEXT, \
+		CustomFurnitureParams TEXT, \
+		SceneObjectNameObject TEXT);";
+	avecStmtPairs.push_back(make_pair("CustomFurniture", strSQLFormat));
+
+	strSQLFormat =
 		"CREATE TABLE IF NOT EXISTS Plate3D ( \
 		Plate3DID INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, \
 		ClassName TEXT, \
@@ -99,6 +108,17 @@ void DatabaseManagerShopEditor::systemOfTables(vector<pair<string,string>> & ave
 		Plate3DTexture TEXT, \
 		SceneObjectNameObject TEXT);";
 	avecStmtPairs.push_back(make_pair("Plate3D", strSQLFormat));
+
+	strSQLFormat =
+		"CREATE TABLE IF NOT EXISTS Cylinder ( \
+		CylinderID INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, \
+		ClassName TEXT, \
+		ObjectName TEXT, \
+		CylinderParams TEXT, \
+		CylinderColor TEXT, \
+		CylinderTexture TEXT, \
+		SceneObjectNameObject TEXT);";
+	avecStmtPairs.push_back(make_pair("Cylinder", strSQLFormat));
 }
 
 //-------------------------------------------------------------------------------

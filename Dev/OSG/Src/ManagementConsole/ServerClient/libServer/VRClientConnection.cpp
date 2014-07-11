@@ -9,6 +9,9 @@
 #include <sstream>
 #include <string>
 
+#include <QFile>
+
+#include "VRAgentManager.h"
 #include "VRDatabaseNetworkManager.h"
 
 #include "VRClientConnection.h"
@@ -66,10 +69,29 @@ void ClientConnection::processRequest(QByteArray & data)	{
 
 	//Initialize parameters
 	in >> nType >> qstrRequest;
-	string & strRequest = qstrRequest.toStdString();
+	string strRequest = qstrRequest.toStdString();
 	bool bRes=false;
 
 	if (nType == 'S')	{
+		QByteArray result;
+		QDataStream out(&result, QIODevice::WriteOnly);
+		out.setVersion(QDataStream::Qt_4_8);
+		out.setFloatingPointPrecision(QDataStream::SinglePrecision);
+
+		string strFileName = "C:/Projekti/VRShop/Dev/OSG/Databases/ShopDemo.db";
+		QFile file(strFileName.c_str());
+		if(!file.open(QIODevice::ReadOnly))	{
+			qDebug() << "Error file can't be opened!";
+			return;
+		}
+
+		QByteArray bytes = file.readAll();
+
+		
+		out << quint64(0) << nType << bytes;	//Size of the package
+
+		writeToClient(result);
+		return;
 	}
 
 	//Access appropriate database
@@ -79,12 +101,12 @@ void ClientConnection::processRequest(QByteArray & data)	{
 	QByteArray result;
 	QDataStream out(&result, QIODevice::WriteOnly);
 	out.setVersion(QDataStream::Qt_4_8);
-	out << quint64(0);	//Size of the package
+	out << quint64(0) << nType;	//Size of the package
 
 	int nBytesAvailable = out.device()->bytesAvailable();
 
 	if (bRes)	{
-		list<string> & lstResult = DBNetworkManager.getResult();
+		list<string> lstResult = DBNetworkManager.getResult();
 		list<string>::iterator it = lstResult.begin();
 		int nI;
 		string strResult;

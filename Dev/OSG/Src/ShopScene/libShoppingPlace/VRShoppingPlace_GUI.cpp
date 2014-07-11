@@ -28,11 +28,12 @@ using namespace std;
 
 //----------------------------------------------------------------------
 
-ShoppingPlace_GUI::ShoppingPlace_GUI()	{	
+ShoppingPlace_GUI::ShoppingPlace_GUI(string & astrFileName, std::string & astrAvatarName)	{	
 	setupUi(this);
 	setWindowTitle("Shop Client");
 
-	m_pShoppingPlace = new ShoppingPlace(m_pOSGQTWidget,m_pOSGQTWidgetMap);
+	m_pShoppingPlace = new ShoppingPlace(
+		m_pOSGQTWidget,m_pOSGQTWidgetMap,astrFileName,astrAvatarName);
 
 	KeyboardMouseManipulatorShopClient * pCameraManipulator = 
 		dynamic_cast<KeyboardMouseManipulatorShopClient *>(m_pOSGQTWidget->getCameraManipulator());
@@ -91,7 +92,6 @@ ShoppingPlace_GUI::~ShoppingPlace_GUI()	{
 	delete m_pAgentInterface;
 	delete m_pProductBasketInterface;
 	delete m_pCameraController;
-
 	delete m_pShoppingPlace;
 }
 

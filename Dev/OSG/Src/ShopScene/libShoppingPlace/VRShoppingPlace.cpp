@@ -9,6 +9,8 @@
 #include "VRProductManager.h"
 #include "VRAvatar.h"
 #include "VRAvatarManagerClient.h"
+#include "VRVisitor.h"
+#include "VRCustomer.h"
 
 #include "VRDatabaseManagerShopClient.h"
 
@@ -40,10 +42,13 @@ using namespace std;
 
 ShoppingPlace::ShoppingPlace(
 OSGQT_Widget * apOSGQTWidget,
-OSGQT_Widget * apOSGQTWidgetMap) :
+OSGQT_Widget * apOSGQTWidgetMap,
+string & astrShopScene,
+string & astrAvatarName) :
 m_pOSGQTWidget(apOSGQTWidget),
 m_pOSGQTWidgetMap(apOSGQTWidgetMap),
-m_strDBFileName("")	{	
+m_strDBFileName(astrShopScene),
+m_strAvatarName(astrAvatarName)	{	
 
 	//Define a scene as a group
 	m_pScene = new Scene();
@@ -81,37 +86,36 @@ m_strDBFileName("")	{
 	m_pScene->addChild(pAxes);
 
 	//Insert Scene objects
-	m_strDBFileName = "../../../Databases/ShopDemo.db";
-
-	createClientScene(m_strDBFileName.toStdString());
+	createClientScene(m_strDBFileName);
 
 	//A pointer to products sent to the scene
 	m_pProductMgr = new ProductManager;
 	Node * pProductsRepresentation = m_pProductMgr->getProductsRepresentation();
 	m_pScene->addChild(pProductsRepresentation);
 
-//	insertProducts();
 
 	//Avatar
 	AvatarParams avatarParams;
 	avatarParams.m_pKeyboardMouseManipulatorShopClient = pKeyboardMouseManipulatorShopClient;
 	avatarParams.m_strAvatarFile = "../../../Resources/Models3D/avatarOut.osg";
-	avatarParams.m_strAvatarName = "avatar";
+	avatarParams.m_strAvatarName = m_strAvatarName;
 
-	ref_ptr<Avatar> pAvatar = new Avatar(&avatarParams);
-	m_pScene->addChild(pAvatar);
+	m_pAvatar = new Avatar(&avatarParams);
+	m_pScene->addChild(m_pAvatar);
 
-	pKeyboardMouseManipulatorShopClient->setCameraPosition2Object(pAvatar);
+	pKeyboardMouseManipulatorShopClient->setCameraPosition2Object(m_pAvatar);
+	
+	m_pAbstractUser = new Visitor(m_pAvatar);
 
 
 	//Other avatars
-	m_pAvatarMgr = new AvatarManagerClient(pAvatar);
+	m_pAvatarMgr = new AvatarManagerClient(m_pAvatar);
 	m_pScene->addChild(m_pAvatarMgr->getAvatars());
 
 
 	//Insert room
 	Room room;
-	ref_ptr<MatrixTransform> pMt = dynamic_cast<MatrixTransform*>(room.createRoom());
+	ref_ptr<MatrixTransform> pMt = dynamic_cast<MatrixTransform*>(room.createRoom().get());
 	m_pScene->addChild(pMt.get());
 }
 
@@ -120,6 +124,7 @@ m_strDBFileName("")	{
 ShoppingPlace::~ShoppingPlace() {
 	delete m_pProductMgr;
 	delete m_pAvatarMgr;
+	delete m_pAbstractUser;
 }
 
 //----------------------------------------------------------------------
@@ -146,7 +151,7 @@ bool ShoppingPlace::createClientScene(const string & astrSceneFileName)	{
 	m_strDBFileName = astrSceneFileName.c_str();
 
 	DatabaseManagerShopClientParams dbParams;
-	dbParams.m_qstrDBName = m_strDBFileName;
+	dbParams.m_qstrDBName = m_strDBFileName.c_str();
 
 	DatabaseManagerShopClient db(dbParams);
 
@@ -176,31 +181,3 @@ bool ShoppingPlace::createClientScene(const string & astrSceneFileName)	{
 }
 
 //----------------------------------------------------------------------
-
-void ShoppingPlace::insertProducts()	{
-	ref_ptr < AbstractObject > pAbstractObject = 
-		dynamic_cast<AbstractObject*>(AbstractObject::createInstance("Plate3D").get());
-	pAbstractObject->predefinedObject();
-
-	ProductParams pParams;
-	pParams.m_strProductName = "bla1 bla2 bla3 bla4 bla5 bla6 bla7 bla8";
-	pParams.m_flPricePerUnit = 0.85;
-	pParams.m_strManufacturerName = "Samsung Corp.";
-
-	Product * pProduct = new Product(pAbstractObject,pParams);
-	m_pProductMgr->addNewProduct(pProduct);
-
-
-//
-	pParams.m_strProductName = "bla1 bla2 bla3 bla4 bla5 bla6 bla7 bla8";
-	pParams.m_flPricePerUnit = 1.85;
-	pParams.m_strManufacturerName = "Nokia Corp.";
-
-	ref_ptr < AbstractObject > pAbstractObject1 = 
-		dynamic_cast<AbstractObject*>(AbstractObject::createInstance("Plate3D").get());
-	pAbstractObject1->predefinedObject();
-
-	Product * pProduct1 = new Product(pAbstractObject1,pParams);
-	m_pProductMgr->addNewProduct(pProduct1);
-
-}

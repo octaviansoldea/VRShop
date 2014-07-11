@@ -19,6 +19,7 @@ namespace VR {
 
 		const char* className() const;
 
+		void createAvatarDB();
 		std::string getAvatarsDataFromDB();
 		void updateAvatarData(const std::string & astrAvatarName, std::string & astrAvatarMatrix);
 

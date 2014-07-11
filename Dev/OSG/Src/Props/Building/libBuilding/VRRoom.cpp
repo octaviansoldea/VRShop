@@ -17,7 +17,7 @@ const char* Room::className() const	{
 
 //---------------------------------------------------
 
-Node * Room::createRoom()	{
+ref_ptr<Node> Room::createRoom()	{
 	ref_ptr<MatrixTransform> pMt = new MatrixTransform;
 
 	FloorParams fP;
@@ -34,5 +34,5 @@ Node * Room::createRoom()	{
 	pWall->createWall();
 	pMt->addChild(pWall);
 
-	return pMt.release();
+	return pMt.get();
 }

@@ -13,7 +13,6 @@ namespace VR {
 
 		const char* className() const;
 
-		bool newUserRequest();
 		void addUser(AbstractUser * apAbstractUser);
 		void removeUser(AbstractUser * apAbstractUser);
 		void updateUser(AbstractUser * apAbstractUser);

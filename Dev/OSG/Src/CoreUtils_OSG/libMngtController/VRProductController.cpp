@@ -101,8 +101,8 @@ void ProductController::slotProductMoreSettings()	{
 
 	//Only first parent is checked
 	int nParent = pAO->getParentalNodePaths().size()-1;
-	const string & strParentName = pAO->getParents()[nParent]->className();
-	if (strParentName == "ProductManager")	{
+	const string & strParentName = pAO->getParents()[nParent]->getName();
+	if (strParentName == "Products")	{
 		Product * pProduct = m_pProductMgr->getProduct(pAO);
 		m_pProductMgr->modifyProduct(pProduct);
 	} else {

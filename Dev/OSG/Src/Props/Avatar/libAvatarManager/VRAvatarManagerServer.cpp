@@ -14,6 +14,8 @@ AvatarManagerServer::AvatarManagerServer()	{
 	dbParams.m_qstrDBName = "../../../Databases/Avatar.db";
 
 	m_pDb = new DatabaseManager(dbParams);
+
+	createAvatarDB();
 }
 
 //------------------------------------------------------------------------------
@@ -26,6 +28,19 @@ AvatarManagerServer::~AvatarManagerServer()	{
 
 const char* AvatarManagerServer::className() const	{
 	return "AvatarManagerServer";
+}
+
+//------------------------------------------------------------------------------
+
+void AvatarManagerServer::createAvatarDB()	{
+	string strSQLFormat =
+		"CREATE TABLE IF NOT EXISTS Avatars ( \
+		AvatarID INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, \
+		AvatarName TEXT, \
+		AvatarMatrix TEXT, \
+		AvatarDateTime TEXT);";
+
+	m_pDb->execute(strSQLFormat);
 }
 
 //------------------------------------------------------------------------------
@@ -50,5 +65,5 @@ string AvatarManagerServer::getAvatarsDataFromDB()	{
 	list<string>::iterator it = m_pDb->executeAndGetResult(strQuery).begin();
 	string & strProductData = *it;
 
-	return strResult;
+	return strProductData;
 }

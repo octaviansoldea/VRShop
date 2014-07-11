@@ -27,29 +27,39 @@ ELSE(Qt5_FOUND)
 ENDIF(Qt5_FOUND)
 
 
-SET(src
-	main.cpp
-)
-
 INCLUDE_DIRECTORIES(
 	${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libServer
 #	${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libClient
 	${CMAKE_SOURCE_DIR}/ManagementConsole/DatabaseNetworkManager/libDatabaseNetworkManager
+	${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgentManager
+	${CMAKE_SOURCE_DIR}/Props/Avatar/libAvatar
+	${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProduct
 	${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabase
 	${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
+	${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libTimer
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_QT
+
+	${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgent
+#	${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgent/View
 )
 
 ADD_EXECUTABLE(Test_libServer
-	main.cpp)
+	main.cpp
+)
 
 SET(LIBS_COMMON
+	libAvatar
 	libServer
 #	libClient
 	libDatabase
 	libDatabaseNetworkManager
+	libAgentManager
+	libProduct
+	libTimer
 	libCommon
 	libCommon_QT
+	Winmm
+	libAgent
 )
 
 IF(Qt5_FOUND)

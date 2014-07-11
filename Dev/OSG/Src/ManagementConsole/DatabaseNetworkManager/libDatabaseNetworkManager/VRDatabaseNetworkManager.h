@@ -6,6 +6,8 @@
 #include <list>
 #include <string>
 
+class Timer;
+
 namespace VR	{
 	class DatabaseNetworkManager : public QObject	{
 		Q_OBJECT
@@ -20,6 +22,7 @@ namespace VR	{
 
 	private:
 		std::list<std::string> m_lststrResult;
+		Timer * m_pTimer;
 	};
 }
 #endif //VR_DATABASE_NETWORK_MANAGER_H

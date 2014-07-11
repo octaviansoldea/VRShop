@@ -1,5 +1,5 @@
-#ifndef VR_ADMINISTRATOR_H
-#define VR_ADMINISTRATOR_H
+#ifndef VR_CENTRAL_CONTROL_H
+#define VR_CENTRAL_CONTROL_H
 
 #include "VRServer.h"
 #include "VRAgentManager.h"
@@ -9,16 +9,13 @@
 namespace VR	{
 	class Server_GUI;
 
-	class Administrator : public QObject	{
+	class CentralControl : public QObject	{
 		Q_OBJECT
 	public:
-		Administrator(QObject * parent=0);
-		~Administrator();
+		CentralControl(QObject * parent=0);
+		~CentralControl();
 
-		bool runServer();
 		void closeServer();
-
-		bool activateAgentManager();
 
 	private:
 		Server m_Server;
@@ -27,7 +24,7 @@ namespace VR	{
 		AgentManager * m_pAgentManager;
 
 	public slots:
-		void slotNewUser();
+		void slotNewUserRequest();
 	};
 }
-#endif //VR_ADMINISTRATOR_H
+#endif //VR_CENTRAL_CONTROL_H

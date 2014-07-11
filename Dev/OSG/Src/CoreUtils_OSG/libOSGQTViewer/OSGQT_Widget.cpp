@@ -20,16 +20,16 @@ OSGQT_Widget::OSGQT_Widget(QWidget * apQWidget, Qt::WindowFlags f) : QWidget(apQ
 	pTraits->height = height();
 	pTraits->doubleBuffer = true;
 
-	osgQt::GraphicsWindowQt* pGraphicsWindow = new osgQt::GraphicsWindowQt(pTraits.get());
+	osgQt::GraphicsWindowQt * pGraphicsWindow = new osgQt::GraphicsWindowQt(pTraits.get());
 
-//	QGridLayout* pLayout = new QGridLayout;
-//	pLayout->addWidget(pGraphicsWindow->getGraphWidget(), 0, 0);
 	QVBoxLayout* pLayout = new QVBoxLayout;
 	pLayout->addWidget(pGraphicsWindow->getGLWidget());
 	pLayout->setMargin(0);
 	setLayout(pLayout);
 
-	m_viewer.setThreadingModel(osgViewer::Viewer::SingleThreaded);
+	m_viewer.setThreadingModel(osgViewer::Viewer::
+//		SingleThreaded);
+		AutomaticSelection);
 
 	osg::Camera* pCamera = m_viewer.getCamera();
 	pCamera->setClearColor(osg::Vec4(0.53725,0.53725,0.53725,1));
@@ -41,6 +41,11 @@ OSGQT_Widget::OSGQT_Widget(QWidget * apQWidget, Qt::WindowFlags f) : QWidget(apQ
 		1.0, 10000.0 );
 
 	startTimer(40);
+}
+
+//--------------------------------------------------------------------
+
+OSGQT_Widget::~OSGQT_Widget()	{
 }
 
 //--------------------------------------------------------------------

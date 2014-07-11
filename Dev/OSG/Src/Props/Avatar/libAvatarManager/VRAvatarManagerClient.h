@@ -15,6 +15,7 @@
 
 #include <QObject>
 
+#include <QTimer>
 
 namespace VR {
 	class Avatar;
@@ -39,17 +40,22 @@ namespace VR {
 	private:
 		Client * m_pClient;
 		Avatar * m_pAvatar;	//Client's avatar
+		QTimer m_QTimerAvatarSelf;
 
 		osg::ref_ptr<osg::Group> m_grpAvatars;	//A group of others' avatars in the client's scene
-		osg::ref_ptr<VR::AnimationPath> m_pAP;
-
+		QTimer m_QTimerAvatarsOthers;
 
 		int m_nMaxNrOfAvatars;
 
+		void registerAvatar();
+
 	private slots:
-		void slotSendAvatarData2Server();
-		void slotRequestAvatarsDataFromServer();
+		void slotSendAvatarData();
+		void slotRequestAvatarsData();
 		void slotReceiveAvatarsData();
+
+	private:
+		std::vector<std::string> m_vecAvatarNames;
 	};
 }
 #endif //VR_AVATAR_MANAGER_CLIENT_H

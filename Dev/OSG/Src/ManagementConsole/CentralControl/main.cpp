@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string>
 
-#include "VRAdministrator.h"
+#include "VRCentralControl.h"
 
 using namespace std;
 using namespace VR;
@@ -11,12 +11,7 @@ using namespace VR;
 int main(int argc, char * argv[])	{
 	QApplication app(argc,argv);
 
-	Administrator admin;
-	bool bRes = admin.runServer();
-
-	if (!bRes)	{	//Server not running
-		return(0);
-	}
+	CentralControl centralControl;
 
 	int nRes = app.exec();
 	return nRes;

@@ -2,7 +2,6 @@
 #define VR_VISITOR_H
 
 #include "VRBasket.h"
-
 #include "VRAbstractUser.h"
 
 /*	
@@ -17,7 +16,8 @@ namespace VR	{
 
 	class Visitor : public AbstractUser {
 	public:
-		Visitor();
+		Visitor(Avatar * apAvatar = 0);
+		virtual ~Visitor();
 
 		virtual const char* className() const;
 

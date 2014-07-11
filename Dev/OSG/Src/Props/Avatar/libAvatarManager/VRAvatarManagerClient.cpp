@@ -18,41 +18,26 @@ using namespace VR;
 using namespace std;
 using namespace osg;
 
-//#define DEBUG_AVATARS 
 
 //==============================================================================
 
 AvatarManagerClient::AvatarManagerClient(Avatar * apAvatar) :
 m_pAvatar(apAvatar)	{
 	m_pClient = new Client;
+
 	m_grpAvatars = new Group();
-	m_pAP = new VR::AnimationPath();
+	//m_pAP = new VR::AnimationPath();
 
-	//Client reports position of his avatar
-	//QTimer *pTimer1 = new QTimer(this);
-	//connect(pTimer1, SIGNAL(timeout()), this, SLOT(slotSendAvatarData2Server()));
-	//pTimer1->start(10000);
+	//Register Avatar to DB
+	registerAvatar();
 
-	//Client gets matrices of avatars in his view
-	/*QTimer *pTimer2 = new QTimer(this);
-	connect(pTimer2, SIGNAL(timeout()), this, SLOT(slotRequestAvatarsDataFromServer()));
-	pTimer2->start(10000);*/
+	connect(&m_QTimerAvatarSelf, SIGNAL(timeout()), this, SLOT(slotSendAvatarData()));
+	m_QTimerAvatarSelf.start(100);
+
+	connect(&m_QTimerAvatarsOthers, SIGNAL(timeout()), this, SLOT(slotRequestAvatarsData()));
+	m_QTimerAvatarsOthers.start(850);
 
 	connect(m_pClient,SIGNAL(done()),this,SLOT(slotReceiveAvatarsData()));
-
-#ifdef DEBUG_AVATARS
-
-	AvatarParams avatarParams;
-	avatarParams.m_strAvatarFile = "../../../Resources/Models3D/avatarOut.osg";
-	avatarParams.m_strAvatarName = "avatar_1";
-	ref_ptr<Avatar> pAvatar1 = new Avatar(&avatarParams);
-	addAvatar(pAvatar1);
-
-	avatarParams.m_strAvatarName = "avatar_2";
-	ref_ptr<Avatar> pAvatar2 = new Avatar(&avatarParams);
-	addAvatar(pAvatar2);
-
-#endif //DEBUG_AVATARS
 }
 
 //------------------------------------------------------------------------------
@@ -69,7 +54,30 @@ const char* AvatarManagerClient::className() const	{
 
 //------------------------------------------------------------------------------
 
-void AvatarManagerClient::slotSendAvatarData2Server()	{
+void AvatarManagerClient::registerAvatar()	{
+	//Here establish client - server communication
+	QByteArray block;
+	QDataStream out(&block, QIODevice::WriteOnly);
+	out.setVersion(QDataStream::Qt_4_8);
+
+	QString qstrAvatarName = QString(m_pAvatar->getName().c_str());
+	out << quint64(0) << quint8('R') << qstrAvatarName;
+
+	/*
+		PATTERN:	
+			quint64(0)  - size
+			quint8('P') - product
+			quint8('A') - avatar
+			quint8('R') - register avatar
+			request
+	*/
+
+	m_pClient->sendRequest(block);
+}
+
+//------------------------------------------------------------------------------
+
+void AvatarManagerClient::slotSendAvatarData()	{
 	//Here establish client - server communication
 	QByteArray block;
 	QDataStream out(&block, QIODevice::WriteOnly);
@@ -101,7 +109,7 @@ void AvatarManagerClient::slotSendAvatarData2Server()	{
 
 //------------------------------------------------------------------------------
 
-void AvatarManagerClient::slotRequestAvatarsDataFromServer()	{
+void AvatarManagerClient::slotRequestAvatarsData()	{
 	//Here establish client - server communication
 	QByteArray block;
 	QDataStream out(&block, QIODevice::WriteOnly);
@@ -132,21 +140,7 @@ void AvatarManagerClient::slotRequestAvatarsDataFromServer()	{
 //------------------------------------------------------------------------------
 
 void AvatarManagerClient::slotReceiveAvatarsData()	{
-	QDataStream out(&m_pClient->getTcpSocket());
-	out.setVersion(QDataStream::Qt_4_8);
-	QTcpSocket * pSocket = static_cast<QTcpSocket*>(out.device());
-
-	int nBytesAvaliable = pSocket->bytesAvailable();
-
-	QString qstrDataFromServer;
-	out >> qstrDataFromServer;
-
-	string & strDataFromServer = qstrDataFromServer.toStdString();
-
-	if (strDataFromServer.empty())	{
-		cout << "No data was returned." << endl;
-		return;
-	}
+	string strDataFromServer = m_pClient->m_qstrAvatarsData.toStdString();
 
 	vector<string> & lststrAvatarNameData = splitString(strDataFromServer,";");
 	int nSize = lststrAvatarNameData.size() / 2;
@@ -162,22 +156,51 @@ void AvatarManagerClient::slotReceiveAvatarsData()	{
 
 	BasicOSGOperations BOO;
 	
-	nI = 0;
 	vector<pair<string,string>>::iterator it = vecpairAvatarData.begin();
 	for (it; it != vecpairAvatarData.end(); it++, nI++)	{
+		if ((*it).first == m_pAvatar->getName())
+			continue;
+
 		vector<string> & vecflAvatarData = splitString((*it).second, " ");
-		const Matrixd & mtrxNewMatrixAvatar = BOO.vecstr2Matrix(vecflAvatarData);		
+		Matrixd mtrxNewMatrixAvatar = BOO.vecstr2Matrix(vecflAvatarData);		
+		
+		nI = 0;
+		vector<string>::iterator itt;
+		itt = find(m_vecAvatarNames.begin(), m_vecAvatarNames.end(), (*it).first);
+		if(itt != m_vecAvatarNames.end())	{
+			nI = itt - m_vecAvatarNames.begin();
+			Avatar * pAvatar = dynamic_cast<Avatar*>(m_grpAvatars->getChild(nI));
+			Matrixd mtrxOldMatrixAvatar = pAvatar->getMatrix();
 
-		Avatar * pAvatar = dynamic_cast<Avatar*>(m_grpAvatars->getChild(nI));
-		const Matrixd & mtrxOldMatrixAvatar = pAvatar->getMatrix();
+			//Both matrices set and attached to the animation
+			pAvatar->setAnimation(mtrxOldMatrixAvatar, mtrxNewMatrixAvatar);
+		} else {
+			//Avatar
+			AvatarParams avatarParams;
+			avatarParams.m_strAvatarFile = "../../../Resources/Models3D/avatarOut.osg";
+			avatarParams.m_strAvatarName = (*it).first;
 
-		//VR::AnimationPath * pAP = dynamic_cast<VR::AnimationPath*>(m_pAP->createAnimationPath(mtrxOldMatrixAvatar, mtrxNewMatrixAvatar));
-		//pAvatar->addAnimationPath(pAP);
+			ref_ptr<Avatar> ppAvatar = new Avatar(&avatarParams);
+			ppAvatar->setMatrix(mtrxNewMatrixAvatar);
+			addAvatar(ppAvatar);
+		}
 
-		//pAvatar->setMatrix(mtrxNewMatrixAvatar);
+		//if (m_grpAvatars->getNumChildren() == 0)	{
+		//	//Avatar
+		//	AvatarParams avatarParams;
+		//	avatarParams.m_strAvatarFile = "../../../Resources/Models3D/avatarOut.osg";
+		//	avatarParams.m_strAvatarName = (*it).first;
 
-		//Both matrices set and attached to the animation
-		pAvatar->setAnimation(mtrxOldMatrixAvatar, mtrxNewMatrixAvatar);
+		//	ref_ptr<Avatar> ppAvatar = new Avatar(&avatarParams);
+		//	ppAvatar->setMatrix(mtrxNewMatrixAvatar);
+		//	addAvatar(ppAvatar);
+		//} else {
+		//	Avatar * pAvatar = dynamic_cast<Avatar*>(m_grpAvatars->getChild(0));
+		//	Matrixd mtrxOldMatrixAvatar = pAvatar->getMatrix();
+
+		//	//Both matrices set and attached to the animation
+		//	pAvatar->setAnimation(mtrxOldMatrixAvatar, mtrxNewMatrixAvatar);
+		//}
 	}
 }
 
@@ -189,6 +212,8 @@ void AvatarManagerClient::addAvatar(Avatar * apAvatar)	{
 	}
 
 	m_grpAvatars->addChild(apAvatar);
+	
+	m_vecAvatarNames.push_back(apAvatar->getName());
 }
 
 //------------------------------------------------------------------------------
@@ -205,6 +230,7 @@ void AvatarManagerClient::removeAvatar(Avatar * apAvatar)	{
 
 void AvatarManagerClient::clearAll()	{
 	m_grpAvatars->removeChildren(0,m_grpAvatars->getNumChildren());
+	m_vecAvatarNames.clear();
 }
 
 //------------------------------------------------------------------------------

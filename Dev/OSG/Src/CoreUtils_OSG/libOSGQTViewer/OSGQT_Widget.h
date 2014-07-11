@@ -12,6 +12,7 @@ namespace VR	{
 
 	public:
 		OSGQT_Widget(QWidget * apQWidget = 0, Qt::WindowFlags f = false);
+		~OSGQT_Widget();
 
 		virtual void paintEvent(QPaintEvent* event);
 		virtual void timerEvent(QTimerEvent* event);

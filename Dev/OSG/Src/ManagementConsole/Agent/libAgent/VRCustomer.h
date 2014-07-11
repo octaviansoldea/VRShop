@@ -9,8 +9,8 @@ namespace VR	{
 
 	class Customer : public Visitor {
 	public:
-		Customer();
-		~Customer();
+		Customer(osg::ref_ptr<Avatar> apAvatar);
+		virtual ~Customer();
 
 		virtual const char* className() const;
 

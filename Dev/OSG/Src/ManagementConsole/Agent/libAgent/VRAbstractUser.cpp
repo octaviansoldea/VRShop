@@ -11,15 +11,14 @@ using namespace std;
 
 //==============================================================================
 
-AbstractUser::AbstractUser()	{
-
-//	m_pAvatar = new Avatar();
+AbstractUser::AbstractUser(Avatar *apAvatar)	{
+	m_pAvatar = apAvatar;
 }
 
 //------------------------------------------------------------------------------
 
 AbstractUser::~AbstractUser()	{
-	delete m_pAvatar;
+
 }
 
 //------------------------------------------------------------------------------
@@ -38,4 +37,9 @@ Avatar * AbstractUser::getAvatar()	{
 
 Basket * AbstractUser::getBasket()	{
 	return &m_Basket;
+}
+
+//------------------------------------------------------------------------------
+
+void AbstractUser::userActivity()	{
 }

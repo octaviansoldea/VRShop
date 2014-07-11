@@ -41,7 +41,7 @@ m_nHandlePosition(0),m_nItemsVisible(5), m_pBasket(0)	{
 	connect(m_pPushButtonBasketBack,SIGNAL(clicked(bool)),this,SLOT(slotBasketBack()));
 	connect(m_pPushButtonBasketForward,SIGNAL(clicked(bool)),this,SLOT(slotBasketForward()));
 
-	connect(m_pBasket,SIGNAL(signalBasketChanged(const int &,bool)),this,SLOT(slotUpdateItemView(const int &,bool)));
+//	connect(m_pBasket,SIGNAL(signalBasketChanged(const int &,bool)),this,SLOT(slotUpdateItemView(const int &,bool)));
 
 	m_pProductBasketInterfaceController = new ProductBasketInterfaceController(m_pBasket);
 

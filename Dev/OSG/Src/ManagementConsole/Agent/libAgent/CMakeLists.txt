@@ -59,7 +59,7 @@ SET(SRCS
 	VRAdministrator.h VRAdministrator.cpp
 	VRCustomerSupportOfficer.h VRCustomerSupportOfficer.cpp
 	VRAgentInterface.h VRAgentInterface.cpp
-	${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgent/View/VRSignUp_GUI.h ${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgent/View/VRSignUp_GUI.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/View/VRSignUp_GUI.h ${CMAKE_CURRENT_SOURCE_DIR}/View/VRSignUp_GUI.cpp
 )
 
 #Library to be later used in the main

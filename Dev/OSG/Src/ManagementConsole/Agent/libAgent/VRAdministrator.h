@@ -7,7 +7,8 @@ namespace VR {
 	//NOT TO BE IMPLEMENTED IN THE FIRST VERSION
 	class Administrator : public AbstractUser	{
 	public:
-		Administrator();
+		Administrator(Avatar * apAvatar = 0);
+		virtual ~Administrator();
 
 		virtual const char* className() const;
 

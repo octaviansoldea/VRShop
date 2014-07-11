@@ -1,3 +1,6 @@
+#include "VRAbstractUser.h"
+#include "VRVisitor.h"
+
 #include "VRAgentManager.h"
 
 #include <string>
@@ -13,24 +16,18 @@ AgentManager::AgentManager()	{
 //------------------------------------------------------------------------------
 
 AgentManager::~AgentManager()	{
+	list<AbstractUser*>::iterator it = m_lstUsers.begin();
+	for(it; it != m_lstUsers.end(); ++it)	{
+		AbstractUser * pAU = (AbstractUser*)(*it);
+		delete pAU;
+		pAU = 0;
+	}
 }
 
 //------------------------------------------------------------------------------
 
 const char* AgentManager::className() const	{
 	return "AgentManager";
-}
-
-//------------------------------------------------------------------------------
-
-bool AgentManager::newUserRequest()	{
-	bool bRes = false;
-
-	//If all steps pass, return true and proceed
-
-	// else send to the server a denial which is passed to the user
-
-	return bRes;
 }
 
 //------------------------------------------------------------------------------
@@ -47,6 +44,11 @@ void AgentManager::addUser(AbstractUser * apAbstractUser)	{
 
 void AgentManager::removeUser(AbstractUser * apAbstractUser)	{
 	m_lstUsers.remove(apAbstractUser);
+}
+
+//------------------------------------------------------------------------------
+
+void AgentManager::updateUser(AbstractUser * apAbstractUser)	{
 }
 
 //------------------------------------------------------------------------------

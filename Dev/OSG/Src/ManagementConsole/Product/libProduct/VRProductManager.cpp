@@ -105,9 +105,14 @@ void ProductManager::addNewProduct()	{
 	if (pProduct != 0)	{
 		m_lstProducts.push_back(pProduct);
 
+		float flScaleX = m_pProductSettings_GUI->m_pDoubleSpinBoxSizeX->value();
+		float flScaleY = m_pProductSettings_GUI->m_pDoubleSpinBoxSizeY->value();
+		float flScaleZ = m_pProductSettings_GUI->m_pDoubleSpinBoxSizeZ->value();
+
 		//Fill osg group whose pointer is sent to the scene 
 		//with the 3D representation of the product
 		ref_ptr<AbstractObject> prefProduct = pProduct->getRepresentation();
+		prefProduct->setScaling(flScaleX, flScaleY, flScaleZ);
 		m_pgrpProductsRepresentation->addChild(prefProduct);
 	}
 }

@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 
+#include <string>
+
 #include "ui_VRShoppingPlace_GUI.h"
 
 namespace VR	{
@@ -19,7 +21,7 @@ namespace VR	{
 	class ShoppingPlace_GUI : public QMainWindow, public Ui::MainWindow	{
 		Q_OBJECT
 	public:
-		ShoppingPlace_GUI();
+		ShoppingPlace_GUI(std::string & astrFileName, std::string & astrAvatarName);
 		~ShoppingPlace_GUI();
 
 	private:

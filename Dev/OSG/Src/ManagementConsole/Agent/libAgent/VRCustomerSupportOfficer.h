@@ -6,8 +6,8 @@
 namespace VR {
 	class CustomerSupportOfficer : public AbstractUser {
 	public:
-		CustomerSupportOfficer();
-
+		CustomerSupportOfficer(Avatar * apAvatar = 0);
+		virtual ~CustomerSupportOfficer();
 		virtual const char* className() const;
 	};
 }

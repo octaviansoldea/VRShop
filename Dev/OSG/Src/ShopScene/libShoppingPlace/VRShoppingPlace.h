@@ -7,6 +7,8 @@
 namespace VR	{
 	class OSGQT_Widget;
 	class Scene;
+	class Avatar;
+	class AbstractUser;
 	class ProductManager;
 	class AvatarManagerClient;
 	class Grid;
@@ -15,7 +17,9 @@ namespace VR	{
 	struct ShoppingPlace {
 		ShoppingPlace(
 			OSGQT_Widget * apOSGQTWidget,
-			OSGQT_Widget * apOSGQTWidgetMap);
+			OSGQT_Widget * apOSGQTWidgetMap,
+			std::string & astrShopScene,
+			std::string & astrAvatarName);
 
 		~ShoppingPlace();
 
@@ -30,6 +34,8 @@ namespace VR	{
 
 		OSGQT_Widget * m_pOSGQTWidget;
 		OSGQT_Widget * m_pOSGQTWidgetMap;
+		std::string m_strDBFileName;
+		std::string m_strAvatarName;
 
 		osg::ref_ptr<PickAndDragHandlerShopClient> m_pPickAndDragHandlerShopClient;
 
@@ -37,9 +43,8 @@ namespace VR	{
 		
 		ProductManager * m_pProductMgr;
 
-		QString m_strDBFileName;
-
-		void insertProducts();
+		AbstractUser * m_pAbstractUser;
+		osg::ref_ptr<Avatar> m_pAvatar;
 
 		AvatarManagerClient * m_pAvatarMgr;
 	};

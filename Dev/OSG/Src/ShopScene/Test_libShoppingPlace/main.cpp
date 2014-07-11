@@ -1,14 +1,30 @@
 #include <QApplication>
 #include <QMessageBox>
+#include <QHostAddress>
+
+#include <QTimer>
+
+#include "BasicStringDefinitions.h"
+
+#include "VRClient.h"
 
 #include "VRShoppingPlace_GUI.h"
 
 using namespace VR;
+using namespace std;
 
 int main(int argc, char *argv[])	{
 	QApplication app(argc, argv);
 
-	ShoppingPlace_GUI widget;
+	//Client client;
+	//client.slotNewUserRequest();
+
+	string strClientName = tostr(time(NULL));
+		//client.getTcpSocket().peerAddress().toString().toStdString();
+	string strDBFileName =
+		"../../../Databases/ShopDemo.db";
+
+	ShoppingPlace_GUI widget(strDBFileName,strClientName);
 
 	widget.show();
 

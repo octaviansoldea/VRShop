@@ -7,20 +7,25 @@
 #include <vector>
 #include <string>
 
+#include "Timer.h"
+
 #include "VRDatabaseNetworkManager.h"
 
 using namespace VR;
 using namespace std;
 
+#define DEBUG_AVATARS 0
+
 //----------------------------------------------------------------------
 
 DatabaseNetworkManager::DatabaseNetworkManager(QObject *apParent) : QObject(apParent)	{
-
+	m_pTimer = Timer::CreateInstance(TimerBase::REAL_TIME);
 }
 
 //----------------------------------------------------------------------
 
 DatabaseNetworkManager::~DatabaseNetworkManager()	{
+	delete m_pTimer;
 }
 
 //=====================================================================
@@ -39,22 +44,31 @@ bool DatabaseNetworkManager::databaseRequest(int anOperationType, string & astrR
 	if (anOperationType == 'P')	{	//'P' - product
 		strSqlQuery = "SELECT * FROM Products WHERE ProductName = '" + astrRequest + "'";
 		strDatabaseName = "Products";
+	} else if (anOperationType == 'R')	{	//'R' - Register avatar
+		strSqlQuery = "INSERT INTO Avatar(AvatarName) VALUES ('" + astrRequest + "')";
+		strDatabaseName = "Avatars";
 	} else if (anOperationType == 'A')	{	//'A' - avatar
 		vector<string> vecstrSplitString = splitString(astrRequest,";");
-		strSqlQuery = "UPDATE Avatars" 
+		strSqlQuery = "UPDATE Avatar" 
 			" SET AvatarMatrix = '" + vecstrSplitString[1] + 
-			"' WHERE AvatarName = '" + vecstrSplitString[0] + "'";
-
+//			"', AvatarDateTime = CURRENT_TIMESTAMP" + 
+			"', AvatarDateTime = '" + tostr(m_pTimer->getCurrTimeInMiliSeconds()) + "'"+ 
+			" WHERE AvatarName = '" + vecstrSplitString[0] + "'";
 		strDatabaseName = "Avatars";
 	} else if (anOperationType == 'a')	{	//'a' - other avatars
-		vector<string> & vecstrSplitString = splitString(astrRequest,";");
+
+#if DEBUG_AVATARS
+		vector<string> vecstrSplitString = splitString(astrRequest,";");
 		int nI;
 		string strSqlCondition = "'" + vecstrSplitString[0] + "'";
 		for (nI=1;nI<vecstrSplitString.size();nI++)	{
 			strSqlCondition += " OR AvatarName = '" + vecstrSplitString[nI] + "'";
 		}
+		strSqlQuery = "SELECT * FROM Avatar WHERE AvatarName = " + strSqlCondition;
+#else
+		strSqlQuery = "SELECT AvatarName, AvatarMatrix FROM Avatar";
+#endif //DEBUG_AVATAR
 
-		strSqlQuery = "SELECT * FROM Avatars WHERE AvatarName = " + strSqlCondition;
 		strDatabaseName = "Avatars";
 	}
 

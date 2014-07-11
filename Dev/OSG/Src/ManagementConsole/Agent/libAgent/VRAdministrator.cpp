@@ -2,11 +2,16 @@
 
 using namespace VR;
 
-Administrator::Administrator() : AbstractUser()	{
+Administrator::Administrator(Avatar * apAvatar) : AbstractUser(apAvatar)	{
 }
 
 //------------------------------------------------------------------------------
 
 const char* Administrator::className() const	{
 	return "Administrator";
+}
+
+//------------------------------------------------------------------------------
+
+Administrator::~Administrator() {
 }

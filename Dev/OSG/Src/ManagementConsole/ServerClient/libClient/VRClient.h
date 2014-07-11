@@ -3,6 +3,7 @@
 
 #include <QTcpSocket>
 #include <QObject>
+#include <QString>
 
 #include <QDataStream>
 
@@ -25,6 +26,7 @@ namespace VR	{
 		quint64 m_unPackageSize;
 
 		QByteArray m_ReceivedData;
+		void processReceivedData(QByteArray & data);
 
 	signals:
 		void done();
@@ -39,6 +41,9 @@ namespace VR	{
 		void slotNewUserRequest();
 		void slotTryToConnect();
 		void close();
+
+	public:
+		QString m_qstrAvatarsData;
 	};
 }
 #endif //VR_CLIENT_H

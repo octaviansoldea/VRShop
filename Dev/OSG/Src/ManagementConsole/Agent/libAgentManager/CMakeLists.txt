@@ -44,6 +44,7 @@ INCLUDE_DIRECTORIES(
     ${CMAKE_SOURCE_DIR}/Props/Avatar/libAvatar
 
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgent
+#	${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgent/View
 )
 
 #Define sources to be later added into the library

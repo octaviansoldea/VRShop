@@ -198,14 +198,15 @@ list<string> DatabaseManager::executeAndGetResult(const string & astrQuery)	{
 	const string * pstrQuery = &astrQuery;
 
 	QSqlDatabase * pDb = &QSqlDatabase::database(*pqstrConnName);
+
 	QSqlQuery query(*pDb);
 
 	bool bRes = query.exec(pstrQuery->c_str());
 
 	if (!bRes)	{
 		return list<string>();
-	} 
-
+	}
+	
 	int nI;
 	list<string> lststrResult;
 	string strResult;

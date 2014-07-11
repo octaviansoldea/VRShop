@@ -2,18 +2,20 @@
 #define VR_ABSTRACT_USER_H
 
 #include <string>
+#include <osg/ref_ptr>
+
+
 #include "VRBasket.h"
 
 namespace VR {
-	class Basket;
-	class Product;
 	class Avatar;
+	class Product;
 
 	class PickAndDragHandlerShopClient;
 
 	class AbstractUser	{
 	public:
-		AbstractUser();
+		AbstractUser(Avatar * apAvatar = 0);
 		virtual ~AbstractUser() = 0;
 		virtual const char* className() const;
 
@@ -34,7 +36,7 @@ namespace VR {
 		void sendMessage(std::string & astrMessage);
 		void receiveMessage(std::string & astrMessage);
 
-		Avatar * m_pAvatar;
+		osg::ref_ptr<Avatar> m_pAvatar;
 		Basket m_Basket;
 
 		PickAndDragHandlerShopClient * m_pPickAndDragHandlerShopClient;

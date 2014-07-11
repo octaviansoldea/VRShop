@@ -13,7 +13,7 @@ namespace VR	{
 
 		virtual const char* className() const;
 	
-		osg::Node * createRoom();
+		osg::ref_ptr<osg::Node> createRoom();
 	};
 }
 

@@ -3,10 +3,11 @@
 #include "VRCustomer.h"
 
 using namespace VR;
+using namespace osg;
 
 //==============================================================================
 
-Customer::Customer()	{
+Customer::Customer(ref_ptr<Avatar> apAvatar) : Visitor(apAvatar)	{
 
 }
 

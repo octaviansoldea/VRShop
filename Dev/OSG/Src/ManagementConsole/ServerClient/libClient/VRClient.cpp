@@ -17,7 +17,10 @@ using namespace std;
 //----------------------------------------------------------------------
 
 Client::Client(QObject *apParent) : QObject(apParent)	{
+	slotTryToConnect();
 
+//	connect(this, SIGNAL(done()), this, SLOT(slotProcessReceivedData()));
+	
 	//m_TcpSocket.connectToHost(QHostAddress::LocalHost, 20000);
 
 	//connect(&m_TcpSocket, SIGNAL(readyRead()), this, SLOT(slotReadReceivedData()));
@@ -92,20 +95,27 @@ void Client::slotReadReceivedData()	{
 	QDataStream in(&m_TcpSocket);
 	in.setVersion(QDataStream::Qt_4_8);
 	
-	quint64 unBytesAvailable = in.device()->bytesAvailable();
-	std::cout << "Client (slotReadReceivedData()): " << unBytesAvailable << std::endl;
+	int nBytesAvailable = m_TcpSocket.bytesAvailable();
+
+	std::cout << "Client (slotReadReceivedData()): " << nBytesAvailable << std::endl;
+
+	QByteArray qData;
 
 	if (m_unPackageSize == 0) {
-		if (unBytesAvailable < sizeof(quint64))
+		if (m_TcpSocket.bytesAvailable() < sizeof(quint64))
 			return;
 		in >> m_unPackageSize;
 	}
 
-	if (unBytesAvailable < m_unPackageSize)
+	if (m_TcpSocket.bytesAvailable() < m_unPackageSize)
 		return;
 
-	emit done();
+	qData = in.device()->readAll();
+
 	m_unPackageSize=0;
+	processReceivedData(qData);
+
+//	emit done();
 }
 
 //---------------------------------------------------------------------
@@ -151,20 +161,62 @@ void Client::slotDisconnected()	{
 //---------------------------------------------------------------------------
 
 void Client::slotNewUserRequest()	{
-	slotTryToConnect();
-	if (m_TcpSocket.state() == QAbstractSocket::ConnectedState)	{
-
-		QByteArray block;
-		QDataStream out(&block, QIODevice::WriteOnly);
-		out.setVersion(QDataStream::Qt_4_8);
+	QByteArray block;
+	QDataStream out(&block, QIODevice::WriteOnly);
+	out.setVersion(QDataStream::Qt_4_8);
 	
-		out << quint64(0) << quint8('S');
+	out << quint64(0) << quint8('S');
 
-		/*
-			PATTERN:	quint64(0) - size
-						quint8('S') - Scene
-		*/
+	/*
+		PATTERN:	quint64(0) - size
+					quint8('S') - Scene
+	*/
 
-		sendRequest(block);
+	sendRequest(block);
+}
+
+//---------------------------------------------------------------------------
+
+void Client::processReceivedData(QByteArray & data)	{
+	QDataStream out(&data,QIODevice::ReadOnly);
+	out.setVersion(QDataStream::Qt_4_8);
+
+	int nBytesAvaliable = out.device()->bytesAvailable();
+
+	quint8 nType;	//Type of the data received
+	out >> nType;
+
+	if (nType == 'S')	{
+		quint32 nFileSize;
+		out >> nFileSize;	//QByteArray always starts with a "quint32" additional value
+
+		QString qstrFileName="C:/Matej/Scene.db";
+		QFile file(qstrFileName);
+		
+		if(!(file.open(QIODevice::Append)))	{
+			qDebug("File cannot be opened.");
+		} else {
+			QByteArray read = out.device()->readAll();
+
+			file.write(read);
+			file.close();
+		}
+	} else if (nType == 'A')	{
+		//This part relates to the single avatar matrix updating.
+		//Don't have to anything yet
+	} else if (nType == 'a')	{
+		//If here, pass information to the "AvatarManagerClient"
+/*		QString qstrAvatarsData;
+		out >> qstrAvatarsData;
+
+		cout << "=========================================================" << endl;
+		cout << qstrAvatarsData.toStdString() << endl;
+		cout << "=========================================================" << endl;
+*/
+		
+		out >> m_qstrAvatarsData;
+		emit done();
 	}
 }
+
+//---------------------------------------------------------------------------

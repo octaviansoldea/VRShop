@@ -42,7 +42,7 @@ bool DatabaseNetworkManager::databaseRequest(int anOperationType, string & astrR
 
 	string strType;
 	if (anOperationType == 'P')	{	//'P' - product
-		strSqlQuery = "SELECT * FROM Products WHERE ProductName = '" + astrRequest + "'";
+		strSqlQuery = "SELECT * FROM Product WHERE ProductName = '" + astrRequest + "'";
 		strDatabaseName = "Products";
 	} else if (anOperationType == 'R')	{	//'R' - Register avatar
 		strSqlQuery = "INSERT INTO Avatar(AvatarName) VALUES ('" + astrRequest + "')";

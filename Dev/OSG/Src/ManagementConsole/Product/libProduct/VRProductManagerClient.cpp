@@ -16,8 +16,10 @@ using namespace osg;
 
 //-----------------------------------------------------------------------------
 
-ProductManagerClient::ProductManagerClient() : m_pClient(0), m_pProduct(0)	{
+ProductManagerClient::ProductManagerClient()	{
 	m_pClient = new Client;
+	m_pProduct = new ProductShopClient;
+
 	connect(m_pClient,SIGNAL(done()),this,SLOT(slotReceiveProductParams()));
 }
 
@@ -63,20 +65,9 @@ void ProductManagerClient::requestProductParams(const std::string & astrProductN
 //-----------------------------------------------------------------------------
 
 void ProductManagerClient::slotReceiveProductParams()	{
-	QDataStream out(&m_pClient->getTcpSocket());
-	out.setVersion(QDataStream::Qt_4_8);
-	QTcpSocket * pSocket = static_cast<QTcpSocket*>(out.device());
+	string strDataFromServer = m_pClient->m_qstrAvatarsData.toStdString();
 
-	int nBytesAvaliable = pSocket->bytesAvailable();
-
-	QString qstrTest;
-	out >> qstrTest;
-
-	string strTest = qstrTest.toStdString();
-	std::cout << "strTest: " << strTest << endl;
-
-	m_pProduct = new ProductShopClient;
-	m_pProduct->initFromSQLData(strTest);
+	m_pProduct->initFromSQLData(strDataFromServer);
 
 	emit signalProductInitialized();
 }

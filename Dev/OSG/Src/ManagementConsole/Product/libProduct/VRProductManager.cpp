@@ -31,6 +31,13 @@ ProductManager::~ProductManager()	{
 		delete m_pProductSettings_GUI;
 	if (m_pRemoveProduct_GUI != 0)
 		delete m_pRemoveProduct_GUI;
+
+	list<Product*>::iterator it = m_lstProducts.begin();
+	for(it; it != m_lstProducts.end(); ++it)	{
+		Product * pProduct = (Product*)(*it);
+		delete pProduct;
+		pProduct = 0;
+	}
 }
 
 //==============================================================================
@@ -227,3 +234,4 @@ void ProductManager::productViewed(const Product & aProduct /*, User & aUser*/)	
 
 }
 
+//-----------------------------------------------------------------------------

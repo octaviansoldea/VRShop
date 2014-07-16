@@ -20,7 +20,7 @@ namespace VR	{
 		void removeProduct(ProductShopClient * apProduct);
 		void modifyQuantity(ProductShopClient * apProduct);
 
-		float calculateBasketValue() const;
+		float calculateBasketValue();
 
 		Basket * getBasket() const;
 
@@ -32,7 +32,7 @@ namespace VR	{
 		void signalBasketChanged(const int & anIndex, bool abIsAdded);		//Emit this signal when adding a product
 
 	private:
-		std::list<ProductShopClient*> m_lstBasket;
+		std::list<ProductShopClient*> m_lstProducts;
 	};
 }
 #endif //VR_BASKET_H

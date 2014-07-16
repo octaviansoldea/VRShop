@@ -110,22 +110,12 @@ void ProductBasketInterfaceItem_GUI::init(ProductShopClient * apProductShopClien
 	ProductShopClientParams productParams;
 	m_pProductShopClient->getParams(productParams);
 
+	
+
 	string strPrice = productParams.m_strCurrency + " " + tostr(productParams.m_flPricePerUnit).c_str();
 	m_pLabelBasketProductPrice->setText(strPrice.c_str());
 
-	string arrstrTest[] = {"../../../Resources/Textures/samsung-galaxy-s5.bmp",
-							"../../../Resources/Textures/Banana.bmp",
-							"../../../Resources/Textures/blueFlowers.bmp",
-							"../../../Resources/Textures/Avatar_1.bmp",
-								"../../../Resources/Textures/brick.bmp",
-								"../../../Resources/Textures/facade.bmp",
-								"../../../Resources/Textures/facade1.bmp",
-								"../../../Resources/Textures/facade2.bmp"};
-
-	srand(time(0));
-	int nI = rand() % 7;
-
-	string strTextureFile = arrstrTest[nI];
+	string strTextureFile = productParams.m_strTextureFile;
 
 	QImageReader image(strTextureFile.c_str());
 	QPixmap imageBasic(QPixmap::fromImageReader(&image));

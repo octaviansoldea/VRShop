@@ -216,6 +216,10 @@ void Client::processReceivedData(QByteArray & data)	{
 		
 		out >> m_qstrAvatarsData;
 		emit done();
+	} else if (nType == 'P')	{
+		string strTest = m_qstrAvatarsData.toStdString();
+		out >> m_qstrAvatarsData;
+		emit done();
 	}
 }
 

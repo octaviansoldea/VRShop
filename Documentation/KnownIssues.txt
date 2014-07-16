@@ -3,9 +3,9 @@ threads
 cashier
 clone of objects - check if all object params are copied
 
-product-basket integration
-	click product - insert into basket
-	remove from basket
+product-basket integration				- DONE
+	click product - insert into basket	- DONE
+	remove from basket					- DONE
 	
 
 

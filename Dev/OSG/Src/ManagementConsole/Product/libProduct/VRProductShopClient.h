@@ -24,6 +24,7 @@ namespace VR	{
 		float m_flPricePerUnit;
 		float m_flTaxRate;
 		std::string m_strCurrency;
+		std::string m_strTextureFile;
 
 		ProductShopClientParams();
 	};
@@ -39,6 +40,7 @@ namespace VR	{
 
 		void setQuantity(float aflQuantity);
 		float getQuantity() const;
+		float getPrice() const;
 
 		virtual void initFromSQLData(std::string & astrSQLData);
 

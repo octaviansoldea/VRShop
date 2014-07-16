@@ -11,6 +11,7 @@
 #include "VRAvatarManagerClient.h"
 #include "VRVisitor.h"
 #include "VRCustomer.h"
+#include "VRBasket.h"
 
 #include "VRDatabaseManagerShopClient.h"
 
@@ -107,7 +108,7 @@ m_strAvatarName(astrAvatarName)	{
 	pKeyboardMouseManipulatorShopClient->setCameraPosition2Object(m_pAvatar);
 	
 	m_pAbstractUser = new Visitor(m_pAvatar);
-
+	m_pBasket = m_pAbstractUser->getBasket();
 
 	//Other avatars
 	m_pAvatarMgr = new AvatarManagerClient(m_pAvatar);
@@ -124,7 +125,9 @@ m_strAvatarName(astrAvatarName)	{
 	Lighting lighting;
 	ref_ptr<LightSource> pNode = lighting.createLights();
     m_pScene->addChild(pNode);
-	
+
+	//Insert products
+	insertProducts();
 }
 
 //----------------------------------------------------------------------
@@ -189,3 +192,32 @@ bool ShoppingPlace::createClientScene(const string & astrSceneFileName)	{
 }
 
 //----------------------------------------------------------------------
+
+Basket * ShoppingPlace::getBasket()	{
+	return m_pBasket;
+}
+
+//----------------------------------------------------------------------
+
+void ShoppingPlace::insertProducts()	{
+	ref_ptr < AbstractObject > pAbstractObject = 
+		dynamic_cast<AbstractObject*>(AbstractObject::createInstance("Plate3D").get());
+	pAbstractObject->setTexture("C:/Matej/Images/Banana.bmp");
+	pAbstractObject->predefinedObject();
+	vector<float> vecColor;
+	vecColor.push_back(1);
+	vecColor.push_back(1);
+	vecColor.push_back(1);
+	vecColor.push_back(1);
+	pAbstractObject->setColor(vecColor);
+	pAbstractObject->setIsTargetPick(true);
+
+	ProductParams pParams;
+	pParams.m_strProductName = "banana";
+	pParams.m_flPricePerUnit = 0.85;
+	pParams.m_strManufacturerName = "banana";
+
+	pAbstractObject->setName(pParams.m_strProductName);
+	Product * pProduct = new Product(pAbstractObject,pParams);
+	m_pProductMgr->addNewProduct(pProduct);
+}

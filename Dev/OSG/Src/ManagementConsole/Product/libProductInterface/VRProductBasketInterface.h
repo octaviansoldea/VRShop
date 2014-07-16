@@ -25,12 +25,11 @@ namespace VR	{
 			QLabel * apLabelBasketCase,
 			QFrame * apFrameItemsBasket,
 			QPushButton * apPushButtonBasketBack,
-			QPushButton * apPushButtonBasketForward
+			QPushButton * apPushButtonBasketForward,
+			Basket * apBasket
 		);	//End of constructor
 
 		~ProductBasketInterface();
-
-		void setBasket(Basket * apBasket);
 
 	private:
 		QToolButton * m_pToolButtonMyBasket;
@@ -38,6 +37,7 @@ namespace VR	{
 		QFrame * m_pFrameItemsBasket;
 		QPushButton * m_pPushButtonBasketBack;
 		QPushButton * m_pPushButtonBasketForward;
+		Basket * m_pBasket;
 
 	private slots:
 		void slotMyBasket(bool abIndicator);
@@ -47,7 +47,6 @@ namespace VR	{
 		void slotUpdateItemView(const int & anIndex, bool abIsAdded);	//Called with the change of the basket size
 
 	private:
-		Basket * m_pBasket;
 		std::list<ProductBasketInterfaceItem_GUI*> m_lstProductItemGUI;
 
 		ProductBasketInterfaceController * m_pProductBasketInterfaceController;

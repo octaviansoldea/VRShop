@@ -67,8 +67,8 @@ bool PickAndDragHandlerShopClient::handle(const GUIEventAdapter& ea, GUIActionAd
 
 		//Only first parent is checked if it's a product or not
 		int nParent = pPickedObject->getParentalNodePaths().size();
-		const string & strParentName = pPickedObject->getParents()[0]->className();
-		if (strParentName == "ProductManager")	{
+		const string & strParentName = pPickedObject->getParents()[0]->getName();
+		if (strParentName == "Products")	{
 			emit signalProductPicked(pPickedObject);
 		} else {
 			//Picked object was not a product

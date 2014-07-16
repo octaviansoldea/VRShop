@@ -5,23 +5,21 @@
 using namespace VR;
 using namespace std;
 
-#define DEBUG_PURPOSES
 
 Basket::Basket() {
-#ifdef DEBUG_PURPOSES
-	int nI;
-	for (nI=0;nI<10;nI++) {
-		ProductShopClient * pProduct = new ProductShopClient;
-		pProduct->setQuantity(nI);
-		m_lstBasket.push_back(pProduct);
-	}
-#endif
 }
 
 //------------------------------------------------------------------------------
 
 Basket::~Basket() {
-	m_lstBasket.clear();
+	m_lstProducts.clear();
+
+	//list<ProductShopClient*>::iterator it = m_lstProducts.begin();
+	//for(it; it != m_lstProducts.end(); ++it)	{
+	//	ProductShopClient * pProduct = (ProductShopClient*)(*it);
+	//	delete pProduct;
+	//	pProduct = 0;
+	//}
 }
 
 //==============================================================================
@@ -33,13 +31,13 @@ const char* Basket::className() const {
 //------------------------------------------------------------------------------
 
 int Basket::count() const	{
-	return m_lstBasket.size();
+	return m_lstProducts.size();
 }
 
 //------------------------------------------------------------------------------
 
 ProductShopClient * Basket::getProduct(int anProductNumber)	{
-	list<VR::ProductShopClient*>::iterator it = m_lstBasket.begin();
+	list<VR::ProductShopClient*>::iterator it = m_lstProducts.begin();
 	advance(it,anProductNumber);
 
 	return (*it);
@@ -48,7 +46,7 @@ ProductShopClient * Basket::getProduct(int anProductNumber)	{
 //------------------------------------------------------------------------------
 
 void Basket::addProduct(ProductShopClient * apProduct)	{
-	m_lstBasket.push_back(apProduct);
+	m_lstProducts.push_back(apProduct);
 
 	emit signalBasketChanged(count()-1,true);
 }
@@ -56,11 +54,13 @@ void Basket::addProduct(ProductShopClient * apProduct)	{
 //------------------------------------------------------------------------------
 
 void Basket::removeProduct(ProductShopClient * apProduct)	{
-	list<VR::ProductShopClient*>::iterator it = m_lstBasket.begin();
+	list<VR::ProductShopClient*>::iterator it = m_lstProducts.begin();
 	int nI=0;
-	for (it; it != m_lstBasket.end();it++,nI++)	{
+	for (it; it != m_lstProducts.end();it++,nI++)	{
 		if (apProduct == *it)	{
-			m_lstBasket.erase(it);
+			//delete *it;
+			//*it = 0;
+			m_lstProducts.erase(it);
 			emit signalBasketChanged(nI,false);
 			return;
 		}
@@ -70,4 +70,21 @@ void Basket::removeProduct(ProductShopClient * apProduct)	{
 //------------------------------------------------------------------------------
 
 void Basket::modifyQuantity(ProductShopClient * apProduct)	{
+}
+
+//------------------------------------------------------------------------------
+
+float Basket::calculateBasketValue()	{
+	float flBasketValue=0;
+
+	list<VR::ProductShopClient*>::iterator it = m_lstProducts.begin();
+	for(it; it != m_lstProducts.end(); ++it)	{
+		ProductShopClient * pProduct = (ProductShopClient*)(*it);
+		flBasketValue += (pProduct->getQuantity() * pProduct->getPrice());
+	}
+
+	//Round final value to two decimals
+	flBasketValue = floor(flBasketValue * 100.0f + 0.5f) / 100.0f;
+
+	return flBasketValue;
 }

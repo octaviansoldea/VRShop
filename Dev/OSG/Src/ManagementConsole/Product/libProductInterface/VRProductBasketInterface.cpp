@@ -27,21 +27,23 @@ QToolButton * apToolButtonMyBasket,
 QLabel * apLabelBasketCase,
 QFrame * apFrameItemsBasket,
 QPushButton * apPushButtonBasketBack,
-QPushButton * apPushButtonBasketForward) : 
-m_nHandlePosition(0),m_nItemsVisible(5), m_pBasket(0)	{
+QPushButton * apPushButtonBasketForward,
+Basket * apBasket) : 
+m_nHandlePosition(0),m_nItemsVisible(5)	{
 
 	m_pToolButtonMyBasket = apToolButtonMyBasket;
 	m_pLabelBasketCase = apLabelBasketCase;
 	m_pFrameItemsBasket = apFrameItemsBasket;
 	m_pPushButtonBasketBack = apPushButtonBasketBack;
 	m_pPushButtonBasketForward = apPushButtonBasketForward;
+	m_pBasket = apBasket;
 
 	connect(m_pToolButtonMyBasket,SIGNAL(toggled(bool)),this,SLOT(slotMyBasket(bool)));
 
 	connect(m_pPushButtonBasketBack,SIGNAL(clicked(bool)),this,SLOT(slotBasketBack()));
 	connect(m_pPushButtonBasketForward,SIGNAL(clicked(bool)),this,SLOT(slotBasketForward()));
 
-//	connect(m_pBasket,SIGNAL(signalBasketChanged(const int &,bool)),this,SLOT(slotUpdateItemView(const int &,bool)));
+	connect(m_pBasket,SIGNAL(signalBasketChanged(const int &,bool)),this,SLOT(slotUpdateItemView(const int &,bool)));
 
 	m_pProductBasketInterfaceController = new ProductBasketInterfaceController(m_pBasket);
 
@@ -57,12 +59,6 @@ ProductBasketInterface::~ProductBasketInterface()	{
 }
 
 //======================================================================
-
-void ProductBasketInterface::setBasket(Basket * apBasket)	{
-	m_pBasket = apBasket;
-}
-
-//----------------------------------------------------------------------
 
 void ProductBasketInterface::slotMyBasket(bool abIndicator)	{
 	m_pLabelBasketCase->setVisible(abIndicator);

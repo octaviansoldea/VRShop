@@ -26,7 +26,8 @@ m_strProductUnitMeasure(""),
 m_flQuantity(0),
 m_flPricePerUnit(0),
 m_flTaxRate(0),
-m_strCurrency("")	{
+m_strCurrency(""),
+m_strTextureFile("")	{
 }
 
 //==============================================================================
@@ -62,6 +63,7 @@ void ProductShopClient::setParams(const ProductShopClientParams & aProductShopCl
 	m_ProductShopClientParams.m_flPricePerUnit = aProductShopClientParams.m_flPricePerUnit;
 	m_ProductShopClientParams.m_flTaxRate = aProductShopClientParams.m_flTaxRate;
 	m_ProductShopClientParams.m_strCurrency = aProductShopClientParams.m_strCurrency;
+	m_ProductShopClientParams.m_strTextureFile = aProductShopClientParams.m_strTextureFile;
 }
 
 //------------------------------------------------------------------------------
@@ -81,6 +83,7 @@ void ProductShopClient::getParams(ProductShopClientParams & aProductShopClientPa
 	aProductShopClientParams.m_flPricePerUnit = m_ProductShopClientParams.m_flPricePerUnit;
 	aProductShopClientParams.m_flTaxRate = m_ProductShopClientParams.m_flTaxRate;
 	aProductShopClientParams.m_strCurrency = m_ProductShopClientParams.m_strCurrency;
+	aProductShopClientParams.m_strTextureFile = m_ProductShopClientParams.m_strTextureFile;
 }
 
 //------------------------------------------------------------------------------
@@ -97,6 +100,12 @@ float ProductShopClient::getQuantity() const	{
 
 //------------------------------------------------------------------------------
 
+float ProductShopClient::getPrice() const	{
+	return m_ProductShopClientParams.m_flPricePerUnit;
+}
+
+//------------------------------------------------------------------------------
+
 void ProductShopClient::initFromSQLData(std::string & astrSQLData)	{
 	string & strSqlData = astrSQLData;
 
@@ -106,17 +115,16 @@ void ProductShopClient::initFromSQLData(std::string & astrSQLData)	{
 
 	vector<string> vecstrProductParams = splitString(strSqlData, ";");
 
-	m_ProductShopClientParams.m_strProductName = vecstrProductParams[0];
-	m_ProductShopClientParams.m_nProductCode = atoi(vecstrProductParams[1].c_str());
-	m_ProductShopClientParams.m_strProductManufacturer = vecstrProductParams[2];
-	m_ProductShopClientParams.m_strProductShortDescription = vecstrProductParams[3];
-	m_ProductShopClientParams.m_strProductDescription = vecstrProductParams[4];
-	m_ProductShopClientParams.m_strManufacturerName = vecstrProductParams[5];
+	m_ProductShopClientParams.m_strProductName = vecstrProductParams[1];
+	m_ProductShopClientParams.m_nProductCode = atoi(vecstrProductParams[2].c_str());
+	m_ProductShopClientParams.m_strProductManufacturer = vecstrProductParams[3];
+	m_ProductShopClientParams.m_strProductShortDescription = vecstrProductParams[4];
+	m_ProductShopClientParams.m_strProductDescription = vecstrProductParams[5];
+	//m_ProductShopClientParams.m_strManufacturerName = vecstrProductParams[5];
 	m_ProductShopClientParams.m_strManufacturerOrigin = vecstrProductParams[6];
 	m_ProductShopClientParams.m_strProductUnit = vecstrProductParams[7];
-	m_ProductShopClientParams.m_strProductUnitMeasure = vecstrProductParams[8];
-	m_ProductShopClientParams.m_flQuantity = atof(vecstrProductParams[9].c_str());
-	m_ProductShopClientParams.m_flPricePerUnit = atof(vecstrProductParams[10].c_str());
-	m_ProductShopClientParams.m_flTaxRate = atof(vecstrProductParams[11].c_str());
-	m_ProductShopClientParams.m_strCurrency = vecstrProductParams[12];
+	m_ProductShopClientParams.m_flPricePerUnit = atof(vecstrProductParams[8].c_str());
+	m_ProductShopClientParams.m_flTaxRate = atof(vecstrProductParams[9].c_str());
+	m_ProductShopClientParams.m_strCurrency = vecstrProductParams[10];
+	m_ProductShopClientParams.m_strTextureFile = vecstrProductParams[11];
 }

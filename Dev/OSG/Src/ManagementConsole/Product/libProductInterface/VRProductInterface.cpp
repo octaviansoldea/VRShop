@@ -4,6 +4,7 @@
 #include "VRProduct.h"
 #include "VRProductShopClient.h"
 #include "VRProductManagerClient.h"
+#include "VRBasket.h"
 
 #include "VRPickAndDragHandlerShopClient.h"
 
@@ -32,6 +33,7 @@ ProductInterface::ProductInterface(
 	QPushButton * apPushButtonProductInterface2Basket,
 	QPushButton * apPushButtonProductInterfaceDetails,
 	QLabel * apLabelProductInterfacePrice,
+	Basket * apBasket,
 	PickAndDragHandlerShopClient * apPickAndDragHandlerShopClient) : m_pProductShopClient(0)	{
 
 	m_pFrameProductInterface = apFrameProductInterface;
@@ -40,6 +42,7 @@ ProductInterface::ProductInterface(
 	m_pPushButtonProductInterface2Basket = apPushButtonProductInterface2Basket;
 	m_pPushButtonProductInterfaceDetails = apPushButtonProductInterfaceDetails;
 	m_pLabelProductInterfacePrice = apLabelProductInterfacePrice;
+	m_pBasket = apBasket;
 	m_pPickAndDragHandlerShopClient = apPickAndDragHandlerShopClient;
 
 	m_pFrameProductInterface->setVisible(false);
@@ -65,14 +68,14 @@ void ProductInterface::init(const ProductShopClient * apProductShopClient)	{
 	string & strPrice = productParams.m_strCurrency + " " + tostr(productParams.m_flPricePerUnit).c_str();
 	m_pLabelProductInterfacePrice->setText(strPrice.c_str());
 
-	string strTextureFile = "../../../Resources/Textures/samsung-galaxy-s5.bmp";
+	string strTextureFile = "C:/Matej/Images/banana.bmp";
 	QImageReader image(strTextureFile.c_str());
 	QPixmap imageBasic(QPixmap::fromImageReader(&image));
 	QPixmap imageScaled(imageBasic.scaled ( m_pLabelProductInterfaceImage->width(),m_pLabelProductInterfaceImage->height(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation ));
 	m_pLabelProductInterfaceImage->setPixmap(imageScaled);
 
 	string & strProductName = productParams.m_strProductName;
-	string & strManufacturer = productParams.m_strManufacturerName;
+	string & strManufacturer = productParams.m_strProductManufacturer;
 	m_pLabelProductInterfaceInfo->setText((strProductName + "\n" + strManufacturer).c_str());	//Product name and manufacturer
 
 	m_pFrameProductInterface->setVisible(true);
@@ -94,8 +97,7 @@ void ProductInterface::init(const string & astrProductName)	{
 	m_pLabelProductInterfacePrice->setGeometry(x+(m_pFrameProductInterface->width()-m_pLabelProductInterfacePrice->width())/2,
 									(m_pFrameProductInterface->y()-8),
 									m_pLabelProductInterfacePrice->width(), m_pLabelProductInterfacePrice->height());
-//	m_ProductMgrClient.initProduct(astrProductName);
-	m_ProductMgrClient.initProduct("Galaxy S");
+	m_ProductMgrClient.initProduct(astrProductName);
 	connect(&m_ProductMgrClient,SIGNAL(signalProductInitialized()),this,SLOT(slotGetProduct()));
 }
 
@@ -111,13 +113,8 @@ void ProductInterface::slotGetProduct()	{
 
 void ProductInterface::slotAdd2Basket()	{
 	if (m_pProductShopClient != 0)	{
-		std::cout << "Add to basket: " << m_pProductShopClient->className() << endl;
+		m_pBasket->addProduct(m_pProductShopClient);
 	}
-
-	/*
-		Add selected product into the basket
-		Basket is defined in a class Client
-	*/
 }
 
 //-----------------------------------------------------------------------------------------

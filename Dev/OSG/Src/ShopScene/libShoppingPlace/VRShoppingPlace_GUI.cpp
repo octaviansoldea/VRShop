@@ -40,6 +40,7 @@ ShoppingPlace_GUI::ShoppingPlace_GUI(string & astrFileName, std::string & astrAv
 
 	Scene * pScene = m_pShoppingPlace->getScene();
 	PickAndDragHandlerShopClient * pPickAndDragHandlerShopClient = m_pShoppingPlace->getPicker();
+	Basket * pBasket = m_pShoppingPlace->getBasket();
 
 	//ProductInterface
 	m_pProductInterface = new ProductInterface(
@@ -49,6 +50,7 @@ ShoppingPlace_GUI::ShoppingPlace_GUI(string & astrFileName, std::string & astrAv
 		m_pPushButtonProductInterface2Basket,
 		m_pPushButtonProductInterfaceDetails,
 		m_pLabelProductInterfacePrice,
+		pBasket,
 		pPickAndDragHandlerShopClient);
 
 	//Agent Interface
@@ -68,8 +70,8 @@ ShoppingPlace_GUI::ShoppingPlace_GUI(string & astrFileName, std::string & astrAv
 		m_pLabelBasketCase,
 		m_pFrameItemsBasket,
 		m_pPushButtonBasketBack,
-		m_pPushButtonBasketForward);
-
+		m_pPushButtonBasketForward,
+		pBasket);
 
 	//Client Camera
 	m_pCameraController = new CameraController(

@@ -14,6 +14,7 @@ class QPushButton;
 namespace VR	{
 	class ProductShopClient;
 	class Product;
+	class Basket;
 	class PickAndDragHandlerShopClient;
 
 	class ProductInterface : public QObject	{
@@ -26,6 +27,7 @@ namespace VR	{
 			QPushButton * apPushButtonProductInterface2Basket,
 			QPushButton * apPushButtonProductInterfaceDetails,
 			QLabel * apLabelProductInterfacePrice,
+			Basket * apBasket,
 			PickAndDragHandlerShopClient * apPickAndDragHandlerShopClient
 		);	//End of constructor
 
@@ -42,6 +44,7 @@ namespace VR	{
 		QPushButton * m_pPushButtonProductInterfaceDetails;
 		QLabel * m_pLabelProductInterfacePrice;
 		PickAndDragHandlerShopClient * m_pPickAndDragHandlerShopClient;
+		Basket * m_pBasket;
 
 		ProductShopClient * m_pProductShopClient;
 		ProductManagerClient m_ProductMgrClient;

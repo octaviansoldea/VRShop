@@ -1,0 +1,17 @@
+CRITICAL
+threads
+cashier
+clone of objects - check if all object params are copied
+
+product-basket integration
+	click product - insert into basket
+	remove from basket
+	
+
+
+Optional
+user accounts - signing in
+lights								- DONE
+synchronization of avatar moves
+orientation of "others" avatars ->?-> direction of lights to "others" avatars
+

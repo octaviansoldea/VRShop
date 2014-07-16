@@ -10,6 +10,7 @@ SUBDIRS(
 	libCommon_QT
 	libSearch
 	libItemModel
+	libLighting
 	libMngtController
 	libOSGQTViewer
 	libPicker

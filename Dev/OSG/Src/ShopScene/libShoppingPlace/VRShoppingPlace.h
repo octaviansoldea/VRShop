@@ -9,6 +9,7 @@ namespace VR	{
 	class Scene;
 	class Avatar;
 	class AbstractUser;
+	class Lighting;
 	class ProductManager;
 	class AvatarManagerClient;
 	class Grid;
@@ -40,6 +41,7 @@ namespace VR	{
 		osg::ref_ptr<PickAndDragHandlerShopClient> m_pPickAndDragHandlerShopClient;
 
 		osg::ref_ptr<Scene> m_pScene;
+		
 		
 		ProductManager * m_pProductMgr;
 

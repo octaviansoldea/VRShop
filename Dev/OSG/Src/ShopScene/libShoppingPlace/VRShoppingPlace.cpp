@@ -16,6 +16,7 @@
 
 #include "VRFloor.h"
 #include "VRRoom.h"
+#include "VRLighting.h"
 
 #include "VRFurniture.h"
 #include "VRPlate3D.h"
@@ -117,6 +118,13 @@ m_strAvatarName(astrAvatarName)	{
 	Room room;
 	ref_ptr<MatrixTransform> pMt = dynamic_cast<MatrixTransform*>(room.createRoom().get());
 	m_pScene->addChild(pMt.get());
+
+
+	//Insert lighting
+	Lighting lighting;
+	ref_ptr<LightSource> pNode = lighting.createLights();
+    m_pScene->addChild(pNode);
+	
 }
 
 //----------------------------------------------------------------------

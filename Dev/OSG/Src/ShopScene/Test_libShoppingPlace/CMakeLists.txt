@@ -40,6 +40,7 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_SOURCE_DIR}/Props/Equipment/GeometricShape/libGeometricShape
   ${CMAKE_SOURCE_DIR}/Props/Equipment/Furniture/libFurniture
   ${CMAKE_SOURCE_DIR}/Props/Building/libBuilding
+  ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libLighting
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libOSGQTViewer
   ${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProduct
   ${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProductInterface
@@ -77,6 +78,7 @@ SET(LIBS_COMMON
 	libFurniture
 	libBuilding
 	libScene
+	libLighting
 	libOSGQTViewer
 	libProduct
 	libProductInterface

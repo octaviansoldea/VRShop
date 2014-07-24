@@ -11,7 +11,8 @@ namespace VR	{
 
 	protected:
 		virtual void mouseMoveEvent(QMouseEvent *event);
-		
+		virtual void leaveEvent (QEvent * event);
+
 	signals:
 		void hovered(bool);
 	};

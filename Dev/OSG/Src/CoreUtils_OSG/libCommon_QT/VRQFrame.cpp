@@ -25,3 +25,11 @@ void VRQFrame::mouseMoveEvent(QMouseEvent *event)	{
 		emit hovered(true);
 	}
 }
+
+//---------------------------------------------------------------------
+
+void VRQFrame::leaveEvent (QEvent * event)	{
+	QFrame::leaveEvent(event);
+
+	emit hovered(false);
+}

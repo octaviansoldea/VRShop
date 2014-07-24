@@ -67,7 +67,7 @@ void Furniture::removePart(unsigned int anPartNo)	{
 
 //-----------------------------------------------------------------------
 
-void Furniture::removePart(ref_ptr < AbstractObject > &aAbstractObject)	{
+void Furniture::removePart(ref_ptr < AbstractObject > aAbstractObject)	{
 	vector <ref_ptr<Node>>::const_iterator it = _children.begin();
 	for (it; it != _children.end(); it++)	{
 		if (*it==aAbstractObject)	{

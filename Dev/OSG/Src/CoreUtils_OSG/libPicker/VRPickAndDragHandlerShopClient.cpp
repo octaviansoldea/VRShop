@@ -51,15 +51,16 @@ bool PickAndDragHandlerShopClient::handle(const GUIEventAdapter& ea, GUIActionAd
 
 	bool bRes = true;
 
-	if((PickAndDragHandler::handle(ea, aa) == false) || 
-		(m_pPickedObject == NULL))	{
+	int nEventType = ea.getEventType();
+	if (nEventType == GUIEventAdapter::DRAG) {
 		bRes = false;
 		return(bRes);
 	}
 
-	int nEventType = ea.getEventType();
-	if ((nEventType == GUIEventAdapter::DRAG)) {
-
+	if((PickAndDragHandler::handle(ea, aa) == false) || 
+		(m_pPickedObject == NULL))	{
+		bRes = false;
+		return(bRes);
 	}
 
 	if ((nEventType == GUIEventAdapter::LEFT_MOUSE_BUTTON)) {
@@ -67,11 +68,11 @@ bool PickAndDragHandlerShopClient::handle(const GUIEventAdapter& ea, GUIActionAd
 
 		//Only first parent is checked if it's a product or not
 		int nParent = pPickedObject->getParentalNodePaths().size();
-		const string & strParentName = pPickedObject->getParents()[0]->getName();
+		string strParentName = pPickedObject->getParents()[0]->getName();
 		if (strParentName == "Products")	{
 			emit signalProductPicked(pPickedObject);
-		} else {
-			//Picked object was not a product
+		} else if (pPickedObject->getName() == "Cashier")	{
+			emit signalCashierPicked();
 		}
 	}
 

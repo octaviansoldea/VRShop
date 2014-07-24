@@ -9,6 +9,7 @@
 #include "VRScene.h"
 #include "VRShoppingPlace.h"
 #include "VRProductManager.h"
+#include "VRCashier.h"
 
 #include "VRProductInterface.h"
 #include "VRAgentInterface.h"
@@ -79,12 +80,22 @@ ShoppingPlace_GUI::ShoppingPlace_GUI(string & astrFileName, std::string & astrAv
 		m_pToolButton3View,
 		pCameraManipulator);
 
+	//Cashier
+	m_pCashier = new Cashier();
+
 	updateGeometry();
 
 	connect(pPickAndDragHandlerShopClient,
 		SIGNAL(signalProductPicked(const VR::AbstractObject *)),
 		this,
-		SLOT(slotProductClicked(const VR::AbstractObject *)));
+		SLOT(slotProductClicked(const VR::AbstractObject *))
+	);
+
+	connect(pPickAndDragHandlerShopClient,
+		SIGNAL(signalCashierPicked()),
+		this,
+		SLOT(slotCashierClicked())
+	);
 }
 
 //-----------------------------------------------------------------------------------------
@@ -93,6 +104,7 @@ ShoppingPlace_GUI::~ShoppingPlace_GUI()	{
 	delete m_pProductInterface;
 	delete m_pAgentInterface;
 	delete m_pProductBasketInterface;
+	delete m_pCashier;
 	delete m_pCameraController;
 	delete m_pShoppingPlace;
 }
@@ -160,8 +172,15 @@ void ShoppingPlace_GUI::resizeEvent(QResizeEvent *event)	{
 //----------------------------------------------------------------------------------------
 
 void ShoppingPlace_GUI::slotProductClicked(const VR::AbstractObject * apAbstractObject)	{
-	const string & strProductName = apAbstractObject->getName();
+	string strProductName = apAbstractObject->getName();
 	m_pProductInterface->init(strProductName);
+}
+
+//----------------------------------------------------------------------------------------
+
+void ShoppingPlace_GUI::slotCashierClicked()	{
+	Basket * pBasket = m_pShoppingPlace->getBasket();
+	m_pCashier->init(pBasket);
 }
 
 //----------------------------------------------------------------------------------------

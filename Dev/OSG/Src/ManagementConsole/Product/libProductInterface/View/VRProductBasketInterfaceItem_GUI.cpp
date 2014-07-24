@@ -9,8 +9,6 @@
 
 #include "BasicStringDefinitions.h"
 
-#include <time.h>
-
 #include "VRProductBasketInterfaceItem_GUI.h"
 
 using namespace Ui;

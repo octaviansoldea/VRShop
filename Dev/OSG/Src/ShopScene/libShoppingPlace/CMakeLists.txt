@@ -55,6 +55,9 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_SOURCE_DIR}/Props/Avatar/libAvatar
   ${CMAKE_SOURCE_DIR}/Props/Avatar/libAvatarManager
   ${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabase
+  ${CMAKE_SOURCE_DIR}/ManagementConsole/Cashier/libCashier
+  ${CMAKE_BINARY_DIR}/ManagementConsole/Cashier/libCashier
+  ${CMAKE_SOURCE_DIR}/ManagementConsole/Cashier/libCashier/View
 )
 
 

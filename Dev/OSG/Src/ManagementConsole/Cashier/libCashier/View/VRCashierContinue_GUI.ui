@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>CashierContinue</class>
+ <widget class="QDialog" name="CashierContinue">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>559</width>
+    <height>371</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>559</width>
+    <height>371</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(72,72,72);</string>
+  </property>
+  <layout class="QFormLayout" name="formLayout">
+   <property name="fieldGrowthPolicy">
+    <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+   </property>
+   <property name="horizontalSpacing">
+    <number>1</number>
+   </property>
+   <property name="verticalSpacing">
+    <number>1</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item row="0" column="0">
+    <widget class="QFrame" name="m_pFrameLeftSide">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>319</width>
+       <height>319</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>319</width>
+       <height>319</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:white;</string>
+     </property>
+     <widget class="QLabel" name="m_pLabelPrice">
+      <property name="geometry">
+       <rect>
+        <x>236</x>
+        <y>290</y>
+        <width>81</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>100.99</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="m_pLabelProductImage">
+      <property name="geometry">
+       <rect>
+        <x>110</x>
+        <y>37</y>
+        <width>101</width>
+        <height>91</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap>../../../../../../../../../Matej/Images/Banana.bmp</pixmap>
+      </property>
+      <property name="scaledContents">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="m_pLabelTitle">
+      <property name="geometry">
+       <rect>
+        <x>100</x>
+        <y>2</y>
+        <width>121</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Times New Roman</family>
+        <pointsize>12</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QLabel {
+	min-height: 20px;
+	color: rgb(204,204,204);
+	border-radius: 5px;
+	border: 1px solid rgb(29,29,29);
+	background-color:rgb(105,105,105);
+}
+</string>
+      </property>
+      <property name="text">
+       <string>List Products</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QTableWidget" name="m_pTableWidgetProducts">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>128</y>
+        <width>321</width>
+        <height>161</height>
+       </rect>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
+      </property>
+      <property name="verticalScrollBarPolicy">
+       <enum>Qt::ScrollBarAlwaysOn</enum>
+      </property>
+      <attribute name="horizontalHeaderVisible">
+       <bool>true</bool>
+      </attribute>
+      <column>
+       <property name="text">
+        <string>Product</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Price</string>
+       </property>
+      </column>
+     </widget>
+     <widget class="QLabel" name="m_pLabelValueName">
+      <property name="geometry">
+       <rect>
+        <x>140</x>
+        <y>290</y>
+        <width>71</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Total Value</string>
+      </property>
+     </widget>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QFrame" name="m_pFrameRightSide">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>239</width>
+       <height>319</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>239</width>
+       <height>319</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:white</string>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <widget class="QPushButton" name="m_pPushButtonProceed">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>230</y>
+        <width>181</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Times New Roman</family>
+        <pointsize>16</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	min-height: 20px;
+	color: rgb(204,204,204);
+	border-radius: 20px;
+	border: 1px solid rgb(29,29,29);
+	background-color:rgb(70,70,70);}
+
+QPushButton:hover {
+	background-color:rgb(105,105,105);
+	border-radius: 20px;
+	color:white;
+}
+</string>
+      </property>
+      <property name="text">
+       <string>Proceed and Pay</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="m_pLabelLogoRetailer">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>30</y>
+        <width>100</width>
+        <height>80</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>80</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">color:red;</string>
+      </property>
+      <property name="text">
+       <string>LOGO - Retailer 
+
+ powered by 
+
+ LOGO - VRShop</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+      <property name="margin">
+       <number>0</number>
+      </property>
+      <property name="indent">
+       <number>-1</number>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="m_pPushButtonInfo">
+      <property name="geometry">
+       <rect>
+        <x>130</x>
+        <y>170</y>
+        <width>81</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Times New Roman</family>
+        <pointsize>10</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	min-height: 20px;
+	color: rgb(204,204,204);
+	border-radius: 20px;
+	border: 1px solid rgb(29,29,29);
+	background-color:rgb(70,70,70);}
+
+QPushButton:hover {
+	background-color:rgb(105,105,105);
+	border-radius: 20px;
+	color:white;
+}
+</string>
+      </property>
+      <property name="text">
+       <string>More Info</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="m_pPushButtonRemove">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>170</y>
+        <width>81</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Times New Roman</family>
+        <pointsize>10</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	min-height: 20px;
+	color: rgb(204,204,204);
+	border-radius: 20px;
+	border: 1px solid rgb(29,29,29);
+	background-color:rgb(70,70,70);}
+
+QPushButton:hover {
+	background-color:rgb(105,105,105);
+	border-radius: 20px;
+	color:white;
+}
+</string>
+      </property>
+      <property name="text">
+       <string>Remove</string>
+      </property>
+     </widget>
+    </widget>
+   </item>
+   <item row="2" column="0" colspan="2">
+    <widget class="QFrame" name="m_pFrameToolBar">
+     <property name="minimumSize">
+      <size>
+       <width>61</width>
+       <height>50</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(105,105,105);
+</string>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Raised</enum>
+     </property>
+     <widget class="QPushButton" name="m_pPushButtonCancel">
+      <property name="geometry">
+       <rect>
+        <x>440</x>
+        <y>10</y>
+        <width>91</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Times New Roman</family>
+        <pointsize>12</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+	min-height: 20px;
+	color: rgb(204,204,204);
+	border-radius: 10px;
+	border: 1px solid gray;
+	background-color:rgb(70,70,70);}
+
+QPushButton:hover {
+	background-color:rgb(105,105,105);
+	border-radius: 10px;
+	color:white;
+}
+
+
+/*	background-color: qlineargradient(spread:pad, 
+	x1:0.181818, y1:0.267, x2:0, y2:1, 
+	stop:0 rgba(234, 133, 0, 255), 
+	stop:1 rgba(255, 255, 255, 255))
+};
+
+*/
+
+/*
+	border: 1px solid rgb(67,67,67); 
+
+
+*/
+</string>
+      </property>
+      <property name="text">
+       <string>Cancel</string>
+      </property>
+      <property name="flat">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

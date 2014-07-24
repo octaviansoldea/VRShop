@@ -22,8 +22,6 @@ namespace VR	{
 
 		float calculateBasketValue();
 
-		Basket * getBasket() const;
-
 		int count() const;
 		ProductShopClient * getProduct(std::string & astrProductName);
 		ProductShopClient * getProduct(int anProductNumber);

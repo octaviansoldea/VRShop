@@ -106,6 +106,18 @@ float ProductShopClient::getPrice() const	{
 
 //------------------------------------------------------------------------------
 
+string ProductShopClient::getProductName() const	{
+	return m_ProductShopClientParams.m_strProductName;
+}
+
+//------------------------------------------------------------------------------
+
+string ProductShopClient::getProductTexture() const	{
+	return m_ProductShopClientParams.m_strTextureFile;
+}
+
+//------------------------------------------------------------------------------
+
 void ProductShopClient::initFromSQLData(std::string & astrSQLData)	{
 	string & strSqlData = astrSQLData;
 

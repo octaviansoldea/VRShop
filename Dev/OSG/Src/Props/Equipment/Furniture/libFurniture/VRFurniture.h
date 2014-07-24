@@ -21,7 +21,7 @@ namespace VR	{
 
 		virtual void addPart(osg::ref_ptr < AbstractObject > apAbstractObject);
 		virtual void removePart(unsigned int anPartNo);
-		virtual void removePart(osg::ref_ptr < AbstractObject > &apAbstractObject);
+		virtual void removePart(osg::ref_ptr < AbstractObject > apAbstractObject);
 
 		virtual std::string getSQLCommand() const;
 

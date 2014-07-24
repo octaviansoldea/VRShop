@@ -38,6 +38,7 @@ namespace VR {
 
 	signals:
 		void signalProductPicked(const VR::AbstractObject * apAbstractObject);
+		void signalCashierPicked();
 	};
 }
 #endif //VR_PICK_AND_DRAG_HANDLER_SHOP_CLIENT_H

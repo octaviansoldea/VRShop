@@ -16,6 +16,7 @@ namespace VR	{
 	class AgentInterface;
 	class ProductBasketInterface;
 	class ProductManagerClient;
+	class Cashier;
 	struct CameraController;
 
 	class ShoppingPlace_GUI : public QMainWindow, public Ui::MainWindow	{
@@ -31,6 +32,7 @@ namespace VR	{
 		ProductBasketInterface * m_pProductBasketInterface;
 		ProductManagerClient * m_pProductManagerClient;
 		CameraController * m_pCameraController;
+		Cashier * m_pCashier;
 
 		void updateGeometry();
 
@@ -39,6 +41,7 @@ namespace VR	{
 
 	private slots:
 		void slotProductClicked(const VR::AbstractObject * apAbstractObject);
+		void slotCashierClicked();
 		void slotAvatarClicked(const Avatar * apAvatar);
 	};
 }

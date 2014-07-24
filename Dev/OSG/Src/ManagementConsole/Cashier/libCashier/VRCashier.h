@@ -10,17 +10,20 @@ class Customer;
 class Receipt;
 
 namespace VR	{
-	class Avatar;
+	class Basket;
 
 	class Cashier	{
 	public:
 		Cashier();
+		~Cashier();
+
+		void init(Basket * apBasket);
 
 		void displayMainMenu();
 
 		void getCurrentSubTotal() const;
 
-		void performPurchase(const std::vector<Product> & avecProducts);
+		void performPurchase(Basket * apBasket);
 		void abort();
 
 	protected:
@@ -29,6 +32,10 @@ namespace VR	{
 
 
 		std::vector < Receipt *> m_lstReceipts;
+
+	private:
+		CashierScreen * m_pCashierScreen;
+		Basket * m_pBasket;
 	};
 }
 #endif //VR_CASHIER_H

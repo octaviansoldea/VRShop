@@ -41,6 +41,8 @@ namespace VR	{
 		void setQuantity(float aflQuantity);
 		float getQuantity() const;
 		float getPrice() const;
+		std::string getProductName() const;
+		std::string getProductTexture() const;
 
 		virtual void initFromSQLData(std::string & astrSQLData);
 

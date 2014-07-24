@@ -183,7 +183,15 @@ bool ShoppingPlace::createClientScene(const string & astrSceneFileName)	{
 		vector<string> vecstrObjectData = db.getObjectData(*it);
 
 		pAO->initFromSQLData(vecstrObjectData);
-		pAO->setIsTargetPick(false);
+//		pAO->setIsTargetPick(false);
+
+		//Temporary solution
+		if (pAO->getName() == "Cashier")	{
+			pAO->setIsTargetPick(true);
+		} else {
+			pAO->setIsTargetPick(false);
+		}
+		//End of temporary solution
 
 		m_pScene->addChild(pAO);
 	}
@@ -202,8 +210,10 @@ Basket * ShoppingPlace::getBasket()	{
 void ShoppingPlace::insertProducts()	{
 	ref_ptr < AbstractObject > pAbstractObject = 
 		dynamic_cast<AbstractObject*>(AbstractObject::createInstance("Plate3D").get());
-	pAbstractObject->setTexture("C:/Matej/Images/Banana.bmp");
+	pAbstractObject->setTexture("../../../Resources/Textures/Banana.bmp");
 	pAbstractObject->predefinedObject();
+	pAbstractObject->setMatrix(osg::Matrix::translate(0,0,0.5));
+
 	vector<float> vecColor;
 	vecColor.push_back(1);
 	vecColor.push_back(1);
@@ -220,4 +230,29 @@ void ShoppingPlace::insertProducts()	{
 	pAbstractObject->setName(pParams.m_strProductName);
 	Product * pProduct = new Product(pAbstractObject,pParams);
 	m_pProductMgr->addNewProduct(pProduct);
+
+
+//Second product
+	ref_ptr < AbstractObject > pAbstractObject1 = 
+		dynamic_cast<AbstractObject*>(AbstractObject::createInstance("Plate3D").get());
+	pAbstractObject1->setTexture("../../../Resources/Textures/blueFlowers.bmp");
+	pAbstractObject1->predefinedObject();
+	pAbstractObject1->setMatrix(osg::Matrix::translate(1.0,0,0.5));
+
+	vector<float> vecColor1;
+	vecColor1.push_back(1);
+	vecColor1.push_back(1);
+	vecColor1.push_back(1);
+	vecColor1.push_back(1);
+	pAbstractObject1->setColor(vecColor1);
+	pAbstractObject1->setIsTargetPick(true);
+
+	ProductParams pParams1;
+	pParams1.m_strProductName = "flower";
+	pParams1.m_flPricePerUnit = 1.85;
+	pParams1.m_strManufacturerName = "flowery";
+
+	pAbstractObject1->setName(pParams1.m_strProductName);
+	Product * pProduct1 = new Product(pAbstractObject1,pParams1);
+	m_pProductMgr->addNewProduct(pProduct1);
 }

@@ -273,31 +273,31 @@ void PickAndDragHandlerShopEditor::duplicateSelection(ref_ptr<Scene> apScene)	{
 	}
 
 	//If selection not empty, open the dialog
-	DuplicateItem_GUI * pDuplicateItem_GUI = new DuplicateItem_GUI;
-	pDuplicateItem_GUI->setWindowFlags(Qt::FramelessWindowHint);
-	bool bRes = pDuplicateItem_GUI->exec();
-	const int nNumberOfCopies = pDuplicateItem_GUI->m_pSpinBoxCopies->text().toInt();
+	DuplicateItem_GUI itemGUI;
+	
+	itemGUI.setWindowFlags(Qt::FramelessWindowHint);
+	bool bRes = itemGUI.exec();
+	const int nNumberOfCopies = itemGUI.m_pSpinBoxCopies->text().toInt();
 
 	if ((bRes == 0) || (nNumberOfCopies == 0))	{
 		clearList();
-		delete pDuplicateItem_GUI;
 		return;
 	}
 
 	Vec3d vec3dPos = Vec3d(
-		pDuplicateItem_GUI->m_pLineEditLocationX->text().toFloat(),
-		pDuplicateItem_GUI->m_pLineEditLocationY->text().toFloat(),
-		pDuplicateItem_GUI->m_pLineEditLocationZ->text().toFloat());
+		itemGUI.m_pLineEditLocationX->text().toFloat(),
+		itemGUI.m_pLineEditLocationY->text().toFloat(),
+		itemGUI.m_pLineEditLocationZ->text().toFloat());
 
 	Vec3d vec3dRot = Vec3d(
-		pDuplicateItem_GUI->m_pLineEditRotationX->text().toFloat(),
-		pDuplicateItem_GUI->m_pLineEditRotationY->text().toFloat(),
-		pDuplicateItem_GUI->m_pLineEditRotationZ->text().toFloat());
+		itemGUI.m_pLineEditRotationX->text().toFloat(),
+		itemGUI.m_pLineEditRotationY->text().toFloat(),
+		itemGUI.m_pLineEditRotationZ->text().toFloat());
 
 	Vec3d vec3dLen = Vec3d(
-		pDuplicateItem_GUI->m_pLineEditScaleX->text().toFloat(),
-		pDuplicateItem_GUI->m_pLineEditScaleY->text().toFloat(),
-		pDuplicateItem_GUI->m_pLineEditScaleZ->text().toFloat());
+		itemGUI.m_pLineEditScaleX->text().toFloat(),
+		itemGUI.m_pLineEditScaleY->text().toFloat(),
+		itemGUI.m_pLineEditScaleZ->text().toFloat());
 
 	vector<osg::ref_ptr<AbstractObject>>::iterator it;
 
@@ -311,7 +311,6 @@ void PickAndDragHandlerShopEditor::duplicateSelection(ref_ptr<Scene> apScene)	{
 		}
 	}
 	clearList();
-	delete pDuplicateItem_GUI;
 }
 
 //-----------------------------------------------------------------------------------
@@ -354,6 +353,10 @@ void PickAndDragHandlerShopEditor::editItem(ref_ptr<Scene> apScene)	{
 	}
 
 	AbstractObject * pAbstractObject = m_pvecPickedObjects[0];	//Only first item is edited
+
+	//release the memory pointed by the pointer before assigning new memory
+	if (m_pEditItem_GUIBase != 0)
+		delete m_pEditItem_GUIBase;
 
 	//If selection not empty, open the dialog
 	m_pEditItem_GUIBase = EditItem_GUIBase::createInstance(pAbstractObject);

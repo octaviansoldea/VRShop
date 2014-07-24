@@ -68,7 +68,7 @@ void ProductInterface::init(const ProductShopClient * apProductShopClient)	{
 	string & strPrice = productParams.m_strCurrency + " " + tostr(productParams.m_flPricePerUnit).c_str();
 	m_pLabelProductInterfacePrice->setText(strPrice.c_str());
 
-	string strTextureFile = "C:/Matej/Images/banana.bmp";
+	string strTextureFile = productParams.m_strTextureFile;
 	QImageReader image(strTextureFile.c_str());
 	QPixmap imageBasic(QPixmap::fromImageReader(&image));
 	QPixmap imageScaled(imageBasic.scaled ( m_pLabelProductInterfaceImage->width(),m_pLabelProductInterfaceImage->height(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation ));
@@ -82,7 +82,7 @@ void ProductInterface::init(const ProductShopClient * apProductShopClient)	{
 	m_pLabelProductInterfacePrice->setVisible(true);
 
 	//This timer closes interface
-	QTimer::singleShot(5000,this,SLOT(slotCloseInterface()));
+	QTimer::singleShot(1000,this,SLOT(slotCloseInterface()));
 }
 
 //-----------------------------------------------------------------------------------------
@@ -113,7 +113,11 @@ void ProductInterface::slotGetProduct()	{
 
 void ProductInterface::slotAdd2Basket()	{
 	if (m_pProductShopClient != 0)	{
-		m_pBasket->addProduct(m_pProductShopClient);
+		ProductShopClientParams pParams;
+		m_pProductShopClient->getParams(pParams);
+		
+		ProductShopClient * pProduct = new ProductShopClient(pParams);
+		m_pBasket->addProduct(pProduct);
 	}
 }
 
@@ -125,6 +129,11 @@ void ProductInterface::slotProductDetails()	{
 //-----------------------------------------------------------------------------------------
 
 void ProductInterface::slotCloseInterface()	{
+	if (m_pFrameProductInterface->underMouse())	{
+		QTimer::singleShot(100,this,SLOT(slotCloseInterface()));
+		return;
+	}
+
 	m_pFrameProductInterface->setVisible(false);
 	m_pLabelProductInterfacePrice->setVisible(false);
 }

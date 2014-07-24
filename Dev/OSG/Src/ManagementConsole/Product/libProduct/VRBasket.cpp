@@ -14,12 +14,12 @@ Basket::Basket() {
 Basket::~Basket() {
 	m_lstProducts.clear();
 
-	//list<ProductShopClient*>::iterator it = m_lstProducts.begin();
-	//for(it; it != m_lstProducts.end(); ++it)	{
-	//	ProductShopClient * pProduct = (ProductShopClient*)(*it);
-	//	delete pProduct;
-	//	pProduct = 0;
-	//}
+	list<ProductShopClient*>::iterator it = m_lstProducts.begin();
+	for(it; it != m_lstProducts.end(); ++it)	{
+		ProductShopClient * pProduct = (ProductShopClient*)(*it);
+		delete pProduct;
+		pProduct = 0;
+	}
 }
 
 //==============================================================================

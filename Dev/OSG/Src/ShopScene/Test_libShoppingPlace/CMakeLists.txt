@@ -54,6 +54,8 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_SOURCE_DIR}/Props/Avatar/libAvatarManager
   ${CMAKE_SOURCE_DIR}/Props/Avatar/libAnimationEditor
   ${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabase
+  ${CMAKE_SOURCE_DIR}/ManagementConsole/Cashier/libCashier
+  ${CMAKE_SOURCE_DIR}/ManagementConsole/Cashier/libCashier/View
 )
 
 SET(LIBS_COMMON 
@@ -89,6 +91,7 @@ SET(LIBS_COMMON
 	libAvatarManager
 	libAnimationEditor
 	libDatabase
+	libCashier
 )
 
 SET(SRCS

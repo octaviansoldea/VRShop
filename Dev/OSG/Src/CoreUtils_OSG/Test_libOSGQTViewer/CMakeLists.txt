@@ -1,7 +1,9 @@
-PROJECT(AnimationEditor)
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+project(Test_libOSGQTViewer)
+cmake_minimum_required( VERSION 2.8 )
 
 SET(CMAKE_DEBUG_POSTFIX "D")
+
+#SET( CMAKE_AUTOMOC ON )
 
 IF(Qt5_FOUND)
   INCLUDE_DIRECTORIES(
@@ -24,64 +26,61 @@ ELSE(Qt5_FOUND)
   )
 ENDIF(Qt5_FOUND)
 
+
+FIND_PACKAGE(OpenSceneGraph REQUIRED osg osgDB osgGA osgUtil osgViewer OpenThreads)
+
 #MOC according to the Qt version
 IF(Qt5_FOUND)
-  QT5_WRAP_UI(UI_SRCS		VRAnimationEditorGUI.ui)
-  QT5_WRAP_CPP(MOC_SRCS 	VRAnimationEditorGUI.h)
-ELSE(Qt5_FOUND)
-  QT4_WRAP_CPP(MOC_SRCS		VRAnimationEditorGUI.h)  
-  QT4_WRAP_UI(UI_SRCS		VRAnimationEditorGUI.ui)
-ENDIF(Qt5_FOUND)
+  QT5_WRAP_UI(UI_SRCS	VRMainWindow_GUI.ui)
+  QT5_WRAP_CPP(MOC_SRCS VRMainWindow_GUI.h)
 
+ELSE()
+  QT4_WRAP_UI(UI_SRCS	VRMainWindow_GUI.ui)
+  QT4_WRAP_CPP(MOC_SRCS VRMainWindow_GUI.h)
+ENDIF()
+
+SET(SRCS
+	VRMainWindow_GUI.cpp VRMainWindow_GUI.h
+	main.cpp
+)
 
 INCLUDE_DIRECTORIES(
 	${OPENSCENEGRAPH_INCLUDE_DIRS}
-	${CMAKE_SOURCE_DIR}/Props/Avatar/AnimationEditor
-	${CMAKE_BINARY_DIR}/Props/Avatar/AnimationEditor
-	${CMAKE_SOURCE_DIR}/Props/Avatar/libAnimationEditor
-	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_OSG
-	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_QT
-	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCamera
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libOSGQTViewer
+	${CMAKE_BINARY_DIR}/CoreUtils_OSG/Test_libOSGQTViewer/
 )
 
-SET(SRCS
-  VRAnimationEditorGUI.h VRAnimationEditorGUI.cpp
-  main.cpp
-)
-
-ADD_EXECUTABLE(AnimationEditor ${SRCS} ${UI_SRCS} ${MOC_SRCS})
+ADD_EXECUTABLE(Test_libOSGQTViewer ${SRCS} ${MOC_SRCS} ${UI_SRCS})
 
 SET(LIBS_COMMON
 	${OSG_LIBRARIES}
-	${OSGANIMATION_LIBRARIES}
 	${OSGDB_LIBRARIES}
 	${OSGGA_LIBRARIES}
-	${OSGQT_LIBRARIES}
+	${OSGUTIL_LIBRARIES}
 	${OSGVIEWER_LIBRARIES}
 	${OPENTHREADS_LIBRARIES}
-	libAnimationEditor
-	libCommon_OSG
-	libCommon_QT
-	libCamera
 	libOSGQTViewer
 )
 
+
 IF(Qt5_FOUND)
-  TARGET_LINK_LIBRARIES(AnimationEditor
+  TARGET_LINK_LIBRARIES(Test_libOSGQTViewer
 	${Qt5Core_LIBRARIES}
     ${Qt5Gui_LIBRARIES}
     ${Qt5Widgets_LIBRARIES}
     ${Qt5Sql_LIBRARIES}
+    ${Qt5Network_LIBRARIES}
 	${Qt5OpenGL_LIBRARIES}
 	${LIBS_COMMON}
   )
 ELSEIF(NOT Qt5_FOUND AND Qt4_FOUND)
-  TARGET_LINK_LIBRARIES(AnimationEditor
+  TARGET_LINK_LIBRARIES(Test_libOSGQTViewer
   	${QT_LIBRARIES}
     ${QT_QTSQL_LIBRARY}
 	${LIBS_COMMON}
   )
 ENDIF(Qt5_FOUND)
 
-SET_PROPERTY(TARGET AnimationEditor PROPERTY FOLDER Animation)
+
+
+SET_PROPERTY(TARGET Test_libOSGQTViewer PROPERTY FOLDER Utils)

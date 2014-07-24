@@ -200,9 +200,9 @@ QToolButton {
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-461</y>
-        <width>516</width>
-        <height>1083</height>
+        <y>-409</y>
+        <width>513</width>
+        <height>1080</height>
        </rect>
       </property>
       <layout class="QFormLayout" name="formLayout">
@@ -1038,7 +1038,7 @@ QComboBox QAbstractItemView {
   <customwidget>
    <class>VR::OSGQT_Widget</class>
    <extends>QWidget</extends>
-   <header location="global">osgqt_widget.h</header>
+   <header location="global">VROSGQT_Widget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

@@ -12,7 +12,7 @@
 
 #include "VRNewProject_GUI.h"
 
-#include "OSGQT_Widget.h"
+#include "VROSGQT_Widget.h"
 #include "VRGrid.h"
 #include "VRScene.h"
 #include "VRProductManager.h"

@@ -32,7 +32,7 @@
 #include "VRReadAndSaveFileCallback.h"
 
 #include "VRGrid.h"
-#include "OSGQT_Widget.h"
+#include "VROSGQT_Widget.h"
 
 #include "VRShoppingPlace.h"
 
@@ -76,8 +76,9 @@ m_strAvatarName(astrAvatarName)	{
 	m_pOSGQTWidget->show();
 
 	//Map of the Scene
-	QLayout * pLayoutMap = dynamic_cast<QLayout *>(m_pOSGQTWidgetMap->layout());
-	pLayoutMap->setMargin(2);
+	//Tavi critical
+	//QLayout * pLayoutMap = dynamic_cast<QLayout *>(m_pOSGQTWidgetMap->layout());
+	//pLayoutMap->setMargin(2);
 
 	m_pOSGQTWidgetMap->setSceneData(m_pScene);
 	m_pOSGQTWidgetMap->setCameraManipulator(pKeyboardMouseManipulatorShopClient,false);

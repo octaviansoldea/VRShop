@@ -10,6 +10,7 @@ IF(Qt5_FOUND)
     ${Qt5Gui_INCLUDE_DIRS}
     ${Qt5Widgets_INCLUDE_DIRS}
     ${Qt5Sql_INCLUDE_DIRS}
+	${Qt5OpenGL_INCLUDE_DIRS}
   )
 ELSE(Qt5_FOUND)
   #Assume Qt4_FOUND, if we are here
@@ -89,6 +90,7 @@ IF(Qt5_FOUND)
     ${Qt5Gui_LIBRARIES}
     ${Qt5Widgets_LIBRARIES}
     ${Qt5Sql_LIBRARIES}
+	${Qt5OpenGL_LIBRARIES}
 	${LIBS_COMMON}
   )
 ELSEIF(NOT Qt5_FOUND AND Qt4_FOUND)

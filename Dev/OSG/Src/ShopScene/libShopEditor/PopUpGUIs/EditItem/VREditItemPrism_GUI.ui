@@ -112,7 +112,7 @@
             <x>0</x>
             <y>0</y>
             <width>449</width>
-            <height>394</height>
+            <height>390</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -882,7 +882,7 @@
   <customwidget>
    <class>VR::OSGQT_Widget</class>
    <extends>QWidget</extends>
-   <header location="global">osgqt_widget.h</header>
+   <header location="global">VROSGQT_Widget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

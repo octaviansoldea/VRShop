@@ -102,7 +102,10 @@ bool KeyboardMouseManipulator::handle(const osgGA::GUIEventAdapter& ea, osgGA::G
 
 bool KeyboardMouseManipulator::keyDown(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa)	{
 	int bRes = true;
-
+	if(ea.getModKeyMask() == osgGA::GUIEventAdapter::MODKEY_CTRL)
+	{
+		m_bCtrl = true;
+	}
 	int nResKey = ea.getKey();
 	if ((nResKey ==	osgGA::GUIEventAdapter::KEY_Control_L) ||
 		(nResKey ==	osgGA::GUIEventAdapter::KEY_Control_R))	{
@@ -215,6 +218,11 @@ bool KeyboardMouseManipulator::keyDown(const osgGA::GUIEventAdapter &ea, osgGA::
 
 bool KeyboardMouseManipulator::keyUp(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter &aa)	{
 	int bRes = true;
+
+	if(ea.getModKeyMask() == osgGA::GUIEventAdapter::MODKEY_CTRL)
+	{
+		m_bCtrl = false;
+	}
 
 	int nResKey = ea.getKey();
 	if ((nResKey ==	osgGA::GUIEventAdapter::KEY_Control_L) ||

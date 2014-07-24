@@ -18,4 +18,5 @@ SUBDIRS(
 	Test_libCamera
 	Test_libPicker
 	Test_libCameraPicker
+	Test_libOSGQTViewer
 )

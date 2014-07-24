@@ -44,11 +44,13 @@ using namespace std;
 
 ShoppingPlace::ShoppingPlace(
 OSGQT_Widget * apOSGQTWidget,
-OSGQT_Widget * apOSGQTWidgetMap,
+//Debug viewer
+//OSGQT_Widget * apOSGQTWidgetMap,
 string & astrShopScene,
 string & astrAvatarName) :
 m_pOSGQTWidget(apOSGQTWidget),
-m_pOSGQTWidgetMap(apOSGQTWidgetMap),
+//Debug viewer
+//m_pOSGQTWidgetMap(apOSGQTWidgetMap),
 m_strDBFileName(astrShopScene),
 m_strAvatarName(astrAvatarName)	{	
 
@@ -80,9 +82,10 @@ m_strAvatarName(astrAvatarName)	{
 	//QLayout * pLayoutMap = dynamic_cast<QLayout *>(m_pOSGQTWidgetMap->layout());
 	//pLayoutMap->setMargin(2);
 
-	m_pOSGQTWidgetMap->setSceneData(m_pScene);
+	//Debug viewer
+	/*m_pOSGQTWidgetMap->setSceneData(m_pScene);
 	m_pOSGQTWidgetMap->setCameraManipulator(pKeyboardMouseManipulatorShopClient,false);
-	m_pOSGQTWidgetMap->show();
+	m_pOSGQTWidgetMap->show();*/
 
 	//Insert axes
 	ref_ptr<Node> pAxes = osgDB::readNodeFile("../../../Resources/Models3D/axes.osgt");

@@ -33,8 +33,10 @@ ShoppingPlace_GUI::ShoppingPlace_GUI(string & astrFileName, std::string & astrAv
 	setupUi(this);
 	setWindowTitle("Shop Client");
 
+	//Tavi debug
 	m_pShoppingPlace = new ShoppingPlace(
-		m_pOSGQTWidget,m_pOSGQTWidgetMap,astrFileName,astrAvatarName);
+		m_pOSGQTWidget,//m_pOSGQTWidgetMap,
+		astrFileName,astrAvatarName);
 
 	KeyboardMouseManipulatorShopClient * pCameraManipulator = 
 		dynamic_cast<KeyboardMouseManipulatorShopClient *>(m_pOSGQTWidget->getCameraManipulator());
@@ -118,7 +120,8 @@ void ShoppingPlace_GUI::updateGeometry()	{
 	int width = centralWidget()->width();
 	int height = centralWidget()->height();
 
-	m_pOSGQTWidgetMap->setGeometry(x+width-m_pOSGQTWidgetMap->width()-10,y+10,m_pOSGQTWidgetMap->width(),m_pOSGQTWidgetMap->height());
+	//Debug viewer
+	//m_pOSGQTWidgetMap->setGeometry(x+width-m_pOSGQTWidgetMap->width()-10,y+10,m_pOSGQTWidgetMap->width(),m_pOSGQTWidgetMap->height());
 
 	m_pFrameItemsBasket->setGeometry((x+width-m_pFrameItemsBasket->width())/2,
 									(y+height-m_pFrameItemsBasket->height()),
@@ -140,7 +143,9 @@ void ShoppingPlace_GUI::updateGeometry()	{
 	viewLayout.setSpacing(0);
 	QRect rect;
 	rect.setRect(x+width-m_pToolButton1View->width()-10,
-				m_pOSGQTWidgetMap->y()+m_pOSGQTWidgetMap->height()+10,
+				//Debug viewer
+				//m_pOSGQTWidgetMap->y()+m_pOSGQTWidgetMap->height()+
+				10,
 				m_pToolButton1View->width(),60);
 	viewLayout.setGeometry(rect);
 

@@ -19,7 +19,8 @@ namespace VR	{
 	struct ShoppingPlace {
 		ShoppingPlace(
 			OSGQT_Widget * apOSGQTWidget,
-			OSGQT_Widget * apOSGQTWidgetMap,
+			//Debug viewer
+			//OSGQT_Widget * apOSGQTWidgetMap,
 			std::string & astrShopScene,
 			std::string & astrAvatarName);
 
@@ -34,7 +35,8 @@ namespace VR	{
 		bool createClientScene(const std::string & astrSceneFileName);
 
 		OSGQT_Widget * m_pOSGQTWidget;
-		OSGQT_Widget * m_pOSGQTWidgetMap;
+		//Debug viewer
+		//OSGQT_Widget * m_pOSGQTWidgetMap;
 		std::string m_strDBFileName;
 		std::string m_strAvatarName;
 

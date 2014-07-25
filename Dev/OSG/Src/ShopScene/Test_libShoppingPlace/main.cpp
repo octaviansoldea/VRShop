@@ -22,7 +22,7 @@ int main(int argc, char *argv[])	{
 	string strClientName = tostr(time(NULL));
 		//client.getTcpSocket().peerAddress().toString().toStdString();
 	string strDBFileName =
-//		"../../../Databases/ShopDemo.db";
+		//"../../../Databases/ShopDemo.db";
 		"C:/Matej/ShopScene_1.db";
 
 	ShoppingPlace_GUI widget(strDBFileName,strClientName);

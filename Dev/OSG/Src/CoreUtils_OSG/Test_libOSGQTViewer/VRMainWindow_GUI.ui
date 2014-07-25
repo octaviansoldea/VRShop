@@ -23,16 +23,11 @@
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
       </property>
-      <widget class="VR::OSGQT_Widget" name="m_pOSGQT_Widget" native="true">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>10</y>
-         <width>561</width>
-         <height>451</height>
-        </rect>
-       </property>
-      </widget>
+      <layout class="QGridLayout" name="gridLayout_2">
+       <item row="0" column="0">
+        <widget class="VR::OSGQT_Widget" name="m_pOSGQT_Widget" native="true"/>
+       </item>
+      </layout>
      </widget>
     </item>
    </layout>

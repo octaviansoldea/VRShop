@@ -72,7 +72,7 @@ OSGQT_Widget::~OSGQT_Widget()
    int qtKey = e->key();
    switch(qtKey)
    {
-      case Qt::Key_Up:
+   case Qt::Key_Up:
       {
          return(osgGA::GUIEventAdapter::KEY_Up);
       }

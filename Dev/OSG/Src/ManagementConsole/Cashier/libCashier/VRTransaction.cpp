@@ -1,15 +1,15 @@
-#include "VRAbstractUser.h"
-#include "VRProduct.h"
-
-#include "VRTransaction.h"
-
-using namespace VR;
-using namespace std;
-
-Transaction::Transaction()	{
-}
-
-//------------------------------------------------------------------------------
-
-Transaction::Transaction(const vector<Product> & avecProduct, const AbstractUser & aAbstractUser)	{
-}
+  #include "VRAbstractUser.h"
+  #include "VRProductShopClient.h"
+    
+    #include "VRTransaction.h"
+    
+    using namespace VR;
+    using namespace std;
+    
+    Transaction::Transaction()	{
+    }
+    
+    //------------------------------------------------------------------------------
+    
+  Transaction::Transaction(const vector<ProductShopClient> & avecProduct, const AbstractUser & aAbstractUser)	{
+    }

@@ -1,0 +1,28 @@
+CRITICAL Bugs
+
+clone of objects - check if all object params are copied
+Colors - materials - we know how to - check avatar and other objects occlusions
+Mouse counter directions
+Avatar camera view perspective and different views
+Connections buttons to update image in Editor
+
+CRITICAL Items
+
+Check animation editor
+Web
+? User accounts - signing in
+Android
+iPhone
+WindowsPhone - WinCE
+
+
+
+OPTIONAL
+
+Load of avatar
+Messages at loading
+Second window in Shopping client
+lights
+synchronization of avatar moves
+orientation of "others" avatars ->?-> direction of lights to "others" avatars
+other avatars

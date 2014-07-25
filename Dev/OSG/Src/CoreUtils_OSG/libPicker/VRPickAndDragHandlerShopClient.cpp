@@ -21,7 +21,6 @@
 
 #include <osgViewer/Viewer>
 
-#include "VRProduct.h"
 #include "VRScene.h"
 
 #include "BasicDefinitions.h"

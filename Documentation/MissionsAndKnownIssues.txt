@@ -2,7 +2,6 @@ CRITICAL Bugs
 
 clone of objects - check if all object params are copied
 Colors - materials - we know how to - check avatar and other objects occlusions
-Mouse counter directions
 Avatar camera view perspective and different views
 Connections buttons to update image in Editor
 

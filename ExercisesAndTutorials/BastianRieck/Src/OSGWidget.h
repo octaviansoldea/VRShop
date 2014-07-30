@@ -8,6 +8,7 @@
 #include <osgViewer/CompositeViewer>
 #include <osgViewer/GraphicsWindow>
 
+
 class OSGWidget : public QGLWidget
 {
   Q_OBJECT

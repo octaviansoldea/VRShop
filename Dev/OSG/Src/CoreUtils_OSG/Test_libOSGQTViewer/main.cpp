@@ -4,12 +4,11 @@
 
 using namespace VR;
 
-int main( int argc, char** argv )
-{
-  QApplication application( argc, argv );
+int main( int argc, char** argv )	{
+	QApplication application( argc, argv );
+	
+	MainWindow_GUI mainWindow_GUI;
+	mainWindow_GUI.show();
 
-  MainWindow_GUI mainWindow_GUI;
-  mainWindow_GUI.show();
-
-  return( application.exec() );
+	return( application.exec() );
 }

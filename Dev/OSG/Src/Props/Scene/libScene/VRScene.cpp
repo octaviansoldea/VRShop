@@ -7,6 +7,8 @@
 #include "BasicStringDefinitions.h"
 #include "Log.h"
 
+#include <osg/Material>
+
 #include "VRAbstractObject.h"
 
 #include "VRScene.h"

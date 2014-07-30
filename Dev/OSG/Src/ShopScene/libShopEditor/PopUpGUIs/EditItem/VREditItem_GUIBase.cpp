@@ -68,3 +68,9 @@ void EditItem_GUIBase::slotBrowseDirectory()	{
 void EditItem_GUIBase::accept()	{
 	QDialog::accept();
 }
+
+//----------------------------------------------------------------------
+
+osg::ref_ptr<AbstractObject> EditItem_GUIBase::getAbstractObject()	{
+	return m_pAbstractObject;
+}

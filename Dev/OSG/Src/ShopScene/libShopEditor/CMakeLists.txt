@@ -53,6 +53,7 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libController
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libMngtController
   ${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProduct
+  ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libLighting
 )
 
 

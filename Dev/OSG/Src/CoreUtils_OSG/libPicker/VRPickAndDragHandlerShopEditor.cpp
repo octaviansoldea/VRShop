@@ -230,7 +230,7 @@ void PickAndDragHandlerShopEditor::splitSelection(ref_ptr<Scene> apScene)	{
 
 	vector<ref_ptr<AbstractObject>>::iterator it = m_pvecPickedObjects.begin();
 
-	ref_ptr<AbstractObject> pAbstractObject;
+	ref_ptr< AbstractObject > pAbstractObject;
 
 	Vec3d vec3dPos;
 	Vec3d vec3dRot;
@@ -244,7 +244,12 @@ void PickAndDragHandlerShopEditor::splitSelection(ref_ptr<Scene> apScene)	{
 		apScene->removeChild(*it);
 		int nI;
 		for (nI=0;nI<it->get()->getNumChildren(); nI++)	{
+			string strClassname = it->get()->getChild(nI)->className();
+
 			pAbstractObject = dynamic_cast<AbstractObject *>(it->get()->getChild(nI));
+			if(pAbstractObject == NULL) {
+				continue;
+			}
 
 			Vec3d vec3dPosItem = pAbstractObject->getPosition();
 			Vec3d vec3dRotItem = pAbstractObject->getRotation();
@@ -362,7 +367,10 @@ void PickAndDragHandlerShopEditor::editItem(ref_ptr<Scene> apScene)	{
 	m_pEditItem_GUIBase = EditItem_GUIBase::createInstance(pAbstractObject);
 	m_pEditItem_GUIBase->setWindowFlags(Qt::FramelessWindowHint);
 
-	m_pEditItem_GUIBase->exec();
+	bool nRes = m_pEditItem_GUIBase->exec();
+
+	if (nRes == QDialog::Accepted)	{
+	}
 
 	clearList();
 }

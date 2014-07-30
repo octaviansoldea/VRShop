@@ -46,6 +46,9 @@ namespace VR {
 			KeyboardMouseManipulatorShopClient * apKeyboardMouseManipulatorShopClient);
 
 
+		signals:
+			void signalUpdateCameraGUI();
+
 		public slots:
 			void slotUpdateCameraGUI();
 

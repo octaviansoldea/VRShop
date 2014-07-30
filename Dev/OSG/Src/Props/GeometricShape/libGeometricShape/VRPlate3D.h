@@ -20,7 +20,7 @@ namespace VR	{
 
 	public:
 		Plate3D(const Plate3DParams & aPlate3DParams);
-		Plate3D(const Plate3D& p3D,const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY);
+		Plate3D(const Plate3D& p3D,const osg::CopyOp& copyop=osg::CopyOp::DEEP_COPY_ALL);
 
 		virtual const char* className() const;
 		virtual osg::Object* cloneType() const;

@@ -16,7 +16,7 @@ namespace VR {
 
 	public:
 		Cylinder(const CylinderParams & aCylinderParams);
-		Cylinder(const Cylinder& cyl,const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY);
+		Cylinder(const Cylinder& cyl,const osg::CopyOp& copyop=osg::CopyOp::DEEP_COPY_ALL);
 
 		virtual const char* className() const;
 		virtual osg::Object* cloneType() const;

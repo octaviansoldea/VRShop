@@ -14,7 +14,7 @@ namespace VR {
 	class Prism : public AbstractGeomShape	{
 	public:
 		Prism(const PrismParams & aPrismParams);
-		Prism(const Prism& pr,const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY);
+		Prism(const Prism& pr,const osg::CopyOp& copyop=osg::CopyOp::DEEP_COPY_ALL);
 
 		virtual const char* className() const;
 		virtual osg::Object* cloneType() const;

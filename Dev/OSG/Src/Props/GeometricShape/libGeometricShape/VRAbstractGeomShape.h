@@ -4,8 +4,6 @@
 #include "VRAbstractObject.h"
 
 namespace VR {
-//	class Product;
-
 	struct AbstractGeomShapeParams : public AbstractObjectParams	{
 		std::vector < float > m_arrflRGBA;
 		std::string m_strFileNameTexture;
@@ -16,7 +14,7 @@ namespace VR {
 	class AbstractGeomShape	: public AbstractObject	{
 	public:
 		AbstractGeomShape(const AbstractGeomShapeParams & aAbstractGeomShapeParams);
-		AbstractGeomShape(const AbstractGeomShape& ags,const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY);
+		AbstractGeomShape(const AbstractGeomShape& ags,const osg::CopyOp& copyop=osg::CopyOp::DEEP_COPY_ALL);
 
 		virtual const char* className() const;
 
@@ -29,7 +27,6 @@ namespace VR {
 		std::vector < float > m_arrflRGBA;
 		std::string m_strFileNameTexture;
 
-//		Product * m_pProduct;
 	};
 }
 #endif //VR_ABSTRACT_GEOM_SHAPE_H

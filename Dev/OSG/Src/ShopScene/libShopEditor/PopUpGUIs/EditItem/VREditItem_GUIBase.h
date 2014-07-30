@@ -12,6 +12,7 @@ namespace VR	{
 		virtual ~EditItem_GUIBase() = 0;
 
 		static EditItem_GUIBase * createInstance(AbstractObject * apAbstractObject);
+		osg::ref_ptr<AbstractObject> getAbstractObject();
 
 	public slots:
 		virtual void slotBrowseDirectory();

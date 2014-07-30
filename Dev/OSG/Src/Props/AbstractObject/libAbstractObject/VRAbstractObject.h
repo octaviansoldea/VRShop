@@ -36,9 +36,10 @@ namespace VR	{
 		virtual osg::Object* clone(const osg::CopyOp& copyop) const = 0;
 
 		static osg::ref_ptr<AbstractObject> createInstance(const std::string & astrClassName);
+		
 
 		virtual std::string getSQLFormat() const;
-		virtual std::string getSQLCommand() const {return "";};
+		virtual std::string getSQLCommand() const {return "";}
 
 		virtual void initFromSQLData(const std::string & astrSQLData) = 0;
 		virtual void initFromSQLData(std::vector<std::string> & avecstrSQLData);

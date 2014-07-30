@@ -33,6 +33,7 @@ Cupboard::Cupboard(const Cupboard& cup,const CopyOp& copyop) : Furniture(cup, co
 	CupboardParams aCup;
 	cup.getParams(aCup);
 	setParams(aCup);
+	m_arrSQLCommandLines = cup.m_arrSQLCommandLines;
 
 	setName("Cupboard_"+tostr(getAbstractObjectNo()));
 }

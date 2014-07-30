@@ -49,6 +49,7 @@
       ${CMAKE_SOURCE_DIR}/Props/GeometricShape/libGeometricShape
       ${CMAKE_SOURCE_DIR}/Props/Equipment/Furniture/libFurniture
       ${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProduct
+	  ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libLighting
     )
     
     SET(LIBS_COMMON 
@@ -76,6 +77,7 @@
     	libScene
     	libProduct
     	libOSGQTViewer
+		libLighting
     )
     
     SET(SRCS

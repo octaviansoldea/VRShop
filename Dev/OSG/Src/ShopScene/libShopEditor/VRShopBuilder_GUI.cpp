@@ -8,7 +8,6 @@
 
 
 #include "VRInsertNewItem_GUI.h"
-//#include "VRSaveAs_GUI.h"
 
 #include "VRShopBuilder.h"
 #include "VRScene.h"
@@ -139,6 +138,8 @@ void ShopBuilder_GUI::buildConnections() {
 	connect(actionSave, SIGNAL(triggered()), this, SLOT(slotSaveDB()));
 	connect(actionSave_As, SIGNAL(triggered()), this, SLOT(slotSaveAsDB()));
 	connect(actionClose, SIGNAL(triggered()), this, SLOT(slotCloseDB()));
+
+	connect(m_pCameraController,SIGNAL(signalUpdateCameraGUI()),m_pOSGQTWidget,SLOT(update()));
 
 	connect(m_p_LineEdit_Search,SIGNAL(returnPressed()), this,SLOT(slotSearchScene()));
 	connect(m_p_ToolButton_Search,SIGNAL(pressed()), this,SLOT(slotSearchScene()));

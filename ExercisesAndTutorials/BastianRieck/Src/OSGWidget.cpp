@@ -1,4 +1,7 @@
-#include "OSGWidget.h"
+#include <QDebug>
+
+#include <QKeyEvent>
+#include <QWheelEvent>
 
 #include <osg/Camera>
 
@@ -17,10 +20,14 @@
 #include <stdexcept>
 #include <vector>
 
-#include <QDebug>
+#include "OSGWidget.h"
 
-#include <QKeyEvent>
-#include <QWheelEvent>
+
+#ifndef GL_DOUBLE
+    #define GL_DOUBLE 0x140A
+    typedef double GLdouble;
+#endif
+
 
 OSGWidget::OSGWidget( QWidget* parent,
                       const QGLWidget* shareWidget,

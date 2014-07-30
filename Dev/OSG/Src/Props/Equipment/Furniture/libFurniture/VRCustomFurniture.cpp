@@ -22,6 +22,7 @@ CustomFurniture::CustomFurniture(const CustomFurniture& cf,const CopyOp& copyop)
 	cf.getParams(aCf);
 	setParams(aCf);
 
+	m_arrSQLCommandLines = cf.m_arrSQLCommandLines;
 	setName("CustomFurniture_"+tostr(getAbstractObjectNo()));
 }
 

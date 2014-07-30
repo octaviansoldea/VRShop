@@ -6,6 +6,10 @@
 #include <osg/TextureRectangle>
 #include <osg/TexMat>
 #include <osgDB/ReadFile>
+#include <osg/Material>
+
+#include <osg/Light>
+#include <osg/LightSource>
 
 #include "VRUntransformedPlate2D.h"
 
@@ -43,6 +47,32 @@ void UntransformedPlate2D::setColor(const vector < float > & aarrflColor) {
 	pColors->push_back(vec4);
 	m_pGeometry->setColorArray(pColors.get());
 	m_pGeometry->setColorBinding(Geometry::BIND_PER_VERTEX);
+
+
+	//osg::Light * pLight = new osg::Light();
+	//pLight->setLightNum(1);
+	//pLight->setAmbient(osg::Vec4(1.0, 1.0, 1.0, 1.0));
+	//pLight->setDiffuse(osg::Vec4(1.0, 1.0, 1.0, 1.0));
+	//pLight->setSpecular(osg::Vec4(1.0, 1.0, 1.0, 1.0));
+	//pLight->setPosition(osg::Vec4(0.0, 0.0, 1.0, 1.0));
+
+	osg::LightSource * pLightSource = new osg::LightSource();
+	//pLightSource->setLight(pLight);
+	//pLightSource->setLocalStateSetModes(osg::StateAttribute::ON);
+
+	//osg::StateSet * pLightStateSet =  m_pGeometry->getOrCreateStateSet();
+	//pLightSource->setStateSetModes(*pLightStateSet, osg::StateAttribute::ON);
+	//pLightStateSet->setMode(GL_LIGHTING,osg::StateAttribute::OVERRIDE|osg::StateAttribute::INHERIT);
+
+	//osg::ref_ptr<osg::Material> pMaterial = new osg::Material; 
+	//pMaterial->setColorMode(Material::DIFFUSE);
+	//pMaterial->setAmbient(Material::FRONT_AND_BACK, Vec4(1, 1, 1, 1.0));
+	//pMaterial->setDiffuse(Material::FRONT_AND_BACK, Vec4(0.9, 0.3, 0.4, 1.0));
+	//pMaterial->setSpecular(Material::FRONT_AND_BACK, Vec4(1.0, 1.0, 1.0, 1.0));
+	//pMaterial->setShininess(Material::FRONT_AND_BACK, 64);
+
+ //   pLightStateSet->setMode(GL_LIGHTING, StateAttribute::ON);
+	//pLightStateSet->setAttributeAndModes(pMaterial.get(), osg::StateAttribute::ON);
 }
 
 //--------------------------------------------------------------

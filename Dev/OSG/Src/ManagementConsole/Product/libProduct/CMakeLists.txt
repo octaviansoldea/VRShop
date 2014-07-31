@@ -36,6 +36,7 @@
     	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libMngtController
     	${CMAKE_SOURCE_DIR}/Props/Scene/libScene
     	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_OSG
+		${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libOSGQTViewer
     	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_QT
         ${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
     	${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor/PopUpGUIs

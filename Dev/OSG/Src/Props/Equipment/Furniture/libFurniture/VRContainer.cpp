@@ -32,7 +32,6 @@ VR::Furniture(cont, copyop)	{
 	ContainerParams aCont;
 	cont.getParams(aCont);
 	setParams(aCont);
-	m_arrSQLCommandLines = cont.m_arrSQLCommandLines;
 
 	setName("Container_"+tostr(getAbstractObjectNo()));
 }

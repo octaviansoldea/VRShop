@@ -92,7 +92,6 @@ void CameraController::slotUpdateCameraGUI() {
 
 void CameraController::slotCameraHomePosition() {
 	m_pKeyboardMouseManipulatorShopEditor->home(0);
-	emit signalUpdateCameraGUI();
 }
 
 
@@ -103,8 +102,6 @@ void CameraController::slotSetCameraPosition() {
 	vec3dEye[1] = m_p_DoubleSpinBox_CameraPositionY->value();
 	vec3dEye[2] = m_p_DoubleSpinBox_CameraPositionZ->value();
 	m_pKeyboardMouseManipulatorShopEditor->setTransformation(vec3dEye, vec3dCenter, vec3dUp);
-	
-	emit signalUpdateCameraGUI();
 }
 
 void CameraController::slotSetCameraPositionDefault() {
@@ -114,7 +111,6 @@ void CameraController::slotSetCameraPositionDefault() {
 	vec3dEye[1] = m_p_DoubleSpinBox_CameraPositionY->value();
 	vec3dEye[2] = m_p_DoubleSpinBox_CameraPositionZ->value();
 	m_pKeyboardMouseManipulatorShopEditor->setHomePosition(vec3dEye, vec3dCenter, vec3dUp);	
-	emit signalUpdateCameraGUI();
 }
 
 void CameraController::slotSetCameraHeadingDirection() {
@@ -124,7 +120,6 @@ void CameraController::slotSetCameraHeadingDirection() {
 	vec3dCenter[1] = m_p_DoubleSpinBox_CameraHeadingDirectionY->value();
 	vec3dCenter[2] = m_p_DoubleSpinBox_CameraHeadingDirectionZ->value();
 	m_pKeyboardMouseManipulatorShopEditor->setTransformation(vec3dEye, vec3dCenter, vec3dUp);
-	emit signalUpdateCameraGUI();
 }
 
 void CameraController::slotSetCameraHeadingDirectionDefault() {
@@ -134,7 +129,6 @@ void CameraController::slotSetCameraHeadingDirectionDefault() {
 	vec3dCenter[1] = m_p_DoubleSpinBox_CameraHeadingDirectionY->value();
 	vec3dCenter[2] = m_p_DoubleSpinBox_CameraHeadingDirectionZ->value();
 	m_pKeyboardMouseManipulatorShopEditor->setHomePosition(vec3dEye, vec3dCenter, vec3dUp);
-	emit signalUpdateCameraGUI();
 }
 
 

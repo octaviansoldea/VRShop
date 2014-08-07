@@ -1,7 +1,6 @@
 #include "BasicStringDefinitions.h"
 
 #include <iostream>
-#include <QVariant>
 
 #include "VRAbstractGeomShape.h"
 

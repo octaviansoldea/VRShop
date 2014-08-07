@@ -4,7 +4,6 @@
 #include "VRAbstractGeomShape.h"
 #include "VRUntransformedSphere.h"
 
-class ostream;
 
 namespace VR	{
 	struct SphereParams : public AbstractGeomShapeParams, public UntransformedSphereParams	{

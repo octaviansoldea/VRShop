@@ -8,10 +8,8 @@
 #include <vector>
 #include <string>
 
-#include "VRDataStructureItem.h"
-
-
 namespace VR	{
+	class DataStructureItem;
 
 	struct DataStructureModelParams	{
 		QList <QString> data;

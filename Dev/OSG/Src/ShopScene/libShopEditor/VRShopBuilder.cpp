@@ -19,8 +19,6 @@
 
 #include "VRAbstractGeomShape.h"
 
-#include "VRLighting.h"
-
 #include "VRSaveAs_GUI.h"
 
 #include "VRPickAndDragHandlerShopEditor.h"
@@ -47,51 +45,34 @@ m_strDBFileName("")	{
 
 ShopBuilder::ShopBuilder(OSGQT_Widget * apOSGQTWidget) :
 m_pOSGQTWidget(apOSGQTWidget),
-	m_strDBFileName("")	{
-		m_pScene = new Scene();
-		addScene(m_pScene);	//Adds the Scene into the vector of scenes
+m_strDBFileName("")	{
+	m_pScene = new Scene();
+	addScene(m_pScene);	//Adds the Scene into the vector of scenes
 
-		//Reuse of textures => memory optimization taken from "OSG Cookbook"
-		osgDB::Registry::instance()->setReadFileCallback(new VR::ReadAndSaveFileCallback);
-		osgDB::Registry::instance()->getOrCreateSharedStateManager();
-		osgDB::SharedStateManager* ssm = osgDB::Registry::instance()->getSharedStateManager();
-		if(ssm) {
-			ssm->share(m_pScene.get());
-		}
+	//Reuse of textures => memory optimization taken from "OSG Cookbook"
+	osgDB::Registry::instance()->setReadFileCallback(new VR::ReadAndSaveFileCallback);
+	osgDB::Registry::instance()->getOrCreateSharedStateManager();
+	osgDB::SharedStateManager* ssm = osgDB::Registry::instance()->getSharedStateManager();
+	if(ssm) {
+		ssm->share(m_pScene.get());
+	}
 
-		//These are necessary parts of any file
-		ref_ptr<Node> pAxes = osgDB::readNodeFile("../../../Resources/Models3D/axes.osgt");
-		ref_ptr<Grid> pGrid = new Grid;
-		m_pScene->addChild(pAxes);
-		m_pScene->addChild(pGrid);
+	//These are necessary parts of any file
+	ref_ptr<Node> pAxes = osgDB::readNodeFile("../../../Resources/Models3D/axes.osgt");
+	ref_ptr<Grid> pGrid = new Grid;
+	m_pScene->addChild(pAxes);
+	m_pScene->addChild(pGrid);
 
-		//A pointer to products sent to the scene
-		m_pProductMgr = new ProductManager;
-		Node * pProductsRepresentation = m_pProductMgr->getProductsRepresentation();
-		m_pScene->addChild(pProductsRepresentation);
+	//A pointer to products sent to the scene
+	m_pProductMgr = new ProductManager;
+	Node * pProductsRepresentation = m_pProductMgr->getProductsRepresentation();
+	m_pScene->addChild(pProductsRepresentation);
 
-		m_pEventHandler = new PickAndDragHandlerShopEditor;
+	m_pEventHandler = new PickAndDragHandlerShopEditor;
 
-		m_pOSGQTWidget->setSceneData(m_pScene);
-		m_pOSGQTWidget->setCameraManipulator(new KeyboardMouseManipulatorShopEditor);
-		m_pOSGQTWidget->addEventHandler(m_pEventHandler);
-
-		//Insert lighting
-		//ref_ptr<Light> pLight = new osg::Light();
-		//pLight->setPosition(osg::Vec4(1,-10, 5, 1));
-		//pLight->setAmbient(osg::Vec4(0.2, 0.2, 0.2, 1.0));
-		//pLight->setDiffuse(osg::Vec4(0.7, 0.4, 0.6, 1.0));
-		//pLight->setSpecular(osg::Vec4(1.0, 1.0, 1.0, 1.0));
-
-		//ref_ptr<LightSource> pLightSource = new LightSource();
-		//pLightSource->setLight(pLight);
-		//pLightSource->setLocalStateSetModes(StateAttribute::ON);
-
-		//StateSet * pLightStateSet = m_pScene->getOrCreateStateSet();
-		//pLightSource->setStateSetModes(*pLightStateSet, StateAttribute::ON);
-		//pLightStateSet->setMode(GL_LIGHTING,StateAttribute::OVERRIDE | StateAttribute::INHERIT); 
-
-		//m_pScene->addChild(pLightSource);
+	m_pOSGQTWidget->setSceneData(m_pScene);
+	m_pOSGQTWidget->setCameraManipulator(new KeyboardMouseManipulatorShopEditor);
+	m_pOSGQTWidget->addEventHandler(m_pEventHandler);
 }
 
 //----------------------------------------------------------------------
@@ -183,7 +164,7 @@ void ShopBuilder::newDB()	{
 	m_pScene->addChild(pAxes);
 	m_pScene->addChild(pGrid);
 
-
+	
 	//A pointer to products sent to the scene
 	Node * pProductsRepresentation = m_pProductMgr->getProductsRepresentation();
 	m_pScene->addChild(pProductsRepresentation);
@@ -237,7 +218,7 @@ void ShopBuilder::readDB(const string & astrDBFileName)	{
 		if (strClassName == "ProductDisplay")	{
 			vector<string> vecstrObjectData = dbMgr.getObjectData(*it);
 			m_pProductMgr->initFromSQLData(vecstrObjectData);
-
+			
 			continue;
 		}
 
@@ -323,12 +304,23 @@ void ShopBuilder::saveDB(const string & astrDBFileName)	{
 
 		dbMgr.insertObject(strSceneName,vecstrData);
 	}
-	//Here add products into the DB
+
+
+	//Here add products into the scene DB
 	vector<string> vecstrData;
 	vecstrData.push_back(strSceneName);
-	m_pProductMgr->preparedObjectData(vecstrData,strSceneName);
-
+	m_pProductMgr->preparedObjectData(vecstrData,strSceneName);	
 	dbMgr.insertObject(strSceneName,vecstrData);
+
+
+	//Add products into the product DB
+	vector<string> vecstrProducts;
+	string strProductsDB = "../../../Databases/Products.db";
+	m_pProductMgr->prepareProductsData(vecstrProducts);
+
+	dbMgrParams.m_qstrDBName = strProductsDB.c_str();
+	DatabaseManagerShopEditor dbMgrProducts(dbMgrParams);
+	dbMgrProducts.insertProduct(vecstrProducts);
 }
 
 //----------------------------------------------------------------------
@@ -366,7 +358,7 @@ bool ShopBuilder::searchScene(const string & astrSearchTerm, DataStructureModel 
 
 	SceneObjectsSearchShopEditor * pSceneObjectsSearchShopEditor = 
 		new SceneObjectsSearchShopEditor(strSearchTerm.c_str(), m_pScene);
-
+	
 	if (!pSceneObjectsSearchShopEditor->getModel())	{
 		delete pSceneObjectsSearchShopEditor;
 		return bRes;

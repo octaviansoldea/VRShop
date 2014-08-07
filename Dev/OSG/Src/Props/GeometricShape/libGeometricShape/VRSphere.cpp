@@ -101,13 +101,15 @@ void VR::Sphere::init(const SphereParams & aSphereParams)	{
 //----------------------------------------------------------------------
 
 void VR::Sphere::setColor(const std::vector < float > & aarrflColor)	{
-	m_pUntransformedSphere->setColor(aarrflColor);
+	m_arrflRGBA = aarrflColor;
+	m_pUntransformedSphere->setColor(m_arrflRGBA);
 }
 
 //----------------------------------------------------------------------
 
 void VR::Sphere::setTexture(const std::string & astrFileName) {
-	m_pUntransformedSphere->setTexture(astrFileName);
+	m_strFileNameTexture = astrFileName;
+	m_pUntransformedSphere->setTexture(m_strFileNameTexture);
 }
 
 //----------------------------------------------------------

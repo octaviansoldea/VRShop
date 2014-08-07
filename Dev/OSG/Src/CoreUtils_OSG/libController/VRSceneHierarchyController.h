@@ -16,11 +16,12 @@
 
 #include <QObject>
 
-#include "VRScene.h"
+#include <osg/ref_ptr>
 
 class QTreeView;
 
 namespace VR {
+	class Scene;
 	class PickAndDragHandlerShopEditor;
 
 	struct SceneHierarchyController : public QObject {

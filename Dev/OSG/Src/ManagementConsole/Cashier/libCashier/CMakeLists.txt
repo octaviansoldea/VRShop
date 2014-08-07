@@ -29,13 +29,13 @@ ENDIF(Qt5_FOUND)
 INCLUDE_DIRECTORIES(
 	${OPENSCENEGRAPH_INCLUDE_DIRS}
 	${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
+	${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
+	${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProduct
+    ${CMAKE_SOURCE_DIR}/Props/Avatar/libAvatar
+	${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgent
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Cashier/libCashier
 	${CMAKE_BINARY_DIR}/ManagementConsole/Cashier/libCashier
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Cashier/libCashier/View
-	${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
-	${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProduct
-	${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgent
-    ${CMAKE_SOURCE_DIR}/Props/Avatar/libAvatar
 )
 
 #MOC according to the Qt version

@@ -1,7 +1,6 @@
 #ifndef VR_SHOPPING_PLACE_H
 #define VR_SHOPPING_PLACE_H
 
-#include <QString>
 #include <osg/ref_ptr>
 
 namespace VR	{
@@ -12,15 +11,13 @@ namespace VR	{
 	class Lighting;
 	class ProductManager;
 	class AvatarManagerClient;
-	class Grid;
 	class PickAndDragHandlerShopClient;
 	class Basket;
 
 	struct ShoppingPlace {
 		ShoppingPlace(
 			OSGQT_Widget * apOSGQTWidget,
-			//Debug viewer
-			//OSGQT_Widget * apOSGQTWidgetMap,
+			OSGQT_Widget * apOSGQTWidgetMap,
 			std::string & astrShopScene,
 			std::string & astrAvatarName);
 
@@ -35,16 +32,15 @@ namespace VR	{
 		bool createClientScene(const std::string & astrSceneFileName);
 
 		OSGQT_Widget * m_pOSGQTWidget;
-		//Debug viewer
-		//OSGQT_Widget * m_pOSGQTWidgetMap;
+		OSGQT_Widget * m_pOSGQTWidgetMap;
 		std::string m_strDBFileName;
 		std::string m_strAvatarName;
 
 		osg::ref_ptr<PickAndDragHandlerShopClient> m_pPickAndDragHandlerShopClient;
 
 		osg::ref_ptr<Scene> m_pScene;
-
-
+		
+		
 		ProductManager * m_pProductMgr;
 
 		AbstractUser * m_pAbstractUser;

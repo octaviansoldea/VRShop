@@ -24,20 +24,22 @@ namespace VR	{
 		osg::Node * getProductsRepresentation();
 
 		osg::Node * getChild(const std::string & astrChildName);
-		//inline Node* getChild( unsigned  int i ) { return _children[i].get(); }
-		//inline const Node* getChild( unsigned  int i ) const { return _children[i].get(); }
+        //inline Node* getChild( unsigned  int i ) { return _children[i].get(); }
+        //inline const Node* getChild( unsigned  int i ) const { return _children[i].get(); }
 
 		ProductShopEditor * getProduct(const AbstractObject * apAbstractObject);
 
 		void addNewProduct();
 		void addNewProduct(ProductShopEditor * apProductShopEditor);
-		//		void removeProduct();
+//		void removeProduct();
 		void removeProduct(ProductShopEditor * apProductShopEditor);
 
 		bool modifyProduct(ProductShopEditor * apProductShopEditor);
 
 		void preparedObjectData(std::vector<std::string> &avecItems, std::string & astrParent);
 		void initFromSQLData(std::vector<std::string> & avecstrSQLData);
+
+		void prepareProductsData(std::vector<std::string> &avecProducts);
 
 	private:
 		osg::ref_ptr<osg::Group> m_pgrpProductsRepresentation;

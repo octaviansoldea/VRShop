@@ -18,12 +18,8 @@
 
 namespace VR {
 
-	class KeyboardMouseManipulator : public osgGA::OrbitManipulator
-	{
-//		typedef osgGA::OrbitManipulator inherited;
-
+	class KeyboardMouseManipulator : public osgGA::OrbitManipulator	{
     public:
-
         KeyboardMouseManipulator(int flags = DEFAULT_SETTINGS);
         KeyboardMouseManipulator(const KeyboardMouseManipulator& cm,
                              const osg::CopyOp& copyOp = osg::CopyOp::SHALLOW_COPY);
@@ -31,7 +27,6 @@ namespace VR {
         virtual bool handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa);
 
 	private:
-
 		bool keyDown(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa);
 		bool keyUp(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter &aa);
 

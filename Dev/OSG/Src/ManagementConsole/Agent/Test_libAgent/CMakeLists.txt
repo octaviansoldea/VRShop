@@ -8,7 +8,6 @@ IF(Qt5_FOUND)
     ${Qt5Core_INCLUDE_DIRS}
     ${Qt5Gui_INCLUDE_DIRS}
     ${Qt5Widgets_INCLUDE_DIRS}
-    ${Qt5Sql_INCLUDE_DIRS}
   )
 ELSE(Qt5_FOUND)
   IF(QT_USE_FILE)
@@ -55,7 +54,6 @@ IF(Qt5_FOUND)
 	${Qt5Core_LIBRARIES}
     ${Qt5Gui_LIBRARIES}
     ${Qt5Widgets_LIBRARIES}
-    ${Qt5Sql_LIBRARIES}
 	${LIBS_COMMON}
   )
 ELSEIF(NOT Qt5_FOUND AND Qt4_FOUND)

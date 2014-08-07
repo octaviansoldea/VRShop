@@ -5,7 +5,6 @@
 #include <string>
 #include <vector>
 
-
 namespace VR	{
 	class BasicOSGOperations	{
 	public:

@@ -8,9 +8,8 @@ SET(CMAKE_DEBUG_POSTFIX "D")
 IF(Qt5_FOUND)
   INCLUDE_DIRECTORIES(
     ${Qt5Core_INCLUDE_DIRS}
-    ${Qt5Gui_INCLUDE_DIRS}
+	${Qt5OpenGL_INCLUDE_DIRS}
     ${Qt5Widgets_INCLUDE_DIRS}
-    ${Qt5OpenGL_INCLUDE_DIRS}
   )
 ELSE(Qt5_FOUND)
   #Assume Qt4_FOUND, if we are here

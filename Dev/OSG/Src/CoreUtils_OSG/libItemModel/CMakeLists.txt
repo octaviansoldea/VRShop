@@ -7,10 +7,6 @@ SET(CMAKE_DEBUG_POSTFIX "D")
 IF(Qt5_FOUND)
   INCLUDE_DIRECTORIES(
     ${Qt5Core_INCLUDE_DIRS}
-    ${Qt5Gui_INCLUDE_DIRS}
-    ${Qt5Widgets_INCLUDE_DIRS}
-    ${Qt5OpenGL_INCLUDE_DIRS}
-    ${Qt5Sql_INCLUDE_DIRS}
   )
 ELSE(Qt5_FOUND)
   #Assume Qt4_FOUND, if we are here
@@ -22,7 +18,6 @@ ELSE(Qt5_FOUND)
 
   INCLUDE_DIRECTORIES(
        ${QT_INCLUDE_DIR}
-	   ${QT_QTSQL_INCLUDE_DIR}
   )
 ENDIF(Qt5_FOUND)
 #end Qt
@@ -46,11 +41,8 @@ ENDIF()
 #General includes, irrespective of the Qt version
 INCLUDE_DIRECTORIES(
 	${OPENSCENEGRAPH_INCLUDE_DIRS}
-#	${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
-#	${CMAKE_SOURCE_DIR}/Props/Scene/libScene
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_OSG
     ${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
-#	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libPicker
 )
 
 #Define sources to be later added into the library

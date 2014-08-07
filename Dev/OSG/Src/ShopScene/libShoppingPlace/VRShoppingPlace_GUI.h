@@ -40,7 +40,7 @@ namespace VR	{
 		virtual void resizeEvent(QResizeEvent *event);
 
 	private slots:
-		void slotProductClicked(const VR::AbstractObject * apAbstractObject);
+		void slotProductClicked(const AbstractObject * apAbstractObject);
 		void slotCashierClicked();
 		void slotAvatarClicked(const Avatar * apAvatar);
 	};

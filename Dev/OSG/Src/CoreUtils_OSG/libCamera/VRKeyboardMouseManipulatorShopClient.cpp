@@ -14,12 +14,12 @@
 /* Modified by Matej Steinbacher and Octavian Soldea */
 
 #include <iostream>
+#include "BasicDefinitions.h"
 
 #include <osgGA/GUIEventAdapter>
 #include <osg/ComputeBoundsVisitor>
 #include <osg/MatrixTransform>
 
-#include "BasicDefinitions.h"
 #include "VRKeyboardMouseManipulatorShopClient.h"
 
 using namespace VR;

@@ -7,10 +7,6 @@
 #include <osg/TextureRectangle>
 #include <osg/TexMat>
 
-#include <osg/Material>
-#include <osg/Light>
-#include <osg/LightSource>
-
 
 #include "VRUntransformedPlate2D.h"
 #include "VRUntransformedPlate3D.h"
@@ -98,45 +94,15 @@ void main_UntransformedPlate2D_Texture(ref_ptr<Group> pScene)
 
 void main_UntransformedPlate3D_Color(ref_ptr<Group> pScene)
 {
+	ref_ptr<UntransformedPlate3D> pUntransformedPlate3D = new UntransformedPlate3D();
 	vector < float > arrflColor;
-	arrflColor.push_back(0.0);
+	arrflColor.push_back(0.80);
+	arrflColor.push_back(0.80);
+	arrflColor.push_back(0.10);
 	arrflColor.push_back(1.0);
-	arrflColor.push_back(0.0);
-	arrflColor.push_back(1.0);
+	pUntransformedPlate3D->setColor(arrflColor);
 
-	vector < float > arrflColor1;
-	arrflColor1.push_back(1.0);
-	arrflColor1.push_back(0.0);
-	arrflColor1.push_back(0.0);
-	arrflColor1.push_back(1.0);
-
-	Plate3DParams pP1;
-	pP1.m_arrflRGBA = arrflColor1;
-	pP1.m_flPosX = 0;
-	ref_ptr<Plate3D > pPlate1 = new Plate3D(pP1);
-	pScene->addChild(pPlate1);
-	
-	Plate3DParams pP;
-	pP.m_arrflRGBA = arrflColor;
-	pP.m_flPosX = 1.2;
-	ref_ptr<Plate3D > pPlate = new Plate3D(pP);
-	pScene->addChild(pPlate);
-
-
-	ref_ptr<Light> pLight = new osg::Light();
-	pLight->setPosition(osg::Vec4(1,-1, 1, 1));
-	pLight->setAmbient(osg::Vec4(0.2, 0.2, 0.2, 1.0));
-	pLight->setDiffuse(osg::Vec4(0.7, 0.4, 0.6, 1.0));
-	pLight->setSpecular(osg::Vec4(1.0, 1.0, 1.0, 1.0));
-
-	ref_ptr<LightSource> pLightSource = new osg::LightSource();
-	pLightSource->setLight(pLight);
-	pLightSource->setLocalStateSetModes(osg::StateAttribute::ON);
-	osg::StateSet * pLightStateSet = pScene->getOrCreateStateSet();
-	pLightSource->setStateSetModes(*pLightStateSet, osg::StateAttribute::ON);
-	pLightStateSet->setMode(GL_LIGHTING,osg::StateAttribute::OVERRIDE|osg::StateAttribute::INHERIT); 
-
-	pScene->addChild(pLightSource);
+	pScene->addChild(pUntransformedPlate3D);
 }
 
 //--------------------------------------------------------------------
@@ -290,7 +256,7 @@ int main(int argc, char * argv[])	{
 	ref_ptr<Node> pAxes = osgDB::readNodeFile("../../../../Resources/Models3D/axes.osgt");
 	pScene->addChild(pAxes);
 
-	int nSelection = 4;
+	int nSelection = 11;
 	switch (nSelection)	{
 	case 1: main_UntransformedPlate2D_Color(pScene); break;
 	case 2: main_UntransformedPlate2D_Texture(pScene); break;

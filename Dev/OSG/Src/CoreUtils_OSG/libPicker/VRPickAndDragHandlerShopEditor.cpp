@@ -1,31 +1,30 @@
-/* -*-c++-*- OpenSceneGraph - Copyright (C) 1998-2006 Robert Osfield
-*
-* This library is open source and may be redistributed and/or modified under
-* the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
-* (at your option) any later version.  The full license is in LICENSE file
-* included with this distribution, and on the openscenegraph.org website.
-*
-* This library is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* OpenSceneGraph Public License for more details.
-*/
-
-/* Modified by Matej Steinbacher and Octavian Soldea */
-
+    /* -*-c++-*- OpenSceneGraph - Copyright (C) 1998-2006 Robert Osfield
+    *
+    * This library is open source and may be redistributed and/or modified under
+    * the terms of the OpenSceneGraph Public License (OSGPL) version 0.0 or
+    * (at your option) any later version.  The full license is in LICENSE file
+    * included with this distribution, and on the openscenegraph.org website.
+    *
+    * This library is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    * OpenSceneGraph Public License for more details.
+    */
+    
+    /* Modified by Matej Steinbacher and Octavian Soldea */
+    
 #include <iostream>
 #include <fstream>
 
+#include "BasicDefinitions.h"
+
 #include <osgGA/GUIEventAdapter>
 #include <osgGA/GUIActionAdapter>
-
 #include <osgViewer/Viewer>
 
 #include "VRScene.h"
 #include "VRAbstractObject.h"
 #include "VRBoundingBox.h"
-
-#include "BasicDefinitions.h"
 
 #include <QStringListModel>
 
@@ -60,8 +59,8 @@ bool PickAndDragHandlerShopEditor::handle(const GUIEventAdapter& ea, GUIActionAd
 
 	if((PickAndDragHandler::handle(ea, aa) == false) || 
 		(m_pPickedObject == NULL))	{
-		bRes = false;
-		return(bRes);
+			bRes = false;
+			return(bRes);
 	}
 
 	int nEventType = ea.getEventType();
@@ -207,7 +206,7 @@ void PickAndDragHandlerShopEditor::groupSelection(ref_ptr<Scene> apScene)	{
 	}
 
 	vector<ref_ptr<VR::AbstractObject>>::iterator it = m_pvecPickedObjects.begin();
-	
+
 	ref_ptr<VR::AbstractObject> pGroupedObject = dynamic_cast<AbstractObject*>(AbstractObject::createInstance("CustomFurniture").get());
 	for (it; it != m_pvecPickedObjects.end(); it++)	{
 		it->get()->setIsTargetPick(false);
@@ -244,8 +243,6 @@ void PickAndDragHandlerShopEditor::splitSelection(ref_ptr<Scene> apScene)	{
 		apScene->removeChild(*it);
 		int nI;
 		for (nI=0;nI<it->get()->getNumChildren(); nI++)	{
-			string strClassname = it->get()->getChild(nI)->className();
-
 			pAbstractObject = dynamic_cast<AbstractObject *>(it->get()->getChild(nI));
 			if(pAbstractObject == NULL) {
 				continue;
@@ -279,7 +276,7 @@ void PickAndDragHandlerShopEditor::duplicateSelection(ref_ptr<Scene> apScene)	{
 
 	//If selection not empty, open the dialog
 	DuplicateItem_GUI itemGUI;
-	
+
 	itemGUI.setWindowFlags(Qt::FramelessWindowHint);
 	bool bRes = itemGUI.exec();
 	const int nNumberOfCopies = itemGUI.m_pSpinBoxCopies->text().toInt();

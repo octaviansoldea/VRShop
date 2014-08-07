@@ -17,11 +17,10 @@
 #include <QObject>
 
 #include "VRPickAndDragHandler.h"
-
 #include "VRAbstractObject.h"
 
 namespace VR {
-	class AbstractUser;
+	
 
 	class PickAndDragHandlerShopClient : public QObject, public PickAndDragHandler	{
 
@@ -32,12 +31,8 @@ namespace VR {
 		~PickAndDragHandlerShopClient();
 		virtual bool handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa);
 
-		void setUser(AbstractUser * apAbstractUser);
-	private:
-		AbstractUser * m_pAbstractUser;
-
 	signals:
-		void signalProductPicked(const VR::AbstractObject * apAbstractObject);
+		void signalProductPicked(const AbstractObject * apAbstractObject);
 		void signalCashierPicked();
 	};
 }

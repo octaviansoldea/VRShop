@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include "VRAbstractObject.h"
 #include "VRScene.h"
 

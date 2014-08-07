@@ -20,13 +20,9 @@
 
 namespace VR {
 
-	class KeyboardMouseManipulatorShopEditor : public QObject, public KeyboardMouseManipulator
-	{
-	//	typedef KeyboardMouseManipulator inherited;
-
+	class KeyboardMouseManipulatorShopEditor : public QObject, public KeyboardMouseManipulator	{
 		Q_OBJECT
     public:
-
         KeyboardMouseManipulatorShopEditor(int flags = DEFAULT_SETTINGS);
         KeyboardMouseManipulatorShopEditor(const KeyboardMouseManipulatorShopEditor& cm,
                              const osg::CopyOp& copyOp = osg::CopyOp::SHALLOW_COPY);

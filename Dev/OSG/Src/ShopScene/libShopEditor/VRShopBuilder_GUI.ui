@@ -373,7 +373,7 @@ QSpinBox::down-arrow:off {border-left: 17px solid none; border-right: 17px solid
              <x>0</x>
              <y>0</y>
              <width>239</width>
-             <height>587</height>
+             <height>611</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_8">
@@ -4179,8 +4179,8 @@ QToolButton:hover {
      <rect>
       <x>187</x>
       <y>171</y>
-      <width>130</width>
-      <height>196</height>
+      <width>138</width>
+      <height>190</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -4322,7 +4322,7 @@ QToolButton:hover {
   <customwidget>
    <class>VR::OSGQT_Widget</class>
    <extends>QWidget</extends>
-   <header location="global">VROSGQT_Widget.h</header>
+   <header location="global">vrosgqt_widget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

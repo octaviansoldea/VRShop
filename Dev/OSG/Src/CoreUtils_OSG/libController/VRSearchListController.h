@@ -16,9 +16,10 @@
 
 #include <QObject>
 
-#include "VRScene.h"
+#include <osg/ref_ptr>
 
 namespace VR {
+	class Scene;
 	class PickAndDragHandlerShopEditor;
 	
 	struct SearchListController : public QObject {

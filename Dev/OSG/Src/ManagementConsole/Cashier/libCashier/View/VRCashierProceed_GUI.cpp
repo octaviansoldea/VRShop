@@ -1,8 +1,7 @@
-#include "VRCashierProceed_GUI.h"
-
-#include <osg/ref_ptr>
 #include <QStringListModel>
 #include <QListView>
+
+#include "VRCashierProceed_GUI.h"
 
 using namespace Ui;
 using namespace VR;

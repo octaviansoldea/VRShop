@@ -32,12 +32,12 @@ INCLUDE_DIRECTORIES(
 	${OPENSCENEGRAPH_INCLUDE_DIRS}
 	${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_QT
+	${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
+	${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProduct
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libPicker
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProductInterface
 	${CMAKE_BINARY_DIR}/ManagementConsole/Product/libProductInterface
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProductInterface/View
-	${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
-	${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProduct
 )
 
 #MOC according to the Qt version
@@ -58,7 +58,8 @@ SET(SRCS ${MOC_SRCS} ${UI_SRCS}
 	VRProductInterface.h VRProductInterface.cpp
 	VRProductBasketInterface.h VRProductBasketInterface.cpp
 	VRProductBasketInterfaceController.h VRProductBasketInterfaceController.cpp
-	${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProductInterface/View/VRProductBasketInterfaceItem_GUI.h ${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProductInterface/View/VRProductBasketInterfaceItem_GUI.cpp
+	${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProductInterface/View/VRProductBasketInterfaceItem_GUI.h
+	${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProductInterface/View/VRProductBasketInterfaceItem_GUI.cpp
 )
 
 

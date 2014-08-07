@@ -4,8 +4,6 @@
 #include "VRAbstractGeomShape.h"
 #include "VRUntransformedPolyhedron.h"
 
-class ostream;
-
 namespace VR {
 	struct PrismParams : public AbstractGeomShapeParams, public UntransformedPolyhedronParams {
 		PrismParams();

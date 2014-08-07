@@ -13,7 +13,7 @@ namespace VR	{
 	class Furniture : public AbstractObject	{
 	public:
 		Furniture(const FurnitureParams & aFurnitureParams);
-		Furniture(const Furniture& fur,const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY);
+		Furniture(const Furniture& fur,const osg::CopyOp& copyop=osg::CopyOp::DEEP_COPY_ALL);
 
 		virtual const char* className() const;
 

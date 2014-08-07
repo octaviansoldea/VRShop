@@ -131,14 +131,24 @@ bool PickAndDragHandler::handlePush(const MouseSignals & aMouseSignals, osgViewe
 			m_dbMouseLastGetYNormalized = flYNormalized;
 
 			//A vector of Nodes from a root node to a descendant
-			NodePath& nodePath = pPicker->getFirstIntersection().nodePath;
-
-			//Navigate through nodes and pick the "right" one
+			//NodePath& nodePath = pPicker->getFirstIntersection().nodePath;
+			bool bFoundIntersect = false;
 			int idx;
-			for(idx=nodePath.size()-1; idx>=0; idx--) {
-				m_pPickedObject = dynamic_cast<AbstractObject*>(nodePath[idx]);
-				if(m_pPickedObject != NULL && m_pPickedObject->getIsTargetPick() != false) {
-					break;
+
+			osgUtil::PolytopeIntersector::Intersections & intersections = pPicker->getIntersections();
+			osgUtil::PolytopeIntersector::Intersections::iterator itIntersect;
+			for(itIntersect = intersections.begin();
+				(itIntersect !=  intersections.end()) && (bFoundIntersect == false);
+				itIntersect++) {
+
+				const NodePath& nodePath = itIntersect->nodePath;
+				//Navigate through nodes and pick the "right" one
+				for(idx=nodePath.size()-1; idx>=0; idx--) {
+					m_pPickedObject = dynamic_cast<AbstractObject*>(nodePath[idx]);
+					if(m_pPickedObject != NULL && m_pPickedObject->getIsTargetPick() != false) {
+						bFoundIntersect = true;
+						break;
+					}
 				}
 			}
 

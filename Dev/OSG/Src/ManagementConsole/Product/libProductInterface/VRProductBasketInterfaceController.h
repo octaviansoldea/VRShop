@@ -2,8 +2,8 @@
 #define VR_PRODUCT_BASKET_INTERFACE_CONTROLLER_H
 
 namespace VR	{
-	class Basket;
 	class ProductShopClient;
+	class Basket;
 
 	class ProductBasketInterfaceController	{
 	public:

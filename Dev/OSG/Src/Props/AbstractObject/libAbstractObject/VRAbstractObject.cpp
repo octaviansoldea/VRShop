@@ -96,7 +96,6 @@ ref_ptr<AbstractObject> AbstractObject::createInstance(const string & astrClassN
 	}
 }
 
-
 //=======================================================================
 
 string AbstractObject::getSQLFormat() const {

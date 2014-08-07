@@ -2,12 +2,13 @@
 #define OSG_PICK_AND_DRAG_HANDLER_H
 
 #include <osgGA/GUIEventHandler>
+#include <osgViewer/Viewer>
 
-namespace osgViewer { class Viewer; };
-
-class AbstractObject;
+#include <osg/ref_ptr>
 
 namespace VR {
+	class AbstractObject;
+
 	class PickAndDragHandler : public osgGA::GUIEventHandler {
 	public:
 		PickAndDragHandler();

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
@@ -123,6 +123,26 @@ QLineEdit {
       <property name="styleSheet">
        <string notr="true">background-color:rgb(137,137,137);</string>
       </property>
+      <widget class="VR::OSGQT_Widget" name="m_pOSGQTWidgetMap" native="true">
+       <property name="geometry">
+        <rect>
+         <x>900</x>
+         <y>10</y>
+         <width>221</width>
+         <height>171</height>
+        </rect>
+       </property>
+       <property name="autoFillBackground">
+        <bool>false</bool>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QWidget	{
+	background-color: rgb(193,193,193);
+	border: 1px solid white;
+}
+</string>
+       </property>
+      </widget>
       <widget class="QToolButton" name="m_pToolButtonMyBasket">
        <property name="geometry">
         <rect>
@@ -1110,7 +1130,7 @@ basket</string>
   <customwidget>
    <class>VR::OSGQT_Widget</class>
    <extends>QWidget</extends>
-   <header location="global">VROSGQT_Widget.h</header>
+   <header location="global">vrosgqt_widget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

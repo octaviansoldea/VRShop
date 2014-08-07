@@ -13,7 +13,6 @@ class QPushButton;
 
 namespace VR	{
 	class ProductShopClient;
-	class Product;
 	class Basket;
 	class PickAndDragHandlerShopClient;
 

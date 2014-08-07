@@ -16,7 +16,7 @@
 
 #include <QObject>
 
-#include "VRAbstractObject.h"
+#include <osg/ref_ptr>
 
 class QComboBox;
 class QDoubleSpinBox;
@@ -54,7 +54,6 @@ namespace VR {
 
 			PickAndDragHandlerShopEditor * a_pPickAndDragHandlerShopEditor,
 			osg::ref_ptr<Scene> a_pScene);	//End of constructor
-
 
 	public slots:
 		void slotUpdatePickAndDragGUI();

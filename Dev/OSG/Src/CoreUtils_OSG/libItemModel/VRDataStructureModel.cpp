@@ -1,3 +1,5 @@
+#include "VRDataStructureItem.h"
+
 #include "VRDataStructureModel.h"
 
 using namespace VR;

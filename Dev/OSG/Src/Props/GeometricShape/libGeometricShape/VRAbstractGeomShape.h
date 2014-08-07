@@ -26,7 +26,6 @@ namespace VR {
 
 		std::vector < float > m_arrflRGBA;
 		std::string m_strFileNameTexture;
-
 	};
 }
 #endif //VR_ABSTRACT_GEOM_SHAPE_H

@@ -18,9 +18,10 @@
 
 #include "VRPickAndDragHandler.h"
 
-#include "VRAbstractObject.h"
+#include <osg/ref_ptr>
 
 namespace VR {
+	class AbstractObject;
 	class Scene;
 	class EditItem_GUIBase;
 	

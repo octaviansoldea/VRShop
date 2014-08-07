@@ -3,8 +3,6 @@
 
 #include "VRFurniture.h"
 
-class ostream;
-
 namespace VR	{
 	struct CustomFurnitureParams : public FurnitureParams	{
 	};
@@ -12,7 +10,7 @@ namespace VR	{
 	class CustomFurniture : public Furniture	{
 	public:
 		CustomFurniture(const CustomFurnitureParams & aCustomFurnitureParams);
-		CustomFurniture(const CustomFurniture& cf,const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY);
+		CustomFurniture(const CustomFurniture& cf,const osg::CopyOp& copyop=osg::CopyOp::DEEP_COPY_ALL);
 
 		virtual const char* className() const;
 		virtual osg::Object* cloneType() const;

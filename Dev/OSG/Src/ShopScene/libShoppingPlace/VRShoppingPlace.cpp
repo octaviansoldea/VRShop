@@ -5,6 +5,7 @@
 #include <QVBoxLayout>
 
 #include "VRScene.h"
+
 #include "VRProductShopClient.h"
 
 #include "VRProductManager.h"
@@ -20,11 +21,7 @@
 #include "VRRoom.h"
 #include "VRLighting.h"
 
-#include "VRFurniture.h"
-#include "VRPlate3D.h"
-#include "VRCylinder.h"
-#include "VRUntransformedSphere.h"
-#include "VRUntransformedPlate2D.h"
+#include "VRAbstractObject.h"
 
 #include "VRPickAndDragHandlerShopClient.h"
 #include "VRKeyboardMouseManipulatorShopClient.h"
@@ -32,7 +29,6 @@
 #include <osgDB/ReadFile>
 #include "VRReadAndSaveFileCallback.h"
 
-#include "VRGrid.h"
 #include "VROSGQT_Widget.h"
 
 #include "VRShoppingPlace.h"
@@ -44,91 +40,90 @@ using namespace std;
 //----------------------------------------------------------------------
 
 ShoppingPlace::ShoppingPlace(
-	OSGQT_Widget * apOSGQTWidget,
-	//Debug viewer
-	//OSGQT_Widget * apOSGQTWidgetMap,
-	string & astrShopScene,
-	string & astrAvatarName) :
+OSGQT_Widget * apOSGQTWidget,
+OSGQT_Widget * apOSGQTWidgetMap,
+string & astrShopScene,
+string & astrAvatarName) :
 m_pOSGQTWidget(apOSGQTWidget),
-	//Debug viewer
-	//m_pOSGQTWidgetMap(apOSGQTWidgetMap),
-	m_strDBFileName(astrShopScene),
-	m_strAvatarName(astrAvatarName)	{	
+m_pOSGQTWidgetMap(apOSGQTWidgetMap),
+m_strDBFileName(astrShopScene),
+m_strAvatarName(astrAvatarName)	{	
 
-		//Define a scene as a group
-		m_pScene = new Scene();
+	//Define a scene as a group
+	m_pScene = new Scene();
 
-		//Reuse of textures => memory optimization taken from "OSG Cookbook"
-		osgDB::Registry::instance()->setReadFileCallback(new VR::ReadAndSaveFileCallback);
-		osgDB::Registry::instance()->getOrCreateSharedStateManager();
-		osgDB::SharedStateManager* ssm = osgDB::Registry::instance()->getSharedStateManager();
-		if(ssm) {
-			ssm->share(m_pScene.get());
-		}
+	//Reuse of textures => memory optimization taken from "OSG Cookbook"
+	osgDB::Registry::instance()->setReadFileCallback(new VR::ReadAndSaveFileCallback);
+	osgDB::Registry::instance()->getOrCreateSharedStateManager();
+	osgDB::SharedStateManager* ssm = osgDB::Registry::instance()->getSharedStateManager();
+	if(ssm) {
+		ssm->share(m_pScene.get());
+	}
 
-		//Ref_ptr
-		m_pPickAndDragHandlerShopClient = new PickAndDragHandlerShopClient;
+	//Ref_ptr
+	m_pPickAndDragHandlerShopClient = new PickAndDragHandlerShopClient;
 
-		ref_ptr<KeyboardMouseManipulatorShopClient> pKeyboardMouseManipulatorShopClient =
-			new KeyboardMouseManipulatorShopClient;
+	ref_ptr<KeyboardMouseManipulatorShopClient> pKeyboardMouseManipulatorShopClient =
+		new KeyboardMouseManipulatorShopClient;
 
-		//Send scene to the Widget
-		m_pOSGQTWidget->setSceneData(m_pScene);
-		m_pOSGQTWidget->setCameraManipulator(pKeyboardMouseManipulatorShopClient);
-		m_pOSGQTWidget->addEventHandler(m_pPickAndDragHandlerShopClient);
-		m_pOSGQTWidget->show();
+	//Send scene to the Widget
+	m_pOSGQTWidget->setSceneData(m_pScene);
+	m_pOSGQTWidget->setCameraManipulator(pKeyboardMouseManipulatorShopClient);
+	m_pOSGQTWidget->addEventHandler(m_pPickAndDragHandlerShopClient);
+	m_pOSGQTWidget->show();
 
-		//Map of the Scene    
-		//Debug viewer
-		/*m_pOSGQTWidgetMap->setSceneData(m_pScene);
-		m_pOSGQTWidgetMap->setCameraManipulator(pKeyboardMouseManipulatorShopClient,false);
-		m_pOSGQTWidgetMap->show();*/
+	//Map of the Scene
+	QLayout * pLayoutMap = dynamic_cast<QLayout *>(m_pOSGQTWidgetMap->layout());
+	pLayoutMap->setMargin(2);
 
-		//Insert axes
-		ref_ptr<Node> pAxes = osgDB::readNodeFile("../../../Resources/Models3D/axes.osgt");
-		m_pScene->addChild(pAxes);
+	m_pOSGQTWidgetMap->setSceneData(m_pScene);
+	m_pOSGQTWidgetMap->setCameraManipulator(pKeyboardMouseManipulatorShopClient,false);
+	m_pOSGQTWidgetMap->show();
 
-		//Insert Scene objects
-		createClientScene(m_strDBFileName);
+	//Insert axes
+	ref_ptr<Node> pAxes = osgDB::readNodeFile("../../../Resources/Models3D/axes.osgt");
+	m_pScene->addChild(pAxes);
 
-		//A pointer to products sent to the scene
-		m_pProductMgr = new ProductManager;
-		Node * pProductsRepresentation = m_pProductMgr->getProductsRepresentation();
-		m_pScene->addChild(pProductsRepresentation);
+	//A pointer to products sent to the scene
+	m_pProductMgr = new ProductManager;
+	Node * pProductsRepresentation = m_pProductMgr->getProductsRepresentation();
+	m_pScene->addChild(pProductsRepresentation);
 
+	//Insert Scene objects
+	createClientScene(m_strDBFileName);
 
-		//Avatar
-		AvatarParams avatarParams;
-		avatarParams.m_pKeyboardMouseManipulatorShopClient = pKeyboardMouseManipulatorShopClient;
-		avatarParams.m_strAvatarFile = "../../../Resources/Models3D/avatarOut.osg";
-		avatarParams.m_strAvatarName = m_strAvatarName;
+	//Avatar
+	AvatarParams avatarParams;
+	avatarParams.m_pKeyboardMouseManipulatorShopClient = pKeyboardMouseManipulatorShopClient;
+	avatarParams.m_strAvatarFile = "../../../Resources/Models3D/avatarOut.osg";
+	avatarParams.m_strAvatarName = m_strAvatarName;
 
-		m_pAvatar = new Avatar(&avatarParams);
-		m_pScene->addChild(m_pAvatar);
+	m_pAvatar = new Avatar(&avatarParams);
+	m_pScene->addChild(m_pAvatar);
 
-		pKeyboardMouseManipulatorShopClient->setCameraPosition2Object(m_pAvatar);
+	pKeyboardMouseManipulatorShopClient->setCameraPosition2Object(m_pAvatar);
+	
+	m_pAbstractUser = new Visitor(m_pAvatar);
+	m_pBasket = m_pAbstractUser->getBasket();
 
-		m_pAbstractUser = new Visitor(m_pAvatar);
-		m_pBasket = m_pAbstractUser->getBasket();
-
-		//Other avatars
-		m_pAvatarMgr = new AvatarManagerClient(m_pAvatar);
-		m_pScene->addChild(m_pAvatarMgr->getAvatars());
-
-
-		//Insert room
-		Room room;
-		ref_ptr<MatrixTransform> pMt = dynamic_cast<MatrixTransform*>(room.createRoom().get());
-		m_pScene->addChild(pMt.get());
+	//Other avatars
+	m_pAvatarMgr = new AvatarManagerClient(m_pAvatar);
+	m_pScene->addChild(m_pAvatarMgr->getAvatars());
 
 
-		//Insert lighting
-		Lighting lighting;
-		ref_ptr<LightSource> pNode = lighting.createLights();
-		m_pScene->addChild(pNode);
+	//Insert room
+	Room room;
+	ref_ptr<MatrixTransform> pMt = dynamic_cast<MatrixTransform*>(room.createRoom().get());
+	m_pScene->addChild(pMt.get());
 
-		//Insert products
-		insertProducts();
+
+	//Insert lighting
+	Lighting lighting;
+	ref_ptr<LightSource> pNode = lighting.createLights();
+    m_pScene->addChild(pNode);
+
+	//Insert products
+	insertProducts();
 }
 
 //----------------------------------------------------------------------
@@ -179,11 +174,19 @@ bool ShoppingPlace::createClientScene(const string & astrSceneFileName)	{
 		const int nFindPos2 = it->find_first_of(";", nFindPos1+1);
 		string strClassName = it->substr(nFindPos1+1,nFindPos2-nFindPos1-1);
 
+		if (strClassName == "ProductDisplay")	{
+			vector<string> vecstrObjectData = db.getObjectData(*it);
+			m_pProductMgr->initFromSQLData(vecstrObjectData);
+
+			continue;
+		}
+
 		pAO = AbstractObject::createInstance(strClassName);
 		pAO->setDataVariance(Object::STATIC);
 		vector<string> vecstrObjectData = db.getObjectData(*it);
 
 		pAO->initFromSQLData(vecstrObjectData);
+
 		//Cashier should be pickable
 		if (pAO->getName() == "Cashier")	{
 			pAO->setIsTargetPick(true);

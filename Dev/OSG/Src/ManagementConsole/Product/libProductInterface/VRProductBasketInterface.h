@@ -12,8 +12,8 @@ class QToolButton;
 
 
 namespace VR	{
-	class Basket;
 	class ProductShopClient;
+	class Basket;
 	class ProductBasketInterfaceItem_GUI;
 	class ProductBasketInterfaceController;
 

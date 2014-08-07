@@ -3,9 +3,9 @@
 
 #include <vector>
 
-#include "VRTransaction.h"
-
 namespace VR	{
+	class Transaction;
+
 	class Receipt	{
 	public:
 		Receipt(const Transaction * apTransaction);

@@ -3,8 +3,6 @@
 
 #include "VRFurniture.h"
 
-class ostream;
-
 namespace VR	{
 	struct CupboardParams : public FurnitureParams	{
 		CupboardParams();
@@ -13,7 +11,7 @@ namespace VR	{
 	class Cupboard : public Furniture	{
 	public:
 		Cupboard(const CupboardParams & aCupboardParams);
-		Cupboard(const Cupboard& cup,const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY);
+		Cupboard(const Cupboard& cup,const osg::CopyOp& copyop=osg::CopyOp::DEEP_COPY_ALL);
 
 		virtual const char* className() const;
 		virtual osg::Object* cloneType() const;

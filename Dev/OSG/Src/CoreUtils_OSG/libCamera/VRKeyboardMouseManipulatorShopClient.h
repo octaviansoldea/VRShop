@@ -22,8 +22,7 @@
 
 namespace VR {
 
-	class KeyboardMouseManipulatorShopClient : public QObject, public KeyboardMouseManipulator
-	{
+	class KeyboardMouseManipulatorShopClient : public QObject, public KeyboardMouseManipulator	{
 		Q_OBJECT
     public:
 

@@ -1,6 +1,5 @@
 #include "VRCashierWelcome_GUI.h"
 
-#include <osg/ref_ptr>
 #include <QStringListModel>
 #include <QListView>
 

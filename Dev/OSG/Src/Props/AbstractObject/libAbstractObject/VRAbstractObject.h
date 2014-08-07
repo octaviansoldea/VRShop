@@ -27,7 +27,7 @@ namespace VR	{
 	class AbstractObject : public osg::MatrixTransform	{
 	public:
 		AbstractObject(const AbstractObjectParams & aAbstractObjectParams);
-		AbstractObject(const AbstractObject& ao,const osg::CopyOp& copyop=osg::CopyOp::SHALLOW_COPY);
+		AbstractObject(const AbstractObject& ao,const osg::CopyOp& copyop=osg::CopyOp::DEEP_COPY_ALL);
 
 		virtual ~AbstractObject() = 0;
 
@@ -36,7 +36,6 @@ namespace VR	{
 		virtual osg::Object* clone(const osg::CopyOp& copyop) const = 0;
 
 		static osg::ref_ptr<AbstractObject> createInstance(const std::string & astrClassName);
-		
 
 		virtual std::string getSQLFormat() const;
 		virtual std::string getSQLCommand() const {return "";}

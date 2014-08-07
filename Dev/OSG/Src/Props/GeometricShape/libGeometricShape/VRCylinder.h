@@ -3,8 +3,6 @@
 
 #include "VRPrism.h"
 
-class ostream;
-
 namespace VR {
 	struct CylinderParams : public PrismParams {
 		CylinderParams();

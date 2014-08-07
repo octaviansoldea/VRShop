@@ -13,9 +13,10 @@
 
 /* Modified by Matej Steinbacher and Octavian Soldea */
 
+#include "BasicDefinitions.h"
+
 #include <osgGA/GUIEventAdapter>
 
-#include "BasicDefinitions.h"
 #include "VRKeyboardMouseManipulatorShopEditor.h"
 
 using namespace VR;

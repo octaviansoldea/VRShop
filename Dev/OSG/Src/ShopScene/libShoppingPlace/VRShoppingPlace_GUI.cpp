@@ -33,10 +33,8 @@ ShoppingPlace_GUI::ShoppingPlace_GUI(string & astrFileName, std::string & astrAv
 	setupUi(this);
 	setWindowTitle("Shop Client");
 
-	//Tavi debug
 	m_pShoppingPlace = new ShoppingPlace(
-		m_pOSGQTWidget,//m_pOSGQTWidgetMap,
-		astrFileName,astrAvatarName);
+		m_pOSGQTWidget,m_pOSGQTWidgetMap,astrFileName,astrAvatarName);
 
 	KeyboardMouseManipulatorShopClient * pCameraManipulator = 
 		dynamic_cast<KeyboardMouseManipulatorShopClient *>(m_pOSGQTWidget->getCameraManipulator());
@@ -88,16 +86,16 @@ ShoppingPlace_GUI::ShoppingPlace_GUI(string & astrFileName, std::string & astrAv
 	updateGeometry();
 
 	connect(pPickAndDragHandlerShopClient,
-		SIGNAL(signalProductPicked(const VR::AbstractObject *)),
+		SIGNAL(signalProductPicked(const AbstractObject *)),
 		this,
-		SLOT(slotProductClicked(const VR::AbstractObject *))
-		);
+		SLOT(slotProductClicked(const AbstractObject *))
+	);
 
 	connect(pPickAndDragHandlerShopClient,
 		SIGNAL(signalCashierPicked()),
 		this,
 		SLOT(slotCashierClicked())
-		);
+	);
 }
 
 //-----------------------------------------------------------------------------------------
@@ -120,15 +118,14 @@ void ShoppingPlace_GUI::updateGeometry()	{
 	int width = centralWidget()->width();
 	int height = centralWidget()->height();
 
-	//Debug viewer
-	//m_pOSGQTWidgetMap->setGeometry(x+width-m_pOSGQTWidgetMap->width()-10,y+10,m_pOSGQTWidgetMap->width(),m_pOSGQTWidgetMap->height());
+	m_pOSGQTWidgetMap->setGeometry(x+width-m_pOSGQTWidgetMap->width()-10,y+10,m_pOSGQTWidgetMap->width(),m_pOSGQTWidgetMap->height());
 
 	m_pFrameItemsBasket->setGeometry((x+width-m_pFrameItemsBasket->width())/2,
-		(y+height-m_pFrameItemsBasket->height()),
-		m_pFrameItemsBasket->width(), m_pFrameItemsBasket->height());
+									(y+height-m_pFrameItemsBasket->height()),
+									m_pFrameItemsBasket->width(), m_pFrameItemsBasket->height());
 	m_pLabelBasketCase->setGeometry(m_pFrameItemsBasket->x()+(m_pFrameItemsBasket->width()-m_pLabelBasketCase->width())/2,
-		(m_pFrameItemsBasket->y()-20),
-		m_pLabelBasketCase->width(), m_pLabelBasketCase->height());
+									(m_pFrameItemsBasket->y()-20),
+									m_pLabelBasketCase->width(), m_pLabelBasketCase->height());
 
 	m_pLabelLegalNotice->setGeometry(5,(y+height-m_pLabelLegalNotice->height()),m_pLabelLegalNotice->width(), m_pLabelLegalNotice->height());
 
@@ -143,10 +140,8 @@ void ShoppingPlace_GUI::updateGeometry()	{
 	viewLayout.setSpacing(0);
 	QRect rect;
 	rect.setRect(x+width-m_pToolButton1View->width()-10,
-		//Debug viewer
-		//m_pOSGQTWidgetMap->y()+m_pOSGQTWidgetMap->height()+
-		10,
-		m_pToolButton1View->width(),60);
+				m_pOSGQTWidgetMap->y()+m_pOSGQTWidgetMap->height()+10,
+				m_pToolButton1View->width(),60);
 	viewLayout.setGeometry(rect);
 
 	//Top fields
@@ -176,7 +171,7 @@ void ShoppingPlace_GUI::resizeEvent(QResizeEvent *event)	{
 
 //----------------------------------------------------------------------------------------
 
-void ShoppingPlace_GUI::slotProductClicked(const VR::AbstractObject * apAbstractObject)	{
+void ShoppingPlace_GUI::slotProductClicked(const AbstractObject * apAbstractObject)	{
 	string strProductName = apAbstractObject->getName();
 	m_pProductInterface->init(strProductName);
 }

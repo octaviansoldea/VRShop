@@ -97,7 +97,7 @@ void Client::slotReadReceivedData()	{
 	
 	int nBytesAvailable = m_TcpSocket.bytesAvailable();
 
-	std::cout << "Client (slotReadReceivedData()): " << nBytesAvailable << std::endl;
+//	std::cout << "Client (slotReadReceivedData()): " << nBytesAvailable << std::endl;
 
 	QByteArray qData;
 

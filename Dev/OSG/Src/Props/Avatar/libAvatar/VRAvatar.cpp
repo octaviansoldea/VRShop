@@ -168,7 +168,7 @@ void Avatar::addAnimationPath(VR::AnimationPath * apAnimationPath)	{
 	m_pAPCallback->setAnimationPath(m_pAnimationPath);
 	setUpdateCallback(m_pAPCallback);
 
-	std::cout << "Animation time: " << m_pAPCallback->getAnimationTime() << endl;
+//	std::cout << "Animation time: " << m_pAPCallback->getAnimationTime() << endl;
 }
 
 //------------------------------------------------------------------------------
@@ -190,11 +190,11 @@ void Avatar::slotUpdatePosition(bool abAnimation)	{
 
 	Matrix mtrxLocalTranslation;
 	Matrix matrixPos(Matrix::identity());
-	bool bView = m_pKeyboardMouseManipulatorShopClient->getViewPerspective();
+	bool bIs1PersonView = m_pKeyboardMouseManipulatorShopClient->getViewPerspective();
 
 	osg::BoundingBox & bB = m_pKeyboardMouseManipulatorShopClient->getBoundingBox();
 
-	if (bView)	{
+	if (bIs1PersonView)	{
 		mtrxLocalTranslation = matrixPos.translate(0, 10, -1.3*bB.zMax());
 	} else {
 		mtrxLocalTranslation = matrixPos.translate(0, 4*bB.yMin()-3*bB.yMax(), -1.0);
@@ -230,8 +230,10 @@ osg::Matrixd Avatar::setAvatar2Camera()	{
 
 	float flCameraCorrector;
 	if (m_pKeyboardMouseManipulatorShopClient->getViewPerspective())	{
+		//First person
 		flCameraCorrector = -bB.yMax();
 	} else {
+		//Third person
 		flCameraCorrector = -(4*bB.yMin()-3*bB.yMax());
 	}
 

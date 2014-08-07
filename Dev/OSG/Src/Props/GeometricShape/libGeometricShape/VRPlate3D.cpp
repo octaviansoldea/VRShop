@@ -83,12 +83,14 @@ void Plate3D::init(const Plate3DParams & aPlate3DParams)	{
 //----------------------------------------------------------------------
 
 void Plate3D::setColor(const std::vector < float > & aarrflColor)	{
+	m_arrflRGBA = aarrflColor;
 	m_pUntransformedPlate3D->setColor(aarrflColor);
 }
 
 //----------------------------------------------------------------------
 
 void Plate3D::setTexture(const std::string & astrFileName) {
+	m_strFileNameTexture = astrFileName;
 	m_pUntransformedPlate3D->setTexture(astrFileName);
 }
 

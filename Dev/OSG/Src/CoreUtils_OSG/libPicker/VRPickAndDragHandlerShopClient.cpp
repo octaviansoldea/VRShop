@@ -14,16 +14,14 @@
 /* Modified by Matej Steinbacher and Octavian Soldea */
 
 #include <iostream>
-#include <fstream>
 
 #include <osgGA/GUIEventAdapter>
 #include <osgGA/GUIActionAdapter>
-
 #include <osgViewer/Viewer>
 
-#include "VRScene.h"
-
 #include "BasicDefinitions.h"
+#include "VRScene.h"
+#include "VRAbstractObject.h"
 
 #include "VRPickAndDragHandlerShopClient.h"
 
@@ -66,7 +64,6 @@ bool PickAndDragHandlerShopClient::handle(const GUIEventAdapter& ea, GUIActionAd
 		AbstractObject * pPickedObject = m_pPickedObject.get();
 
 		//Only first parent is checked if it's a product or not
-		int nParent = pPickedObject->getParentalNodePaths().size();
 		string strParentName = pPickedObject->getParents()[0]->getName();
 		if (strParentName == "Products")	{
 			emit signalProductPicked(pPickedObject);

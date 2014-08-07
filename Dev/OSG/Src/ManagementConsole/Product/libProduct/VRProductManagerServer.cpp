@@ -17,7 +17,7 @@ using namespace osg;
 ProductManagerServer::ProductManagerServer()	{
 	DatabaseManagerParams dbParams;
 	dbParams.m_qstrConnectionName = "Product";
-	dbParams.m_qstrDBName = "../../../Databases/Product.db";
+	dbParams.m_qstrDBName = "../../../Databases/Products.db";
 
 	m_pDb = new DatabaseManager(dbParams);
 }

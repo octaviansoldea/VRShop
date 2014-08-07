@@ -19,21 +19,23 @@ Lighting::~Lighting()	{
 //--------------------------------------------------------------------
 
 ref_ptr<LightSource> Lighting::createLights()	{
-	osg::ref_ptr<osg::Light> pLight = new osg::Light();
-	Vec4d diffuse(osg::Vec4(1., 1., 1.0, 1.0));
+	osg::ref_ptr<osg::Light> light0 = new osg::Light();
+	light0->setLightNum(0); //light0 is now GL-Light0
 
-	pLight->setAmbient(osg::Vec4(147/255, 226/255, 240/255, 1.0));	//147 226 240
-	pLight->setDiffuse(diffuse);
-	pLight->setSpecular(diffuse);
-	pLight->setPosition(osg::Vec4(-3.0, -2.0, 3.0, 1.0));
+	light0->setAmbient(osg::Vec4f(0.15, 0.15, 0.15, 0.0));
+	light0->setDiffuse(osg::Vec4f(0.15, 0.15, 0.15, 0.0f));
+	light0->setSpecular(osg::Vec4f(0.15, 0.15, 0.15, 0.0f));
+	light0->setPosition(osg::Vec4f(0, -100, 10, 0));			//w=0 => directional light; w=1 => positional light
+	light0->setDirection(osg::Vec3f(0, 50, 10));
+	light0->setLinearAttenuation(2);
 
-	ref_ptr<LightSource> pLightSource = new osg::LightSource();
-	pLightSource->setLight(pLight.get());
-	pLightSource->setDataVariance(osg::Object::STATIC);
-	pLightSource->setLocalStateSetModes(osg::StateAttribute::ON);
-	pLightSource->getOrCreateStateSet()->setMode(GL_LIGHTING,osg::StateAttribute::OVERRIDE|osg::StateAttribute::INHERIT); 
 
-	return pLightSource;
+	osg::ref_ptr< osg::LightSource > ls0 = new osg::LightSource();
+	ls0->setLight(light0.get());
+	ls0->setDataVariance(osg::Object::STATIC);
+	ls0->setLocalStateSetModes(osg::StateAttribute::ON);
+
+	return ls0;
 }
 
 //====================================================================

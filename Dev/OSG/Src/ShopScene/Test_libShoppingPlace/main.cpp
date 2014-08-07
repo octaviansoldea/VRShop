@@ -19,17 +19,17 @@ int main(int argc, char *argv[])	{
 	//Client client;
 	//client.slotNewUserRequest();
 
-	string strClientName = tostr(time(NULL));
+	string strClientName = 
+		tostr(time(NULL));
 		//client.getTcpSocket().peerAddress().toString().toStdString();
-	string strDBFileName =
-		//"../../../Databases/ShopDemo.db";
-		"C:/Matej/ShopScene_1.db";
+
+	string strDBFileName = 
+		"../../../Databases/Shop.db";
 
 	ShoppingPlace_GUI widget(strDBFileName,strClientName);
 
 	widget.show();
 
 	int nRetCode = app.exec();
-
-    return nRetCode;
+	return nRetCode;
 }

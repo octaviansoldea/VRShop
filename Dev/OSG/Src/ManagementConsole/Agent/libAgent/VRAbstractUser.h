@@ -11,15 +11,11 @@ namespace VR {
 	class Avatar;
 	class Product;
 
-	class PickAndDragHandlerShopClient;
-
 	class AbstractUser	{
 	public:
 		AbstractUser(Avatar * apAvatar = 0);
 		virtual ~AbstractUser() = 0;
 		virtual const char* className() const;
-
-		void setPicker(PickAndDragHandlerShopClient * apPickAndDragHandlerShopClient);
 
 		Avatar * getAvatar();
 		Basket * getBasket();	//This basket is read by the "VRTransaction.h" before the payment
@@ -38,8 +34,6 @@ namespace VR {
 
 		osg::ref_ptr<Avatar> m_pAvatar;
 		Basket m_Basket;
-
-		PickAndDragHandlerShopClient * m_pPickAndDragHandlerShopClient;
 	};
 }
 #endif //VR_ABSTRACT_USER_H

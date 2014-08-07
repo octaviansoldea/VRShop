@@ -126,7 +126,7 @@ void ProductShopClient::initFromSQLData(std::string & astrSQLData)	{
 	}
 
 	vector<string> vecstrProductParams = splitString(strSqlData, ";");
-
+/*
 	m_ProductShopClientParams.m_strProductName = vecstrProductParams[1];
 	m_ProductShopClientParams.m_nProductCode = atoi(vecstrProductParams[2].c_str());
 	m_ProductShopClientParams.m_strProductManufacturer = vecstrProductParams[3];
@@ -139,4 +139,19 @@ void ProductShopClient::initFromSQLData(std::string & astrSQLData)	{
 	m_ProductShopClientParams.m_flTaxRate = atof(vecstrProductParams[9].c_str());
 	m_ProductShopClientParams.m_strCurrency = vecstrProductParams[10];
 	m_ProductShopClientParams.m_strTextureFile = vecstrProductParams[11];
+*/
+
+	m_ProductShopClientParams.m_strProductName = vecstrProductParams[2];
+	m_ProductShopClientParams.m_nProductCode = atoi(vecstrProductParams[3].c_str());
+	m_ProductShopClientParams.m_strProductShortDescription = vecstrProductParams[4];
+	m_ProductShopClientParams.m_strProductDescription = vecstrProductParams[5];
+	m_ProductShopClientParams.m_strProductManufacturer = vecstrProductParams[6];
+	m_ProductShopClientParams.m_strManufacturerOrigin = vecstrProductParams[7];
+	m_ProductShopClientParams.m_strProductUnit = vecstrProductParams[9];
+	m_ProductShopClientParams.m_flQuantity = atof(vecstrProductParams[10].c_str());
+	m_ProductShopClientParams.m_flPricePerUnit = atof(vecstrProductParams[11].c_str());
+	m_ProductShopClientParams.m_flTaxRate = atof(vecstrProductParams[12].c_str());
+	m_ProductShopClientParams.m_strCurrency = vecstrProductParams[13];
+	m_ProductShopClientParams.m_strTextureFile = vecstrProductParams[16];
+
 }

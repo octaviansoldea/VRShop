@@ -43,6 +43,7 @@ VR::BoundingBox::BoundingBox(ref_ptr<Node> aNode)	{
 	setName("BoundingBox");
 }
 
+
 const char * VR::BoundingBox::className() const	{
 	return "BoundingBox";
 }

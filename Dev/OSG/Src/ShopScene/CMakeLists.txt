@@ -5,6 +5,7 @@ PROJECT(SceneEditorDlg)
 SET(CMAKE_DEBUG_POSTFIX "D")
 	
 SUBDIRS(
+  libPopUpGUIs
   libShopEditor
   Test_libShopEditor
   libShoppingPlace

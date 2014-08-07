@@ -6,7 +6,10 @@
 #include "VRProductSettings_GUI.h"
 #include "VRRemoveProduct_GUI.h"
 
+#include "VRAbstractGeomShape.h"
+
 #include "VRProductShopEditor.h"
+
 #include "BasicStringDefinitions.h"
 
 #include "VRProductManager.h"
@@ -28,8 +31,8 @@ ProductManager::ProductManager() {
 //-----------------------------------------------------------------------------
 
 ProductManager::~ProductManager()	{
-	if (m_pProductSettings_GUI !=0)
-		delete m_pProductSettings_GUI;
+	//if (m_pProductSettings_GUI !=0)
+	//	delete m_pProductSettings_GUI;
 	if (m_pRemoveProduct_GUI != 0)
 		delete m_pRemoveProduct_GUI;
 
@@ -121,16 +124,22 @@ void ProductManager::addNewProduct()	{
 	float flScaleY = m_pProductSettings_GUI->m_pDoubleSpinBoxSizeY->value();
 	float flScaleZ = m_pProductSettings_GUI->m_pDoubleSpinBoxSizeZ->value();
 	string strProductName = m_pProductSettings_GUI->m_pLineEditProductName->text().toStdString();
+	string strTexture = m_pProductSettings_GUI->getTexture();
+
+	delete m_pProductSettings_GUI;
 
 	//Fill osg group whose pointer is sent to the scene 
 	//with the 3D representation of the product
-	ref_ptr<AbstractObject> pProductGraphics = pProductShopEditor->getRepresentation();
+//	ref_ptr<AbstractObject> pProductGraphics = pProductShopEditor->getRepresentation();
+	ref_ptr<AbstractGeomShape> pProductGraphics = dynamic_cast<AbstractGeomShape*>(pProductShopEditor->getRepresentation().get());
 
 	if (pProductGraphics==0)
 		return;
 
 	pProductGraphics->setName(strProductName);
 	pProductGraphics->setScaling(flScaleX, flScaleY, flScaleZ);
+	pProductGraphics->setTexture(strTexture);
+
 	m_pgrpProductsRepresentation->addChild(pProductGraphics);
 }
 
@@ -154,12 +163,8 @@ void ProductManager::removeProduct(ProductShopEditor * apProductShopEditor)	{
 //-----------------------------------------------------------------------------
 
 bool ProductManager::modifyProduct(ProductShopEditor * apProductShopEditor)	{
-	if (m_pProductSettings_GUI != 0)
-		delete m_pProductSettings_GUI;
-
 	m_pProductSettings_GUI = new ProductSettings_GUI(apProductShopEditor);
 
-	AbstractObject * pAO = apProductShopEditor->getRepresentation();
 	m_pProductSettings_GUI->setWindowFlags(Qt::FramelessWindowHint);
 	bool bRes = m_pProductSettings_GUI->exec();
 
@@ -169,7 +174,7 @@ bool ProductManager::modifyProduct(ProductShopEditor * apProductShopEditor)	{
 
 		ProductShopEditorParams productParams;
 		apProductShopEditor->getParams(productParams);
-
+/*
 		productParams.m_flQuantity = m_pProductSettings_GUI->m_pLineEditQuantity->text().toFloat();
 		productParams.m_strProductCategory = m_pProductSettings_GUI->m_pComboBoxProductCategory->currentText().toStdString();
 		productParams.m_strProductName = m_pProductSettings_GUI->m_pLineEditProductName->text().toStdString();
@@ -177,20 +182,33 @@ bool ProductManager::modifyProduct(ProductShopEditor * apProductShopEditor)	{
 		productParams.m_strProductDescription = m_pProductSettings_GUI->m_pTextEditProductDescription->toPlainText().toStdString();
 		productParams.m_strProductShortDescription = m_pProductSettings_GUI->m_pLineEditShortDescription->text().toStdString();
 
-		////	m_pProductParams->m_strManufacturerName = m_pProductSettings_GUI-> ;
-		////	m_pProductParams->m_strManufacturerOrigin = m_pProductSettings_GUI-> ;
-		////	m_pProductParams->m_strDateAdded = m_pProductSettings_GUI-> ;
-		////	m_pProductParams->m_strDateLastModified = m_pProductSettings_GUI-> ;
 		productParams.m_strProductUnit = m_pProductSettings_GUI->m_pComboBoxProductUnit->currentText().toStdString();
 		productParams.m_flPricePerUnit = m_pProductSettings_GUI->m_pLineEditPrice->text().toFloat();
 		productParams.m_flQuantity = m_pProductSettings_GUI->m_pLineEditQuantity->text().toFloat();
 		productParams.m_flTaxRate = m_pProductSettings_GUI->m_pComboBoxTaxRate->currentText().remove("%").toFloat();
-		////	m_pProductParams->m_nCurrency = m_pProductSettings_GUI-> ;
+*/
 
+		productParams.m_strProductCategory = m_pProductSettings_GUI->m_pComboBoxProductCategory->currentText().toStdString();
+		productParams.m_strProductName = m_pProductSettings_GUI->m_pLineEditProductName->text().toStdString();
+		productParams.m_nProductCode = m_pProductSettings_GUI->m_pLineEditProductCode->text().toInt();
+		productParams.m_strProductShortDescription = m_pProductSettings_GUI->m_pLineEditShortDescription->text().toStdString();
+		productParams.m_strProductDescription = m_pProductSettings_GUI->m_pTextEditProductDescription->toPlainText().toStdString();
+		productParams.m_strManufacturerName = m_pProductSettings_GUI->m_pComboBoxProducer->currentText().toStdString();
+		productParams.m_strManufacturerOrigin = m_pProductSettings_GUI->m_pComboBoxPlaceOfOrigin->currentText().toStdString();
+		productParams.m_strProductDateAdded = m_pProductSettings_GUI->m_pLineEditPriceLastChanged->text().toStdString();
+		productParams.m_strProductDateLastModified = m_pProductSettings_GUI->m_pLineEditPriceLastChanged->text().toStdString();
+		productParams.m_strProductUnit = m_pProductSettings_GUI->m_pComboBoxProductUnit->currentText().toStdString();
+		productParams.m_flPricePerUnit = m_pProductSettings_GUI->m_pLineEditPrice->text().toFloat();
+		productParams.m_flQuantity = m_pProductSettings_GUI->m_pLineEditQuantity->text().toFloat();
+		productParams.m_flTaxRate = m_pProductSettings_GUI->m_pComboBoxTaxRate->currentText().remove("%").toFloat();
+		productParams.m_strCurrency = "EUR";
+		productParams.m_strTextureFile = m_pProductSettings_GUI->getTexture();
 
 		apProductShopEditor->setParams(productParams);
 	} else {
 		bRes = false;
+
+		delete m_pProductSettings_GUI;
 	}
 
 	return bRes;
@@ -220,9 +238,9 @@ void ProductManager::preparedObjectData(vector<string> &avecItems, string & astr
 			break;
 		}
 
-		strClassName = pChild->className();
-		pstrObjectName = &pChild->getName();
-		strItem = (strClassName + ";" + *pstrObjectName + ";" + pChild->prepareRowData(*pstrObjectName));
+		string strClassNameChild = pChild->className();
+		string strObjectNameChild = pChild->getName();
+		strItem = (strClassNameChild + ";" + strObjectNameChild + ";" + pChild->prepareRowData(strClassName));
 
 		pvecItems->push_back(string(2*nI,' ') + strItem);
 	}
@@ -231,12 +249,12 @@ void ProductManager::preparedObjectData(vector<string> &avecItems, string & astr
 //-----------------------------------------------------------------------------
 
 void ProductManager::initFromSQLData(vector<string> & avecstrSQLData)	{
-	//**********************************************
-	//	HIERARCHY (how you get data inside)
-	//		OBJECT1				Layer: 0
-	//			|--PRIMITIVE1	Layer: 1
-	//			|--PRIMITIVE2	Layer: 1
-	//*******************************************/
+//**********************************************
+//	HIERARCHY (how you get data inside)
+//		OBJECT1				Layer: 0
+//			|--PRIMITIVE1	Layer: 1
+//			|--PRIMITIVE2	Layer: 1
+//*******************************************/
 
 	int nNoOfElements = avecstrSQLData.size();
 	int nPos;	//Position of the indent
@@ -272,6 +290,16 @@ void ProductManager::initFromSQLData(vector<string> & avecstrSQLData)	{
 		pAOChild->setIsTargetPick(true);
 
 		m_pgrpProductsRepresentation->addChild(pAOChild);
+	}
+}
+
+//-----------------------------------------------------------------------------
+
+void ProductManager::prepareProductsData(vector<string> &avecProducts)	{
+	std::list<ProductShopEditor*>::iterator it = m_lstProducts.begin();
+	for (it; it != m_lstProducts.end(); it++)	{
+		string strProductData = (*it)->prepareRowData();
+		avecProducts.push_back(strProductData);
 	}
 }
 

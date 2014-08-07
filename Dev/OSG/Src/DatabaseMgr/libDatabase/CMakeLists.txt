@@ -6,7 +6,6 @@ IF(Qt5_FOUND)
   MESSAGE("Database Qt5 used START")
   INCLUDE_DIRECTORIES(
     ${Qt5Core_INCLUDE_DIRS}
-    ${Qt5Gui_INCLUDE_DIRS}
     ${Qt5Widgets_INCLUDE_DIRS}
     ${Qt5Sql_INCLUDE_DIRS}
   )

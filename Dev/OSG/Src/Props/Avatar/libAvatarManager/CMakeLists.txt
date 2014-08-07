@@ -41,12 +41,12 @@ INCLUDE_DIRECTORIES(
 	${OPENSCENEGRAPH_INCLUDE_DIRS}
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_OSG
 	${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
-	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCamera
-	${CMAKE_SOURCE_DIR}/Props/Avatar/libAnimationEditor
-	${CMAKE_SOURCE_DIR}/Props/Avatar/libAvatar
 	${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabase
 	${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libClient
 	${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libServer
+	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCamera
+	${CMAKE_SOURCE_DIR}/Props/Avatar/libAnimationEditor
+	${CMAKE_SOURCE_DIR}/Props/Avatar/libAvatar
 )
 
 SET(SRCS

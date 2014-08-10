@@ -43,6 +43,124 @@ KeyboardMouseManipulator(cm, copyOp) {
 
 //-------------------------------------------------------------------------------
 
+bool KeyboardMouseManipulatorShopClient::keyDown(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa)	{
+	bool bRes = true;
+
+	int nResKey = ea.getKey();
+	if ((nResKey == osgGA::GUIEventAdapter::KEY_Control_L) ||
+		(nResKey == osgGA::GUIEventAdapter::KEY_Control_R))	{
+		m_bCtrl = true;
+	}
+
+	if ((nResKey == osgGA::GUIEventAdapter::KEY_Shift_L) ||
+		(nResKey == osgGA::GUIEventAdapter::KEY_Shift_R))	{
+		m_bShift = true;
+	}
+
+	if (nResKey == osgGA::GUIEventAdapter::KEY_Up)	{
+		if (m_bCtrl)	{ //Move forward
+			m_dbForwardFactor = 0.5 * (m_bShift ? (m_dbDefaultMoveSpeed *= 1.1) : m_dbDefaultMoveSpeed);
+
+			Vec3d prevCenter, prevEye, prevUp;
+			getTransformation(prevEye, prevCenter, prevUp);
+			Vec3d dbvecDirection = prevCenter - prevEye;
+
+			float flvecStep = fabs(dbvecDirection.x()) + fabs(dbvecDirection.y());
+			float deltaStepX = m_dbForwardFactor*(dbvecDirection.x() / flvecStep);
+			float deltaStepY = m_dbForwardFactor*(dbvecDirection.y() / flvecStep);
+
+			Vec3d newEye = prevEye + Vec3d(deltaStepX, deltaStepY, 0.0);
+			Vec3d newCenter = prevCenter + Vec3d(deltaStepX, deltaStepY, 0.0);
+
+			setTransformation(newEye, newCenter, prevUp);
+
+		}
+		else { //Rotate view (but not direction of travel) up.
+			m_dbTranslationFactorX = m_cdbRotationFactor *
+				(m_bShift ? (m_dbDefaultMoveSpeed *= 1.1) : m_dbDefaultMoveSpeed);
+			panModel(0.0, m_dbTranslationFactorX);
+		}
+	}
+
+	if (nResKey == osgGA::GUIEventAdapter::KEY_Down)	{
+		if (m_bCtrl)	{ //Move backwards
+			m_dbForwardFactor = 0.5 * (m_bShift ? (m_dbDefaultMoveSpeed *= 1.1) : m_dbDefaultMoveSpeed);
+
+			Vec3d prevCenter, prevEye, prevUp;
+			getTransformation(prevEye, prevCenter, prevUp);
+			Vec3d dbvecDirection = prevCenter - prevEye;
+
+			float flvecStep = fabs(dbvecDirection.x()) + fabs(dbvecDirection.y());
+			float deltaStepX = m_dbForwardFactor*(dbvecDirection.x() / flvecStep);
+			float deltaStepY = m_dbForwardFactor*(dbvecDirection.y() / flvecStep);
+
+			Vec3d newEye = prevEye - Vec3d(deltaStepX, deltaStepY, 0.0);
+			Vec3d newCenter = prevCenter - Vec3d(deltaStepX, deltaStepY, 0.0);
+
+			setTransformation(newEye, newCenter, prevUp);
+
+		}
+		else { //Rotate view (but not direction of travel) down.
+			m_dbTranslationFactorX = -m_cdbRotationFactor *
+				(m_bShift ? (m_dbDefaultMoveSpeed *= 1.1) : m_dbDefaultMoveSpeed);
+			panModel(0.0, m_dbTranslationFactorX);
+		}
+	}
+
+	if ((nResKey == osgGA::GUIEventAdapter::KEY_Right) ||
+		((nResKey == osgGA::GUIEventAdapter::KEY_Left))) {
+
+		double dbDir = 1.0;
+		if (nResKey == osgGA::GUIEventAdapter::KEY_Left) {
+			dbDir = -1.0;
+		}
+
+		if (m_bCtrl)	{	//Translate camera right
+			m_dbTranslationFactorZ = dbDir * m_cdbRotationFactor *
+				(m_bShift ? (m_dbDefaultMoveSpeed *= 1.1) : m_dbDefaultMoveSpeed);
+			panModel(m_dbTranslationFactorZ, 0.0);
+		}
+		else {	//Rotate camera to the right
+			m_dbDirectionRotationRate = dbDir  * (- m_cdbRotationFactor) *
+				(m_bShift ? (m_dbDefaultMoveSpeed *= 1.1) : m_dbDefaultMoveSpeed);
+
+			Vec3d prevCenter, prevEye, prevUp;
+			getTransformation(prevEye, prevCenter, prevUp);
+			Vec3d vecdbDirection = prevCenter - prevEye;
+
+			if (this->m_bFirstPerson) {
+				Vec3d normalized = vecdbDirection * Matrix::rotate(DegreesToRadians(m_dbDirectionRotationRate), prevUp);
+				Vec3d newCenter = prevEye + normalized;
+				setTransformation(prevEye, newCenter, prevUp);
+			}
+			else {
+				vecdbDirection.normalize();
+				vecdbDirection = vecdbDirection * m_flCameraCorrector * 2;
+				Vec3d newCenter = prevEye + vecdbDirection;
+
+				Vec3d vecdbAntiDirection = -vecdbDirection;
+				vecdbAntiDirection.normalize();
+				Vec3d twisted = vecdbAntiDirection * Matrix::rotate(DegreesToRadians(m_dbDirectionRotationRate), prevUp);
+				twisted.normalize();
+				twisted *= m_flCameraCorrector * 2;
+				Vec3d newEye = newCenter + twisted;
+				setTransformation(newEye, newCenter, prevUp);
+			}
+		}
+
+	}
+
+	if (nResKey == ' ')	{
+		home(0);
+	}
+	else	{
+		bRes = false;
+	}
+
+	return(bRes);
+}
+//-------------------------------------------------------------------------------
+
 bool KeyboardMouseManipulatorShopClient::handle(const GUIEventAdapter& ea, GUIActionAdapter& aa) {
 	bool bRes = false;
 	Matrixd prevCameraMatrix = getMatrix();
@@ -111,11 +229,71 @@ Vec3d KeyboardMouseManipulatorShopClient::cameraPerspectiveCorrector() const	{
 
 //-------------------------------------------------------------------------------
 
+osg::Matrixd KeyboardMouseManipulatorShopClient::getAvatar2CameraMatrix() {
+	Matrix matrixRot(Matrix::identity());
+
+	Matrix mtrxLocalOrientation =
+		matrixRot.rotate(
+		degrees2Radians((float)90), osg::X_AXIS,//90
+		degrees2Radians((float)0), osg::Y_AXIS,
+		degrees2Radians((float)180), osg::Z_AXIS);//180
+
+	Matrix mtrxLocalTranslation;
+	Matrix matrixPos(Matrix::identity());
+
+	if (m_bFirstPerson)	{
+		mtrxLocalTranslation = matrixPos.translate(0, 10, -1.3*m_BoundingBox.zMax());
+	}
+	else {
+		mtrxLocalTranslation = matrixPos.translate(0, 4 * m_BoundingBox.yMin() - 3 * m_BoundingBox.yMax(), -1.0);
+	}
+
+	//float flCameraCorrector;
+	//if (getViewPerspective())	{
+	//	//First person
+	//	flCameraCorrector = -bB.yMax();
+	//}
+	//else {
+	//	//Third person
+	//	flCameraCorrector = -(4 * bB.yMin() - 3 * bB.yMax());
+	//}
+
+	//Coordinates of the camera
+	Vec3d vecEye, vecCenter, vecUp;
+	getTransformation(vecEye, vecCenter, vecUp);
+
+	Vec3d vecDistance = vecCenter - vecEye;
+	vecDistance.normalize();
+
+	Matrix mtrxCamera = getMatrix() * Matrix::translate(vecDistance * m_flCameraCorrector);
+
+	//Avatar rotated so its look is OK
+	Matrixd mtrxTransform =
+		mtrxLocalTranslation *
+		mtrxLocalOrientation *
+
+		mtrxCamera;
+
+	return mtrxTransform;
+}
+
+//-------------------------------------------------------------------------------
+
 void KeyboardMouseManipulatorShopClient::setCameraPosition2Object(osg::Node * apNode)	{
 	//Get BB of the avatar and position camera accordingly
 	ComputeBoundsVisitor cbv;
 	apNode->accept(cbv);
 	m_BoundingBox = cbv.getBoundingBox();
+
+	if (m_bFirstPerson)	{
+		//First person
+		m_flCameraCorrector = -m_BoundingBox.yMax();
+	}
+	else {
+		//Third person
+		m_flCameraCorrector = -(4 * m_BoundingBox.yMin() - 3 * m_BoundingBox.yMax());
+	}
+
 
 	float flCenterX = (m_BoundingBox.xMax()+m_BoundingBox.xMin())/2;
 
@@ -172,6 +350,15 @@ void KeyboardMouseManipulatorShopClient::setViewPerspective(bool abFirstPerson) 
 				vec3dCameraPerspectiveDiff[0],
 				vec3dCameraPerspectiveDiff[1],
 				vec3dCameraPerspectiveDiff[2]));
+	}
+
+	if (m_bFirstPerson)	{
+		//First person
+		m_flCameraCorrector = -m_BoundingBox.yMax();
+	}
+	else {
+		//Third person
+		m_flCameraCorrector = -(4 * m_BoundingBox.yMin() - 3 * m_BoundingBox.yMax());
 	}
 
 	setByMatrix(mtrxCamera);

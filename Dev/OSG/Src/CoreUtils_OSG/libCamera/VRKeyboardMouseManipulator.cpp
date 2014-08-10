@@ -92,7 +92,7 @@ bool KeyboardMouseManipulator::handle(const osgGA::GUIEventAdapter& ea, osgGA::G
 	}
 
 	if (nResEvent == GUIEventAdapter::KEYDOWN)	{
-		bRes = VR::KeyboardMouseManipulator::keyDown(ea, aa);
+		bRes = keyDown(ea, aa);
 	}
 
 	if (nResEvent == GUIEventAdapter::KEYUP)	{
@@ -179,7 +179,7 @@ bool KeyboardMouseManipulator::keyDown(const osgGA::GUIEventAdapter &ea, osgGA::
 			m_dbTranslationFactorZ = m_cdbRotationFactor * 
 				(m_bShift ? (m_dbDefaultMoveSpeed*=1.1) : m_dbDefaultMoveSpeed);
 			panModel(m_dbTranslationFactorZ,0.0);
-		} else {	//Rotate cameram right
+		} else {	//Rotate camera to the right
 			m_dbDirectionRotationRate = - m_cdbRotationFactor * 
 				(m_bShift ? (m_dbDefaultMoveSpeed*=1.1) : m_dbDefaultMoveSpeed);
 

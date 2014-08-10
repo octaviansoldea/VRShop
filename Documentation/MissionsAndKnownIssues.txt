@@ -1,27 +1,22 @@
 CRITICAL Bugs
 
-clone of objects - check if all object params are copied
-Colors - materials - we know how to - check avatar and other objects occlusions
-Avatar camera view perspective and different views
-Connections buttons to update image in Editor
-
 CRITICAL Items
 
-Check animation editor
 Web
-? User accounts - signing in
+
+User accounts - signing in
+QTimer server cleaning
+
 Android
 iPhone
 WindowsPhone - WinCE
 
-
-
 OPTIONAL
 
+Polish keyDown in KeyboardMouseManipulatorShopClient and KeyboardMouseManipulator
+When client finishes should try announcing the server to delete the remains
 Load of avatar
 Messages at loading
-Second window in Shopping client
 lights
 synchronization of avatar moves
 orientation of "others" avatars ->?-> direction of lights to "others" avatars
-other avatars

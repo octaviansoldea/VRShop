@@ -27,9 +27,10 @@ namespace VR {
         virtual bool handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa);
 
 	private:
-		bool keyDown(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa);
+		virtual bool keyDown(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa);
 		bool keyUp(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter &aa);
-
+	
+	protected:
 		double		m_dbForwardFactor;		//Forward move value
 		double		m_dbDefaultMoveSpeed;	//Speed for a move in any direction
 

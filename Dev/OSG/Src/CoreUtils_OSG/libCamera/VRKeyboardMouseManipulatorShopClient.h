@@ -29,6 +29,9 @@ namespace VR {
         KeyboardMouseManipulatorShopClient(int flags = DEFAULT_SETTINGS);
         KeyboardMouseManipulatorShopClient(const KeyboardMouseManipulatorShopClient& cm,
                              const osg::CopyOp& copyOp = osg::CopyOp::SHALLOW_COPY);
+	private:
+		virtual bool keyDown(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa);
+	public:
 
 		virtual bool handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa);
 
@@ -37,6 +40,8 @@ namespace VR {
 		void setViewPerspective(bool abFirstPerson);
 		bool getViewPerspective() const;
 		osg::Vec3d cameraPerspectiveCorrector() const;
+
+		osg::Matrixd getAvatar2CameraMatrix();
 
 		void setCameraPosition2Object(osg::Node * apNode);
 		std::vector<osg::Matrixd> m_vecPredefinedViews;
@@ -47,6 +52,8 @@ namespace VR {
 		bool m_bFirstPerson;
 		osg::Matrixd setMatrixTransform(osg::Vec3d &avec3dEye,osg::Vec3d &avec3dCenter,osg::Vec3d &avec3dUp);
 		osg::BoundingBox m_BoundingBox;
+
+		float m_flCameraCorrector;
 
 	signals:
 		void signalCameraPositionOrHeadingDirectionChanged(bool abAnimation);

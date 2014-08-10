@@ -95,7 +95,7 @@ void Avatar::setAnimation(const Matrixd & amtrxOldMatrix, const Matrixd & amtrxN
 	// Define animation path callback
 	setUpdateCallback(m_pAPCallback);
 
-	std::cout << "Animation time: " << m_pAPCallback->getAnimationTime() << endl;
+	//std::cout << "Animation time: " << m_pAPCallback->getAnimationTime() << endl;
 
 	startAnimation();
 
@@ -124,7 +124,7 @@ void Avatar::startAnimation()	{
 	float flDuration = anim->getDuration();
 	
 	if (bRes)	{
-		std::cout << "Animation already playing - go out of the loop." << std::endl;
+		//std::cout << "Animation already playing - go out of the loop." << std::endl;
 		return;
 	}
 
@@ -161,14 +161,14 @@ void Avatar::setOrientation(const osg::Vec3d & aVec3d)	{
 //------------------------------------------------------------------------------
 
 void Avatar::addAnimationPath(VR::AnimationPath * apAnimationPath)	{
-//	m_plstAnimationPaths.push_back(&aAnimationPath);
+	//m_plstAnimationPaths.push_back(&aAnimationPath);
 	m_pAnimationPath = apAnimationPath;
 
 	m_pAPCallback->setDataVariance(osg::Object::DYNAMIC);
 	m_pAPCallback->setAnimationPath(m_pAnimationPath);
 	setUpdateCallback(m_pAPCallback);
 
-//	std::cout << "Animation time: " << m_pAPCallback->getAnimationTime() << endl;
+	//std::cout << "Animation time: " << m_pAPCallback->getAnimationTime() << endl;
 }
 
 //------------------------------------------------------------------------------
@@ -180,36 +180,9 @@ VR::AnimationPath * Avatar::getAnimationPath()	{
 //------------------------------------------------------------------------------
 
 void Avatar::slotUpdatePosition(bool abAnimation)	{
-	Matrix matrixRot(Matrix::identity());
-
-	Matrix mtrxLocalOrientation =
-		matrixRot.rotate(
-			degrees2Radians((float)90), osg::X_AXIS,//90
-			degrees2Radians((float)0), osg::Y_AXIS,
-			degrees2Radians((float)180), osg::Z_AXIS);//180
-
-	Matrix mtrxLocalTranslation;
-	Matrix matrixPos(Matrix::identity());
-	bool bIs1PersonView = m_pKeyboardMouseManipulatorShopClient->getViewPerspective();
-
-	osg::BoundingBox & bB = m_pKeyboardMouseManipulatorShopClient->getBoundingBox();
-
-	if (bIs1PersonView)	{
-		mtrxLocalTranslation = matrixPos.translate(0, 10, -1.3*bB.zMax());
-	} else {
-		mtrxLocalTranslation = matrixPos.translate(0, 4*bB.yMin()-3*bB.yMax(), -1.0);
-//		mtrxLocalTranslation = matrixPos.translate(0, 0, -1.0);
-	}
 	
 	//Avatar put to the center of the camera
-	Matrixd & mtrxTransform = setAvatar2Camera();
-
-	//Avatar rotated so its look is OK
-	mtrxTransform = 
-		mtrxLocalTranslation * 
-		mtrxLocalOrientation * 
-		
-		mtrxTransform;
+	Matrixd mtrxTransform = m_pKeyboardMouseManipulatorShopClient->getAvatar2CameraMatrix();
 
 	setMatrix(mtrxTransform);
 
@@ -220,32 +193,3 @@ void Avatar::slotUpdatePosition(bool abAnimation)	{
 }
 
 //------------------------------------------------------------------------------
-
-osg::Matrixd Avatar::setAvatar2Camera()	{
-	//Get BB of the avatar and position camera accordingly
-	osg::BoundingBox & bB = m_pKeyboardMouseManipulatorShopClient->getBoundingBox();
-
-	Matrix mtrxCamera;
-	Vec3d vecDistance;
-
-	float flCameraCorrector;
-	if (m_pKeyboardMouseManipulatorShopClient->getViewPerspective())	{
-		//First person
-		flCameraCorrector = -bB.yMax();
-	} else {
-		//Third person
-		flCameraCorrector = -(4*bB.yMin()-3*bB.yMax());
-	}
-
-	//Coordinates of the camera
-	Vec3d vecEye, vecCenter, vecUp;
-	m_pKeyboardMouseManipulatorShopClient->getTransformation(vecEye, vecCenter, vecUp);
-
-	vecDistance = vecCenter - vecEye;
-	vecDistance.normalize();
-
-	mtrxCamera = m_pKeyboardMouseManipulatorShopClient->getMatrix() * 
-		Matrix::translate(vecDistance * flCameraCorrector);
-
-	return mtrxCamera;
-}

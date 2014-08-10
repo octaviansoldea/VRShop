@@ -67,8 +67,6 @@ namespace VR {
 		osg::ref_ptr<osg::Group> m_p_LocalCoords_Avatar;
 
 		AnimationManagerFinder * m_pFinder;
-
-		osg::Matrixd setAvatar2Camera();
 	};
 }
 #endif //VR_AVATAR_H

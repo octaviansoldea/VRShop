@@ -32,7 +32,8 @@ Cupboard::Cupboard(const CupboardParams & aCupboardParams) : Furniture(aCupboard
 Cupboard::Cupboard(const Cupboard& cup,const CopyOp& copyop) : Furniture(cup, copyop)	{
 	CupboardParams aCup;
 	cup.getParams(aCup);
-	setParams(aCup);
+//	setParams(aCup);
+	init(aCup);
 
 	setName("Cupboard_"+tostr(getAbstractObjectNo()));
 }

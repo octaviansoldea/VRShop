@@ -132,8 +132,7 @@ bool KeyboardMouseManipulatorShopClient::keyDown(const osgGA::GUIEventAdapter &e
 				Vec3d normalized = vecdbDirection * Matrix::rotate(DegreesToRadians(m_dbDirectionRotationRate), prevUp);
 				Vec3d newCenter = prevEye + normalized;
 				setTransformation(prevEye, newCenter, prevUp);
-			}
-			else {
+			} else {
 				vecdbDirection.normalize();
 				vecdbDirection = vecdbDirection * m_flCameraCorrector * 2;
 				Vec3d newCenter = prevEye + vecdbDirection;
@@ -152,8 +151,7 @@ bool KeyboardMouseManipulatorShopClient::keyDown(const osgGA::GUIEventAdapter &e
 
 	if (nResKey == ' ')	{
 		home(0);
-	}
-	else	{
+	} else	{
 		bRes = false;
 	}
 

@@ -33,8 +33,8 @@ ProductManager::ProductManager() {
 ProductManager::~ProductManager()	{
 	//if (m_pProductSettings_GUI !=0)
 	//	delete m_pProductSettings_GUI;
-	if (m_pRemoveProduct_GUI != 0)
-		delete m_pRemoveProduct_GUI;
+	//if (m_pRemoveProduct_GUI != 0)
+		//delete m_pRemoveProduct_GUI;
 
 	list<ProductShopEditor*>::iterator it = m_lstProducts.begin();
 	for(it; it != m_lstProducts.end(); ++it)	{
@@ -165,7 +165,7 @@ void ProductManager::removeProduct(ProductShopEditor * apProductShopEditor)	{
 bool ProductManager::modifyProduct(ProductShopEditor * apProductShopEditor)	{
 	m_pProductSettings_GUI = new ProductSettings_GUI(apProductShopEditor);
 
-	m_pProductSettings_GUI->setWindowFlags(Qt::FramelessWindowHint);
+//	m_pProductSettings_GUI->setWindowFlags(Qt::FramelessWindowHint);
 	bool bRes = m_pProductSettings_GUI->exec();
 
 	//If SAVE is clicked in the PROD.SETTINGS_GUI

@@ -56,6 +56,7 @@ void EditItem_GUI::previewTexture(QString & aqstrFileName)	{
 	QPixmap p(QPixmap::fromImageReader(&image));
 	QPixmap p1(p.scaled ( m_pLabelTexture->width(),m_pLabelTexture->height(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation ));
 	m_pLabelTexture->setPixmap(p1);
+	m_pAbstractObject->setTexture(aqstrFileName.toStdString());
 }
 
 //----------------------------------------------------------------------

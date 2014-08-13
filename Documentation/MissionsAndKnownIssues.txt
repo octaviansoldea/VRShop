@@ -1,11 +1,20 @@
 CRITICAL Bugs
+Textures when cloning objects
 
+EditItem doesn't center selection but scene
+	VRProductmanager line 168: if frameless window selected, then fails to display correctly
+	(likely because of a missing parent)
+
+Texturing of cylinder
+
+	
 CRITICAL Items
 
 Web
 
 User accounts - signing in
 QTimer server cleaning
+Saving already opened file adds to the existing file and doesn't overwrite it
 
 Android
 iPhone
@@ -20,3 +29,8 @@ Messages at loading
 lights
 synchronization of avatar moves
 orientation of "others" avatars ->?-> direction of lights to "others" avatars
+
+
+CONVENIENCE
+
+Split adding products to the database from inserting them into the scene

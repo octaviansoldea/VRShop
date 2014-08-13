@@ -43,8 +43,8 @@ Plate3D::Plate3D(const Plate3D& p3D,const CopyOp& copyop) : AbstractGeomShape(p3
 
 	Plate3DParams p3DP;
 	p3D.getParams(p3DP);
-	setParams(p3DP);
 
+	init(p3DP);
 	setName("Plate3D_"+tostr(getAbstractObjectNo()));
 }
 
@@ -84,14 +84,14 @@ void Plate3D::init(const Plate3DParams & aPlate3DParams)	{
 
 void Plate3D::setColor(const std::vector < float > & aarrflColor)	{
 	m_arrflRGBA = aarrflColor;
-	m_pUntransformedPlate3D->setColor(aarrflColor);
+	m_pUntransformedPlate3D->setColor(m_arrflRGBA);
 }
 
 //----------------------------------------------------------------------
 
 void Plate3D::setTexture(const std::string & astrFileName) {
 	m_strFileNameTexture = astrFileName;
-	m_pUntransformedPlate3D->setTexture(astrFileName);
+	m_pUntransformedPlate3D->setTexture(m_strFileNameTexture);
 }
 
 //----------------------------------------------------------

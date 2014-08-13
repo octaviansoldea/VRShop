@@ -16,11 +16,16 @@ namespace VR {
 		virtual bool handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa );
 		osg::ref_ptr<AbstractObject> m_pPickedObject;
 
+		//double m_dbMouseLastGetX;
+		//double m_dbMouseLastGetY;
+
 	private:
 		typedef struct {
 			int m_nButton;
 			float m_flXNormalized;
 			float m_flYNormalized;
+			double m_dbMouseLastGetX;
+			double m_dbMouseLastGetY;
 		} MouseSignals;
 
 		void getMouseSignals(MouseSignals * apMouseSignals, const osgGA::GUIEventAdapter& ea);

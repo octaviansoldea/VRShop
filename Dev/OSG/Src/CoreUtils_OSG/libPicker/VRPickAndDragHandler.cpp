@@ -8,6 +8,7 @@
 #include <iostream>
 
 #include <osgUtil/PolytopeIntersector>
+#include <osgUtil/LineSegmentIntersector>
 #include <osgGA/GUIEventHandler>
 #include <osgViewer/Viewer>
 #include <osg/Group>
@@ -27,6 +28,9 @@ using namespace std;
 PickAndDragHandler::PickAndDragHandler() :
 	m_dbMouseLastGetXNormalized(0), m_dbMouseLastGetYNormalized(0),
 	m_nCurrentBasicTransform(TRANSLATE), m_nCurrentModalityTransform(DISPLAY_PLANE) {
+
+		//m_dbMouseLastGetX=0;
+		//m_dbMouseLastGetY=0;
 }
 
 //---------------------------------------------------------------------------------------
@@ -35,6 +39,9 @@ void PickAndDragHandler::getMouseSignals(MouseSignals * apMouseSignals, const GU
 	apMouseSignals->m_nButton = ea.getButton();
 	apMouseSignals->m_flXNormalized = ea.getXnormalized();
 	apMouseSignals->m_flYNormalized = ea.getYnormalized();
+	apMouseSignals->m_dbMouseLastGetX = ea.getX();
+	apMouseSignals->m_dbMouseLastGetY = ea.getY();
+
 }
 
 //------------------------------------------------------------------------------
@@ -110,15 +117,14 @@ bool PickAndDragHandler::handleKeyDown(int anKey) {
 bool PickAndDragHandler::handlePush(const MouseSignals & aMouseSignals, osgViewer::Viewer * apViewer) {
 	float flXNormalized = aMouseSignals.m_flXNormalized;
 	float flYNormalized = aMouseSignals.m_flYNormalized;
+	float flX = aMouseSignals.m_dbMouseLastGetX;
+	float flY = aMouseSignals.m_dbMouseLastGetY;
 
 	if(aMouseSignals.m_nButton == GUIEventAdapter::LEFT_MOUSE_BUTTON) {
 		float flMargin = 0.01;
 
-		//Do the polytope intersect the scene graph.
-		ref_ptr<osgUtil::PolytopeIntersector> pPicker = new osgUtil::PolytopeIntersector( 
-			osgUtil::Intersector::PROJECTION,
-			flXNormalized-flMargin, flYNormalized-flMargin,
-			flXNormalized+flMargin, flYNormalized+flMargin);
+		osg::ref_ptr<osgUtil::LineSegmentIntersector> pPicker = 
+            new osgUtil::LineSegmentIntersector(osgUtil::Intersector::WINDOW, flX, flY);
 
 		//InteresectionVisitor is used to testing for intersections with the scene
 		osgUtil::IntersectionVisitor iv(pPicker);
@@ -131,39 +137,27 @@ bool PickAndDragHandler::handlePush(const MouseSignals & aMouseSignals, osgViewe
 			m_dbMouseLastGetYNormalized = flYNormalized;
 
 			//A vector of Nodes from a root node to a descendant
-			//NodePath& nodePath = pPicker->getFirstIntersection().nodePath;
-			bool bFoundIntersect = false;
 			int idx;
 
-			osgUtil::PolytopeIntersector::Intersections & intersections = pPicker->getIntersections();
-			osgUtil::PolytopeIntersector::Intersections::iterator itIntersect;
+			osgUtil::LineSegmentIntersector::Intersections & intersections = pPicker->getIntersections();
+			osgUtil::LineSegmentIntersector::Intersections::iterator itIntersect;
 			for(itIntersect = intersections.begin();
-				(itIntersect !=  intersections.end()) && (bFoundIntersect == false);
+				itIntersect !=  intersections.end();
 				itIntersect++) {
-
+				
 				const NodePath& nodePath = itIntersect->nodePath;
 				//Navigate through nodes and pick the "right" one
 				for(idx=nodePath.size()-1; idx>=0; idx--) {
 					m_pPickedObject = dynamic_cast<AbstractObject*>(nodePath[idx]);
 					if(m_pPickedObject != NULL && m_pPickedObject->getIsTargetPick() != false) {
-						bFoundIntersect = true;
-						break;
+						return true;
 					}
 				}
 			}
-
-			//Get the matrix of the picked object and pass it to the drag
-			if(idx >= 0) {
-				return(true);
-			} else {
-				m_pPickedObject = NULL;
-			}
-		}
-		else	{
+		} else	{
 			m_pPickedObject = NULL;
 		}
-	}	//Case: Push_Left_Mouse_button
-	else {
+	} else {
 		m_pPickedObject = NULL;
 	}
 	return(true);

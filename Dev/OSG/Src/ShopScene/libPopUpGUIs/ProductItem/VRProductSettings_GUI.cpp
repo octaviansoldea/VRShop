@@ -52,6 +52,11 @@ ProductSettings_GUI::~ProductSettings_GUI()	{
 //=====================================================================
 
 void ProductSettings_GUI::buildConnections() {
+	QDir directory("../../../Resources/Textures/Products/");
+	QStringList files = directory.entryList(QDir::Files);
+	m_pComboBoxImageSelect->insertItem(0,"Browse Image ...");
+	m_pComboBoxImageSelect->addItems(files);
+
 	connect(m_pPushButtonSave, SIGNAL(pressed()), this, SLOT(accept()));
 	connect(m_pPushButtonCancel, SIGNAL(pressed()), this, SLOT(close()));
 	connect(m_pToolButtonClose, SIGNAL(clicked(bool)), this, SLOT(close()));

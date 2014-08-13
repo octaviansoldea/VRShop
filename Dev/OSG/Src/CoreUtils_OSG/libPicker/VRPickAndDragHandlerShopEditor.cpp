@@ -85,8 +85,8 @@ bool PickAndDragHandlerShopEditor::handle(const GUIEventAdapter& ea, GUIActionAd
 	if(nEventType == osgGA::GUIEventAdapter::LEFT_MOUSE_BUTTON && ea.getModKeyMask()&osgGA::GUIEventAdapter::MODKEY_LEFT_ALT)	{
 		//Only first parent is checked if it's a product or not
 		int nParent = pPickedObject->getParentalNodePaths().size()-1;
-		const string & strParentName = pPickedObject->getParents()[nParent]->className();
-		if (strParentName == "ProductManager")	{
+		const string & strParentName = pPickedObject->getParents()[nParent]->getName();
+		if (strParentName == "Products")	{
 			emit signalProductPicked(pPickedObject);
 		} else {
 			//Picked object was not a product
@@ -307,7 +307,6 @@ void PickAndDragHandlerShopEditor::duplicateSelection(ref_ptr<Scene> apScene)	{
 	int nI;
 	for (nI=0;nI<nNumberOfCopies;nI++)	{
 		for (it = m_pvecPickedObjects.begin(); it != m_pvecPickedObjects.end(); it++)	{
-			//An open issue with the matrix
 			pObject = dynamic_cast<AbstractObject*>(it->get()->clone(CopyOp::DEEP_COPY_ALL));
 			apScene->addChild(pObject);
 		}

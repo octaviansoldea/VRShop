@@ -47,12 +47,12 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libPicker
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libController
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libMngtController
-  ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor
-  ${CMAKE_BINARY_DIR}/ShopScene/libShopEditor
+  ${CMAKE_BINARY_DIR}/ShopScene/libPopUpGUIs
   ${CMAKE_SOURCE_DIR}/ShopScene/libPopUpGUIs
   ${CMAKE_SOURCE_DIR}/ShopScene/libPopUpGUIs/EditItem
   ${CMAKE_SOURCE_DIR}/ShopScene/libPopUpGUIs/ProductItem
-  ${CMAKE_BINARY_DIR}/ShopScene/libPopUpGUIs
+  ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor
+  ${CMAKE_BINARY_DIR}/ShopScene/libShopEditor
 )
 
 #MOC according to the Qt version

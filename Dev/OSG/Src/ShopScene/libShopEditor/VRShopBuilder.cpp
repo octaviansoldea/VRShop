@@ -403,6 +403,17 @@ void ShopBuilder::addNewItem(ref_ptr<VR::AbstractObject> apAbstractObject)	{
 	if (apAbstractObject == 0)
 		return;
 
+	//Put new item in the center of the viewport and not to (0,0,0)
+	Vec3d vec3dEye, vec3dCenter, vec3dUp;
+
+	KeyboardMouseManipulatorShopEditor * pKeyboardMouseManipulatorShopEditor = 
+		dynamic_cast<KeyboardMouseManipulatorShopEditor *>(m_pOSGQTWidget->getCameraManipulator());
+	pKeyboardMouseManipulatorShopEditor->getTransformation(vec3dEye, vec3dCenter, vec3dUp);
+
+	apAbstractObject->setPosition(vec3dCenter.x(),vec3dCenter.y(),vec3dCenter.z());
+	Matrix & mtrxMatrix = apAbstractObject->calculateMatrix();
+	apAbstractObject->setMatrix(mtrxMatrix);
+
 	m_pScene->addChild(apAbstractObject);
 }
 

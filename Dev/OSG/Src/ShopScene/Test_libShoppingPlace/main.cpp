@@ -24,8 +24,9 @@ int main(int argc, char *argv[])	{
 		//client.getTcpSocket().peerAddress().toString().toStdString();
 
 	string strDBFileName = 
-//		"../../../Databases/Shop.db";
-		"C:/Matej/BookStore.db";
+//		"../../../Databases/ShopDemo.db";
+		"C:/Matej/sceneShopVarious.db";	//This one is working
+
 
 	ShoppingPlace_GUI widget(strDBFileName,strClientName);
 

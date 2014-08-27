@@ -37,7 +37,7 @@ using namespace std;
 ShopBuilder_GUI::ShopBuilder_GUI()	{
 	setupUi(this);
 
-	setWindowTitle("VR Shop Server Dialog");
+	setWindowTitle("ShopBuilder");
 
 	m_pShopBuilder = new ShopBuilder(m_pOSGQTWidget);
 	ref_ptr<Scene> pScene = m_pShopBuilder->getScene();

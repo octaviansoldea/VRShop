@@ -82,7 +82,7 @@ m_strAvatarName(astrAvatarName)	{
 
 	//Insert axes
 	ref_ptr<Node> pAxes = osgDB::readNodeFile("../../../Resources/Models3D/axes.osgt");
-	m_pScene->addChild(pAxes);
+//	m_pScene->addChild(pAxes);
 
 	//A pointer to products sent to the scene
 	m_pProductMgr = new ProductManager;

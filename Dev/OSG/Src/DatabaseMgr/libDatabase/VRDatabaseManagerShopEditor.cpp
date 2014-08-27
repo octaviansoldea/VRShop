@@ -55,7 +55,7 @@ void DatabaseManagerShopEditor::systemOfTables(vector<pair<string,string>> & ave
 			ProductID INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, \
 			ProductCategory TEXT, \
 			ProductName TEXT, \
-			ProductCode INTEGER, \
+			ProductCode INTEGER UNIQUE, \
 			ProductShortDescription TEXT, \
 			ProductDescription TEXT, \
 			ProductManufacturerName TEXT, \

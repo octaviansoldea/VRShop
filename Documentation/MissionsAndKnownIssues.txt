@@ -7,6 +7,8 @@ EditItem doesn't center selection but scene
 
 Texturing of cylinder
 
+Matrix (Position) of a grouped object is not in world coords
+
 	
 CRITICAL Items
 

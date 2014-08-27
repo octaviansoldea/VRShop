@@ -21,7 +21,8 @@ using namespace std;
 //----------------------------------------------------------------------
 
 ProductSettings_GUI::ProductSettings_GUI() :
-m_pProductShopEditor(0)	{
+m_pProductShopEditor(0),
+m_qstrFileName("")	{
 	setupUi(this);
 
 	buildConnections();
@@ -32,12 +33,13 @@ m_pProductShopEditor(0)	{
 
 //----------------------------------------------------------------------
 
-ProductSettings_GUI::ProductSettings_GUI(ProductShopEditor * apProductShopEditor)	{
+ProductSettings_GUI::ProductSettings_GUI(ProductShopEditor * apProductShopEditor) :
+m_pProductShopEditor(apProductShopEditor),
+m_qstrFileName("")	{
 	setupUi(this);
 
 	buildConnections();
 
-	m_pProductShopEditor = apProductShopEditor;
 	initGUI(m_pProductShopEditor);
 
 	m_pOSGQT_Widget->setCameraManipulator(new KeyboardMouseManipulatorShopEditor);
@@ -133,12 +135,7 @@ void ProductSettings_GUI::slotSetTexture()	{
 //----------------------------------------------------------------------
 
 string ProductSettings_GUI::getTexture() const	{
-	
-	if (m_qstrFileName.isEmpty())	{
-		return 0;
-	} else {
-		return m_qstrFileName.toStdString();
-	}
+	return m_qstrFileName.toStdString();	
 }
 
 //----------------------------------------------------------------------

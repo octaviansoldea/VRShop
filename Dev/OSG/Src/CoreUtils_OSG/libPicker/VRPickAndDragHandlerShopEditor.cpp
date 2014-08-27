@@ -22,6 +22,8 @@
 #include <osgGA/GUIActionAdapter>
 #include <osgViewer/Viewer>
 
+#include <osg/ComputeBoundsVisitor>
+
 #include "VRScene.h"
 #include "VRAbstractObject.h"
 #include "VRBoundingBox.h"
@@ -215,6 +217,25 @@ void PickAndDragHandlerShopEditor::groupSelection(ref_ptr<Scene> apScene)	{
 	}
 	pGroupedObject->setIsTargetPick(true);
 	apScene->addChild(pGroupedObject.get());
+
+	ComputeBoundsVisitor cbv;
+	pGroupedObject->accept(cbv);
+	osg::BoundingBox localBB = cbv.getBoundingBox();
+
+	//osg::Matrix localToWorld = osg::computeLocalToWorld(
+	//	pGroupedObject->getParent(0)->getParentalNodePaths()[0]);
+	//int nI;
+	//for (nI=0; nI<8; nI++)	{
+	//	localBB.expandBy(localBB.corner(nI) * localToWorld);
+	//}
+	Vec3d vec3DCenter = localBB.center();	//Correct center of the grouped object
+
+	pGroupedObject->setPosition(vec3DCenter.x(),vec3DCenter.y(),vec3DCenter.z());
+//	Matrixd mtrxGrp = pGroupedObject->calculateMatrix();
+
+//	pGroupedObject->setMatrix(mtrxGrp);
+
+
 
 	clearList();
 }

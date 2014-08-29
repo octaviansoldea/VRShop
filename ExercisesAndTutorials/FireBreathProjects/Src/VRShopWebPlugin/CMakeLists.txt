@@ -68,6 +68,13 @@ include_directories	(
 	${OPENSCENEGRAPH_INCLUDE_DIRS}
 	${CMAKE_CURRENT_SOURCE_DIR}/../testing/libSceneEditor
 	${CMAKE_BINARY_DIR}/testing/libSceneEditor
+
+	${CMAKE_CURRENT_SOURCE_DIR}/../testing/libOSGQTViewer
+	${CMAKE_CURRENT_SOURCE_DIR}/../testing/Test_libModel
+	${CMAKE_CURRENT_SOURCE_DIR}/../testing/libModel
+	${CMAKE_CURRENT_SOURCE_DIR}/../testing/libCommon_OSG
+
+	${CMAKE_BINARY_DIR}/testing/libModel
 )
 
 
@@ -111,9 +118,7 @@ SET(LIBS_COMMON
 
 	libCommon_OSG
   libOSGQTViewer
-  Test_libOSGQTViewer
   libSceneEditor
-  Test_libSceneEditor
 )
 
 IF(Qt5_FOUND)

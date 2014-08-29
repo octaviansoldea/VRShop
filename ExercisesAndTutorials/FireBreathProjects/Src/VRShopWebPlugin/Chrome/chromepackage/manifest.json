@@ -1,9 +1,0 @@
-{
-  "name": "VRShop",
-  "version": "${FBSTRING_PLUGIN_VERSION}",
-  "description": "VRShop Web plugin",
-
-	"plugins": [
-    { "path": "npVRShop.dll", "public": true }
-  ]
-}

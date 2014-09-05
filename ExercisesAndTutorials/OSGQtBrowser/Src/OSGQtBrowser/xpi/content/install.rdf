@@ -6,7 +6,7 @@
 		<em:name>OSGQtBrowser</em:name>
 		<em:version>${FBSTRING_PLUGIN_VERSION}</em:version>
 		<!--<em:iconURL></em:iconURL>-->
-		<!--em:updateURL>http://vrshop.com/update.rdf</em:updateURL>
+		<!--em:updateURL>http://OSGQtBrowser.com/update.rdf</em:updateURL>
 		<em:updateKey></em:updateKey-->
 		<em:unpack>true</em:unpack>
 
@@ -14,9 +14,9 @@
 			<Description>
 				<em:locale>en-US</em:locale>
 				<em:name>OSGQtBrowser</em:name>
-				<em:description>OSGQt browser plugin</em:description>
-				<em:creator>VRShop</em:creator>
-				<em:homepageURL>http://vrshop.com</em:homepageURL>
+				<em:description>OSGQtBrowser</em:description>
+				<em:creator>OSGQtBrowser</em:creator>
+				<em:homepageURL>http://OSGQtBrowser.com</em:homepageURL>
 			</Description>
 		</em:localized> 
 

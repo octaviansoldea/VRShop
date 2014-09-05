@@ -15,7 +15,7 @@
 #include "VRMainWindow_GUI.h"
 
 #include <QWindow>
-
+#include <QProcess>
 #include <QWidget>
 #include <QString>
 
@@ -124,16 +124,16 @@ bool OSGQtBrowser::onWindowAttached(FB::AttachedEvent *evt, FB::PluginWindow * w
 {
 	FB::PluginWindowWin* window = reinterpret_cast<FB::PluginWindowWin*>(win);
 	if ( window )	{
-		int argc = 0;
-		char ** argv = 0;
-		QApplication app(argc, argv);
 
-		VR::MainWindow_GUI mainWindow_GUI;
-		mainWindow_GUI.setAttribute(Qt::WA_NativeWindow);
-		SetParent((HWND)mainWindow_GUI.winId(), window->getHWND());
- 
-		mainWindow_GUI.show();
-		return app.exec();
+		HWND hWnd=  window->getHWND();
+
+		QString strArguments = QString::number((int)hWnd);
+
+		QProcess *process = new QProcess(0);
+		
+		QString strFPExe = "D:\\Octavian\\Companies\\VirtualShop\\GitHub\\VRShop\\ExercisesAndTutorials\\OSGQtBrowser\\Build\\RedBall\\Test_libModel\\Debug\\Test_libModel.exe";
+
+		process->start(strFPExe, QStringList() << strArguments);
 	}
 
     // The window is attached; act appropriately

@@ -1,0 +1,9 @@
+{
+  "name": "OSGQtBrowser",
+  "version": "${FBSTRING_PLUGIN_VERSION}",
+  "description": "OSGQt browser plugin",
+
+	"plugins": [
+    { "path": "npOSGQtBrowser.dll", "public": true }
+  ]
+}

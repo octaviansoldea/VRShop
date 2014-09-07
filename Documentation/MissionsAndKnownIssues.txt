@@ -1,38 +1,68 @@
 CRITICAL Bugs
-Textures when cloning objects
+
+Matrix (Position) of a grouped object is not in world coords
+
+Load of avatar / Synchronization of avatar moves
 
 EditItem doesn't center selection but scene
 	VRProductmanager line 168: if frameless window selected, then fails to display correctly
 	(likely because of a missing parent)
 
+Paths for system in browser and classic mode
+
+Textures when cloning objects
+
+============================================================	
+
+Non-Critical Bugs
+
 Texturing of cylinder
 
-Matrix (Position) of a grouped object is not in world coords
+============================================================
 
-	
 CRITICAL Items
 
-Web
+Design of web with fix IP - WordPress proposed
 
 User accounts - signing in
+
+Test the far IP
+
+Cashier
+	- carry-out payment
+	- track transactions and operations
+	- add to history database
+
 QTimer server cleaning
+
 Saving already opened file adds to the existing file and doesn't overwrite it
 
-Android
-iPhone
-WindowsPhone - WinCE
+* Android
+* iPhone
+* WindowsPhone - WinCE
+
+Upper limit of users from server
+
+====================================================================
 
 OPTIONAL
 
-Polish keyDown in KeyboardMouseManipulatorShopClient and KeyboardMouseManipulator
+Linux/Mac
+
+Polish keyDown in KeyboardMouseManipulatorShopClient and KeyboardMouseManipulator: no fly with Fwd/Bckwd buttons
+
+Introducing new avatars
+
+Editing avatars
+
 When client finishes should try announcing the server to delete the remains
-Load of avatar
+
 Messages at loading
-lights
-synchronization of avatar moves
-orientation of "others" avatars ->?-> direction of lights to "others" avatars
 
+Lights
 
-CONVENIENCE
+Orientation of "others" avatars ->?-> direction of lights to "others" avatars
+
+Data mining
 
 Split adding products to the database from inserting them into the scene

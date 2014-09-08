@@ -11,7 +11,6 @@
 using namespace std;
 using namespace VR;
 
-#define WEB 1
 
 int main(int argc, char *argv[])	{
 	QApplication app(argc, argv);
@@ -20,15 +19,15 @@ int main(int argc, char *argv[])	{
 	
 	ShopBuilder_GUI widget;
 
-#if WEB
-	widget.setAttribute(Qt::WA_NativeWindow);
+	if (argc > 1)	{
+		widget.setAttribute(Qt::WA_NativeWindow);
 
-	QString qstrArg = app.arguments().at(1);
+		QString qstrArg = app.arguments().at(1);
 
-	bool bOk;
+		bool bOk;
 
-	SetParent((HWND)widget.winId(), (HWND)qstrArg.toULong(&bOk));
-#endif //WEB
+		SetParent((HWND)widget.winId(), (HWND)qstrArg.toULong(&bOk));
+	}
 
 	widget.show();
 	return app.exec();

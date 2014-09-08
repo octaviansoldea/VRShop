@@ -39,7 +39,6 @@ int main(int argc, char *argv[])	{
 
 
 	ShoppingPlace_GUI widget(strDBFileName,string(strClientName));
-	widget.showFullScreen();
 
 
 	if (argc > 1)	{

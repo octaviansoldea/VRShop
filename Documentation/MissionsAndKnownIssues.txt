@@ -1,6 +1,6 @@
 CRITICAL Bugs
 
-Load of avatar / Synchronization of avatar moves
+Initial position of camera / Synchronization of avatar moves
 
 EditItem doesn't center selection but scene
 	VRProductmanager line 168: if frameless window selected, then fails to display correctly
@@ -20,11 +20,11 @@ Texturing of cylinder
 
 CRITICAL Items
 
-Design of web with fix IP - WordPress proposed
+Test the far/fix IP
 
 User accounts - signing in
 
-Test the far IP
+
 
 Cashier
 	- carry-out payment

@@ -97,13 +97,15 @@ m_strAvatarName(astrAvatarName)	{
 	avatarParams.m_pKeyboardMouseManipulatorShopClient = pKeyboardMouseManipulatorShopClient;
 	avatarParams.m_strAvatarFile = //"../../../Resources/Models3D/avatarOut.osg";
 		"C:/Projekti/VRShop/Dev/CorePlatform/Resources/Models3D/avatarOut.osg";
+		//"D:/Octavian/Companies/VirtualShop/GitHub/VRShop/Dev/CorePlatform/Resources/Models3D/avatarOut.osg";
 	avatarParams.m_strAvatarName = m_strAvatarName;
 
 	m_pAvatar = new Avatar(&avatarParams);
 	m_pScene->addChild(m_pAvatar);
 
 	pKeyboardMouseManipulatorShopClient->setCameraPosition2Object(m_pAvatar);
-	
+	m_pAvatar->slotUpdatePosition(false);
+
 	m_pAbstractUser = new Visitor(m_pAvatar);
 	m_pBasket = m_pAbstractUser->getBasket();
 

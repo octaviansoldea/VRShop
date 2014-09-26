@@ -50,6 +50,7 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libController
   ${CMAKE_SOURCE_DIR}/ShopScene/libShoppingPlace
   ${CMAKE_BINARY_DIR}/ShopScene/libShoppingPlace
+  ${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgentManager
   ${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProduct
   ${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProductInterface
   ${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProductInterface/View

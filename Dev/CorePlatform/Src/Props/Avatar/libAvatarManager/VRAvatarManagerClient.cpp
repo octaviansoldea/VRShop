@@ -177,7 +177,8 @@ void AvatarManagerClient::slotReceiveAvatarsData()	{
 		} else {
 			//Avatar
 			AvatarParams avatarParams;
-			avatarParams.m_strAvatarFile = "C:/Projekti/VRShop/Dev/CorePlatform/Resources/Models3D/avatarOut.osg";
+			avatarParams.m_strAvatarFile = //"D:/Octavian/Companies/VirtualShop/GitHub/VRShop/Dev/CorePlatform/Resources/Models3D/avatarOut.osg";
+				"D:/Octavian/Companies/VirtualShop/GitHub/VRShop/Dev/CorePlatform/Resources/Models3D/avatarOut.osg";
 				//"../../../Resources/Models3D/avatarOut.osg";
 			avatarParams.m_strAvatarName = (*it).first;
 

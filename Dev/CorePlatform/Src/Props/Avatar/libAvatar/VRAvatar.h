@@ -8,7 +8,7 @@
 #include <osg/MatrixTransform>
 #include "VRAnimationPath.h"
 
-class AnimationManagerFinder;
+struct AnimationManagerFinder;
 
 namespace VR {
 	class AnimationPath;

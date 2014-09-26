@@ -139,6 +139,9 @@ void Avatar::startAnimation()	{
 
 void Avatar::stopAnimation()	{
 	osgAnimation::BasicAnimationManager* model = m_pFinder->_am.get();
+	if(model == 0) {
+		return;
+	}
 	model->stopAll();
 	
 	const osgAnimation::AnimationList & lstAnimation = model->getAnimationList();

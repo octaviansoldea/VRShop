@@ -15,14 +15,11 @@ using namespace std;
 
 Server::Server(QObject *parent,int anConnMax) : QTcpServer(parent), m_nMaxNoOfConnections(anConnMax)	{
 	m_nNoOfConnections = 0;
-
-	m_pAgentManager = new AgentManager;
 }
 
 //----------------------------------------------------------------------
 
 Server::~Server()	{
-	delete m_pAgentManager;
 }
 
 //=====================================================================

@@ -1,7 +1,5 @@
 CRITICAL Bugs
 
-Matrix (Position) of a grouped object is not in world coords
-
 Load of avatar / Synchronization of avatar moves
 
 EditItem doesn't center selection but scene

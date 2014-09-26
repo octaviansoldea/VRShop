@@ -1,5 +1,4 @@
 #include <windows.h>
-//#pragma comment(lib, "user32.lib")
 
 #include <fstream>
 #include <iostream>
@@ -34,9 +33,10 @@ int main(int argc, char *argv[])	{
 		//client.getTcpSocket().peerAddress().toString().toStdString();
 
 	string strDBFileName = 
-//		"../../../Databases/ShopDemo.db";
-		"C:/Projekti/VRShop/SampleScenes/Finalna_OK.db";	//This one is working
-
+//		"C:/Projekti/VRShopDocs/Scenes/sceneShop_NoProducts.db"
+		"../../../Databases/ShopDemo.db"
+//"C:/Projekti/VRShop/SampleScenes/Finalna_OK.db"	//This one is working
+		;
 
 	ShoppingPlace_GUI widget(strDBFileName,string(strClientName));
 

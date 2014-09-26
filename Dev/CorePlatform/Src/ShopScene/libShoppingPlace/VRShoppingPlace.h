@@ -28,6 +28,8 @@ namespace VR	{
 		PickAndDragHandlerShopClient * getPicker() const;
 		Basket * getBasket();
 
+		AbstractUser * getAbstractUser();
+
 	private:
 		bool createClientScene(const std::string & astrSceneFileName);
 

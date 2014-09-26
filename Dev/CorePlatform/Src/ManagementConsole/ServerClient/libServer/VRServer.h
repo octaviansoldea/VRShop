@@ -4,8 +4,6 @@
 #include <QTcpServer>
 
 namespace VR	{
-	class AgentManager;
-
 	class Server : public QTcpServer	{
 		Q_OBJECT
 
@@ -25,9 +23,6 @@ namespace VR	{
 
 	private slots:
 		void slotDisconnected();
-
-	private:
-		AgentManager * m_pAgentManager;
 	};
 }
 #endif //VR_SERVER_H

@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainCentralWindow</class>
+ <widget class="QMainWindow" name="MainCentralWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1007</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">color: black;
+font-weight: normal;
+background-color: #27262a;</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <property name="leftMargin">
+     <number>100</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>100</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <item>
+     <widget class="QFrame" name="frame">
+      <property name="styleSheet">
+       <string notr="true">max-height: 50px;</string>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="VR::VRQLabel" name="m_pLabelLogo">
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QLabel {
+	font:FuturaBook;
+	font-size: 25px;
+	font-style: normal; 
+	color:#acd5d4;
+	text-decoration: none;
+	margin-left:20px;
+}
+</string>
+         </property>
+         <property name="text">
+          <string>V R S H O P</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QComboBox" name="m_pComboBoxShops">
+         <property name="styleSheet">
+          <string notr="true">color:white;</string>
+         </property>
+         <property name="editable">
+          <bool>false</bool>
+         </property>
+         <property name="currentText">
+          <string>ShopDemo</string>
+         </property>
+         <property name="frame">
+          <bool>false</bool>
+         </property>
+         <item>
+          <property name="text">
+           <string>ShopDemo</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Shop</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <property name="spacing">
+          <number>20</number>
+         </property>
+         <property name="rightMargin">
+          <number>20</number>
+         </property>
+         <item>
+          <widget class="VR::VRQLabel" name="m_pLabelHome">
+           <property name="font">
+            <font>
+             <family>FuturaBook</family>
+             <pointsize>-1</pointsize>
+             <weight>50</weight>
+             <bold>false</bold>
+             <underline>false</underline>
+             <strikeout>false</strikeout>
+            </font>
+           </property>
+           <property name="cursor">
+            <cursorShape>PointingHandCursor</cursorShape>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color: white;
+display: inline;
+text-decoration: none;
+font-size:15px;
+font-family:FuturaBook;</string>
+           </property>
+           <property name="text">
+            <string>Home</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="VR::VRQLabel" name="m_pLabelSelectShop">
+           <property name="cursor">
+            <cursorShape>PointingHandCursor</cursorShape>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color: white;
+display: inline;
+text-decoration: none;
+font-size:15px;
+font-family:FuturaBook;</string>
+           </property>
+           <property name="text">
+            <string>Select Shop</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="VR::VRQLabel" name="m_pLabelAbout">
+           <property name="cursor">
+            <cursorShape>PointingHandCursor</cursorShape>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color: white;
+display: inline;
+text-decoration: none;
+font-size:15px;
+font-family:FuturaBook;</string>
+           </property>
+           <property name="text">
+            <string>About</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="VR::VRQLabel" name="m_pLabelForDevs">
+           <property name="cursor">
+            <cursorShape>PointingHandCursor</cursorShape>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color: white;
+display: inline;
+text-decoration: none;
+font-size:15px;
+font-family:FuturaBook;</string>
+           </property>
+           <property name="text">
+            <string>For Developers</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="VR::VRQLabel" name="m_pLabelContact">
+           <property name="cursor">
+            <cursorShape>PointingHandCursor</cursorShape>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">color: white;
+display: inline;
+text-decoration: none;
+font-size:15px;
+font-family:FuturaBook;</string>
+           </property>
+           <property name="text">
+            <string>Contact</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QWidget" name="m_pWidgetCentralContent" native="true">
+      <property name="styleSheet">
+       <string notr="true">QWidget#m_pWidgetCentralContent	{
+height: 600px; padding: 0px;
+margin: 0px; background-color: Black;
+border: 2px solid #acd5d4;
+border-radius:5px;
+width: 100%; 
+height: 100%;
+}
+</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QLabel" name="m_pLabelCopyright">
+      <property name="styleSheet">
+       <string notr="true">max-height: 20px;</string>
+      </property>
+      <property name="text">
+       <string>&lt;div class=&quot;footer&quot; style=&quot;padding-bottom: 5px; position: relative; top: 50%;&quot;&gt;
+            &lt;div id=&quot;footerText&quot; style=&quot;text-align: center; font-size: 12px; color: Gray;&quot;&gt;
+                &lt;span id=&quot;Span1&quot;&gt;Copyright (C) 2014 VRShop. All Rights Reserved.&lt;/span&gt; Using
+                this site, you agree to have read and accepted our &lt;a href=&quot;/&quot; style=&quot;text-decoration: none;
+                    color: Gray;&quot;&gt;terms of use&lt;/a&gt;, &lt;a href=&quot;/&quot; style=&quot;text-decoration: none; color: Gray;&quot;&gt;
+                        cookie and privacy policy&lt;/a&gt;.
+            &lt;/div&gt;
+        &lt;/div&gt;</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>VR::VRQLabel</class>
+   <extends>QLabel</extends>
+   <header location="global">vrqlabel.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

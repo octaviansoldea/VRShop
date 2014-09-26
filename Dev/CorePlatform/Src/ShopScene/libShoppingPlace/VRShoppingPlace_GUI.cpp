@@ -42,6 +42,7 @@ ShoppingPlace_GUI::ShoppingPlace_GUI(string & astrFileName, std::string & astrAv
 	Scene * pScene = m_pShoppingPlace->getScene();
 	PickAndDragHandlerShopClient * pPickAndDragHandlerShopClient = m_pShoppingPlace->getPicker();
 	Basket * pBasket = m_pShoppingPlace->getBasket();
+	AbstractUser * pUser = m_pShoppingPlace->getAbstractUser();
 
 	//ProductInterface
 	m_pProductInterface = new ProductInterface(
@@ -63,7 +64,8 @@ ShoppingPlace_GUI::ShoppingPlace_GUI(string & astrFileName, std::string & astrAv
 		m_pPushButtonSignIn,
 		m_pPushButtonSignOut,
 		m_pPushButtonRemoveAccount,
-		m_pPushButtonChangeSettings);
+		m_pPushButtonChangeSettings,
+		pUser);
 
 	//Basket Interface
 	m_pProductBasketInterface = new ProductBasketInterface(

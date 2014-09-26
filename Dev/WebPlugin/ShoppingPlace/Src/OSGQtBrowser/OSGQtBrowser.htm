@@ -1,39 +1,51 @@
 <!DOCTYPE html>
-<!--
-    Auto-generated test-site
--->
-<html>
-<head>
-<title>test page for object fbcontrol</title>
-</head>
-    <script type="text/javascript">
-        function plugin0()
-        {
-            return document.getElementById('plugin0');
-        }
-        plugin = plugin0;
 
-        function addEvent(obj, name, func)
-        {
-            if (obj.attachEvent) {
-                obj.attachEvent("on"+name, func);
-            } else {
-                obj.addEventListener(name, func, false); 
+<html lang="en">
+	<head>
+		<title>ShopBuilder</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="description" content="ShopBuilder :: cross-platform 3D toolkit for designing a shop." />
+		<link rel="icon" type="image/bmp" href="../WebResources/Banana.bmp" />
+		<link href="C:/Projekti/VRShop/Dev/WebPlugin/ShoppingPlace/Src/WebResources/OSGQtBrowser.css" rel="stylesheet" type="text/css" />
+
+        <script type="text/javascript">
+            function plugin0()
+            {
+                return document.getElementById('plugin0');
             }
-        }
-
-        function load()
-        {
-            addEvent(plugin(), 'test', function(){
-                alert("Received a test event from the plugin.")
-            });
-        }
-
-
-    </script>
-<body onload="load()">
-<object id="plugin0" type="application/x-osgqtbrowser" style="border: 0px; height: 600px; width: 800px;">
+            plugin = plugin0;
+            function addEvent(obj, name, func)
+            {
+                if (obj.attachEvent) {
+                    obj.attachEvent("on"+name, func);
+                } else {
+                    obj.addEventListener(name, func, false); 
+                }
+            }
+        
+            function load()
+            {
+                addEvent(plugin(), 'test', function(){
+                    alert("Received a test event from the plugin.")
+                });
+            }
+            function pluginLoaded() {
+                alert("Plugin loaded!");
+            }        
+        </script>
+	</head>
+	
+	<body class="inner" onload="load()">
+        <div id="mainWrap">
+            <div id="mainMenuBar">
+                <!-- Put header here-->
+            </div>
+            <div id="mainContent">
+                <!-- Put plugin here-->
+            </div>
+        </div>        
+<object type="application/x-osgqtbrowser" width="1000px" height="800px">
     <param name="onload" value="pluginLoaded" />
-   </object><br />
-</body>
+</object>
+	</body>
 </html>

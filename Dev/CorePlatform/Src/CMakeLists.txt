@@ -33,4 +33,5 @@ SUBDIRS(
 	Props
 	ManagementConsole
 	ShopScene
+	EmbeddedWidget
 )

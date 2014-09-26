@@ -38,6 +38,7 @@ ENDIF(Qt5_FOUND)
 INCLUDE_DIRECTORIES(
 	${OPENSCENEGRAPH_INCLUDE_DIRS}
 	${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libServer
+	${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libClient
 	${CMAKE_SOURCE_DIR}/ManagementConsole/DatabaseNetworkManager/libDatabaseNetworkManager
 	${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabase
 	${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
@@ -66,6 +67,7 @@ SET(LIBS_COMMON
 	${OSGVIEWER_LIBRARIES}
 	${OPENTHREADS_LIBRARIES}
 	libServer
+	libClient
 	libDatabaseNetworkManager
 	libDatabase
 	libCommon

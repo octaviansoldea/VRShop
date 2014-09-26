@@ -144,8 +144,9 @@ bool OSGQtBrowser::onWindowAttached(FB::AttachedEvent *evt, FB::PluginWindow * w
 		
 		QString strFPExeEditor = "C:/Projekti/VRShop/Dev/CorePlatform/Build/ShopScene/Test_libShopEditor/Debug/Test_libShopEditor.exe";
 		QString strFPExeClient = "C:/Projekti/VRShop/Dev/CorePlatform/Build/ShopScene/Test_libShoppingPlace/Debug/Test_libShoppingPlace.exe";
+		QString strFPExeWebsite = "C:/Projekti/VRShop/Dev/CorePlatform/Build/EmbeddedWidget/Test_libEmbeddedWidget/Debug/Test_libEmbeddedWidget.exe";
 
-		m_pProcess->start(strFPExeClient, QStringList() << strArguments);
+		m_pProcess->start(strFPExeWebsite, QStringList() << strArguments);
 
 		return true;
 	}

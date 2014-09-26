@@ -81,7 +81,7 @@ m_strAvatarName(astrAvatarName)	{
 	m_pOSGQTWidgetMap->show();
 
 	//Insert axes
-	ref_ptr<Node> pAxes = osgDB::readNodeFile("../../../Resources/Models3D/axes.osgt");
+//	ref_ptr<Node> pAxes = osgDB::readNodeFile("../../../Resources/Models3D/axes.osgt");
 //	m_pScene->addChild(pAxes);
 
 	//A pointer to products sent to the scene
@@ -205,6 +205,12 @@ bool ShoppingPlace::createClientScene(const string & astrSceneFileName)	{
 
 Basket * ShoppingPlace::getBasket()	{
 	return m_pBasket;
+}
+
+//----------------------------------------------------------------------
+
+AbstractUser * ShoppingPlace::getAbstractUser()	{
+	return m_pAbstractUser;
 }
 
 //----------------------------------------------------------------------

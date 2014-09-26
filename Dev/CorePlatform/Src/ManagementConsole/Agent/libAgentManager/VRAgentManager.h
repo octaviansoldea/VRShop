@@ -3,10 +3,14 @@
 
 #include <list>
 
+#include <QObject>
+
 namespace VR {
 	class AbstractUser;
+	class Client;
 	
-	class AgentManager	{
+	class AgentManager : public QObject	{
+		Q_OBJECT
 	public:
 		AgentManager();
 		~AgentManager();
@@ -25,6 +29,11 @@ namespace VR {
 	private:
 		std::list<AbstractUser*> m_lstUsers;
 		int m_nMaxNrOfAgents;
+
+		Client * m_pClient;
+
+	public:
+		void trySigningIn(const std::string & astrUserName, const std::string & astrPassword);
 	};
 }
 #endif //VR_AGENT_MANAGER_H

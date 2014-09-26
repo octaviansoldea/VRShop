@@ -19,7 +19,7 @@ namespace VR	{
 
 		void createUserAccountDB() const;
 
-	protected:
+	private:
 		std::string m_strUserName;
 		std::string m_strPassword;
 		std::string m_strEMail;

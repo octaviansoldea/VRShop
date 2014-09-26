@@ -29,7 +29,7 @@ ENDIF(Qt5_FOUND)
 
 INCLUDE_DIRECTORIES(
 	${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libServer
-#	${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libClient
+	${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libClient
 	${CMAKE_SOURCE_DIR}/ManagementConsole/DatabaseNetworkManager/libDatabaseNetworkManager
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgentManager
 	${CMAKE_SOURCE_DIR}/Props/Avatar/libAvatar
@@ -50,7 +50,7 @@ ADD_EXECUTABLE(Test_libServer
 SET(LIBS_COMMON
 	libAvatar
 	libServer
-#	libClient
+	libClient
 	libDatabase
 	libDatabaseNetworkManager
 	libAgentManager

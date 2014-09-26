@@ -27,11 +27,9 @@ ENDIF(Qt5_FOUND)
 #MOC according to the Qt version
 IF(Qt5_FOUND)
   QT5_WRAP_UI(UI_SRCS		${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgent/View/VRSignUp_GUI.ui)
-  QT5_WRAP_CPP(MOC_SRCS 	VRAgentInterface.h
-							${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgent/View/VRSignUp_GUI.h)
+  QT5_WRAP_CPP(MOC_SRCS 	${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgent/View/VRSignUp_GUI.h)
 ELSE(Qt5_FOUND)
-  QT4_WRAP_CPP(MOC_SRCS		VRAgentInterface.h
-							${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgent/View/VRSignUp_GUI.h)  
+  QT4_WRAP_CPP(MOC_SRCS		${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgent/View/VRSignUp_GUI.h)  
   QT4_WRAP_UI(UI_SRCS		${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgent/View/VRSignUp_GUI.ui)
 ENDIF(Qt5_FOUND)
 
@@ -57,7 +55,6 @@ SET(SRCS
 	VRUserAccount.h VRUserAccount.cpp
 	VRAdministrator.h VRAdministrator.cpp
 	VRCustomerSupportOfficer.h VRCustomerSupportOfficer.cpp
-	VRAgentInterface.h VRAgentInterface.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/View/VRSignUp_GUI.h ${CMAKE_CURRENT_SOURCE_DIR}/View/VRSignUp_GUI.cpp
 )
 

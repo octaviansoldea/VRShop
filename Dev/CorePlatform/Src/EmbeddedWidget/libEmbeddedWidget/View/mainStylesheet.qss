@@ -1,0 +1,18 @@
+QWidget#m_pWidgetCentralContent	{
+	padding: 1000px 15px 0px 0px;
+}
+
+
+QMainWindow#MainWindow	{
+	color: black;
+	font-weight: normal;
+	background-color: #27262a;
+}
+
+QLabel#m_pLabelLogo 	{
+	font:FuturaBook;
+	font-size: 25px;
+	font-style: normal; 
+	color:#acd5d4;
+	text-decoration: none;
+}

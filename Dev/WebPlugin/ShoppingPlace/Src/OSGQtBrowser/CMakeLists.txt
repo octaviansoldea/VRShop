@@ -15,7 +15,7 @@ file (GLOB GENERAL RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
     [^.]*.cpp
     [^.]*.h
     [^.]*.cmake
-	[^.]*.htm
+	[^.]*.htm*
     )
 
 include_directories(${PLUGIN_INCLUDE_DIRS})

@@ -27,21 +27,6 @@
 	background-color: rgb(105,105,105);
 }
 
-/*	Push button
-QPushButton {
-	height: 20px;
-	border: 1px solid gray;
-	border-radius: 3px;
-	background-color: lightgray;
-	selection-background-color: gray;
-}
-
-QPushButton:hover {
-	background-color: gray;
-	border-radius: 3px;
-}
-*/
-
 /*Line edit*/
 QLineEdit {
     border: 1px solid gray;
@@ -219,7 +204,11 @@ QToolButton:hover {
         </size>
        </property>
        <property name="styleSheet">
-        <string notr="true"/>
+        <string notr="true">QLabel#m_pLabelLogoRetailer	{
+	border:0px;
+	border-radius:0px;
+	background-color:rgba(255,255,255,0);
+}</string>
        </property>
        <property name="text">
         <string>LOGO - Retailer 
@@ -346,30 +335,24 @@ QToolButton:hover {
        </property>
        <property name="font">
         <font>
-         <family>Arial</family>
-         <pointsize>10</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
+         <family>12 20px</family>
+         <weight>50</weight>
+         <italic>false</italic>
+         <bold>false</bold>
         </font>
        </property>
        <property name="cursor">
         <cursorShape>PointingHandCursor</cursorShape>
        </property>
        <property name="styleSheet">
-        <string notr="true">QPushButton {
+        <string notr="true">QPushButton#m_pPushButtonSignIn {
 	color:rgb(204,204,204);
 	border: 1px solid rgb(67,67,67);
 	background-color:rgb(102,102,102);
-
-/*
-qlineargradient(x1:0, y1:0, x2:0, y2:1, 
-stop: 0 rgb(70,70,70), 
-stop: 0.5 lightgray,
-stop: 1 rgb(70,70,70));
-*/
+	font: Arial bold 20px;
 }
 
-QPushButton:hover {
+QPushButton#m_pPushButtonSignIn:hover {
 	color: white;
 }
 </string>
@@ -838,20 +821,15 @@ padding: 2px;</string>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">QLabel {
+        <string notr="true">QLabel#m_pLabelBasketCase {
 	color: rgb(204,204,204);
 	border-radius: 5px;
 	border: 1px solid rgb(67,67,67);
 	background-color:rgb(70,70,70);
-}
-
-/*
-rgb(102,102,102);
-	background-color: 
-*/</string>
+}</string>
        </property>
        <property name="text">
-        <string>Basket case</string>
+        <string>Basket</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -894,10 +872,9 @@ rgb(102,102,102);
         </rect>
        </property>
        <property name="styleSheet">
-        <string notr="true">QFrame	{
+        <string notr="true">QFrame#m_pFrameProductInterface	{
 	border: 1px solid rgb(29,29,29);
 	background-color: rgb(67,67,67);
-
 	border-radius: 10px;
 	padding: 2px;
 }
@@ -1106,7 +1083,7 @@ basket</string>
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">QLabel {
+        <string notr="true">QLabel#m_pLabelProductInterfacePrice {
 	color: rgb(204,204,204);
 	border-radius: 5px;
 	border: 1px solid rgb(18,18,18);

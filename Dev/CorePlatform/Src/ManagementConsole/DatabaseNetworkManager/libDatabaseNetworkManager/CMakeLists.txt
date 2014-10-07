@@ -10,7 +10,7 @@ IF(Qt5_FOUND)
     ${Qt5Gui_INCLUDE_DIRS}
     ${Qt5Widgets_INCLUDE_DIRS}
     ${Qt5Network_INCLUDE_DIRS}	
-	${Qt5Sql_INCLUDE_DIRS}	
+	${Qt5Sql_INCLUDE_DIRS}
   )
 ELSE(Qt5_FOUND)
   #Assume Qt4_FOUND, if we are here
@@ -34,6 +34,8 @@ INCLUDE_DIRECTORIES(
 	${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
 	${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libTimer
 	${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabase
+	${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libServerClientCommands
+	${CMAKE_SOURCE_DIR}/Props/Avatar/libAvatarManagerServer
 )
 
 #MOC according to the Qt version

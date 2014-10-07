@@ -49,6 +49,8 @@ INCLUDE_DIRECTORIES(
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgent
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProduct
 	${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libTimer
+	${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libServerClientCommands
+	${CMAKE_SOURCE_DIR}/Props/Avatar/libAvatarManagerServer
 )
 
 SET(SRCS
@@ -78,6 +80,8 @@ SET(LIBS_COMMON
 	libProduct
 	libTimer
 	Winmm
+	libServerClientCommands
+	libAvatarManagerServer
 )
 
 IF(Qt5_FOUND)

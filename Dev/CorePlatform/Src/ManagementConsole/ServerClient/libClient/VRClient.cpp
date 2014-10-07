@@ -1,5 +1,7 @@
 #include <iostream>
 
+#include "VRServerClientCommands.h"
+
 #include <QMessageBox>
 #include <QHostAddress>
 
@@ -71,7 +73,7 @@ void Client::sendRequest(QByteArray & aarrRequest)	{
 
 //---------------------------------------------------------------------
 
-QTcpSocket &  Client::getTcpSocket() {
+QTcpSocket & Client::getTcpSocket() {
 	return(m_TcpSocket);
 }
 
@@ -83,25 +85,23 @@ void Client::slotReadReceivedData()	{
 	
 	int nBytesAvailable = m_TcpSocket.bytesAvailable();
 
-//	std::cout << "Client (slotReadReceivedData()): " << nBytesAvailable << std::endl;
-
 	QByteArray qData;
 
 	if (m_unPackageSize == 0) {
-		if (m_TcpSocket.bytesAvailable() < sizeof(quint64))
+		if (nBytesAvailable < sizeof(quint64))
 			return;
 		in >> m_unPackageSize;
 	}
 
-	if (m_TcpSocket.bytesAvailable() < m_unPackageSize)
+	if (nBytesAvailable < m_unPackageSize)
 		return;
 
 	qData = in.device()->readAll();
 
 	m_unPackageSize=0;
-	processReceivedData(qData);
 
-//	emit done();
+	m_TransmitData = qData;
+	emit done();
 }
 
 //---------------------------------------------------------------------
@@ -150,63 +150,16 @@ void Client::slotNewUserRequest()	{
 	QByteArray block;
 	QDataStream out(&block, QIODevice::WriteOnly);
 	out.setVersion(QDataStream::Qt_4_8);
-	
-	out << quint64(0) << quint8('S');
 
-	/*
-		PATTERN:	quint64(0) - size
-					quint8('S') - Scene
-	*/
+	char chType = ServerClientCommands::getOperationType(ServerClientCommands::NEW_USER_REQUEST);
+
+	out << quint64(0) << quint8(chType);
 
 	sendRequest(block);
 }
 
 //---------------------------------------------------------------------------
 
-void Client::processReceivedData(QByteArray & data)	{
-	QDataStream out(&data,QIODevice::ReadOnly);
-	out.setVersion(QDataStream::Qt_4_8);
-
-	int nBytesAvaliable = out.device()->bytesAvailable();
-
-	quint8 nType;	//Type of the data received
-	out >> nType;
-
-	if (nType == 'S')	{
-		quint32 nFileSize;
-		out >> nFileSize;	//QByteArray always starts with a "quint32" additional value
-
-		QString qstrFileName="C:/Matej/Scene.db";
-		QFile file(qstrFileName);
-		
-		if(!(file.open(QIODevice::Append)))	{
-			qDebug("File cannot be opened.");
-		} else {
-			QByteArray read = out.device()->readAll();
-
-			file.write(read);
-			file.close();
-		}
-	} else if (nType == 'A')	{
-		//This part relates to the single avatar matrix updating.
-		//Don't have to anything yet
-	} else if (nType == 'a')	{
-		//If here, pass information to the "AvatarManagerClient"
-/*		QString qstrAvatarsData;
-		out >> qstrAvatarsData;
-
-		cout << "=========================================================" << endl;
-		cout << qstrAvatarsData.toStdString() << endl;
-		cout << "=========================================================" << endl;
-*/
-		
-		out >> m_qstrAvatarsData;
-		emit done();
-	} else if (nType == 'P')	{
-		string strTest = m_qstrAvatarsData.toStdString();
-		out >> m_qstrAvatarsData;
-		emit done();
-	}
+QByteArray Client::getTransmittedData()	{
+	return m_TransmitData;
 }
-
-//---------------------------------------------------------------------------

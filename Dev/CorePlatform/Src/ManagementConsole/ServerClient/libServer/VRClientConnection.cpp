@@ -4,6 +4,8 @@
 #include <QTcpSocket>
 #include <QHostAddress>
 
+#include "VRServerClientCommands.h"
+
 #include <QList>
 
 #include <sstream>
@@ -72,7 +74,7 @@ void ClientConnection::processRequest(QByteArray & data)	{
 	string strRequest = qstrRequest.toStdString();
 	bool bRes=false;
 
-	if (nType == 'S')	{
+	if (nType == ServerClientCommands::getOperationType(ServerClientCommands::NEW_USER_REQUEST))	{
 		QByteArray result;
 		QDataStream out(&result, QIODevice::WriteOnly);
 		out.setVersion(QDataStream::Qt_4_8);

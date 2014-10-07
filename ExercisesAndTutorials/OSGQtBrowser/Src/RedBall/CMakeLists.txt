@@ -7,5 +7,6 @@ SUBDIRS(
   libCommon_OSG
   libOSGQTViewer
   libModel
+  libReadWriteData
   Test_libModel
 )

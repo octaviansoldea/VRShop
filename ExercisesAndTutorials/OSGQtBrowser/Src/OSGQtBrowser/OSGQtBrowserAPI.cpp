@@ -9,6 +9,8 @@
 #include "DOM/Document.h"
 #include "global/config.h"
 
+#include <string>
+
 #include "OSGQtBrowserAPI.h"
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -63,4 +65,12 @@ std::string OSGQtBrowserAPI::get_version()
 void OSGQtBrowserAPI::testEvent()
 {
     fire_test();
+}
+
+int OSGQtBrowserAPI::printToFile()	{
+	VR::ReadWrite rw;
+	std::string strFile = "C:/Matej/test.txt";
+	int nRes = rw.readFileData(strFile);
+	
+	return nRes;
 }

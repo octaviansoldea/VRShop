@@ -9,6 +9,9 @@
 #include <boost/weak_ptr.hpp>
 #include "JSAPIAuto.h"
 #include "BrowserHost.h"
+
+#include "ReadWrite.h"
+
 #include "OSGQtBrowser.h"
 
 #ifndef H_OSGQtBrowserAPI
@@ -33,7 +36,9 @@ public:
     {
         registerMethod("echo",      make_method(this, &OSGQtBrowserAPI::echo));
         registerMethod("testEvent", make_method(this, &OSGQtBrowserAPI::testEvent));
-        
+
+		registerMethod("printToFile",      make_method(this, &OSGQtBrowserAPI::printToFile));
+
         // Read-write property
         registerProperty("testString",
                          make_property(this,
@@ -73,6 +78,9 @@ public:
 
     // Method test-event
     void testEvent();
+
+
+	int printToFile();
 
 private:
     OSGQtBrowserWeakPtr m_plugin;

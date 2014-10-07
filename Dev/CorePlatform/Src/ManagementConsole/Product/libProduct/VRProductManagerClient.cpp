@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
 
+#include "VRServerClientCommands.h"
+
 #include <QByteArray>
 #include <QDataStream>
 
@@ -50,14 +52,10 @@ void ProductManagerClient::requestProductParams(const std::string & astrProductN
 	QDataStream out(&block, QIODevice::WriteOnly);
 	out.setVersion(QDataStream::Qt_4_8);
 	QString aqstrProductName = astrProductName.c_str();
-	
-	out << quint64(0) << quint8('P') << aqstrProductName;
 
-	/*
-		PATTERN:	quint64(0) - size
-					quint8('P') - product
-					request
-	*/
+	char chType = ServerClientCommands::getOperationType(ServerClientCommands::PRODUCT_REQUEST);
+
+	out << quint64(0) << quint8(chType) << aqstrProductName;
 
 	m_pClient->sendRequest(block);
 }
@@ -65,7 +63,17 @@ void ProductManagerClient::requestProductParams(const std::string & astrProductN
 //-----------------------------------------------------------------------------
 
 void ProductManagerClient::slotReceiveProductParams()	{
-	string strDataFromServer = m_pClient->m_qstrAvatarsData.toStdString();
+	QByteArray & data = m_pClient->getTransmittedData();
+
+	QDataStream out(&data,QIODevice::ReadOnly);
+	out.setVersion(QDataStream::Qt_4_8);
+
+	quint8 nType;	//Type of the data received
+	QString qstrDataFromServer;
+
+	out >> nType >> qstrDataFromServer;
+
+	string strDataFromServer = qstrDataFromServer.toStdString(); //m_pClient->m_qstrAvatarsData.toStdString();
 
 	m_pProduct->initFromSQLData(strDataFromServer);
 

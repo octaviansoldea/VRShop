@@ -74,7 +74,7 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_BINARY_DIR}/ShopScene/libShopEditor
   ${CMAKE_SOURCE_DIR}/ShopScene/libPopUpGUIs
   ${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProduct
-
+  ${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libServerClientCommands
 )
 
 
@@ -124,7 +124,7 @@ SET(LIBS_COMMON
   libShopEditor
   libPopUpGUIs
   libProduct
-
+  libServerClientCommands
 
 )
 

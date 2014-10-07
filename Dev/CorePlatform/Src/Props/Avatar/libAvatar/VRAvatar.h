@@ -6,6 +6,7 @@
 #include <string>
 
 #include <osg/MatrixTransform>
+#include <osg/Matrix>
 #include "VRAnimationPath.h"
 
 struct AnimationManagerFinder;
@@ -19,6 +20,7 @@ namespace VR {
 
 		std::string m_strAvatarFile;
 		std::string m_strAvatarName;
+		osg::Matrixd m_mtrxAvatarMatrix;
 		KeyboardMouseManipulatorShopClient * m_pKeyboardMouseManipulatorShopClient;
 		QObject * m_pParent;
 	};

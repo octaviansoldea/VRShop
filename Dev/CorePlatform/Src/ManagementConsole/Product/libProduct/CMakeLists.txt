@@ -44,6 +44,7 @@ INCLUDE_DIRECTORIES(
 	${CMAKE_BINARY_DIR}/ShopScene/libPopUpGUIs
 	#${CMAKE_BINARY_DIR}/ShopScene/libShopEditor
 	${CMAKE_SOURCE_DIR}/ShopScene/libPopUpGUIs/ProductItem
+	${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libServerClientCommands
 )
 
 #MOC according to the Qt version

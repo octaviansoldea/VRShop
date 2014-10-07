@@ -41,15 +41,15 @@ int main(int argc, char *argv[])	{
 	ShoppingPlace_GUI widget(strDBFileName,string(strClientName));
 
 
-	if (argc > 1)	{
-		widget.setAttribute(Qt::WA_NativeWindow);
+	//if (argc > 1)	{
+	//	widget.setAttribute(Qt::WA_NativeWindow);
 
-		QString qstrArg = app.arguments().at(1);
+	//	QString qstrArg = app.arguments().at(1);
 
-		bool bOk;
+	//	bool bOk;
 
-		SetParent((HWND)widget.winId(), (HWND)qstrArg.toULong(&bOk));
-	}
+	//	SetParent((HWND)widget.winId(), (HWND)qstrArg.toULong(&bOk));
+	//}
 
 	widget.show();
 	

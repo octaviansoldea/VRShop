@@ -7,6 +7,7 @@
 */
 
 #include <string>
+#include <list>
 
 namespace VR {
 	class Avatar;
@@ -20,8 +21,10 @@ namespace VR {
 		const char* className() const;
 
 		void createAvatarDB();
-		std::string getAvatarsDataFromDB();
-		void updateAvatarData(const std::string & astrAvatarName, std::string & astrAvatarMatrix);
+
+		void registerAvatar(std::string & astrRequest);
+		std::list<std::string> getAvatarsDataFromDB();
+		void updateAvatarData(std::string & astrRequest);
 
 	private:
 		DatabaseManager * m_pDb;

@@ -57,6 +57,7 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabase
   ${CMAKE_SOURCE_DIR}/ManagementConsole/Cashier/libCashier
   ${CMAKE_SOURCE_DIR}/ManagementConsole/Cashier/libCashier/View
+  ${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libServerClientCommands
 )
 
 SET(LIBS_COMMON 
@@ -95,6 +96,7 @@ SET(LIBS_COMMON
 	libAnimationEditor
 	libDatabase
 	libCashier
+	libServerClientCommands
 )
 
 SET(SRCS

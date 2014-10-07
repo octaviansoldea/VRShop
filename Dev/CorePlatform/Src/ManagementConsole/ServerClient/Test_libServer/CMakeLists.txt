@@ -41,6 +41,8 @@ INCLUDE_DIRECTORIES(
 
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgent
 #	${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgent/View
+	${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libServerClientCommands
+	${CMAKE_SOURCE_DIR}/Props/Avatar/libAvatarManagerServer
 )
 
 ADD_EXECUTABLE(Test_libServer
@@ -60,6 +62,8 @@ SET(LIBS_COMMON
 	libCommon_QT
 	Winmm
 	libAgent
+	libServerClientCommands
+	libAvatarManagerServer
 )
 
 IF(Qt5_FOUND)

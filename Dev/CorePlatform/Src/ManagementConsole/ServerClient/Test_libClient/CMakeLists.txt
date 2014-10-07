@@ -32,6 +32,7 @@ SET(src
 
 INCLUDE_DIRECTORIES(
 	${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libClient
+	${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libServerClientCommands
 )
 
 ADD_EXECUTABLE(Test_libClient
@@ -39,6 +40,7 @@ ADD_EXECUTABLE(Test_libClient
 
 SET(LIBS_COMMON
 	libClient
+	libServerClientCommands
 )
 
 IF(Qt5_FOUND)

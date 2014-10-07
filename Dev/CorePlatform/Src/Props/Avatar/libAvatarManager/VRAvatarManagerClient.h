@@ -14,6 +14,7 @@
 #include <osg/Group>
 
 #include <QObject>
+#include <QString>
 
 #include <QTimer>
 
@@ -49,10 +50,12 @@ namespace VR {
 
 		void registerAvatar();
 
+		QByteArray dataStreamBlock(const quint8 & astrType, QString & aqstrInputData);
+
 	private slots:
 		void slotSendAvatarData();
 		void slotRequestAvatarsData();
-		void slotReceiveAvatarsData();
+		void slotReceiveDataFromServer();
 
 	private:
 		std::vector<std::string> m_vecAvatarNames;

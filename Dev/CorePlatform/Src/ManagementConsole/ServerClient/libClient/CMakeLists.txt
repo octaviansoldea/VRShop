@@ -32,6 +32,7 @@ ENDIF(Qt5_FOUND)
 #General includes, irrespective of the Qt version
 INCLUDE_DIRECTORIES(
 	${OPENSCENEGRAPH_INCLUDE_DIRS}
+	${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libServerClientCommands
 )
 
 #MOC according to the Qt version

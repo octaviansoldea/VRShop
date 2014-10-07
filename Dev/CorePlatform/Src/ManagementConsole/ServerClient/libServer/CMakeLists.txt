@@ -34,6 +34,7 @@ INCLUDE_DIRECTORIES(
 	${CMAKE_SOURCE_DIR}/ManagementConsole/DatabaseNetworkManager/libDatabaseNetworkManager
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgentManager
 	${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabase
+	${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libServerClientCommands
 )
 
 #MOC according to the Qt version

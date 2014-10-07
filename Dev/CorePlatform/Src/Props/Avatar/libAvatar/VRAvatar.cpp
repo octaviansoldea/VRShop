@@ -19,6 +19,7 @@ using namespace std;
 AvatarParams::AvatarParams() :
 	m_strAvatarFile(""),
 	m_strAvatarName(""),
+	m_mtrxAvatarMatrix(osg::Matrix::identity()),
 	m_pKeyboardMouseManipulatorShopClient(0),
 	m_pParent(0)
 {
@@ -49,6 +50,7 @@ Avatar::Avatar(const AvatarParams * apAvatarParams) : QObject(apAvatarParams->m_
 
 	addChild(pAvatarFile);
 	setName(apAvatarParams->m_strAvatarName);
+	setMatrix(apAvatarParams->m_mtrxAvatarMatrix);
 
 	connect(m_pKeyboardMouseManipulatorShopClient, 
 		SIGNAL(signalCameraPositionOrHeadingDirectionChanged(bool)),

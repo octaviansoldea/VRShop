@@ -24,6 +24,7 @@ INCLUDE_DIRECTORIES (
 	${CMAKE_CURRENT_SOURCE_DIR}/../RedBall/libOSGQTViewer
 	${CMAKE_CURRENT_SOURCE_DIR}/../RedBall/libModel
 	${CMAKE_CURRENT_SOURCE_DIR}/../RedBall/libCommon_OSG
+	${CMAKE_CURRENT_SOURCE_DIR}/../RedBall/libReadWriteData
 
 	${CMAKE_BINARY_DIR}/RedBall/libModel
 )
@@ -115,6 +116,7 @@ SET(LIBS_COMMON
 	libCommon_OSG
 	libOSGQTViewer
 	libModel
+	libReadWriteData
 )
 
 IF(Qt5_FOUND)

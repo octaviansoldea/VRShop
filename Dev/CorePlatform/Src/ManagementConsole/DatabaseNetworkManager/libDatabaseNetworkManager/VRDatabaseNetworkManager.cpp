@@ -3,6 +3,9 @@
 
 #include <iostream>
 
+#include "VRAvatarManagerServer.h"
+#include "VRServerClientCommands.h"
+
 #include <list>
 #include <vector>
 #include <string>
@@ -14,7 +17,6 @@
 using namespace VR;
 using namespace std;
 
-#define DEBUG_AVATARS 0
 
 //----------------------------------------------------------------------
 
@@ -38,38 +40,28 @@ list<string> DatabaseNetworkManager::getResult()	{
 
 bool DatabaseNetworkManager::databaseRequest(int anOperationType, string & astrRequest)	{
 	string strSqlQuery;
-	string strDatabaseName;
-
-	string strType;
-	if (anOperationType == 'P')	{	//'P' - product
+	string strDatabaseName;	
+		
+	if (anOperationType == ServerClientCommands::getOperationType(ServerClientCommands::PRODUCT_REQUEST))	{
 		strSqlQuery = "SELECT * FROM Product WHERE ProductName = '" + astrRequest + "'";
 		strDatabaseName = "Products";
-	} else if (anOperationType == 'R')	{	//'R' - Register avatar
-		strSqlQuery = "INSERT INTO Avatar(AvatarName) VALUES ('" + astrRequest + "')";
-		strDatabaseName = "Avatars";
-	} else if (anOperationType == 'A')	{	//'A' - avatar
-		vector<string> vecstrSplitString = splitString(astrRequest,";");
-		strSqlQuery = "UPDATE Avatar" 
-			" SET AvatarMatrix = '" + vecstrSplitString[1] + 
-//			"', AvatarDateTime = CURRENT_TIMESTAMP" + 
-			"', AvatarDateTime = '" + tostr(m_pTimer->getCurrTimeInMiliSeconds()) + "'"+ 
-			" WHERE AvatarName = '" + vecstrSplitString[0] + "'";
-		strDatabaseName = "Avatars";
-	} else if (anOperationType == 'a')	{	//'a' - other avatars
+	} else if (anOperationType == ServerClientCommands::getOperationType(ServerClientCommands::AVATAR_REGISTER))	{
+		AvatarManagerServer ams;
+		ams.registerAvatar(astrRequest);
 
-#if DEBUG_AVATARS
-		vector<string> vecstrSplitString = splitString(astrRequest,";");
-		int nI;
-		string strSqlCondition = "'" + vecstrSplitString[0] + "'";
-		for (nI=1;nI<vecstrSplitString.size();nI++)	{
-			strSqlCondition += " OR AvatarName = '" + vecstrSplitString[nI] + "'";
-		}
-		strSqlQuery = "SELECT * FROM Avatar WHERE AvatarName = " + strSqlCondition;
-#else
-		strSqlQuery = "SELECT AvatarName, AvatarMatrix FROM Avatar";
-#endif //DEBUG_AVATAR
+		m_lststrResult=list<string>(0);
+		return false;
+	} else if (anOperationType == ServerClientCommands::getOperationType(ServerClientCommands::AVATAR_UPDATE))	{
+		AvatarManagerServer ams;
+		ams.updateAvatarData(astrRequest);
 
-		strDatabaseName = "Avatars";
+		m_lststrResult=list<string>(0);
+		return false;
+	} else if (anOperationType == ServerClientCommands::getOperationType(ServerClientCommands::OTHER_AVATARS_REQUEST))	{
+		AvatarManagerServer ams;
+		m_lststrResult = ams.getAvatarsDataFromDB();
+
+		return (m_lststrResult.empty()) ? false : true;
 	}
 
 	DatabaseManagerShopClientParams dbParams;

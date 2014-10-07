@@ -31,7 +31,6 @@ m_qstrConnectionName("")	{
 //===========================================================================
 
 DatabaseManager::DatabaseManager(QObject *parent) : QObject(parent) {
-	createConnection(m_DBMgrParams);
 }
 
 //---------------------------------------------------------------------------
@@ -47,6 +46,7 @@ QObject(parent) {
 
 void DatabaseManager::init(const DatabaseManagerParams & aDBMgrParams)	{
 	m_DBMgrParams = aDBMgrParams;
+	createConnection(m_DBMgrParams);
 }
 
 //---------------------------------------------------------------------------

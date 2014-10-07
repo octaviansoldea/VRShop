@@ -6,6 +6,7 @@ SUBDIRS(
 	libAnimationEditor
 	libAvatar
 	libAvatarManager
+	libAvatarManagerServer
 	AnimationEditor
 	Test_libAvatar
 )

@@ -32,6 +32,14 @@ const char* AvatarManagerServer::className() const	{
 	return "AvatarManagerServer";
 }
 
+DatabaseInterfaceParams AvatarManagerServer::getDBParams()	{
+	DatabaseInterfaceParams dbParams;
+	dbParams.m_qstrConnectionName = "UserAccount";
+	dbParams.m_qstrDBName = getDatabaseName().c_str();
+
+	return dbParams;
+}
+
 //------------------------------------------------------------------------------
 
 void AvatarManagerServer::registerAvatar(string & astrRequest)	{
@@ -110,7 +118,7 @@ vector<pair<string,string>> AvatarManagerServer::getAvatarElements()	{
 
 //------------------------------------------------------------------------------
 
-void AvatarManagerServer::createAvatarDB() const	{
+void AvatarManagerServer::createAvatarDB() {
 	m_DIAvatar.createTable(getTableName(), getAvatarElements());
 }
 

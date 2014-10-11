@@ -18,7 +18,7 @@ namespace VR	{
 		static std::string getTableName();
 		static std::string getDatabaseName();
 
-		void createUserAccountDB() const;
+		static void createUserAccountDB();
 
 		static DatabaseInterface * getDatabaseInterface();
 

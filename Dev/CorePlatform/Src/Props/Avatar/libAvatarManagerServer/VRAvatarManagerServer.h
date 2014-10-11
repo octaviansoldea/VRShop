@@ -31,7 +31,7 @@ namespace VR {
 		static std::string getTableName();
 		static std::string getDatabaseName();
 
-		void createAvatarDB() const;
+		static void createAvatarDB();
 
 		static DatabaseInterface * getDatabaseInterface();
 

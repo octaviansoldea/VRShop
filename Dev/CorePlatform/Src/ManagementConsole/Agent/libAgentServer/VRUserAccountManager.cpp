@@ -59,7 +59,7 @@ vector<pair<string,string>> UserAccountManager::getAccountElements()	{
 
 //------------------------------------------------------------------------------
 
-void UserAccountManager::createUserAccountDB() const	{
+void UserAccountManager::createUserAccountDB()	{
 	m_DIUA.createTable(getTableName(), getAccountElements());
 }
 

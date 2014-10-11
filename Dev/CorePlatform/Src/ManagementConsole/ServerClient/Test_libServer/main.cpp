@@ -1,6 +1,9 @@
 #include <QApplication>
 #include <QTimer>
 
+#include "VRAvatarManagerServer.h"
+#include "VRUserAccountManager.h"
+
 #include <iostream>
 
 #include "VRServer.h"
@@ -26,8 +29,9 @@ int main(int argc, char * argv[])	{
 	Server_GUI server_GUI(&server);
 	server_GUI.show();
 
-	//Server_GUI server;
-	//server.show();
+	//Creates necessary databases if missing
+	UserAccountManager::createUserAccountDB();
+	AvatarManagerServer::createAvatarDB();
 
 	return app.exec();
 }

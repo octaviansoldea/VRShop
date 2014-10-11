@@ -4,7 +4,7 @@
 
 #include "VRProductShopClient.h"
 
-#include "VRDatabaseManager.h"
+#include "VRDatabaseInterface.h"
 
 #include "VRProductManagerServer.h"
 
@@ -15,17 +15,17 @@ using namespace osg;
 //-----------------------------------------------------------------------------
 
 ProductManagerServer::ProductManagerServer()	{
-	DatabaseManagerParams dbParams;
+	DatabaseInterfaceParams dbParams;
 	dbParams.m_qstrConnectionName = "Product";
 	dbParams.m_qstrDBName = "../../../Databases/Products.db";
 
-	m_pDb = new DatabaseManager(dbParams);
+	m_pDI = new DatabaseInterface(dbParams);
 }
 
 //-----------------------------------------------------------------------------
 
 ProductManagerServer::~ProductManagerServer()	{
-	delete m_pDb;
+	delete m_pDI;
 }
 
 //==============================================================================
@@ -39,7 +39,7 @@ const char* ProductManagerServer::className() const	{
 string ProductManagerServer::getProductDataFromDB(const std::string astrProductName)	{
 	string strQuery = "SELECT * FROM Product WHERE ProductName = '" + astrProductName + "'";
 
-	list<string>::iterator it = m_pDb->executeAndGetResult(strQuery).begin();
+	list<string>::iterator it = m_pDI->executeAndGetResult(strQuery).begin();
 	string & strProductData = *it;
 
 	return strProductData;

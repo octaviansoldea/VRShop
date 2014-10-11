@@ -7,7 +7,7 @@
 #include <QObject>
 
 namespace VR	{
-	class DatabaseManager;
+	class DatabaseInterface;
 
 	class ProductManagerServer : public QObject	{
 		Q_OBJECT
@@ -20,7 +20,7 @@ namespace VR	{
 		std::string getProductDataFromDB(const std::string astrProductName);
 
 	private:
-		DatabaseManager * m_pDb;
+		DatabaseInterface * m_pDI;
 	};
 }
 #endif //VR_PRODUCT_MANAGER_SERVER_H

@@ -26,7 +26,7 @@
 #include "VRSceneObjectsSearchShopEditor.h"
 #include "VRDataStructureModel.h"
 
-#include "VRDatabaseManagerShopEditor.h"
+#include "VRDatabaseInterfaceShopEditor.h"
 
 #include "VRShopBuilder.h"
 
@@ -154,9 +154,9 @@ void ShopBuilder::newDB()	{
 		file.close();
 	}	//End "if (newProject.result())"
 
-	DatabaseManagerShopEditorParams dbMgrParams;
-	dbMgrParams.m_qstrDBName = m_strDBFileName.c_str();
-	DatabaseManagerShopEditor dbMgr(dbMgrParams);
+	DatabaseInterfaceShopEditorParams dbInterfaceParams;
+	dbInterfaceParams.m_qstrDBName = m_strDBFileName.c_str();
+	DatabaseInterfaceShopEditor dbMgr(dbInterfaceParams);
 
 	//These are necessary parts of any file
 	ref_ptr<Node> pAxes = osgDB::readNodeFile("../../../Resources/Models3D/axes.osgt");
@@ -199,9 +199,9 @@ void ShopBuilder::readDB(const string & astrDBFileName)	{
 
 	m_strDBFileName = astrDBFileName;
 
-	DatabaseManagerShopEditorParams dbMgrParams;
-	dbMgrParams.m_qstrDBName = m_strDBFileName.c_str();
-	DatabaseManagerShopEditor dbMgr(dbMgrParams);
+	DatabaseInterfaceShopEditorParams dbParams;
+	dbParams.m_qstrDBName = m_strDBFileName.c_str();
+	DatabaseInterfaceShopEditor dbMgr(dbParams);
 
 	//Get list of objects in the scene
 	list<string> lststrSceneObjects = dbMgr.getListOfObjects("Untitled");
@@ -283,12 +283,12 @@ void ShopBuilder::saveDB(const string & astrDBFileName)	{
 	string strSceneName = m_pScene->getName();
 	int nSize = m_pScene->getNumChildren();
 
-	DatabaseManagerShopEditorParams dbMgrParams;
-	dbMgrParams.m_qstrDBName = m_strDBFileName.c_str();
-	DatabaseManagerShopEditor dbMgr(dbMgrParams);
+	DatabaseInterfaceShopEditorParams dbParams;
+	dbParams.m_qstrDBName = m_strDBFileName.c_str();
+	DatabaseInterfaceShopEditor dbInterface(dbParams);
 
 	//Insert scene into the DB
-	dbMgr.insertScene(strSceneName);
+	dbInterface.insertScene(strSceneName);
 
 	int nI;
 	for (nI=0; nI<nSize; nI++)	{
@@ -302,7 +302,7 @@ void ShopBuilder::saveDB(const string & astrDBFileName)	{
 		vecstrData.push_back(strSceneName);
 		pAO->preparedObjectData(vecstrData,strSceneName);
 
-		dbMgr.insertObject(strSceneName,vecstrData);
+		dbInterface.insertObject(strSceneName,vecstrData);
 	}
 
 
@@ -310,7 +310,7 @@ void ShopBuilder::saveDB(const string & astrDBFileName)	{
 	vector<string> vecstrData;
 	vecstrData.push_back(strSceneName);
 	m_pProductMgr->preparedObjectData(vecstrData,strSceneName);	
-	dbMgr.insertObject(strSceneName,vecstrData);
+	dbInterface.insertObject(strSceneName,vecstrData);
 
 
 	//Add products into the product DB
@@ -318,9 +318,9 @@ void ShopBuilder::saveDB(const string & astrDBFileName)	{
 	string strProductsDB = "../../../Databases/Products.db";
 	m_pProductMgr->prepareProductsData(vecstrProducts);
 
-	dbMgrParams.m_qstrDBName = strProductsDB.c_str();
-	DatabaseManagerShopEditor dbMgrProducts(dbMgrParams);
-	dbMgrProducts.insertProduct(vecstrProducts);
+	dbParams.m_qstrDBName = strProductsDB.c_str();
+	DatabaseInterfaceShopEditor dbProducts(dbParams);
+	dbProducts.insertProduct(vecstrProducts);
 }
 
 //----------------------------------------------------------------------
@@ -342,9 +342,9 @@ void ShopBuilder::saveAsDB()	{
 		file.close();
 
 		//Create necessary DB tables
-		DatabaseManagerShopEditorParams dbMgrParams;
-		dbMgrParams.m_qstrDBName = strFileName.c_str();
-		DatabaseManagerShopEditor dbMgr(dbMgrParams);
+		DatabaseInterfaceShopEditorParams dbParams;
+		dbParams.m_qstrDBName = strFileName.c_str();
+		DatabaseInterfaceShopEditor dbMgr(dbParams);
 
 		saveDB(strFileName);
 	}

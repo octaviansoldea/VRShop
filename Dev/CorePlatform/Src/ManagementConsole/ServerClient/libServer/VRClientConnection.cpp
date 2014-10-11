@@ -13,7 +13,6 @@
 
 #include <QFile>
 
-#include "VRAgentManager.h"
 #include "VRDatabaseNetworkManager.h"
 
 #include "VRClientConnection.h"
@@ -74,7 +73,7 @@ void ClientConnection::processRequest(QByteArray & data)	{
 	string strRequest = qstrRequest.toStdString();
 	bool bRes=false;
 
-	if (nType == ServerClientCommands::getOperationType(ServerClientCommands::NEW_USER_REQUEST))	{
+	if (nType == ServerClientCommands::NEW_USER_REQUEST)	{
 		QByteArray result;
 		QDataStream out(&result, QIODevice::WriteOnly);
 		out.setVersion(QDataStream::Qt_4_8);
@@ -110,7 +109,6 @@ void ClientConnection::processRequest(QByteArray & data)	{
 	if (bRes)	{
 		list<string> lstResult = DBNetworkManager.getResult();
 		list<string>::iterator it = lstResult.begin();
-		int nI;
 		string strResult;
 		for (it; it != lstResult.end(); it++)	{
 			strResult += (*it) + ";";

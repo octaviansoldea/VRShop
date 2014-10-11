@@ -10,6 +10,7 @@ class QPushButton;
 
 namespace VR	{
 	class AbstractUser;
+	class AgentManagerClient;
 
 	class AgentInterface : public QObject	{
 		Q_OBJECT
@@ -30,10 +31,13 @@ namespace VR	{
 
 	private slots:
 		void slotUserClicked(bool abIsProfileVisible);
+		void slotSignUp();
 		void slotSignIn();
 		void slotSignOut();
 		void slotRemoveAccount();
 		void slotChangeSettings();
+
+		void slotSignedIn();
 
 	private:
 		QFrame * m_pFrameSettings;
@@ -45,6 +49,8 @@ namespace VR	{
 		QPushButton * m_pPushButtonRemoveAccount;
 		QPushButton * m_pPushButtonChangeSettings;
 		AbstractUser * m_pAbstractUser;
+
+		AgentManagerClient * m_pAgentManagerClient;
 	};
 }
 #endif //VR_AGENT_INTERFACE_H

@@ -6,10 +6,11 @@
 #include <QLineEdit>
 #include <QPushButton>
 
-#include "VRSignUp_GUI.h"
 #include "VRAbstractUser.h"
 
-#include "VRAgentManager.h"
+#include "VRServerClientCommands.h"
+
+#include "VRAgentManagerClient.h"
 
 #include "VRAgentInterface.h"
 
@@ -42,15 +43,19 @@ AbstractUser * apAbstractUser)	{
 	m_pFrameSettings->setVisible(false);
 
 	connect(m_pToolButtonUser,SIGNAL(toggled(bool)),this,SLOT(slotUserClicked(bool)));
-	connect(m_pPushButtonSignIn,SIGNAL(clicked()),this,SLOT(slotSignIn()));
+	connect(m_pPushButtonSignIn,SIGNAL(clicked()),this,SLOT(slotSignUp()));
 	connect(m_pLineEditPassword,SIGNAL(returnPressed()),this,SLOT(slotSignIn()));
 	connect(m_pLineEditUserName,SIGNAL(returnPressed()),this,SLOT(slotSignIn()));
+
+	m_pAgentManagerClient = new AgentManagerClient(m_pAbstractUser);
+
+	connect(m_pAgentManagerClient,SIGNAL(done()),this,SLOT(slotSignedIn()));
 }
 
 //----------------------------------------------------------------------
 
 AgentInterface::~AgentInterface()	{
-
+	delete m_pAgentManagerClient;
 }
 
 //=======================================================================
@@ -76,56 +81,67 @@ void AgentInterface::slotUserClicked(bool abIsProfileVisible)	{
 
 //----------------------------------------------------------------------
 
+void AgentInterface::slotSignUp()	{
+	m_pAgentManagerClient->requestToServer(ServerClientCommands::SIGN_UP_REQUEST);
+}
+
+//----------------------------------------------------------------------
+
 void AgentInterface::slotSignIn()	{
 	string strUserName = m_pLineEditUserName->text().toStdString();
 	string strPsw = m_pLineEditPassword->text().toStdString();
 
-	bool bRes = true;
 	if (strPsw.empty() || strUserName.empty())	{	//User doesn't seem to have an account yet
-		SignUp_GUI signUp;
-		
-		signUp.setWindowFlags(Qt::FramelessWindowHint);
-		bRes = signUp.exec();
-		if (bRes == QDialog::Accepted)	{
+		m_pLineEditUserName->clear();
+		m_pLineEditPassword->clear();
 
-			string strUserName = signUp.m_pLineEditEMail->text().toStdString();
-			string strPsw = signUp.m_pLineEditPassword->text().toStdString();
-
-			AgentManager agentMgr;
-			agentMgr.trySigningIn(strUserName, strPsw);
-
-			//try signing him up
-		}
+		slotSignUp();
 	} else {	//Check validity of user's data
-		if (!bRes)	{
-			//user's data doesn't match the DB
-			m_pLineEditUserName->clear();
-			m_pLineEditPassword->clear();
-		}
-	}
-
-	if (bRes)	{	// User signed-in
-		m_pToolButtonUser->setVisible(true);
-		m_pPushButtonSignIn->close();
-		m_pLineEditPassword->close();
-		m_pLineEditUserName->close();
+		AgentManagerClient::AgentClientParams acp;
+		acp.strUserName = strUserName;
+		acp.strPassword = strPsw;
+		m_pAgentManagerClient->requestToServer(ServerClientCommands::SIGN_IN_REQUEST, &acp);
 	}
 }
 
 //----------------------------------------------------------------------
 
 void AgentInterface::slotSignOut()	{
-	std::cout << "sign-out" << std::endl;
+	m_pAgentManagerClient->requestToServer(ServerClientCommands::SIGN_OUT_REQUEST);
+
+	m_pFrameSettings->close();
+	m_pToolButtonUser->setVisible(false);
+
+	m_pPushButtonSignIn->show();
+	m_pLineEditPassword->show();
+	m_pLineEditUserName->show();
 }
 
 //----------------------------------------------------------------------
 
 void AgentInterface::slotRemoveAccount()	{
 	std::cout << "remove account" << std::endl;
+
+	m_pFrameSettings->close();
 }
 
 //----------------------------------------------------------------------
 
 void AgentInterface::slotChangeSettings()	{
-	std::cout << "change settings" << std::endl;
+	m_pFrameSettings->close();
+
+	m_pAgentManagerClient->requestToServer(ServerClientCommands::MODIFY_USER_ACCOUNT_REQUEST);
+}
+
+//----------------------------------------------------------------------
+
+void AgentInterface::slotSignedIn()	{
+	m_pPushButtonSignIn->close();
+	m_pLineEditPassword->close();
+	m_pLineEditUserName->close();
+
+	m_pToolButtonUser->setVisible(true);
+
+	m_pLineEditPassword->clear();
+	m_pLineEditUserName->clear();
 }

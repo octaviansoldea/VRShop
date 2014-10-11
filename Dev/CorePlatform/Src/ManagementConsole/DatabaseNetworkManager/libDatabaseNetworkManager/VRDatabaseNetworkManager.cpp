@@ -1,9 +1,11 @@
 #include "BasicStringDefinitions.h"
-#include "VRDatabaseManagerShopClient.h"
+#include "VRDatabaseInterfaceShopClient.h"
 
 #include <iostream>
 
 #include "VRAvatarManagerServer.h"
+#include "VRUserAccount.h"
+
 #include "VRServerClientCommands.h"
 
 #include <list>
@@ -42,32 +44,57 @@ bool DatabaseNetworkManager::databaseRequest(int anOperationType, string & astrR
 	string strSqlQuery;
 	string strDatabaseName;	
 		
-	if (anOperationType == ServerClientCommands::getOperationType(ServerClientCommands::PRODUCT_REQUEST))	{
+	if (anOperationType == ServerClientCommands::PRODUCT_REQUEST)	{
 		strSqlQuery = "SELECT * FROM Product WHERE ProductName = '" + astrRequest + "'";
 		strDatabaseName = "Products";
-	} else if (anOperationType == ServerClientCommands::getOperationType(ServerClientCommands::AVATAR_REGISTER))	{
+	} else if (anOperationType == ServerClientCommands::AVATAR_REGISTER)	{
 		AvatarManagerServer ams;
 		ams.registerAvatar(astrRequest);
 
-		m_lststrResult=list<string>(0);
+//		m_lststrResult.push_back(tostr(0));
 		return false;
-	} else if (anOperationType == ServerClientCommands::getOperationType(ServerClientCommands::AVATAR_UPDATE))	{
+	} else if (anOperationType == ServerClientCommands::AVATAR_UPDATE)	{
 		AvatarManagerServer ams;
 		ams.updateAvatarData(astrRequest);
 
-		m_lststrResult=list<string>(0);
 		return false;
-	} else if (anOperationType == ServerClientCommands::getOperationType(ServerClientCommands::OTHER_AVATARS_REQUEST))	{
+	} else if (anOperationType == ServerClientCommands::OTHER_AVATARS_REQUEST)	{
 		AvatarManagerServer ams;
 		m_lststrResult = ams.getAvatarsDataFromDB();
 
 		return (m_lststrResult.empty()) ? false : true;
+
+	} else if (anOperationType == ServerClientCommands::SIGN_IN_REQUEST)	{
+		UserAccount ua;
+		int nRes = ua.trySignIn(astrRequest) ? ServerClientCommands::PASSED : ServerClientCommands::FAILED;
+		m_lststrResult.push_back(tostr(nRes));
+
+		return true;
+		
+	} else if (anOperationType == ServerClientCommands::SIGN_UP_REQUEST)	{
+		UserAccount ua;
+		int nRes = ua.trySignUp(astrRequest) ? ServerClientCommands::PASSED : ServerClientCommands::FAILED;
+		m_lststrResult.push_back(tostr(nRes));
+
+		return true;
+	} else if (anOperationType == ServerClientCommands::SIGN_OUT_REQUEST)	{
+		UserAccount ua;
+		int nRes = ua.trySignOut(astrRequest) ? ServerClientCommands::PASSED : ServerClientCommands::FAILED;
+		m_lststrResult.push_back(tostr(nRes));
+
+		return true;
+	} else if (anOperationType == ServerClientCommands::MODIFY_USER_ACCOUNT_REQUEST)	{
+		UserAccount ua;
+		int nRes = ua.tryModifyUserAccount(astrRequest) ? ServerClientCommands::PASSED : ServerClientCommands::FAILED;
+		m_lststrResult.push_back(tostr(nRes));
+
+		return true;
 	}
 
-	DatabaseManagerShopClientParams dbParams;
+	DatabaseInterfaceShopClientParams dbParams;
 	dbParams.m_qstrDBName = ("../../../../Databases/" + strDatabaseName + ".db").c_str();
 	
-	DatabaseManagerShopClient db(dbParams);
+	DatabaseInterfaceShopClient db(dbParams);
 	
 	m_lststrResult = db.executeAndGetResult(strSqlQuery);
 

@@ -4,6 +4,8 @@
 #include "VRAbstractUser.h"
 
 namespace VR {
+	class ProductShopClient;
+
 	//NOT TO BE IMPLEMENTED IN THE FIRST VERSION
 	class Administrator : public AbstractUser	{
 	public:
@@ -15,12 +17,12 @@ namespace VR {
 		virtual bool trySignIn();
 		bool trySignOut();
 
-		void addProduct2Database(const Product & aProduct);
-		void removeProductFromDatabase(const Product & aProduct);
-		void modifyProductInDatabase(const Product & aProduct);
+		void addProduct2Database(const ProductShopClient & aProduct);
+		void removeProductFromDatabase(const ProductShopClient & aProduct);
+		void modifyProductInDatabase(const ProductShopClient & aProduct);
 
-		void exposeProduct(const Product & aProduct);
-		void hideProduct(const Product & aProduct);
+		void exposeProduct(const ProductShopClient & aProduct);
+		void hideProduct(const ProductShopClient & aProduct);
 		
 	};
 }

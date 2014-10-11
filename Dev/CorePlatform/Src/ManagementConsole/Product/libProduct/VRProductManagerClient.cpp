@@ -53,7 +53,7 @@ void ProductManagerClient::requestProductParams(const std::string & astrProductN
 	out.setVersion(QDataStream::Qt_4_8);
 	QString aqstrProductName = astrProductName.c_str();
 
-	char chType = ServerClientCommands::getOperationType(ServerClientCommands::PRODUCT_REQUEST);
+	char chType = ServerClientCommands::PRODUCT_REQUEST;
 
 	out << quint64(0) << quint8(chType) << aqstrProductName;
 

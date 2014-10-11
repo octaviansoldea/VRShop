@@ -1,5 +1,5 @@
-#ifndef DATABASE_MANAGER_H
-#define DATABASE_MANAGER_H
+#ifndef VR_DATABASE_INTERFACE_H
+#define VR_DATABASE_INTERFACE_H
 
 #include <QObject>
 
@@ -12,27 +12,29 @@
 #include <list>
 
 namespace VR	{
-	struct DatabaseManagerParams	{
+	struct DatabaseInterfaceParams	{
 		QString m_qstrDBName;
 		QString m_qstrConnectionName;
 
-		DatabaseManagerParams();
+		DatabaseInterfaceParams(const QString & aqstrDBName = "", const QString & aqstrConnectionName = "");
 	};
 
-	class DatabaseManager : public QObject {
-		Q_OBJECT
+	class DatabaseInterface {
 
 	public:
-		DatabaseManager(QObject * parent = 0);
-		DatabaseManager(const DatabaseManagerParams & aDBMgrParams, QObject * parent = 0);
-		virtual ~DatabaseManager();
 
-		virtual void init(const DatabaseManagerParams & aDBMgrParams);
+		DatabaseInterface();
+		DatabaseInterface(const DatabaseInterfaceParams & aDBInterfaceParams);
+		virtual ~DatabaseInterface();
+
+		virtual void init(const DatabaseInterfaceParams & aDBInterfaceParams);
 
 		bool execute(const std::string & astrQuery);
 		std::list<std::string> executeAndGetResult(const std::string & astrQuery);
 
-	protected:
+		bool createTable(const std::string & astrTableName, std::vector<std::pair<std::string,std::string>> & avecTableElements);
+
+//	protected:
 		bool createTable(const std::string & astrTableName, const std::string & astrTableStmt);
 		bool removeTable(const QString& aqstrTableName);
 
@@ -41,12 +43,12 @@ namespace VR	{
 		void deleteRow(const std::string & astrTableName, const std::string & astrObjectName);
 		void updateDB();
 
-		bool createConnection(const DatabaseManagerParams & aDBMgrParams);
+		bool createConnection(const DatabaseInterfaceParams & aDBInterfaceParams);
 		bool removeConnection();
 
 		bool dropDatabase(const QString & aqstrDBName);
 
-		DatabaseManagerParams m_DBMgrParams;
+		DatabaseInterfaceParams m_DBInterfaceParams;
 
 		virtual void systemOfTables(std::vector<std::pair<std::string,std::string>> & avecStmtPairs);
 
@@ -54,4 +56,4 @@ namespace VR	{
 		bool containsTable(const QString & aqstrTableName);
 	};
 }
-#endif //DATABASE_MANAGER_H
+#endif //VR_DATABASE_INTERFACE_H

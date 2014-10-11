@@ -2,7 +2,7 @@
 
 #include "BasicStringDefinitions.h"
 
-#include "VRDatabaseManagerShopEditor.h"
+#include "VRDatabaseInterfaceShopEditor.h"
 
 using namespace VR;
 using namespace std;
@@ -10,32 +10,26 @@ using namespace std;
 
 //==================================================================================
 
-DatabaseManagerShopEditorParams::DatabaseManagerShopEditorParams() :
-DatabaseManagerParams()	{
+DatabaseInterfaceShopEditorParams::DatabaseInterfaceShopEditorParams() :
+DatabaseInterfaceParams()	{
 }
 
 //-------------------------------------------------------------------------------
 
-DatabaseManagerShopEditor::DatabaseManagerShopEditor(QObject * parent) :
-DatabaseManager(parent)	{
+DatabaseInterfaceShopEditor::DatabaseInterfaceShopEditor(const DatabaseInterfaceShopEditorParams & aDBInterfaceParams):
+DatabaseInterface(aDBInterfaceParams)	{
+	init(aDBInterfaceParams);
 }
 
 //-------------------------------------------------------------------------------
 
-DatabaseManagerShopEditor::DatabaseManagerShopEditor(const DatabaseManagerShopEditorParams & aDBMgrParams, QObject * parent):
-DatabaseManager(aDBMgrParams,parent)	{
-	init(aDBMgrParams);
-}
-
-//-------------------------------------------------------------------------------
-
-DatabaseManagerShopEditor::~DatabaseManagerShopEditor()	{
+DatabaseInterfaceShopEditor::~DatabaseInterfaceShopEditor()	{
 }
 
 //===============================================================================
 
-void DatabaseManagerShopEditor::init(const DatabaseManagerShopEditorParams & aDBMgrParams)	{
-	m_DBMgrParams = aDBMgrParams;
+void DatabaseInterfaceShopEditor::init(const DatabaseInterfaceShopEditorParams & aDBInterfaceParams)	{
+	m_DBInterfaceParams = aDBInterfaceParams;
 
 	vector<pair<string,string>> vecStmts;
 	systemOfTables(vecStmts);
@@ -48,8 +42,8 @@ void DatabaseManagerShopEditor::init(const DatabaseManagerShopEditorParams & aDB
 
 //-------------------------------------------------------------------------------
 
-void DatabaseManagerShopEditor::systemOfTables(vector<pair<string,string>> & avecStmtPairs)	{	
-	if (m_DBMgrParams.m_qstrDBName.endsWith("Products.db"))	{
+void DatabaseInterfaceShopEditor::systemOfTables(vector<pair<string,string>> & avecStmtPairs)	{	
+	if (m_DBInterfaceParams.m_qstrDBName.endsWith("Products.db"))	{
 		string strSQLFormat =
 			"CREATE TABLE IF NOT EXISTS Product ( \
 			ProductID INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, \
@@ -167,14 +161,14 @@ void DatabaseManagerShopEditor::systemOfTables(vector<pair<string,string>> & ave
 
 //-------------------------------------------------------------------------------
 
-void DatabaseManagerShopEditor::insertScene(const string & astrScene)	{
+void DatabaseInterfaceShopEditor::insertScene(const string & astrScene)	{
 	string strValues = astrScene;
 	insertRow("Scene",strValues);
 }
 
 //-------------------------------------------------------------------------------
 
-void DatabaseManagerShopEditor::insertObject(const string & astrScene, vector<string> & avecstrData)	{
+void DatabaseInterfaceShopEditor::insertObject(const string & astrScene, vector<string> & avecstrData)	{
 //**********************************************
 //	HIERARCHY (how you get data inside)
 //		SCENE				Layer: 0
@@ -222,7 +216,7 @@ void DatabaseManagerShopEditor::insertObject(const string & astrScene, vector<st
 
 //-------------------------------------------------------------------------------
 
-void DatabaseManagerShopEditor::insertProduct(std::vector<std::string> & avecstrData)	{
+void DatabaseInterfaceShopEditor::insertProduct(std::vector<std::string> & avecstrData)	{
 //**********************************************
 //	HIERARCHY (how you get data inside)
 //		|--	PRODUCT1				Layer: 0
@@ -237,7 +231,7 @@ void DatabaseManagerShopEditor::insertProduct(std::vector<std::string> & avecstr
 
 //-------------------------------------------------------------------------------
 
-list<string> DatabaseManagerShopEditor::getListOfObjects(const string & astrScene)	{
+list<string> DatabaseInterfaceShopEditor::getListOfObjects(const string & astrScene)	{
 	//Get IDs of elements of the scene
 	string strSqlQuery = 
 		"SELECT SceneObjectID, ClassName, SceneObjectName FROM SceneObject WHERE SceneName = '" + astrScene + "'";
@@ -248,7 +242,7 @@ list<string> DatabaseManagerShopEditor::getListOfObjects(const string & astrScen
 
 //-------------------------------------------------------------------------------
 
-vector<string> DatabaseManagerShopEditor::getObjectData(string & strSceneObject)	{
+vector<string> DatabaseInterfaceShopEditor::getObjectData(string & strSceneObject)	{
 	vector<string> vecstrResult;
 	vector<string> vecstrSceneObject = splitString(strSceneObject,";");
 		

@@ -67,7 +67,7 @@ void AvatarManagerClient::registerAvatar()	{
 	string strMtrx2String = matrix2String(mtrxAvatar);
 	qstrAvatarData += strMtrx2String.c_str();
 
-	char chType = ServerClientCommands::getOperationType(ServerClientCommands::AVATAR_REGISTER);
+	char chType = ServerClientCommands::AVATAR_REGISTER;
 
 	QByteArray & block = dataStreamBlock(chType,qstrAvatarData);
 	m_pClient->sendRequest(block);
@@ -83,7 +83,7 @@ void AvatarManagerClient::slotSendAvatarData()	{
 	string strMtrx2String = matrix2String(mtrxAvatar);
 	qstrAvatarData += strMtrx2String.c_str();
 
-	char chType = ServerClientCommands::getOperationType(ServerClientCommands::AVATAR_UPDATE);
+	char chType = ServerClientCommands::AVATAR_UPDATE;
 
 	QByteArray & block = dataStreamBlock(chType,qstrAvatarData);
 	m_pClient->sendRequest(block);
@@ -100,7 +100,7 @@ void AvatarManagerClient::slotRequestAvatarsData()	{
 	}
 	qstrAvatarNames.chop(1);
 
-	char chType = ServerClientCommands::getOperationType(ServerClientCommands::OTHER_AVATARS_REQUEST);
+	char chType = ServerClientCommands::OTHER_AVATARS_REQUEST;
 
 	QByteArray & block = dataStreamBlock(chType,qstrAvatarNames);
 	m_pClient->sendRequest(block);
@@ -117,13 +117,15 @@ void AvatarManagerClient::slotReceiveDataFromServer()	{
 	quint8 nType;	//Type of the data received
 	out >> nType;
 
-	if (nType == ServerClientCommands::getOperationType(ServerClientCommands::AVATAR_REGISTER))	{
+	if (nType == ServerClientCommands::AVATAR_REGISTER)	{
+		QString qstrAvatarsData;
+		out >> qstrAvatarsData;
+
+		return;
+	} else if (nType == ServerClientCommands::AVATAR_UPDATE)	{
 		//Do nothing
 		return;
-	} else if (nType == ServerClientCommands::getOperationType(ServerClientCommands::AVATAR_UPDATE))	{
-		//Do nothing
-		return;
-	} else if (nType == ServerClientCommands::getOperationType(ServerClientCommands::OTHER_AVATARS_REQUEST))	{
+	} else if (nType == ServerClientCommands::OTHER_AVATARS_REQUEST)	{
 
 		QString qstrAvatarsData;
 		out >> qstrAvatarsData;

@@ -8,7 +8,7 @@ using namespace VR;
 //----------------------------------------------------------------------
 
 ProductBasketInterfaceController::ProductBasketInterfaceController(Basket * apBasket)	{
-	m_pBasket = dynamic_cast<VR::Basket*>(apBasket);
+	m_pBasket = apBasket;
 }
 
 //----------------------------------------------------------------------

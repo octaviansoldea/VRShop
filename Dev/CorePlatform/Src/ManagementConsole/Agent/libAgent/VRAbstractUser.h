@@ -2,14 +2,11 @@
 #define VR_ABSTRACT_USER_H
 
 #include <string>
-#include <osg/ref_ptr>
-
-
-#include "VRBasket.h"
 
 namespace VR {
 	class Avatar;
-	class Product;
+	class ProductShopClient;
+	class Basket;
 
 	class AbstractUser	{
 	public:
@@ -21,19 +18,25 @@ namespace VR {
 		Basket * getBasket();	//This basket is read by the "VRTransaction.h" before the payment
 	
 	protected:
-		virtual bool trySignIn() = 0;
 
 		//not 2 be implemented in the 1. version
 		virtual void userActivity();
 
-		void findProductInShop(const Product & aProduct) const;
+		void findProductInShop(const ProductShopClient & aProduct) const {};
 
 		//Communication between agents - not 2 be implemented in the 1. version
 		void sendMessage(std::string & astrMessage);
 		void receiveMessage(std::string & astrMessage);
 
-		osg::ref_ptr<Avatar> m_pAvatar;
-		Basket m_Basket;
+		Avatar * m_pAvatar;
+		Basket * m_pBasket;
+
+	private:
+		std::string m_strUserIDName;
+
+	public:
+		void setUserIDName(std::string m_strUserIDName);
+		std::string getUserIDName() const;
 	};
 }
 #endif //VR_ABSTRACT_USER_H

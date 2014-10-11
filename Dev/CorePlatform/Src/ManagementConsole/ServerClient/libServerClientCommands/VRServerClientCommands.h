@@ -9,14 +9,18 @@ namespace VR	{
 			NEW_USER_REQUEST = 0,
 			AVATAR_REGISTER,
 			AVATAR_UPDATE,
+			OTHER_AVATARS_REQUEST,
 			SIGN_IN_REQUEST,
 			SIGN_UP_REQUEST,
-			OTHER_AVATARS_REQUEST,
+			SIGN_OUT_REQUEST,
+			MODIFY_USER_ACCOUNT_REQUEST,
 			PRODUCT_REQUEST
 		};
 
-		static char getOperationType(const enum OPERATION_TYPE & aenumOperationType);
-
-	};		
+		enum OPERATION_RESULT	{
+			FAILED = 0,
+			PASSED
+		};
+	};
 }
 #endif //VR_SERVER_CLIENT_COMMANDS_H

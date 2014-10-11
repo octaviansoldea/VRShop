@@ -1,7 +1,6 @@
 #ifndef VR_VISITOR_H
 #define VR_VISITOR_H
 
-#include "VRBasket.h"
 #include "VRAbstractUser.h"
 
 /*	
@@ -9,10 +8,10 @@
 	The visitor can use the platform but has to sign-in should he make a purchase.
 */
 
+#include <list>
+
 namespace VR	{
-	struct VisitorParams	{
-		std::string m_strVisitorIP;
-	};
+	class ProductShopClient;
 
 	class Visitor : public AbstractUser {
 	public:
@@ -21,23 +20,24 @@ namespace VR	{
 
 		virtual const char* className() const;
 
-	protected:
-		virtual bool trySignIn();
-		bool openAccount();
-
 		// Track client's activity: client_ID, access_date/time, exit_date/time, products_observed
 		
-		bool addProduct2Basket(const Product & aProduct) const;//check if the shop can satisfy the request.
-		bool removeProductFromBasket(const Product & aProduct) const;
+		bool addProduct2Basket(const ProductShopClient & aProduct) const;//check if the shop can satisfy the request.
+		bool removeProductFromBasket(const ProductShopClient & aProduct) const;
 		void listProductsInBasket() const;
-		void inspectProduct(const Product & aProduct) const;
+		void inspectProduct(const ProductShopClient & aProduct) const;
 
-		void listProductComplements(std::list < Product > & alstProducts, const Product * apProduct);	//e.g. Milk => cereals
-		void listProductSubstitutes(std::list < Product > & alstProducts, const Product * apProduct);	//e.g. Milk1 => Mllk2 or Water => Juice
+		void listProductComplements(std::list < ProductShopClient > & alstProducts, const ProductShopClient * apProduct);	//e.g. Milk => cereals
+		void listProductSubstitutes(std::list < ProductShopClient > & alstProducts, const ProductShopClient * apProduct);	//e.g. Milk1 => Mllk2 or Water => Juice
 
 
 		void requestHelp();
 
+		void pay();
+
+
+	private:
+		bool tryPay();
 	};
 }
 #endif //VR_VISITOR_H

@@ -3,8 +3,6 @@
 #include <iostream>
 #include <string>
 
-#include "VRAgentManager.h"
-
 #include "VRClientConnection.h"
 #include "VRServer.h"
 

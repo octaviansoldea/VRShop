@@ -21,12 +21,10 @@ void SignUp_GUI::accept()	{
 		m_pLineEditLastName->text().isEmpty()	||
 		m_pLineEditEMail->text().isEmpty()		||
 		m_pLineEditPassword->text().isEmpty()	||
-		m_pLineEditRetypePassword->text().isEmpty())	{
+		m_pLineEditRetypePassword->text().isEmpty() || 
+		m_pLineEditPassword->text() != m_pLineEditRetypePassword->text()
+	)	{
 			return;
-	}
-
-	if (m_pLineEditPassword->text() != m_pLineEditRetypePassword->text())	{
-		return;
 	}
 
 	QDialog::accept();

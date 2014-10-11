@@ -151,7 +151,7 @@ void Client::slotNewUserRequest()	{
 	QDataStream out(&block, QIODevice::WriteOnly);
 	out.setVersion(QDataStream::Qt_4_8);
 
-	char chType = ServerClientCommands::getOperationType(ServerClientCommands::NEW_USER_REQUEST);
+	char chType = ServerClientCommands::NEW_USER_REQUEST;
 
 	out << quint64(0) << quint8(chType);
 

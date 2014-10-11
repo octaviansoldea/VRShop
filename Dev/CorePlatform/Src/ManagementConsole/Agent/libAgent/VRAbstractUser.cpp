@@ -11,14 +11,16 @@ using namespace std;
 
 //==============================================================================
 
-AbstractUser::AbstractUser(Avatar *apAvatar)	{
+AbstractUser::AbstractUser(Avatar *apAvatar) :
+m_strUserIDName("")	{
 	m_pAvatar = apAvatar;
+	m_pBasket = new Basket;
 }
 
 //------------------------------------------------------------------------------
 
 AbstractUser::~AbstractUser()	{
-
+	delete m_pBasket;
 }
 
 //------------------------------------------------------------------------------
@@ -36,10 +38,22 @@ Avatar * AbstractUser::getAvatar()	{
 //------------------------------------------------------------------------------
 
 Basket * AbstractUser::getBasket()	{
-	return &m_Basket;
+	return m_pBasket;
 }
 
 //------------------------------------------------------------------------------
 
 void AbstractUser::userActivity()	{
+}
+
+//------------------------------------------------------------------------------
+
+string AbstractUser::getUserIDName() const	{
+	return m_strUserIDName;
+}
+
+//------------------------------------------------------------------------------
+
+void AbstractUser::setUserIDName(string astrUserIDName)	{
+	m_strUserIDName = astrUserIDName;
 }

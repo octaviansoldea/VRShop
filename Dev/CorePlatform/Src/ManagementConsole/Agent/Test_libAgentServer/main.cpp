@@ -1,13 +1,10 @@
 #include <QApplication>
 
-#include "VRUserAccount.h"
-
-using namespace VR;
+#include "VRUserAccountManager.h"
 
 int main(int argc, char * argv[])	{
-	QApplication app(argc, argv);
 
-	UserAccount ua;
+	VR::UserAccountManager ua;
 	ua.createUserAccountDB();
 
 	return(0);

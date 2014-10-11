@@ -8,6 +8,7 @@ namespace VR	{
 	class Scene;
 	class Avatar;
 	class AbstractUser;
+	class Visitor;
 	class Lighting;
 	class ProductManager;
 	class AvatarManagerClient;
@@ -45,7 +46,7 @@ namespace VR	{
 		
 		ProductManager * m_pProductMgr;
 
-		AbstractUser * m_pAbstractUser;
+		Visitor * m_pVisitor;
 		osg::ref_ptr<Avatar> m_pAvatar;
 		Basket * m_pBasket;
 

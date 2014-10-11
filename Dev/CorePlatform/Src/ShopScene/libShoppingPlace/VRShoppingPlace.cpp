@@ -12,10 +12,9 @@
 #include "VRAvatar.h"
 #include "VRAvatarManagerClient.h"
 #include "VRVisitor.h"
-#include "VRCustomer.h"
 #include "VRBasket.h"
 
-#include "VRDatabaseManagerShopClient.h"
+#include "VRDatabaseInterfaceShopClient.h"
 
 #include "VRFloor.h"
 #include "VRRoom.h"
@@ -106,8 +105,8 @@ m_strAvatarName(astrAvatarName)	{
 	pKeyboardMouseManipulatorShopClient->setCameraPosition2Object(m_pAvatar);
 	m_pAvatar->slotUpdatePosition(false);
 
-	m_pAbstractUser = new Visitor(m_pAvatar);
-	m_pBasket = m_pAbstractUser->getBasket();
+	m_pVisitor = new Visitor((Avatar*)m_pAvatar);
+	m_pBasket = m_pVisitor->getBasket();
 
 	//Other avatars
 	m_pAvatarMgr = new AvatarManagerClient(m_pAvatar);
@@ -134,7 +133,7 @@ m_strAvatarName(astrAvatarName)	{
 ShoppingPlace::~ShoppingPlace() {
 	delete m_pProductMgr;
 	delete m_pAvatarMgr;
-	delete m_pAbstractUser;
+	delete m_pVisitor;
 }
 
 //----------------------------------------------------------------------
@@ -160,10 +159,10 @@ PickAndDragHandlerShopClient * ShoppingPlace::getPicker() const	{
 bool ShoppingPlace::createClientScene(const string & astrSceneFileName)	{
 	m_strDBFileName = astrSceneFileName.c_str();
 
-	DatabaseManagerShopClientParams dbParams;
+	DatabaseInterfaceShopClientParams dbParams;
 	dbParams.m_qstrDBName = m_strDBFileName.c_str();
 
-	DatabaseManagerShopClient db(dbParams);
+	DatabaseInterfaceShopClient db(dbParams);
 
 	//Get list of objects in the scene
 	list<string> lststrSceneObjects = db.getListOfObjects("Untitled");
@@ -212,7 +211,7 @@ Basket * ShoppingPlace::getBasket()	{
 //----------------------------------------------------------------------
 
 AbstractUser * ShoppingPlace::getAbstractUser()	{
-	return m_pAbstractUser;
+	return m_pVisitor;
 }
 
 //----------------------------------------------------------------------

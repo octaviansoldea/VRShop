@@ -2,7 +2,7 @@
 #include "VRPlate3D.h"
 #include "VRPrism.h"
 
-#include "VRDatabaseManagerShopEditor.h"
+#include "VRDatabaseInterfaceShopEditor.h"
 
 #include "BasicStringDefinitions.h"
 

@@ -1,6 +1,6 @@
 #include "BasicStringDefinitions.h"
 
-#include "VRDatabaseManagerShopClient.h"
+#include "VRDatabaseInterfaceShopClient.h"
 
 using namespace VR;
 using namespace std;
@@ -8,30 +8,25 @@ using namespace std;
 
 //==================================================================================
 
-DatabaseManagerShopClientParams::DatabaseManagerShopClientParams() :
-DatabaseManagerParams()	{
+DatabaseInterfaceShopClientParams::DatabaseInterfaceShopClientParams() :
+DatabaseInterfaceParams()	{
 }
 
 //-------------------------------------------------------------------------------
 
-DatabaseManagerShopClient::DatabaseManagerShopClient(QObject * parent) :
-DatabaseManager(parent)	{
+
+DatabaseInterfaceShopClient::DatabaseInterfaceShopClient(const DatabaseInterfaceShopClientParams & aDBInterfaceParams):
+DatabaseInterface(aDBInterfaceParams)	{
 }
 
 //-------------------------------------------------------------------------------
 
-DatabaseManagerShopClient::DatabaseManagerShopClient(const DatabaseManagerShopClientParams & aDBMgrParams, QObject * parent):
-DatabaseManager(aDBMgrParams,parent)	{
-}
-
-//-------------------------------------------------------------------------------
-
-DatabaseManagerShopClient::~DatabaseManagerShopClient()	{
+DatabaseInterfaceShopClient::~DatabaseInterfaceShopClient()	{
 }
 
 //===============================================================================
 
-void DatabaseManagerShopClient::loadScene(const std::string & astrScene)	{
+void DatabaseInterfaceShopClient::loadScene(const std::string & astrScene)	{
 	//list<string> lststrSceneObjects = getListOfObjects(astrScene);
 
 	//ref_ptr<AbstractObject> pAO = 0;
@@ -55,7 +50,7 @@ void DatabaseManagerShopClient::loadScene(const std::string & astrScene)	{
 
 //-------------------------------------------------------------------------------
 
-list<string> DatabaseManagerShopClient::getListOfObjects(const string & astrScene)	{
+list<string> DatabaseInterfaceShopClient::getListOfObjects(const string & astrScene)	{
 	//Get IDs of elements of the scene
 	string & strSqlQuery = 
 		"SELECT SceneObjectID, ClassName, SceneObjectName FROM SceneObject WHERE SceneName = '" + astrScene + "'";
@@ -66,7 +61,7 @@ list<string> DatabaseManagerShopClient::getListOfObjects(const string & astrScen
 
 //-------------------------------------------------------------------------------
 
-vector<string> DatabaseManagerShopClient::getObjectData(string & strSceneObject)	{
+vector<string> DatabaseInterfaceShopClient::getObjectData(string & strSceneObject)	{
 	vector<string> vecstrResult;
 	vector<string> vecstrSceneObject = splitString(strSceneObject,";");
 		

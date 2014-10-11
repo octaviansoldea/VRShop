@@ -36,6 +36,7 @@ INCLUDE_DIRECTORIES(
 	${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabase
 	${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libServerClientCommands
 	${CMAKE_SOURCE_DIR}/Props/Avatar/libAvatarManagerServer
+	${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgentServer
 )
 
 #MOC according to the Qt version

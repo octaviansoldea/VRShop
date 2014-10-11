@@ -22,10 +22,6 @@ CRITICAL Items
 
 Test the far/fix IP
 
-User accounts - signing in
-
-
-
 Cashier
 	- carry-out payment
 	- track transactions and operations

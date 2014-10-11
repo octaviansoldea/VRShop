@@ -23,12 +23,16 @@ Matrixd vecstr2Matrix(std::vector<std::string> & avecstrMatrixData)	{
 
 //------------------------------------------------------------------------------
 
-std::string matrix2String(osg::Matrixd & amtrxMatrixData, std::string astrDelimiter)	{
+std::string matrix2String(osg::Matrixd & amtrxMatrixData, char achDelimiter)	{
+	if (!amtrxMatrixData.valid())	{
+		return 0;
+	}
+
 	string strMatrixData="";
 	int nI,nJ;
 	for (nI=0;nI<4;nI++)	{
 		for (nJ=0;nJ<4;nJ++)	{
-			strMatrixData += (tostr(amtrxMatrixData(nI,nJ))) + astrDelimiter;
+			strMatrixData += (tostr(amtrxMatrixData(nI,nJ)) + achDelimiter);
 		}
 	}
 	strMatrixData.pop_back();

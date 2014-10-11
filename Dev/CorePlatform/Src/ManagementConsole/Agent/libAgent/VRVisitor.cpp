@@ -1,3 +1,5 @@
+#include "VRProductShopClient.h"
+
 #include "VRVisitor.h"
 
 using namespace VR;
@@ -5,7 +7,7 @@ using namespace std;
 
 //==============================================================================
 
-Visitor::Visitor(Avatar * apAvatar) : AbstractUser(apAvatar) {
+Visitor::Visitor(Avatar * apAvatar) : AbstractUser((Avatar*)apAvatar) {
 }
 
 //------------------------------------------------------------------------------
@@ -21,25 +23,13 @@ const char* Visitor::className() const	{
 
 //------------------------------------------------------------------------------
 
-bool Visitor::trySignIn()	{
-	return true;
-}
-
-//------------------------------------------------------------------------------
-
-bool Visitor::openAccount()	{
+bool Visitor::addProduct2Basket(const ProductShopClient & aProduct) const	{
 	return false;
 }
 
 //------------------------------------------------------------------------------
 
-bool Visitor::addProduct2Basket(const Product & aProduct) const	{
-	return false;
-}
-
-//------------------------------------------------------------------------------
-
-bool Visitor::removeProductFromBasket(const Product & aProduct) const	{
+bool Visitor::removeProductFromBasket(const ProductShopClient & aProduct) const	{
 	return false;
 }
 
@@ -50,20 +40,31 @@ void Visitor::listProductsInBasket() const	{
 
 //------------------------------------------------------------------------------
 
-void Visitor::inspectProduct(const Product & aProduct) const	{
+void Visitor::inspectProduct(const ProductShopClient & aProduct) const	{
 }
 
 //------------------------------------------------------------------------------
 
-void Visitor::listProductComplements(std::list < Product > & alstProducts, const Product * apProduct)	{
+void Visitor::listProductComplements(std::list < ProductShopClient > & alstProducts, const ProductShopClient * apProduct)	{
 }
 
 //------------------------------------------------------------------------------
 
-void Visitor::listProductSubstitutes(std::list < Product > & alstProducts, const Product * apProduct)	{
+void Visitor::listProductSubstitutes(std::list < ProductShopClient > & alstProducts, const ProductShopClient * apProduct)	{
 }
 
 //------------------------------------------------------------------------------
 
 void Visitor::requestHelp()	{
 }
+
+//------------------------------------------------------------------------------
+
+void Visitor::pay() {
+}
+
+//------------------------------------------------------------------------------
+
+bool Visitor::tryPay()	{
+	return false;
+};

@@ -50,9 +50,7 @@ INCLUDE_DIRECTORIES(
 #Define sources to be later added into the library
 SET(SRCS
 	VRAbstractUser.h VRAbstractUser.cpp
-	VRCustomer.h VRCustomer.cpp
 	VRVisitor.h VRVisitor.cpp
-	VRUserAccount.h VRUserAccount.cpp
 	VRAdministrator.h VRAdministrator.cpp
 	VRCustomerSupportOfficer.h VRCustomerSupportOfficer.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/View/VRSignUp_GUI.h ${CMAKE_CURRENT_SOURCE_DIR}/View/VRSignUp_GUI.cpp

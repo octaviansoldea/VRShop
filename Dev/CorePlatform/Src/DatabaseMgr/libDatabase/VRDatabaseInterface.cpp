@@ -15,7 +15,7 @@
 #include "BasicStringDefinitions.h"
 #include "VRBasicQTOperations.h"
 
-#include "VRDatabaseManager.h"
+#include "VRDatabaseInterface.h"
 
 using namespace std;
 using namespace VR;
@@ -23,43 +23,40 @@ using namespace VR;
 
 //===========================================================================
 
-DatabaseManagerParams::DatabaseManagerParams() :	
-m_qstrDBName(""),
-m_qstrConnectionName("")	{
-}
-
-//===========================================================================
-
-DatabaseManager::DatabaseManager(QObject *parent) : QObject(parent) {
+DatabaseInterfaceParams::DatabaseInterfaceParams(const QString & aqstrDBName, const QString & aqstrConnectionName) :	
+m_qstrDBName(aqstrDBName),
+m_qstrConnectionName(aqstrConnectionName)	{
 }
 
 //---------------------------------------------------------------------------
 
-DatabaseManager::DatabaseManager(const DatabaseManagerParams & aDBMgrParams, QObject *parent) :
-QObject(parent) {
-	m_DBMgrParams = aDBMgrParams;
-
-	createConnection(m_DBMgrParams);
-}
-
-//===========================================================================
-
-void DatabaseManager::init(const DatabaseManagerParams & aDBMgrParams)	{
-	m_DBMgrParams = aDBMgrParams;
-	createConnection(m_DBMgrParams);
+DatabaseInterface::DatabaseInterface()	{
 }
 
 //---------------------------------------------------------------------------
 
-bool DatabaseManager::createConnection(const DatabaseManagerParams & aDBMgrParams)	{
+DatabaseInterface::DatabaseInterface(const DatabaseInterfaceParams & aDBInterfaceParams) {
+	init(aDBInterfaceParams);
+}
+
+//===========================================================================
+
+void DatabaseInterface::init(const DatabaseInterfaceParams & aDBInterfaceParams)	{
+	m_DBInterfaceParams = aDBInterfaceParams;
+	createConnection(m_DBInterfaceParams);
+}
+
+//---------------------------------------------------------------------------
+
+bool DatabaseInterface::createConnection(const DatabaseInterfaceParams & aDBInterfaceParams)	{
 	if (!QSqlDatabase::isDriverAvailable("QSQLITE")) {
 		printError("Given driver QSQLITE not supported.");
 		return false;
 	}
-	const QString * pqstrConnName = &aDBMgrParams.m_qstrConnectionName;
+	const QString * pqstrConnName = &aDBInterfaceParams.m_qstrConnectionName;
 	
 	QSqlDatabase * pDb = &QSqlDatabase::addDatabase("QSQLITE",*pqstrConnName);
-	pDb->setDatabaseName(aDBMgrParams.m_qstrDBName);
+	pDb->setDatabaseName(aDBInterfaceParams.m_qstrDBName);
 
 	bool bOk = pDb->isOpen() ? true : pDb->open();
 
@@ -73,7 +70,7 @@ bool DatabaseManager::createConnection(const DatabaseManagerParams & aDBMgrParam
 
 //---------------------------------------------------------------------------
 
-bool DatabaseManager::dropDatabase(const QString & aqstrDBName)	{
+bool DatabaseInterface::dropDatabase(const QString & aqstrDBName)	{
 	const QString * pqstrDBName = &aqstrDBName;
 
 	if (pqstrDBName->isEmpty())	{
@@ -89,8 +86,8 @@ bool DatabaseManager::dropDatabase(const QString & aqstrDBName)	{
 
 //---------------------------------------------------------------------------
 
-bool DatabaseManager::removeConnection()	{
-	QString * pqstrConnName = &m_DBMgrParams.m_qstrConnectionName;
+bool DatabaseInterface::removeConnection()	{
+	QString * pqstrConnName = &m_DBInterfaceParams.m_qstrConnectionName;
 	QSqlDatabase * pDb = &QSqlDatabase::database(*pqstrConnName, false);
 
 	if (pDb->isValid() && pDb->isOpen())
@@ -103,13 +100,27 @@ bool DatabaseManager::removeConnection()	{
 
 //-----------------------------------------------------------------------------------------
 
-DatabaseManager::~DatabaseManager()	{
+DatabaseInterface::~DatabaseInterface()	{
 	removeConnection();
 }
 
 //-----------------------------------------------------------------------------------------
 
-bool DatabaseManager::createTable(const string & astrTableName, const string & astrTableStmt)	{
+bool DatabaseInterface::createTable(const string & astrTableName, vector<pair<string,string>> & avecTableElements)	{
+	string strSQLFormat = "CREATE TABLE IF NOT EXISTS " + astrTableName + "(";
+
+	std::vector<std::pair<std::string,std::string>>::iterator it = avecTableElements.begin();
+	for (it; it != avecTableElements.end(); it++)	{
+		strSQLFormat += (it->first + " " + it->second + ",");
+	}
+	strSQLFormat.pop_back(); strSQLFormat += ");";
+
+	return execute(strSQLFormat);
+}
+
+//-----------------------------------------------------------------------------------------
+
+bool DatabaseInterface::createTable(const string & astrTableName, const string & astrTableStmt)	{
 	bool bRes = false;
 
 	const string * pstrTableName = &astrTableName;
@@ -130,14 +141,14 @@ bool DatabaseManager::createTable(const string & astrTableName, const string & a
 
 //-----------------------------------------------------------------------------------------
 
-bool DatabaseManager::removeTable(const QString& aqstrTableName)	{
+bool DatabaseInterface::removeTable(const QString& aqstrTableName)	{
 	bool bRes = false;	
 	const QString * pqstrTableName = &aqstrTableName;
 	if (pqstrTableName->isEmpty())	{
 		return bRes;
 	}
 
-	QSqlDatabase * pDb = &QSqlDatabase::database(m_DBMgrParams.m_qstrConnectionName);	
+	QSqlDatabase * pDb = &QSqlDatabase::database(m_DBInterfaceParams.m_qstrConnectionName);	
 	QSqlQuery q(*pDb);
 	
 	QStringList & qlstDBtables = pDb->tables();
@@ -157,14 +168,14 @@ bool DatabaseManager::removeTable(const QString& aqstrTableName)	{
 
 //-----------------------------------------------------------------------------------------
 
-bool DatabaseManager::containsTable(const QString & aqstrTableName)	{
+bool DatabaseInterface::containsTable(const QString & aqstrTableName)	{
 	const QString * pqstrTableName = &aqstrTableName;
 
 	if (pqstrTableName->isEmpty())	{
 		return false;
 	}
 
-	QSqlDatabase * pDb = &QSqlDatabase::database(m_DBMgrParams.m_qstrConnectionName);	
+	QSqlDatabase * pDb = &QSqlDatabase::database(m_DBInterfaceParams.m_qstrConnectionName);	
 	QStringList & qlstpDBtables = pDb->tables();
 
 	bool bRes = (qlstpDBtables.contains(*pqstrTableName, Qt::CaseInsensitive)) ? true : false;
@@ -173,10 +184,8 @@ bool DatabaseManager::containsTable(const QString & aqstrTableName)	{
 
 //-----------------------------------------------------------------------------------------
 
-bool DatabaseManager::execute(const string & astrQuery)	{
-	QString * pqstrConnName = &m_DBMgrParams.m_qstrConnectionName;
-	string strTest = pqstrConnName->toStdString();
-
+bool DatabaseInterface::execute(const string & astrQuery)	{
+	QString * pqstrConnName = &m_DBInterfaceParams.m_qstrConnectionName;
 	const string * pstrQuery = &astrQuery;
 
 	QSqlDatabase * pDb = &QSqlDatabase::database(*pqstrConnName);
@@ -193,8 +202,8 @@ bool DatabaseManager::execute(const string & astrQuery)	{
 
 //-----------------------------------------------------------------------------------------
 
-list<string> DatabaseManager::executeAndGetResult(const string & astrQuery)	{
-	QString * pqstrConnName = &m_DBMgrParams.m_qstrConnectionName;
+list<string> DatabaseInterface::executeAndGetResult(const string & astrQuery)	{
+	QString * pqstrConnName = &m_DBInterfaceParams.m_qstrConnectionName;
 	const string * pstrQuery = &astrQuery;
 
 	QSqlDatabase * pDb = &QSqlDatabase::database(*pqstrConnName);
@@ -226,10 +235,10 @@ list<string> DatabaseManager::executeAndGetResult(const string & astrQuery)	{
 
 //-----------------------------------------------------------------------------------------
 
-int DatabaseManager::insertRow(const string & astrTableName, string &astrTblFieldValues)	{
-	QSqlDatabase * pDb = &QSqlDatabase::database(m_DBMgrParams.m_qstrConnectionName);
+int DatabaseInterface::insertRow(const string & astrTableName, string &astrTblFieldValues)	{
+	QSqlDatabase * pDb = &QSqlDatabase::database(m_DBInterfaceParams.m_qstrConnectionName);
 
-	QSqlTableModel model(this,*pDb);
+	QSqlTableModel model(0,*pDb);
 
 	const string * pstrTableName = &astrTableName;
 	vector<string> fieldValues = splitString(astrTblFieldValues,";");
@@ -270,9 +279,9 @@ int DatabaseManager::insertRow(const string & astrTableName, string &astrTblFiel
 
 //-----------------------------------------------------------------------------------------
 
-void DatabaseManager::deleteRow(const string & astrTableName, const string & astrObjectName)	{
-	QSqlDatabase * pDb = &QSqlDatabase::database(m_DBMgrParams.m_qstrConnectionName);
-	QSqlTableModel model(this, *pDb);
+void DatabaseInterface::deleteRow(const string & astrTableName, const string & astrObjectName)	{
+	QSqlDatabase * pDb = &QSqlDatabase::database(m_DBInterfaceParams.m_qstrConnectionName);
+	QSqlTableModel model(0, *pDb);
 
 	const string * pstrTableName = &astrTableName;
 	if (!containsTable(pstrTableName->c_str()))	{
@@ -298,10 +307,10 @@ void DatabaseManager::deleteRow(const string & astrTableName, const string & ast
 
 //-----------------------------------------------------------------------------------------
 
-void DatabaseManager::updateDB() {
+void DatabaseInterface::updateDB() {
 }
 
 //-----------------------------------------------------------------------------------------
 
-void DatabaseManager::systemOfTables(std::vector<std::pair<std::string,std::string>> & avecStmtPairs)	{
+void DatabaseInterface::systemOfTables(std::vector<std::pair<std::string,std::string>> & avecStmtPairs)	{
 }

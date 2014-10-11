@@ -1,24 +1,24 @@
-#ifndef VR_DATABASE_MANAGER_SHOP_EDITOR_H
-#define VR_DATABASE_MANAGER_SHOP_EDITOR_H
+#ifndef VR_DATABASE_INTERFACE_SHOP_EDITOR_H
+#define VR_DATABASE_INTERFACE_SHOP_EDITOR_H
 
 #include <QObject>
 
-#include "VRDatabaseManager.h"
+#include "VRDatabaseInterface.h"
 
 namespace VR {
-	struct DatabaseManagerShopEditorParams : public DatabaseManagerParams	{
-		DatabaseManagerShopEditorParams();
+	struct DatabaseInterfaceShopEditorParams : public DatabaseInterfaceParams	{
+		DatabaseInterfaceShopEditorParams();
 	};
 
-	class DatabaseManagerShopEditor : public DatabaseManager	{
+	class DatabaseInterfaceShopEditor : public DatabaseInterface	{
 
 	public:
-		DatabaseManagerShopEditor(QObject * parent = 0);
-		DatabaseManagerShopEditor(const DatabaseManagerShopEditorParams & aDBMgrParams, QObject * parent = 0);
+		DatabaseInterfaceShopEditor();
+		DatabaseInterfaceShopEditor(const DatabaseInterfaceShopEditorParams & aDBInterfaceParams);
 
-		virtual ~DatabaseManagerShopEditor();
+		virtual ~DatabaseInterfaceShopEditor();
 
-		virtual void init(const DatabaseManagerShopEditorParams & aDBMgrParams);
+		virtual void init(const DatabaseInterfaceShopEditorParams & aDBInterfaceParams);
 
 		void insertScene(const std::string & astrScene);
 		void insertObject(const std::string & astrScene, std::vector<std::string> & avecstrData);

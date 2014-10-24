@@ -1,14 +1,21 @@
 CRITICAL Bugs
 
+Paths for system in browser and classic mode
+
+============================================================	
+Highly desirable to be solved Bugs
+
+
 Initial position of camera / Synchronization of avatar moves
 
 EditItem doesn't center selection but scene
 	VRProductmanager line 168: if frameless window selected, then fails to display correctly
 	(likely because of a missing parent)
 
-Paths for system in browser and classic mode
-
 Textures when cloning objects
+
+Upper limit of users from server
+
 
 ============================================================	
 
@@ -23,19 +30,17 @@ CRITICAL Items
 Test the far/fix IP
 
 Cashier
-	- carry-out payment
+	- carry-out payment	
 	- track transactions and operations
 	- add to history database
 
-QTimer server cleaning
+QTimer server cleaning	-	time interval
 
 Saving already opened file adds to the existing file and doesn't overwrite it
 
 * Android
 * iPhone
 * WindowsPhone - WinCE
-
-Upper limit of users from server
 
 ====================================================================
 

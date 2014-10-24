@@ -183,7 +183,7 @@ float ProductManagerServer::modifyProductQuantity(const ProductManagerServerPara
 		ProductManagerServerParams pmsp = aProductManagerServerParams;
 		pmsp.m_flProductQuantity = flDiffQuantity;
 
-		float flNewValue = tryAddProduct2Basket(pmsp) + aProductManagerServerParams.m_flProductQuantity;
+		float flNewValue = (tryAddProduct2Basket(pmsp) + aProductManagerServerParams.m_flProductQuantity);
 
 		return flNewValue;
 	} else {

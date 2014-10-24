@@ -63,10 +63,6 @@ void Client::sendRequest(QByteArray & aarrRequest)	{
 	quint64 unTotalToWrite = (quint64)(aarrRequest.size());
 	out << (quint64)(unTotalToWrite - sizeof(quint64));
 
-	//Check that everything is written
-	//while (unTotalToWrite - unWritten > 0)	{
-	//	unWritten += m_TcpSocket.write(aarrRequest.data() + unWritten,unTotalToWrite-unWritten);
-	//}
 	unWritten = m_TcpSocket.write(aarrRequest);
 	m_TcpSocket.waitForBytesWritten();
 }

@@ -46,8 +46,8 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProduct
   ${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProductInterface
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libController
-  ${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libServer
   ${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libClient
+  ${CMAKE_SOURCE_DIR}/ShopScene/libModelViewController
   ${CMAKE_SOURCE_DIR}/ShopScene/libShoppingPlace
   ${CMAKE_BINARY_DIR}/ShopScene/libShoppingPlace
   ${CMAKE_SOURCE_DIR}/ShopScene/libPopUpGUIs/ProductItem
@@ -55,9 +55,12 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_SOURCE_DIR}/Props/Avatar/libAvatarManager
   ${CMAKE_SOURCE_DIR}/Props/Avatar/libAnimationEditor
   ${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabase
-  ${CMAKE_SOURCE_DIR}/ManagementConsole/Cashier/libCashier
-  ${CMAKE_SOURCE_DIR}/ManagementConsole/Cashier/libCashier/View
+  ${CMAKE_SOURCE_DIR}/ManagementConsole/Cashier/libCashierClient
+  ${CMAKE_SOURCE_DIR}/ManagementConsole/Cashier/libCashierClient/View
   ${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libServerClientCommands
+  ${CMAKE_SOURCE_DIR}/Props/AbstractManagerClient/libAbstractManagerClient
+  ${CMAKE_SOURCE_DIR}/ManagementConsole/Cashier/libCashierManagerClient
+  ${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProductManagerClient
 )
 
 SET(LIBS_COMMON 
@@ -89,14 +92,17 @@ SET(LIBS_COMMON
 	libProduct
 	libProductInterface
 	libController
-	libServer
 	libClient
 	libAvatar
 	libAvatarManager
 	libAnimationEditor
 	libDatabase
-	libCashier
+	libCashierClient
 	libServerClientCommands
+	libAbstractManagerClient
+	libCashierManagerClient
+	libProductManagerClient
+	libModelViewController
 )
 
 SET(SRCS

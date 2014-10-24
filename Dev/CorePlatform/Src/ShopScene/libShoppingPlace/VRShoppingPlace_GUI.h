@@ -10,14 +10,12 @@
 namespace VR	{
 	struct ShoppingPlace;
 	class AbstractObject;
-	class Avatar;
-	class Grid;
 	class ProductInterface;
 	class AgentInterface;
 	class ProductBasketInterface;
-	class ProductManagerClient;
-	class Cashier;
 	struct CameraController;
+	class CashierScreenManager;
+	class ProductShopClient;
 
 	class ShoppingPlace_GUI : public QMainWindow, public Ui::MainWindow	{
 		Q_OBJECT
@@ -30,11 +28,12 @@ namespace VR	{
 		ProductInterface * m_pProductInterface;
 		AgentInterface * m_pAgentInterface;
 		ProductBasketInterface * m_pProductBasketInterface;
-		ProductManagerClient * m_pProductManagerClient;
 		CameraController * m_pCameraController;
-		Cashier * m_pCashier;
+
+		CashierScreenManager * m_pCashierScreenManager;
 
 		void updateGeometry();
+		void signalSlotConnections();
 
 	protected:
 		virtual void resizeEvent(QResizeEvent *event);
@@ -42,7 +41,13 @@ namespace VR	{
 	private slots:
 		void slotProductClicked(const AbstractObject * apAbstractObject);
 		void slotCashierClicked();
-		void slotAvatarClicked(const Avatar * apAvatar);
+		void slotAvatarClicked(const std::string & astrAvatarName);
+
+		void slotProcesRequest(int anRequestOperation);
+
+		void slotAdd2Basket();
+		void slotRemoveProduct(ProductShopClient * apProduct);
+		void slotModifyProductQuantity(ProductShopClient * apProduct, float aflNewQuantity);
 	};
 }
 #endif //VR_SHOPPING_PLACE_GUI_H

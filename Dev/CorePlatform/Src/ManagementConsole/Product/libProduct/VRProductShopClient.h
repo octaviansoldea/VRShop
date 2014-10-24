@@ -44,6 +44,8 @@ namespace VR	{
 		std::string getProductName() const;
 		std::string getProductTexture() const;
 
+		long getProductID() const;
+
 		virtual void initFromSQLData(std::string & astrSQLData);
 
 	private:

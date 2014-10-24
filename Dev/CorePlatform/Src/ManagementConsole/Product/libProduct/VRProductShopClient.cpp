@@ -118,6 +118,12 @@ string ProductShopClient::getProductTexture() const	{
 
 //------------------------------------------------------------------------------
 
+long ProductShopClient::getProductID() const	{
+	return m_ProductShopClientParams.m_nProductCode;
+}
+
+//------------------------------------------------------------------------------
+
 void ProductShopClient::initFromSQLData(std::string & astrSQLData)	{
 	string & strSqlData = astrSQLData;
 

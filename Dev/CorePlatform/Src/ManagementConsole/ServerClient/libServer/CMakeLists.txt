@@ -9,7 +9,6 @@ IF(Qt5_FOUND)
     ${Qt5Core_INCLUDE_DIRS}
     ${Qt5Gui_INCLUDE_DIRS}
     ${Qt5Widgets_INCLUDE_DIRS}
-    ${Qt5OpenGL_INCLUDE_DIRS}
     ${Qt5Network_INCLUDE_DIRS}	
   )
 ELSE(Qt5_FOUND)
@@ -32,7 +31,7 @@ ENDIF(Qt5_FOUND)
 #General includes, irrespective of the Qt version
 INCLUDE_DIRECTORIES(
 	${CMAKE_SOURCE_DIR}/ManagementConsole/DatabaseNetworkManager/libDatabaseNetworkManager
-	${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgentManager
+#	${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgentManager
 	${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabase
 	${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libServerClientCommands
 )

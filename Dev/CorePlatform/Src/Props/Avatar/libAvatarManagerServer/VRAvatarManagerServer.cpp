@@ -12,9 +12,7 @@ using namespace std;
 
 #define DEBUG_AVATARS 0
 
-DatabaseInterface AvatarManagerServer::m_DIAvatar(
-	DatabaseInterfaceParams(AvatarManagerServer::getDatabaseName().c_str(),"Avatar")
-);
+DatabaseInterface AvatarManagerServer::m_DIAvatar(AvatarManagerServer::getDBParams());
 
 //==============================================================================
 
@@ -32,9 +30,11 @@ const char* AvatarManagerServer::className() const	{
 	return "AvatarManagerServer";
 }
 
+//------------------------------------------------------------------------------
+
 DatabaseInterfaceParams AvatarManagerServer::getDBParams()	{
 	DatabaseInterfaceParams dbParams;
-	dbParams.m_qstrConnectionName = "UserAccount";
+	dbParams.m_qstrConnectionName = "Avatar";
 	dbParams.m_qstrDBName = getDatabaseName().c_str();
 
 	return dbParams;
@@ -42,11 +42,9 @@ DatabaseInterfaceParams AvatarManagerServer::getDBParams()	{
 
 //------------------------------------------------------------------------------
 
-void AvatarManagerServer::registerAvatar(string & astrRequest)	{
-	vector<string> vecstrSplitString = splitString(astrRequest,";");
-
+void AvatarManagerServer::registerAvatar(string & astrAvatarName, string & astrAvatarMatrix)	{
 	string strSqlQuery = "INSERT INTO Avatar(AvatarName, AvatarMatrix) VALUES ('" + 
-		vecstrSplitString[0] + "','" + vecstrSplitString[1] + "')";
+		astrAvatarName + "','" + astrAvatarMatrix + "')";
 
 	DatabaseInterface *pDI = AvatarManagerServer::getDatabaseInterface();
 	pDI->executeAndGetResult(strSqlQuery);
@@ -54,15 +52,14 @@ void AvatarManagerServer::registerAvatar(string & astrRequest)	{
 
 //------------------------------------------------------------------------------
 
-void AvatarManagerServer::updateAvatarData(std::string & astrRequest)	{
-	vector<string> vecstrSplitString = splitString(astrRequest,";");
+void AvatarManagerServer::updateAvatarData(std::string & astrAvatarName, std::string & astrAvatarMatrix)	{
 	string strSqlQuery = "UPDATE Avatar" 
-		" SET AvatarMatrix = '" + vecstrSplitString[1] + 
+		" SET AvatarMatrix = '" + astrAvatarMatrix + 
 //		"', AvatarDateTime = CURRENT_TIMESTAMP" + 
 		"', AvatarDateTime = '" + tostr(time(NULL)
 										//m_pTimer->getCurrTimeInMiliSeconds()
 										) + "'"+ 
-		" WHERE AvatarName = '" + vecstrSplitString[0] + "'";
+		" WHERE AvatarName = '" + astrAvatarName + "'";
 
 	DatabaseInterface *pDI = AvatarManagerServer::getDatabaseInterface();
 	pDI->executeAndGetResult(strSqlQuery);
@@ -105,7 +102,7 @@ string AvatarManagerServer::getDatabaseName()	{
 
 //------------------------------------------------------------------------------
 
-vector<pair<string,string>> AvatarManagerServer::getAvatarElements()	{
+vector<pair<string,string>> AvatarManagerServer::getDBElements()	{
 	vector<pair<string,string>> vecpairAvatarElements;
 
 	vecpairAvatarElements.push_back(make_pair("AvatarID", "INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE"));
@@ -119,7 +116,7 @@ vector<pair<string,string>> AvatarManagerServer::getAvatarElements()	{
 //------------------------------------------------------------------------------
 
 void AvatarManagerServer::createAvatarDB() {
-	m_DIAvatar.createTable(getTableName(), getAvatarElements());
+	m_DIAvatar.createTable(getTableName(), getDBElements());
 }
 
 //------------------------------------------------------------------------------

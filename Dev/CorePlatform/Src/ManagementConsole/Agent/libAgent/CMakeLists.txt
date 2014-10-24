@@ -45,6 +45,9 @@ INCLUDE_DIRECTORIES(
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgent
 	${CMAKE_BINARY_DIR}/ManagementConsole/Agent/libAgent
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgent/View
+	${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libServerClientCommands
+	${CMAKE_SOURCE_DIR}/Props/AbstractManagerClient/libAbstractManagerClient
+	${CMAKE_SOURCE_DIR}/ManagementConsole/Cashier/libCashierManagerClient
 )
 
 #Define sources to be later added into the library

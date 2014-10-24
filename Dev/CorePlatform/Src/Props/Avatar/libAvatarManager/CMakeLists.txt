@@ -9,7 +9,6 @@ IF(Qt5_FOUND)
     ${Qt5Gui_INCLUDE_DIRS}
     ${Qt5Widgets_INCLUDE_DIRS}
     ${Qt5OpenGL_INCLUDE_DIRS}
-	${Qt5Sql_INCLUDE_DIRS}
 	${Qt5Network_INCLUDE_DIRS}
   )
 ELSE(Qt5_FOUND)
@@ -43,11 +42,11 @@ INCLUDE_DIRECTORIES(
 	${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
 	${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabase
 	${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libClient
-	${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libServer
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCamera
 	${CMAKE_SOURCE_DIR}/Props/Avatar/libAnimationEditor
 	${CMAKE_SOURCE_DIR}/Props/Avatar/libAvatar
 	${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libServerClientCommands
+	${CMAKE_SOURCE_DIR}/Props/AbstractManagerClient/libAbstractManagerClient
 )
 
 SET(SRCS
@@ -55,7 +54,7 @@ SET(SRCS
 )
 
 ADD_LIBRARY(libAvatarManager
-  ${SRCS} ${MOC_SRCS} ${UI_SRCS}
+  ${SRCS} ${MOC_SRCS}
 )
 
 SET_PROPERTY(TARGET libAvatarManager PROPERTY FOLDER AvatarManager)

@@ -12,7 +12,10 @@
 #include "VRAvatar.h"
 #include "VRAvatarManagerClient.h"
 #include "VRVisitor.h"
-#include "VRBasket.h"
+#include "VRBasketClient.h"
+#include "VRProductManagerClient.h"
+
+#include "VRModelViewControllerClient.h"
 
 #include "VRDatabaseInterfaceShopClient.h"
 
@@ -79,13 +82,9 @@ m_strAvatarName(astrAvatarName)	{
 	m_pOSGQTWidgetMap->setCameraManipulator(pKeyboardMouseManipulatorShopClient,false);
 	m_pOSGQTWidgetMap->show();
 
-	//Insert axes
-//	ref_ptr<Node> pAxes = osgDB::readNodeFile("../../../Resources/Models3D/axes.osgt");
-//	m_pScene->addChild(pAxes);
-
 	//A pointer to products sent to the scene
-	m_pProductMgr = new ProductManager;
-	Node * pProductsRepresentation = m_pProductMgr->getProductsRepresentation();
+//	m_pProductMgr = new ProductManager;
+	Node * pProductsRepresentation = m_ProductManager.getProductsRepresentation();
 	m_pScene->addChild(pProductsRepresentation);
 
 	//Insert Scene objects
@@ -106,7 +105,6 @@ m_strAvatarName(astrAvatarName)	{
 	m_pAvatar->slotUpdatePosition(false);
 
 	m_pVisitor = new Visitor((Avatar*)m_pAvatar);
-	m_pBasket = m_pVisitor->getBasket();
 
 	//Other avatars
 	m_pAvatarMgr = new AvatarManagerClient(m_pAvatar);
@@ -126,14 +124,19 @@ m_strAvatarName(astrAvatarName)	{
 
 	//Insert products
 	insertProducts();
+
+	m_pMVCClient = new ModelViewControllerClient;
+
+	m_pProductMgr = new ProductManagerClient(m_pMVCClient, (BasketClient*)m_pVisitor->getBasket());
 }
 
 //----------------------------------------------------------------------
 
 ShoppingPlace::~ShoppingPlace() {
-	delete m_pProductMgr;
 	delete m_pAvatarMgr;
+	delete m_pProductMgr;
 	delete m_pVisitor;
+	delete m_pMVCClient;
 }
 
 //----------------------------------------------------------------------
@@ -145,7 +148,8 @@ ref_ptr<Scene> ShoppingPlace::getScene() const	{
 //----------------------------------------------------------------------
 
 ref_ptr<Node> ShoppingPlace::getProducts()	{
-	return m_pProductMgr->getProductsRepresentation();
+	return m_ProductManager
+		.getProductsRepresentation();
 }
 
 //----------------------------------------------------------------------
@@ -178,7 +182,9 @@ bool ShoppingPlace::createClientScene(const string & astrSceneFileName)	{
 
 		if (strClassName == "ProductDisplay")	{
 			vector<string> vecstrObjectData = db.getObjectData(*it);
-			m_pProductMgr->initFromSQLData(vecstrObjectData);
+			m_ProductManager
+				//m_pProductMgr->
+				.initFromSQLData(vecstrObjectData);
 
 			continue;
 		}
@@ -204,8 +210,8 @@ bool ShoppingPlace::createClientScene(const string & astrSceneFileName)	{
 
 //----------------------------------------------------------------------
 
-Basket * ShoppingPlace::getBasket()	{
-	return m_pBasket;
+BasketClient * ShoppingPlace::getBasket()	{
+	return m_pVisitor->getBasket();
 }
 
 //----------------------------------------------------------------------
@@ -217,4 +223,52 @@ AbstractUser * ShoppingPlace::getAbstractUser()	{
 //----------------------------------------------------------------------
 
 void ShoppingPlace::insertProducts()	{
+}
+
+//----------------------------------------------------------------------
+
+void ShoppingPlace::avatarClicked(const string & astrAvatarName)	{
+}
+
+//----------------------------------------------------------------------
+
+void ShoppingPlace::productClicked(const string & astrProductName)	{
+	string strProductName = astrProductName;
+	m_pProductMgr->productClicked(strProductName);
+}
+
+//----------------------------------------------------------------------
+
+void ShoppingPlace::product2BasketRequest(ProductShopClient * apProduct)	{
+	string strUserID = m_pVisitor->getUserIDName();
+
+	m_pProductMgr->addProduct2Basket(strUserID,apProduct);
+}
+
+//----------------------------------------------------------------------
+
+void ShoppingPlace::removeProductRequest(ProductShopClient * apProduct)	{
+	string strUserID = m_pVisitor->getUserIDName();
+
+	m_pProductMgr->removeProductRequest(strUserID,apProduct);
+}
+
+//----------------------------------------------------------------------
+
+void ShoppingPlace::modifyProductQuantityRequest(ProductShopClient * apProduct, float aflNewQuantity)	{
+	string strUserID = m_pVisitor->getUserIDName();
+
+	m_pProductMgr->modifyProductQuantityRequest(strUserID,apProduct,aflNewQuantity);
+}
+
+//----------------------------------------------------------------------
+
+void ShoppingPlace::purchaseRequest()	{
+	m_pVisitor->payRequest();
+}
+
+//----------------------------------------------------------------------
+
+ModelViewControllerClient * ShoppingPlace::getModelViewController() const	{
+	return m_pMVCClient;
 }

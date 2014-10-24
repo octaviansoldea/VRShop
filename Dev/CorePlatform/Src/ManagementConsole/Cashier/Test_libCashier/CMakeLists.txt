@@ -1,4 +1,4 @@
-project(Test_libCashier)
+project(Test_libCashierClient)
 cmake_minimum_required( VERSION 2.8 )
 
 SET(CMAKE_DEBUG_POSTFIX "D")
@@ -34,27 +34,31 @@ INCLUDE_DIRECTORIES(
 	${OPENSCENEGRAPH_INCLUDE_DIRS}
     ${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
 	${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
-	${CMAKE_SOURCE_DIR}/ManagementConsole/Cashier/libCashier
-	${CMAKE_BINARY_DIR}/ManagementConsole/Cashier/libCashier
-	${CMAKE_SOURCE_DIR}/ManagementConsole/Cashier/libCashier/View
+	${CMAKE_SOURCE_DIR}/ManagementConsole/Cashier/libCashierClient
+	${CMAKE_BINARY_DIR}/ManagementConsole/Cashier/libCashierClient
+	${CMAKE_SOURCE_DIR}/ManagementConsole/Cashier/libCashierClient/View
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProduct
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgent
+	${CMAKE_SOURCE_DIR}/Props/AbstractManagerClient/libAbstractManagerClient
+	${CMAKE_SOURCE_DIR}/ManagementConsole/Cashier/libCashierManagerClient
 )
 
-ADD_EXECUTABLE(Test_libCashier
+ADD_EXECUTABLE(Test_libCashierClient
 	main.cpp)
 
 SET(LIBS_COMMON
 	${OSG_LIBRARIES}
 	libCommon
 	libAbstractObject
-	libCashier
+	libCashierClient
 	libProduct
 	libAgent
+	libAbstractManagerClient
+	libCashierManagerClient
 )
 
 IF(Qt5_FOUND)
-  TARGET_LINK_LIBRARIES(Test_libCashier
+  TARGET_LINK_LIBRARIES(Test_libCashierClient
 	${Qt5Core_LIBRARIES}
     ${Qt5Gui_LIBRARIES}
     ${Qt5Widgets_LIBRARIES}
@@ -62,11 +66,11 @@ IF(Qt5_FOUND)
 	${LIBS_COMMON}
   )
 ELSEIF(NOT Qt5_FOUND AND Qt4_FOUND)
-  TARGET_LINK_LIBRARIES(Test_libCashier
+  TARGET_LINK_LIBRARIES(Test_libCashierClient
   	${QT_LIBRARIES}
     ${QT_QTSQL_LIBRARY}
 	${LIBS_COMMON}
   )
 ENDIF(Qt5_FOUND)
 
-SET_PROPERTY(TARGET Test_libCashier PROPERTY FOLDER Management)
+SET_PROPERTY(TARGET Test_libCashierClient PROPERTY FOLDER Management)

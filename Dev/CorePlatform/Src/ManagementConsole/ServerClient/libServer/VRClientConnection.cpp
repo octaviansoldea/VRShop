@@ -56,90 +56,20 @@ void ClientConnection::slotReadClient()	{
 	qData = in.device()->readAll();
 
 	m_unPackageSize = 0;
-	processRequest(qData);
-}
 
-//----------------------------------------------------------------------
+	QByteArray & output = DatabaseNetworkManager::databaseRequest(qData);
 
-void ClientConnection::processRequest(QByteArray & data)	{
-	QDataStream in(&data,QIODevice::ReadOnly);
-	in.setVersion(QDataStream::Qt_4_8);
-
-	quint8 nType;
-	QString qstrRequest;
-
-	//Initialize parameters
-	in >> nType >> qstrRequest;
-	string strRequest = qstrRequest.toStdString();
-	bool bRes=false;
-
-	if (nType == ServerClientCommands::NEW_USER_REQUEST)	{
-		QByteArray result;
-		QDataStream out(&result, QIODevice::WriteOnly);
-		out.setVersion(QDataStream::Qt_4_8);
-		out.setFloatingPointPrecision(QDataStream::SinglePrecision);
-
-		string strFileName = "C:/Projekti/VRShop/Dev/OSG/Databases/ShopDemo.db";
-		QFile file(strFileName.c_str());
-		if(!file.open(QIODevice::ReadOnly))	{
-			qDebug() << "Error file can't be opened!";
-			return;
-		}
-
-		QByteArray bytes = file.readAll();
-
-		
-		out << quint64(0) << nType << bytes;	//Size of the package
-
-		writeToClient(result);
-		return;
-	}
-
-	//Access appropriate database
-	DatabaseNetworkManager DBNetworkManager;
-	bRes = DBNetworkManager.databaseRequest(nType,strRequest);
-
-	QByteArray result;
-	QDataStream out(&result, QIODevice::WriteOnly);
-	out.setVersion(QDataStream::Qt_4_8);
-	out << quint64(0) << nType;	//Size of the package
-
-	int nBytesAvailable = out.device()->bytesAvailable();
-
-	if (bRes)	{
-		list<string> lstResult = DBNetworkManager.getResult();
-		list<string>::iterator it = lstResult.begin();
-		string strResult;
-		for (it; it != lstResult.end(); it++)	{
-			strResult += (*it) + ";";
-		}
-		strResult.pop_back();
-
-		QString qstrTest = strResult.c_str();
-		out << qstrTest;
-	} else {
-		out << "Error: Database returns 0.";
-	}
-
-	writeToClient(result);
-}
-
-//----------------------------------------------------------------------
-
-void ClientConnection::writeToClient(QByteArray & data)	{
-	QDataStream out(&data, QIODevice::WriteOnly);
+	//Write to client
+	QDataStream out(&output, QIODevice::WriteOnly);
 	out.setVersion(QDataStream::Qt_4_8);
 
 	bool bRes = out.device()->seek(0);
 	quint64 unWritten = 0;
-	quint64 unTotalToWrite = (quint64)(data.size());
+	quint64 unTotalToWrite = (quint64)(output.size());
 	out << (quint64)(unTotalToWrite - sizeof(quint64));
 
-	//Check that everything is written
-	//while (unTotalToWrite - unWritten > 0)	{
-	//	unWritten += write(data.data() + unWritten,unTotalToWrite-unWritten);
-	//}
-
-	unWritten = this->write(data);
+	unWritten = this->write(output);
 	this->waitForBytesWritten();
 }
+
+//----------------------------------------------------------------------

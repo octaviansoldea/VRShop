@@ -1,7 +1,7 @@
 #include <QApplication>
-#include "VRBasket.h"
+#include "VRBasketClient.h"
 
-#include "VRCashierScreen.h"
+#include "VRCashierScreenManager.h"
 #include <iostream>
 
 using namespace VR;
@@ -9,9 +9,5 @@ using namespace VR;
 int main(int argc, char * argv[])	{
 	QApplication app(argc,argv);
 
-	Basket basket;
-	CashierScreen cashier(&basket);
-	cashier.setCashierScreen(true);
-
-	return app.exec();
+	return 0;
 }

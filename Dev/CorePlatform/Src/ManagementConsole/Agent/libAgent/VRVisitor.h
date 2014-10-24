@@ -12,6 +12,8 @@
 
 namespace VR	{
 	class ProductShopClient;
+	class CashierManagerClient;
+
 
 	class Visitor : public AbstractUser {
 	public:
@@ -22,8 +24,8 @@ namespace VR	{
 
 		// Track client's activity: client_ID, access_date/time, exit_date/time, products_observed
 		
-		bool addProduct2Basket(const ProductShopClient & aProduct) const;//check if the shop can satisfy the request.
-		bool removeProductFromBasket(const ProductShopClient & aProduct) const;
+		bool addProduct2Basket(ProductShopClient * apProduct); //check if the shop can satisfy the request.
+		bool removeProductFromBasket(ProductShopClient * apProduct);
 		void listProductsInBasket() const;
 		void inspectProduct(const ProductShopClient & aProduct) const;
 
@@ -33,11 +35,13 @@ namespace VR	{
 
 		void requestHelp();
 
-		void pay();
+		bool approachCashier();	//For now just returns true
+		void payRequest();
 
 
 	private:
 		bool tryPay();
+		CashierManagerClient * m_pCashierManagerClient;
 	};
 }
 #endif //VR_VISITOR_H

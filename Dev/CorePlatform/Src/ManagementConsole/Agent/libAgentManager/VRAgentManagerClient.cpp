@@ -15,9 +15,8 @@ using namespace std;
 
 //==============================================================================
 
-AgentManagerClient::AgentManagerClient(AbstractUser * apAbstractUser)	{
-	m_pClient = new Client;
-	m_pAbstractUser = (Visitor*)apAbstractUser;
+AgentManagerClient::AgentManagerClient(AbstractUser * apAbstractUser, QObject * apParent) : AbstractManagerClient(apParent)	{
+	m_pVisitor = (Visitor*)apAbstractUser;
 
 	connect(m_pClient,SIGNAL(done()),this,SLOT(slotReceiveDataFromServer()));
 }
@@ -25,7 +24,6 @@ AgentManagerClient::AgentManagerClient(AbstractUser * apAbstractUser)	{
 //------------------------------------------------------------------------------
 
 AgentManagerClient::~AgentManagerClient()	{
-	delete m_pClient;
 }
 
 //------------------------------------------------------------------------------
@@ -43,15 +41,15 @@ void AgentManagerClient::slotReceiveDataFromServer()	{
 	out.setVersion(QDataStream::Qt_4_8);
 
 	quint8 nType;	//Type of the data received
-	QString qstrDataFromServer;
+	int nSuccess;
 
-	out >> nType >> qstrDataFromServer;
+	out >> nType >> nSuccess;
 
 	switch (nType)	{
 	case ServerClientCommands::SIGN_IN_REQUEST:
 		{
-			if (qstrDataFromServer.toInt() == ServerClientCommands::PASSED)	{
-				userApproved(qstrDataFromServer.toStdString());
+			if (nSuccess == ServerClientCommands::PASSED)	{
+				userApproved(tostr(nSuccess));
 			} else {
 				requestToServer(ServerClientCommands::SIGN_UP_REQUEST);
 			}
@@ -60,8 +58,8 @@ void AgentManagerClient::slotReceiveDataFromServer()	{
 
 	case ServerClientCommands::SIGN_UP_REQUEST:
 		{
-			if (qstrDataFromServer.toInt() == ServerClientCommands::PASSED)	{
-				userApproved(qstrDataFromServer.toStdString());
+			if (nSuccess == ServerClientCommands::PASSED)	{
+				userApproved(tostr(nSuccess));
 			} else {
 				break;
 			}
@@ -70,8 +68,8 @@ void AgentManagerClient::slotReceiveDataFromServer()	{
 
 	case ServerClientCommands::SIGN_OUT_REQUEST:
 		{
-			if (qstrDataFromServer.toInt() == ServerClientCommands::PASSED)	{	//Successfully signed out
-				m_pAbstractUser->setUserIDName(tostr(0));
+			if (nSuccess == ServerClientCommands::PASSED)	{	//Successfully signed out
+				m_pVisitor->setUserIDName(tostr(0));
 			} else {
 				break;
 			}
@@ -80,7 +78,7 @@ void AgentManagerClient::slotReceiveDataFromServer()	{
 
 	case ServerClientCommands::MODIFY_USER_ACCOUNT_REQUEST:
 		{
-			if (qstrDataFromServer.toInt() == ServerClientCommands::PASSED)	{	//Successfully modified account settings
+			if (nSuccess == ServerClientCommands::PASSED)	{	//Successfully modified account settings
 			} else {
 				break;
 			}
@@ -93,25 +91,34 @@ void AgentManagerClient::slotReceiveDataFromServer()	{
 
 void AgentManagerClient::requestToServer(
 	const enum ServerClientCommands::OPERATION_TYPE & aenumOperationType, 
-	AgentClientParams * apAgentClientParams
+	AbstractManagerClientParams * apAbstractManagerClientParams
 )	{
+
+	AgentClientParams * pAcp = (AgentClientParams*)apAbstractManagerClientParams;
+
 	QByteArray block;
 	QDataStream out(&block, QIODevice::WriteOnly);
 	out.setVersion(QDataStream::Qt_4_8);
 
-	QString aqstrInputData;
-
 	int nType = aenumOperationType;
+	out << quint64(0) << quint8(nType);
 
 	switch (nType)	{
 	case ServerClientCommands::SIGN_IN_REQUEST:
-		aqstrInputData = (apAgentClientParams->strUserName + ";" + apAgentClientParams->strPassword).c_str();
-		break;
+		{
+			QString qstrUser = pAcp->strUserName.c_str();
+			QString qstrPsw = pAcp->strPassword.c_str();
+			out << qstrUser << qstrPsw;
 
+			break;
+		}
 	case ServerClientCommands::SIGN_OUT_REQUEST:
-		aqstrInputData = m_pAbstractUser->getUserIDName().c_str();
-		break;
+		{
+			QString qstrUser = m_pVisitor->getUserIDName().c_str();
+			out << qstrUser;
 
+			break;
+		}
 	case ServerClientCommands::SIGN_UP_REQUEST:
 	case ServerClientCommands::MODIFY_USER_ACCOUNT_REQUEST:
 		{
@@ -134,14 +141,12 @@ void AgentManagerClient::requestToServer(
 			QString qstrFirstName = signUp.m_pLineEditFirstName->text();
 			QString qstrLastName = signUp.m_pLineEditLastName->text();
 
-			aqstrInputData = "";
-
 			if (nType == ServerClientCommands::MODIFY_USER_ACCOUNT_REQUEST)	{
-				QString qstrUserIDName = (m_pAbstractUser->getUserIDName() + ";").c_str();
-				aqstrInputData += qstrUserIDName;
+				QString qstrUserIDName = m_pVisitor->getUserIDName().c_str();
+				out << qstrUserIDName;
 			}
 
-			aqstrInputData += (qstrFirstName + ";" + qstrLastName + ";" + qstrEMail + ";" + qstrPsw);
+			out << qstrFirstName << qstrLastName << qstrEMail << qstrPsw;
 			break;
 		}
 
@@ -149,14 +154,12 @@ void AgentManagerClient::requestToServer(
 		return;
 	}
 
-	out << quint64(0) << quint8(nType) << aqstrInputData;
-
 	m_pClient->sendRequest(block);
 }
 
 //------------------------------------------------------------------------------
 
 void AgentManagerClient::userApproved(const std::string & astrUserName)	{
-	m_pAbstractUser->setUserIDName(astrUserName);
+	m_pVisitor->setUserIDName(astrUserName);
 	emit done();
 }

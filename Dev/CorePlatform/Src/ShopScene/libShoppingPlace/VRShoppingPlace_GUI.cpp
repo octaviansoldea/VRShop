@@ -9,13 +9,17 @@
 #include "VRScene.h"
 #include "VRShoppingPlace.h"
 #include "VRProductManager.h"
-#include "VRCashier.h"
+#include "VRAbstractObject.h"
 
 #include "VRProductInterface.h"
 #include "VRAgentInterface.h"
 #include "VRProductBasketInterface.h"
-#include "VRProductManagerClient.h"
 #include "VRCameraController.h"
+
+#include "VRModelViewControllerClient.h"
+
+#include "VRCashierScreenManager.h"
+#include "VRServerClientCommands.h"
 
 #include "VRKeyboardMouseManipulatorShopClient.h"
 #include "VRPickAndDragHandlerShopClient.h"
@@ -39,9 +43,7 @@ ShoppingPlace_GUI::ShoppingPlace_GUI(string & astrFileName, std::string & astrAv
 	KeyboardMouseManipulatorShopClient * pCameraManipulator = 
 		dynamic_cast<KeyboardMouseManipulatorShopClient *>(m_pOSGQTWidget->getCameraManipulator());
 
-	Scene * pScene = m_pShoppingPlace->getScene();
-	PickAndDragHandlerShopClient * pPickAndDragHandlerShopClient = m_pShoppingPlace->getPicker();
-	Basket * pBasket = m_pShoppingPlace->getBasket();
+	BasketClient * pBasket = m_pShoppingPlace->getBasket();
 	AbstractUser * pUser = m_pShoppingPlace->getAbstractUser();
 
 	//ProductInterface
@@ -51,9 +53,7 @@ ShoppingPlace_GUI::ShoppingPlace_GUI(string & astrFileName, std::string & astrAv
 		m_pLabelProductInterfaceInfo,
 		m_pPushButtonProductInterface2Basket,
 		m_pPushButtonProductInterfaceDetails,
-		m_pLabelProductInterfacePrice,
-		pBasket,
-		pPickAndDragHandlerShopClient);
+		m_pLabelProductInterfacePrice);
 
 	//Agent Interface
 	m_pAgentInterface = new AgentInterface(
@@ -82,22 +82,11 @@ ShoppingPlace_GUI::ShoppingPlace_GUI(string & astrFileName, std::string & astrAv
 		m_pToolButton3View,
 		pCameraManipulator);
 
-	//Cashier
-	m_pCashier = new Cashier();
-
 	updateGeometry();
 
-	connect(pPickAndDragHandlerShopClient,
-		SIGNAL(signalProductPicked(const AbstractObject *)),
-		this,
-		SLOT(slotProductClicked(const AbstractObject *))
-	);
+	m_pCashierScreenManager = new CashierScreenManager(this->centralWidget());
 
-	connect(pPickAndDragHandlerShopClient,
-		SIGNAL(signalCashierPicked()),
-		this,
-		SLOT(slotCashierClicked())
-	);
+	signalSlotConnections();
 }
 
 //-----------------------------------------------------------------------------------------
@@ -106,9 +95,10 @@ ShoppingPlace_GUI::~ShoppingPlace_GUI()	{
 	delete m_pProductInterface;
 	delete m_pAgentInterface;
 	delete m_pProductBasketInterface;
-	delete m_pCashier;
 	delete m_pCameraController;
 	delete m_pShoppingPlace;
+
+	delete m_pCashierScreenManager;
 }
 
 //=========================================================================================
@@ -165,6 +155,49 @@ void ShoppingPlace_GUI::updateGeometry()	{
 
 //=========================================================================================
 
+void ShoppingPlace_GUI::signalSlotConnections()	{
+	//Add product to basket
+	connect(m_pPushButtonProductInterface2Basket,SIGNAL(clicked(bool)),this,SLOT(slotAdd2Basket()));
+
+	//Remove product
+	connect(m_pProductBasketInterface,SIGNAL(signalProductBasketChangeRequest(ProductShopClient * )),
+		this,SLOT(slotRemoveProduct(ProductShopClient *)));
+
+	//Modify product
+	connect(m_pProductBasketInterface,SIGNAL(signalProductBasketModifyRequest(ProductShopClient *, float)),
+		this,SLOT(slotModifyProductQuantity(ProductShopClient *, float)));
+
+	//Product interface manipulation
+	ModelViewControllerClient * pMVCClient = m_pShoppingPlace->getModelViewController();
+	connect(pMVCClient, SIGNAL(signalNewProductQuantity(float)),
+		m_pProductBasketInterface,SIGNAL(signalSetSpinBoxProduct(float)));
+
+	connect(pMVCClient, SIGNAL(signalProductInitialized(const ProductShopClient * )),
+		m_pProductInterface,SLOT(slotProductInitialized(const ProductShopClient * )));
+
+	//Cashier operations
+	connect(m_pCashierScreenManager,SIGNAL(signalCashierOperation(int)),
+		this,SLOT(slotProcesRequest(int)));
+
+
+	PickAndDragHandlerShopClient * pPickAndDragHandlerShopClient = m_pShoppingPlace->getPicker();
+	//Product clicked
+	connect(pPickAndDragHandlerShopClient,
+		SIGNAL(signalProductPicked(const AbstractObject *)),
+		this,
+		SLOT(slotProductClicked(const AbstractObject *))
+	);
+
+	//cashier clicked
+	connect(pPickAndDragHandlerShopClient,
+		SIGNAL(signalCashierPicked()),
+		this,
+		SLOT(slotCashierClicked())
+	);
+}
+
+//----------------------------------------------------------------------------------------
+
 void ShoppingPlace_GUI::resizeEvent(QResizeEvent *event)	{
 	QWidget::resizeEvent(event);
 
@@ -175,17 +208,66 @@ void ShoppingPlace_GUI::resizeEvent(QResizeEvent *event)	{
 
 void ShoppingPlace_GUI::slotProductClicked(const AbstractObject * apAbstractObject)	{
 	string strProductName = apAbstractObject->getName();
-	m_pProductInterface->init(strProductName);
+
+	m_pShoppingPlace->productClicked(strProductName);
+}
+
+//----------------------------------------------------------------------------------------
+
+void ShoppingPlace_GUI::slotAdd2Basket()	{
+	ProductShopClient * pProduct = m_pProductInterface->getProduct();
+	m_pShoppingPlace->product2BasketRequest(pProduct);
+}
+
+//----------------------------------------------------------------------------------------
+
+void ShoppingPlace_GUI::slotRemoveProduct(ProductShopClient * apProduct)	{
+	m_pShoppingPlace->removeProductRequest(apProduct);
+}
+
+//----------------------------------------------------------------------------------------
+
+void ShoppingPlace_GUI::slotModifyProductQuantity(ProductShopClient * apProduct, float aflNewQuantity)	{	
+	m_pShoppingPlace->modifyProductQuantityRequest(apProduct, aflNewQuantity);
 }
 
 //----------------------------------------------------------------------------------------
 
 void ShoppingPlace_GUI::slotCashierClicked()	{
-	Basket * pBasket = m_pShoppingPlace->getBasket();
-	m_pCashier->init(pBasket);
+	QObject * pParent = this->centralWidget();
+	BasketClient * pBasket = m_pShoppingPlace->getBasket();
+	m_pCashierScreenManager->init(pBasket,pParent);
 }
 
 //----------------------------------------------------------------------------------------
 
-void ShoppingPlace_GUI::slotAvatarClicked(const Avatar * apAvatar)	{
+void ShoppingPlace_GUI::slotAvatarClicked(const string & astrAvatarName)	{
+	m_pShoppingPlace->avatarClicked(astrAvatarName);
+}
+
+//----------------------------------------------------------------------------------------
+
+void ShoppingPlace_GUI::slotProcesRequest(int anRequestOperation)	{
+	switch (anRequestOperation)	{
+	case ServerClientCommands::PURCHASE_REQUEST:
+		{
+			m_pShoppingPlace->purchaseRequest();
+			break;
+		}
+	case ServerClientCommands::PRODUCT_INFO_REQUEST:
+		{
+			int nSelectedProduct = m_pCashierScreenManager->getCurrentSelection();
+			break;
+		}
+	case ServerClientCommands::USER_CONFIRMS_PURCHASE:
+		{
+			break;
+		}
+	default:
+		{
+			break;
+		}
+
+		//	m_pShoppingPlace->processCashierRequest(astrRequestOperation);
+	}
 }

@@ -13,23 +13,39 @@
 
 #include <osg/Group>
 
-#include <QObject>
 #include <QString>
 
 #include <QTimer>
 
+#include "VRAbstractManagerClient.h"
+
+#include "VRServerClientCommands.h"
+
+
 namespace VR {
 	class Avatar;
-	class Client;
 	class AnimationPath;
 
-	class AvatarManagerClient : public QObject	{
+	class AvatarManagerClient : public AbstractManagerClient	{
 		Q_OBJECT
 	public:
-		AvatarManagerClient(Avatar * apAvatar);
-		~AvatarManagerClient();
+		AvatarManagerClient(Avatar * apAvatar, QObject *parent=0);
+		virtual ~AvatarManagerClient();
 
 		const char* className() const;
+
+		struct AvatarManagerClientParams : public AbstractManagerClientParams {
+			std::string m_strAvatarName;
+		};
+
+
+		virtual void requestToServer(
+			const enum ServerClientCommands::OPERATION_TYPE & aenumOperationType, 
+			AbstractManagerClientParams * apAbstractManagerClientParams=0
+		);
+
+		virtual void slotReceiveDataFromServer();
+
 
 		void addAvatar(Avatar * apAvatar);
 		void removeAvatar(Avatar * apAvatar);
@@ -39,7 +55,6 @@ namespace VR {
 		int getNumberOfAvatars() const;
 
 	private:
-		Client * m_pClient;
 		Avatar * m_pAvatar;	//Client's avatar
 		QTimer m_QTimerAvatarSelf;
 
@@ -48,14 +63,9 @@ namespace VR {
 
 		int m_nMaxNrOfAvatars;
 
-		void registerAvatar();
-
-		QByteArray dataStreamBlock(const quint8 & astrType, QString & aqstrInputData);
-
 	private slots:
 		void slotSendAvatarData();
 		void slotRequestAvatarsData();
-		void slotReceiveDataFromServer();
 
 	private:
 		std::vector<std::string> m_vecAvatarNames;

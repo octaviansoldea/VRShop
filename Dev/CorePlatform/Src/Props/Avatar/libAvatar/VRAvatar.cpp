@@ -198,3 +198,7 @@ void Avatar::slotUpdatePosition(bool abAnimation)	{
 }
 
 //------------------------------------------------------------------------------
+
+bool Avatar::moveTo(const osg::Vec3d & avec3dPosition, float aflSpeed)	{
+	return true;
+}

@@ -54,9 +54,19 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProduct
   ${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProductInterface
   ${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProductInterface/View
-  ${CMAKE_SOURCE_DIR}/ManagementConsole/Cashier/libCashier
-  ${CMAKE_BINARY_DIR}/ManagementConsole/Cashier/libCashier
-  ${CMAKE_SOURCE_DIR}/ManagementConsole/Cashier/libCashier/View
+  ${CMAKE_SOURCE_DIR}/ManagementConsole/Cashier/libCashierClient
+  ${CMAKE_BINARY_DIR}/ManagementConsole/Cashier/libCashierClient
+  ${CMAKE_SOURCE_DIR}/ManagementConsole/Cashier/libCashierClient/View
+
+  ${CMAKE_SOURCE_DIR}/ManagementConsole/Cashier/libCashierManagerClient
+  ${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libServerClientCommands
+
+
+	${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libClient
+	${CMAKE_SOURCE_DIR}/Props/AbstractManagerClient/libAbstractManagerClient
+	${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProductManagerClient
+
+	${CMAKE_SOURCE_DIR}/ShopScene/libModelViewController
 )
 
 

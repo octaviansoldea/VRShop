@@ -4,18 +4,15 @@
 #include <QObject>
 #include <list>
 
-class QDoubleSpinBox;
 class QFrame;
 class QLabel;
 class QPushButton;
 class QToolButton;
 
-
 namespace VR	{
 	class ProductShopClient;
-	class Basket;
+	class BasketClient;
 	class ProductBasketInterfaceItem_GUI;
-	class ProductBasketInterfaceController;
 
 	class ProductBasketInterface : public QObject	{
 		Q_OBJECT
@@ -26,7 +23,7 @@ namespace VR	{
 			QFrame * apFrameItemsBasket,
 			QPushButton * apPushButtonBasketBack,
 			QPushButton * apPushButtonBasketForward,
-			Basket * apBasket
+			BasketClient * apBasket
 		);	//End of constructor
 
 		~ProductBasketInterface();
@@ -37,19 +34,16 @@ namespace VR	{
 		QFrame * m_pFrameItemsBasket;
 		QPushButton * m_pPushButtonBasketBack;
 		QPushButton * m_pPushButtonBasketForward;
-		Basket * m_pBasket;
+		BasketClient * m_pBasket;
 
 	private slots:
 		void slotMyBasket(bool abIndicator);
-
 		void slotBasketBack();
 		void slotBasketForward();
 		void slotUpdateItemView(const int & anIndex, bool abIsAdded);	//Called with the change of the basket size
 
 	private:
 		std::list<ProductBasketInterfaceItem_GUI*> m_lstProductItemGUI;
-
-		ProductBasketInterfaceController * m_pProductBasketInterfaceController;
 
 		ProductBasketInterfaceItem_GUI * getProductItemGUI(int anPosition);
 
@@ -60,6 +54,11 @@ namespace VR	{
 
 		int m_nHandlePosition;	//First item on the left
 		const int m_nItemsVisible;	//No of items shown in the Basket bar
+
+	signals:
+		void signalProductBasketChangeRequest(ProductShopClient * apProduct);
+		void signalProductBasketModifyRequest(ProductShopClient * apProduct, float aflNewQuantity);
+		void signalSetSpinBoxProduct(float aflNewSpinBoxValue);
 	};
 }
 #endif //VR_PRODUCT_BASKET_INTERFACE_H

@@ -20,7 +20,7 @@ namespace VR	{
 
 	class DataStructureModel : public QAbstractItemModel {
 
-		Q_OBJECT
+//		Q_OBJECT
 
 	public:
 		DataStructureModel(const DataStructureModelParams & aDataStructureModelParams);

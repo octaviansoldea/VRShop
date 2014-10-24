@@ -39,6 +39,7 @@ namespace VR {
 		void setAnimation(const osg::Matrixd & amtrxOldMatrix, const osg::Matrixd & amtrxNewMatrix);
 
 		void pickProduct();		//Either from a shelf or a basket
+		bool moveTo(const osg::Vec3d & avec3dPosition, float aflSpeed);
 		//void returnProduct();	//Either to a shelf or a basket
 		//void communicate();
 

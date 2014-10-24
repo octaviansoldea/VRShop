@@ -44,7 +44,10 @@ void EmbeddedWidget::selectShop(const QString & aqstrShopName)	{
 
 	string strClientName = "Avatar";
 	string strDBFileName = 
-		"../../../Databases/" + aqstrShopName.toStdString() + ".db";
+		//"../../../Databases/" 
+//		"C:/Projekti/VRShop/SampleScenes/" + aqstrShopName.toStdString() + ".db";
+		"C:/Projekti/VRShop/Dev/CorePlatform/Databases/ShopDemo.db";
+
 
 	QRect qrectCentralContent = m_pWidgetCentralContent->geometry();
 

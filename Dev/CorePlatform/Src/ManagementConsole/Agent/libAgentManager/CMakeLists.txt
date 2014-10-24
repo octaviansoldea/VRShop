@@ -28,9 +28,9 @@ ENDIF(Qt5_FOUND)
 #MOC according to the Qt version
 IF(Qt5_FOUND)
   QT5_WRAP_UI(UI_SRCS		)
-  QT5_WRAP_CPP(MOC_SRCS 	VRAgentManagerClient.h VRAgentInterface.h)
+  QT5_WRAP_CPP(MOC_SRCS 	VRAgentInterface.h)
 ELSE(Qt5_FOUND)
-  QT4_WRAP_CPP(MOC_SRCS		VRAgentManagerClient.h VRAgentInterface.h)
+  QT4_WRAP_CPP(MOC_SRCS		VRAgentInterface.h)
   QT4_WRAP_UI(UI_SRCS		)
 ENDIF(Qt5_FOUND)
 
@@ -45,6 +45,7 @@ INCLUDE_DIRECTORIES(
 	${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libClient
 	${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libServerClientCommands
 	${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
+	${CMAKE_SOURCE_DIR}/Props/AbstractManagerClient/libAbstractManagerClient
 )
 
 #Define sources to be later added into the library

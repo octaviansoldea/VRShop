@@ -11,7 +11,6 @@ namespace VR	{
 	class Grid;
 	class ProductManager;
 	class DataStructureModel;
-	class FileManager;
 
 	struct ShopBuilder {
 		ShopBuilder();

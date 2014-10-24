@@ -3,19 +3,14 @@
 
 #include <QObject>
 
-#include "VRProductManagerClient.h"
-
 class QFrame;
 class QLabel;
 class QPushButton;
 
 #include <string>
+#include "VRProductShopClient.h"
 
 namespace VR	{
-	class ProductShopClient;
-	class Basket;
-	class PickAndDragHandlerShopClient;
-
 	class ProductInterface : public QObject	{
 		Q_OBJECT
 	public:
@@ -25,15 +20,10 @@ namespace VR	{
 			QLabel * apLabelProductInterfaceInfo,
 			QPushButton * apPushButtonProductInterface2Basket,
 			QPushButton * apPushButtonProductInterfaceDetails,
-			QLabel * apLabelProductInterfacePrice,
-			Basket * apBasket,
-			PickAndDragHandlerShopClient * apPickAndDragHandlerShopClient
+			QLabel * apLabelProductInterfacePrice
 		);	//End of constructor
 
 		~ProductInterface();
-
-		void init(const ProductShopClient * apProductShopClient);
-		void init(const std::string & astrProductName);
 
 	private:
 		QFrame * m_pFrameProductInterface;
@@ -42,20 +32,21 @@ namespace VR	{
 		QPushButton * m_pPushButtonProductInterface2Basket;
 		QPushButton * m_pPushButtonProductInterfaceDetails;
 		QLabel * m_pLabelProductInterfacePrice;
-		PickAndDragHandlerShopClient * m_pPickAndDragHandlerShopClient;
-		Basket * m_pBasket;
 
-		ProductShopClient * m_pProductShopClient;
-		ProductManagerClient m_ProductMgrClient;
+		ProductShopClient m_ProductShopClient;
 
+		void init(const ProductShopClient * apProductShopClient);
 		void setGeometry();
 
 	private slots:
-		void slotAdd2Basket();
 		void slotProductDetails();
-		void slotGetProduct();
-
 		void slotCloseInterface();
+
+	public slots:
+		void slotProductInitialized(const ProductShopClient * apProductShopClient);
+
+	public:
+		ProductShopClient * getProduct();
 	};
 }
 #endif //VR_PRODUCT_INTERFACE_H

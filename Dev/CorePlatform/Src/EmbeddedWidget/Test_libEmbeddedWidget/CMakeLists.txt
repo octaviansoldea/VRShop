@@ -62,8 +62,8 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_SOURCE_DIR}/Props/Avatar/libAvatarManager
   ${CMAKE_SOURCE_DIR}/Props/Avatar/libAnimationEditor
   ${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabase
-  ${CMAKE_SOURCE_DIR}/ManagementConsole/Cashier/libCashier
-  ${CMAKE_SOURCE_DIR}/ManagementConsole/Cashier/libCashier/View
+  ${CMAKE_SOURCE_DIR}/ManagementConsole/Cashier/libCashierClient
+  ${CMAKE_SOURCE_DIR}/ManagementConsole/Cashier/libCashierClient/View
 
 
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libItemModel
@@ -75,6 +75,10 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_SOURCE_DIR}/ShopScene/libPopUpGUIs
   ${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProduct
   ${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libServerClientCommands
+  ${CMAKE_SOURCE_DIR}/ManagementConsole/Cashier/libCashierManagerClient
+  ${CMAKE_SOURCE_DIR}/Props/AbstractManagerClient/libAbstractManagerClient
+  ${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProductManagerClient
+  ${CMAKE_SOURCE_DIR}/ShopScene/libModelViewController
 )
 
 
@@ -113,7 +117,7 @@ SET(LIBS_COMMON
 	libAvatarManager
 	libAnimationEditor
 	libDatabase
-	libCashier
+	libCashierClient
 	libEmbeddedWidget
 
   libItemModel
@@ -125,7 +129,10 @@ SET(LIBS_COMMON
   libPopUpGUIs
   libProduct
   libServerClientCommands
-
+  libCashierManagerClient
+  libAbstractManagerClient
+  libProductManagerClient
+  libModelViewController
 )
 
 

@@ -41,6 +41,8 @@ INCLUDE_DIRECTORIES(
 
 	${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor
 	${CMAKE_BINARY_DIR}/ShopScene/libShopEditor
+
+	${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
 )
 
 

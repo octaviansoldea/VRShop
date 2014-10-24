@@ -26,7 +26,7 @@ int main(int argc, char * argv[])	{
 
 	EmbeddedWidget_GUI embeddedWidget;
 
-	int nSelection=1;
+	int nSelection=0;
 
 	switch(nSelection)	{
 	case 1:	{

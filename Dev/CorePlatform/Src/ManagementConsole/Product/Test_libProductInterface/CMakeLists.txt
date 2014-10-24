@@ -34,6 +34,9 @@ INCLUDE_DIRECTORIES(
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProduct
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_QT
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libPicker
+	${CMAKE_SOURCE_DIR}/Props/AbstractManagerClient/libAbstractManagerClient
+	${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libServerClientCommands
+	
 )
 
 SET(SRCS
@@ -54,6 +57,9 @@ SET(LIBS_COMMON
 	libProduct
 	libCommon_QT
 	libPicker
+	libAbstractManagerClient
+	libServerClientCommands
+
 )
 
 IF(Qt5_FOUND)

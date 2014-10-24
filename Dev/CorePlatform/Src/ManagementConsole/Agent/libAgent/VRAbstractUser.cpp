@@ -1,4 +1,4 @@
-#include "VRBasket.h"
+#include "VRBasketClient.h"
 #include "VRAvatar.h"
 
 #include <string>
@@ -14,7 +14,7 @@ using namespace std;
 AbstractUser::AbstractUser(Avatar *apAvatar) :
 m_strUserIDName("")	{
 	m_pAvatar = apAvatar;
-	m_pBasket = new Basket;
+	m_pBasket = new BasketClient;
 }
 
 //------------------------------------------------------------------------------
@@ -37,7 +37,7 @@ Avatar * AbstractUser::getAvatar()	{
 
 //------------------------------------------------------------------------------
 
-Basket * AbstractUser::getBasket()	{
+BasketClient * AbstractUser::getBasket()	{
 	return m_pBasket;
 }
 

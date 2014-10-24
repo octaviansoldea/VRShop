@@ -4,44 +4,37 @@
 #include <QObject>
 
 #include "VRServerClientCommands.h"
+#include "VRAbstractManagerClient.h"
 
 namespace VR {
-	class AbstractUser;
 	class Visitor;
-	class Client;
 
-	class AgentManagerClient : public QObject	{
-		Q_OBJECT
+	class AgentManagerClient : public AbstractManagerClient	{
 	public:
-		AgentManagerClient(AbstractUser * apAbstractUser);
+		AgentManagerClient(AbstractUser * apAbstractUser, QObject * apParent=0);
 		~AgentManagerClient();
 
 		const char* className() const;
 
-		struct AgentClientParams	{
+		struct AgentClientParams : public AbstractManagerClientParams	{
 			std::string strUserName;
 			std::string strPassword;
 			std::string strFirstName;
 			std::string strLastName;
 		};
 
-		void requestToServer(
+		virtual void requestToServer(
 			const enum ServerClientCommands::OPERATION_TYPE & aenumOperationType, 
-			AgentClientParams * apAgentClientParams=0
+			AbstractManagerClientParams * apAbstractManagerClientParams=0
 		);
 
 	private:
-		Client * m_pClient;
-//		AbstractUser * m_pAbstractUser;
-		Visitor * m_pAbstractUser;
+		Visitor * m_pVisitor;
 
 		void userApproved(const std::string & astrUserName);
 
-	public slots:
-		void slotReceiveDataFromServer();
-
-	signals:
-		void done();
+	public:
+		virtual void slotReceiveDataFromServer();
 	};
 }
 #endif //VR_AGENT_MANAGER_CLIENT_H

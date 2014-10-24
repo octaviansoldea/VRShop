@@ -1,7 +1,6 @@
 #include <iostream>
 
 #include "VRProductShopClient.h"
-#include "VRProductBasketInterfaceController.h"
 
 #include <QImageReader>
 #include <QMessageBox>
@@ -18,11 +17,8 @@ using namespace std;
 //----------------------------------------------------------------------
 
 ProductBasketInterfaceItem_GUI::ProductBasketInterfaceItem_GUI(
-ProductBasketInterfaceController * apProductBasketInterfaceController,
 QFrame *apParent) : QFrame(apParent),m_pProductShopClient(0)	{
 	setupUi(this);
-
-	m_pProductBasketInterfaceController = apProductBasketInterfaceController;
 
 	connect(m_pPushButtonDetails,SIGNAL(clicked(bool)),this,SLOT(slotProductDetails()));
 	connect(m_pPushButtonRemove,SIGNAL(clicked(bool)),this,SLOT(slotProductRemove()));
@@ -36,12 +32,10 @@ QFrame *apParent) : QFrame(apParent),m_pProductShopClient(0)	{
 
 ProductBasketInterfaceItem_GUI::ProductBasketInterfaceItem_GUI(
 ProductShopClient * apProductShopClient, 
-ProductBasketInterfaceController * apProductBasketInterfaceController,
 QFrame *apParent) : QFrame(apParent)	{
 	setupUi(this);
 
 	m_pProductShopClient = apProductShopClient;
-	m_pProductBasketInterfaceController = apProductBasketInterfaceController;
 
 	connect(m_pPushButtonDetails,SIGNAL(clicked(bool)),this,SLOT(slotProductDetails()));
 	connect(m_pPushButtonRemove,SIGNAL(clicked(bool)),this,SLOT(slotProductRemove()));
@@ -60,6 +54,12 @@ ProductBasketInterfaceItem_GUI::~ProductBasketInterfaceItem_GUI()	{
 }
 
 //=====================================================================
+
+ProductShopClient * ProductBasketInterfaceItem_GUI::getProduct()	{
+	return m_pProductShopClient;
+}
+
+//----------------------------------------------------------------------
 
 void ProductBasketInterfaceItem_GUI::slotProductItemHovered(bool abIndicator)	{
 	m_pFrameProductItemHover->setVisible(abIndicator);
@@ -83,8 +83,7 @@ void ProductBasketInterfaceItem_GUI::slotProductRemove()	{
 
 	//remove product from the basket
 	if (nRes == QMessageBox::Ok)	{
-		m_pProductBasketInterfaceController->removeProduct(m_pProductShopClient);
-		//Report forward that this product should be removed from the basket
+		emit signalRemoveProduct(m_pProductShopClient);
 	} else {
 		m_pFrameProductItemHover->setVisible(false);
 	}
@@ -93,9 +92,9 @@ void ProductBasketInterfaceItem_GUI::slotProductRemove()	{
 //-----------------------------------------------------------------------------------------
 
 void ProductBasketInterfaceItem_GUI::slotSetQuantity()	{
-	float flQuantity = m_pDoubleSpinBoxQuantity->value();
+	float flNewQuantity = m_pDoubleSpinBoxQuantity->value();
 
-	m_pProductShopClient->setQuantity(flQuantity);
+	emit signalModifyProductQuantity(m_pProductShopClient, flNewQuantity);
 }
 
 //-----------------------------------------------------------------------------------------
@@ -127,4 +126,10 @@ void ProductBasketInterfaceItem_GUI::init(ProductShopClient * apProductShopClien
 	m_pFrameProductItemHover->setVisible(false);
 
 	show();
+}
+
+//-----------------------------------------------------------------------------------------
+
+void ProductBasketInterfaceItem_GUI::slotSetProductSpinBox(float aflNewProductValue)	{
+	m_pDoubleSpinBoxQuantity->setValue(aflNewProductValue);
 }

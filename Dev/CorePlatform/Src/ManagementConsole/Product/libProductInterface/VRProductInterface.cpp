@@ -2,10 +2,6 @@
 #include <iostream>
 
 #include "VRProductShopClient.h"
-#include "VRProductManagerClient.h"
-#include "VRBasket.h"
-
-#include "VRPickAndDragHandlerShopClient.h"
 
 #include <QFrame>
 #include <QLabel>
@@ -14,13 +10,11 @@
 #include <QTimer>
 #include <QCursor>
 
-#include <osg/Group>
 #include "BasicStringDefinitions.h"
 
 #include "VRProductInterface.h"
 
 using namespace VR;
-using namespace osg;
 using namespace std;
 
 //----------------------------------------------------------------------
@@ -31,9 +25,7 @@ ProductInterface::ProductInterface(
 	QLabel * apLabelProductInterfaceInfo,
 	QPushButton * apPushButtonProductInterface2Basket,
 	QPushButton * apPushButtonProductInterfaceDetails,
-	QLabel * apLabelProductInterfacePrice,
-	Basket * apBasket,
-	PickAndDragHandlerShopClient * apPickAndDragHandlerShopClient) : m_pProductShopClient(0)	{
+	QLabel * apLabelProductInterfacePrice)	{
 
 	m_pFrameProductInterface = apFrameProductInterface;
 	m_pLabelProductInterfaceImage = apLabelProductInterfaceImage;
@@ -41,15 +33,12 @@ ProductInterface::ProductInterface(
 	m_pPushButtonProductInterface2Basket = apPushButtonProductInterface2Basket;
 	m_pPushButtonProductInterfaceDetails = apPushButtonProductInterfaceDetails;
 	m_pLabelProductInterfacePrice = apLabelProductInterfacePrice;
-	m_pBasket = apBasket;
-	m_pPickAndDragHandlerShopClient = apPickAndDragHandlerShopClient;
 
 	m_pFrameProductInterface->setVisible(false);
 	m_pLabelProductInterfacePrice->setVisible(false);
 
 	//Signal/slot connections
 	connect(m_pPushButtonProductInterfaceDetails,SIGNAL(clicked(bool)),this,SLOT(slotProductDetails()));
-	connect(m_pPushButtonProductInterface2Basket,SIGNAL(clicked(bool)),this,SLOT(slotAdd2Basket()));
 }
 
 //----------------------------------------------------------------------
@@ -60,9 +49,13 @@ ProductInterface::~ProductInterface()	{
 //=======================================================================
 
 void ProductInterface::init(const ProductShopClient * apProductShopClient)	{
-	const ProductShopClient * pProduct = apProductShopClient;
+	if (apProductShopClient == 0)	{
+		return;
+	}
+
+	m_ProductShopClient = *apProductShopClient;
 	ProductShopClientParams productParams;
-	pProduct->getParams(productParams);
+	m_ProductShopClient.getParams(productParams);
 
 	string & strPrice = productParams.m_strCurrency + " " + tostr(productParams.m_flPricePerUnit).c_str();
 	m_pLabelProductInterfacePrice->setText(strPrice.c_str());
@@ -77,17 +70,8 @@ void ProductInterface::init(const ProductShopClient * apProductShopClient)	{
 	string & strManufacturer = productParams.m_strProductManufacturer;
 	m_pLabelProductInterfaceInfo->setText((strProductName + "\n" + strManufacturer).c_str());	//Product name and manufacturer
 
-	m_pFrameProductInterface->setVisible(true);
-	m_pLabelProductInterfacePrice->setVisible(true);
 
-	//This timer closes interface
-	QTimer::singleShot(1000,this,SLOT(slotCloseInterface()));
-}
-
-//-----------------------------------------------------------------------------------------
-
-void ProductInterface::init(const string & astrProductName)	{
-	//Get mouse coordinates at the click
+	//Geometry
 	QPoint cursor(QCursor::pos());
 	int x = cursor.x();
 	int y = cursor.y();
@@ -96,28 +80,17 @@ void ProductInterface::init(const string & astrProductName)	{
 	m_pLabelProductInterfacePrice->setGeometry(x+(m_pFrameProductInterface->width()-m_pLabelProductInterfacePrice->width())/2,
 									(m_pFrameProductInterface->y()-8),
 									m_pLabelProductInterfacePrice->width(), m_pLabelProductInterfacePrice->height());
-	m_ProductMgrClient.initProduct(astrProductName);
-	connect(&m_ProductMgrClient,SIGNAL(signalProductInitialized()),this,SLOT(slotGetProduct()));
-}
 
-//-----------------------------------------------------------------------------------------
 
-void ProductInterface::slotGetProduct()	{
-	m_pProductShopClient = m_ProductMgrClient.getProduct();
-	if (m_pProductShopClient!=0)
-		init(m_pProductShopClient);
-}
+	//m_pFrameProductInterface->setVisible(true);
+	//m_pLabelProductInterfacePrice->setVisible(true);
 
-//-----------------------------------------------------------------------------------------
+	m_pFrameProductInterface->show();
+	m_pLabelProductInterfacePrice->show();
 
-void ProductInterface::slotAdd2Basket()	{
-	if (m_pProductShopClient != 0)	{
-		ProductShopClientParams pParams;
-		m_pProductShopClient->getParams(pParams);
-		
-		ProductShopClient * pProduct = new ProductShopClient(pParams);
-		m_pBasket->addProduct(pProduct);
-	}
+
+	//This timer closes interface
+	QTimer::singleShot(1000,this,SLOT(slotCloseInterface()));
 }
 
 //-----------------------------------------------------------------------------------------
@@ -133,11 +106,26 @@ void ProductInterface::slotCloseInterface()	{
 		return;
 	}
 
-	m_pFrameProductInterface->setVisible(false);
-	m_pLabelProductInterfacePrice->setVisible(false);
+	//m_pFrameProductInterface->setVisible(false);
+	//m_pLabelProductInterfacePrice->setVisible(false);
+
+	m_pFrameProductInterface->close();
+	m_pLabelProductInterfacePrice->close();
 }
 
 //----------------------------------------------------------------------------------------
 
 void ProductInterface::setGeometry()	{
+}
+
+//----------------------------------------------------------------------------------------
+
+void ProductInterface::slotProductInitialized(const ProductShopClient * apProductShopClient)	{
+	init(apProductShopClient);
+}
+
+//----------------------------------------------------------------------------------------
+
+ProductShopClient * ProductInterface::getProduct()	{
+	return &m_ProductShopClient;
 }

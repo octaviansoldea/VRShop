@@ -1,102 +1,264 @@
 #include "BasicStringDefinitions.h"
-#include "VRDatabaseInterfaceShopClient.h"
-
-#include <iostream>
-
-#include "VRAvatarManagerServer.h"
-#include "VRUserAccount.h"
+#include <QDataStream>
 
 #include "VRServerClientCommands.h"
 
-#include <list>
-#include <vector>
-#include <string>
+#include "VRAvatarManagerServer.h"
+#include "VRUserAccount.h"
+#include "VRProductManagerServer.h"
+#include "VRCashierServer.h"
 
-#include "Timer.h"
+#include "VRBasketServer.h"
 
 #include "VRDatabaseNetworkManager.h"
 
 using namespace VR;
 using namespace std;
 
-
 //----------------------------------------------------------------------
 
-DatabaseNetworkManager::DatabaseNetworkManager(QObject *apParent) : QObject(apParent)	{
-	m_pTimer = Timer::CreateInstance(TimerBase::REAL_TIME);
+DatabaseNetworkManager::DatabaseNetworkManager()	{
 }
 
 //----------------------------------------------------------------------
 
 DatabaseNetworkManager::~DatabaseNetworkManager()	{
-	delete m_pTimer;
 }
 
 //=====================================================================
 
-list<string> DatabaseNetworkManager::getResult()	{
-	return m_lststrResult;
-}
+QByteArray DatabaseNetworkManager::databaseRequest(QByteArray & aData)	{
+	//Request
+	QDataStream in(&aData,QIODevice::ReadOnly);
+	in.setVersion(QDataStream::Qt_4_8);
 
-//----------------------------------------------------------------------
+	//Initialize parameters
+	quint8 nType;
+	in >> nType;
 
-bool DatabaseNetworkManager::databaseRequest(int anOperationType, string & astrRequest)	{
-	string strSqlQuery;
-	string strDatabaseName;	
+	//Respond
+	QByteArray output;
+	QDataStream out(&output, QIODevice::WriteOnly);
+	out.setVersion(QDataStream::Qt_4_8);
+
+
+	out << quint64(0) << nType;	//Size of the package
+
+	switch (nType)	{
+	case ServerClientCommands::PRODUCT_REQUEST:
+		{
+			QString qstrRequest;
+			in >> qstrRequest;
+
+			ProductManagerServer pms;
+			QString qstrProductData = pms.getProductDataFromDB(qstrRequest.toStdString()).c_str();
+
+			out << qstrProductData;
+			break;
+		}
+	case ServerClientCommands::PRODUCT_TO_BASKET_REQUEST:
+		{
+			QString qstrProductName;
+			QString qstrUserIDName;
+			float flProductQuantity;
+
+			in >> qstrUserIDName >> qstrProductName >> flProductQuantity;
+
+			ProductManagerServer pms;
+			ProductManagerServer::ProductManagerServerParams pmsp;
+			pmsp.m_strUserIDName = qstrUserIDName.toStdString();
+			pmsp.m_strProductName = qstrProductName.toStdString();
+			pmsp.m_flProductQuantity = flProductQuantity;
+
+			float flQuantity = pms.tryAddProduct2Basket(pmsp);
+
+			out << flQuantity;
+			break;
+		}
+	case ServerClientCommands::REMOVE_PRODUCT_REQUEST:
+		{
+			QString qstrUserIDName;
+			QString qstrProductName;
+			float flProductQuantity;
+
+			in >> qstrUserIDName >> qstrProductName >> flProductQuantity;
+
+			ProductManagerServer pms;
+			ProductManagerServer::ProductManagerServerParams pmsp;
+			pmsp.m_strUserIDName = qstrUserIDName.toStdString();
+			pmsp.m_strProductName = qstrProductName.toStdString();
+			pmsp.m_flProductQuantity = flProductQuantity;
+
+			bool bRes = pms.removeProduct(pmsp);
+
+			out << bRes;
+			break;
+		}
+	case ServerClientCommands::MODIFY_PRODUCT_REQUEST:
+		{
+			QString qstrUserIDName;
+			QString qstrProductName;
+			float flProductQuantity;
+			float flProductNewQuantity;
+
+			in >> qstrUserIDName >> qstrProductName >> flProductQuantity >> flProductNewQuantity;
+
+			ProductManagerServer pms;
+			ProductManagerServer::ProductManagerServerParams pmsp;
+			pmsp.m_strUserIDName = qstrUserIDName.toStdString();
+			pmsp.m_strProductName = qstrProductName.toStdString();
+			pmsp.m_flProductQuantity = flProductQuantity;
+			pmsp.m_flProductNewQuantity = flProductNewQuantity;
+
+			float flNewQuantity = pms.modifyProductQuantity(pmsp);
+
+			out << flNewQuantity;
+			break;
+		}
+	case ServerClientCommands::AVATAR_REGISTER:
+		{
+			QString qstrAvatarName;
+			QString qstrAvatarMatrix;
+			in >> qstrAvatarName >> qstrAvatarMatrix;
+
+			AvatarManagerServer ams;
+			ams.registerAvatar(qstrAvatarName.toStdString(), qstrAvatarMatrix.toStdString());
+			break;
+		}
+	case ServerClientCommands::AVATAR_UPDATE:
+		{
+			QString qstrAvatarName;
+			QString qstrAvatarMatrix;
+			in >> qstrAvatarName >> qstrAvatarMatrix;
+
+			AvatarManagerServer ams;
+			ams.updateAvatarData(qstrAvatarName.toStdString(), qstrAvatarMatrix.toStdString());
+			break;
+		}
+	case ServerClientCommands::OTHER_AVATARS_REQUEST:
+		{
+			QString qstrAvatarNames;
+			in >> qstrAvatarNames;
+
+			AvatarManagerServer ams;
+			list<string> & lstOtherAvatarsData = ams.getAvatarsDataFromDB();
+
+			list<string>::iterator it = lstOtherAvatarsData.begin();
+			string strResult;
+			for (it; it != lstOtherAvatarsData.end(); it++)	{
+				strResult += (*it) + ";";
+			}
+			strResult.pop_back();
+
+			QString qstrResult = strResult.c_str();
+			out << qstrResult;
+			break;
+		}
+	case ServerClientCommands::SIGN_IN_REQUEST:
+		{
+			QString qstrUser;
+			QString qstrPsw;
+			in >> qstrUser >> qstrPsw;
+
+			UserAccount ua;
+			int nRes = ua.trySignIn(qstrUser.toStdString(), qstrPsw.toStdString()) 
+				? ServerClientCommands::PASSED : ServerClientCommands::FAILED;
+
+			out << nRes;
+			break;
+		}
+	case ServerClientCommands::SIGN_UP_REQUEST:
+		{
+			QString qstrEMail;
+			QString qstrPsw;
+			QString qstrFirstName;
+			QString qstrLastName;
+
+			in >> qstrFirstName >> qstrLastName >> qstrEMail >> qstrPsw;
+
+			UserAccount::UserAccountParams uap;
+			uap.m_strEMail = qstrEMail.toStdString();
+			uap.m_strFirstName = qstrFirstName.toStdString();
+			uap.m_strLastName = qstrLastName.toStdString();
+			uap.m_strPsw = qstrPsw.toStdString();
+
+			UserAccount ua;
+			int nRes = ua.trySignUp(uap) ? ServerClientCommands::PASSED : ServerClientCommands::FAILED;
+
+			out << nRes;
+			break;
+		}
+	case ServerClientCommands::SIGN_OUT_REQUEST: 
+		{
+			QString qstrUser;
+			in >> qstrUser;
+
+			UserAccount ua;
+			int nRes = ua.trySignOut(qstrUser.toStdString()) ? ServerClientCommands::PASSED : ServerClientCommands::FAILED;
+			out << nRes;
+			break;
+		}
+	case ServerClientCommands::MODIFY_USER_ACCOUNT_REQUEST: 
+		{
+			QString qstrUserIDName;
+			QString qstrEMail;
+			QString qstrPsw;
+			QString qstrFirstName;
+			QString qstrLastName;
+			in >> qstrUserIDName >> qstrFirstName >> qstrLastName >> qstrEMail >> qstrPsw;
+
+			UserAccount::UserAccountParams uap;
+			uap.m_strEMail = qstrEMail.toStdString();
+			uap.m_strFirstName = qstrFirstName.toStdString();
+			uap.m_strLastName = qstrLastName.toStdString();
+			uap.m_strPsw = qstrPsw.toStdString();
+
+			UserAccount ua;
+			int nRes = ua.tryModifyUserAccount(uap) ? ServerClientCommands::PASSED : ServerClientCommands::FAILED;
+			out << nRes;
+
+			break;
+		}
+	case ServerClientCommands::PURCHASE_REQUEST:
+		{
+			QString qstrVisitorName;
+			QString qstrBasketProdQty;
+			in >> qstrVisitorName >> qstrBasketProdQty;
+
+			//User checked
+			bool bAccountValid = UserAccount::checkUserAccountValidity(qstrVisitorName.toStdString());
+			if (bAccountValid==false)	{
+				int nRes = ServerClientCommands::AUTHENTICATION_FAILED;
+				out << nRes;
+				break;
+			}
+
+			//Basket checked
+			ProductManagerServer productMgr;
+			bool bCanMeetRequest = productMgr.canFullfilRequest(qstrBasketProdQty.toStdString());
+			if (bCanMeetRequest==false)	{
+				//REPORT THAT QUANTITIES ARE LIMITED
+				break;
+			}
+
+			//PREPARE INFORMATIONAL RECEIPT; SEND IT INTO CONFIRMATION
+			//REAL RECEIPT IS SENT ALONG WITH THE GOODS
+			CashierServer cashier;
+//			cashier.prepareReceipt(basket);
+
+			break;
+		}
+	case ServerClientCommands::USER_CONFIRMS_PURCHASE:
+		{
+			CashierServer cashier;
+
+			//NOT YET IMPLEMENTED
+
+			break;
+		}
 		
-	if (anOperationType == ServerClientCommands::PRODUCT_REQUEST)	{
-		strSqlQuery = "SELECT * FROM Product WHERE ProductName = '" + astrRequest + "'";
-		strDatabaseName = "Products";
-	} else if (anOperationType == ServerClientCommands::AVATAR_REGISTER)	{
-		AvatarManagerServer ams;
-		ams.registerAvatar(astrRequest);
-
-//		m_lststrResult.push_back(tostr(0));
-		return false;
-	} else if (anOperationType == ServerClientCommands::AVATAR_UPDATE)	{
-		AvatarManagerServer ams;
-		ams.updateAvatarData(astrRequest);
-
-		return false;
-	} else if (anOperationType == ServerClientCommands::OTHER_AVATARS_REQUEST)	{
-		AvatarManagerServer ams;
-		m_lststrResult = ams.getAvatarsDataFromDB();
-
-		return (m_lststrResult.empty()) ? false : true;
-
-	} else if (anOperationType == ServerClientCommands::SIGN_IN_REQUEST)	{
-		UserAccount ua;
-		int nRes = ua.trySignIn(astrRequest) ? ServerClientCommands::PASSED : ServerClientCommands::FAILED;
-		m_lststrResult.push_back(tostr(nRes));
-
-		return true;
-		
-	} else if (anOperationType == ServerClientCommands::SIGN_UP_REQUEST)	{
-		UserAccount ua;
-		int nRes = ua.trySignUp(astrRequest) ? ServerClientCommands::PASSED : ServerClientCommands::FAILED;
-		m_lststrResult.push_back(tostr(nRes));
-
-		return true;
-	} else if (anOperationType == ServerClientCommands::SIGN_OUT_REQUEST)	{
-		UserAccount ua;
-		int nRes = ua.trySignOut(astrRequest) ? ServerClientCommands::PASSED : ServerClientCommands::FAILED;
-		m_lststrResult.push_back(tostr(nRes));
-
-		return true;
-	} else if (anOperationType == ServerClientCommands::MODIFY_USER_ACCOUNT_REQUEST)	{
-		UserAccount ua;
-		int nRes = ua.tryModifyUserAccount(astrRequest) ? ServerClientCommands::PASSED : ServerClientCommands::FAILED;
-		m_lststrResult.push_back(tostr(nRes));
-
-		return true;
 	}
 
-	DatabaseInterfaceShopClientParams dbParams;
-	dbParams.m_qstrDBName = ("../../../../Databases/" + strDatabaseName + ".db").c_str();
-	
-	DatabaseInterfaceShopClient db(dbParams);
-	
-	m_lststrResult = db.executeAndGetResult(strSqlQuery);
 
-	return (m_lststrResult.empty()) ? false : true;
+	return output;
 }

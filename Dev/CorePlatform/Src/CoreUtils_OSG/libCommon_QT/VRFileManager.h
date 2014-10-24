@@ -1,13 +1,11 @@
 #ifndef VR_FILE_MANAGER_H
 #define VR_FILE_MANAGER_H
 
-#include <QObject>
 #include <string>
 #include <QString>
 
 namespace VR	{
-	class FileManager : public QObject	{
-		Q_OBJECT
+	class FileManager	{
 	public:
 		FileManager();
 

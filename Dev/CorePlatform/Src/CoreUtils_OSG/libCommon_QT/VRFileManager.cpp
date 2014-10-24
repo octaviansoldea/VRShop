@@ -1,5 +1,6 @@
 #include <iostream>
 #include <QString>
+#include <QObject>
 
 #include <QFileDialog>
 #include <QMessageBox>

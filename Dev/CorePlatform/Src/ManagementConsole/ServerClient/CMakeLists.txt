@@ -4,7 +4,6 @@ SUBDIRS(
 	libServer
 	libClient
 	libServerClientCommands
-	libClientShop
 	Test_libClient
 	Test_libServer
 )

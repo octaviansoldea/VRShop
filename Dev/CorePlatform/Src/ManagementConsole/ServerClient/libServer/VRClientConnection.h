@@ -18,9 +18,6 @@ namespace VR	{
 		void slotReadClient();
 
 	private:
-		void processRequest(QByteArray & data);
-		void writeToClient(QByteArray & data);
-
 		bool m_bIsFirstPackage;
 		quint64 m_unPackageSize;
 	};

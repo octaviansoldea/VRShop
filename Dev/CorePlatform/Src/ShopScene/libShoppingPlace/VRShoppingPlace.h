@@ -3,6 +3,8 @@
 
 #include <osg/ref_ptr>
 
+#include "VRProductManager.h"
+
 namespace VR	{
 	class OSGQT_Widget;
 	class Scene;
@@ -10,10 +12,13 @@ namespace VR	{
 	class AbstractUser;
 	class Visitor;
 	class Lighting;
-	class ProductManager;
 	class AvatarManagerClient;
+	class ProductManagerClient;
 	class PickAndDragHandlerShopClient;
-	class Basket;
+	class BasketClient;
+	class ProductShopClient;
+
+	class ModelViewControllerClient;
 
 	struct ShoppingPlace {
 		ShoppingPlace(
@@ -24,12 +29,22 @@ namespace VR	{
 
 		~ShoppingPlace();
 
+		void avatarClicked(const std::string & astrAvatarName);
+		void productClicked(const std::string & astrProductName);
+		void product2BasketRequest(ProductShopClient * apProduct);
+		void removeProductRequest(ProductShopClient * apProduct);
+		void modifyProductQuantityRequest(ProductShopClient * apProduct, float aflNewQuantity);
+
+		void purchaseRequest();
+
 		osg::ref_ptr<Scene> getScene() const;
 		osg::ref_ptr<osg::Node> getProducts();
 		PickAndDragHandlerShopClient * getPicker() const;
-		Basket * getBasket();
+		BasketClient * getBasket();
 
 		AbstractUser * getAbstractUser();
+
+		ModelViewControllerClient * getModelViewController() const;
 
 	private:
 		bool createClientScene(const std::string & astrSceneFileName);
@@ -44,13 +59,15 @@ namespace VR	{
 		osg::ref_ptr<Scene> m_pScene;
 		
 		
-		ProductManager * m_pProductMgr;
+		ProductManager m_ProductManager;
 
 		Visitor * m_pVisitor;
 		osg::ref_ptr<Avatar> m_pAvatar;
-		Basket * m_pBasket;
 
 		AvatarManagerClient * m_pAvatarMgr;
+		ProductManagerClient * m_pProductMgr;
+
+		ModelViewControllerClient * m_pMVCClient;
 
 		void insertProducts();
 	};

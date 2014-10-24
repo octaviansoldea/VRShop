@@ -8,7 +8,7 @@
 using namespace VR;
 using namespace std;
 
-DatabaseInterface UserAccountManager::m_DIUA(DatabaseInterfaceParams(UserAccountManager::getDatabaseName().c_str(),"UserAccount"));
+DatabaseInterface UserAccountManager::m_DIUA(UserAccountManager::getDBParams());
 
 //==============================================================================
 

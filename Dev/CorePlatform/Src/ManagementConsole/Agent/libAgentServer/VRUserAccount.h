@@ -10,13 +10,21 @@ namespace VR	{
 		UserAccount();
 		~UserAccount();
 
-		bool trySignIn(std::string & astrSqlRequest);
-		bool trySignUp(std::string & astrSqlRequest);
-		bool trySignOut(std::string & astrSqlRequest);
-		bool tryModifyUserAccount(std::string & astrSqlRequest);
+		struct UserAccountParams	{
+			std::string m_strUserIDName;
+			std::string m_strEMail;
+			std::string m_strPsw;
+			std::string m_strFirstName;
+			std::string m_strLastName;
+		};
+
+		bool trySignIn(std::string & astrUser, std::string & astrPsw);
+		bool trySignUp(UserAccountParams & aUserAccountParams);
+		bool trySignOut(std::string & astrUser);
+		bool tryModifyUserAccount(UserAccountParams & aUserAccountParams);
 		
 		void removeUserAccount();
-		bool checkUserAccountValidity(const std::string & astrUserName) const;
+		static bool checkUserAccountValidity(const std::string & astrUserName);
 		void resetUserAccount();
 	private:
 		int m_nID;

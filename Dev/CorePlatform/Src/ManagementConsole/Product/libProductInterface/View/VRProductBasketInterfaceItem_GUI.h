@@ -7,22 +7,20 @@
 
 namespace VR	{
 	class ProductShopClient;
-	class ProductBasketInterfaceController;
 	
 	class ProductBasketInterfaceItem_GUI : public QFrame, public Ui::ProductBasketInterfaceItem	{
 		Q_OBJECT
 	public:
 		ProductBasketInterfaceItem_GUI(
-			ProductBasketInterfaceController * apProductBasketInterfaceController,
 			QFrame *apParent=0);
 
 		ProductBasketInterfaceItem_GUI(
 			ProductShopClient * apProductShopClient, 
-			ProductBasketInterfaceController * apProductBasketInterfaceController,
 			QFrame *apParent=0);
 		~ProductBasketInterfaceItem_GUI();
 
 		void init(ProductShopClient * apProductShopClient);
+		ProductShopClient * getProduct();
 
 	public slots:
 		void slotProductItemHovered(bool abIndicator);
@@ -30,9 +28,14 @@ namespace VR	{
 		void slotProductRemove();
 		void slotSetQuantity();
 
+		void slotSetProductSpinBox(float aflNewProductValue);
+
+	signals:
+		void signalModifyProductQuantity(ProductShopClient * apProductShopClient, float aflNewQuantity);
+		void signalRemoveProduct(ProductShopClient * apProductShopClient);
+
 	private:
 		ProductShopClient * m_pProductShopClient;
-		ProductBasketInterfaceController * m_pProductBasketInterfaceController;
 	};
 }
 #endif //VR_PRODUCT_BASKET_INTERFACE_ITEM_GUI_H

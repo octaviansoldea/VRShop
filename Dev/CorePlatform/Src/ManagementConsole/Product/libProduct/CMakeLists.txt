@@ -35,14 +35,12 @@ INCLUDE_DIRECTORIES(
     ${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
 	${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabase
 	${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libClient
-	${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libServer
 	${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
 	${CMAKE_SOURCE_DIR}/Props/GeometricShape/libGeometricShape
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libMngtController
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libOSGQTViewer
 	${CMAKE_SOURCE_DIR}/ShopScene/libPopUpGUIs
 	${CMAKE_BINARY_DIR}/ShopScene/libPopUpGUIs
-	#${CMAKE_BINARY_DIR}/ShopScene/libShopEditor
 	${CMAKE_SOURCE_DIR}/ShopScene/libPopUpGUIs/ProductItem
 	${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libServerClientCommands
 )
@@ -50,9 +48,9 @@ INCLUDE_DIRECTORIES(
 #MOC according to the Qt version
 IF(Qt5_FOUND)
   QT5_WRAP_UI(UI_SRCS		)
-  QT5_WRAP_CPP(MOC_SRCS 	VRProductManagerClient.h VRProductManagerServer.h VRBasket.h)
+  QT5_WRAP_CPP(MOC_SRCS 	VRBasketClient.h)
 ELSE(Qt5_FOUND)
-  QT4_WRAP_CPP(MOC_SRCS		VRProductManagerClient.h VRProductManagerServer.h VRBasket.h)
+  QT4_WRAP_CPP(MOC_SRCS		VRBasketClient.h)
   QT4_WRAP_UI(UI_SRCS		)
 ENDIF(Qt5_FOUND)
 
@@ -60,13 +58,11 @@ ENDIF(Qt5_FOUND)
 #Define sources to be later added into the library
 SET(SRCS ${MOC_SRCS} ${UI_SRCS}
 	VRProductManager.h VRProductManager.cpp
-	VRBasket.h VRBasket.cpp
+	VRBasketClient.h VRBasketClient.cpp
 	
 	VRAbstractProduct.h VRAbstractProduct.cpp
 	VRProductShopEditor.h VRProductShopEditor.cpp
 	VRProductShopClient.h VRProductShopClient.cpp
-	VRProductManagerClient.h VRProductManagerClient.cpp
-	VRProductManagerServer.h VRProductManagerServer.cpp
 )
 
 #Library to be later used in the main

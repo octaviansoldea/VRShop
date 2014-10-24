@@ -1,5 +1,4 @@
 #include <QApplication>
-#include <QTimer>
 
 #include "VRAvatarManagerServer.h"
 #include "VRUserAccountManager.h"

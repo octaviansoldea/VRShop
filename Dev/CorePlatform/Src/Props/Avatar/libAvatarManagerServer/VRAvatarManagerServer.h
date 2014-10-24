@@ -21,13 +21,15 @@ namespace VR {
 
 		const char* className() const;
 
-		void registerAvatar(std::string & astrRequest);
+		
+
+		void registerAvatar(std::string & astrAvatarName, std::string & astrAvatarMatrix);
 		std::list<std::string> getAvatarsDataFromDB();
-		void updateAvatarData(std::string & astrRequest);
+		void updateAvatarData(std::string & astrAvatarName, std::string & astrAvatarMatrix);
 
 	public:
 		static DatabaseInterfaceParams getDBParams();
-		static std::vector<std::pair<std::string,std::string>> getAvatarElements();
+		static std::vector<std::pair<std::string,std::string>> getDBElements();
 		static std::string getTableName();
 		static std::string getDatabaseName();
 

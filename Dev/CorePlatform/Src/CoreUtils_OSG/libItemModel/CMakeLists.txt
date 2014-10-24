@@ -27,13 +27,13 @@ IF(Qt5_FOUND)
   QT5_WRAP_UI(UI_SRCS
   )
   QT5_WRAP_CPP(MOC_SRCS 
-	VRDataStructureModel.h
+#	VRDataStructureModel.h
   )
 ELSE()
   QT4_WRAP_UI(UI_SRCS
   )
   QT4_WRAP_CPP(MOC_SRCS
-	VRDataStructureModel.h
+#	VRDataStructureModel.h
 )
 ENDIF()
 

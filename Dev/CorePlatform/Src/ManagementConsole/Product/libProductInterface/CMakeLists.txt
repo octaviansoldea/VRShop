@@ -9,7 +9,7 @@ IF(Qt5_FOUND)
     ${Qt5Core_INCLUDE_DIRS}
     ${Qt5Gui_INCLUDE_DIRS}
     ${Qt5Widgets_INCLUDE_DIRS}
-    ${Qt5OpenGL_INCLUDE_DIRS}
+#    ${Qt5OpenGL_INCLUDE_DIRS}
   )
 ELSE(Qt5_FOUND)
   #Assume Qt4_FOUND, if we are here
@@ -38,6 +38,9 @@ INCLUDE_DIRECTORIES(
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProductInterface
 	${CMAKE_BINARY_DIR}/ManagementConsole/Product/libProductInterface
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProductInterface/View
+	${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgent
+	${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libServerClientCommands
+	${CMAKE_SOURCE_DIR}/Props/AbstractManagerClient/libAbstractManagerClient
 )
 
 #MOC according to the Qt version
@@ -57,7 +60,6 @@ ENDIF(Qt5_FOUND)
 SET(SRCS ${MOC_SRCS} ${UI_SRCS}
 	VRProductInterface.h VRProductInterface.cpp
 	VRProductBasketInterface.h VRProductBasketInterface.cpp
-	VRProductBasketInterfaceController.h VRProductBasketInterfaceController.cpp
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProductInterface/View/VRProductBasketInterfaceItem_GUI.h
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProductInterface/View/VRProductBasketInterfaceItem_GUI.cpp
 )

@@ -1,19 +1,14 @@
 #include <iostream>
 
-#include <QDoubleSpinBox>
 #include <QFrame>
 #include <QLabel>
 #include <QPushButton>
 #include <QToolButton>
 
-#include "VRQFrame.h"
-
 #include "VRProductShopClient.h"
+#include "VRBasketClient.h"
 
 #include "VRProductBasketInterfaceItem_GUI.h"
-#include "VRProductBasketInterfaceController.h"
-
-#include "VRBasket.h"
 
 #include "VRProductBasketInterface.h"
 
@@ -28,7 +23,7 @@ QLabel * apLabelBasketCase,
 QFrame * apFrameItemsBasket,
 QPushButton * apPushButtonBasketBack,
 QPushButton * apPushButtonBasketForward,
-Basket * apBasket) : 
+BasketClient * apBasket) : 
 m_nHandlePosition(0),m_nItemsVisible(5)	{
 
 	m_pToolButtonMyBasket = apToolButtonMyBasket;
@@ -45,8 +40,6 @@ m_nHandlePosition(0),m_nItemsVisible(5)	{
 
 	connect(m_pBasket,SIGNAL(signalBasketChanged(const int &,bool)),this,SLOT(slotUpdateItemView(const int &,bool)));
 
-	m_pProductBasketInterfaceController = new ProductBasketInterfaceController(m_pBasket);
-
 	setupBasketInterface();
 }
 
@@ -54,8 +47,6 @@ m_nHandlePosition(0),m_nItemsVisible(5)	{
 
 ProductBasketInterface::~ProductBasketInterface()	{
 	m_lstProductItemGUI.clear();
-
-	delete m_pProductBasketInterfaceController;
 }
 
 //======================================================================
@@ -162,7 +153,7 @@ void ProductBasketInterface::slotUpdateItemView(const int & anIndex, bool abIsAd
 
 			if (m_nHandlePosition>0)	{
 				pProductGUIItem = 
-					new ProductBasketInterfaceItem_GUI(m_pProductBasketInterfaceController,m_pFrameItemsBasket);
+					new ProductBasketInterfaceItem_GUI(m_pFrameItemsBasket);
 				if (nAbsolutePosition==nSize+1)	{
 					m_nHandlePosition -= 1;
 					pProduct = m_pBasket->getProduct(m_nHandlePosition);
@@ -174,7 +165,7 @@ void ProductBasketInterface::slotUpdateItemView(const int & anIndex, bool abIsAd
 			} else if (m_nHandlePosition==0 && nAbsolutePosition<nSize+1)	{
 				pProduct = m_pBasket->getProduct(m_nItemsVisible-1);
 				pProductGUIItem = 
-					new ProductBasketInterfaceItem_GUI(m_pProductBasketInterfaceController,m_pFrameItemsBasket);
+					new ProductBasketInterfaceItem_GUI(m_pFrameItemsBasket);
 				m_lstProductItemGUI.push_back(pProductGUIItem);
 			}
 
@@ -197,8 +188,19 @@ void ProductBasketInterface::setData(ProductShopClient * apProduct, bool abAppen
 
 	//Create new GUI and insert it into the container
 	ProductBasketInterfaceItem_GUI * pProductGUIItem
-		= new ProductBasketInterfaceItem_GUI(m_pProductBasketInterfaceController,m_pFrameItemsBasket);
+		= new ProductBasketInterfaceItem_GUI(m_pFrameItemsBasket);
 	pProductGUIItem->init(apProduct);
+
+	//Remove product
+	connect(pProductGUIItem,SIGNAL(signalRemoveProduct(ProductShopClient * )), 
+		this, SIGNAL(signalProductBasketChangeRequest(ProductShopClient * )));
+	//Modify quantity
+	connect(pProductGUIItem,SIGNAL(signalModifyProductQuantity(ProductShopClient * , float)), 
+		this, SIGNAL(signalProductBasketModifyRequest(ProductShopClient * , float )));
+
+	connect(this,SIGNAL(signalSetSpinBoxProduct(float)), 
+		pProductGUIItem, SLOT(slotSetProductSpinBox(float )));
+
 
 	//Put it into the list of GUIs
 	if (m_lstProductItemGUI.size() < m_nItemsVisible)	{
@@ -240,3 +242,5 @@ void ProductBasketInterface::setupBasketInterface()	{
 	}
 	initGeometry();
 }
+
+//-----------------------------------------------------------------------------------------

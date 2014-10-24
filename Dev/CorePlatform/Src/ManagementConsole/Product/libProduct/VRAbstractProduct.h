@@ -2,7 +2,7 @@
 #define VR_PRODUCT_BASE_H
 
 #include <string>
-#include "VRAbstractObject.h"
+//#include "VRAbstractObject.h"
 
 namespace VR	{
 	struct AbstractProductParams	{

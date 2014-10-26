@@ -1,6 +1,9 @@
 #include <iostream>
 
 #include <string>
+#include <ctime>
+
+#include "BasicStringDefinitions.h"
 
 #include "VRShoppingPlace_GUI.h"
 //#include "VRShopBuilder_GUI.h"
@@ -42,7 +45,7 @@ void EmbeddedWidget::selectShop(const QString & aqstrShopName)	{
 		m_pWidget = 0;
 	}
 
-	string strClientName = "Avatar";
+	string strClientName = tostr(time(NULL));
 	string strDBFileName = 
 		//"../../../Databases/" 
 //		"C:/Projekti/VRShop/SampleScenes/" + aqstrShopName.toStdString() + ".db";

@@ -82,6 +82,13 @@ m_strAvatarName(astrAvatarName)	{
 	m_pOSGQTWidgetMap->setCameraManipulator(pKeyboardMouseManipulatorShopClient,false);
 	m_pOSGQTWidgetMap->show();
 
+
+	//Insert room
+	Room room;
+	ref_ptr<MatrixTransform> pMt = dynamic_cast<MatrixTransform*>(room.createRoom().get());
+	m_pScene->addChild(pMt.get());
+
+
 	//A pointer to products sent to the scene
 //	m_pProductMgr = new ProductManager;
 	Node * pProductsRepresentation = m_ProductManager.getProductsRepresentation();
@@ -97,6 +104,10 @@ m_strAvatarName(astrAvatarName)	{
 		"C:/Projekti/VRShop/Dev/CorePlatform/Resources/Models3D/avatarOut.osg";
 		//"D:/Octavian/Companies/VirtualShop/GitHub/VRShop/Dev/CorePlatform/Resources/Models3D/avatarOut.osg";
 	avatarParams.m_strAvatarName = m_strAvatarName;
+	avatarParams.m_mtrxAvatarMatrix = osg::Matrix(1,0,0,0,
+		0,1,0,0,
+		0,0,1,0,
+		0,-2,1,1);
 
 	m_pAvatar = new Avatar(&avatarParams);
 	m_pScene->addChild(m_pAvatar);
@@ -109,12 +120,6 @@ m_strAvatarName(astrAvatarName)	{
 	//Other avatars
 	m_pAvatarMgr = new AvatarManagerClient(m_pAvatar);
 	m_pScene->addChild(m_pAvatarMgr->getAvatars());
-
-
-	//Insert room
-	Room room;
-	ref_ptr<MatrixTransform> pMt = dynamic_cast<MatrixTransform*>(room.createRoom().get());
-	m_pScene->addChild(pMt.get());
 
 
 	//Insert lighting

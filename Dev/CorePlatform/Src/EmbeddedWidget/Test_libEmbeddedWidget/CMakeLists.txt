@@ -133,6 +133,8 @@ SET(LIBS_COMMON
   libAbstractManagerClient
   libProductManagerClient
   libModelViewController
+
+  ${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
 )
 
 

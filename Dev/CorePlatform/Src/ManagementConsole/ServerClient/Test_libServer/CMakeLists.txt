@@ -43,6 +43,7 @@ INCLUDE_DIRECTORIES(
 #	${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgent/View
 	${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libServerClientCommands
 	${CMAKE_SOURCE_DIR}/Props/Avatar/libAvatarManagerServer
+	${CMAKE_BINARY_DIR}/Props/Avatar/libAvatarManagerServer
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgentServer
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProductManagerServer
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Cashier/libCashierServer

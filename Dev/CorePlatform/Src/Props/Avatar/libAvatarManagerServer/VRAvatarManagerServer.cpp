@@ -43,8 +43,8 @@ DatabaseInterfaceParams AvatarManagerServer::getDBParams()	{
 //------------------------------------------------------------------------------
 
 void AvatarManagerServer::registerAvatar(string & astrAvatarName, string & astrAvatarMatrix)	{
-	string strSqlQuery = "INSERT INTO Avatar(AvatarName, AvatarMatrix) VALUES ('" + 
-		astrAvatarName + "','" + astrAvatarMatrix + "')";
+	string strSqlQuery = "INSERT INTO Avatar(AvatarName, AvatarMatrix, AvatarDateTime) VALUES ('" + 
+		astrAvatarName + "','" + astrAvatarMatrix + "',0)";
 
 	DatabaseInterface *pDI = AvatarManagerServer::getDatabaseInterface();
 	pDI->executeAndGetResult(strSqlQuery);
@@ -87,6 +87,20 @@ list<string> AvatarManagerServer::getAvatarsDataFromDB()	{
 	return lststrResult;
 }
 
+//------------------------------------------------------------------------------
+
+void AvatarManagerServer::checkAvatarActivity()	{
+	long lTime = time(NULL) - 10;
+
+	string strSqlQueryDelete = "DELETE FROM Avatar WHERE (AvatarDateTime > 0) AND (AvatarDateTime < '" + 
+						tostr(lTime)
+						//m_pTimer->getCurrTimeInMiliSeconds()
+						+ "')"
+						;
+
+	DatabaseInterface *pDI = AvatarManagerServer::getDatabaseInterface();
+	pDI->executeAndGetResult(strSqlQueryDelete);
+}
 
 //====================================================================================================
 

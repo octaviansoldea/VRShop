@@ -1,6 +1,8 @@
 #ifndef VR_SERVER_H
 #define VR_SERVER_H
 
+#include <QTimer>
+
 #include <QTcpServer>
 
 namespace VR	{
@@ -23,6 +25,10 @@ namespace VR	{
 
 	private slots:
 		void slotDisconnected();
+		void slotCleanAvatarDB();
+
+	private:
+		QTimer m_Timer;
 	};
 }
 #endif //VR_SERVER_H

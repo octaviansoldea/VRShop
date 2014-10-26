@@ -42,7 +42,8 @@ Avatar::Avatar(std::string & astrAvatarFile, QObject * parent): QObject(parent)	
 
 //-----------------------------------------------------------------------------
 
-Avatar::Avatar(const AvatarParams * apAvatarParams) : QObject(apAvatarParams->m_pParent)	{
+Avatar::Avatar(const AvatarParams * apAvatarParams) : 
+QObject(apAvatarParams->m_pParent),MatrixTransform(apAvatarParams->m_mtrxAvatarMatrix)	{
 
 	m_pKeyboardMouseManipulatorShopClient = apAvatarParams->m_pKeyboardMouseManipulatorShopClient;
 
@@ -50,7 +51,6 @@ Avatar::Avatar(const AvatarParams * apAvatarParams) : QObject(apAvatarParams->m_
 
 	addChild(pAvatarFile);
 	setName(apAvatarParams->m_strAvatarName);
-	setMatrix(apAvatarParams->m_mtrxAvatarMatrix);
 
 	connect(m_pKeyboardMouseManipulatorShopClient, 
 		SIGNAL(signalCameraPositionOrHeadingDirectionChanged(bool)),
@@ -156,6 +156,10 @@ void Avatar::stopAnimation()	{
 //------------------------------------------------------------------------------
 
 void Avatar::setPosition(const osg::Vec3d & aVec3d)	{
+	osg::Matrix mtrxAvatar = getMatrix();
+
+	mtrxAvatar.makeTranslate(aVec3d);
+	setMatrix(mtrxAvatar);
 }
 
 //------------------------------------------------------------------------------

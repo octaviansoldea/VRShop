@@ -30,6 +30,8 @@ ENDIF(Qt5_FOUND)
 #General includes, irrespective of the Qt version
 INCLUDE_DIRECTORIES(
 	${OPENSCENEGRAPH_INCLUDE_DIRS}
+
+	${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
 	${CMAKE_SOURCE_DIR}/EmbeddedWidget/libEmbeddedWidget
 	${CMAKE_BINARY_DIR}/EmbeddedWidget/libEmbeddedWidget
 

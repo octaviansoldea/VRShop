@@ -36,6 +36,7 @@ namespace VR {
 
 		struct AvatarManagerClientParams : public AbstractManagerClientParams {
 			std::string m_strAvatarName;
+			QString m_qstrAvatarMatrix;
 		};
 
 
@@ -69,6 +70,7 @@ namespace VR {
 
 	private:
 		std::vector<std::string> m_vecAvatarNames;
+		std::vector<std::pair<std::string, Avatar *>> m_pairAvatarNamesAndObjects;
 	};
 }
 #endif //VR_AVATAR_MANAGER_CLIENT_H

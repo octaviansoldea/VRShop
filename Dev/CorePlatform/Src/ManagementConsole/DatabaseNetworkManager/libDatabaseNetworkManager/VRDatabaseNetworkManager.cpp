@@ -142,13 +142,17 @@ QByteArray DatabaseNetworkManager::databaseRequest(QByteArray & aData)	{
 
 			AvatarManagerServer ams;
 			list<string> & lstOtherAvatarsData = ams.getAvatarsDataFromDB();
-
-			list<string>::iterator it = lstOtherAvatarsData.begin();
 			string strResult;
-			for (it; it != lstOtherAvatarsData.end(); it++)	{
-				strResult += (*it) + ";";
+
+			if (lstOtherAvatarsData == list<string>())	{
+				strResult = "";
+			} else {
+				list<string>::iterator it = lstOtherAvatarsData.begin();
+				for (it; it != lstOtherAvatarsData.end(); it++)	{
+					strResult += (*it) + ";";
+				}
+				strResult.pop_back();
 			}
-			strResult.pop_back();
 
 			QString qstrResult = strResult.c_str();
 			out << qstrResult;

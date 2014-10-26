@@ -28,9 +28,9 @@ ENDIF(Qt5_FOUND)
 #MOC according to the Qt version
 IF(Qt5_FOUND)
   QT5_WRAP_UI(UI_SRCS		)
-  QT5_WRAP_CPP(MOC_SRCS 	)
+  QT5_WRAP_CPP(MOC_SRCS 	VRAvatarManagerServer.h)
 ELSE(Qt5_FOUND)
-  QT4_WRAP_CPP(MOC_SRCS		)
+  QT4_WRAP_CPP(MOC_SRCS		VRAvatarManagerServer.h)
   QT4_WRAP_UI(UI_SRCS		)
 ENDIF(Qt5_FOUND)
 
@@ -38,9 +38,10 @@ ENDIF(Qt5_FOUND)
 INCLUDE_DIRECTORIES(
 	${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
 	${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabase
-	${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libServer
+#	${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libServer
 	${CMAKE_SOURCE_DIR}/Props/Avatar/libAvatar
 	${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libServerClientCommands
+	${CMAKE_BINARY_DIR}/Props/Avatar/libAvatarManagerServer
 )
 
 SET(SRCS
@@ -48,7 +49,7 @@ SET(SRCS
 )
 
 ADD_LIBRARY(libAvatarManagerServer
-  ${SRCS}
+  ${SRCS} ${MOC_SRCS}
 )
 
 SET_PROPERTY(TARGET libAvatarManagerServer PROPERTY FOLDER AvatarManagerServer)

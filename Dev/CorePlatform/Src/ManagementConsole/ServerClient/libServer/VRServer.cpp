@@ -3,6 +3,8 @@
 #include <iostream>
 #include <string>
 
+#include "VRAvatarManagerServer.h"
+
 #include "VRClientConnection.h"
 #include "VRServer.h"
 
@@ -13,6 +15,9 @@ using namespace std;
 
 Server::Server(QObject *parent,int anConnMax) : QTcpServer(parent), m_nMaxNoOfConnections(anConnMax)	{
 	m_nNoOfConnections = 0;
+
+	connect(&m_Timer, SIGNAL(timeout()), this, SLOT(slotCleanAvatarDB()));
+	m_Timer.start(1000);
 }
 
 //----------------------------------------------------------------------
@@ -67,6 +72,8 @@ bool Server::init()	{
 void Server::slotDisconnected()	{
 	std::cout << "server: disconnected." << std::endl;
 	m_nNoOfConnections--;
+
+	slotCleanAvatarDB();
 }
 
 //----------------------------------------------------------------------
@@ -79,4 +86,11 @@ void Server::setMaxNoOfConnections(int anConnMax)	{
 
 int Server::getNoOfConnections() const	{
 	return m_nNoOfConnections;
+}
+
+//----------------------------------------------------------------------
+
+void Server::slotCleanAvatarDB()	{
+	AvatarManagerServer ams;
+	ams.checkAvatarActivity();
 }

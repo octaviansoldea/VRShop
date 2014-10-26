@@ -12,6 +12,7 @@
 #include <QString>
 #include <string>
 #include <list>
+#include <vector>
 
 #include <iostream>
 
@@ -145,6 +146,13 @@ void AvatarManagerClient::slotReceiveDataFromServer()	{
 
 			string strDataFromServer = qstrAvatarsData.toStdString();
 
+			if (strDataFromServer == "")	{
+				if (m_grpAvatars->getNumChildren() == 0)
+					return;
+				clearAll();
+				return;
+			}
+
 			vector<string> & lststrAvatarNameData = splitString(strDataFromServer,";");
 			int nSize = lststrAvatarNameData.size() / 2;
 
@@ -157,6 +165,34 @@ void AvatarManagerClient::slotReceiveDataFromServer()	{
 			}
 			vecpairAvatarData.push_back(make_pair(lststrAvatarNameData[2*(nSize-1)],lststrAvatarNameData[2*nSize-1]));
 
+			//=====================
+
+			bool bSize = (m_pairAvatarNamesAndObjects.size() > 0) ? true : false;
+			if (bSize == true)	{
+				Avatar * pAvatar = 0;
+				//Avatars from the DB
+				vector<pair<string,string>>::iterator itAvatarData;
+				vector<pair<string, Avatar *>>::iterator itAvatarNames;
+
+				for(itAvatarData= vecpairAvatarData.begin(); itAvatarData != vecpairAvatarData.end(); itAvatarData++)	{
+					string strDBItem = itAvatarData->first;
+
+					vector<pair<string, Avatar *>> vecAvatarNamesTemp;
+
+					//Current avatars in the scene
+					for(itAvatarNames = m_pairAvatarNamesAndObjects.begin(); itAvatarNames != m_pairAvatarNamesAndObjects.end(); itAvatarNames++)	{
+						if (itAvatarNames->first == strDBItem)	{
+							vecAvatarNamesTemp.push_back(make_pair(itAvatarNames->first,itAvatarNames->second));
+						} else {
+							pAvatar = itAvatarNames->second;
+							//m_pairAvatarNamesAndObjects.erase(itAvatarNames);
+							removeAvatar(pAvatar);
+						}
+					}
+					m_pairAvatarNamesAndObjects = vecAvatarNamesTemp;
+				}
+			}
+			//=====================
 
 			vector<pair<string,string>>::iterator it = vecpairAvatarData.begin();
 			for (it; it != vecpairAvatarData.end(); it++, nIndexAvatar++)	{
@@ -212,6 +248,7 @@ void AvatarManagerClient::addAvatar(Avatar * apAvatar)	{
 	m_grpAvatars->addChild(apAvatar);
 	
 	m_vecAvatarNames.push_back(apAvatar->getName());
+	m_pairAvatarNamesAndObjects.push_back(make_pair(apAvatar->getName(),apAvatar));
 }
 
 //------------------------------------------------------------------------------
@@ -221,9 +258,10 @@ void AvatarManagerClient::removeAvatar(Avatar * apAvatar)	{
 		return;
 	}
 
+	string strAvatarName = apAvatar->getName();
+
 	m_grpAvatars->removeChild(apAvatar);
 
-	string strAvatarName = apAvatar->getName();
 	vector <string>::const_iterator it = m_vecAvatarNames.begin();
 	for (it; it != m_vecAvatarNames.end(); it++)	{
 		if (*it==strAvatarName)	{
@@ -238,6 +276,7 @@ void AvatarManagerClient::removeAvatar(Avatar * apAvatar)	{
 void AvatarManagerClient::clearAll()	{
 	m_grpAvatars->removeChildren(0,m_grpAvatars->getNumChildren());
 	m_vecAvatarNames.clear();
+	m_pairAvatarNamesAndObjects.clear();
 }
 
 //------------------------------------------------------------------------------

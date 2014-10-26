@@ -34,8 +34,6 @@ Cashier
 	- track transactions and operations
 	- add to history database
 
-QTimer server cleaning	-	time interval
-
 Saving already opened file adds to the existing file and doesn't overwrite it
 
 * Android

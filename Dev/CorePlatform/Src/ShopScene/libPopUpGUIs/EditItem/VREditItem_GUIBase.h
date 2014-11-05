@@ -22,7 +22,6 @@ namespace VR	{
 	protected:
 		virtual void previewTexture(QString & aqstrFileName) = 0;
 		osg::ref_ptr<AbstractObject> m_pAbstractObject;
-		osg::Matrix m_mtrxOriginalMatrix;
 	};
 }
 #endif //VR_EDIT_ITEM_GUI_BASE_H

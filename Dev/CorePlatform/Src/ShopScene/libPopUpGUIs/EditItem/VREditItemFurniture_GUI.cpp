@@ -19,8 +19,6 @@ EditItemFurniture_GUI::EditItemFurniture_GUI(AbstractObject * apAbstractObject) 
 EditItem_GUIBase(apAbstractObject)	{
 	setupUi(this);
 
-	m_mtrxOriginalMatrix = ((MatrixTransform*)m_pAbstractObject)->getMatrix();
-
 	Matrix & mtrxTemp = Matrix::identity();
 	m_pAbstractObject->setMatrix(mtrxTemp);
 

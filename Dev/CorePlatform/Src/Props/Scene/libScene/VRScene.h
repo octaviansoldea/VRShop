@@ -2,6 +2,7 @@
 #define VR_SCENE_H
 
 #include <osg/Group>
+#include <ostream>
 
 #include <string>
 
@@ -25,8 +26,10 @@ namespace VR	{
 		virtual bool removeChild(Node *child);
 		void clearScene();
 
+		osg::Matrixd calculateInitialCameraMatrix();
+
 		std::string SQLFieldValues(const std::string & astrParentName="");
-		virtual void print();
+		void print();
 
 		//NOT YET IN USE - POTENTIALLY USEFUL IN NODE SEARCHES
 		Node * findNamedNode(const std::string& searchName, osg::Node* currNode);

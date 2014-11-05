@@ -5,13 +5,13 @@
 
 #include "ui_VRShopBuilder_GUI.h"
 
-class ShopBuilder;
-class CameraController;
-class PickAndDragController;
-class ProductController;
-class Grid;
-
 namespace VR	{
+	struct ShopBuilder;
+	struct CameraController;
+	struct PickAndDragController;
+	class ProductController;
+	class Grid;
+
 	class ShopBuilder_GUI : public QMainWindow, public Ui::MainWindow	{
 		Q_OBJECT
 	public:

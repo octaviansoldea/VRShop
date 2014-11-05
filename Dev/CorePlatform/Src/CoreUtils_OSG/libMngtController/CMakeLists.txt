@@ -38,6 +38,7 @@ ENDIF()
 INCLUDE_DIRECTORIES(
 	${OPENSCENEGRAPH_INCLUDE_DIRS}
 	${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
+	${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libServerClientCommands
 	${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
 	${CMAKE_SOURCE_DIR}/Props/Scene/libScene
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProduct

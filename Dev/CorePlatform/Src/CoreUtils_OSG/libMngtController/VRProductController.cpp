@@ -2,6 +2,8 @@
 #include <iostream>
 #include "BasicStringDefinitions.h"
 
+#include "VRShopBuilderCommands.h"
+
 #include <QComboBox>
 #include <QPushButton>
 #include <QDoubleSpinBox>
@@ -79,10 +81,10 @@ void ProductController::slotRemoveProduct()	{
 	} else {
 		//Only first parent is checked
 		int nParent = pAO->getParentalNodePaths().size()-1;
-		const string & strParentName = pAO->getParents()[nParent]->getName();
-		if (strParentName == "Products")	{
+		string strParentName = pAO->getParents()[nParent]->getName();
+		if (strParentName == ShopBuilderCommands::getOperationType(ShopBuilderCommands::PRODUCT))	{
 			ProductShopEditor * pProductShopEditor = m_pProductMgr->getProduct(pAO);
-			m_pProductMgr-> removeProduct(pProductShopEditor);
+			m_pProductMgr->removeProduct(pProductShopEditor);
 			m_pPickAndDragHandlerShopEditor->clearList();
 		} else {
 			//Picked object was not a product
@@ -102,7 +104,7 @@ void ProductController::slotProductMoreSettings()	{
 	//Only first parent is checked
 	int nParent = pAO->getParentalNodePaths().size()-1;
 	const string & strParentName = pAO->getParents()[nParent]->getName();
-	if (strParentName == "Products")	{
+	if (strParentName == ShopBuilderCommands::getOperationType(ShopBuilderCommands::PRODUCT))	{
 		ProductShopEditor * pProductShopEditor = m_pProductMgr->getProduct(pAO);
 		m_pProductMgr->modifyProduct(pProductShopEditor);
 	} else {

@@ -20,4 +20,6 @@ public:
 
 std::string getSuffix(const std::string & astrFileName);
 
+std::string adjustFileData(std::string & strFileDir, std::string & strFileName);
+
 #endif //FILE_OPERATIONS_H

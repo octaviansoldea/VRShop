@@ -1,12 +1,16 @@
+#include <osgDB/ReadFile>
+
 #include <string>
 #include "BasicStringDefinitions.h"
+#include "FileOperations.h"
+#include "VRShopBuilderCommands.h"
+#include "VRBasicQTOperations.h"
 
 #include <QString>
 #include <QVariant>
 #include <QVBoxLayout>
 #include <QMessageBox>
 
-#include <osgDB/ReadFile>
 #include <QFileDialog>
 #include "VRReadAndSaveFileCallback.h"
 
@@ -34,7 +38,6 @@ using namespace osg;
 using namespace VR;
 using namespace std;
 
-
 //----------------------------------------------------------------------
 
 ShopBuilder::ShopBuilder() :
@@ -54,49 +57,55 @@ m_strDBFileName("")	{
 	osgDB::Registry::instance()->getOrCreateSharedStateManager();
 	osgDB::SharedStateManager* ssm = osgDB::Registry::instance()->getSharedStateManager();
 	if(ssm) {
-		ssm->share(m_pScene.get());
+		ssm->share(m_pScene);
 	}
 
 	//These are necessary parts of any file
-	ref_ptr<Node> pAxes = osgDB::readNodeFile("../../../Resources/Models3D/axes.osgt");
-	ref_ptr<Grid> pGrid = new Grid;
+	osg::ref_ptr<osg::Node> pAxes = osgDB::readNodeFile("../../../Resources/Models3D/axes.osgt");
+	osg::ref_ptr<Grid> pGrid = new Grid;
 	m_pScene->addChild(pAxes);
 	m_pScene->addChild(pGrid);
 
 	//A pointer to products sent to the scene
 	m_pProductMgr = new ProductManager;
-	Node * pProductsRepresentation = m_pProductMgr->getProductsRepresentation();
+	osg::Node * pProductsRepresentation = m_pProductMgr->getProductsRepresentation();
 	m_pScene->addChild(pProductsRepresentation);
 
-	m_pEventHandler = new PickAndDragHandlerShopEditor;
+	m_pPickAndDragHandlerShopEditor = new PickAndDragHandlerShopEditor;
+	m_pKeyboardMouseManipulatorShopEditor = new KeyboardMouseManipulatorShopEditor();
 
 	m_pOSGQTWidget->setSceneData(m_pScene);
-	m_pOSGQTWidget->setCameraManipulator(new KeyboardMouseManipulatorShopEditor);
-	m_pOSGQTWidget->addEventHandler(m_pEventHandler);
+	m_pOSGQTWidget->setCameraManipulator(m_pKeyboardMouseManipulatorShopEditor);
+	m_pOSGQTWidget->addEventHandler(m_pPickAndDragHandlerShopEditor);
 }
 
 //----------------------------------------------------------------------
 
 ShopBuilder::~ShopBuilder() {
 	delete m_pProductMgr;
+
+	//vector<Scene*>::iterator it = m_pvecScenes.begin();
+	//for(it; it != m_pvecScenes.end(); ++it)	{
+	//	Scene * pScene = (Scene*)(*it);
+	//	delete pScene;
+	//	pScene = 0;
+	//}
 }
 
 //----------------------------------------------------------------------
 
 void ShopBuilder::gridOnOff(bool abIndicator) {
 	//ToolButton checked && Grid not already a child
+	Grid * pGrid = (Grid *)m_pScene->getChild("Grid");
+
+	if (pGrid == 0)	{
+		return;
+	}
+
 	if (abIndicator) {
-		ref_ptr<Grid> pGrid = new Grid;
-		m_pScene->addChild(pGrid);
+		pGrid->setNodeMask(0xFFFFFFFF);	// Visible
 	} else {
-		int nI;
-		for (nI=0; nI < m_pScene->getNumChildren(); nI++)	{
-			string strChild = m_pScene->getChild(nI)->className();
-			if (strChild == "Grid")	{
-				m_pScene->removeChild(m_pScene->getChild(nI));
-				return;
-			}
-		}
+		pGrid->setNodeMask(0x0);         // Hidden
 	}
 }
 
@@ -106,18 +115,12 @@ void ShopBuilder::newDB()	{
 	//Before creating new file, check if any still opened.
 	if (getCurrentFileName().c_str())	{
 		QMessageBox msgBox;
-		string strText = "Changes to the current file will be lost if not saved. \n\nDo you want to save them?";
-		msgBox.setText(strText.c_str());
-		msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::No);
-		msgBox.setWindowTitle("Warning window");
-		int nRes = msgBox.exec();
+		int nRes = BasicQtOperations::getMsgBox(VR::BasicQtOperations::OPEN_NEW_FILE, msgBox);
 
 		if (nRes == QMessageBox::Ok)	{
 			saveDB(m_strDBFileName.c_str());
 		}
 	}
-
-	m_pScene->clearScene();
 
 	NewProject_GUI newProject;
 	//To get a widget without a "TitleBar"
@@ -126,68 +129,53 @@ void ShopBuilder::newDB()	{
 
 	//Result == 1 indicates that path+name are valid
 	if (newProject.result() == 1)	{
-		string & strFileName = 
-			(newProject.m_pLineEditDirectory->text() + "/" + newProject.m_pLineEditFileName->text()).toStdString();
-		strFileName += (isAtEndOfString(strFileName, ".db")) ? "" : ".db";
-		replace(strFileName.begin(), strFileName.end(), '/', '\\');
+		std::string & strFileName = 
+			adjustFileData(
+				newProject.m_pLineEditDirectory->text().toStdString(),
+				newProject.m_pLineEditFileName->text().toStdString()
+			);
 
 		QDir dir(strFileName.c_str());
 		if(dir.exists(strFileName.c_str()))	{
 			QMessageBox msgBox;
-			string strText = "File " + strFileName + " already exists. \n Press OK to overwrite it, else press NO.";
-			msgBox.setText(strText.c_str());
-			msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::No);
-			msgBox.setWindowTitle("Warning window");
-			int nRes = msgBox.exec();
+			int nRes = BasicQtOperations::getMsgBox(BasicQtOperations::FILE_ALREADY_EXISTS, msgBox);
 
 			if (nRes == QMessageBox::No)	{
 				newProject.show();
-			} else {
-				dir.remove(strFileName.c_str());
-				m_strDBFileName = strFileName;
 			}
 		}
+
 		m_strDBFileName = strFileName;
-		QFile file;
-		file.setFileName(m_strDBFileName.c_str());
-		file.open(QIODevice::ReadWrite | QIODevice::Text);
-		file.close();
+		bool bRes = BasicQtOperations::QtFileOperation(strFileName, BasicQtOperations::FILE_OPEN);
 	}	//End "if (newProject.result())"
+
+	m_pScene->clearScene();
 
 	DatabaseInterfaceShopEditorParams dbInterfaceParams;
 	dbInterfaceParams.m_qstrDBName = m_strDBFileName.c_str();
 	DatabaseInterfaceShopEditor dbMgr(dbInterfaceParams);
 
 	//These are necessary parts of any file
-	ref_ptr<Node> pAxes = osgDB::readNodeFile("../../../Resources/Models3D/axes.osgt");
-	ref_ptr<Grid> pGrid = new Grid;
+	osg::ref_ptr<osg::Node> pAxes = osgDB::readNodeFile("../../../Resources/Models3D/axes.osgt");
+	osg::ref_ptr<Grid> pGrid = new Grid;
 	m_pScene->addChild(pAxes);
 	m_pScene->addChild(pGrid);
 
 	
 	//A pointer to products sent to the scene
-	Node * pProductsRepresentation = m_pProductMgr->getProductsRepresentation();
+	osg::Node * pProductsRepresentation = m_pProductMgr->getProductsRepresentation();
 	m_pScene->addChild(pProductsRepresentation);
 }
 
 //----------------------------------------------------------------------
 
-void ShopBuilder::readDB()	{
-}
-
-//----------------------------------------------------------------------
-
-void ShopBuilder::readDB(const string & astrDBFileName)	{
+void ShopBuilder::readDB(const std::string & astrDBFileName)	{
 	m_strDBFileName = astrDBFileName;
 
 	//Before creating new file, check if any still opened.
 	if (getCurrentFileName().c_str() == "" || m_pScene->getNumChildren() > 3)	{
 		QMessageBox msgBox;
-		string strText = "Changes to the current file will be lost if not saved. \n\nDo you want to save them?";
-		msgBox.setText(strText.c_str());
-		msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::No);
-		msgBox.setWindowTitle("Warning window");
-		int nRes = msgBox.exec();
+		int nRes = BasicQtOperations::getMsgBox(BasicQtOperations::OPEN_NEW_FILE,msgBox);
 
 		if (nRes == QMessageBox::Ok)	{
 			saveDB();
@@ -204,41 +192,42 @@ void ShopBuilder::readDB(const string & astrDBFileName)	{
 	DatabaseInterfaceShopEditor dbMgr(dbParams);
 
 	//Get list of objects in the scene
-	list<string> lststrSceneObjects = dbMgr.getListOfObjects("Untitled");
+	std::list<std::string> lststrSceneObjects = dbMgr.getListOfObjects("Untitled");
 
-	ref_ptr<AbstractObject> pAO = 0;
+	osg::ref_ptr<AbstractObject> pAO = 0;
 
-	list<string>::iterator it = lststrSceneObjects.begin();
+	std::list<std::string>::iterator it = lststrSceneObjects.begin();
 	for (it; it != lststrSceneObjects.end(); it++)	{
 		//Find class and object names
 		const int & nFindPos1 = it->find_first_of(";");
 		const int & nFindPos2 = it->find_first_of(";", nFindPos1+1);
-		string strClassName = it->substr(nFindPos1+1,nFindPos2-nFindPos1-1);
+		std::string strClassName = it->substr(nFindPos1+1,nFindPos2-nFindPos1-1);
 
-		if (strClassName == "ProductDisplay")	{
-			vector<string> vecstrObjectData = dbMgr.getObjectData(*it);
+		if (strClassName == ShopBuilderCommands::getOperationType(VR::ShopBuilderCommands::PRODUCT_DISPLAY))	{
+			std::vector<std::string> vecstrObjectData = dbMgr.getObjectData(*it);
 			m_pProductMgr->initFromSQLData(vecstrObjectData);
 			
 			continue;
 		}
 
 		pAO = AbstractObject::createInstance(strClassName);
-		vector<string> vecstrObjectData = dbMgr.getObjectData(*it);
+		std::vector<std::string> vecstrObjectData = dbMgr.getObjectData(*it);
 
 		pAO->initFromSQLData(vecstrObjectData);
 
 		m_pScene->addChild(pAO);
 	}
 
-	ref_ptr<Node> pAxes = osgDB::readNodeFile("../../../Resources/Models3D/axes.osgt");
-	ref_ptr<Grid> pGrid = new Grid;
+	
+	osg::ref_ptr<osg::Node> pAxes = osgDB::readNodeFile("../../../Resources/Models3D/axes.osgt");
+	osg::ref_ptr<Grid> pGrid = new Grid;
 	if(!m_pProductMgr)
 		m_pProductMgr = new ProductManager;
 
 	m_pScene->addChild(pAxes);
 	m_pScene->addChild(pGrid);
 
-	Node * pProductsRepresentation = m_pProductMgr->getProductsRepresentation();
+	osg::Node * pProductsRepresentation = m_pProductMgr->getProductsRepresentation();
 	m_pScene->addChild(pProductsRepresentation);
 }
 
@@ -248,11 +237,7 @@ void ShopBuilder::closeDB(const std::string & astrDBFileName)	{
 	//Before creating new file, check if any still opened.
 	if (getCurrentFileName().c_str())	{
 		QMessageBox msgBox;
-		string strText = "Changes to the current file will be lost if not saved. \n\nDo you want to save them?";
-		msgBox.setText(strText.c_str());
-		msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::No);
-		msgBox.setWindowTitle("Warning window");
-		int nRes = msgBox.exec();
+		int nRes = BasicQtOperations::getMsgBox(BasicQtOperations::OPEN_NEW_FILE,msgBox);
 
 		if (nRes == QMessageBox::Ok)	{
 			saveDB(m_strDBFileName.c_str());
@@ -265,7 +250,7 @@ void ShopBuilder::closeDB(const std::string & astrDBFileName)	{
 //----------------------------------------------------------------------
 
 void ShopBuilder::saveDB()	{
-	const string & strCurrentFile = getCurrentFileName();
+	const std::string & strCurrentFile = getCurrentFileName();
 
 	if (strCurrentFile == "")	{
 		saveAsDB();
@@ -276,11 +261,14 @@ void ShopBuilder::saveDB()	{
 
 //----------------------------------------------------------------------
 
-void ShopBuilder::saveDB(const string & astrDBFileName)	{
+void ShopBuilder::saveDB(const std::string & astrDBFileName)	{
 	m_strDBFileName = astrDBFileName;
 
+	//This will open, clear and close the file
+	bool bRes = BasicQtOperations::QtFileOperation(m_strDBFileName, BasicQtOperations::FILE_OPEN_TRUNCATE);
+
 	AbstractObject * pAO = 0;
-	string strSceneName = m_pScene->getName();
+	std::string strSceneName = m_pScene->getName();
 	int nSize = m_pScene->getNumChildren();
 
 	DatabaseInterfaceShopEditorParams dbParams;
@@ -294,11 +282,11 @@ void ShopBuilder::saveDB(const string & astrDBFileName)	{
 	for (nI=0; nI<nSize; nI++)	{
 		pAO = dynamic_cast<AbstractObject*>(m_pScene->getChild(nI));
 
-		if (pAO == 0 || pAO->className() == "Grid")
+		if (pAO == 0 || pAO->className() == ShopBuilderCommands::getOperationType(ShopBuilderCommands::GRID))
 			continue;
 
 		//Call DB here
-		vector<string> vecstrData;
+		std::vector<std::string> vecstrData;
 		vecstrData.push_back(strSceneName);
 		pAO->preparedObjectData(vecstrData,strSceneName);
 
@@ -307,15 +295,15 @@ void ShopBuilder::saveDB(const string & astrDBFileName)	{
 
 
 	//Here add products into the scene DB
-	vector<string> vecstrData;
+	std::vector<std::string> vecstrData;
 	vecstrData.push_back(strSceneName);
 	m_pProductMgr->preparedObjectData(vecstrData,strSceneName);	
 	dbInterface.insertObject(strSceneName,vecstrData);
 
 
 	//Add products into the product DB
-	vector<string> vecstrProducts;
-	string strProductsDB = "../../../Databases/Products.db";
+	std::vector<std::string> vecstrProducts;
+	std::string strProductsDB = "../../../Databases/Products.db";
 	m_pProductMgr->prepareProductsData(vecstrProducts);
 
 	dbParams.m_qstrDBName = strProductsDB.c_str();
@@ -330,16 +318,15 @@ void ShopBuilder::saveAsDB()	{
 	int nRes = saveAs.exec();
 
 	if (nRes == 1)	{
-		string strFileName = 
-			(saveAs.m_pLineEditDirectory->text() + "/" + saveAs.m_pLineEditFileName->text()).toStdString();
-		strFileName += (isAtEndOfString(strFileName, ".db")) ? "" : ".db";
-		replace(strFileName.begin(), strFileName.end(), '/', '\\');
+		std::string & strFileName = 
+			adjustFileData(
+				saveAs.m_pLineEditDirectory->text().toStdString(),
+				saveAs.m_pLineEditFileName->text().toStdString()
+			);
+
 
 		//Create file
-		QFile file;
-		file.setFileName(strFileName.c_str());
-		file.open(QIODevice::ReadWrite | QIODevice::Text);
-		file.close();
+		bool bRes = BasicQtOperations::QtFileOperation(strFileName, VR::BasicQtOperations::FILE_OPEN);
 
 		//Create necessary DB tables
 		DatabaseInterfaceShopEditorParams dbParams;
@@ -352,9 +339,9 @@ void ShopBuilder::saveAsDB()	{
 
 //----------------------------------------------------------------------
 
-bool ShopBuilder::searchScene(const string & astrSearchTerm, DataStructureModel ** appDataStructureModel)	{
+bool ShopBuilder::searchScene(const std::string & astrSearchTerm, DataStructureModel ** appDataStructureModel)	{
 	bool bRes = false;
-	const string & strSearchTerm = astrSearchTerm;
+	const std::string & strSearchTerm = astrSearchTerm;
 
 	SceneObjectsSearchShopEditor * pSceneObjectsSearchShopEditor = 
 		new SceneObjectsSearchShopEditor(strSearchTerm.c_str(), m_pScene);
@@ -372,8 +359,14 @@ bool ShopBuilder::searchScene(const string & astrSearchTerm, DataStructureModel 
 
 //----------------------------------------------------------------------
 
-ref_ptr<Scene> ShopBuilder::getScene() const	{
+Scene * ShopBuilder::getScene() const	{
 	return m_pScene;
+}
+
+//----------------------------------------------------------------------
+
+PickAndDragHandlerShopEditor * ShopBuilder::getPicker() const	{
+	return m_pPickAndDragHandlerShopEditor;
 }
 
 //----------------------------------------------------------------------
@@ -390,8 +383,8 @@ std::string ShopBuilder::getCurrentFileName() const	{
 
 //----------------------------------------------------------------------
 
-void ShopBuilder::addNewItem(const string & astrObjectName)	{
-	ref_ptr < AbstractObject > pAbstractObject = 
+void ShopBuilder::addNewItem(const std::string & astrObjectName)	{
+	osg::ref_ptr < AbstractObject > pAbstractObject = 
 		dynamic_cast<AbstractObject*>(AbstractObject::createInstance(astrObjectName).get());
 	pAbstractObject->predefinedObject();
 	addNewItem(pAbstractObject);
@@ -399,19 +392,17 @@ void ShopBuilder::addNewItem(const string & astrObjectName)	{
 
 //-----------------------------------------------------------------------
 
-void ShopBuilder::addNewItem(ref_ptr<VR::AbstractObject> apAbstractObject)	{
+void ShopBuilder::addNewItem(osg::ref_ptr<VR::AbstractObject> apAbstractObject)	{
 	if (apAbstractObject == 0)
 		return;
 
 	//Put new item in the center of the viewport and not to (0,0,0)
-	Vec3d vec3dEye, vec3dCenter, vec3dUp;
+	osg::Vec3d vec3dEye, vec3dCenter, vec3dUp;
 
-	KeyboardMouseManipulatorShopEditor * pKeyboardMouseManipulatorShopEditor = 
-		dynamic_cast<KeyboardMouseManipulatorShopEditor *>(m_pOSGQTWidget->getCameraManipulator());
-	pKeyboardMouseManipulatorShopEditor->getTransformation(vec3dEye, vec3dCenter, vec3dUp);
+	m_pKeyboardMouseManipulatorShopEditor->getTransformation(vec3dEye, vec3dCenter, vec3dUp);
 
 	apAbstractObject->setPosition(vec3dCenter.x(),vec3dCenter.y(),vec3dCenter.z());
-	Matrix & mtrxMatrix = apAbstractObject->calculateMatrix();
+	osg::Matrix & mtrxMatrix = apAbstractObject->calculateMatrix();
 	apAbstractObject->setMatrix(mtrxMatrix);
 
 	m_pScene->addChild(apAbstractObject);
@@ -419,30 +410,30 @@ void ShopBuilder::addNewItem(ref_ptr<VR::AbstractObject> apAbstractObject)	{
 
 //-----------------------------------------------------------------------
 
-ref_ptr<Scene> ShopBuilder::getScene(const string & astrSceneName)	{
+Scene * ShopBuilder::getScene(const std::string & astrSceneName)	{
 	if (astrSceneName.empty())	{
 		return 0;
 	}
-	int nI;
-	Scene * pScene = 0;
-	for (nI=0; nI < m_pvecScenes.size(); nI++)	{
-		pScene = m_pvecScenes[nI];
-		if (pScene->getName() == astrSceneName)	{
-			return m_pvecScenes[nI];
+
+	std::vector<Scene*>::iterator it = m_pvecScenes.begin();
+	for (it; it != m_pvecScenes.end(); it++)	{
+		if ((*it)->getName() == astrSceneName)	{
+			return *it;
 		}
 	}
+
 	return 0;
 }
 
 //-----------------------------------------------------------------------
 
-const string ShopBuilder::getSceneName(Scene * apScene)	{
+const std::string ShopBuilder::getSceneName(Scene * apScene)	{
 	return apScene->getName();
 }
 
 //-----------------------------------------------------------------------
 
-const string ShopBuilder::getSceneName(unsigned int i)	{
+const std::string ShopBuilder::getSceneName(unsigned int i)	{
 	return (i<m_pvecScenes.size()) ? m_pvecScenes[i]->getName() : "";
 }
 

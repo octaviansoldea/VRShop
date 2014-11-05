@@ -104,15 +104,21 @@ m_strAvatarName(astrAvatarName)	{
 		"C:/Projekti/VRShop/Dev/CorePlatform/Resources/Models3D/avatarOut.osg";
 		//"D:/Octavian/Companies/VirtualShop/GitHub/VRShop/Dev/CorePlatform/Resources/Models3D/avatarOut.osg";
 	avatarParams.m_strAvatarName = m_strAvatarName;
-	avatarParams.m_mtrxAvatarMatrix = osg::Matrix(1,0,0,0,
+	avatarParams.m_mtrxAvatarMatrix = osg::Matrix(
+		1,0,0,0,
 		0,1,0,0,
 		0,0,1,0,
-		0,-2,1,1);
+		0,-2,0,1);
 
 	m_pAvatar = new Avatar(&avatarParams);
 	m_pScene->addChild(m_pAvatar);
 
-	pKeyboardMouseManipulatorShopClient->setCameraPosition2Object(m_pAvatar);
+	//Get a matrix of the camera in the scene and initialize the camera itself
+	Matrix & mtrxCamera = m_pScene->calculateInitialCameraMatrix();
+	pKeyboardMouseManipulatorShopClient->setByMatrix(mtrxCamera);
+
+//	pKeyboardMouseManipulatorShopClient->setCameraPredefinedViews((MatrixTransform*)m_pAvatar);
+	pKeyboardMouseManipulatorShopClient->setCameraPosition2Object((MatrixTransform*)m_pAvatar);
 	m_pAvatar->slotUpdatePosition(false);
 
 	m_pVisitor = new Visitor((Avatar*)m_pAvatar);

@@ -68,3 +68,5 @@ void EditItem_GUIBase::slotBrowseDirectory()	{
 void EditItem_GUIBase::accept()	{
 	QDialog::accept();
 }
+
+//----------------------------------------------------------------------

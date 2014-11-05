@@ -1,12 +1,26 @@
+//#ifdef WIN32 
+//
+//// Replace STL fstream with OSG fstream 
+//#include <osgDB/fstream> 
+//#define ifstream osgDB::ifstream 
+//#define ofstream osgDB::ofstream 
+//
+//#else 
+
+//#include <fstream> 
+//#define ifstream std::ifstream 
+//#define ofstream std::ofstream
+
 #include <windows.h>
-#pragma comment(lib, "user32.lib")
 
 #include <string>
+
+#include "Log.h"
+
 #include <QApplication>
 #include <QMessageBox>
 
 #include "VRShopBuilder_GUI.h"
-#include "Log.h"
 
 using namespace std;
 using namespace VR;

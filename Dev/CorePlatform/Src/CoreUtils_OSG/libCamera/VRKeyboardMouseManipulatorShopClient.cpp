@@ -303,7 +303,7 @@ void KeyboardMouseManipulatorShopClient::setCameraPosition2Object(osg::Node * ap
 	Vec3d vec3dPerson1Up = vec3dDiff1^vec3dPerp1;
 	vec3dPerson1Up.normalize();
 
-	Matrixd mtrx1Person = setMatrixTransform(vec3dPerson1Eye, vec3dPerson1Center, vec3dPerson1Up);
+	Matrixd mtrx1Person = Matrix::inverse(Matrix::lookAt(vec3dPerson1Eye, vec3dPerson1Center, vec3dPerson1Up));
 	m_vecPredefinedViews.push_back(mtrx1Person);
 
 
@@ -315,7 +315,7 @@ void KeyboardMouseManipulatorShopClient::setCameraPosition2Object(osg::Node * ap
 	Vec3d vec3dPerson3Up = vec3dDiff3^vec3dPerp3;
 	vec3dPerson3Up.normalize();
 
-	Matrixd mtrx3Person = setMatrixTransform(vec3dPerson3Eye, vec3dPerson3Center, vec3dPerson3Up);
+	Matrixd mtrx3Person = Matrix::inverse(Matrix::lookAt(vec3dPerson3Eye, vec3dPerson3Center, vec3dPerson3Up));
 	m_vecPredefinedViews.push_back(mtrx3Person);
 
 	//Also set the camera

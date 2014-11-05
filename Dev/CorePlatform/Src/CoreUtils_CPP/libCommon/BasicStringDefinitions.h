@@ -9,6 +9,7 @@ std::string GetLastErrorString();
 bool isInString(const std::string & astrName, const std::string & astrField);
 bool isAtEndOfString(const std::string & astrName, const std::string & astrField);
 std::vector<std::string> splitString(std::string & astrName, const std::string & astrDelimiters);
+std::string replaceAll(std::string astrText, const std::string& astrFrom, const std::string& astrTo);
 
 template <class T>
 std::string tostr(T aVal)	{

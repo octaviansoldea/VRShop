@@ -40,7 +40,7 @@ ShopBuilder_GUI::ShopBuilder_GUI()	{
 	setWindowTitle("ShopBuilder");
 
 	m_pShopBuilder = new ShopBuilder(m_pOSGQTWidget);
-	ref_ptr<Scene> pScene = m_pShopBuilder->getScene();
+	Scene * pScene = m_pShopBuilder->getScene();
 	ProductManager * pProductMgr = m_pShopBuilder->getProducts();
 	string strFileName = m_pShopBuilder->getCurrentFileName();
 
@@ -70,8 +70,7 @@ ShopBuilder_GUI::ShopBuilder_GUI()	{
 		cerr << bt.what() << endl;
 	}
 
-	PickAndDragHandlerShopEditor *pPickAndDragHandlerShopEditor = 		
-		dynamic_cast<PickAndDragHandlerShopEditor *>(m_pShopBuilder->m_pEventHandler);
+	PickAndDragHandlerShopEditor *pPickAndDragHandlerShopEditor = m_pShopBuilder->getPicker();
 
 	m_pPickAndDragController = new PickAndDragController(
 		m_p_DoubleSpinBox_TranslationX,
@@ -198,16 +197,6 @@ void ShopBuilder_GUI::slotSaveDB() {
 
 void ShopBuilder_GUI::slotSaveAsDB()	{
 	m_pShopBuilder->saveAsDB();
-	//QString qstrFileName = saveDialog("*.db");
-	//if(isAtEndOfString(qstrFileName.toStdString(), ".db") == false)	{
-	//	QMessageBox msgBox;
-	//	msgBox.setText(qstrFileName + "Save");
-	//	msgBox.setStandardButtons(QMessageBox::Ok);
-	//	msgBox.setWindowTitle("Error window");
-	//	int nRes = msgBox.exec();
-	//	return;
-	//}
-	//m_pShopBuilder->saveDB(qstrFileName.toStdString());
 }
 
 //---------------------------------------------------------------------------------------
@@ -241,8 +230,7 @@ void ShopBuilder_GUI::slotSearchScene()	{
 void ShopBuilder_GUI::slotItemClicked(const QModelIndex & aItemIndex)	{
 	QString & strClickedItem = aItemIndex.data().toString();
 
-	PickAndDragHandlerShopEditor *pPickAndDragHandlerShopEditor = 		
-		dynamic_cast<PickAndDragHandlerShopEditor *>(m_pShopBuilder->m_pEventHandler);
+	PickAndDragHandlerShopEditor *pPickAndDragHandlerShopEditor = m_pShopBuilder->getPicker();
 
 	SearchListController searchList(
 		strClickedItem,
@@ -302,15 +290,13 @@ void ShopBuilder_GUI::slotDefineDragAxis(const QString & astrAxis)	{
 //---------------------------------------------------------------------------------------
 
 void ShopBuilder_GUI::slotModifySceneActions()	{
-	InsertNewItem_GUI * pInsertNewItem_GUI = new InsertNewItem_GUI;
-	connect(pInsertNewItem_GUI, SIGNAL(signalNewItemRequested(const QString &)),
+	InsertNewItem_GUI insertNewItem_GUI;
+	connect(&insertNewItem_GUI, SIGNAL(signalNewItemRequested(const QString &)),
 			this, SLOT(slotAddNewItem(const QString & )));
 
 	//To get a widget without a "TitleBar"
-	pInsertNewItem_GUI->setWindowFlags(Qt::FramelessWindowHint);
-	pInsertNewItem_GUI->exec();
-
-	delete pInsertNewItem_GUI;
+	insertNewItem_GUI.setWindowFlags(Qt::FramelessWindowHint);
+	insertNewItem_GUI.exec();
 }
 
 //---------------------------------------------------------------------------------------

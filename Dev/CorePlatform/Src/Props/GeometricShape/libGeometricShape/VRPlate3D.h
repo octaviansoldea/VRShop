@@ -4,8 +4,6 @@
 #include "VRAbstractGeomShape.h"
 #include "VRUntransformedPlate3D.h"
 
-class ostream;
-
 namespace VR	{
 	struct Plate3DParams : public AbstractGeomShapeParams	{
 		Plate3DParams();

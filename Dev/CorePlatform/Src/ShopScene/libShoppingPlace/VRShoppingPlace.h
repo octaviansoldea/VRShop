@@ -2,6 +2,7 @@
 #define VR_SHOPPING_PLACE_H
 
 #include <osg/ref_ptr>
+#include <string>
 
 #include "VRProductManager.h"
 

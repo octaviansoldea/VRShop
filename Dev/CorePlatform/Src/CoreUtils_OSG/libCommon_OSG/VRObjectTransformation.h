@@ -19,8 +19,6 @@ namespace VR {
 			static osg::Matrix setScalingGetMatrix(float aflX, float aflY, float aflZ);
 
 			const osg::Matrix& getMatrix() const;
-
-
 	};
 }
 #endif //VR_OBJECT_TRANSFORMATION_H

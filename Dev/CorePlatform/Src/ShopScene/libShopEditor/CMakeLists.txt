@@ -46,6 +46,7 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProduct
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libPicker
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libController
+  ${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libServerClientCommands
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libMngtController
   ${CMAKE_BINARY_DIR}/ShopScene/libPopUpGUIs
   ${CMAKE_SOURCE_DIR}/ShopScene/libPopUpGUIs

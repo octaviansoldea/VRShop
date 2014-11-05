@@ -130,8 +130,7 @@ void ProductManager::addNewProduct()	{
 
 	//Fill osg group whose pointer is sent to the scene 
 	//with the 3D representation of the product
-//	ref_ptr<AbstractObject> pProductGraphics = pProductShopEditor->getRepresentation();
-	ref_ptr<AbstractGeomShape> pProductGraphics = dynamic_cast<AbstractGeomShape*>(pProductShopEditor->getRepresentation().get());
+	AbstractGeomShape * pProductGraphics = dynamic_cast<AbstractGeomShape*>(pProductShopEditor->getRepresentation().get());
 
 	if (pProductGraphics==0)
 		return;

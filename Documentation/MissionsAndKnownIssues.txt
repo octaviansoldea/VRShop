@@ -8,7 +8,6 @@ Highly desirable to be solved Bugs
 
 Initial position of camera / Synchronization of avatar moves
 
-EditItem doesn't center selection but scene
 	VRProductmanager line 168: if frameless window selected, then fails to display correctly
 	(likely because of a missing parent)
 
@@ -23,6 +22,8 @@ Non-Critical Bugs
 
 Texturing of cylinder
 
+Camera positioning - bounding box undermines orientation of the object
+
 ============================================================
 
 CRITICAL Items
@@ -33,8 +34,6 @@ Cashier
 	- carry-out payment	
 	- track transactions and operations
 	- add to history database
-
-Saving already opened file adds to the existing file and doesn't overwrite it
 
 * Android
 * iPhone

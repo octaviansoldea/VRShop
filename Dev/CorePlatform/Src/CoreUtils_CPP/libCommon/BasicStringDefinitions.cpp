@@ -66,3 +66,12 @@ vector<string> splitString(string & astrName, const string & astrDelimiters)	{
 
 	return vecSplitString;
 }
+
+std::string replaceAll(std::string astrText, const std::string& astrFrom, const std::string& astrTo) {
+    size_t start_pos = 0;
+    while((start_pos = astrText.find(astrFrom, start_pos)) != std::string::npos) {
+        astrText.replace(start_pos, astrFrom.length(), astrTo);
+        start_pos += astrTo.length(); // Handles case where 'to' is a substring of 'from'
+    }
+    return astrText;
+}

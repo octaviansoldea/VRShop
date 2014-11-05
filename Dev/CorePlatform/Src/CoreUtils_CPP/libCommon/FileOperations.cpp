@@ -18,6 +18,7 @@
 #include <string>
 #include <exception>
 
+#include "BasicStringDefinitions.h"
 #include "Singleton.h"
 #include "Trace.h"
 #include "FileOperations.h"
@@ -94,4 +95,13 @@ string getSuffix(const string & astrFileName) {
 	
 	string strSuffix = astrFileName.substr(nLen - 3, nLen - 1);
 	return(strSuffix);
+}
+
+string adjustFileData(std::string & strFileDir, std::string & strFileName)	{
+	strFileDir += (isAtEndOfString(strFileDir, "/")) ? "" : "/";
+	strFileDir += strFileName;
+	strFileDir += (isAtEndOfString(strFileDir, ".db")) ? "" : ".db";
+	string & strFileNameFinal = replaceAll(strFileDir, "/", "\\");
+
+	return strFileNameFinal;
 }

@@ -5,7 +5,6 @@
 #include <vector>
 
 #include "BasicStringDefinitions.h"
-#include "Log.h"
 
 #include "VRAbstractObject.h"
 

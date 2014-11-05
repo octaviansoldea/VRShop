@@ -1,4 +1,5 @@
 #include <iostream>
+#include <ostream>
 
 #include "BasicDefinitions.h"
 #include "BasicStringDefinitions.h"

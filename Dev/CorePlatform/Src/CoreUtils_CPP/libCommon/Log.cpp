@@ -26,7 +26,7 @@ std::string getLogFile() {
 
 void CreateLogFile() {
 	string strFileName = getLogFile();
-	ofstream output;
+	std::ofstream output;
 	output.open(strFileName);
 	output.close();
 }

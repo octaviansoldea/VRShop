@@ -50,7 +50,7 @@ void DatabaseInterface::init(const DatabaseInterfaceParams & aDBInterfaceParams)
 
 bool DatabaseInterface::createConnection(const DatabaseInterfaceParams & aDBInterfaceParams)	{
 	if (!QSqlDatabase::isDriverAvailable("QSQLITE")) {
-		printError("Given driver QSQLITE not supported.");
+		BasicQtOperations::printError("Given driver QSQLITE not supported.");
 		return false;
 	}
 	const QString * pqstrConnName = &aDBInterfaceParams.m_qstrConnectionName;
@@ -62,7 +62,7 @@ bool DatabaseInterface::createConnection(const DatabaseInterfaceParams & aDBInte
 
 	if (!bOk) {
 		QString & qstrError = QSqlDatabase::database().lastError().text();
-		printError(qstrError);
+		BasicQtOperations::printError(qstrError);
 		QSqlDatabase::removeDatabase(*pqstrConnName);
 	}
 	return bOk;
@@ -78,7 +78,7 @@ bool DatabaseInterface::dropDatabase(const QString & aqstrDBName)	{
 	}
 
     if (QFile(*pqstrDBName).exists() && !QDir().remove(*pqstrDBName)) {
-		printError("Could not remove DB file: " + *pqstrDBName);
+		BasicQtOperations::printError("Could not remove DB file: " + *pqstrDBName);
 		return false;
     }
     return true;
@@ -126,7 +126,7 @@ bool DatabaseInterface::createTable(const string & astrTableName, const string &
 	const string * pstrTableName = &astrTableName;
 
 	if (pstrTableName->empty())	{
-		printError("Table name not given");
+		BasicQtOperations::printError("Table name not given");
 		return false;
 	}
 	
@@ -156,7 +156,7 @@ bool DatabaseInterface::removeTable(const QString& aqstrTableName)	{
 		q.exec( "DROP TABLE " + *pqstrTableName);
 	} else {
 		QString * pqstrError = &QSqlDatabase::database().lastError().text();
-		printWarning("Unable to drop table " + *pqstrTableName + " - " + *pqstrError);
+		BasicQtOperations::printWarning("Unable to drop table " + *pqstrTableName + " - " + *pqstrError);
 
 		return bRes;
 	}
@@ -194,7 +194,7 @@ bool DatabaseInterface::execute(const string & astrQuery)	{
 	bool bRes = query.exec(pstrQuery->c_str());
 
 	if (!bRes)	{
-		printError("Failed to execute SQL");
+		BasicQtOperations::printError("Failed to execute SQL");
 	}
 
 	return bRes;
@@ -244,7 +244,7 @@ int DatabaseInterface::insertRow(const string & astrTableName, string &astrTblFi
 	vector<string> fieldValues = splitString(astrTblFieldValues,";");
 
 	if (!containsTable(pstrTableName->c_str()))	{
-		printError("Requested table not part of the database: " + pDb->databaseName());
+		BasicQtOperations::printError("Requested table not part of the database: " + pDb->databaseName());
 		return(-1);
 	}
 
@@ -268,7 +268,7 @@ int DatabaseInterface::insertRow(const string & astrTableName, string &astrTblFi
 		model.submitAll();
 	} else {
 		model.revertAll();
-		printError("Failed to insert the record.");
+		BasicQtOperations::printError("Failed to insert the record.");
 		return(-1);
 	}
 
@@ -285,7 +285,7 @@ void DatabaseInterface::deleteRow(const string & astrTableName, const string & a
 
 	const string * pstrTableName = &astrTableName;
 	if (!containsTable(pstrTableName->c_str()))	{
-		printError("Requested table not part of the Database.");
+		BasicQtOperations::printError("Requested table not part of the Database.");
 		return;
 	}
 

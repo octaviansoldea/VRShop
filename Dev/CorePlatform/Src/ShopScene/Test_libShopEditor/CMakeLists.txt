@@ -36,6 +36,7 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libItemModel
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libSearch
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libController
+  ${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libServerClientCommands
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libMngtController
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libOSGQTViewer
   ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor
@@ -70,6 +71,7 @@ SET(LIBS_COMMON
 	libCamera
 	libPicker
 	libController
+	libServerClientCommands
 	libMngtController
 	libFurniture
 	libScene

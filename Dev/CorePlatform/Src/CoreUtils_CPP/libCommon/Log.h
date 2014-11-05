@@ -64,6 +64,7 @@ class CMjLog
 protected:
 	ControlT m_Control;	  //log control class
 	ImplT	 m_Impl;	  //log implementation class
+
 public:
 	CMjLog(const std::string ImplStr="",const std::string ControlStr="")
 	:m_Control(ControlStr),m_Impl(ImplStr){};
@@ -95,6 +96,7 @@ public:
 
 };
 	/*--------------CFileLog definition------------------*/
+
 	typedef CMjLog<FileLogImpl,GeneralLogControl> CFileLog;
 	/*------------CFileLog Usage-------------------------
 		MjTools::CFileLog log("C:\\test.log"); //Construct a new logfile or open a existing log file

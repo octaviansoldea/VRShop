@@ -1,6 +1,3 @@
-#include <fstream>
-#include <ostream>
-
 #include "VRAbstractGeomShape.h"
 #include "VRPlate3D.h"
 #include "VRCylinder.h"

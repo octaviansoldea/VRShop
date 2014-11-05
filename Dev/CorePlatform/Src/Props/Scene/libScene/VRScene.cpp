@@ -9,6 +9,8 @@
 
 #include "VRAbstractObject.h"
 
+#include <osg/ComputeBoundsVisitor>
+
 #include "VRScene.h"
 
 using namespace VR;
@@ -89,6 +91,28 @@ bool Scene::removeChild(Node *child)	{
 
 void Scene::clearScene()	{
 	removeChildren(0,getNumChildren());
+}
+
+//--------------------------------------------------------------
+
+Matrixd Scene::calculateInitialCameraMatrix()	{
+	ComputeBoundsVisitor cbv;
+	accept(cbv);
+
+	Vec3d vec3dSceneCorner = cbv.getBoundingBox().corner(5);	//Camera positioned 
+	Vec3d vec3dSceneCenter = cbv.getBoundingBox().center();
+
+	Vec3d vec3dEye = Vec3d(vec3dSceneCenter.x(),vec3dSceneCorner.y(),vec3dSceneCorner.z());
+	Vec3d vec3dCenter = Vec3d(vec3dEye.x(),0.0,0.0);
+	Vec3d vec3dDiff = vec3dCenter - vec3dEye;
+	Vec3d vec3dPerp = Vec3d(0,0,1)^vec3dDiff;
+	Vec3d vec3dUp = vec3dDiff^vec3dPerp;
+	vec3dUp.normalize();
+
+	//Also set the camera
+	Matrixd mtrxSceneCameraMatrix = Matrix::inverse(Matrix::lookAt(vec3dEye, vec3dCenter, vec3dUp));
+
+	return mtrxSceneCameraMatrix;
 }
 
 //--------------------------------------------------------------

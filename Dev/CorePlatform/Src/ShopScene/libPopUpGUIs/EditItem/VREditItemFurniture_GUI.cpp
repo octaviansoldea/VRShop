@@ -18,6 +18,12 @@ using namespace std;
 EditItemFurniture_GUI::EditItemFurniture_GUI(AbstractObject * apAbstractObject) :
 EditItem_GUIBase(apAbstractObject)	{
 	setupUi(this);
+
+	m_mtrxOriginalMatrix = ((MatrixTransform*)m_pAbstractObject)->getMatrix();
+
+	Matrix & mtrxTemp = Matrix::identity();
+	m_pAbstractObject->setMatrix(mtrxTemp);
+
 	
 	m_pOSGQT_Widget->setSceneData(m_pAbstractObject);
 	m_pOSGQT_Widget->setCameraManipulator(new KeyboardMouseManipulatorShopEditor);

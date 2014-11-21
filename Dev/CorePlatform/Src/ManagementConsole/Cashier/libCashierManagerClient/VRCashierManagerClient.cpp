@@ -67,7 +67,7 @@ void CashierManagerClient::slotReceiveDataFromServer()	{
 //------------------------------------------------------------------------------
 
 void CashierManagerClient::requestToServer(
-const enum ServerClientCommands::OPERATION_TYPE & aenumOperationType, 
+const ServerClientCommands::OPERATION_TYPE & aenumOperationType, 
 AbstractManagerClientParams * apAbstractManagerClientParams)	{
 
 	CashierManagerClientParams * pParams = (CashierManagerClientParams*)apAbstractManagerClientParams;

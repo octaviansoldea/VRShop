@@ -15,11 +15,11 @@ using namespace std;
 SceneHierarchyController::SceneHierarchyController(
 QTreeView * a_pQTreeView,
 PickAndDragHandlerShopEditor * a_pPickAndDragHandlerShopEditor,
-ref_ptr<Scene> a_pScene)	{
+Scene * a_pScene)	{
 
 	m_pQTreeView = a_pQTreeView;
 	mpPickAndDragHandlerShopEditor = a_pPickAndDragHandlerShopEditor;
-	mp_Scene = a_pScene;
+	m_pScene = a_pScene;
 
 	connect(m_pQTreeView,SIGNAL(clicked(const QModelIndex &)), this, SLOT(slotItemClicked(const QModelIndex &)));
 }
@@ -32,9 +32,9 @@ void SceneHierarchyController::updateSceneHierarchyGUI() {
 //--------------------------------------------------------------------------------------
 
 void SceneHierarchyController::slotItemClicked(const QModelIndex & anItemIndex)	{
-	const string & strSelectedItem = anItemIndex.data().toString().toStdString();
+	const string strSelectedItem = anItemIndex.data().toString().toStdString();
 
-	AbstractObject * pAbstractObject = dynamic_cast<AbstractObject*>(mp_Scene->getChild(strSelectedItem));
+	ref_ptr<AbstractObject> pAbstractObject = dynamic_cast<AbstractObject*>(m_pScene->getChild(strSelectedItem));
 
 	if (pAbstractObject==0)
 		return;
@@ -48,7 +48,7 @@ void SceneHierarchyController::slotItemClicked(const QModelIndex & anItemIndex)	
 void SceneHierarchyController::slotItemDeleted(const QModelIndex & anItemIndex)	{
 	string strItemName = anItemIndex.data().toString().toStdString();
 
-	AbstractObject * pAbstractObject = dynamic_cast<AbstractObject*>(mp_Scene->getChild(strItemName));
+	ref_ptr<AbstractObject> pAbstractObject = dynamic_cast<AbstractObject*>(m_pScene->getChild(strItemName));
 
 	if (pAbstractObject==0)
 		return;

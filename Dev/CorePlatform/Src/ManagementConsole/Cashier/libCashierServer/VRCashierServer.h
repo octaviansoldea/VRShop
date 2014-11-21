@@ -7,7 +7,6 @@ namespace VR	{
 	class CashierServer	{
 	public:
 		CashierServer();
-		~CashierServer();
 
 		const char* className() const;
 

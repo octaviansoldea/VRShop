@@ -3,6 +3,11 @@
 
 #include <osg/ref_ptr>
 
+class QComboBox;
+class QLineEdit;
+
+#include "VRSceneObjectsSearchShopEditor.h"
+
 namespace VR	{
 	class OSGQT_Widget;
 	class AbstractObject;
@@ -28,13 +33,12 @@ namespace VR	{
 		void saveDB();
 		void saveAsDB();
 
-		bool searchScene(const std::string & astrSearchTerm, DataStructureModel ** appDataStructureModel);
+		bool searchScene(const std::string & astrSearchTerm);
 
-		void addNewItem(const std::string & astrObjectName);
-		void addNewItem(osg::ref_ptr<AbstractObject> apAbstractObject);
+		void addNewItem();
 
-		Scene * getScene() const;
-		Scene * getScene(const std::string & astrSceneName);
+		osg::ref_ptr<Scene> getScene() const;
+		osg::ref_ptr<Scene> getScene(const std::string & astrSceneName);
 		const std::string getSceneName(Scene * apScene);
 		const std::string getSceneName(unsigned int i);
 
@@ -43,6 +47,25 @@ namespace VR	{
 		PickAndDragHandlerShopEditor * getPicker() const;
 
 		std::string getCurrentFileName() const;
+
+		void addNewProduct();
+		void removeProductClicked(const std::string & astrProductCode);
+
+		struct ProductClickedItems	{
+			std::string m_strProductName;
+			QComboBox * m_pComboBox_ProductSettings_ProductName;
+			QLineEdit * m_pLineEdit_ProductSettings_Price;
+			QLineEdit * m_pLineEdit_ProductSettings_Quantity;
+			QLineEdit * m_pLineEdit_ProductSettings_NewPrice;
+			QLineEdit * m_pLineEdit_ProductSettings_NewQuantity;
+		};
+
+		void productClicked(ProductClickedItems & aProductClickedItems);
+
+		void productMoreSettingsClicked(const std::string & astrProductCode);
+
+		void modifyProductClicked(ProductClickedItems & aProductClickedItems);
+		void updateProductSettings(ProductClickedItems & aProductClickedItems);
 
 	private:
 		OSGQT_Widget * m_pOSGQTWidget;
@@ -57,7 +80,20 @@ namespace VR	{
 
 		void addScene(Scene * apScene);
 		void removeScene(Scene * apScene);
-		std::vector<Scene*> m_pvecScenes;
+		std::vector<osg::ref_ptr<Scene>> m_pvecScenes;
+
+		SceneObjectsSearchShopEditor * m_pSceneObjectsSearch;
+
+	public:
+		void groupItems();
+		void splitItem();
+		void duplicateSelection();
+		void removeSelection();
+		void editItem();
+
+		void updateSearchList(std::string & astrSelectedItemName);
+
+		DataStructureModel * getSceneObjectsSearchModel();
 	};
 }
 #endif //VR_SHOP_BUILDER_H

@@ -2,6 +2,7 @@
 #define VR_SCENE_OBJECTS_SEARCH_H
 
 #include <QString>
+#include <osg/ref_ptr>
 
 namespace VR	{
 	class DataStructureModel;
@@ -18,7 +19,7 @@ namespace VR	{
 
 	protected:
 		DataStructureModel * m_pDataStructureModel;
-		Scene * m_pScene;
+		osg::ref_ptr<Scene> m_pScene;
 
 	private:
 		void setupSearchData(const QString & aqstrSearchQuery);

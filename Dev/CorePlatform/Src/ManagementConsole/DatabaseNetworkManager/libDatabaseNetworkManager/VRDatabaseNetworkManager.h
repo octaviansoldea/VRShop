@@ -10,9 +10,6 @@ namespace VR	{
 	class DatabaseNetworkManager	{
 
 	public:
-		DatabaseNetworkManager();
-		~DatabaseNetworkManager();
-
 		static QByteArray databaseRequest(QByteArray & aData);
 	};
 }

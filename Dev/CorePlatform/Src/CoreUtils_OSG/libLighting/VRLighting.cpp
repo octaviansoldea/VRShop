@@ -13,11 +13,6 @@ Lighting::Lighting(QObject * apQObject) : QObject(apQObject)	{
 
 //--------------------------------------------------------------------
 
-Lighting::~Lighting()	{
-}
-
-//--------------------------------------------------------------------
-
 ref_ptr<LightSource> Lighting::createLights()	{
 	osg::ref_ptr<osg::Light> light0 = new osg::Light();
 	light0->setLightNum(0); //light0 is now GL-Light0
@@ -43,11 +38,6 @@ ref_ptr<LightSource> Lighting::createLights()	{
 
 LightFollowsNodeCallback::LightFollowsNodeCallback(osg::Node * apNode)	{
 	m_pNode = apNode;
-}
-
-//--------------------------------------------------------------------
-
-LightFollowsNodeCallback::~LightFollowsNodeCallback()	{
 }
 
 //--------------------------------------------------------------------

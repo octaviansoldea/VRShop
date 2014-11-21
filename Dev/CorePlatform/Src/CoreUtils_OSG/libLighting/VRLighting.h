@@ -12,7 +12,6 @@ namespace VR	{
 
 	public:
 		Lighting(QObject * apQObject = 0);
-		~Lighting();
 
 		static osg::ref_ptr<osg::LightSource> createLights();
 	};
@@ -21,7 +20,6 @@ namespace VR	{
 	class LightFollowsNodeCallback : public osg::NodeCallback	{
 	public:
 		LightFollowsNodeCallback(osg::Node * apNode);
-		~LightFollowsNodeCallback();
 
 		virtual void operator()(osg::Node* node, osg::NodeVisitor* nv);
 

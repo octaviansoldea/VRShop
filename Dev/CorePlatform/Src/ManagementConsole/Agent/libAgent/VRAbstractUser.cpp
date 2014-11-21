@@ -32,7 +32,7 @@ const char* AbstractUser::className() const	{
 //------------------------------------------------------------------------------
 
 Avatar * AbstractUser::getAvatar()	{
-	return m_pAvatar;
+	return m_pAvatar.get();
 }
 
 //------------------------------------------------------------------------------

@@ -9,8 +9,6 @@ namespace VR	{
 	struct ShopBuilder;
 	struct CameraController;
 	struct PickAndDragController;
-	class ProductController;
-	class Grid;
 
 	class ShopBuilder_GUI : public QMainWindow, public Ui::MainWindow	{
 		Q_OBJECT
@@ -28,9 +26,8 @@ namespace VR	{
 
 		CameraController * m_pCameraController;
 		PickAndDragController * m_pPickAndDragController;
-		ProductController * m_pProductController;
 
-	public slots:
+	private slots:
 		void slotNewProject();
 		void slotOpenDB();
 		void slotSaveDB();
@@ -48,10 +45,24 @@ namespace VR	{
 
 		void slotDefineDragAxis(const QString & astrAxis);
 
-		void slotModifySceneActions();
-		void slotSetNewPriceQuantity();
+		void slotAddNewItem();
 
-		void slotAddNewItem(const QString & aqstrItemName);
+		void slotAboutToQuitCalled();
+
+		void slotAddNewProductClicked();
+
+		void slotRemoveProduct();
+		void slotProductMoreSettings();
+
+		void slotProductClicked(const std::string & astrProductName);
+		void slotApplyModifyProductClicked();
+		void slotComboBoxProductChanged();
+
+		void slotGroupItems();
+		void slotSplitItem();
+		void slotDuplicateSelection();
+		void slotRemoveSelection();
+		void slotEditItem();
 	};
 }
 #endif //VR_SHOP_BUILDER_GUI_H

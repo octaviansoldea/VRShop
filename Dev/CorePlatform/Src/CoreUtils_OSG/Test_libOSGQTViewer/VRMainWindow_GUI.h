@@ -13,7 +13,6 @@ namespace VR {
 
 	public:
 		MainWindow_GUI();
-		~MainWindow_GUI();
 	};
 }
 

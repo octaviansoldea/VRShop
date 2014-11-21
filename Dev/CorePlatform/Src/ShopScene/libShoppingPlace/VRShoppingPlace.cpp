@@ -23,6 +23,7 @@
 #include "VRRoom.h"
 #include "VRLighting.h"
 
+#include "VRAbstractObjectFactory.h"
 #include "VRAbstractObject.h"
 
 #include "VRPickAndDragHandlerShopClient.h"
@@ -91,7 +92,7 @@ m_strAvatarName(astrAvatarName)	{
 
 	//A pointer to products sent to the scene
 //	m_pProductMgr = new ProductManager;
-	Node * pProductsRepresentation = m_ProductManager.getProductsRepresentation();
+	ref_ptr<Node> pProductsRepresentation = m_ProductManager.getProductsRepresentation();
 	m_pScene->addChild(pProductsRepresentation);
 
 	//Insert Scene objects
@@ -114,7 +115,7 @@ m_strAvatarName(astrAvatarName)	{
 	m_pScene->addChild(m_pAvatar);
 
 	//Get a matrix of the camera in the scene and initialize the camera itself
-	Matrix & mtrxCamera = m_pScene->calculateInitialCameraMatrix();
+	Matrix mtrxCamera = m_pScene->calculateInitialCameraMatrix();
 	pKeyboardMouseManipulatorShopClient->setByMatrix(mtrxCamera);
 
 //	pKeyboardMouseManipulatorShopClient->setCameraPredefinedViews((MatrixTransform*)m_pAvatar);
@@ -182,8 +183,6 @@ bool ShoppingPlace::createClientScene(const string & astrSceneFileName)	{
 	//Get list of objects in the scene
 	list<string> lststrSceneObjects = db.getListOfObjects("Untitled");
 
-	ref_ptr<AbstractObject> pAO = 0;
-
 	list<string>::iterator it = lststrSceneObjects.begin();
 	for (it; it != lststrSceneObjects.end(); it++)	{
 		//Find class and object names
@@ -193,14 +192,12 @@ bool ShoppingPlace::createClientScene(const string & astrSceneFileName)	{
 
 		if (strClassName == "ProductDisplay")	{
 			vector<string> vecstrObjectData = db.getObjectData(*it);
-			m_ProductManager
-				//m_pProductMgr->
-				.initFromSQLData(vecstrObjectData);
+			m_ProductManager.initFromSQLData(vecstrObjectData);
 
 			continue;
 		}
 
-		pAO = AbstractObject::createInstance(strClassName);
+		ref_ptr<AbstractObject> pAO = AbstractObjectFactory::createAbstractObject(strClassName);
 		pAO->setDataVariance(Object::STATIC);
 		vector<string> vecstrObjectData = db.getObjectData(*it);
 

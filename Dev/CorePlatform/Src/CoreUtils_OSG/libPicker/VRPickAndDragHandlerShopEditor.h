@@ -17,33 +17,25 @@
 #include <QObject>
 
 #include "VRPickAndDragHandler.h"
+#include <string>
 
 #include <osg/ref_ptr>
 
 namespace VR {
 	class AbstractObject;
-	class Scene;
-	class EditItem_GUIBase;
 	
-
 	class PickAndDragHandlerShopEditor : public QObject, public PickAndDragHandler	{
-
 		Q_OBJECT
 
 	public:
-		PickAndDragHandlerShopEditor();
-		~PickAndDragHandlerShopEditor();
+
 		virtual bool handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa);
+
+		std::vector<osg::ref_ptr<AbstractObject>> getPickedObjects();
 
 		void setPropertiesPosition(const osg::Vec3d & avec3dPosition);
 		void setPropertiesScaling(const osg::Vec3d & avec3dScaling);
 		void setPropertiesRotation(const osg::Vec3d & avec3dRotation);
-
-		void groupSelection(osg::ref_ptr<Scene> apScene);
-		void splitSelection(osg::ref_ptr<Scene> apScene);
-		void duplicateSelection(osg::ref_ptr<Scene> apScene);
-		void removeSelection(osg::ref_ptr<Scene> apScene);
-		void editItem(osg::ref_ptr<Scene> apScene);
 
 		void clearList();
 
@@ -52,15 +44,13 @@ namespace VR {
 
 	signals:
 		void signalPropertiesSettingsChanged();
-		void signalProductPicked(const AbstractObject * apAO);
+		void signalProductPicked(const std::string & astrAbstractObjectName);
 
 	private:
 		bool addPart(osg::ref_ptr < AbstractObject > apAbstractObject);
 		bool removePart(osg::ref_ptr < AbstractObject > apAbstractObject);
 
 		std::vector<osg::ref_ptr<AbstractObject>> m_pvecPickedObjects;
-
-		EditItem_GUIBase * m_pEditItem_GUIBase;
 	};
 }
 #endif //VR_PICK_AND_DRAG_HANDLER_SHOP_EDITOR_H

@@ -8,12 +8,9 @@
 namespace VR	{
 	
 	class EditItem_GUI : public EditItem_GUIBase, public Ui::EditItem	{
-		Q_OBJECT
 	public:
 		EditItem_GUI(AbstractObject * apAbstractObject);
-		~EditItem_GUI();
 
-	public slots:
 		virtual void slotSetColor();
 
 	protected:

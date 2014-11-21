@@ -11,10 +11,10 @@ namespace VR	{
 		Q_OBJECT
 	public:
 		EditItemPrism_GUI(AbstractObject * apAbstractObject);
-		~EditItemPrism_GUI();
+
+		virtual void slotSetColor();
 
 	public slots:
-		virtual void slotSetColor();
 		void slotSetResolution();
 
 	protected:

@@ -96,9 +96,8 @@ ShoppingPlace_GUI::~ShoppingPlace_GUI()	{
 	delete m_pAgentInterface;
 	delete m_pProductBasketInterface;
 	delete m_pCameraController;
-	delete m_pShoppingPlace;
-
 	delete m_pCashierScreenManager;
+	delete m_pShoppingPlace;
 }
 
 //=========================================================================================
@@ -271,3 +270,5 @@ void ShoppingPlace_GUI::slotProcesRequest(int anRequestOperation)	{
 		//	m_pShoppingPlace->processCashierRequest(astrRequestOperation);
 	}
 }
+
+//----------------------------------------------------------------------------------------

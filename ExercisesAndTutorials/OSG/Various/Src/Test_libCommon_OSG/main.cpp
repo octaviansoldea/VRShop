@@ -48,9 +48,126 @@ void main_Model3D(osg::ref_ptr<osg::Group> pScene)	{
 	pScene->addChild(pModel3D.get());
 }
 
-//----------------------------------------------------------------------
+//=====================================================================================
+
+/*
+	T* release() { T* tmp=_ptr; if (_ptr) _ptr->unref_nodelete(); _ptr=0; return tmp; }
+	T* get() const { return _ptr; }
+*/
+class MonitoringTarget : public osg::Referenced	{
+public:
+	MonitoringTarget( int id ) : m_nId(id)	{
+		std::cout << "Constructing target " << m_nId << std::endl;
+	}
+
+	MonitoringTarget* createMonitoringTarget( unsigned int id );
+	osg::ref_ptr<MonitoringTarget> createMonitoringTargetRef( unsigned int id );
+
+	static MonitoringTarget* createMonitoringTargetStatic( unsigned int id );
+	static osg::ref_ptr<MonitoringTarget> createMonitoringTargetRefStatic( unsigned int id );
+
+protected:
+	virtual ~MonitoringTarget()	{ 
+		std::cout << "Destroying target " << m_nId << std::endl; 
+	}
+	int m_nId;
+};
+
+MonitoringTarget* MonitoringTarget::createMonitoringTarget( unsigned int id )
+{
+	//Fails because ref_ptr is run out of scope before assigning of the return value
+	osg::ref_ptr<MonitoringTarget> target = new MonitoringTarget(id);
+	return target.get();
+
+	//potential memory leak if the caller can't assign the return value to a ref_ptr<>.
+	//MonitoringTarget * target1 = new MonitoringTarget(id);
+	//return target1;
+}
+
+osg::ref_ptr<MonitoringTarget> MonitoringTarget::createMonitoringTargetRef( unsigned int id )
+{
+	osg::ref_ptr<MonitoringTarget> target = new MonitoringTarget(id);
+	return target;
+}
+
+MonitoringTarget* MonitoringTarget::createMonitoringTargetStatic( unsigned int id )
+{
+	//Fails because ref_ptr is run out of scope before assigning of the return value
+	//osg::ref_ptr<MonitoringTarget> target = new MonitoringTarget(id);
+	//return target.get();
+
+	//potential memory leak if the caller can't assign the return value to a ref_ptr<>.
+	MonitoringTarget * target1 = new MonitoringTarget(id);
+	return target1;
+}
+
+osg::ref_ptr<MonitoringTarget> MonitoringTarget::createMonitoringTargetRefStatic( unsigned int id )
+{
+	osg::ref_ptr<MonitoringTarget> target = new MonitoringTarget(id);
+	return target;
+}
+
+
+
+int main_MonitorTarget(int argc, char * argv[])	{
+	osg::ref_ptr<MonitoringTarget> pMonitoringTarget = new MonitoringTarget(0);
+	for ( unsigned int i=1; i<5; ++i )
+	{
+		std::cout << "reference count before: " << pMonitoringTarget->referenceCount() << std::endl;
+		osg::ref_ptr<MonitoringTarget> subTarget = pMonitoringTarget->createMonitoringTarget(i);
+		std::cout << "reference count after: " << pMonitoringTarget->referenceCount() << std::endl;
+	}
+
+	return 0;
+}
+
+int main_MonitorTargetRef(int argc, char * argv[])	{
+	osg::ref_ptr<MonitoringTarget> pMonitoringTarget = new MonitoringTarget(0);
+	for ( unsigned int i=1; i<5; ++i )	{
+		std::cout << "reference count before: " << pMonitoringTarget->referenceCount() << std::endl;
+		osg::ref_ptr<MonitoringTarget> subTarget = pMonitoringTarget->createMonitoringTargetRef(i);
+		std::cout << "reference count after: " << pMonitoringTarget->referenceCount() << std::endl;
+	}
+
+	return 0;
+}
+
+
+int main_MonitorTargetStatic(int argc, char * argv[])	{
+	osg::ref_ptr<MonitoringTarget> pMonitoringTarget = new MonitoringTarget(0);
+	for ( unsigned int i=1; i<5; ++i )
+	{
+		osg::ref_ptr<MonitoringTarget> subTarget = MonitoringTarget::createMonitoringTargetStatic(i);
+		std::cout << "reference count after: " << subTarget->referenceCount() << std::endl;
+	}
+
+	return 0;
+}
+
+int main_MonitorTargetRefStatic(int argc, char * argv[])	{
+	osg::ref_ptr<MonitoringTarget> pMonitoringTarget = new MonitoringTarget(0);
+	for ( unsigned int i=1; i<5; ++i )	{
+		osg::ref_ptr<MonitoringTarget> subTarget = MonitoringTarget::createMonitoringTargetRefStatic(i);
+		std::cout << "reference count after: " << subTarget->referenceCount() << std::endl;
+	}
+
+	return 0;
+}
+
+
 
 int main(int argc, char * argv[])	{
+	//main_MonitorTarget(argc,argv);
+	//main_MonitorTargetRef(argc,argv);
+
+	main_MonitorTargetStatic(argc,argv);
+	//main_MonitorTargetRefStatic(argc,argv);
+
+}
+
+//=========================================================================================================
+
+int main_Geography(int argc, char * argv[])	{
 	osg::Vec3d closestPoint;
 	computeClosestPointOnLine(osg::Vec3d(0,0,0), osg::Vec3d(2,0,0), osg::Vec3d(1,2,0), closestPoint);
 
@@ -75,7 +192,7 @@ int main(int argc, char * argv[])	{
 	osg::ref_ptr<VR::BoundingBox> bb = new VR::BoundingBox(pMt);
 	root->addChild(bb);
 
-//	root->addChild(new VR::Grid);
+	root->addChild(new VR::Grid);
 	root->addChild(pMt);
 	root->addChild(axes);
 
@@ -85,3 +202,47 @@ int main(int argc, char * argv[])	{
 	return viewer.run();
 }
 
+//==============================================================================================
+/*
+class Base	{
+public:
+	Base() {std::cout << "Base class created" << std::endl;}
+
+	virtual ~Base() {
+		std::cout << "Base class destructor" << std::endl;
+	}
+};
+
+class A : public Base	{
+public:
+	A(float aflIndy) : m_flIndy(aflIndy) {std::cout << "A class created" << std::endl;}
+
+private:
+	float m_flIndy;
+public:
+	virtual ~A() {std::cout << "A class destructor" << std::endl;}
+};
+
+class C : public Base	{
+public:
+	C(int anIndy) : m_nIndy(anIndy) {std::cout << "C class created" << std::endl;}
+
+private:
+	int m_nIndy;
+
+public:
+	virtual ~C() {std::cout << "C class destructor" << std::endl;}
+
+	void display() {std::cout << "C class display" << std::endl;};
+};
+
+int main(int argc, char * argv[])	{
+
+	Base * pB = new C(3);
+	delete pB;
+
+	return 0;
+}
+*/
+
+//=====================================================================================================

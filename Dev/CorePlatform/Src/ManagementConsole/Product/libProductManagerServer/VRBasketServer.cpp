@@ -11,16 +11,6 @@ BasketServer * BasketServer::createBasketServer(std::vector<std::string> & avecs
 
 //==============================================================================
 
-BasketServer::BasketServer()	{
-}
-
-//-----------------------------------------------------------------------------
-
-BasketServer::~BasketServer()	{
-}
-
-//==============================================================================
-
 const char* BasketServer::className() const	{
 	return "BasketServer";
 }

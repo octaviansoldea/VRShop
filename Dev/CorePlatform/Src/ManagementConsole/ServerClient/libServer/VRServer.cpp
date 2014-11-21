@@ -20,11 +20,6 @@ Server::Server(QObject *parent,int anConnMax) : QTcpServer(parent), m_nMaxNoOfCo
 	m_Timer.start(1000);
 }
 
-//----------------------------------------------------------------------
-
-Server::~Server()	{
-}
-
 //=====================================================================
 
 void Server::incomingConnection(qintptr handle)	{
@@ -51,7 +46,7 @@ void Server::incomingConnection(qintptr handle)	{
 bool Server::init()	{
 	bool bRes=true;
 
-	string & strServerIP = QHostAddress(QHostAddress::LocalHost).toString().toStdString();
+	string strServerIP = QHostAddress(QHostAddress::LocalHost).toString().toStdString();
 	int nPort = 20000;
 	
 	if (!listen(QHostAddress(strServerIP.c_str()), nPort)) {	//server listens for incoming conenctions

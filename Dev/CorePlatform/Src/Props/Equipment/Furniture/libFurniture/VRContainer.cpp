@@ -70,7 +70,7 @@ void Container::init(const ContainerParams & aContainerParams)	{
 	setPosition(cP.m_flPosX, cP.m_flPosY, cP.m_flPosZ);
 	*/
 	
-	Matrix & containerMatrix = calculateMatrix();
+	Matrix containerMatrix = calculateMatrix();
 	setMatrix(containerMatrix);
 }
 

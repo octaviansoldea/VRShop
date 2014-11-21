@@ -23,7 +23,7 @@ namespace VR	{
 			FILE_OPEN_TRUNCATE
 		};
 
-		static bool QtFileOperation(std::string & astrFileName, enum FILE_OPERATION aenumFileOperation);
+		static bool QtFileOperation(std::string & astrFileName, FILE_OPERATION aenumFileOperation);
 	};
 }
 

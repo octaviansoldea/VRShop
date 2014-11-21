@@ -18,15 +18,10 @@ using namespace std;
 
 Server_GUI::Server_GUI(Server * apServer, QWidget * parent) 
 : m_pServer(apServer), QWidget(parent)	{
-	const string & strIP = m_pServer->serverAddress().toString().toStdString();
-	const int & nPort = m_pServer->serverPort();
+	const string strIP = m_pServer->serverAddress().toString().toStdString();
+	const int nPort = m_pServer->serverPort();
 
 	init(strIP,nPort);
-}
-
-//----------------------------------------------------------------------
-
-Server_GUI::~Server_GUI()	{
 }
 
 //=====================================================================

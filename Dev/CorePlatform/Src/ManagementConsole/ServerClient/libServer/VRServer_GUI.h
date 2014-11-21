@@ -11,7 +11,6 @@ namespace VR	{
 
 	public:
 		Server_GUI(Server * apServer, QWidget * parent =0);
-		~Server_GUI();
 
 	private:
 		void init(const std::string & astrIPAddress, const int & anPort);

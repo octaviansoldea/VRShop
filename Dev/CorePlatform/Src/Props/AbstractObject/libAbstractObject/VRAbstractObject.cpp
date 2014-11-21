@@ -4,15 +4,6 @@
 #include "BasicDefinitions.h"
 #include "BasicStringDefinitions.h"
 
-#include "VRCustomFurniture.h"
-#include "VRContainer.h"
-#include "VRCupboard.h"
-
-#include "VRCylinder.h"
-#include "VRPlate3D.h"
-#include "VRPrism.h"
-#include "VRSphere.h"
-
 #include "VRAbstractObject.h"
 
 using namespace VR;
@@ -68,33 +59,6 @@ AbstractObject::~AbstractObject() {
 
 const char * AbstractObject::className() const	{
 	return "AbstractObject";
-}
-
-//-----------------------------------------------------------------------
-
-ref_ptr<AbstractObject> AbstractObject::createInstance(const string & astrClassName)	{
-	if (astrClassName == "Cupboard")	{
-		CupboardParams cP;
-		return (new VR::Cupboard(cP));
-	} else if (astrClassName == "Container")	{
-		ContainerParams cP;
-		return (new VR::Container(cP));
-	} else if (astrClassName == "CustomFurniture")	{
-		CustomFurnitureParams cF;
-		return (new VR::CustomFurniture(cF));
-	} else if (astrClassName == "Plate3D")	{
-		Plate3DParams p3DP;
-		return (new VR::Plate3D(p3DP));
-	} else if (astrClassName == "Cylinder")	{
-		CylinderParams cP;
-		return (new VR::Cylinder(cP));
-	} else if (astrClassName == "Prism")	{
-		PrismParams pP;
-		return (new VR::Prism(pP));
-	} else if (astrClassName == "Sphere")	{
-		SphereParams sP;
-		return (new VR::Sphere(sP));
-	}
 }
 
 //=======================================================================
@@ -202,7 +166,7 @@ void AbstractObject::writeObjectHierarchy(vector<string> &avecstrHierarchy)	{
 	//Object name
 	avecstrHierarchy.push_back(getName());
 	
-	AbstractObject * pAO = dynamic_cast<AbstractObject*>(this);
+	ref_ptr<AbstractObject> pAO = dynamic_cast<AbstractObject*>(this);
 
 	NodeList::iterator it = pAO->_children.begin();
 	for (it; it != pAO->_children.end(); it++)	{
@@ -237,7 +201,7 @@ void AbstractObject::print(std::ostream & os) const	{
 //--------------------------------------------------------------------------
 
 void AbstractObject::preparedObjectData(std::vector<std::string> &avecItems, std::string & astrParent)	{
-	AbstractObject * pAbstractObject = dynamic_cast<AbstractObject*>(this);
+	ref_ptr<AbstractObject> pAbstractObject = dynamic_cast<AbstractObject*>(this);
 
 	vector<string> * pvecItems = &avecItems;
 
@@ -250,7 +214,7 @@ void AbstractObject::preparedObjectData(std::vector<std::string> &avecItems, std
 
 	nI += 1;	//enlarge indent by 1 unit
 
-	AbstractObject * pChild = 0;
+	ref_ptr<AbstractObject> pChild = 0;
 	NodeList::iterator it;
 	for (it = pAbstractObject->_children.begin(); it != pAbstractObject->_children.end(); it++)	{
 		pChild = dynamic_cast<AbstractObject*>(it->get());
@@ -290,11 +254,11 @@ void AbstractObject::getParams(AbstractObjectParams & aAbstractObjectParams) con
 	aAbstractObjectParams.m_flPosX = m_flPosX;
 	aAbstractObjectParams.m_flPosY = m_flPosY;
 	aAbstractObjectParams.m_flPosZ = m_flPosZ;
-
+	
 	aAbstractObjectParams.m_flLenX = m_flLenX;
 	aAbstractObjectParams.m_flLenY = m_flLenY;
 	aAbstractObjectParams.m_flLenZ = m_flLenZ;
-
+	
 	aAbstractObjectParams.m_flAngleYZ = m_flAngleYZ;
 	aAbstractObjectParams.m_flAngleXZ = m_flAngleXZ;
 	aAbstractObjectParams.m_flAngleXY = m_flAngleXY;

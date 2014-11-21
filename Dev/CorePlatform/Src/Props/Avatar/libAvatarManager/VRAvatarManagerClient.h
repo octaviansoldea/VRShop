@@ -41,7 +41,7 @@ namespace VR {
 
 
 		virtual void requestToServer(
-			const enum ServerClientCommands::OPERATION_TYPE & aenumOperationType, 
+			const ServerClientCommands::OPERATION_TYPE & aenumOperationType, 
 			AbstractManagerClientParams * apAbstractManagerClientParams=0
 		);
 
@@ -56,7 +56,7 @@ namespace VR {
 		int getNumberOfAvatars() const;
 
 	private:
-		Avatar * m_pAvatar;	//Client's avatar
+		osg::ref_ptr<Avatar> m_pAvatar;	//Client's avatar
 		QTimer m_QTimerAvatarSelf;
 
 		osg::ref_ptr<osg::Group> m_grpAvatars;	//A group of others' avatars in the client's scene
@@ -70,7 +70,7 @@ namespace VR {
 
 	private:
 		std::vector<std::string> m_vecAvatarNames;
-		std::vector<std::pair<std::string, Avatar *>> m_pairAvatarNamesAndObjects;
+		std::vector<std::pair<std::string, osg::ref_ptr<Avatar> >> m_pairAvatarNamesAndObjects;
 	};
 }
 #endif //VR_AVATAR_MANAGER_CLIENT_H

@@ -11,13 +11,14 @@ namespace VR	{
 	};
 
 	class Furniture : public AbstractObject	{
+	protected:
+		virtual ~Furniture() = 0;
+
 	public:
 		Furniture(const FurnitureParams & aFurnitureParams);
 		Furniture(const Furniture& fur,const osg::CopyOp& copyop=osg::CopyOp::DEEP_COPY_ALL);
 
 		virtual const char* className() const;
-
-		virtual ~Furniture() = 0;
 
 		virtual void addPart(osg::ref_ptr < AbstractObject > apAbstractObject);
 		virtual void removePart(unsigned int anPartNo);
@@ -33,7 +34,11 @@ namespace VR	{
 		virtual void setColor(const std::vector < float > & aarrflColor);
 		virtual void setTexture(const std::string & astrFileName);
 
+		virtual void setParams(const AbstractObjectParams & aAbstractObjectParams);
+
 	protected:
+		void getParams(FurnitureParams & aFurnitureParams) const;
+
 		std::vector < std::string > m_arrSQLCommandLines;
 	};
 }

@@ -22,11 +22,6 @@ Client::Client(QObject *apParent) : QObject(apParent)	{
 	slotTryToConnect();
 }
 
-//----------------------------------------------------------------------
-
-Client::~Client()	{
-}
-
 //=====================================================================
 
 void Client::slotTryToConnect()	{

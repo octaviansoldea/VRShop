@@ -27,8 +27,6 @@ namespace VR {
 		Q_OBJECT
 
 	public:
-		PickAndDragHandlerShopClient();
-		~PickAndDragHandlerShopClient();
 		virtual bool handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa);
 
 	signals:

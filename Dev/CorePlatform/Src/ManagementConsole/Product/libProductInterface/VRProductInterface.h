@@ -23,8 +23,6 @@ namespace VR	{
 			QLabel * apLabelProductInterfacePrice
 		);	//End of constructor
 
-		~ProductInterface();
-
 	private:
 		QFrame * m_pFrameProductInterface;
 		QLabel * m_pLabelProductInterfaceImage;

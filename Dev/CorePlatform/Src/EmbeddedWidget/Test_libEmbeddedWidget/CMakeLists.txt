@@ -69,7 +69,6 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libItemModel
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libSearch
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libController
-  ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libMngtController
   ${CMAKE_SOURCE_DIR}/ShopScene/libShopEditor
   ${CMAKE_BINARY_DIR}/ShopScene/libShopEditor
   ${CMAKE_SOURCE_DIR}/ShopScene/libPopUpGUIs
@@ -123,7 +122,6 @@ SET(LIBS_COMMON
   libItemModel
   libSearch
   libController
-  libMngtController
   
   libShopEditor
   libPopUpGUIs

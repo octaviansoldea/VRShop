@@ -61,7 +61,7 @@ bool DatabaseInterface::createConnection(const DatabaseInterfaceParams & aDBInte
 	bool bOk = pDb->isOpen() ? true : pDb->open();
 
 	if (!bOk) {
-		QString & qstrError = QSqlDatabase::database().lastError().text();
+		QString qstrError = QSqlDatabase::database().lastError().text();
 		BasicQtOperations::printError(qstrError);
 		QSqlDatabase::removeDatabase(*pqstrConnName);
 	}
@@ -151,7 +151,7 @@ bool DatabaseInterface::removeTable(const QString& aqstrTableName)	{
 	QSqlDatabase * pDb = &QSqlDatabase::database(m_DBInterfaceParams.m_qstrConnectionName);	
 	QSqlQuery q(*pDb);
 	
-	QStringList & qlstDBtables = pDb->tables();
+	QStringList qlstDBtables = pDb->tables();
 	if (qlstDBtables.contains(*pqstrTableName, Qt::CaseInsensitive))	{
 		q.exec( "DROP TABLE " + *pqstrTableName);
 	} else {
@@ -176,7 +176,7 @@ bool DatabaseInterface::containsTable(const QString & aqstrTableName)	{
 	}
 
 	QSqlDatabase * pDb = &QSqlDatabase::database(m_DBInterfaceParams.m_qstrConnectionName);	
-	QStringList & qlstpDBtables = pDb->tables();
+	QStringList qlstpDBtables = pDb->tables();
 
 	bool bRes = (qlstpDBtables.contains(*pqstrTableName, Qt::CaseInsensitive)) ? true : false;
 	return bRes;

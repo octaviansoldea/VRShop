@@ -10,7 +10,7 @@ namespace VR	{
 		VRQLabel(QWidget * parent = 0, Qt::WindowFlags f = 0);
 		VRQLabel(const QString & text, QWidget * parent = 0, Qt::WindowFlags f = 0);
 
-		~VRQLabel();
+		virtual ~VRQLabel();
 
 	signals:
 		void clicked();

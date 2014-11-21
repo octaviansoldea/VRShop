@@ -5,7 +5,7 @@ using namespace std;
 
 //=====================================================================
 
-string ShopBuilderCommands::getOperationType(enum OBJECT_NAME aenumOBJECT_NAME)	{
+string ShopBuilderCommands::getOperationType(OBJECT_NAME aenumOBJECT_NAME)	{
 	int nType = aenumOBJECT_NAME;
 
 	string strResult;

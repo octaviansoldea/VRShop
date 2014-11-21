@@ -10,9 +10,6 @@ namespace VR	{
 
 	class BasketServer	{
 	public:
-		BasketServer();
-		~BasketServer();
-
 		const char* className() const;
 
 		static BasketServer * createBasketServer(std::vector<std::string> & avecstrBasketData);

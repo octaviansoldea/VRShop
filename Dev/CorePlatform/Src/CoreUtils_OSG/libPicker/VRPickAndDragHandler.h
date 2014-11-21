@@ -16,9 +16,6 @@ namespace VR {
 		virtual bool handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa );
 		osg::ref_ptr<AbstractObject> m_pPickedObject;
 
-		//double m_dbMouseLastGetX;
-		//double m_dbMouseLastGetY;
-
 	private:
 		typedef struct {
 			int m_nButton;
@@ -32,6 +29,7 @@ namespace VR {
 
 
 	protected:
+		virtual ~PickAndDragHandler();
 		virtual bool handleKeyDown(int anKey);
 		virtual bool handlePush(const MouseSignals & aMouseSignals, osgViewer::Viewer * apViewer);
 		virtual bool handleDrag(const MouseSignals & aMouseSignals, osgViewer::Viewer * apViewer);

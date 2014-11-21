@@ -15,16 +15,6 @@
 using namespace VR;
 using namespace std;
 
-//----------------------------------------------------------------------
-
-DatabaseNetworkManager::DatabaseNetworkManager()	{
-}
-
-//----------------------------------------------------------------------
-
-DatabaseNetworkManager::~DatabaseNetworkManager()	{
-}
-
 //=====================================================================
 
 QByteArray DatabaseNetworkManager::databaseRequest(QByteArray & aData)	{
@@ -141,7 +131,7 @@ QByteArray DatabaseNetworkManager::databaseRequest(QByteArray & aData)	{
 			in >> qstrAvatarNames;
 
 			AvatarManagerServer ams;
-			list<string> & lstOtherAvatarsData = ams.getAvatarsDataFromDB();
+			list<string> lstOtherAvatarsData = ams.getAvatarsDataFromDB();
 			string strResult;
 
 			if (lstOtherAvatarsData == list<string>())	{

@@ -7,7 +7,7 @@ namespace VR	{
 	struct ProductShopEditorParams : public AbstractProductParams	{
 		std::string m_strProductCategory;
 		std::string m_strProductName;
-		unsigned long m_nProductCode;
+		unsigned long m_ulProductCode;
 		std::string m_strProductShortDescription;
 		std::string m_strProductDescription;
 		std::string m_strManufacturerName;
@@ -28,6 +28,7 @@ namespace VR	{
 	class ProductShopEditor : public AbstractProduct	{
 	public:
 		ProductShopEditor();
+		ProductShopEditor(std::string & astrSQLParams);
 		ProductShopEditor(osg::ref_ptr <AbstractObject> apRepresentation, const ProductShopEditorParams & aProductShopEditorParams);
 		virtual ~ProductShopEditor();
 
@@ -36,9 +37,18 @@ namespace VR	{
 
 		void setColor(const std::vector < float > & aarrflColor);
 		void setTexture(const std::string & astrFileName);
+		std::string getTexture() const;
 
 		void setParams(const ProductShopEditorParams & aProductShopEditorParams);
 		void getParams(ProductShopEditorParams & aProductShopEditorParams) const;
+
+		void setQuantity(float aflQuantity);
+		float getQuantity() const;
+
+		void setPrice(float aflPrice);
+		float getPrice() const;
+
+		unsigned long getProductCode() const;
 
 		std::string prepareRowData(const std::string & astrParentName="");
 

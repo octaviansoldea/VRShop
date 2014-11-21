@@ -30,11 +30,6 @@ SceneObjectsSearch(aqstrSearchQuery,apScene) {
 
 //--------------------------------------------------------------------
 
-SceneObjectsSearchShopEditor::~SceneObjectsSearchShopEditor()	{
-}
-
-//--------------------------------------------------------------------
-
 DataStructureModel * SceneObjectsSearchShopEditor::getModel() const	{
 	return this->m_pDataStructureModel;
 }
@@ -42,13 +37,13 @@ DataStructureModel * SceneObjectsSearchShopEditor::getModel() const	{
 //--------------------------------------------------------------------
 
 void SceneObjectsSearchShopEditor::slotChangeName(const QModelIndex & anIndex)	{
-	string & strPrevName = m_pDataStructureModel->getPrevValue().toString().toStdString();
+	string strPrevName = m_pDataStructureModel->getPrevValue().toString().toStdString();
 //	AbstractObject * pObject = dynamic_cast<AbstractObject*>(m_pScene->getChild(strPrevName));
-	Node * pObject = dynamic_cast<Node*>(m_pScene->getChild(strPrevName));
+	ref_ptr<Node> pObject = dynamic_cast<Node*>(m_pScene->getChild(strPrevName));
 
 	if (!pObject)
 		return;
 
-	string & strNewName = anIndex.data().toString().toStdString();
+	string strNewName = anIndex.data().toString().toStdString();
 	pObject->setName(strNewName);
 }

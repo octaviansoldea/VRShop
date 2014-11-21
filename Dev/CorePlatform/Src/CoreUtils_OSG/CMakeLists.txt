@@ -11,7 +11,6 @@ SUBDIRS(
 	libSearch
 	libItemModel
 	libLighting
-	libMngtController
 	libOSGQTViewer
 	libPicker
 	libController

@@ -20,7 +20,6 @@
 #include <osgViewer/Viewer>
 
 #include "BasicDefinitions.h"
-#include "VRScene.h"
 #include "VRAbstractObject.h"
 
 #include "VRPickAndDragHandlerShopClient.h"
@@ -31,20 +30,8 @@ using namespace osg;
 using namespace osgGA;
 
 
-PickAndDragHandlerShopClient::PickAndDragHandlerShopClient()	{
-}
-
-//-------------------------------------------------------------------------------
-
-PickAndDragHandlerShopClient::~PickAndDragHandlerShopClient()	{
-}
-
-//-------------------------------------------------------------------------------
-
 bool PickAndDragHandlerShopClient::handle(const GUIEventAdapter& ea, GUIActionAdapter& aa) {
 	osgViewer::Viewer * pViewer = dynamic_cast<osgViewer::Viewer*>(&aa);
-
-	Scene * pScene = dynamic_cast<Scene*>(pViewer->getSceneData());
 
 	bool bRes = true;
 
@@ -61,7 +48,7 @@ bool PickAndDragHandlerShopClient::handle(const GUIEventAdapter& ea, GUIActionAd
 	}
 
 	if ((nEventType == GUIEventAdapter::LEFT_MOUSE_BUTTON)) {
-		AbstractObject * pPickedObject = m_pPickedObject.get();
+		ref_ptr<AbstractObject> pPickedObject = m_pPickedObject;
 
 		//Only first parent is checked if it's a product or not
 		string strParentName = pPickedObject->getParents()[0]->getName();

@@ -28,9 +28,11 @@ using namespace std;
 PickAndDragHandler::PickAndDragHandler() :
 	m_dbMouseLastGetXNormalized(0), m_dbMouseLastGetYNormalized(0),
 	m_nCurrentBasicTransform(TRANSLATE), m_nCurrentModalityTransform(DISPLAY_PLANE) {
+}
 
-		//m_dbMouseLastGetX=0;
-		//m_dbMouseLastGetY=0;
+//---------------------------------------------------------------------------------------
+
+PickAndDragHandler::~PickAndDragHandler()	{
 }
 
 //---------------------------------------------------------------------------------------
@@ -306,7 +308,7 @@ bool PickAndDragHandler::handleDrag(const MouseSignals & aMouseSignals, osgViewe
 		}
 	}
 
-	Matrix & mtrxMatrix = m_pPickedObject->calculateMatrix();
+	Matrix mtrxMatrix = m_pPickedObject->calculateMatrix();
 	m_pPickedObject->setMatrix(mtrxMatrix);
 
 	//ref_ptr<Group> pScene = dynamic_cast<Group*>(apViewer->getSceneData());

@@ -14,16 +14,6 @@ using namespace std;
 
 DatabaseInterface ProductManagerServer::m_DIProduct(ProductManagerServer::getDBParams());
 
-//-----------------------------------------------------------------------------
-
-ProductManagerServer::ProductManagerServer()	{
-}
-
-//-----------------------------------------------------------------------------
-
-ProductManagerServer::~ProductManagerServer()	{
-}
-
 //==============================================================================
 
 const char* ProductManagerServer::className() const	{
@@ -69,7 +59,7 @@ string ProductManagerServer::getProductDataFromDB(const std::string astrProductN
 	}
 
 	list<string>::iterator it = lstResult.begin();
-	string & strProductData = *it;
+	string strProductData = *it;
 
 	return strProductData;
 }

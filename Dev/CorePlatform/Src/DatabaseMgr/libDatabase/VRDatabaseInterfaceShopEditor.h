@@ -16,13 +16,10 @@ namespace VR {
 		DatabaseInterfaceShopEditor();
 		DatabaseInterfaceShopEditor(const DatabaseInterfaceShopEditorParams & aDBInterfaceParams);
 
-		virtual ~DatabaseInterfaceShopEditor();
-
 		virtual void init(const DatabaseInterfaceShopEditorParams & aDBInterfaceParams);
 
 		void insertScene(const std::string & astrScene);
 		void insertObject(const std::string & astrScene, std::vector<std::string> & avecstrData);
-		void insertProduct(std::vector<std::string> & avecstrData);
 
 		std::list<std::string> getListOfObjects(const std::string & astrScene);
 		std::vector<std::string> getObjectData(std::string & strSceneObject);

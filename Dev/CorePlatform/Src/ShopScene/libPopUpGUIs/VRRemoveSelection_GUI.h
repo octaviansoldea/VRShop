@@ -7,7 +7,7 @@
 
 namespace VR	{
 	class RemoveSelection_GUI : public QDialog, public Ui::RemoveSelection	{
-		Q_OBJECT
+//		Q_OBJECT
 	public:
 		RemoveSelection_GUI();
 	};

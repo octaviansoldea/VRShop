@@ -26,8 +26,8 @@ int main(int argc, char * argv[])	{
 
 	EmbeddedWidget_GUI embeddedWidget;
 
-	int nSelection=0;
-
+	//nSelection=1: run as a web plugin; default: run as a windows APPi
+	int nSelection=1;
 	switch(nSelection)	{
 	case 1:	{
 		embeddedWidget.setAttribute(Qt::WA_NativeWindow);

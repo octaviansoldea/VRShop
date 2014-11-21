@@ -7,7 +7,7 @@ using namespace osg;
 //=======================================================================
 
 AbstractGeomShapeParams::AbstractGeomShapeParams() : AbstractObjectParams(),
-m_strFileNameTexture(""){
+m_strFileNameTexture(" "){
 	m_arrflRGBA.push_back(1.0);
 	m_arrflRGBA.push_back(0.0);
 	m_arrflRGBA.push_back(0.0);
@@ -44,10 +44,10 @@ const char* AbstractGeomShape::className() const	{
 //--------------------------------------------------------------------------
 
 void AbstractGeomShape::setParams(const AbstractGeomShapeParams & aAbstractGeomShapeParams) {
-	AbstractObject::setParams(aAbstractGeomShapeParams);
-
 	m_arrflRGBA = aAbstractGeomShapeParams.m_arrflRGBA;
 	m_strFileNameTexture = aAbstractGeomShapeParams.m_strFileNameTexture;
+
+	AbstractObject::setParams(aAbstractGeomShapeParams);
 }
 
 //--------------------------------------------------------------------------
@@ -58,3 +58,5 @@ void AbstractGeomShape::getParams(AbstractGeomShapeParams & aAbstractGeomShapePa
 	aAbstractGeomShapeParams.m_arrflRGBA = m_arrflRGBA;
 	aAbstractGeomShapeParams.m_strFileNameTexture = m_strFileNameTexture;
 }
+
+//--------------------------------------------------------------------------

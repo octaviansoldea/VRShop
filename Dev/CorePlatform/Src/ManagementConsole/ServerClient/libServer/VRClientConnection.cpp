@@ -29,11 +29,6 @@ ClientConnection::ClientConnection(QObject *parent) : QTcpSocket(parent), m_bIsF
 	m_unPackageSize = 0;
 }
 
-//----------------------------------------------------------------------
-
-ClientConnection::~ClientConnection()	{
-}
-
 //=====================================================================
 
 void ClientConnection::slotReadClient()	{
@@ -57,7 +52,7 @@ void ClientConnection::slotReadClient()	{
 
 	m_unPackageSize = 0;
 
-	QByteArray & output = DatabaseNetworkManager::databaseRequest(qData);
+	QByteArray output = DatabaseNetworkManager::databaseRequest(qData);
 
 	//Write to client
 	QDataStream out(&output, QIODevice::WriteOnly);

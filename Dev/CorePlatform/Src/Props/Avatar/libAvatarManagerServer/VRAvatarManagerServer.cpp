@@ -21,11 +21,6 @@ AvatarManagerServer::AvatarManagerServer()	{
 
 //------------------------------------------------------------------------------
 
-AvatarManagerServer::~AvatarManagerServer()	{
-}
-
-//------------------------------------------------------------------------------
-
 const char* AvatarManagerServer::className() const	{
 	return "AvatarManagerServer";
 }

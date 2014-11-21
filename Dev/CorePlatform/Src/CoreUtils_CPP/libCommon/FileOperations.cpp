@@ -101,7 +101,7 @@ string adjustFileData(std::string & strFileDir, std::string & strFileName)	{
 	strFileDir += (isAtEndOfString(strFileDir, "/")) ? "" : "/";
 	strFileDir += strFileName;
 	strFileDir += (isAtEndOfString(strFileDir, ".db")) ? "" : ".db";
-	string & strFileNameFinal = replaceAll(strFileDir, "/", "\\");
+	string strFileNameFinal = replaceAll(strFileDir, "/", "\\");
 
 	return strFileNameFinal;
 }

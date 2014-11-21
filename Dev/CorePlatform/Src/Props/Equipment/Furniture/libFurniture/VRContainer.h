@@ -29,8 +29,8 @@ namespace VR	{
 
 		virtual void initFromSQLData(const std::string & astrSQLData);
 
-		virtual void setParams(const ContainerParams & aContainerParams);
-		virtual void getParams(ContainerParams & aContainerParams) const;
+		void setParams(const ContainerParams & aContainerParams);
+		void getParams(ContainerParams & aContainerParams) const;
 
 	private:
 		float m_flWidth;

@@ -4,8 +4,6 @@
 #include <QImageReader>
 #include <QFileDialog>
 
-//#include "VRKeyboardMouseManipulatorShopEditor.h"
-
 #include "VRAbstractObject.h"
 #include "VREditItem_GUI.h"
 #include "VREditItemPrism_GUI.h"
@@ -55,7 +53,7 @@ void EditItem_GUIBase::slotInsertImage()	{
 //----------------------------------------------------------------------
 
 void EditItem_GUIBase::slotBrowseDirectory()	{
-	QString & qstrFileName = QFileDialog::getOpenFileName(this, 
+	QString qstrFileName = QFileDialog::getOpenFileName(this, 
 		tr("Open File"),
 		tr("."), "*.bmp");
 

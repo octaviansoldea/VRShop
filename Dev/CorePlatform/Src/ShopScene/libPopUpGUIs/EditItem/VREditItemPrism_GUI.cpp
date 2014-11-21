@@ -21,7 +21,7 @@ EditItemPrism_GUI::EditItemPrism_GUI(AbstractObject * apAbstractObject) :
 EditItem_GUIBase(apAbstractObject)	{
 	setupUi(this);
 
-	Matrix & mtrxTemp = Matrix::identity();
+	Matrix mtrxTemp = Matrix::identity();
 	m_pAbstractObject->setMatrix(mtrxTemp);
 
 	
@@ -49,14 +49,6 @@ EditItem_GUIBase(apAbstractObject)	{
 	m_pLineEditColorB->setText("0");
 	m_pLineEditColorA->setText("0");
 }
-
-//----------------------------------------------------------------------
-
-EditItemPrism_GUI::~EditItemPrism_GUI()	{
-	if (m_pOSGQT_Widget)
-		delete m_pOSGQT_Widget;
-}
-
 
 //----------------------------------------------------------------------
 

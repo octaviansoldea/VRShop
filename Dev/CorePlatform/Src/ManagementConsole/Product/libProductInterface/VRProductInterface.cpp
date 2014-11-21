@@ -41,11 +41,6 @@ ProductInterface::ProductInterface(
 	connect(m_pPushButtonProductInterfaceDetails,SIGNAL(clicked(bool)),this,SLOT(slotProductDetails()));
 }
 
-//----------------------------------------------------------------------
-
-ProductInterface::~ProductInterface()	{
-}
-
 //=======================================================================
 
 void ProductInterface::init(const ProductShopClient * apProductShopClient)	{
@@ -57,7 +52,7 @@ void ProductInterface::init(const ProductShopClient * apProductShopClient)	{
 	ProductShopClientParams productParams;
 	m_ProductShopClient.getParams(productParams);
 
-	string & strPrice = productParams.m_strCurrency + " " + tostr(productParams.m_flPricePerUnit).c_str();
+	string strPrice = productParams.m_strCurrency + " " + tostr(productParams.m_flPricePerUnit).c_str();
 	m_pLabelProductInterfacePrice->setText(strPrice.c_str());
 
 	string strTextureFile = productParams.m_strTextureFile;

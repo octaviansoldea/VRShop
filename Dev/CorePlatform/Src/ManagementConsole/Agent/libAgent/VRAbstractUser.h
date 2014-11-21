@@ -2,6 +2,7 @@
 #define VR_ABSTRACT_USER_H
 
 #include <string>
+#include <osg/ref_ptr>
 
 namespace VR {
 	class Avatar;
@@ -29,7 +30,7 @@ namespace VR {
 		void sendMessage(std::string & astrMessage);
 		void receiveMessage(std::string & astrMessage);
 
-		Avatar * m_pAvatar;
+		osg::ref_ptr<Avatar> m_pAvatar;
 		BasketClient * m_pBasket;
 
 	private:

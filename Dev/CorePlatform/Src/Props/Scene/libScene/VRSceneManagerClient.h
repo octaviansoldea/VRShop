@@ -14,7 +14,6 @@ namespace VR	{
 	public:
 		SceneManagerClient();
 		SceneManagerClient(const std::string & astrDBFileName);
-		~SceneManagerClient();
 
 		virtual const char* className() const;
 

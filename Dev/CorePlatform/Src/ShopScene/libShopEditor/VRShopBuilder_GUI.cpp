@@ -1,4 +1,5 @@
 #include "BasicStringDefinitions.h"
+#include <string>
 
 #include <osgDB/ReadFile>
 #include <osgGA/GUIEventHandler>
@@ -6,18 +7,11 @@
 #include <QFileDialog>
 #include <QMessageBox>
 
-
-#include "VRInsertNewItem_GUI.h"
-
 #include "VRShopBuilder.h"
 #include "VRScene.h"
 
-#include "VRProductManager.h"
-
 #include "VRCameraController.h"
 #include "VRPickAndDragController.h"
-#include "VRSearchListController.h"
-#include "VRProductController.h"
 
 #include "VRKeyboardMouseManipulatorShopEditor.h"
 #include "VRPickAndDragHandlerShopEditor.h"
@@ -40,12 +34,11 @@ ShopBuilder_GUI::ShopBuilder_GUI()	{
 	setWindowTitle("ShopBuilder");
 
 	m_pShopBuilder = new ShopBuilder(m_pOSGQTWidget);
-	Scene * pScene = m_pShopBuilder->getScene();
-	ProductManager * pProductMgr = m_pShopBuilder->getProducts();
+	ref_ptr<Scene> pScene = m_pShopBuilder->getScene();
 	string strFileName = m_pShopBuilder->getCurrentFileName();
 
-	KeyboardMouseManipulatorShopEditor * pKeyboardMouseManipulatorShopEditor = 
-		dynamic_cast<KeyboardMouseManipulatorShopEditor *>(m_pOSGQTWidget->getCameraManipulator());
+	ref_ptr<KeyboardMouseManipulatorShopEditor> pKeyboardMouseManipulatorShopEditor = 
+		(KeyboardMouseManipulatorShopEditor *)(m_pOSGQTWidget->getCameraManipulator());
 
 	try{
 		typeid(*pKeyboardMouseManipulatorShopEditor);
@@ -70,7 +63,7 @@ ShopBuilder_GUI::ShopBuilder_GUI()	{
 		cerr << bt.what() << endl;
 	}
 
-	PickAndDragHandlerShopEditor *pPickAndDragHandlerShopEditor = m_pShopBuilder->getPicker();
+	ref_ptr<PickAndDragHandlerShopEditor> pPickAndDragHandlerShopEditor = m_pShopBuilder->getPicker();
 
 	m_pPickAndDragController = new PickAndDragController(
 		m_p_DoubleSpinBox_TranslationX,
@@ -84,38 +77,16 @@ ShopBuilder_GUI::ShopBuilder_GUI()	{
 		m_p_DoubleSpinBox_RotationZ,
 		m_p_ComboBox_DirectionOfTranslation,
 		m_p_ComboBox_TranslateRelativeTo,
-		pPickAndDragHandlerShopEditor,
-		pScene);
+		pPickAndDragHandlerShopEditor);
 
-
-	m_pPickAndDragController = new PickAndDragController(
-		m_p_PushButton_ModifyScene_DuplicateSelection,
-		m_p_PushButton_ModifyScene_DeleteSelection,
-		m_p_PushButton_ModifyScene_SplitItem,
-		m_p_PushButton_ModifyScene_GroupItems,
-		m_p_PushButton_ModifyScene_EditItem,
-		pPickAndDragHandlerShopEditor,
-		pScene);
-
-
-	m_pProductController = new ProductController(
-		m_p_PushButton_ProductSettings_AddNewProduct,
-		m_p_PushButton_ProductSettings_RemoveProduct,
-		m_p_PushButton_ProductSettings_Apply,
-		m_p_PushButton_ProductSettings_Cancel,
-		m_p_PushButton_ProductSettings_MoreSettings,
-		m_p_ComboBox_ProductSettings_ProductName,
-		m_p_LineEdit_ProductSettings_NewPrice,
-		m_p_LineEdit_ProductSettings_NewQuantity,
-		m_p_LineEdit_ProductSettings_Price,
-		m_p_LineEdit_ProductSettings_Quantity,
-		pProductMgr,
-		pPickAndDragHandlerShopEditor
-	);
 
 	m_pOSGQTWidget->show();
 
 	buildConnections();
+
+	connect(pPickAndDragHandlerShopEditor,SIGNAL(signalProductPicked(const std::string &)),
+		this,SLOT(slotProductClicked(const std::string &))
+	);
 }
 
 //=========================================================================================
@@ -123,9 +94,6 @@ ShopBuilder_GUI::ShopBuilder_GUI()	{
 ShopBuilder_GUI::~ShopBuilder_GUI() {
 	delete m_pCameraController;
 	delete m_pPickAndDragController;
-	delete m_pProductController;
-
-	delete m_pOSGQTWidget;
 
 	delete m_pShopBuilder;
 }
@@ -151,7 +119,23 @@ void ShopBuilder_GUI::buildConnections() {
 
 	connect(m_p_ComboBox_DefineDragAxis, SIGNAL(currentTextChanged(const QString &)),this,SLOT(slotDefineDragAxis(const QString &)));
 
-	connect(m_p_PushButton_ModifyScene_AddNewItem,SIGNAL(clicked()),this,SLOT(slotModifySceneActions()));
+	connect(m_p_PushButton_ModifyScene_AddNewItem,SIGNAL(clicked()),this,SLOT(slotAddNewItem()));
+
+	connect(m_p_PushButton_ProductSettings_AddNewProduct, SIGNAL(pressed()), this, SLOT(slotAddNewProductClicked()));
+
+	connect(m_p_PushButton_ProductSettings_RemoveProduct,SIGNAL(pressed()),this,SLOT(slotRemoveProduct()));
+	connect(m_p_PushButton_ProductSettings_MoreSettings,SIGNAL(pressed()),this,SLOT(slotProductMoreSettings()));
+
+	connect(m_p_PushButton_ProductSettings_Apply,SIGNAL(clicked(bool)),this,SLOT(slotApplyModifyProductClicked()));
+
+	connect(m_p_ComboBox_ProductSettings_ProductName,SIGNAL(editTextChanged(const QString &)),this,SLOT(slotComboBoxProductChanged()));
+
+	//Item management
+	connect(m_p_PushButton_ModifyScene_DeleteSelection,SIGNAL(clicked()),this,SLOT(slotRemoveSelection()));
+	connect(m_p_PushButton_ModifyScene_SplitItem,SIGNAL(clicked()),this,SLOT(slotSplitItem()));
+	connect(m_p_PushButton_ModifyScene_GroupItems,SIGNAL(clicked()),this,SLOT(slotGroupItems()));
+	connect(m_p_PushButton_ModifyScene_DuplicateSelection,SIGNAL(clicked()),this,SLOT(slotDuplicateSelection()));
+	connect(m_p_PushButton_ModifyScene_EditItem,SIGNAL(clicked()),this,SLOT(slotEditItem()));
 }
 
 //=========================================================================================
@@ -204,40 +188,35 @@ void ShopBuilder_GUI::slotSaveAsDB()	{
 void ShopBuilder_GUI::slotCloseDB()	{
 	slotSaveDB();
 	
-	const string & strCurrentFile = m_pShopBuilder->getCurrentFileName();
+	const string strCurrentFile = m_pShopBuilder->getCurrentFileName();
 	m_pShopBuilder->closeDB(strCurrentFile);
 }
 
 //---------------------------------------------------------------------------------------
 
 void ShopBuilder_GUI::slotSearchScene()	{
-	string & strSearchQuery = m_p_LineEdit_Search->text().toStdString();
+	string strSearchQuery = m_p_LineEdit_Search->text().toStdString();
 
 	if (strSearchQuery.empty())
 		return;
-
-	DataStructureModel * pDataStructureModel = 0;
 	
-	if(m_pShopBuilder->searchScene(strSearchQuery, &pDataStructureModel))	{
+	if(m_pShopBuilder->searchScene(strSearchQuery))	{
 		m_pSearchListWidget->show();
-		m_pListView->setModel(pDataStructureModel);
+		m_pListView->setModel(m_pShopBuilder->getSceneObjectsSearchModel());
 		m_pListView->show();
 	}
+
 }
 
 //---------------------------------------------------------------------------------------
 
 void ShopBuilder_GUI::slotItemClicked(const QModelIndex & aItemIndex)	{
-	QString & strClickedItem = aItemIndex.data().toString();
+	QString strClickedItem = aItemIndex.data().toString();
 
-	PickAndDragHandlerShopEditor *pPickAndDragHandlerShopEditor = m_pShopBuilder->getPicker();
+	m_pShopBuilder->updateSearchList(strClickedItem.toStdString());
 
-	SearchListController searchList(
-		strClickedItem,
-		pPickAndDragHandlerShopEditor,
-		m_pShopBuilder->getScene()
-	);
-	searchList.updateSearchListGUI();
+	ref_ptr<PickAndDragHandlerShopEditor> pPickAndDragHandlerShopEditor = m_pShopBuilder->getPicker();
+	emit pPickAndDragHandlerShopEditor->signalPropertiesSettingsChanged();
 }
 
 //---------------------------------------------------------------------------------------
@@ -289,31 +268,103 @@ void ShopBuilder_GUI::slotDefineDragAxis(const QString & astrAxis)	{
 
 //---------------------------------------------------------------------------------------
 
-void ShopBuilder_GUI::slotModifySceneActions()	{
-	InsertNewItem_GUI insertNewItem_GUI;
-	connect(&insertNewItem_GUI, SIGNAL(signalNewItemRequested(const QString &)),
-			this, SLOT(slotAddNewItem(const QString & )));
-
-	//To get a widget without a "TitleBar"
-	insertNewItem_GUI.setWindowFlags(Qt::FramelessWindowHint);
-	insertNewItem_GUI.exec();
-}
-
-//---------------------------------------------------------------------------------------
-
-void ShopBuilder_GUI::slotSetNewPriceQuantity()	{
-	//Update database with new data
-	//Perhaps open a new "confirmation" widget
-
-	m_p_LineEdit_ProductSettings_NewPrice;
-	m_p_LineEdit_ProductSettings_NewQuantity;
-}
-
-//---------------------------------------------------------------------------------------
-
-void ShopBuilder_GUI::slotAddNewItem(const QString & aqstrItemName)	{
-	m_pShopBuilder->addNewItem(aqstrItemName.toStdString());
+void ShopBuilder_GUI::slotAddNewItem()	{
+	m_pShopBuilder->addNewItem();
 }
 
 //=======================================================================================
 
+void ShopBuilder_GUI::slotAddNewProductClicked()	{
+	m_pShopBuilder->addNewProduct();
+}
+
+//---------------------------------------------------------------------------------------
+
+void ShopBuilder_GUI::slotRemoveProduct()	{
+	string strProductCode = m_p_ComboBox_ProductSettings_ProductName->currentText().toStdString();
+	m_pShopBuilder->removeProductClicked(strProductCode);
+}
+
+//---------------------------------------------------------------------------------------
+
+void ShopBuilder_GUI::slotProductMoreSettings()	{
+	string strProductCode = m_p_ComboBox_ProductSettings_ProductName->currentText().toStdString();
+	m_pShopBuilder->productMoreSettingsClicked(strProductCode);
+}
+
+//---------------------------------------------------------------------------------------
+
+void ShopBuilder_GUI::slotProductClicked(const std::string & astrProductName)	{
+	ShopBuilder::ProductClickedItems aProductClickedItems;
+	aProductClickedItems.m_pComboBox_ProductSettings_ProductName = m_p_ComboBox_ProductSettings_ProductName;
+	aProductClickedItems.m_pLineEdit_ProductSettings_Price = m_p_LineEdit_ProductSettings_Price;
+	aProductClickedItems.m_pLineEdit_ProductSettings_Quantity = m_p_LineEdit_ProductSettings_Quantity;
+	aProductClickedItems.m_strProductName = astrProductName;
+
+	m_pShopBuilder->productClicked(aProductClickedItems);
+
+	m_p_LineEdit_ProductSettings_NewPrice->setEnabled(true);
+	m_p_LineEdit_ProductSettings_NewQuantity->setEnabled(true);
+}
+
+//---------------------------------------------------------------------------------------
+
+void ShopBuilder_GUI::slotApplyModifyProductClicked()	{
+	ShopBuilder::ProductClickedItems aProductClickedItems;
+	aProductClickedItems.m_pComboBox_ProductSettings_ProductName = m_p_ComboBox_ProductSettings_ProductName;
+	aProductClickedItems.m_pLineEdit_ProductSettings_Price = m_p_LineEdit_ProductSettings_Price;
+	aProductClickedItems.m_pLineEdit_ProductSettings_Quantity = m_p_LineEdit_ProductSettings_Quantity;
+	aProductClickedItems.m_pLineEdit_ProductSettings_NewPrice = m_p_LineEdit_ProductSettings_NewPrice;
+	aProductClickedItems.m_pLineEdit_ProductSettings_NewQuantity = m_p_LineEdit_ProductSettings_NewQuantity;
+
+	m_pShopBuilder->modifyProductClicked(aProductClickedItems);
+
+	m_p_LineEdit_ProductSettings_NewPrice->clear();
+	m_p_LineEdit_ProductSettings_NewQuantity->clear();
+}
+
+//---------------------------------------------------------------------------------------
+
+void ShopBuilder_GUI::slotComboBoxProductChanged()	{
+	ShopBuilder::ProductClickedItems aProductClickedItems;
+	aProductClickedItems.m_pComboBox_ProductSettings_ProductName = m_p_ComboBox_ProductSettings_ProductName;
+	aProductClickedItems.m_pLineEdit_ProductSettings_Price = m_p_LineEdit_ProductSettings_Price;
+	aProductClickedItems.m_pLineEdit_ProductSettings_Quantity = m_p_LineEdit_ProductSettings_Quantity;
+
+	m_pShopBuilder->updateProductSettings(aProductClickedItems);
+}
+
+//---------------------------------------------------------------------------------------
+
+void ShopBuilder_GUI::slotAboutToQuitCalled()	{
+}
+
+//---------------------------------------------------------------------------------------
+
+void ShopBuilder_GUI::slotGroupItems()	{
+	m_pShopBuilder->groupItems();
+}
+
+//--------------------------------------------------------------------------------------
+
+void ShopBuilder_GUI::slotSplitItem()	{
+	m_pShopBuilder->splitItem();
+}
+
+//--------------------------------------------------------------------------------------
+
+void ShopBuilder_GUI::slotDuplicateSelection()	{
+	m_pShopBuilder->duplicateSelection();
+}
+
+//--------------------------------------------------------------------------------------
+
+void ShopBuilder_GUI::slotRemoveSelection()	{
+	m_pShopBuilder->removeSelection();
+}
+
+//--------------------------------------------------------------------------------------
+
+void ShopBuilder_GUI::slotEditItem()	{
+	m_pShopBuilder->editItem();
+}

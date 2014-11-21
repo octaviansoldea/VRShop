@@ -37,7 +37,6 @@ INCLUDE_DIRECTORIES(
 	${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libClient
 	${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
 	${CMAKE_SOURCE_DIR}/Props/GeometricShape/libGeometricShape
-	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libMngtController
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libOSGQTViewer
 	${CMAKE_SOURCE_DIR}/ShopScene/libPopUpGUIs
 	${CMAKE_BINARY_DIR}/ShopScene/libPopUpGUIs
@@ -48,9 +47,9 @@ INCLUDE_DIRECTORIES(
 #MOC according to the Qt version
 IF(Qt5_FOUND)
   QT5_WRAP_UI(UI_SRCS		)
-  QT5_WRAP_CPP(MOC_SRCS 	VRBasketClient.h)
+  QT5_WRAP_CPP(MOC_SRCS 	VRBasketClient.h VRProductManager.h)
 ELSE(Qt5_FOUND)
-  QT4_WRAP_CPP(MOC_SRCS		VRBasketClient.h)
+  QT4_WRAP_CPP(MOC_SRCS		VRBasketClient.h VRProductManager.h)
   QT4_WRAP_UI(UI_SRCS		)
 ENDIF(Qt5_FOUND)
 

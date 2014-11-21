@@ -13,7 +13,7 @@ namespace VR	{
 	public:
 		CashierScreenManager(QObject * apParent=0);
 		CashierScreenManager(BasketClient * apBasket, QObject * apParent=0);
-		~CashierScreenManager();
+		virtual ~CashierScreenManager();
 
 		void setCashierScreen(bool abIsWelcome);
 

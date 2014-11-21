@@ -15,11 +15,6 @@ CashierServer::CashierServer() :
 m_bIsTransactionApproved(false)	{
 }
 
-//------------------------------------------------------------------------------
-
-CashierServer::~CashierServer()	{
-}
-
 //=============================================================================
 
 const char* CashierServer::className() const	{

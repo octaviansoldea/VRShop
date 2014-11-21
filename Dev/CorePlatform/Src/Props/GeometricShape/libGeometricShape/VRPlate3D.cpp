@@ -72,7 +72,7 @@ Object* Plate3D::clone(const CopyOp& copyop) const	{
 void Plate3D::init(const Plate3DParams & aPlate3DParams)	{
 	setParams(aPlate3DParams);
 
-	Matrix & plate3DMatrix = calculateMatrix();
+	Matrix plate3DMatrix = calculateMatrix();
 	setMatrix(plate3DMatrix);
 
 	setColor(aPlate3DParams.m_arrflRGBA);
@@ -107,17 +107,17 @@ string Plate3D::getSQLCommand() const	{
 	getParams(plate3DParams);
 
 	string strPlate3DParams;
-	strPlate3DParams = to_string((long double)plate3DParams.m_flPosX) + "_";
-	strPlate3DParams += to_string((long double)plate3DParams.m_flPosY) + "_";
-	strPlate3DParams += to_string((long double)plate3DParams.m_flPosZ) + "_";
+	strPlate3DParams = to_string((long double)plate3DParams.m_flPosX) + "_" +
+	to_string((long double)plate3DParams.m_flPosY) + "_" +
+	to_string((long double)plate3DParams.m_flPosZ) + "_" +
 
-	strPlate3DParams += to_string((long double)plate3DParams.m_flLenX) + "_";
-	strPlate3DParams += to_string((long double)plate3DParams.m_flLenY) + "_";
-	strPlate3DParams += to_string((long double)plate3DParams.m_flLenZ) + "_";
+	to_string((long double)plate3DParams.m_flLenX) + "_" +
+	to_string((long double)plate3DParams.m_flLenY) + "_" +
+	to_string((long double)plate3DParams.m_flLenZ) + "_" +
 
-	strPlate3DParams += to_string((long double)plate3DParams.m_flAngleYZ) + "_";
-	strPlate3DParams += to_string((long double)plate3DParams.m_flAngleXZ) + "_";
-	strPlate3DParams += to_string((long double)plate3DParams.m_flAngleXY);
+	to_string((long double)plate3DParams.m_flAngleYZ) + "_" +
+	to_string((long double)plate3DParams.m_flAngleXZ) + "_" +
+	to_string((long double)plate3DParams.m_flAngleXY);
 
 
 	int nI;
@@ -199,17 +199,17 @@ string Plate3D::prepareRowData(const std::string & astrParentName)	{
 	getParams(plate3DParams);
 
 	string strPlate3DParams;
-	strPlate3DParams = to_string((long double)plate3DParams.m_flPosX) + "_";
-	strPlate3DParams += to_string((long double)plate3DParams.m_flPosY) + "_";
-	strPlate3DParams += to_string((long double)plate3DParams.m_flPosZ) + "_";
+	strPlate3DParams = to_string((long double)plate3DParams.m_flPosX) + "_" +
+	to_string((long double)plate3DParams.m_flPosY) + "_" +
+	to_string((long double)plate3DParams.m_flPosZ) + "_" +
 
-	strPlate3DParams += to_string((long double)plate3DParams.m_flLenX) + "_";
-	strPlate3DParams += to_string((long double)plate3DParams.m_flLenY) + "_";
-	strPlate3DParams += to_string((long double)plate3DParams.m_flLenZ) + "_";
+	to_string((long double)plate3DParams.m_flLenX) + "_" +
+	to_string((long double)plate3DParams.m_flLenY) + "_" +
+	to_string((long double)plate3DParams.m_flLenZ) + "_" +
 
-	strPlate3DParams += to_string((long double)plate3DParams.m_flAngleYZ) + "_";
-	strPlate3DParams += to_string((long double)plate3DParams.m_flAngleXZ) + "_";
-	strPlate3DParams += to_string((long double)plate3DParams.m_flAngleXY) + ";";
+	to_string((long double)plate3DParams.m_flAngleYZ) + "_" +
+	to_string((long double)plate3DParams.m_flAngleXZ) + "_" +
+	to_string((long double)plate3DParams.m_flAngleXY) + ";";
 
 
 	int nI;
@@ -219,11 +219,7 @@ string Plate3D::prepareRowData(const std::string & astrParentName)	{
 	}
 	strColor += to_string((long double)plate3DParams.m_arrflRGBA[3]) + ";";
 
-	strPlate3DParams += strColor;
-
-	strPlate3DParams += plate3DParams.m_strFileNameTexture + ";";
-
-	strPlate3DParams += astrParentName;
+	strPlate3DParams += strColor + plate3DParams.m_strFileNameTexture + ";" + astrParentName;
 
 	return strPlate3DParams;
 }

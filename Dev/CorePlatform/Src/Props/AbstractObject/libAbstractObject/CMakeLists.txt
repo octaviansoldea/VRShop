@@ -9,6 +9,7 @@ INCLUDE_DIRECTORIES(
 
 SET(SRCS
     VRAbstractObject.h VRAbstractObject.cpp
+	VRAbstractObjectFactory.h VRAbstractObjectFactory.cpp
 )
 
 ADD_LIBRARY(libAbstractObject ${SRCS})

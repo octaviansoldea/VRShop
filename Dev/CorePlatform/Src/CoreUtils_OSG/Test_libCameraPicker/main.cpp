@@ -4,7 +4,7 @@
 
 #include "VRContainer.h"
 
-#include "VRPickAndDragHandler.h"
+#include "VRPickAndDragHandlerShopEditor.h"
 #include "VRKeyboardMouseManipulator.h"
 
 #include <osgViewer/Viewer>
@@ -87,7 +87,7 @@ int main(int argc, char * argv[])	{
 	viewer.setSceneData( root.get() );
 	viewer.setUpViewInWindow(0, 0, 600, 400);	
 	viewer.setCameraManipulator(new VR::KeyboardMouseManipulator);
-	viewer.addEventHandler( new VR::PickAndDragHandler );
+	viewer.addEventHandler( new VR::PickAndDragHandlerShopEditor );
 
 	return viewer.run();
 }

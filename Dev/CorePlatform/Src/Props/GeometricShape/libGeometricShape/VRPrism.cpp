@@ -223,20 +223,20 @@ string Prism::prepareRowData(const string & astrParentName)	{
 	getParams(prismParams);
 	string strPrismParams;
 
-	strPrismParams= to_string((long double)prismParams.m_flRadius) + "_";
-	strPrismParams+= to_string((long double)prismParams.m_flHeight) + "_";
+	strPrismParams= to_string((long double)prismParams.m_flRadius) + "_" +
+	to_string((long double)prismParams.m_flHeight) + "_" +
 
-	strPrismParams+= to_string((long double)prismParams.m_flPosX) + "_";
-	strPrismParams+= to_string((long double)prismParams.m_flPosY) + "_";
-	strPrismParams+= to_string((long double)prismParams.m_flPosZ) + "_";
+	to_string((long double)prismParams.m_flPosX) + "_" +
+	to_string((long double)prismParams.m_flPosY) + "_" +
+	to_string((long double)prismParams.m_flPosZ) + "_" +
 
-	strPrismParams += to_string((long double)prismParams.m_flLenX) + "_";
-	strPrismParams += to_string((long double)prismParams.m_flLenY) + "_";
-	strPrismParams += to_string((long double)prismParams.m_flLenZ) + "_";
+	to_string((long double)prismParams.m_flLenX) + "_" +
+	to_string((long double)prismParams.m_flLenY) + "_" +
+	to_string((long double)prismParams.m_flLenZ) + "_" +
 
-	strPrismParams+= to_string((long double)prismParams.m_flAngleXY) + "_";
-	strPrismParams+= to_string((long double)prismParams.m_flAngleXZ) + "_";
-	strPrismParams+= to_string((long double)prismParams.m_flAngleYZ) + ";";	
+	to_string((long double)prismParams.m_flAngleXY) + "_" +
+	to_string((long double)prismParams.m_flAngleXZ) + "_" +
+	to_string((long double)prismParams.m_flAngleYZ) + ";";	
 
 	int nI;
 	string strColor;
@@ -245,10 +245,7 @@ string Prism::prepareRowData(const string & astrParentName)	{
 	}
 	strColor += to_string((long double)prismParams.m_arrflRGBA[3]) + ";";
 
-	strPrismParams += strColor;
+	strPrismParams += strColor + prismParams.m_strFileNameTexture + ";" + astrParentName + ";";
 
-	strPrismParams += prismParams.m_strFileNameTexture + ";";
-
-	strPrismParams += astrParentName + ";";
 	return strPrismParams;
 }

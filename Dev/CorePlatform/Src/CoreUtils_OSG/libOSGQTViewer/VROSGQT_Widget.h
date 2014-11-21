@@ -2,7 +2,6 @@
 #define OSGQT_WIDGET_H
 
 #include <QWidget>
-#include <QTimer>
 #include <osgViewer/Viewer>
 
 
@@ -12,19 +11,19 @@ namespace VR	{
 
 	public:
 		OSGQT_Widget(QWidget * apQWidget = 0, Qt::WindowFlags f = false);
-		~OSGQT_Widget();
 
 		virtual void paintEvent(QPaintEvent* event);
 		virtual void timerEvent(QTimerEvent* event);
 
 		void setSceneData(osg::Node* apNode);
+		osg::Node * getSceneData();
+
 		void setCameraManipulator(osgGA::CameraManipulator* manipulator, bool resetPosition = true);
 		osgGA::CameraManipulator * getCameraManipulator();
 		void addEventHandler(osgGA::GUIEventHandler *eventHandler);
 
 	private:
 		osgViewer::Viewer m_viewer;
-//		QTimer m_Qtimer;
 	};
 }
 #endif //OSGQT_WIDGET_H

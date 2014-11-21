@@ -8,12 +8,9 @@
 namespace VR	{
 	
 	class EditItemFurniture_GUI : public EditItem_GUIBase, public Ui::EditFurniture	{
-		Q_OBJECT
 	public:
 		EditItemFurniture_GUI(AbstractObject * apAbstractObject);
-		~EditItemFurniture_GUI();
 
-	public slots:
 		virtual void slotSetColor();
 
 	protected:

@@ -14,12 +14,12 @@ using namespace VR;
 //--------------------------------------------------------------------
 
 OSGQT_Widget::OSGQT_Widget(QWidget * apQWidget, Qt::WindowFlags f) : QWidget(apQWidget, f | Qt::MSWindowsOwnDC) {
- 	osg::ref_ptr<osg::GraphicsContext::Traits> pTraits = new osg::GraphicsContext::Traits(osg::DisplaySettings::instance().get());
+	osg::ref_ptr<osg::GraphicsContext::Traits> pTraits = new osg::GraphicsContext::Traits(osg::DisplaySettings::instance().get());
 	pTraits->width = width();
 	pTraits->height = height();
 	pTraits->doubleBuffer = true;
 
-	osgQt::GraphicsWindowQt * pGraphicsWindow = new osgQt::GraphicsWindowQt(pTraits.get());
+	osg::ref_ptr<osgQt::GraphicsWindowQt> pGraphicsWindow = new osgQt::GraphicsWindowQt(pTraits.get());
 
 	QVBoxLayout* pLayout = new QVBoxLayout;
 	pLayout->addWidget(pGraphicsWindow->getGLWidget());
@@ -42,11 +42,6 @@ OSGQT_Widget::OSGQT_Widget(QWidget * apQWidget, Qt::WindowFlags f) : QWidget(apQ
 
 //--------------------------------------------------------------------
 
-OSGQT_Widget::~OSGQT_Widget()	{
-}
-
-//--------------------------------------------------------------------
-
 void OSGQT_Widget::paintEvent(QPaintEvent* event)	{
 	m_viewer.frame();
 }
@@ -61,6 +56,12 @@ void OSGQT_Widget::timerEvent(QTimerEvent* event)	{
 
 void OSGQT_Widget::setSceneData(osg::Node* apNode)	{
 	m_viewer.setSceneData(apNode);
+}
+
+//--------------------------------------------------------------------
+
+Node * OSGQT_Widget::getSceneData()	{
+	return m_viewer.getSceneData();
 }
 
 //--------------------------------------------------------------------

@@ -52,8 +52,8 @@ ref_ptr<Geometry> Floor::setGeometry()	{
 	ref_ptr<Vec2Array> tcs = new osg::Vec2Array;
 	osg::Vec3 nrm(0,-1,0);
 
-	Vec3d & vec3dPoint0 = m_FloorParams.m_vec3dBottomLeft;
-	Vec3d & vec3dPoint1 = m_FloorParams.m_vec3dUpRight;
+	Vec3d vec3dPoint0 = m_FloorParams.m_vec3dBottomLeft;
+	Vec3d vec3dPoint1 = m_FloorParams.m_vec3dUpRight;
 
 	float flarrCoords[4][2] = { 
 		{ vec3dPoint0.x(), vec3dPoint0.y() },

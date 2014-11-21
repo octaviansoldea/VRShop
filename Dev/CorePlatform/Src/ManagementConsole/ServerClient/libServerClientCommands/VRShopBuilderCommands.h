@@ -13,7 +13,7 @@ namespace VR	{
 			GRID
 		};
 
-		static std::string getOperationType(enum OBJECT_NAME aenumOBJECT_NAME);
+		static std::string getOperationType(OBJECT_NAME aenumOBJECT_NAME);
 	};
 }
 #endif //VR_SHOP_BUILDER_COMMANDS_H

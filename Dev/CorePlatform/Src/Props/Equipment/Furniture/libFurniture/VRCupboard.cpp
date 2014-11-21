@@ -59,7 +59,7 @@ Object* Cupboard::clone(const CopyOp& copyop) const	{
 void Cupboard::init(const CupboardParams & aCupboardParams)	{
 	setParams(aCupboardParams);
 
-	Matrix & cupboardMatrix = calculateMatrix();
+	Matrix cupboardMatrix = calculateMatrix();
 	setMatrix(cupboardMatrix);
 }
 

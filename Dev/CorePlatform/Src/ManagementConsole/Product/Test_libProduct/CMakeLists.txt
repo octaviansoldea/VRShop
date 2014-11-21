@@ -30,7 +30,6 @@ SET(src
 )
 
 INCLUDE_DIRECTORIES(
-	${CMAKE_BINARY_DIR}/CoreUtils_OSG/libMngtController
 	${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
 	${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabase
 	${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
@@ -42,7 +41,6 @@ ADD_EXECUTABLE(Test_libProduct
 	main.cpp)
 
 SET(LIBS_COMMON
-	libMngtController
 	libAbstractObject
 	libProduct
 	libCommon

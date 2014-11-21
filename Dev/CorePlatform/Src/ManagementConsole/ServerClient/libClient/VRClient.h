@@ -13,7 +13,6 @@ namespace VR	{
 
 	public:
 		Client(QObject *apParent=0);		
-		~Client();
 
 		void sendRequest(QByteArray & aarrRequest);
 		QTcpSocket & getTcpSocket();

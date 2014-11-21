@@ -47,15 +47,7 @@ INCLUDE_DIRECTORIES(
     ${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_OSG
 	${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
-	${CMAKE_SOURCE_DIR}/Props/Scene/libScene
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProduct
-	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libMngtController
-	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libOSGQTViewer
-	${CMAKE_SOURCE_DIR}/ShopScene/libPopUpGUIs
-	${CMAKE_BINARY_DIR}/ShopScene/libPopUpGUIs
-	${CMAKE_BINARY_DIR}/ShopScene/libPopUpGUIs
-	${CMAKE_BINARY_DIR}/ShopScene/libShopEditor
-	${CMAKE_SOURCE_DIR}/ShopScene/libPopUpGUIs/EditItem
 )
 
 #Define sources to be later added into the library

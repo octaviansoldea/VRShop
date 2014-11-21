@@ -1,9 +1,7 @@
 #include <QDoubleSpinBox>
 #include <QComboBox>
-#include <QPushButton>
 
 #include "VRAbstractObject.h"
-#include "VRScene.h"
 
 #include "VRPickAndDragHandlerShopEditor.h"
 
@@ -24,152 +22,117 @@ QDoubleSpinBox * a_p_DoubleSpinBox_RotationY,
 QDoubleSpinBox * a_p_DoubleSpinBox_RotationZ,
 QComboBox * a_p_ComboBox_DirectionOfTranslation,
 QComboBox * a_p_ComboBox_TranslateRelativeTo,
-PickAndDragHandlerShopEditor * a_pPickAndDragHandlerShopEditor,
-ref_ptr<Scene> a_pScene)	{
+PickAndDragHandlerShopEditor * a_pPickAndDragHandlerShopEditor)	{
 
-	mp_DoubleSpinBox_TranslationX = a_p_DoubleSpinBox_TranslationX;
-	mp_DoubleSpinBox_TranslationY = a_p_DoubleSpinBox_TranslationY;
-	mp_DoubleSpinBox_TranslationZ = a_p_DoubleSpinBox_TranslationZ;
+	m_pDoubleSpinBoxTranslationX = a_p_DoubleSpinBox_TranslationX;
+	m_pDoubleSpinBoxTranslationY = a_p_DoubleSpinBox_TranslationY;
+	m_pDoubleSpinBoxTranslationZ = a_p_DoubleSpinBox_TranslationZ;
 
-	mp_DoubleSpinBox_ScalingX = a_p_DoubleSpinBox_ScalingX,
-	mp_DoubleSpinBox_ScalingY = a_p_DoubleSpinBox_ScalingY,
-	mp_DoubleSpinBox_ScalingZ = a_p_DoubleSpinBox_ScalingZ,
-	mp_DoubleSpinBox_RotationX = a_p_DoubleSpinBox_RotationX,
-	mp_DoubleSpinBox_RotationY = a_p_DoubleSpinBox_RotationY,
-	mp_DoubleSpinBox_RotationZ = a_p_DoubleSpinBox_RotationZ,
+	m_pDoubleSpinBoxScalingX = a_p_DoubleSpinBox_ScalingX,
+	m_pDoubleSpinBoxScalingY = a_p_DoubleSpinBox_ScalingY,
+	m_pDoubleSpinBoxScalingZ = a_p_DoubleSpinBox_ScalingZ,
+	m_pDoubleSpinBoxRotationX = a_p_DoubleSpinBox_RotationX,
+	m_pDoubleSpinBoxRotationY = a_p_DoubleSpinBox_RotationY,
+	m_pDoubleSpinBoxRotationZ = a_p_DoubleSpinBox_RotationZ,
 
-	mp_ComboBox_DirectionOfTranslation = a_p_ComboBox_DirectionOfTranslation;
-	mp_ComboBox_TranslateRelativeTo = a_p_ComboBox_TranslateRelativeTo;
+	m_pComboBoxDirectionOfTranslation = a_p_ComboBox_DirectionOfTranslation;
+	m_pComboBoxTranslateRelativeTo = a_p_ComboBox_TranslateRelativeTo;
 
-	mpPickAndDragHandlerShopEditor = dynamic_cast<PickAndDragHandlerShopEditor*>(a_pPickAndDragHandlerShopEditor);
+	m_pPickAndDragHandlerShopEditor = a_pPickAndDragHandlerShopEditor;
 
-	mp_Scene = a_pScene;
-
-	connect(mp_DoubleSpinBox_TranslationX,SIGNAL(valueChanged(double)),
+	connect(m_pDoubleSpinBoxTranslationX,SIGNAL(valueChanged(double)),
 		this,SLOT(slotSetPropertiesPosition()));
-	connect(mp_DoubleSpinBox_TranslationY,SIGNAL(valueChanged(double)),
+	connect(m_pDoubleSpinBoxTranslationY,SIGNAL(valueChanged(double)),
 		this,SLOT(slotSetPropertiesPosition()));
-	connect(mp_DoubleSpinBox_TranslationZ,SIGNAL(valueChanged(double)),
+	connect(m_pDoubleSpinBoxTranslationZ,SIGNAL(valueChanged(double)),
 		this,SLOT(slotSetPropertiesPosition()));
 
-	connect(mp_DoubleSpinBox_RotationX,SIGNAL(valueChanged(double)),
+	connect(m_pDoubleSpinBoxRotationX,SIGNAL(valueChanged(double)),
 		this,SLOT(slotSetPropertiesRotation()));
-	connect(mp_DoubleSpinBox_RotationY,SIGNAL(valueChanged(double)),
+	connect(m_pDoubleSpinBoxRotationY,SIGNAL(valueChanged(double)),
 		this,SLOT(slotSetPropertiesRotation()));
-	connect(mp_DoubleSpinBox_RotationZ,SIGNAL(valueChanged(double)),
+	connect(m_pDoubleSpinBoxRotationZ,SIGNAL(valueChanged(double)),
 		this,SLOT(slotSetPropertiesRotation()));
 
-	connect(mp_DoubleSpinBox_ScalingX,SIGNAL(valueChanged(double)),
+	connect(m_pDoubleSpinBoxScalingX,SIGNAL(valueChanged(double)),
 		this,SLOT(slotSetPropertiesScaling()));
-	connect(mp_DoubleSpinBox_ScalingY,SIGNAL(valueChanged(double)),
+	connect(m_pDoubleSpinBoxScalingY,SIGNAL(valueChanged(double)),
 		this,SLOT(slotSetPropertiesScaling()));
-	connect(mp_DoubleSpinBox_ScalingZ,SIGNAL(valueChanged(double)),
+	connect(m_pDoubleSpinBoxScalingZ,SIGNAL(valueChanged(double)),
 		this,SLOT(slotSetPropertiesScaling()));
 
-	connect(mp_ComboBox_DirectionOfTranslation,SIGNAL(currentTextChanged(const QString &)),
-		mpPickAndDragHandlerShopEditor,SLOT(slotSetTransformParams(const QString &)));
-	connect(mp_ComboBox_TranslateRelativeTo,SIGNAL(currentTextChanged(const QString &)),
-		mpPickAndDragHandlerShopEditor,SLOT(slotSetTransformParams(const QString &)));
+	connect(m_pComboBoxDirectionOfTranslation,SIGNAL(currentTextChanged(const QString &)),
+		m_pPickAndDragHandlerShopEditor,SLOT(slotSetTransformParams(const QString &)));
+	connect(m_pComboBoxTranslateRelativeTo,SIGNAL(currentTextChanged(const QString &)),
+		m_pPickAndDragHandlerShopEditor,SLOT(slotSetTransformParams(const QString &)));
 
-	connect(mpPickAndDragHandlerShopEditor,
+	connect(m_pPickAndDragHandlerShopEditor,
 		SIGNAL(signalPropertiesSettingsChanged()),
 		this,
 		SLOT(slotUpdatePickAndDragGUI()));
 }
 
-//--------------------------------------------------------------------------------------
-
-PickAndDragController::PickAndDragController(
-QPushButton * a_pPushButton_ModifyScene_DuplicateSelection,
-QPushButton * a_pPushButton_ModifyScene_DeleteSelection,
-QPushButton * a_pPushButton_ModifyScene_SplitItem,
-QPushButton * a_pPushButton_ModifyScene_GroupItems,
-QPushButton * a_pPushButton_ModifyScene_EditItem,
-PickAndDragHandlerShopEditor * a_pPickAndDragHandlerShopEditor,
-ref_ptr<Scene> a_pScene)	{
-
-	mp_PushButton_ModifyScene_DuplicateSelection = a_pPushButton_ModifyScene_DuplicateSelection;
-	mp_PushButton_ModifyScene_DeleteSelection = a_pPushButton_ModifyScene_DeleteSelection;
-	mp_PushButton_ModifyScene_SplitItem = a_pPushButton_ModifyScene_SplitItem;
-	mp_PushButton_ModifyScene_GroupItems = a_pPushButton_ModifyScene_GroupItems;
-	mp_PushButton_ModifyScene_EditItem = a_pPushButton_ModifyScene_EditItem;
-
-	mpPickAndDragHandlerShopEditor = dynamic_cast<PickAndDragHandlerShopEditor*>(a_pPickAndDragHandlerShopEditor);
-
-	mp_Scene = a_pScene;
-
-	connect(mp_PushButton_ModifyScene_DeleteSelection,SIGNAL(clicked()),
-		this,SLOT(slotRemoveSelection()));
-	connect(mp_PushButton_ModifyScene_SplitItem,SIGNAL(clicked()),
-		this,SLOT(slotSplitItem()));
-	connect(mp_PushButton_ModifyScene_GroupItems,SIGNAL(clicked()),
-		this,SLOT(slotGroupItems()));
-	connect(mp_PushButton_ModifyScene_DuplicateSelection,SIGNAL(clicked()),
-		this,SLOT(slotDuplicateSelection()));
-	connect(mp_PushButton_ModifyScene_EditItem,SIGNAL(clicked()),
-		this,SLOT(slotEditItem()));
-}
-
 //======================================================================================
 
 void PickAndDragController::slotUpdatePickAndDragGUI() {
-	disconnect(mp_DoubleSpinBox_TranslationX,SIGNAL(valueChanged(double)),
+	disconnect(m_pDoubleSpinBoxTranslationX,SIGNAL(valueChanged(double)),
 		this,SLOT(slotSetPropertiesPosition()));
-	disconnect(mp_DoubleSpinBox_TranslationY,SIGNAL(valueChanged(double)),
+	disconnect(m_pDoubleSpinBoxTranslationY,SIGNAL(valueChanged(double)),
 		this,SLOT(slotSetPropertiesPosition()));
-	disconnect(mp_DoubleSpinBox_TranslationZ,SIGNAL(valueChanged(double)),
+	disconnect(m_pDoubleSpinBoxTranslationZ,SIGNAL(valueChanged(double)),
 		this,SLOT(slotSetPropertiesPosition()));
 
-	disconnect(mp_DoubleSpinBox_RotationX,SIGNAL(valueChanged(double)),
+	disconnect(m_pDoubleSpinBoxRotationX,SIGNAL(valueChanged(double)),
 		this,SLOT(slotSetPropertiesRotation()));
-	disconnect(mp_DoubleSpinBox_RotationY,SIGNAL(valueChanged(double)),
+	disconnect(m_pDoubleSpinBoxRotationY,SIGNAL(valueChanged(double)),
 		this,SLOT(slotSetPropertiesRotation()));
-	disconnect(mp_DoubleSpinBox_RotationZ,SIGNAL(valueChanged(double)),
+	disconnect(m_pDoubleSpinBoxRotationZ,SIGNAL(valueChanged(double)),
 		this,SLOT(slotSetPropertiesRotation()));
 
-	disconnect(mp_DoubleSpinBox_ScalingX,SIGNAL(valueChanged(double)),
+	disconnect(m_pDoubleSpinBoxScalingX,SIGNAL(valueChanged(double)),
 		this,SLOT(slotSetPropertiesScaling()));
-	disconnect(mp_DoubleSpinBox_ScalingY,SIGNAL(valueChanged(double)),
+	disconnect(m_pDoubleSpinBoxScalingY,SIGNAL(valueChanged(double)),
 		this,SLOT(slotSetPropertiesScaling()));
-	disconnect(mp_DoubleSpinBox_ScalingZ,SIGNAL(valueChanged(double)),
+	disconnect(m_pDoubleSpinBoxScalingZ,SIGNAL(valueChanged(double)),
 		this,SLOT(slotSetPropertiesScaling()));
 
+	ref_ptr<AbstractObject> pPickedObject = m_pPickAndDragHandlerShopEditor->m_pPickedObject;
 
 	//Updates dialogs that reflect transformation changes done with the mouse
-	Vec3d & vec3dPos = mpPickAndDragHandlerShopEditor->m_pPickedObject->getPosition();
-	mp_DoubleSpinBox_TranslationX->setValue(vec3dPos.x());
-	mp_DoubleSpinBox_TranslationY->setValue(vec3dPos.y());
-	mp_DoubleSpinBox_TranslationZ->setValue(vec3dPos.z());
+	Vec3d vec3dPos = pPickedObject->getPosition();
+	m_pDoubleSpinBoxTranslationX->setValue(vec3dPos.x());
+	m_pDoubleSpinBoxTranslationY->setValue(vec3dPos.y());
+	m_pDoubleSpinBoxTranslationZ->setValue(vec3dPos.z());
 
-	Vec3d & vec3dScale = mpPickAndDragHandlerShopEditor->m_pPickedObject->getScaling();
-	mp_DoubleSpinBox_ScalingX->setValue(vec3dScale.x());
-	mp_DoubleSpinBox_ScalingY->setValue(vec3dScale.y());
-	mp_DoubleSpinBox_ScalingZ->setValue(vec3dScale.z());
+	Vec3d vec3dScale = pPickedObject->getScaling();
+	m_pDoubleSpinBoxScalingX->setValue(vec3dScale.x());
+	m_pDoubleSpinBoxScalingY->setValue(vec3dScale.y());
+	m_pDoubleSpinBoxScalingZ->setValue(vec3dScale.z());
 
-	Vec3d & vec3dRot = mpPickAndDragHandlerShopEditor->m_pPickedObject->getRotation();
-	mp_DoubleSpinBox_RotationX->setValue(vec3dRot.x());
-	mp_DoubleSpinBox_RotationY->setValue(vec3dRot.y());
-	mp_DoubleSpinBox_RotationZ->setValue(vec3dRot.z());
+	Vec3d vec3dRot = pPickedObject->getRotation();
+	m_pDoubleSpinBoxRotationX->setValue(vec3dRot.x());
+	m_pDoubleSpinBoxRotationY->setValue(vec3dRot.y());
+	m_pDoubleSpinBoxRotationZ->setValue(vec3dRot.z());
 
-	connect(mp_DoubleSpinBox_TranslationX,SIGNAL(valueChanged(double)),
+	connect(m_pDoubleSpinBoxTranslationX,SIGNAL(valueChanged(double)),
 		this,SLOT(slotSetPropertiesPosition()));
-	connect(mp_DoubleSpinBox_TranslationY,SIGNAL(valueChanged(double)),
+	connect(m_pDoubleSpinBoxTranslationY,SIGNAL(valueChanged(double)),
 		this,SLOT(slotSetPropertiesPosition()));
-	connect(mp_DoubleSpinBox_TranslationZ,SIGNAL(valueChanged(double)),
+	connect(m_pDoubleSpinBoxTranslationZ,SIGNAL(valueChanged(double)),
 		this,SLOT(slotSetPropertiesPosition()));
+	
+	connect(m_pDoubleSpinBoxRotationX,SIGNAL(valueChanged(double)),
+		this,SLOT(slotSetPropertiesRotation()));
+	connect(m_pDoubleSpinBoxRotationY,SIGNAL(valueChanged(double)),
+		this,SLOT(slotSetPropertiesRotation()));
+	connect(m_pDoubleSpinBoxRotationZ,SIGNAL(valueChanged(double)),
+		this,SLOT(slotSetPropertiesRotation()));
 
-	connect(mp_DoubleSpinBox_RotationX,SIGNAL(valueChanged(double)),
-		this,SLOT(slotSetPropertiesRotation()));
-	connect(mp_DoubleSpinBox_RotationY,SIGNAL(valueChanged(double)),
-		this,SLOT(slotSetPropertiesRotation()));
-	connect(mp_DoubleSpinBox_RotationZ,SIGNAL(valueChanged(double)),
-		this,SLOT(slotSetPropertiesRotation()));
-
-	connect(mp_DoubleSpinBox_ScalingX,SIGNAL(valueChanged(double)),
+	connect(m_pDoubleSpinBoxScalingX,SIGNAL(valueChanged(double)),
 		this,SLOT(slotSetPropertiesScaling()));
-	connect(mp_DoubleSpinBox_ScalingY,SIGNAL(valueChanged(double)),
+	connect(m_pDoubleSpinBoxScalingY,SIGNAL(valueChanged(double)),
 		this,SLOT(slotSetPropertiesScaling()));
-	connect(mp_DoubleSpinBox_ScalingZ,SIGNAL(valueChanged(double)),
+	connect(m_pDoubleSpinBoxScalingZ,SIGNAL(valueChanged(double)),
 		this,SLOT(slotSetPropertiesScaling()));
 
 }
@@ -179,11 +142,11 @@ void PickAndDragController::slotUpdatePickAndDragGUI() {
 void PickAndDragController::slotSetPropertiesPosition()	{
 	Vec3d vec3dPosition;
 
-	vec3dPosition[0] = mp_DoubleSpinBox_TranslationX->value();
-	vec3dPosition[1] = mp_DoubleSpinBox_TranslationY->value();
-	vec3dPosition[2] = mp_DoubleSpinBox_TranslationZ->value();
+	vec3dPosition[0] = m_pDoubleSpinBoxTranslationX->value();
+	vec3dPosition[1] = m_pDoubleSpinBoxTranslationY->value();
+	vec3dPosition[2] = m_pDoubleSpinBoxTranslationZ->value();
 
-	mpPickAndDragHandlerShopEditor->setPropertiesPosition(vec3dPosition);
+	m_pPickAndDragHandlerShopEditor->setPropertiesPosition(vec3dPosition);
 }
 
 //--------------------------------------------------------------------------------------
@@ -191,11 +154,11 @@ void PickAndDragController::slotSetPropertiesPosition()	{
 void PickAndDragController::slotSetPropertiesRotation()	{
 	Vec3d vec3dRotation;
 
-	vec3dRotation[0] = mp_DoubleSpinBox_RotationX->value();
-	vec3dRotation[1] = mp_DoubleSpinBox_RotationY->value();
-	vec3dRotation[2] = mp_DoubleSpinBox_RotationZ->value();
+	vec3dRotation[0] = m_pDoubleSpinBoxRotationX->value();
+	vec3dRotation[1] = m_pDoubleSpinBoxRotationY->value();
+	vec3dRotation[2] = m_pDoubleSpinBoxRotationZ->value();
 
-	mpPickAndDragHandlerShopEditor->setPropertiesRotation(vec3dRotation);
+	m_pPickAndDragHandlerShopEditor->setPropertiesRotation(vec3dRotation);
 }
 
 //--------------------------------------------------------------------------------------
@@ -203,39 +166,11 @@ void PickAndDragController::slotSetPropertiesRotation()	{
 void PickAndDragController::slotSetPropertiesScaling()	{
 	Vec3d vec3dScaling;
 
-	vec3dScaling[0] = mp_DoubleSpinBox_ScalingX->value();
-	vec3dScaling[1] = mp_DoubleSpinBox_ScalingY->value();
-	vec3dScaling[2] = mp_DoubleSpinBox_ScalingZ->value();
+	vec3dScaling[0] = m_pDoubleSpinBoxScalingX->value();
+	vec3dScaling[1] = m_pDoubleSpinBoxScalingY->value();
+	vec3dScaling[2] = m_pDoubleSpinBoxScalingZ->value();
 
-	mpPickAndDragHandlerShopEditor->setPropertiesScaling(vec3dScaling);
+	m_pPickAndDragHandlerShopEditor->setPropertiesScaling(vec3dScaling);
 }
 
 //=====================================================================================
-
-void PickAndDragController::slotGroupItems()	{
-	mpPickAndDragHandlerShopEditor->groupSelection(mp_Scene);
-}
-
-//--------------------------------------------------------------------------------------
-
-void PickAndDragController::slotSplitItem()	{
-	mpPickAndDragHandlerShopEditor->splitSelection(mp_Scene);
-}
-
-//--------------------------------------------------------------------------------------
-
-void PickAndDragController::slotDuplicateSelection()	{
-	mpPickAndDragHandlerShopEditor->duplicateSelection(mp_Scene);
-}
-
-//--------------------------------------------------------------------------------------
-
-void PickAndDragController::slotRemoveSelection()	{
-	mpPickAndDragHandlerShopEditor->removeSelection(mp_Scene);
-}
-
-//--------------------------------------------------------------------------------------
-
-void PickAndDragController::slotEditItem()	{
-	mpPickAndDragHandlerShopEditor->editItem(mp_Scene);
-}

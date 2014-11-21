@@ -1,8 +1,7 @@
-#ifndef VR_PRODUCT_BASE_H
-#define VR_PRODUCT_BASE_H
+#ifndef VR_ABSTRACT_PRODUCT_H
+#define VR_ABSTRACT_PRODUCT_H
 
 #include <string>
-//#include "VRAbstractObject.h"
 
 namespace VR	{
 	struct AbstractProductParams	{
@@ -22,4 +21,4 @@ namespace VR	{
 		AbstractProductParams m_AbstractProductParams;
 	};
 }
-#endif //VR_PRODUCT_BASE_H
+#endif //VR_ABSTRACT_PRODUCT_H

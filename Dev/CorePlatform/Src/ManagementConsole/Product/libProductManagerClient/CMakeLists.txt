@@ -28,9 +28,9 @@ ENDIF(Qt5_FOUND)
 #MOC according to the Qt version
 IF(Qt5_FOUND)
   QT5_WRAP_UI(UI_SRCS		)
-  QT5_WRAP_CPP(MOC_SRCS 	VRProductManagerClient.h  )#VRModelViewControllerClient.h)
+  QT5_WRAP_CPP(MOC_SRCS 	VRProductManagerClient.h  )
 ELSE(Qt5_FOUND)
-  QT4_WRAP_CPP(MOC_SRCS		VRProductManagerClient.h  )#VRModelViewControllerClient.h)
+  QT4_WRAP_CPP(MOC_SRCS		VRProductManagerClient.h  )
   QT4_WRAP_UI(UI_SRCS		)
 ENDIF(Qt5_FOUND)
 
@@ -54,7 +54,6 @@ INCLUDE_DIRECTORIES(
 #Define sources to be later added into the library
 SET(SRCS
 	VRProductManagerClient.h VRProductManagerClient.cpp
-#	VRModelViewControllerClient.h  VRModelViewControllerClient.cpp
 )
 
 #Library to be later used in the main

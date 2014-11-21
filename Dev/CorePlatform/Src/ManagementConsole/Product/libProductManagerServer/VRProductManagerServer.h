@@ -12,9 +12,6 @@ namespace VR	{
 	class ProductManagerServer	{
 
 	public:
-		ProductManagerServer();
-		~ProductManagerServer();
-
 		const char* className() const;
 
 		struct ProductManagerServerParams	{

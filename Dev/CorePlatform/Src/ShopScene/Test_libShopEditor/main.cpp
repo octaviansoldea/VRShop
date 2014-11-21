@@ -1,16 +1,3 @@
-//#ifdef WIN32 
-//
-//// Replace STL fstream with OSG fstream 
-//#include <osgDB/fstream> 
-//#define ifstream osgDB::ifstream 
-//#define ofstream osgDB::ofstream 
-//
-//#else 
-
-//#include <fstream> 
-//#define ifstream std::ifstream 
-//#define ofstream std::ofstream
-
 #include <windows.h>
 
 #include <string>
@@ -19,6 +6,8 @@
 
 #include <QApplication>
 #include <QMessageBox>
+#include <QObject>
+#include <QString>
 
 #include "VRShopBuilder_GUI.h"
 
@@ -33,16 +22,36 @@ int main(int argc, char *argv[])	{
 	
 	ShopBuilder_GUI widget;
 
-	if (argc > 1)	{
-		widget.setAttribute(Qt::WA_NativeWindow);
+	//nSelection = 1: run inside the web plugin
+	int nSelection = 0;
+	switch (nSelection)	{
+	case 1:
+		{
+			widget.setAttribute(Qt::WA_NativeWindow);
 
-		QString qstrArg = app.arguments().at(1);
+			QString qstrArg = app.arguments().at(1);
 
-		bool bOk;
+			bool bOk;
 
-		SetParent((HWND)widget.winId(), (HWND)qstrArg.toULong(&bOk));
+			SetParent((HWND)widget.winId(), (HWND)qstrArg.toULong(&bOk));
+
+			break;
+		}
+	default:
+		break;
 	}
 
 	widget.show();
-	return app.exec();
+	
+	int nRetVal = app.exec();
+
+	/*
+		We recommend that you connect clean-up code to the aboutToQuit() signal, instead of putting it in your 
+		application's main() function because on some platforms the QCoreApplication::exec() call may not return. 
+		For example, on Windows when the user logs off, the system terminates the process after Qt closes all 
+		top-level windows. Hence, there is no guarantee that the application will have time to exit its event loop 
+		and execute code at the end of the main() function after the QCoreApplication::exec() call.
+	*/
+
+	return nRetVal;
 }

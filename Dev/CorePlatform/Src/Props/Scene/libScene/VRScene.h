@@ -14,7 +14,6 @@ namespace VR	{
 	public:
 		Scene();
 		Scene(const std::string & astrDBFileName);
-		~Scene();
 
 		virtual const char* className() const;
 

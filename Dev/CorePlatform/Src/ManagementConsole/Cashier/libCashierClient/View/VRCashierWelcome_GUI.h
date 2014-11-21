@@ -11,6 +11,7 @@ namespace VR	{
 		Q_OBJECT
 	public:
 		CashierWelcome_GUI(QDialog * apParent = 0);
+
 	};
 }
 #endif //VR_CASHIER_WELCOME_GUI_H

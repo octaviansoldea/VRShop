@@ -39,7 +39,6 @@ DataStructureModel * SceneObjectsSearch::getModel() const	{
 
 void SceneObjectsSearch::setupSearchData(const QString & aqstrSearchQuery)	{
 	QString strSearchQuery = aqstrSearchQuery;
-//	vector<string> & strvecSearchQueries = splitString(strSearchQuery,",; ");
 
 	QList<QString> data;
 

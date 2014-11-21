@@ -12,7 +12,6 @@ namespace VR	{
 
 	public:
 		ClientConnection(QObject *parent=0);
-		~ClientConnection();
 
 	private slots:
 		void slotReadClient();

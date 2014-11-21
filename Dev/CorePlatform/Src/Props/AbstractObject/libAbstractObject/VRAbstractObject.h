@@ -25,17 +25,16 @@ namespace VR	{
 	};
 
 	class AbstractObject : public osg::MatrixTransform	{
+	protected:
+		virtual ~AbstractObject() = 0;
+
 	public:
 		AbstractObject(const AbstractObjectParams & aAbstractObjectParams);
 		AbstractObject(const AbstractObject& ao,const osg::CopyOp& copyop=osg::CopyOp::DEEP_COPY_ALL);
 
-		virtual ~AbstractObject() = 0;
-
         virtual const char* className() const;
 		virtual osg::Object* cloneType() const = 0;
 		virtual osg::Object* clone(const osg::CopyOp& copyop) const = 0;
-
-		static osg::ref_ptr<AbstractObject> createInstance(const std::string & astrClassName);
 
 		virtual std::string getSQLFormat() const;
 		virtual std::string getSQLCommand() const {return "";}
@@ -68,10 +67,6 @@ namespace VR	{
 		virtual void setColor(const std::vector < float > & aarrflColor) = 0;
 		virtual void setTexture(const std::string & astrFileName) = 0;
 
-	protected:
-		virtual void setParams(const AbstractObjectParams & aAbstractObjectParams);
-		virtual void getParams(AbstractObjectParams & aAbstractObjectParams) const;
-
 		unsigned long getAbstractObjectNo() const;
 
 	private:
@@ -80,7 +75,12 @@ namespace VR	{
 
 		static unsigned long s_nAbstractObjectNo;
 
+	public:
+		virtual void setParams(const AbstractObjectParams & aAbstractObjectParams);
+
 	protected:
+		void getParams(AbstractObjectParams & aAbstractObjectParams) const;
+
 		float m_flPosX;
 		float m_flPosY;
 		float m_flPosZ;

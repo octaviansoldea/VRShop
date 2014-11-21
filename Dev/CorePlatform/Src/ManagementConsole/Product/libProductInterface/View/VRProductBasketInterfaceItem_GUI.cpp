@@ -48,11 +48,6 @@ QFrame *apParent) : QFrame(apParent)	{
 	init(m_pProductShopClient);
 }
 
-//----------------------------------------------------------------------
-
-ProductBasketInterfaceItem_GUI::~ProductBasketInterfaceItem_GUI()	{
-}
-
 //=====================================================================
 
 ProductShopClient * ProductBasketInterfaceItem_GUI::getProduct()	{

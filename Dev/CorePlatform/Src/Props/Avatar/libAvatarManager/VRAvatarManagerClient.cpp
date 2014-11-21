@@ -59,7 +59,7 @@ const char* AvatarManagerClient::className() const	{
 //------------------------------------------------------------------------------
 
 void AvatarManagerClient::requestToServer(
-const enum ServerClientCommands::OPERATION_TYPE & aenumOperationType, 
+const ServerClientCommands::OPERATION_TYPE & aenumOperationType, 
 AbstractManagerClientParams * apAbstractManagerClientParams)	{
 
 	AvatarManagerClientParams * pParams = (AvatarManagerClientParams*)apAbstractManagerClientParams;
@@ -153,7 +153,7 @@ void AvatarManagerClient::slotReceiveDataFromServer()	{
 				return;
 			}
 
-			vector<string> & lststrAvatarNameData = splitString(strDataFromServer,";");
+			vector<string> lststrAvatarNameData = splitString(strDataFromServer,";");
 			int nSize = lststrAvatarNameData.size() / 2;
 
 			//First: avatarName; Second: avatarMatrix
@@ -169,15 +169,15 @@ void AvatarManagerClient::slotReceiveDataFromServer()	{
 
 			bool bSize = (m_pairAvatarNamesAndObjects.size() > 0) ? true : false;
 			if (bSize == true)	{
-				Avatar * pAvatar = 0;
+				ref_ptr<Avatar> pAvatar = 0;
 				//Avatars from the DB
 				vector<pair<string,string>>::iterator itAvatarData;
-				vector<pair<string, Avatar *>>::iterator itAvatarNames;
+				vector<pair<string, ref_ptr<Avatar>>>::iterator itAvatarNames;
 
 				for(itAvatarData= vecpairAvatarData.begin(); itAvatarData != vecpairAvatarData.end(); itAvatarData++)	{
 					string strDBItem = itAvatarData->first;
 
-					vector<pair<string, Avatar *>> vecAvatarNamesTemp;
+					vector<pair<string, ref_ptr<Avatar>>> vecAvatarNamesTemp;
 
 					//Current avatars in the scene
 					for(itAvatarNames = m_pairAvatarNamesAndObjects.begin(); itAvatarNames != m_pairAvatarNamesAndObjects.end(); itAvatarNames++)	{
@@ -201,7 +201,7 @@ void AvatarManagerClient::slotReceiveDataFromServer()	{
 					continue;
 
 				//Reposition active avatars
-				vector<string> & vecflAvatarData = splitString((*it).second, " ");
+				vector<string> vecflAvatarData = splitString((*it).second, " ");
 				Matrixd mtrxNewMatrixAvatar = vecstr2Matrix(vecflAvatarData);		
 
 				nIndexAvatar = 0;
@@ -209,7 +209,7 @@ void AvatarManagerClient::slotReceiveDataFromServer()	{
 				itt = find(m_vecAvatarNames.begin(), m_vecAvatarNames.end(), strAvatarName);
 				if(itt != m_vecAvatarNames.end())	{
 					nIndexAvatar = itt - m_vecAvatarNames.begin();
-					Avatar * pAvatar = dynamic_cast<Avatar*>(m_grpAvatars->getChild(nIndexAvatar));
+					ref_ptr<Avatar> pAvatar = dynamic_cast<Avatar*>(m_grpAvatars->getChild(nIndexAvatar));
 					Matrixd mtrxOldMatrixAvatar = pAvatar->getMatrix();
 
 					if(distanceL2Matrixd(mtrxOldMatrixAvatar, mtrxNewMatrixAvatar) > EPS) {

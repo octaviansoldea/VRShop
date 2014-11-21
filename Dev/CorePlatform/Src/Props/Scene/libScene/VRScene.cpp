@@ -32,11 +32,6 @@ m_nIteration(0)	{
 	setName(m_strDBFileName);
 }
 
-//--------------------------------------------------------------
-
-Scene::~Scene()	{
-}
-
 //=======================================================================
 
 const char* Scene::className() const	{
@@ -53,7 +48,7 @@ Node * Scene::getChild(const string & astrChildName)	{
 
 	NodeList::iterator it = _children.begin();
 	for (it; it != _children.end(); it++)	{
-		const string & strChild = it->get()->getName();
+		const string strChild = it->get()->getName();
 		if (strChild == astrChildName)	{
 			pChild = dynamic_cast<Node*>(it->get());
 
@@ -67,7 +62,7 @@ Node * Scene::getChild(const string & astrChildName)	{
 
 bool Scene::addChild(Node *child)	{
 	bool bRes = true;
-	AbstractObject * pChild = dynamic_cast<AbstractObject*>(child);
+	ref_ptr<AbstractObject> pChild = dynamic_cast<AbstractObject*>(child);
 	if(pChild == 0)	{
 		bRes = Group::addChild(child);
 		return bRes;

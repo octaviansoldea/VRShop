@@ -54,7 +54,3 @@ MainWindow_GUI::MainWindow_GUI()	{
 	m_pOSGQT_Widget->setCameraManipulator(new osgGA::TrackballManipulator);
 
 }
-
-MainWindow_GUI::~MainWindow_GUI()
-{
-}

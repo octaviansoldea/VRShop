@@ -21,11 +21,6 @@ DatabaseInterface(aDBInterfaceParams)	{
 	init(aDBInterfaceParams);
 }
 
-//-------------------------------------------------------------------------------
-
-DatabaseInterfaceShopEditor::~DatabaseInterfaceShopEditor()	{
-}
-
 //===============================================================================
 
 void DatabaseInterfaceShopEditor::init(const DatabaseInterfaceShopEditorParams & aDBInterfaceParams)	{
@@ -211,21 +206,6 @@ void DatabaseInterfaceShopEditor::insertObject(const string & astrScene, vector<
 			insertRow(strClassName,*it);
 			insertRow("SceneObjectDrawable",tostr(nLastID)+";"+strClassName + ";" + strObjectName);
 		}
-	}
-}
-
-//-------------------------------------------------------------------------------
-
-void DatabaseInterfaceShopEditor::insertProduct(std::vector<std::string> & avecstrData)	{
-//**********************************************
-//	HIERARCHY (how you get data inside)
-//		|--	PRODUCT1				Layer: 0
-//		|--	PRODUCT2				Layer: 0
-//**********************************************/
-
-	vector<string>::iterator it;
-	for(it = avecstrData.begin(); it != avecstrData.end(); it++)	{
-		insertRow("Product",*it);
 	}
 }
 

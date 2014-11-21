@@ -49,7 +49,7 @@ ProductShopClient * ProductManagerClient::getProduct()	{
 //-----------------------------------------------------------------------------
 
 void ProductManagerClient::requestToServer(
-	const enum ServerClientCommands::OPERATION_TYPE & aenumOperationType, 
+	const ServerClientCommands::OPERATION_TYPE & aenumOperationType, 
 	AbstractManagerClientParams * apAbstractManagerClientParams
 )	{
 
@@ -114,7 +114,7 @@ void ProductManagerClient::requestToServer(
 //-----------------------------------------------------------------------------
 
 void ProductManagerClient::slotReceiveDataFromServer()	{
-	QByteArray & data = m_pClient->getTransmittedData();
+	QByteArray data = m_pClient->getTransmittedData();
 
 	QDataStream out(&data,QIODevice::ReadOnly);
 	out.setVersion(QDataStream::Qt_4_8);

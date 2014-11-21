@@ -51,7 +51,7 @@ int BasicQtOperations::getMsgBox(MESSAGE_BOX_TYPE aenumMESSAGE_BOX_TYPE, QMessag
 
 //-----------------------------------------------------------------------------
 
-bool BasicQtOperations::QtFileOperation(string & astrFileName, enum FILE_OPERATION aenumFileOperation)	{
+bool BasicQtOperations::QtFileOperation(string & astrFileName, FILE_OPERATION aenumFileOperation)	{
 	QFile file(astrFileName.c_str());
 	QIODevice::OpenMode opMode;
 

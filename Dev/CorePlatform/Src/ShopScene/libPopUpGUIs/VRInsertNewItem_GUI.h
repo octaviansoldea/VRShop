@@ -15,11 +15,7 @@ namespace VR	{
 
 	public slots:
 		void slotDisplayWidgetItems(QListWidgetItem * item);
-		void slotInsertNewItem();
 		void slotInsertfromFile();
-
-	signals:
-		void signalNewItemRequested(const QString & astrItem);
 	};
 }
 #endif //VR_SELECT_ITEM_GUI_H

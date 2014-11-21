@@ -21,7 +21,6 @@ namespace VR {
 		Q_OBJECT
 	public:
 		AvatarManagerServer();
-		~AvatarManagerServer();
 
 		const char* className() const;
 

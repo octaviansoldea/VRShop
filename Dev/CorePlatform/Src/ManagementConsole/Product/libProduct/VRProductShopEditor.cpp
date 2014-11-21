@@ -1,6 +1,5 @@
+#include "VRAbstractObjectFactory.h"
 #include "VRAbstractObject.h"
-#include "VRPlate3D.h"
-#include "VRPrism.h"
 
 #include "VRDatabaseInterfaceShopEditor.h"
 
@@ -16,7 +15,7 @@ ProductShopEditorParams::ProductShopEditorParams() :
 AbstractProductParams(),
 m_strProductCategory(""),
 m_strProductName(""),
-m_nProductCode(0),
+m_ulProductCode(0),
 m_strProductShortDescription(""),
 m_strProductDescription(""),
 m_strManufacturerName(""),
@@ -35,7 +34,14 @@ m_strTextureFile("")	{
 //==============================================================================
 
 ProductShopEditor::ProductShopEditor() : 
-AbstractProduct(), m_pRepresentation(0)	{
+AbstractProduct()/*, m_pRepresentation(0)*/	{
+}
+
+//------------------------------------------------------------------------------
+
+ProductShopEditor::ProductShopEditor(string & astrSQLParams) : 
+AbstractProduct()	{
+	initFromSQLData(astrSQLParams);
 }
 
 //------------------------------------------------------------------------------
@@ -55,7 +61,7 @@ ProductShopEditor::~ProductShopEditor()	{
 //==============================================================================
 
 void ProductShopEditor::createRepresentation(const std::string & astrRepresentation)	{
-	m_pRepresentation = AbstractObject::createInstance(astrRepresentation);
+	m_pRepresentation = AbstractObjectFactory::createAbstractObject(astrRepresentation);
 	m_pRepresentation->setIsTargetPick(true);
 }
 
@@ -79,10 +85,16 @@ void ProductShopEditor::setTexture(const std::string & astrFileName)	{
 
 //------------------------------------------------------------------------------
 
+string ProductShopEditor::getTexture() const	{
+	return m_ProductShopEditorParams.m_strTextureFile;
+}
+
+//------------------------------------------------------------------------------
+
 void ProductShopEditor::setParams(const ProductShopEditorParams & aProductShopEditorParams)	{
 	m_ProductShopEditorParams.m_strProductCategory = aProductShopEditorParams.m_strProductCategory;
 	m_ProductShopEditorParams.m_strProductName = aProductShopEditorParams.m_strProductName;
-	m_ProductShopEditorParams.m_nProductCode = aProductShopEditorParams.m_nProductCode;
+	m_ProductShopEditorParams.m_ulProductCode = aProductShopEditorParams.m_ulProductCode;
 	m_ProductShopEditorParams.m_strProductDescription = aProductShopEditorParams.m_strProductDescription;
 	m_ProductShopEditorParams.m_strProductShortDescription = aProductShopEditorParams.m_strProductShortDescription;
 	m_ProductShopEditorParams.m_strManufacturerName = aProductShopEditorParams.m_strManufacturerName;
@@ -102,7 +114,7 @@ void ProductShopEditor::setParams(const ProductShopEditorParams & aProductShopEd
 void ProductShopEditor::getParams(ProductShopEditorParams & aProductShopEditorParams) const	{
 	aProductShopEditorParams.m_strProductCategory = m_ProductShopEditorParams.m_strProductCategory;
 	aProductShopEditorParams.m_strProductName = m_ProductShopEditorParams.m_strProductName;
-	aProductShopEditorParams.m_nProductCode = m_ProductShopEditorParams.m_nProductCode;
+	aProductShopEditorParams.m_ulProductCode = m_ProductShopEditorParams.m_ulProductCode;
 	aProductShopEditorParams.m_strProductDescription = m_ProductShopEditorParams.m_strProductDescription;
 	aProductShopEditorParams.m_strProductShortDescription = m_ProductShopEditorParams.m_strProductShortDescription;
 	aProductShopEditorParams.m_strManufacturerName = m_ProductShopEditorParams.m_strManufacturerName;
@@ -119,7 +131,37 @@ void ProductShopEditor::getParams(ProductShopEditorParams & aProductShopEditorPa
 
 //------------------------------------------------------------------------------
 
-string ProductShopEditor::prepareRowData(const std::string & astrParentName)	{
+void ProductShopEditor::setQuantity(float aflQuantity)	{
+	m_ProductShopEditorParams.m_flQuantity = aflQuantity;
+}
+
+//------------------------------------------------------------------------------
+
+float ProductShopEditor::getQuantity() const	{
+	return m_ProductShopEditorParams.m_flQuantity;
+}
+
+//------------------------------------------------------------------------------
+
+void ProductShopEditor::setPrice(float aflPrice)	{
+	m_ProductShopEditorParams.m_flPricePerUnit = aflPrice;
+}
+
+//------------------------------------------------------------------------------
+
+float ProductShopEditor::getPrice() const	{
+	return m_ProductShopEditorParams.m_flPricePerUnit;
+}
+
+//------------------------------------------------------------------------------
+
+unsigned long ProductShopEditor::getProductCode() const	{
+	return m_ProductShopEditorParams.m_ulProductCode;
+}
+
+//------------------------------------------------------------------------------
+
+string ProductShopEditor::prepareRowData(const string & astrParentName)	{
 	ProductShopEditorParams productParams;
 	getParams(productParams);
 
@@ -127,7 +169,7 @@ string ProductShopEditor::prepareRowData(const std::string & astrParentName)	{
 
 	strProductParams += productParams.m_strProductCategory + ";";
 	strProductParams += productParams.m_strProductName + ";";
-	strProductParams += tostr(productParams.m_nProductCode) + ";";
+	strProductParams += tostr(productParams.m_ulProductCode) + ";";
 	strProductParams += productParams.m_strProductShortDescription + ";";
 	strProductParams += productParams.m_strProductDescription + ";";
 	strProductParams += productParams.m_strManufacturerName + ";";
@@ -148,4 +190,20 @@ string ProductShopEditor::prepareRowData(const std::string & astrParentName)	{
 //------------------------------------------------------------------------------
 
 void ProductShopEditor::initFromSQLData(std::string & astrSQLData)	{
+	vector<string> vecstrProductParams = splitString(astrSQLData,";");
+	vector<string>::iterator it = vecstrProductParams.begin();
+
+	m_ProductShopEditorParams.m_strProductCategory = *(it+1);
+	m_ProductShopEditorParams.m_strProductName = *(it+2);
+	m_ProductShopEditorParams.m_ulProductCode = stol(*(it+3));
+	m_ProductShopEditorParams.m_strProductShortDescription = *(it+4);
+	m_ProductShopEditorParams.m_strProductDescription = *(it+5);
+	m_ProductShopEditorParams.m_strManufacturerName = *(it+6);
+	m_ProductShopEditorParams.m_strManufacturerOrigin = *(it+7);
+	m_ProductShopEditorParams.m_strProductUnit = *(it+8);
+	m_ProductShopEditorParams.m_flQuantity = stof(*(it+10));
+	m_ProductShopEditorParams.m_flPricePerUnit = stof(*(it+11));
+	m_ProductShopEditorParams.m_flTaxRate = stof(*(it+12));
+	m_ProductShopEditorParams.m_strCurrency = *(it+13);
+	m_ProductShopEditorParams.m_strTextureFile = *(it+16);
 }

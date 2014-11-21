@@ -35,7 +35,7 @@ const char* AgentManagerClient::className() const	{
 //------------------------------------------------------------------------------
 
 void AgentManagerClient::slotReceiveDataFromServer()	{
-	QByteArray & data = m_pClient->getTransmittedData();
+	QByteArray data = m_pClient->getTransmittedData();
 
 	QDataStream out(&data,QIODevice::ReadOnly);
 	out.setVersion(QDataStream::Qt_4_8);
@@ -90,7 +90,7 @@ void AgentManagerClient::slotReceiveDataFromServer()	{
 //------------------------------------------------------------------------------
 
 void AgentManagerClient::requestToServer(
-	const enum ServerClientCommands::OPERATION_TYPE & aenumOperationType, 
+	const ServerClientCommands::OPERATION_TYPE & aenumOperationType, 
 	AbstractManagerClientParams * apAbstractManagerClientParams
 )	{
 

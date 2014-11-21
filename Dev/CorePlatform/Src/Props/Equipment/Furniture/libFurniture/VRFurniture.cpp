@@ -2,6 +2,7 @@
 
 #include <iostream>
 
+#include "VRAbstractObjectFactory.h"
 #include "VRAbstractGeomShape.h"
 
 #include "VRCupboard.h"
@@ -49,7 +50,7 @@ const char* Furniture::className() const	{
 void Furniture::addPart(ref_ptr < AbstractObject > apAbstractObject) {
 	addChild(apAbstractObject);
 
-	string & strCommand = apAbstractObject->getSQLCommand();
+	string strCommand = apAbstractObject->getSQLCommand();
 
 	m_arrSQLCommandLines.push_back(strCommand);
 }
@@ -118,7 +119,7 @@ void Furniture::initFromSQLData(vector<string> & avecstrSQLData)	{
 //			|--PRIMITIVE2	Layer: 1
 //*******************************************/
 
-	const int & nNoOfElements = avecstrSQLData.size();
+	const int nNoOfElements = avecstrSQLData.size();
 	int nPos;	//Position of the indent
 
 	vector<string> vecstrSqlDataLine;
@@ -128,7 +129,7 @@ void Furniture::initFromSQLData(vector<string> & avecstrSQLData)	{
 
 		//Find the position of the first character & clear empty spaces
 		nPos = it->find_first_not_of(" ");
-		const int & nFindPos = it->find_first_of(";");	//This one deletes ID number
+		const int nFindPos = it->find_first_of(";");	//This one deletes ID number
 		it->erase(0,nFindPos+1);
 
 		vecstrSqlDataLine = splitString(*it,";");
@@ -160,14 +161,14 @@ void Furniture::initFromSQLData(vector<string> & avecstrSQLData)	{
 			fP.m_flAngleXY = stof(arrstrFurnitureParams[8]);
 
 			setParams(fP);
-			Matrix & furnitureMatrix = calculateMatrix();
+			Matrix furnitureMatrix = calculateMatrix();
 
 			setMatrix(furnitureMatrix);
 			setName(strObject);
 			setIsTargetPick(true);
 
 		} else {
-			pAOChild = AbstractObject::createInstance(strClass);
+			pAOChild = AbstractObjectFactory::createAbstractObject(strClass);
 			pAOChild->initFromSQLData(vecstrSqlDataLine);
 
 			pAOChild->setName(strObject);
@@ -205,7 +206,7 @@ string Furniture::prepareRowData(const string & astrParentName)	{
 
 void Furniture::setTexture(const std::string & astrFileName)	{
 	int nI;
-	AbstractObject * pAbstractObject = 0;
+	ref_ptr<AbstractObject> pAbstractObject = 0;
 	for (nI=0; nI<this->getNumChildren();nI++)	{
 		pAbstractObject = dynamic_cast<VR::AbstractObject*>(getChild(nI));
 		pAbstractObject->setTexture(astrFileName);
@@ -216,9 +217,23 @@ void Furniture::setTexture(const std::string & astrFileName)	{
 
 void Furniture::setColor(const std::vector < float > & aarrflColor)	{
 	int nI;
-	AbstractObject * pAbstractObject = 0;
+	ref_ptr<AbstractObject> pAbstractObject = 0;
 	for (nI=0; nI<this->getNumChildren();nI++)	{
 		pAbstractObject = dynamic_cast<VR::AbstractObject*>(getChild(nI));
 		pAbstractObject->setColor(aarrflColor);
 	}
 }
+
+//-----------------------------------------------------------------------
+
+void Furniture::setParams(const AbstractObjectParams & aAbstractObjectParams)	{
+	AbstractObject::setParams(aAbstractObjectParams);
+}
+
+//-----------------------------------------------------------------------
+
+void Furniture::getParams(FurnitureParams & aFurnitureParams) const	{
+	AbstractObject::getParams(aFurnitureParams);
+}
+
+//-----------------------------------------------------------------------

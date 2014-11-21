@@ -220,7 +220,7 @@ void AnimationEditorGUI::slotMatrixTransformChanged()	{
 	float flPosZ = m_pDoubleSpinBoxPosZ->value();
 
 	osg::Matrix mtrxMt = m_pMt->getMatrix();
-	osg::Matrix & mtrxTransform =
+	osg::Matrix mtrxTransform =
 		mtrxMt.scale(flScale[0],flScale[1],flScale[2])	*
 		mtrxMt.translate(0,0,flPosZ);
 	m_pMt->setMatrix(mtrxTransform);

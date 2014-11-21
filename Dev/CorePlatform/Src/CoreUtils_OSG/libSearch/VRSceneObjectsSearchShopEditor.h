@@ -15,7 +15,6 @@ namespace VR	{
 		SceneObjectsSearchShopEditor();
 		SceneObjectsSearchShopEditor(const QString & aqstrSearchQuery, Scene * apScene);
 
-		~SceneObjectsSearchShopEditor();
 
 		virtual DataStructureModel * getModel() const;
 

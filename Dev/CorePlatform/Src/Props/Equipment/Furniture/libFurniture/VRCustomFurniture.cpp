@@ -49,7 +49,7 @@ Object* CustomFurniture::clone(const CopyOp& copyop) const	{
 void CustomFurniture::init(const CustomFurnitureParams & aCustomFurnitureParams)	{
 	setParams(aCustomFurnitureParams);
 
-	Matrix & customFurnitureMatrix = calculateMatrix();
+	Matrix customFurnitureMatrix = calculateMatrix();
 	setMatrix(customFurnitureMatrix);
 }
 

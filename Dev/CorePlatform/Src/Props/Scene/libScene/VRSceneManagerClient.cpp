@@ -22,9 +22,6 @@ SceneManagerClient::SceneManagerClient(const std::string & astrDBFileName)	{
 }
 
 
-SceneManagerClient::~SceneManagerClient()	{
-}
-
 const char* SceneManagerClient::className() const	{
 	return "SceneManagerClient";
 }

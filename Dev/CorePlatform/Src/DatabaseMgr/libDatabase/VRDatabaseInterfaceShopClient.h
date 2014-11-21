@@ -16,8 +16,6 @@ namespace VR {
 		DatabaseInterfaceShopClient();
 		DatabaseInterfaceShopClient(const DatabaseInterfaceShopClientParams & aDBInterfaceParams);
 
-		virtual ~DatabaseInterfaceShopClient();
-
 		void loadScene(const std::string & astrScene);
 
 		std::list<std::string> getListOfObjects(const std::string & astrScene);

@@ -19,11 +19,6 @@ DatabaseInterfaceShopClient::DatabaseInterfaceShopClient(const DatabaseInterface
 DatabaseInterface(aDBInterfaceParams)	{
 }
 
-//-------------------------------------------------------------------------------
-
-DatabaseInterfaceShopClient::~DatabaseInterfaceShopClient()	{
-}
-
 //===============================================================================
 
 void DatabaseInterfaceShopClient::loadScene(const std::string & astrScene)	{
@@ -54,7 +49,7 @@ list<string> DatabaseInterfaceShopClient::getListOfObjects(const string & astrSc
 	//Get IDs of elements of the scene
 	string & strSqlQuery = 
 		"SELECT SceneObjectID, ClassName, SceneObjectName FROM SceneObject WHERE SceneName = '" + astrScene + "'";
-	list<string> & lststrElements = executeAndGetResult(strSqlQuery);
+	list<string> lststrElements = executeAndGetResult(strSqlQuery);
 
 	return lststrElements;
 }

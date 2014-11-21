@@ -11,7 +11,6 @@ namespace VR	{
 
 	public:
 		Server(QObject *parent=0, int anConnMax=100);
-		~Server();
 
 		bool init();
 

@@ -19,7 +19,7 @@ EditItem_GUI::EditItem_GUI(AbstractObject * apAbstractObject) :
 EditItem_GUIBase(apAbstractObject)	{
 	setupUi(this);
 
-	Matrix & mtrxTemp = Matrix::identity();
+	Matrix mtrxTemp = Matrix::identity();
 	m_pAbstractObject->setMatrix(mtrxTemp);
 
 	m_pOSGQT_Widget->setSceneData(m_pAbstractObject);
@@ -43,14 +43,6 @@ EditItem_GUIBase(apAbstractObject)	{
 	m_pLineEditColorB->setText("0");
 	m_pLineEditColorA->setText("0");
 }
-
-//----------------------------------------------------------------------
-
-EditItem_GUI::~EditItem_GUI()	{
-	if (m_pOSGQT_Widget)
-		delete m_pOSGQT_Widget;
-}
-
 
 //----------------------------------------------------------------------
 

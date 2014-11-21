@@ -16,15 +16,12 @@
 
 #include <QObject>
 
-#include <osg/ref_ptr>
 
 class QComboBox;
 class QDoubleSpinBox;
-class QPushButton;
 
 namespace VR {
 	class PickAndDragHandlerShopEditor;
-	class Scene;
 	
 	struct PickAndDragController : public QObject {
 		PickAndDragController(
@@ -42,18 +39,8 @@ namespace VR {
 			QComboBox * a_p_ComboBox_DirectionOfTranslation,
 			QComboBox * a_p_ComboBox_TranslateRelativeTo,
 
-			PickAndDragHandlerShopEditor * a_pPickAndDragHandlerShopEditor,
-			osg::ref_ptr<Scene> a_pScene);	//End of constructor
+			PickAndDragHandlerShopEditor * a_pPickAndDragHandlerShopEditor);	//End of constructor
 
-		PickAndDragController(
-			QPushButton * a_pPushButton_ModifyScene_DuplicateSelection,
-			QPushButton * a_pPushButton_ModifyScene_DeleteSelection,
-			QPushButton * a_pPushButton_ModifyScene_SplitItem,
-			QPushButton * a_pPushButton_ModifyScene_GroupItems,
-			QPushButton * a_pPushButton_ModifyScene_EditItem,
-
-			PickAndDragHandlerShopEditor * a_pPickAndDragHandlerShopEditor,
-			osg::ref_ptr<Scene> a_pScene);	//End of constructor
 
 	public slots:
 		void slotUpdatePickAndDragGUI();
@@ -62,38 +49,24 @@ namespace VR {
 		void slotSetPropertiesRotation();
 		void slotSetPropertiesScaling();
 
-		void slotGroupItems();
-		void slotSplitItem();
-		void slotDuplicateSelection();
-		void slotRemoveSelection();
-		void slotEditItem();
-
 	private:
 		Q_OBJECT
 
-		QDoubleSpinBox * mp_DoubleSpinBox_TranslationX;
-		QDoubleSpinBox * mp_DoubleSpinBox_TranslationY;
-		QDoubleSpinBox * mp_DoubleSpinBox_TranslationZ;
+		QDoubleSpinBox * m_pDoubleSpinBoxTranslationX;
+		QDoubleSpinBox * m_pDoubleSpinBoxTranslationY;
+		QDoubleSpinBox * m_pDoubleSpinBoxTranslationZ;
 
-		QDoubleSpinBox * mp_DoubleSpinBox_ScalingX;
-		QDoubleSpinBox * mp_DoubleSpinBox_ScalingY;
-		QDoubleSpinBox * mp_DoubleSpinBox_ScalingZ;
-		QDoubleSpinBox * mp_DoubleSpinBox_RotationX;
-		QDoubleSpinBox * mp_DoubleSpinBox_RotationY;
-		QDoubleSpinBox * mp_DoubleSpinBox_RotationZ;
+		QDoubleSpinBox * m_pDoubleSpinBoxScalingX;
+		QDoubleSpinBox * m_pDoubleSpinBoxScalingY;
+		QDoubleSpinBox * m_pDoubleSpinBoxScalingZ;
+		QDoubleSpinBox * m_pDoubleSpinBoxRotationX;
+		QDoubleSpinBox * m_pDoubleSpinBoxRotationY;
+		QDoubleSpinBox * m_pDoubleSpinBoxRotationZ;
 
-		QComboBox * mp_ComboBox_DirectionOfTranslation;
-		QComboBox * mp_ComboBox_TranslateRelativeTo;
+		QComboBox * m_pComboBoxDirectionOfTranslation;
+		QComboBox * m_pComboBoxTranslateRelativeTo;
 
-		QPushButton * mp_PushButton_ModifyScene_DuplicateSelection;
-		QPushButton * mp_PushButton_ModifyScene_DeleteSelection;
-		QPushButton * mp_PushButton_ModifyScene_SplitItem;
-		QPushButton * mp_PushButton_ModifyScene_GroupItems;
-		QPushButton * mp_PushButton_ModifyScene_EditItem;
-
-		PickAndDragHandlerShopEditor * mpPickAndDragHandlerShopEditor;
-
-		osg::ref_ptr<Scene> mp_Scene;
+		PickAndDragHandlerShopEditor * m_pPickAndDragHandlerShopEditor;
 	};
 }
 #endif //VR_PICK_AND_DRAG_CONTROLLER_H

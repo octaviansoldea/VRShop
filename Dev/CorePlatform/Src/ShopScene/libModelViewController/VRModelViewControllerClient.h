@@ -8,9 +8,6 @@
 namespace VR	{
 	class ModelViewControllerClient : public QObject	{
 		Q_OBJECT
-	public:
-		ModelViewControllerClient();
-		~ModelViewControllerClient();
 
 	signals:
 		void signalProductInitialized(const ProductShopClient * apProductShopClient);

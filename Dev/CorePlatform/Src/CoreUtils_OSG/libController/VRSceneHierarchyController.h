@@ -29,7 +29,7 @@ namespace VR {
 		SceneHierarchyController(
 			QTreeView * a_pQTreeView,
 			PickAndDragHandlerShopEditor * a_pPickAndDragHandlerShopEditor,
-			osg::ref_ptr<Scene> a_pScene);	//End of constructor
+			Scene * a_pScene);	//End of constructor
 
 		void updateSceneHierarchyGUI();
 
@@ -42,7 +42,7 @@ namespace VR {
 
 		QTreeView * m_pQTreeView;
 		PickAndDragHandlerShopEditor * mpPickAndDragHandlerShopEditor;
-		osg::ref_ptr<Scene> mp_Scene;
+		osg::ref_ptr<Scene> m_pScene;
 
 	};
 }

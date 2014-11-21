@@ -20,7 +20,7 @@ namespace VR	{
 		};
 
 		virtual void requestToServer(
-			const enum ServerClientCommands::OPERATION_TYPE & aenumOperationType, 
+			const ServerClientCommands::OPERATION_TYPE & aenumOperationType, 
 			AbstractManagerClientParams * apAbstractManagerClientParams=0
 		) = 0;
 

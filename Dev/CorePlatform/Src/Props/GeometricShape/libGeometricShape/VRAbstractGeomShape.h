@@ -20,10 +20,10 @@ namespace VR {
 
 		virtual ~AbstractGeomShape() = 0;
 
-	protected:
-		virtual void setParams(const AbstractGeomShapeParams & aAbstractGeomShapeParams);
-		virtual void getParams(AbstractGeomShapeParams & aAbstractGeomShapeParams) const;
+		void setParams(const AbstractGeomShapeParams & aAbstractGeomShapeParams);
+		void getParams(AbstractGeomShapeParams & aAbstractGeomShapeParams) const;
 
+	protected:
 		std::vector < float > m_arrflRGBA;
 		std::string m_strFileNameTexture;
 	};

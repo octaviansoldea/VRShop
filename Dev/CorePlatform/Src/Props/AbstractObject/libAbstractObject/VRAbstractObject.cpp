@@ -214,10 +214,9 @@ void AbstractObject::preparedObjectData(std::vector<std::string> &avecItems, std
 
 	nI += 1;	//enlarge indent by 1 unit
 
-	ref_ptr<AbstractObject> pChild = 0;
 	NodeList::iterator it;
 	for (it = pAbstractObject->_children.begin(); it != pAbstractObject->_children.end(); it++)	{
-		pChild = dynamic_cast<AbstractObject*>(it->get());
+		ref_ptr<AbstractObject> pChild = dynamic_cast<AbstractObject*>(it->get());
 
 		if(pChild == NULL)	{
 			break;

@@ -169,7 +169,6 @@ void AvatarManagerClient::slotReceiveDataFromServer()	{
 
 			bool bSize = (m_pairAvatarNamesAndObjects.size() > 0) ? true : false;
 			if (bSize == true)	{
-				ref_ptr<Avatar> pAvatar = 0;
 				//Avatars from the DB
 				vector<pair<string,string>>::iterator itAvatarData;
 				vector<pair<string, ref_ptr<Avatar>>>::iterator itAvatarNames;
@@ -184,8 +183,7 @@ void AvatarManagerClient::slotReceiveDataFromServer()	{
 						if (itAvatarNames->first == strDBItem)	{
 							vecAvatarNamesTemp.push_back(make_pair(itAvatarNames->first,itAvatarNames->second));
 						} else {
-							pAvatar = itAvatarNames->second;
-							//m_pairAvatarNamesAndObjects.erase(itAvatarNames);
+							ref_ptr<Avatar> pAvatar = itAvatarNames->second;
 							removeAvatar(pAvatar);
 						}
 					}

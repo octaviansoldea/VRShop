@@ -322,7 +322,7 @@ QToolButton {
          <property name="geometry">
           <rect>
            <x>0</x>
-           <y>0</y>
+           <y>-415</y>
            <width>496</width>
            <height>729</height>
           </rect>
@@ -1093,7 +1093,11 @@ QComboBox QAbstractItemView {
                  <number>0</number>
                 </property>
                 <item>
-                 <widget class="VR::OSGQT_Widget" name="m_pOSGQT_Widget" native="true"/>
+                 <widget class="VR::OSGQT_Widget" name="m_pOSGQT_Widget" native="true">
+                  <property name="styleSheet">
+                   <string notr="true">background-color: rgb(191, 193, 194);</string>
+                  </property>
+                 </widget>
                 </item>
                </layout>
               </widget>

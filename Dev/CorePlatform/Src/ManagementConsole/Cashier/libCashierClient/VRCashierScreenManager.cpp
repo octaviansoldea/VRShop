@@ -107,14 +107,13 @@ void CashierScreenManager::slotShowProceed()	{
 		return;
 	}
 
-	ProductShopClient * pProduct = 0;
 	float flBasketValue=0;
 	int nRow;
 
 	for (nRow = 0; nRow < nBasketSize; ++nRow) {
 		addRow();
 
-		pProduct = dynamic_cast<ProductShopClient*>(m_pBasket->getProduct(nRow));
+		ProductShopClient * pProduct = dynamic_cast<ProductShopClient*>(m_pBasket->getProduct(nRow));
 
 		string strProductName = pProduct->getProductName();
 		float flPrice = pProduct->getPrice();

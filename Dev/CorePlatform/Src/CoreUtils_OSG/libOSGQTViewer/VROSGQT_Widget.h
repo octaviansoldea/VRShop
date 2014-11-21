@@ -7,7 +7,7 @@
 
 namespace VR	{
 	class OSGQT_Widget : public QWidget {
-		Q_OBJECT
+//		Q_OBJECT
 
 	public:
 		OSGQT_Widget(QWidget * apQWidget = 0, Qt::WindowFlags f = false);

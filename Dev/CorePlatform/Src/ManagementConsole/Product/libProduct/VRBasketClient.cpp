@@ -104,9 +104,8 @@ list<pair<long,float>> BasketClient::getBasketProductsAndQuantities()	{
 
 	int nBasketSize = count();
 	int nI;
-	ProductShopClient * pProduct = 0;
 	for (nI=0;nI<nBasketSize;nI++)	{
-		pProduct = getProduct(nI);
+		ProductShopClient * pProduct = getProduct(nI);
 		lstpairBasketProductsAndQuantities.push_back(make_pair(pProduct->getProductID(),pProduct->getQuantity()));
 	}
 
@@ -120,9 +119,8 @@ string BasketClient::getBasketIDQuantity2String()	{
 
 	int nBasketSize = count();
 	int nI;
-	ProductShopClient * pProduct = 0;
 	for (nI=0;nI<nBasketSize;nI++)	{
-		pProduct = getProduct(nI);
+		ProductShopClient * pProduct = getProduct(nI);
 		strBasketProductsAndQuantities += (tostr(pProduct->getProductID()) + ";" + tostr(pProduct->getQuantity()) + ";");
 	}
 	strBasketProductsAndQuantities.pop_back();

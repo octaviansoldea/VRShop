@@ -140,8 +140,6 @@ void Furniture::initFromSQLData(vector<string> & avecstrSQLData)	{
 		string & strClass = vecstrSqlDataLine[0];
 		string & strObject = vecstrSqlDataLine[1];
 
-		ref_ptr<AbstractObject> pAOChild = 0;
-
 		if (nPos == 0)	{
 			string & strMtrx = vecstrSqlDataLine[2];
 
@@ -168,7 +166,7 @@ void Furniture::initFromSQLData(vector<string> & avecstrSQLData)	{
 			setIsTargetPick(true);
 
 		} else {
-			pAOChild = AbstractObjectFactory::createAbstractObject(strClass);
+			ref_ptr<AbstractObject> pAOChild = AbstractObjectFactory::createAbstractObject(strClass);
 			pAOChild->initFromSQLData(vecstrSqlDataLine);
 
 			pAOChild->setName(strObject);
@@ -206,9 +204,8 @@ string Furniture::prepareRowData(const string & astrParentName)	{
 
 void Furniture::setTexture(const std::string & astrFileName)	{
 	int nI;
-	ref_ptr<AbstractObject> pAbstractObject = 0;
 	for (nI=0; nI<this->getNumChildren();nI++)	{
-		pAbstractObject = dynamic_cast<VR::AbstractObject*>(getChild(nI));
+		ref_ptr<AbstractObject> pAbstractObject = dynamic_cast<VR::AbstractObject*>(getChild(nI));
 		pAbstractObject->setTexture(astrFileName);
 	}
 }
@@ -217,9 +214,8 @@ void Furniture::setTexture(const std::string & astrFileName)	{
 
 void Furniture::setColor(const std::vector < float > & aarrflColor)	{
 	int nI;
-	ref_ptr<AbstractObject> pAbstractObject = 0;
 	for (nI=0; nI<this->getNumChildren();nI++)	{
-		pAbstractObject = dynamic_cast<VR::AbstractObject*>(getChild(nI));
+		ref_ptr<AbstractObject> pAbstractObject = dynamic_cast<VR::AbstractObject*>(getChild(nI));
 		pAbstractObject->setColor(aarrflColor);
 	}
 }

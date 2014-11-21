@@ -208,8 +208,6 @@ void ShopBuilder::readDB(const std::string & astrDBFileName)	{
 	//Get list of objects in the scene
 	std::list<std::string> lststrSceneObjects = dbMgr.getListOfObjects("Untitled");
 
-	osg::ref_ptr<AbstractObject> pAO = 0;
-
 	std::list<std::string>::iterator it = lststrSceneObjects.begin();
 	for (it; it != lststrSceneObjects.end(); it++)	{
 		//Find class and object names
@@ -224,7 +222,7 @@ void ShopBuilder::readDB(const std::string & astrDBFileName)	{
 			continue;
 		}
 
-		pAO = AbstractObjectFactory::createAbstractObject(strClassName);
+		osg::ref_ptr<AbstractObject> pAO = AbstractObjectFactory::createAbstractObject(strClassName);
 		std::vector<std::string> vecstrObjectData = dbMgr.getObjectData(*it);
 
 		pAO->initFromSQLData(vecstrObjectData);
@@ -281,7 +279,6 @@ void ShopBuilder::saveDB(const std::string & astrDBFileName)	{
 	//This will open, clear and close the file
 	bool bRes = BasicQtOperations::QtFileOperation(m_strDBFileName, BasicQtOperations::FILE_OPEN_TRUNCATE);
 
-	ref_ptr<AbstractObject> pAO = 0;
 	std::string strSceneName = m_pScene->getName();
 	int nSize = m_pScene->getNumChildren();
 
@@ -294,7 +291,7 @@ void ShopBuilder::saveDB(const std::string & astrDBFileName)	{
 
 	int nI;
 	for (nI=0; nI<nSize; nI++)	{
-		pAO = dynamic_cast<AbstractObject*>(m_pScene->getChild(nI));
+		ref_ptr<AbstractObject> pAO = dynamic_cast<AbstractObject*>(m_pScene->getChild(nI));
 
 		if (pAO == 0 || pAO->className() == ShopBuilderCommands::getOperationType(ShopBuilderCommands::GRID))
 			continue;
@@ -577,28 +574,22 @@ void ShopBuilder::splitItem()	{
 
 	vector<ref_ptr<AbstractObject>>::iterator it = pickedObjects.begin();
 
-	ref_ptr< AbstractObject > pAbstractObject;
-
-	Vec3d vec3dPos;
-	Vec3d vec3dRot;
-	Vec3d vec3dLen;
-
 	for (it; it != pickedObjects.end(); it++)	{
-		vec3dPos = it->get()->getPosition();
-		vec3dRot = it->get()->getRotation();
-		vec3dLen = it->get()->getScaling();
+		Vec3d vec3dPos(it->get()->getPosition());
+		Vec3d vec3dRot(it->get()->getRotation());
+		Vec3d vec3dLen(it->get()->getScaling());
 
 		m_pScene->removeChild(*it);
 		int nI;
 		for (nI=0;nI<it->get()->getNumChildren(); nI++)	{
-			pAbstractObject = dynamic_cast<AbstractObject *>(it->get()->getChild(nI));
+			ref_ptr< AbstractObject > pAbstractObject = dynamic_cast<AbstractObject *>(it->get()->getChild(nI));
 			if(pAbstractObject == NULL) {
 				continue;
 			}
 
-			Vec3d vec3dPosItem = pAbstractObject->getPosition();
-			Vec3d vec3dRotItem = pAbstractObject->getRotation();
-			Vec3d vec3dLenItem = pAbstractObject->getScaling();
+			Vec3d vec3dPosItem(pAbstractObject->getPosition());
+			Vec3d vec3dRotItem(pAbstractObject->getRotation());
+			Vec3d vec3dLenItem(pAbstractObject->getScaling());
 
 			pAbstractObject->setPosition(vec3dPosItem[0]+vec3dPos[0], vec3dPosItem[1]+vec3dPos[1], vec3dPosItem[2]+vec3dPos[2]);
 			pAbstractObject->setRotation(vec3dRotItem[0]+vec3dRot[0], vec3dRotItem[1]+vec3dRot[1], vec3dRotItem[2]+vec3dRot[2]);
@@ -651,13 +642,11 @@ void ShopBuilder::duplicateSelection()	{
 		itemGUI.m_pLineEditScaleY->text().toFloat(),
 		itemGUI.m_pLineEditScaleZ->text().toFloat());
 
-	vector<osg::ref_ptr<AbstractObject>>::iterator it;
-
-	ref_ptr<AbstractObject> pObject = 0;
 	int nI;
 	for (nI=0;nI<nNumberOfCopies;nI++)	{
+		vector<osg::ref_ptr<AbstractObject>>::iterator it;
 		for (it = pickedObjects.begin(); it != pickedObjects.end(); it++)	{
-			pObject = dynamic_cast<AbstractObject*>(it->get()->clone(CopyOp::DEEP_COPY_ALL));
+			ref_ptr<AbstractObject> pObject = dynamic_cast<AbstractObject*>(it->get()->clone(CopyOp::DEEP_COPY_ALL));
 			m_pScene->addChild(pObject);
 		}
 	}

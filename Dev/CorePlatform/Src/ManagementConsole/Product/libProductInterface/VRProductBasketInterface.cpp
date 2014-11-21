@@ -234,10 +234,9 @@ void ProductBasketInterface::setupBasketInterface()	{
 
 	//Which condition is smaller (basket size or number of items shown)
 	int nSize = (m_nItemsVisible < nCount) ? m_nItemsVisible : nCount;
-
-	ProductShopClient * pProduct = 0;
+	
 	for (nI=0;nI<nSize;nI++)	{
-		pProduct = m_pBasket->getProduct(nI);
+		ProductShopClient * pProduct = m_pBasket->getProduct(nI);
 		setData(pProduct);
 	}
 	initGeometry();

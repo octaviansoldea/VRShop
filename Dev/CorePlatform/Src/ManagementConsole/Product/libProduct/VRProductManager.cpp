@@ -73,9 +73,8 @@ Node * ProductManager::getProductsRepresentation()	{
 //--------------------------------------------------------------------------
 
 Node * ProductManager::getChild(const string & astrChildName)	{
-	ref_ptr<AbstractObject> pChild = 0;
 	if (astrChildName.empty())	{
-		return pChild;
+		return 0;
 	}
 
 	int nSize = m_pgrpProductsRepresentation->getNumChildren();
@@ -84,12 +83,11 @@ Node * ProductManager::getChild(const string & astrChildName)	{
 	for (nI=0; nI<nSize; nI++)	{
 		const string & strChild = m_pgrpProductsRepresentation->getChild(nI)->getName();
 		if (strChild == astrChildName)	{
-			pChild = dynamic_cast<AbstractObject*>(m_pgrpProductsRepresentation->getChild(nI));
-
+			ref_ptr<AbstractObject> pChild = dynamic_cast<AbstractObject*>(m_pgrpProductsRepresentation->getChild(nI));
 			return pChild;
 		}
 	}
-	return pChild;
+	return 0;
 }
 
 //-----------------------------------------------------------------------------
@@ -308,11 +306,10 @@ void ProductManager::preparedObjectData(vector<string> &avecItems, string & astr
 
 	nI += 1;	//enlarge indent by 1 unit
 
-	ref_ptr<AbstractObject> pChild = 0;
 	int nJ;
 	int nSize = m_pgrpProductsRepresentation->getNumChildren();
 	for (nJ = 0; nJ < nSize; nJ++)	{
-		pChild = dynamic_cast<AbstractObject*>(m_pgrpProductsRepresentation->getChild(nJ));
+		ref_ptr<AbstractObject> pChild = dynamic_cast<AbstractObject*>(m_pgrpProductsRepresentation->getChild(nJ));
 
 		if(pChild == NULL)	{
 			break;
@@ -361,9 +358,7 @@ void ProductManager::initFromSQLData(vector<string> & avecstrSQLData)	{
 		string strClass = vecstrSqlDataLine[0];
 		string strObject = vecstrSqlDataLine[1];
 
-		ref_ptr<AbstractObject> pAOChild = 0;
-
-		pAOChild = AbstractObjectFactory::createAbstractObject(strClass);
+		ref_ptr<AbstractObject> pAOChild = AbstractObjectFactory::createAbstractObject(strClass);
 		pAOChild->initFromSQLData(vecstrSqlDataLine);
 
 		pAOChild->setName(strObject);

@@ -311,9 +311,6 @@ bool PickAndDragHandler::handleDrag(const MouseSignals & aMouseSignals, osgViewe
 	Matrix mtrxMatrix = m_pPickedObject->calculateMatrix();
 	m_pPickedObject->setMatrix(mtrxMatrix);
 
-	//ref_ptr<Group> pScene = dynamic_cast<Group*>(apViewer->getSceneData());
-	//apViewer->setSceneData(pScene);
-
 	return(true);
 }
 

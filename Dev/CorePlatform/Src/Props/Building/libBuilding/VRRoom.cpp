@@ -18,8 +18,6 @@ const char* Room::className() const	{
 //---------------------------------------------------
 
 ref_ptr<Node> Room::createRoom()	{
-	ref_ptr<MatrixTransform> pMt = new MatrixTransform;
-
 	FloorParams fP;
 	fP.m_strTextureName = 
 		"../../../Resources/Textures/CeramicTileFloor.bmp";
@@ -27,6 +25,8 @@ ref_ptr<Node> Room::createRoom()	{
 	fP.m_vec3dUpRight = Vec3d(25.5,25.5,0);
 	Floor floor(fP);
 	ref_ptr<Node> pNode = floor.createFloor();
+
+	ref_ptr<MatrixTransform> pMt = new MatrixTransform;
 	pMt->addChild(pNode);
 
 	ref_ptr<Wall> pWall = new Wall;

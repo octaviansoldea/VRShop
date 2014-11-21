@@ -48,13 +48,11 @@ bool PickAndDragHandlerShopClient::handle(const GUIEventAdapter& ea, GUIActionAd
 	}
 
 	if ((nEventType == GUIEventAdapter::LEFT_MOUSE_BUTTON)) {
-		ref_ptr<AbstractObject> pPickedObject = m_pPickedObject;
-
 		//Only first parent is checked if it's a product or not
-		string strParentName = pPickedObject->getParents()[0]->getName();
+		string strParentName = m_pPickedObject->getParents()[0]->getName();
 		if (strParentName == "Products")	{
-			emit signalProductPicked(pPickedObject);
-		} else if (pPickedObject->getName() == "Cashier")	{
+			emit signalProductPicked(m_pPickedObject);
+		} else if (m_pPickedObject->getName() == "Cashier")	{
 			emit signalCashierPicked();
 		}
 	}

@@ -11,7 +11,7 @@ using namespace osg;
 
 AddProduct_GUI::AddProduct_GUI()	{
 	setupUi(this);
-//	setWindowFlags(Qt::FramelessWindowHint);
+	setWindowFlags(Qt::FramelessWindowHint);
 	m_pScrollAreaNewProduct->setVisible(false);
 
 	ref_ptr<KeyboardMouseManipulatorShopEditor> pCamera = new KeyboardMouseManipulatorShopEditor;

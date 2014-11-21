@@ -121,8 +121,8 @@ void Cupboard::initFromSQLData(const string & astrSQLData)	{
 	cupboardParams.m_flAngleXZ = arrflMatrix[7];
 	cupboardParams.m_flAngleXY = arrflMatrix[8];
 
-	ref_ptr < AbstractGeomShape > pAbstractGeomShape;
 	for (auto it = arrstrSQLData.begin()+1; it != arrstrSQLData.end()-1; it++)	{
+		ref_ptr < AbstractGeomShape > pAbstractGeomShape;
 		if(isAtEndOfString(*it, "Plate3D"))	{
 			Plate3DParams p3Dp;
 			pAbstractGeomShape = new Plate3D(p3Dp);

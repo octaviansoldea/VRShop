@@ -41,21 +41,20 @@ const char* Scene::className() const	{
 //-----------------------------------------------------------------------
 
 Node * Scene::getChild(const string & astrChildName)	{
-	Node * pChild = 0;
 	if (astrChildName.empty())	{
-		return pChild;
+		return 0;
 	}
 
 	NodeList::iterator it = _children.begin();
 	for (it; it != _children.end(); it++)	{
 		const string strChild = it->get()->getName();
 		if (strChild == astrChildName)	{
-			pChild = dynamic_cast<Node*>(it->get());
+			Node * pChild = dynamic_cast<Node*>(it->get());
 
 			return pChild;
 		}
 	}
-	return pChild;
+	return 0;
 }
 
 //--------------------------------------------------------------
@@ -136,11 +135,9 @@ void Scene::print()	{
 	}
 
 	
-
-	ref_ptr<VR::AbstractObject> pObject;
 	for (it = _children.begin(); it != _children.end(); it++)	{
 		nI = it - _children.begin();
-		pObject = dynamic_cast<VR::AbstractObject*>(this->getChild(nI));
+		ref_ptr<VR::AbstractObject> pObject = dynamic_cast<VR::AbstractObject*>(this->getChild(nI));
 		if (!pObject.valid())
 			continue;
 		else

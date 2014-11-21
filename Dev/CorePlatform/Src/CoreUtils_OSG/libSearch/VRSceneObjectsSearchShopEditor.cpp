@@ -38,7 +38,6 @@ DataStructureModel * SceneObjectsSearchShopEditor::getModel() const	{
 
 void SceneObjectsSearchShopEditor::slotChangeName(const QModelIndex & anIndex)	{
 	string strPrevName = m_pDataStructureModel->getPrevValue().toString().toStdString();
-//	AbstractObject * pObject = dynamic_cast<AbstractObject*>(m_pScene->getChild(strPrevName));
 	ref_ptr<Node> pObject = dynamic_cast<Node*>(m_pScene->getChild(strPrevName));
 
 	if (!pObject)

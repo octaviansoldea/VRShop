@@ -1,4 +1,3 @@
-
 #include "VRRemoveSelection_GUI.h"
 
 using namespace Ui;

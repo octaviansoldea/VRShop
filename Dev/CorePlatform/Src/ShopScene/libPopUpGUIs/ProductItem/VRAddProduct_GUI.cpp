@@ -4,21 +4,13 @@
 
 using namespace Ui;
 using namespace VR;
-using namespace std;
 using namespace osg;
 
 //----------------------------------------------------------------------
 
 AddProduct_GUI::AddProduct_GUI()	{
 	setupUi(this);
-	setWindowFlags(Qt::FramelessWindowHint);
 	m_pScrollAreaNewProduct->setVisible(false);
-
-	ref_ptr<KeyboardMouseManipulatorShopEditor> pCamera = new KeyboardMouseManipulatorShopEditor;
-	m_pOSGQT_Widget->setCameraManipulator(pCamera);
-	ref_ptr<Group> pScene = new Group;
-	m_pOSGQT_Widget->setSceneData(pScene);
-	m_pOSGQT_Widget->show();
 
 	connect(m_pToolButtonClose, SIGNAL(pressed()),this,SLOT(close()));
 	connect(m_pPushButtonCancel, SIGNAL(pressed()),this,SLOT(close()));
@@ -29,6 +21,9 @@ AddProduct_GUI::AddProduct_GUI()	{
 
 	connect(m_pToolButtonFromDB, SIGNAL(pressed()),this,SLOT(slotSetActiveWidget()));
 	connect(m_pToolButtonNew,SIGNAL(pressed()),this,SLOT(slotSetActiveWidget()));
+
+	ref_ptr<KeyboardMouseManipulatorShopEditor> pCamera = new KeyboardMouseManipulatorShopEditor;
+	m_pOSGQT_Widget->setCameraManipulator(pCamera);
 }
 
 //----------------------------------------------------------------------

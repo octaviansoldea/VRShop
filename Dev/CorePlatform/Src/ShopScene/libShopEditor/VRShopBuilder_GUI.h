@@ -19,9 +19,6 @@ namespace VR	{
 	private:
 		void buildConnections();
 
-		QString openDialog(const char * apchDBName);
-		QString saveDialog(const char * apchDBName);
-
 		ShopBuilder * m_pShopBuilder;
 
 		CameraController * m_pCameraController;

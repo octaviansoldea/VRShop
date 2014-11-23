@@ -1,5 +1,6 @@
 #include <QMessageBox>
 #include <QFile>
+#include <QFileDialog>
 
 #include "VRBasicQTOperations.h"
 
@@ -74,4 +75,15 @@ bool BasicQtOperations::QtFileOperation(string & astrFileName, FILE_OPERATION ae
 	file.close();
 
 	return true;
+}
+
+//-----------------------------------------------------------------------------
+
+string BasicQtOperations::openSaveDialog(const char * apchDBName,QWidget * apParent, bool abOpen) {
+	string strFileName;
+	strFileName = (abOpen == true) 
+		? QFileDialog::getOpenFileName(apParent, "Open File",".", apchDBName).toStdString()
+		: QFileDialog::getSaveFileName(apParent, "Save file",".\\", apchDBName).toStdString();
+
+	return(strFileName);
 }

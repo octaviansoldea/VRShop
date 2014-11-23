@@ -8,9 +8,6 @@ Highly desirable to be solved Bugs
 
 Initial position of camera / Synchronization of avatar moves
 
-	VRProductmanager line 168: if frameless window selected, then fails to display correctly
-	(likely because of a missing parent)
-
 Textures when cloning objects
 
 Upper limit of users from server

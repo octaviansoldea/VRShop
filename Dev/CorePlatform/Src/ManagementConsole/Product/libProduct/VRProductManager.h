@@ -82,6 +82,8 @@ namespace VR	{
 	private slots:
 		void slotUpdateCombo();
 		void slotBoxFrameChanged();
+		void slotSelectTexture();
+		void slotSetTexture();
 
 	public:
 		std::list<std::string> requestData(

@@ -1,10 +1,10 @@
 #include "BasicStringDefinitions.h"
 #include <string>
+#include "VRBasicQTOperations.h"
 
 #include <osgDB/ReadFile>
 #include <osgGA/GUIEventHandler>
 
-#include <QFileDialog>
 #include <QMessageBox>
 
 #include "VRShopBuilder.h"
@@ -140,25 +140,6 @@ void ShopBuilder_GUI::buildConnections() {
 
 //=========================================================================================
 
-QString ShopBuilder_GUI::openDialog(const char * apchDBName) {
-	QString qstrFileName = QFileDialog::getOpenFileName(this, 
-		tr("Open File"),
-		tr("."), apchDBName);
-
-	return(qstrFileName);
-}
-
-//=========================================================================================
-
-QString ShopBuilder_GUI::saveDialog(const char * apchDBName) {
-	QString qstrFileName = QFileDialog::getSaveFileName(this, 
-		tr("Save file"),
-		tr(".\\"), apchDBName);
-	return(qstrFileName);
-}
-
-//=========================================================================================
-
 void ShopBuilder_GUI::slotNewProject()	{
 	m_pShopBuilder->newDB();
 }
@@ -166,7 +147,7 @@ void ShopBuilder_GUI::slotNewProject()	{
 //---------------------------------------------------------------------------------------
 
 void ShopBuilder_GUI::slotOpenDB() {
-	QString qstrFileName = openDialog("*.db");
+	QString qstrFileName = BasicQtOperations::openSaveDialog("*.db", this).c_str();
 
 	m_pShopBuilder->readDB(qstrFileName.toStdString());
 }

@@ -2,34 +2,13 @@
 <ui version="4.0">
  <class>AddProduct</class>
  <widget class="QDialog" name="AddProduct">
-  <property name="windowModality">
-   <enum>Qt::ApplicationModal</enum>
-  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>530</width>
-    <height>558</height>
+    <width>465</width>
+    <height>535</height>
    </rect>
-  </property>
-  <property name="sizePolicy">
-   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-    <horstretch>0</horstretch>
-    <verstretch>0</verstretch>
-   </sizepolicy>
-  </property>
-  <property name="minimumSize">
-   <size>
-    <width>530</width>
-    <height>0</height>
-   </size>
-  </property>
-  <property name="maximumSize">
-   <size>
-    <width>530</width>
-    <height>16777215</height>
-   </size>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
@@ -115,21 +94,6 @@ QToolButton:checked {
 }</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
-   <property name="spacing">
-    <number>0</number>
-   </property>
-   <property name="leftMargin">
-    <number>0</number>
-   </property>
-   <property name="topMargin">
-    <number>0</number>
-   </property>
-   <property name="rightMargin">
-    <number>0</number>
-   </property>
-   <property name="bottomMargin">
-    <number>0</number>
-   </property>
    <item>
     <widget class="QFrame" name="frame_2">
      <property name="sizePolicy">
@@ -193,150 +157,328 @@ QToolButton {
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="widget" native="true">
-     <layout class="QVBoxLayout" name="verticalLayout_2">
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
-        <property name="spacing">
-         <number>0</number>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QToolButton" name="m_pToolButtonFromDB">
+       <property name="minimumSize">
+        <size>
+         <width>150</width>
+         <height>40</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>79</width>
+         <height>22</height>
+        </size>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="text">
+        <string>Insert From Database</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QToolButton" name="m_pToolButtonNew">
+       <property name="minimumSize">
+        <size>
+         <width>150</width>
+         <height>40</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>79</width>
+         <height>22</height>
+        </size>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="text">
+        <string>Insert New Product</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QFrame" name="m_pFrameFromDB">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Sunken</enum>
+     </property>
+     <layout class="QFormLayout" name="formLayout_7">
+      <property name="horizontalSpacing">
+       <number>40</number>
+      </property>
+      <property name="verticalSpacing">
+       <number>6</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_17">
+        <property name="text">
+         <string>Product Category</string>
         </property>
-        <item>
-         <widget class="QToolButton" name="m_pToolButtonFromDB">
-          <property name="minimumSize">
-           <size>
-            <width>150</width>
-            <height>40</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>79</width>
-            <height>22</height>
-           </size>
-          </property>
-          <property name="cursor">
-           <cursorShape>PointingHandCursor</cursorShape>
-          </property>
-          <property name="text">
-           <string>Insert From Database</string>
-          </property>
-          <property name="checkable">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QToolButton" name="m_pToolButtonNew">
-          <property name="minimumSize">
-           <size>
-            <width>150</width>
-            <height>40</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>79</width>
-            <height>22</height>
-           </size>
-          </property>
-          <property name="cursor">
-           <cursorShape>PointingHandCursor</cursorShape>
-          </property>
-          <property name="text">
-           <string>Insert New Product</string>
-          </property>
-          <property name="checkable">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <widget class="QFrame" name="m_pFrameFromDB">
-        <property name="frameShape">
-         <enum>QFrame::StyledPanel</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
-        </property>
-        <layout class="QFormLayout" name="formLayout">
-         <property name="horizontalSpacing">
-          <number>40</number>
-         </property>
-         <property name="verticalSpacing">
-          <number>6</number>
-         </property>
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_2">
-           <property name="text">
-            <string>Product Category</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <widget class="QComboBox" name="m_pComboBoxProductCategoryFromDB"/>
-         </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="label_3">
-           <property name="text">
-            <string>Product Name</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="QComboBox" name="m_pComboBoxProductNameFromDB"/>
-         </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="label_4">
-           <property name="text">
-            <string>Product Code</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="1">
-          <widget class="QComboBox" name="m_pComboBoxProductCodeFromDB"/>
-         </item>
-        </layout>
        </widget>
       </item>
-      <item>
-       <widget class="QScrollArea" name="m_pScrollAreaNewProduct">
-        <property name="widgetResizable">
-         <bool>true</bool>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="m_pComboBoxProductCategoryFromDB"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_19">
+        <property name="text">
+         <string>Product Name</string>
         </property>
-        <widget class="QWidget" name="scrollAreaWidgetContents">
-         <property name="geometry">
-          <rect>
-           <x>0</x>
-           <y>-415</y>
-           <width>496</width>
-           <height>729</height>
-          </rect>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="m_pComboBoxProductNameFromDB"/>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_20">
+        <property name="text">
+         <string>Product Code</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QComboBox" name="m_pComboBoxProductCodeFromDB"/>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QScrollArea" name="m_pScrollAreaNewProduct">
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="scrollAreaWidgetContents">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>431</width>
+        <height>663</height>
+       </rect>
+      </property>
+      <layout class="QFormLayout" name="formLayout_5">
+       <property name="fieldGrowthPolicy">
+        <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+       </property>
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_36">
+         <property name="text">
+          <string>Product Category:</string>
          </property>
-         <layout class="QFormLayout" name="formLayout_2">
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_22">
-            <property name="text">
-             <string>Product Category:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QComboBox" name="m_pComboBoxProductCategory">
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QComboBox" name="m_pComboBoxProductCategory">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>21</height>
+          </size>
+         </property>
+         <property name="editable">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_37">
+         <property name="text">
+          <string>Product Name:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="m_pLineEditProductName"/>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_38">
+         <property name="text">
+          <string>Product Code:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLineEdit" name="m_pLineEditProductCode"/>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="label_39">
+         <property name="text">
+          <string>Product Description:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QTextEdit" name="m_pTextEditProductDescription">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>50</height>
+          </size>
+         </property>
+         <property name="tabStopWidth">
+          <number>80</number>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="label_40">
+         <property name="text">
+          <string>Short Description:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QLineEdit" name="m_pLineEditShortDescription"/>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="label_41">
+         <property name="text">
+          <string>Product's URL:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <widget class="QLineEdit" name="m_pLineEditProductURL"/>
+       </item>
+       <item row="6" column="0">
+        <widget class="QLabel" name="label_42">
+         <property name="text">
+          <string>Producer:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1">
+        <widget class="QComboBox" name="m_pComboBoxProducer">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>21</height>
+          </size>
+         </property>
+         <property name="editable">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="0">
+        <widget class="QLabel" name="label_43">
+         <property name="text">
+          <string>Producer's Address:</string>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="1">
+        <widget class="QTextEdit" name="m_pTextEditProducerAddress">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>50</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="0">
+        <widget class="QLabel" name="label_18">
+         <property name="text">
+          <string>Producer's URL:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="8" column="1">
+        <widget class="QComboBox" name="m_pComboBoxProducerURL">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>21</height>
+          </size>
+         </property>
+         <property name="editable">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="0">
+        <widget class="QLabel" name="label_44">
+         <property name="text">
+          <string>Place of Origin:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="9" column="1">
+        <widget class="QComboBox" name="m_pComboBoxPlaceOfOrigin">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>21</height>
+          </size>
+         </property>
+         <property name="editable">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="0">
+        <widget class="QLabel" name="label_45">
+         <property name="text">
+          <string>Product Unit:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="10" column="1">
+        <widget class="QFrame" name="frame_4">
+         <layout class="QHBoxLayout" name="horizontalLayout_11" stretch="0,0,5,4">
+          <property name="spacing">
+           <number>10</number>
+          </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QComboBox" name="m_pComboBoxProductUnit">
             <property name="minimumSize">
              <size>
               <width>0</width>
@@ -348,510 +490,332 @@ QToolButton {
             </property>
            </widget>
           </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_23">
+          <item>
+           <widget class="QLabel" name="label_21">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="text">
-             <string>Product Name:</string>
+             <string>Unit Quantity:</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="1">
-           <widget class="QLineEdit" name="m_pLineEditProductName"/>
-          </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="label_24">
-            <property name="text">
-             <string>Product Code:</string>
+          <item>
+           <widget class="QComboBox" name="m_pComboBoxUnitQuantity">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
             </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QLineEdit" name="m_pLineEditProductCode"/>
-          </item>
-          <item row="3" column="0">
-           <widget class="QLabel" name="label_25">
-            <property name="text">
-             <string>Product Description:</string>
+            <property name="minimumSize">
+             <size>
+              <width>50</width>
+              <height>21</height>
+             </size>
             </property>
-           </widget>
-          </item>
-          <item row="3" column="1">
-           <widget class="QTextEdit" name="m_pTextEditProductDescription">
             <property name="maximumSize">
              <size>
-              <width>16777215</width>
-              <height>50</height>
-             </size>
-            </property>
-            <property name="tabStopWidth">
-             <number>80</number>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="0">
-           <widget class="QLabel" name="label_26">
-            <property name="text">
-             <string>Short Description:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="1">
-           <widget class="QLineEdit" name="m_pLineEditShortDescription"/>
-          </item>
-          <item row="5" column="0">
-           <widget class="QLabel" name="label_27">
-            <property name="text">
-             <string>Product's URL:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="1">
-           <widget class="QLineEdit" name="m_pLineEditProductURL"/>
-          </item>
-          <item row="6" column="0">
-           <widget class="QLabel" name="label_28">
-            <property name="text">
-             <string>Producer:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="6" column="1">
-           <widget class="QComboBox" name="m_pComboBoxProducer">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>21</height>
-             </size>
-            </property>
-            <property name="editable">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="7" column="0">
-           <widget class="QLabel" name="label_29">
-            <property name="text">
-             <string>Producer's Address:</string>
-            </property>
-            <property name="wordWrap">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="7" column="1">
-           <widget class="QTextEdit" name="m_pTextEditProducerAddress">
-            <property name="maximumSize">
-             <size>
-              <width>16777215</width>
-              <height>50</height>
-             </size>
-            </property>
-           </widget>
-          </item>
-          <item row="8" column="0">
-           <widget class="QLabel" name="label_6">
-            <property name="text">
-             <string>Producer's URL:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="8" column="1">
-           <widget class="QComboBox" name="m_pComboBoxProducerURL">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>21</height>
-             </size>
-            </property>
-            <property name="editable">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="9" column="0">
-           <widget class="QLabel" name="label_30">
-            <property name="text">
-             <string>Place of Origin:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="9" column="1">
-           <widget class="QComboBox" name="m_pComboBoxPlaceOfOrigin">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>21</height>
-             </size>
-            </property>
-            <property name="editable">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="10" column="0">
-           <widget class="QLabel" name="label_32">
-            <property name="text">
-             <string>Product Unit:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="10" column="1">
-           <widget class="QFrame" name="frame_3">
-            <layout class="QHBoxLayout" name="horizontalLayout_8" stretch="0,0,5,4">
-             <property name="spacing">
-              <number>10</number>
-             </property>
-             <property name="leftMargin">
-              <number>0</number>
-             </property>
-             <property name="topMargin">
-              <number>0</number>
-             </property>
-             <property name="rightMargin">
-              <number>0</number>
-             </property>
-             <property name="bottomMargin">
-              <number>0</number>
-             </property>
-             <item>
-              <widget class="QComboBox" name="m_pComboBoxProductUnit">
-               <property name="minimumSize">
-                <size>
-                 <width>0</width>
-                 <height>21</height>
-                </size>
-               </property>
-               <property name="editable">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="label_20">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="text">
-                <string>Unit Quantity:</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QComboBox" name="m_pComboBoxUnitQuantity">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="minimumSize">
-                <size>
-                 <width>50</width>
-                 <height>21</height>
-                </size>
-               </property>
-               <property name="maximumSize">
-                <size>
-                 <width>90</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <property name="editable">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <spacer name="horizontalSpacer_3">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>40</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-            </layout>
-           </widget>
-          </item>
-          <item row="11" column="0">
-           <widget class="QLabel" name="label_35">
-            <property name="text">
-             <string>Tax Rate:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="11" column="1">
-           <widget class="QComboBox" name="m_pComboBoxTaxRate">
-            <property name="maximumSize">
-             <size>
-              <width>70</width>
+              <width>90</width>
               <height>16777215</height>
              </size>
             </property>
-            <item>
+            <property name="editable">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_9">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="11" column="0">
+        <widget class="QLabel" name="label_46">
+         <property name="text">
+          <string>Tax Rate:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="11" column="1">
+        <widget class="QComboBox" name="m_pComboBoxTaxRate">
+         <property name="maximumSize">
+          <size>
+           <width>70</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <item>
+          <property name="text">
+           <string>9.5%</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>22%</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="12" column="0">
+        <widget class="QLabel" name="label_47">
+         <property name="text">
+          <string>Quantity:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="12" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_12" stretch="0,0,0,0,0">
+         <property name="spacing">
+          <number>10</number>
+         </property>
+         <item>
+          <widget class="QLineEdit" name="m_pLineEditQuantity">
+           <property name="minimumSize">
+            <size>
+             <width>70</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>70</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_10">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_48">
+           <property name="text">
+            <string>Last Changed:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="m_pLineEditQuantLastChanged">
+           <property name="minimumSize">
+            <size>
+             <width>70</width>
+             <height>0</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_11">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item row="13" column="0">
+        <widget class="QLabel" name="label_49">
+         <property name="text">
+          <string>Price:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="13" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_13">
+         <property name="spacing">
+          <number>10</number>
+         </property>
+         <item>
+          <widget class="QLineEdit" name="m_pLineEditPrice">
+           <property name="minimumSize">
+            <size>
+             <width>70</width>
+             <height>0</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>70</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_12">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_50">
+           <property name="text">
+            <string>Last Changed:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="m_pLineEditPriceLastChanged">
+           <property name="minimumSize">
+            <size>
+             <width>70</width>
+             <height>0</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_13">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item row="14" column="0">
+        <widget class="QLabel" name="label_51">
+         <property name="text">
+          <string>Image:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="14" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_14" stretch="0,1">
+         <property name="spacing">
+          <number>15</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="m_pLabelTexture">
+           <property name="minimumSize">
+            <size>
+             <width>50</width>
+             <height>50</height>
+            </size>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::StyledPanel</enum>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QFormLayout" name="formLayout_6">
+           <property name="fieldGrowthPolicy">
+            <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+           </property>
+           <property name="horizontalSpacing">
+            <number>10</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_52">
              <property name="text">
-              <string>9.5%</string>
+              <string>Select:</string>
              </property>
-            </item>
-            <item>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QComboBox" name="m_pComboBoxImageSelect">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>21</height>
+              </size>
+             </property>
+             <property name="editable">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_53">
              <property name="text">
-              <string>22%</string>
+              <string>Add New:</string>
              </property>
-            </item>
-           </widget>
-          </item>
-          <item row="12" column="0">
-           <widget class="QLabel" name="label_33">
-            <property name="text">
-             <string>Quantity:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="12" column="1">
-           <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="0,0,0,0,0">
-            <property name="spacing">
-             <number>10</number>
-            </property>
-            <item>
-             <widget class="QLineEdit" name="m_pLineEditQuantity">
-              <property name="minimumSize">
-               <size>
-                <width>70</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>70</width>
-                <height>16777215</height>
-               </size>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="horizontalSpacer_2">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item>
-             <widget class="QLabel" name="label_19">
-              <property name="text">
-               <string>Last Changed:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="m_pLineEditQuantLastChanged">
-              <property name="minimumSize">
-               <size>
-                <width>70</width>
-                <height>0</height>
-               </size>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="horizontalSpacer_6">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-           </layout>
-          </item>
-          <item row="13" column="0">
-           <widget class="QLabel" name="label_34">
-            <property name="text">
-             <string>Price:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="13" column="1">
-           <layout class="QHBoxLayout" name="horizontalLayout_5">
-            <property name="spacing">
-             <number>10</number>
-            </property>
-            <item>
-             <widget class="QLineEdit" name="m_pLineEditPrice">
-              <property name="minimumSize">
-               <size>
-                <width>70</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>70</width>
-                <height>16777215</height>
-               </size>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="horizontalSpacer_4">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item>
-             <widget class="QLabel" name="label_17">
-              <property name="text">
-               <string>Last Changed:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLineEdit" name="m_pLineEditPriceLastChanged">
-              <property name="minimumSize">
-               <size>
-                <width>70</width>
-                <height>0</height>
-               </size>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <spacer name="horizontalSpacer_7">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-           </layout>
-          </item>
-          <item row="14" column="0">
-           <widget class="QLabel" name="label_31">
-            <property name="text">
-             <string>Image:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="14" column="1">
-           <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="0,1">
-            <property name="spacing">
-             <number>15</number>
-            </property>
-            <property name="rightMargin">
-             <number>0</number>
-            </property>
-            <item>
-             <widget class="QLabel" name="m_pLabelTexture">
-              <property name="minimumSize">
-               <size>
-                <width>50</width>
-                <height>50</height>
-               </size>
-              </property>
-              <property name="frameShape">
-               <enum>QFrame::StyledPanel</enum>
-              </property>
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <layout class="QFormLayout" name="formLayout_3">
-              <property name="fieldGrowthPolicy">
-               <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-              </property>
-              <property name="horizontalSpacing">
-               <number>10</number>
-              </property>
-              <property name="rightMargin">
-               <number>0</number>
-              </property>
-              <item row="0" column="0">
-               <widget class="QLabel" name="label_10">
-                <property name="text">
-                 <string>Select:</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="1">
-               <widget class="QComboBox" name="m_pComboBoxImageSelect">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>0</width>
-                  <height>21</height>
-                 </size>
-                </property>
-                <property name="editable">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="0">
-               <widget class="QLabel" name="label_11">
-                <property name="text">
-                 <string>Add New:</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="1">
-               <widget class="QToolButton" name="m_pToolButtonSetTexture">
-                <property name="minimumSize">
-                 <size>
-                  <width>20</width>
-                  <height>20</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>79</width>
-                  <height>22</height>
-                 </size>
-                </property>
-                <property name="font">
-                 <font>
-                  <kerning>true</kerning>
-                 </font>
-                </property>
-                <property name="focusPolicy">
-                 <enum>Qt::TabFocus</enum>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">/*Tool button*/
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QToolButton" name="m_pToolButtonSetTexture">
+             <property name="minimumSize">
+              <size>
+               <width>20</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>79</width>
+               <height>22</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <kerning>true</kerning>
+              </font>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::TabFocus</enum>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">/*Tool button*/
 QToolButton {
 	max-width: 77px;
 	max-height: 20px;
@@ -863,44 +827,44 @@ QToolButton:hover {
 	border-radius: 1px;
 }
 </string>
-                </property>
-                <property name="text">
-                 <string>Select File ...</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-           </layout>
-          </item>
-          <item row="15" column="0">
-           <widget class="QLabel" name="label_5">
-            <property name="text">
-             <string>Frame:</string>
-            </property>
-           </widget>
-          </item>
-          <item row="15" column="1">
-           <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="0,0">
-            <property name="spacing">
-             <number>2</number>
-            </property>
-            <item>
-             <widget class="QComboBox" name="m_pComboBoxFrame">
-              <property name="minimumSize">
-               <size>
-                <width>150</width>
-                <height>21</height>
-               </size>
-              </property>
-              <property name="acceptDrops">
-               <bool>false</bool>
-              </property>
-              <property name="accessibleName">
-               <string/>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">QComboBox {
+             </property>
+             <property name="text">
+              <string>Select File ...</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+       <item row="15" column="0">
+        <widget class="QLabel" name="label_54">
+         <property name="text">
+          <string>Frame:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="15" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_15" stretch="0,0">
+         <property name="spacing">
+          <number>2</number>
+         </property>
+         <item>
+          <widget class="QComboBox" name="m_pComboBoxFrame">
+           <property name="minimumSize">
+            <size>
+             <width>150</width>
+             <height>21</height>
+            </size>
+           </property>
+           <property name="acceptDrops">
+            <bool>false</bool>
+           </property>
+           <property name="accessibleName">
+            <string/>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QComboBox {
 	min-height: 19px;
 	background-color: lightgray;
 	selection-background-color: gray;
@@ -939,212 +903,179 @@ QComboBox QAbstractItemView {
 	background-color: gray;
 }
 </string>
-              </property>
-              <property name="editable">
-               <bool>false</bool>
-              </property>
-              <property name="currentText">
-               <string>Plate3D</string>
-              </property>
-              <item>
-               <property name="text">
-                <string>Plate3D</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Prism</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>Sphere</string>
-               </property>
-              </item>
-             </widget>
-            </item>
-            <item>
-             <spacer name="horizontalSpacer_5">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-           </layout>
-          </item>
-          <item row="16" column="0">
-           <widget class="QLabel" name="label_7">
+           </property>
+           <property name="editable">
+            <bool>false</bool>
+           </property>
+           <property name="currentText">
+            <string>Plate3D</string>
+           </property>
+           <item>
             <property name="text">
-             <string>Size:</string>
+             <string>Plate3D</string>
             </property>
-           </widget>
-          </item>
-          <item row="16" column="1">
-           <layout class="QHBoxLayout" name="horizontalLayout_9">
-            <item>
-             <widget class="QLabel" name="label_8">
-              <property name="maximumSize">
-               <size>
-                <width>20</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>X:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QDoubleSpinBox" name="m_pDoubleSpinBoxSizeX">
-              <property name="singleStep">
-               <double>0.010000000000000</double>
-              </property>
-              <property name="value">
-               <double>1.000000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="label_9">
-              <property name="maximumSize">
-               <size>
-                <width>20</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>Y:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QDoubleSpinBox" name="m_pDoubleSpinBoxSizeY">
-              <property name="singleStep">
-               <double>0.010000000000000</double>
-              </property>
-              <property name="value">
-               <double>0.010000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="label_12">
-              <property name="maximumSize">
-               <size>
-                <width>20</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>Z:</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QDoubleSpinBox" name="m_pDoubleSpinBoxSizeZ">
-              <property name="singleStep">
-               <double>0.010000000000000</double>
-              </property>
-              <property name="value">
-               <double>1.000000000000000</double>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item row="17" column="0">
-           <widget class="QLabel" name="label_13">
+           </item>
+           <item>
             <property name="text">
-             <string>Preview:</string>
+             <string>Prism</string>
             </property>
-           </widget>
-          </item>
-          <item row="17" column="1">
-           <widget class="QFrame" name="m_pQFramePreview">
-            <layout class="QHBoxLayout" name="horizontalLayout_10">
-             <item>
-              <widget class="QWidget" name="widget_2" native="true">
-               <property name="minimumSize">
-                <size>
-                 <width>150</width>
-                 <height>150</height>
-                </size>
-               </property>
-               <layout class="QVBoxLayout" name="verticalLayout_4">
-                <property name="spacing">
-                 <number>0</number>
-                </property>
-                <property name="leftMargin">
-                 <number>0</number>
-                </property>
-                <property name="topMargin">
-                 <number>0</number>
-                </property>
-                <property name="rightMargin">
-                 <number>0</number>
-                </property>
-                <property name="bottomMargin">
-                 <number>0</number>
-                </property>
-                <item>
-                 <widget class="VR::OSGQT_Widget" name="m_pOSGQT_Widget" native="true">
-                  <property name="styleSheet">
-                   <string notr="true">background-color: rgb(191, 193, 194);</string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-             </item>
-             <item>
-              <spacer name="horizontalSpacer_8">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>40</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-            </layout>
-           </widget>
-          </item>
-         </layout>
+           </item>
+           <item>
+            <property name="text">
+             <string>Sphere</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_14">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item row="16" column="0">
+        <widget class="QLabel" name="label_55">
+         <property name="text">
+          <string>Size:</string>
+         </property>
         </widget>
-       </widget>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <property name="spacing">
-         <number>6</number>
-        </property>
-        <item>
-         <widget class="QPushButton" name="m_pPushButtonOK">
-          <property name="text">
-           <string>Confirm</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="m_pPushButtonCancel">
-          <property name="text">
-           <string>Cancel</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-     </layout>
+       </item>
+       <item row="16" column="1">
+        <layout class="QHBoxLayout" name="horizontalLayout_16">
+         <item>
+          <widget class="QLabel" name="label_56">
+           <property name="maximumSize">
+            <size>
+             <width>20</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>X:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QDoubleSpinBox" name="m_pDoubleSpinBoxSizeX">
+           <property name="singleStep">
+            <double>0.010000000000000</double>
+           </property>
+           <property name="value">
+            <double>1.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_57">
+           <property name="maximumSize">
+            <size>
+             <width>20</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Y:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QDoubleSpinBox" name="m_pDoubleSpinBoxSizeY">
+           <property name="singleStep">
+            <double>0.010000000000000</double>
+           </property>
+           <property name="value">
+            <double>0.010000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_58">
+           <property name="maximumSize">
+            <size>
+             <width>20</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>Z:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QDoubleSpinBox" name="m_pDoubleSpinBoxSizeZ">
+           <property name="singleStep">
+            <double>0.010000000000000</double>
+           </property>
+           <property name="value">
+            <double>1.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="17" column="0">
+        <widget class="QLabel" name="label_59">
+         <property name="text">
+          <string>Preview:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="17" column="1">
+        <layout class="QVBoxLayout" name="verticalLayout_4">
+         <item>
+          <widget class="VR::OSGQT_Widget" name="m_pOSGQT_Widget" native="true">
+           <property name="minimumSize">
+            <size>
+             <width>100</width>
+             <height>100</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>100</width>
+             <height>100</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(191, 193, 194);</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
     </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_18">
+     <property name="spacing">
+      <number>6</number>
+     </property>
+     <item>
+      <widget class="QPushButton" name="m_pPushButtonOK">
+       <property name="text">
+        <string>Apply</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="m_pPushButtonCancel">
+       <property name="text">
+        <string>Cancel</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>

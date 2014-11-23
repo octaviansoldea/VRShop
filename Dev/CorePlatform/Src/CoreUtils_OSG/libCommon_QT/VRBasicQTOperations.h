@@ -24,6 +24,7 @@ namespace VR	{
 		};
 
 		static bool QtFileOperation(std::string & astrFileName, FILE_OPERATION aenumFileOperation);
+		static std::string openSaveDialog(const char * apchDBName, QWidget * apParent=0, bool abOpen=true);
 	};
 }
 

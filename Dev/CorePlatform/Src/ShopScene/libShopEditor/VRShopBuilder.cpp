@@ -102,7 +102,7 @@ ShopBuilder::~ShopBuilder() {
 	delete m_pProductMgr;
 	if (m_pSceneObjectsSearch != 0)	{
 		delete m_pSceneObjectsSearch;
-		m_pSceneObjectsSearch == 0;
+		m_pSceneObjectsSearch = 0;
 	}
 }
 
@@ -345,14 +345,14 @@ bool ShopBuilder::searchScene(const std::string & astrSearchTerm)	{
 
 	if (m_pSceneObjectsSearch != 0)	{
 		delete m_pSceneObjectsSearch;
-		m_pSceneObjectsSearch == 0;
+		m_pSceneObjectsSearch = 0;
 	}
 
 	m_pSceneObjectsSearch = new SceneObjectsSearchShopEditor(astrSearchTerm.c_str(), m_pScene);
 	
 	if (!m_pSceneObjectsSearch->getModel())	{
 		delete m_pSceneObjectsSearch;
-		m_pSceneObjectsSearch == 0;
+		m_pSceneObjectsSearch = 0;
 
 		return bRes;
 	}

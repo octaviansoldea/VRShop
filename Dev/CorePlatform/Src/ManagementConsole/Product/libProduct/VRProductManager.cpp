@@ -3,6 +3,9 @@
 #include <QString>
 
 #include <QObject>
+#include "VRBasicQTOperations.h"
+
+#include <QImageReader>
 
 #include "VRRemoveProduct_GUI.h"
 #include "VRAddProduct_GUI.h"
@@ -29,6 +32,8 @@ DatabaseInterface ProductManager::m_DIProductEditor(ProductManager::getDBParams(
 
 ProductManager::ProductManager(QObject * apParent) : QObject(apParent) {
 	m_pAddProduct_GUI = new AddProduct_GUI;
+	m_pAddProduct_GUI->setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
+	m_pAddProduct_GUI->setParent(0);
 
 	m_pgrpProductsRepresentation = new Group();
 	m_pgrpProductsRepresentation->setName("Products");
@@ -43,6 +48,13 @@ ProductManager::ProductManager(QObject * apParent) : QObject(apParent) {
 
 	connect(m_pAddProduct_GUI->m_pComboBoxFrame,
 		SIGNAL(currentIndexChanged(const QString &)),this,SLOT(slotBoxFrameChanged()));
+	connect(m_pAddProduct_GUI->m_pToolButtonSetTexture,SIGNAL(pressed()),this,SLOT(slotSelectTexture()));
+	connect(m_pAddProduct_GUI->m_pComboBoxImageSelect,SIGNAL(currentTextChanged(const QString &)),this,SLOT(slotSetTexture()));
+
+
+	ref_ptr<AbstractGeomShape> pAGS = dynamic_cast<AbstractGeomShape*>(AbstractObjectFactory::createAbstractObject("Plate3D").get());
+	OSGQT_Widget * pOSGQT_Widget = m_pAddProduct_GUI->m_pOSGQT_Widget;
+	pOSGQT_Widget->setSceneData(pAGS);
 }
 
 //-----------------------------------------------------------------------------
@@ -247,6 +259,7 @@ void ProductManager::addNewProduct(ProductShopEditor * apProductShopEditor)	{
 //-----------------------------------------------------------------------------
 
 bool ProductManager::removeProduct(const string & astrProductCode)	{	
+
 	vector<string> vecstrProductMgrParams;
 	vecstrProductMgrParams.push_back(astrProductCode);
 	list<string> lststrQuery = requestData(REMOVE_PRODUCT,vecstrProductMgrParams);
@@ -264,6 +277,8 @@ bool ProductManager::removeProduct(const string & astrProductCode)	{
 	const string strProductTexture = *(it+3);
 
 	RemoveProduct_GUI removeProduct_GUI;
+	removeProduct_GUI.setWindowFlags(Qt::FramelessWindowHint);
+
 	removeProduct_GUI.m_pComboBoxCategory->addItem(strProductCategory.c_str());
 	removeProduct_GUI.m_pComboBoxProduct->addItem(strProductName.c_str());
 	removeProduct_GUI.m_pComboBoxID->addItem(tostr(strProductCode).c_str());
@@ -277,7 +292,7 @@ bool ProductManager::removeProduct(const string & astrProductCode)	{
 	pOSGQT_Widget->setSceneData(pAGS);
 
 	int nRes = removeProduct_GUI.exec();
-	
+
 	return nRes;
 }
 
@@ -523,10 +538,9 @@ void ProductManager::slotUpdateCombo()	{
 		pProductCode->clear();
 
 		list<string>::iterator it;
-		vector<string> vecstrResultLine;
-
+		
 		for (it = lststrQuery.begin(); it != lststrQuery.end(); it++)	{
-			vecstrResultLine = splitString(*it,";");
+			vector<string> vecstrResultLine = splitString(*it,";");
 			pProductName->addItem(vecstrResultLine[0].c_str());
 			pProductCode->addItem(vecstrResultLine[1].c_str());
 		}
@@ -685,4 +699,37 @@ list<string> ProductManager::requestData(const OPERATION_TYPE & aenumOperationTy
 		return ((list<string>)0);
 	}
 	return lststrReceivedData;
+}
+
+//----------------------------------------------------------------------------
+
+void ProductManager::slotSetTexture()	{
+	QString qstrTextureFile = m_pAddProduct_GUI->m_pComboBoxImageSelect->currentText();
+
+	QImageReader image(qstrTextureFile);
+	QPixmap imageBasic(QPixmap::fromImageReader(&image));
+	QLabel * pImageLabel = m_pAddProduct_GUI->m_pLabelTexture;
+	QPixmap imageScaled(imageBasic.scaled(
+		pImageLabel->width(),
+		pImageLabel->height(),
+		Qt::IgnoreAspectRatio,
+		Qt::SmoothTransformation)
+		);
+	pImageLabel->setPixmap(imageScaled);
+
+	OSGQT_Widget * pOSGQT_Widget = m_pAddProduct_GUI->m_pOSGQT_Widget;
+	ref_ptr<AbstractGeomShape> pAGS = (AbstractGeomShape*)pOSGQT_Widget->getSceneData();
+	pAGS->setTexture(qstrTextureFile.toStdString());
+}
+
+//----------------------------------------------------------------------------
+
+void ProductManager::slotSelectTexture()	{
+	string strFileName = BasicQtOperations::openSaveDialog("*.bmp", m_pAddProduct_GUI);
+
+	if (strFileName.empty())	{
+		return;
+	}
+
+	m_pAddProduct_GUI->m_pComboBoxImageSelect->addItem(strFileName.c_str());
 }

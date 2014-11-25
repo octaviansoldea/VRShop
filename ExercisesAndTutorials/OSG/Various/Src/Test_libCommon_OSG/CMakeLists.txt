@@ -1,0 +1,32 @@
+project(Test_libCommon_OSG)
+cmake_minimum_required( VERSION 2.8 )
+
+SET(CMAKE_DEBUG_POSTFIX "D")
+
+FIND_PACKAGE(OpenSceneGraph REQUIRED osg osgDB osgGA osgUtil osgViewer OpenThreads)
+
+SET(src
+	main.cpp
+)
+
+INCLUDE_DIRECTORIES(
+	${OPENSCENEGRAPH_INCLUDE_DIRS}
+	${CMAKE_SOURCE_DIR}/libCommon_OSG
+	${CMAKE_SOURCE_DIR}/libModel
+)
+
+ADD_EXECUTABLE(Test_libCommon_OSG
+	main.cpp)
+
+TARGET_LINK_LIBRARIES(Test_libCommon_OSG
+	${OSG_LIBRARIES}
+	${OSGDB_LIBRARIES}
+	${OSGGA_LIBRARIES}
+	${OSGUTIL_LIBRARIES}
+	${OSGVIEWER_LIBRARIES}
+	${OPENTHREADS_LIBRARIES}
+	libCommon_OSG
+	libModel
+)
+
+SET_PROPERTY(TARGET Test_libCommon_OSG PROPERTY FOLDER Utils)

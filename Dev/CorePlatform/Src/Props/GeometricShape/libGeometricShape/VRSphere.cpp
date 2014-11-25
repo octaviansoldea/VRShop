@@ -64,7 +64,14 @@ Object* VR::Sphere::cloneType() const	{
 //-----------------------------------------------------------------------
 
 Object* VR::Sphere::clone(const CopyOp& copyop) const	{
-	return new Sphere(*this,copyop);
+//	return new Sphere(*this,copyop);
+
+	SphereParams pSphereParams;
+	this->getParams(pSphereParams);
+
+	VR::Sphere * pSphere = new VR::Sphere(pSphereParams);
+	
+	return pSphere;
 }
 
 //-----------------------------------------------------------------------

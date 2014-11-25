@@ -33,7 +33,7 @@ INCLUDE_DIRECTORIES(
   ${OPENSCENEGRAPH_INCLUDE_DIRS}
   ${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
   #${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_OSG
-  #${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_QT
+  ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_QT
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libOSGQTViewer
   #${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libItemModel
   #${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabase

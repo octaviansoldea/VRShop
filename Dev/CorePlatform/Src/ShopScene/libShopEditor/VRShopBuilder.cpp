@@ -36,7 +36,6 @@
 #include "VRProductShopEditor.h"
 
 #include "VRAbstractObjectFactory.h"
-#include "VRAbstractGeomShape.h"
 
 #include "VRSaveAs_GUI.h"
 
@@ -646,7 +645,8 @@ void ShopBuilder::duplicateSelection()	{
 	for (nI=0;nI<nNumberOfCopies;nI++)	{
 		vector<osg::ref_ptr<AbstractObject>>::iterator it;
 		for (it = pickedObjects.begin(); it != pickedObjects.end(); it++)	{
-			ref_ptr<AbstractObject> pObject = dynamic_cast<AbstractObject*>(it->get()->clone(CopyOp::DEEP_COPY_ALL));
+			ref_ptr<AbstractObject> pObject = dynamic_cast<AbstractObject*>((*it)->clone(CopyOp::DEEP_COPY_ALL));
+			pObject->setIsTargetPick(true);
 			m_pScene->addChild(pObject);
 		}
 	}

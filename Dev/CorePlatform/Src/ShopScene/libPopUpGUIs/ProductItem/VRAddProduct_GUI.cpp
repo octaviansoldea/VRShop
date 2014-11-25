@@ -10,6 +10,7 @@ using namespace osg;
 
 AddProduct_GUI::AddProduct_GUI()	{
 	setupUi(this);
+	
 	m_pScrollAreaNewProduct->setVisible(false);
 
 	connect(m_pToolButtonClose, SIGNAL(pressed()),this,SLOT(close()));

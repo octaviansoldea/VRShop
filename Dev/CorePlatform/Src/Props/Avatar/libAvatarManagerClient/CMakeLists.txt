@@ -1,4 +1,4 @@
-PROJECT(libAvatarManager)
+PROJECT(libAvatarManagerClient)
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
 SET(CMAKE_DEBUG_POSTFIX "D")
@@ -53,8 +53,8 @@ SET(SRCS
   VRAvatarManagerClient.h VRAvatarManagerClient.cpp
 )
 
-ADD_LIBRARY(libAvatarManager
+ADD_LIBRARY(libAvatarManagerClient
   ${SRCS} ${MOC_SRCS}
 )
 
-SET_PROPERTY(TARGET libAvatarManager PROPERTY FOLDER AvatarManager)
+SET_PROPERTY(TARGET libAvatarManagerClient PROPERTY FOLDER AvatarManagerClient)

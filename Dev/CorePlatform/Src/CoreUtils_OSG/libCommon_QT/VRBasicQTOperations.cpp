@@ -87,3 +87,5 @@ string BasicQtOperations::openSaveDialog(const char * apchDBName,QWidget * apPar
 
 	return(strFileName);
 }
+
+//-----------------------------------------------------------------------------

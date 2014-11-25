@@ -57,8 +57,16 @@ const char* Prism::className() const	{
 //----------------------------------------------------------
 
 Object* Prism::cloneType() const	{
-	PrismParams pP;
-	return new Prism(pP);
+	//PrismParams pP;
+	//return new Prism(pP);
+
+
+	PrismParams pPrismParams;
+	this->getParams(pPrismParams);
+
+	VR::Prism * pPrism = new VR::Prism(pPrismParams);
+	
+	return pPrism;
 }
 
 //----------------------------------------------------------

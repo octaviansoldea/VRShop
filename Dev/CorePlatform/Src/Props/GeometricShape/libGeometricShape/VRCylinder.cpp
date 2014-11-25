@@ -58,7 +58,15 @@ Object* VR::Cylinder::cloneType() const	{
 //----------------------------------------------------------
 
 Object* VR::Cylinder::clone(const CopyOp& copyop) const	{
-	return new VR::Cylinder(*this,copyop);
+//	return new VR::Cylinder(*this,copyop);
+
+
+	CylinderParams pCylinderParams;
+	this->getParams(pCylinderParams);
+
+	VR::Cylinder * pCylinder = new VR::Cylinder(pCylinderParams);
+	
+	return pCylinder;
 }
 
 //----------------------------------------------------------

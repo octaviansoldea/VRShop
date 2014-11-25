@@ -59,17 +59,8 @@ Object* Container::clone(const CopyOp& copyop) const	{
 //-----------------------------------------------------------------------
 
 void Container::init(const ContainerParams & aContainerParams)	{
-
 	setParams(aContainerParams);
 
-	/*
-	const ContainerParams & cP = dynamic_cast<const ContainerParams&>(aContainerParams);
-
-	setScaling(cP.m_flLenX, cP.m_flLenY, cP.m_flLenZ);
-	setRotation(cP.m_flAngleYZ, cP.m_flAngleXZ, cP.m_flAngleXY);
-	setPosition(cP.m_flPosX, cP.m_flPosY, cP.m_flPosZ);
-	*/
-	
 	Matrix containerMatrix = calculateMatrix();
 	setMatrix(containerMatrix);
 }

@@ -57,5 +57,3 @@ Lights
 Orientation of "others" avatars ->?-> direction of lights to "others" avatars
 
 Data mining
-
-Split adding products to the database from inserting them into the scene

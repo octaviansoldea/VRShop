@@ -46,7 +46,7 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libLighting
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libOSGQTViewer
   ${CMAKE_SOURCE_DIR}/Props/Avatar/libAvatar
-  ${CMAKE_SOURCE_DIR}/Props/Avatar/libAvatarManager
+  ${CMAKE_SOURCE_DIR}/Props/Avatar/libAvatarManagerClient
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libController
   ${CMAKE_SOURCE_DIR}/ShopScene/libShoppingPlace
   ${CMAKE_BINARY_DIR}/ShopScene/libShoppingPlace

@@ -92,7 +92,7 @@ UntransformedPlate3D::UntransformedPlate3D()	{
 	}
 }
 
-//--------------------------------------------------------------------------
+//-----------------------------------------------------------------------
 
 void UntransformedPlate3D::setColor(const vector < float > & aarrflColor) {
 	int nI;

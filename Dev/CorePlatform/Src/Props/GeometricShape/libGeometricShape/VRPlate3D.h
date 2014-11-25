@@ -13,14 +13,13 @@ namespace VR	{
 	class Plate3D : public AbstractGeomShape	{
 	private:
 		static std::string m_strSQLFormat;
-
 		osg::ref_ptr <UntransformedPlate3D> m_pUntransformedPlate3D;
 
 	public:
 		Plate3D(const Plate3DParams & aPlate3DParams);
 		Plate3D(const Plate3D& p3D,const osg::CopyOp& copyop=osg::CopyOp::DEEP_COPY_ALL);
 
-		virtual const char* className() const;
+		virtual const char* className() const;	
 		virtual osg::Object* cloneType() const;
 		virtual osg::Object* clone(const osg::CopyOp& copyop) const;
 
@@ -39,6 +38,9 @@ namespace VR	{
 
 
 		virtual std::string prepareRowData(const std::string & astrParentName="");
+
+		void setParams(const Plate3DParams & aPlate3DParams);
+		void getParams(Plate3DParams & aPlate3DParams) const;
 	};
 }
 #endif //VR_PLATE_3D_H

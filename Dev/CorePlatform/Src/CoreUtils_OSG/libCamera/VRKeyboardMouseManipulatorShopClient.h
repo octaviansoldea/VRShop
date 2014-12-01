@@ -11,14 +11,27 @@
 * OpenSceneGraph Public License for more details.
 */
 
+/*
+	COMMANDS:
+		Key UP:		forward
+		Key DOWN:	backward
+
+		Key S:		down
+		Key F:		up
+
+		Key Shift:	speed
+*/
+
+
 #ifndef VR_KEYBOARD_MOUSE_MANIPULATOR_SHOP_CLIENT_H
 #define VR_KEYBOARD_MOUSE_MANIPULATOR_SHOP_CLIENT_H
 
 #include <QObject>
-#include <osg/Node>
 
 #include "VRKeyboardMouseManipulator.h"
 #include <vector>
+
+namespace osg {class osg::Node;};
 
 namespace VR {
 
@@ -26,11 +39,15 @@ namespace VR {
 		Q_OBJECT
     public:
 
-        KeyboardMouseManipulatorShopClient(int flags = DEFAULT_SETTINGS);
-        KeyboardMouseManipulatorShopClient(const KeyboardMouseManipulatorShopClient& cm,
-                             const osg::CopyOp& copyOp = osg::CopyOp::SHALLOW_COPY);
+        KeyboardMouseManipulatorShopClient(osg::Node * apNode,int flags = DEFAULT_SETTINGS);
+        KeyboardMouseManipulatorShopClient(
+			const KeyboardMouseManipulatorShopClient& cm,
+			const osg::CopyOp& copyOp = osg::CopyOp::SHALLOW_COPY
+		);
+
 	private:
 		virtual bool keyDown(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa);
+
 	public:
 
 		virtual bool handle(const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa);
@@ -47,16 +64,18 @@ namespace VR {
 		std::vector<osg::Matrixd> m_vecPredefinedViews;
 
 	private:
-		bool checkObstructionInFront(float aflDistance);
+		bool checkObstructionInFront(const osg::Vec3d& avec3dStart, const osg::Vec3d& avec3dEnd);
 
 		bool m_bFirstPerson;
-		osg::Matrixd setMatrixTransform(osg::Vec3d &avec3dEye,osg::Vec3d &avec3dCenter,osg::Vec3d &avec3dUp);
 		osg::BoundingBox m_BoundingBox;
 
 		float m_flCameraCorrector;
 
 	signals:
 		void signalCameraPositionOrHeadingDirectionChanged(bool abAnimation);
+
+	private:
+		osg::ref_ptr<osg::Node> m_pNode;
 	};
 }
 #endif //VR_KEYBOARD_MOUSE_MANIPULATOR_SHOP_CLIENT_H

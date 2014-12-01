@@ -41,9 +41,11 @@ INCLUDE_DIRECTORIES(
 #MOC according to the Qt version
 IF(Qt5_FOUND)
   QT5_WRAP_UI(UI_SRCS		)
-  QT5_WRAP_CPP(MOC_SRCS 	VRServer_GUI.h VRServer.h VRClientConnection.h)
+  QT5_WRAP_CPP(MOC_SRCS 	# VRServer_GUI.h 
+							VRServer.h VRClientConnection.h)
 ELSE(Qt5_FOUND)
-  QT4_WRAP_CPP(MOC_SRCS		VRServer_GUI.h VRServer.h VRClientConnection.h)
+  QT4_WRAP_CPP(MOC_SRCS		#VRServer_GUI.h 
+							VRServer.h VRClientConnection.h)
   QT4_WRAP_UI(UI_SRCS		)
 ENDIF(Qt5_FOUND)
 

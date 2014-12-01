@@ -15,10 +15,12 @@
 #include "VRAgentInterface.h"
 #include "VRProductBasketInterface.h"
 #include "VRCameraController.h"
+#include "VRCashierClient.h"
+
+#include "VRBasketClient.h"
 
 #include "VRModelViewControllerClient.h"
 
-#include "VRCashierScreenManager.h"
 #include "VRServerClientCommands.h"
 
 #include "VRKeyboardMouseManipulatorShopClient.h"
@@ -82,9 +84,11 @@ ShoppingPlace_GUI::ShoppingPlace_GUI(string & astrFileName, std::string & astrAv
 		m_pToolButton3View,
 		pCameraManipulator);
 
-	updateGeometry();
 
-	m_pCashierScreenManager = new CashierScreenManager(this->centralWidget());
+	//Cashier
+	m_pCashierClient = new CashierClient(this);
+
+	updateGeometry();
 
 	signalSlotConnections();
 }
@@ -96,7 +100,7 @@ ShoppingPlace_GUI::~ShoppingPlace_GUI()	{
 	delete m_pAgentInterface;
 	delete m_pProductBasketInterface;
 	delete m_pCameraController;
-	delete m_pCashierScreenManager;
+	delete m_pCashierClient;
 	delete m_pShoppingPlace;
 }
 
@@ -174,10 +178,6 @@ void ShoppingPlace_GUI::signalSlotConnections()	{
 	connect(pMVCClient, SIGNAL(signalProductInitialized(const ProductShopClient * )),
 		m_pProductInterface,SLOT(slotProductInitialized(const ProductShopClient * )));
 
-	//Cashier operations
-	connect(m_pCashierScreenManager,SIGNAL(signalCashierOperation(int)),
-		this,SLOT(slotProcesRequest(int)));
-
 
 	PickAndDragHandlerShopClient * pPickAndDragHandlerShopClient = m_pShoppingPlace->getPicker();
 	//Product clicked
@@ -187,12 +187,14 @@ void ShoppingPlace_GUI::signalSlotConnections()	{
 		SLOT(slotProductClicked(const AbstractObject *))
 	);
 
-	//cashier clicked
-	connect(pPickAndDragHandlerShopClient,
-		SIGNAL(signalCashierPicked()),
-		this,
-		SLOT(slotCashierClicked())
-	);
+	//cashier related signals and slots
+	connect(pPickAndDragHandlerShopClient,SIGNAL(signalCashierPicked()),this,SLOT(slotCashierClicked()));
+	connect(m_pCashierClient->m_pPushButtonStart,SIGNAL(pressed()),this,SLOT(slotStartCashierClicked()));
+	connect(m_pCashierClient->m_pPushButtonRemove,SIGNAL(pressed()),this,SLOT(slotRemoveFromCashierClicked()));
+	connect(m_pCashierClient->m_pPushButtonInfo,SIGNAL(pressed()),this,SLOT(slotProductInfoClicked()));
+	connect(m_pCashierClient->m_pPushButtonProceed,SIGNAL(pressed()),this,SLOT(slotProceedAndPayClicked()));
+
+	connect(pMVCClient, SIGNAL(signalRemoveProduct()),this,SLOT(slotRemoveProductConfirmed()));	
 }
 
 //----------------------------------------------------------------------------------------
@@ -233,9 +235,44 @@ void ShoppingPlace_GUI::slotModifyProductQuantity(ProductShopClient * apProduct,
 //----------------------------------------------------------------------------------------
 
 void ShoppingPlace_GUI::slotCashierClicked()	{
-	QObject * pParent = this->centralWidget();
+	bool bIsUserAuthorized = m_pShoppingPlace->isUserAuthorized();
+
+	//BEFORE OPENING THE CASHIER CHECK IF USER SIGNED IN
+
+	m_pCashierClient->launchCashier();
+}
+
+//----------------------------------------------------------------------------------------
+
+void ShoppingPlace_GUI::slotStartCashierClicked()	{
 	BasketClient * pBasket = m_pShoppingPlace->getBasket();
-	m_pCashierScreenManager->init(pBasket,pParent);
+	m_pCashierClient->init(pBasket);
+}
+
+//----------------------------------------------------------------------------------------
+
+void ShoppingPlace_GUI::slotRemoveFromCashierClicked()	{
+	int nProductNo = m_pCashierClient->getCurrentSelection();
+	m_pShoppingPlace->removeFromCashier(nProductNo);
+}
+
+//----------------------------------------------------------------------------------------
+
+void ShoppingPlace_GUI::slotProductInfoClicked()	{
+	int nProductNo = m_pCashierClient->getCurrentSelection();
+	m_pShoppingPlace->productInfoCashier(nProductNo);
+}
+
+//----------------------------------------------------------------------------------------
+
+void ShoppingPlace_GUI::slotProceedAndPayClicked()	{
+	m_pShoppingPlace->proceedAndPayRequested();
+}
+
+//----------------------------------------------------------------------------------------
+
+void ShoppingPlace_GUI::slotRemoveProductConfirmed()	{
+	m_pCashierClient->removeFromBasket();
 }
 
 //----------------------------------------------------------------------------------------
@@ -243,32 +280,3 @@ void ShoppingPlace_GUI::slotCashierClicked()	{
 void ShoppingPlace_GUI::slotAvatarClicked(const string & astrAvatarName)	{
 	m_pShoppingPlace->avatarClicked(astrAvatarName);
 }
-
-//----------------------------------------------------------------------------------------
-
-void ShoppingPlace_GUI::slotProcesRequest(int anRequestOperation)	{
-	switch (anRequestOperation)	{
-	case ServerClientCommands::PURCHASE_REQUEST:
-		{
-			m_pShoppingPlace->purchaseRequest();
-			break;
-		}
-	case ServerClientCommands::PRODUCT_INFO_REQUEST:
-		{
-			int nSelectedProduct = m_pCashierScreenManager->getCurrentSelection();
-			break;
-		}
-	case ServerClientCommands::USER_CONFIRMS_PURCHASE:
-		{
-			break;
-		}
-	default:
-		{
-			break;
-		}
-
-		//	m_pShoppingPlace->processCashierRequest(astrRequestOperation);
-	}
-}
-
-//----------------------------------------------------------------------------------------

@@ -18,6 +18,7 @@ namespace VR	{
 	class PickAndDragHandlerShopClient;
 	class BasketClient;
 	class ProductShopClient;
+	class CashierManagerClient;
 
 	class ModelViewControllerClient;
 
@@ -36,6 +37,11 @@ namespace VR	{
 		void removeProductRequest(ProductShopClient * apProduct);
 		void modifyProductQuantityRequest(ProductShopClient * apProduct, float aflNewQuantity);
 
+		void removeFromCashier(const int & anProductPosition);
+		void productInfoCashier(const int & anProductPosition);
+		void proceedAndPayRequested();
+
+
 		void purchaseRequest();
 
 		osg::ref_ptr<Scene> getScene() const;
@@ -44,6 +50,7 @@ namespace VR	{
 		BasketClient * getBasket();
 
 		AbstractUser * getAbstractUser();
+		bool isUserAuthorized() const;
 
 		ModelViewControllerClient * getModelViewController() const;
 
@@ -67,6 +74,7 @@ namespace VR	{
 
 		AvatarManagerClient * m_pAvatarMgr;
 		ProductManagerClient * m_pProductMgr;
+		CashierManagerClient * m_pCashierMgr;
 
 		ModelViewControllerClient * m_pMVCClient;
 

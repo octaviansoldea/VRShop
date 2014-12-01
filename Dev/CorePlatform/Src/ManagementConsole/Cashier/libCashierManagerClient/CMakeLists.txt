@@ -44,12 +44,13 @@ INCLUDE_DIRECTORIES(
 	${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgent
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProduct
+	${CMAKE_SOURCE_DIR}/ShopScene/libModelViewController
 )
 
 #Define sources to be later added into the library
 SET(SRCS
 	VRCashierManagerClient.h VRCashierManagerClient.cpp
-	VRCashierInterface.h VRCashierInterface.cpp
+#	VRCashierInterface.h VRCashierInterface.cpp
 )
 
 #Library to be later used in the main

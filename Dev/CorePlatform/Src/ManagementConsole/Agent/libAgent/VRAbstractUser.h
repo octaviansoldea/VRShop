@@ -18,6 +18,7 @@ namespace VR {
 		Avatar * getAvatar();
 		BasketClient * getBasket();	//This basket is read by the "VRTransaction.h" before the payment
 		std::string getUserIDName() const;
+		bool getIsUserAuthorized() const;
 	
 	protected:
 
@@ -35,6 +36,7 @@ namespace VR {
 
 	private:
 		std::string m_strUserIDName;
+		bool m_bIsUserAuthorized;
 
 	public:
 		void setUserIDName(std::string m_strUserIDName);

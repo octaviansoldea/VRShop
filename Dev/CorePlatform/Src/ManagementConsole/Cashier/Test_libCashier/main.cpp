@@ -1,7 +1,7 @@
 #include <QApplication>
 #include "VRBasketClient.h"
 
-#include "VRCashierScreenManager.h"
+#include "VRCashierClient.h"
 #include <iostream>
 
 using namespace VR;

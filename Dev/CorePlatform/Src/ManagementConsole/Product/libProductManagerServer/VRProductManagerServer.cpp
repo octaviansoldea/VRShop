@@ -66,6 +66,15 @@ string ProductManagerServer::getProductDataFromDB(const std::string astrProductN
 
 //------------------------------------------------------------------------------
 
+string ProductManagerServer::getProductInfo(const string astrProductName)	{
+	//NOT YET IMPLEMENTED
+
+	string strProductData;
+	return strProductData;
+}
+
+//------------------------------------------------------------------------------
+
 bool ProductManagerServer::canFullfilRequest(std::string & astrBasketRequest)	{
 	//Requested quantities
 	vector<string> vecstrBasket = splitString(astrBasketRequest,";");

@@ -1,21 +1,19 @@
-CRITICAL Bugs
+CRITICAL BUGS
 
 Paths for system in browser and classic mode
 
 ============================================================	
-Highly desirable to be solved Bugs
+HIGHLY DESIRABLE TO BE SOLVED BUGS
 
 
 Initial position of camera / Synchronization of avatar moves
-
-Textures when cloning objects
 
 Upper limit of users from server
 
 
 ============================================================	
 
-Non-Critical Bugs
+NON-CRITICAL BUGS
 
 Texturing of cylinder
 
@@ -23,7 +21,7 @@ Camera positioning - bounding box undermines orientation of the object
 
 ============================================================
 
-CRITICAL Items
+CRITICAL ITEMS
 
 Test the far/fix IP
 
@@ -42,13 +40,9 @@ OPTIONAL
 
 Linux/Mac
 
-Polish keyDown in KeyboardMouseManipulatorShopClient and KeyboardMouseManipulator: no fly with Fwd/Bckwd buttons
-
 Introducing new avatars
 
 Editing avatars
-
-When client finishes should try announcing the server to delete the remains
 
 Messages at loading
 
@@ -57,3 +51,10 @@ Lights
 Orientation of "others" avatars ->?-> direction of lights to "others" avatars
 
 Data mining
+
+
+//======================================================================
+
+TEMPORARY (AD HOC) SOLUTIONS
+
+Polish keyDown in KeyboardMouseManipulatorShopClient and KeyboardMouseManipulator: no fly with Fwd/Bckwd buttons

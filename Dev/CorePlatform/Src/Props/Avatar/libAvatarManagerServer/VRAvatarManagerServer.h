@@ -17,8 +17,8 @@ namespace VR {
 	class DatabaseInterface;
 	struct DatabaseInterfaceParams;
 
-	class AvatarManagerServer : public QObject	{
-		Q_OBJECT
+	class AvatarManagerServer	{	//: public QObject	{
+//		Q_OBJECT
 	public:
 		AvatarManagerServer();
 

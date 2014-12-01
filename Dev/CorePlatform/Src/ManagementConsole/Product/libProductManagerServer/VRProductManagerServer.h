@@ -22,6 +22,8 @@ namespace VR	{
 		};
 
 		std::string getProductDataFromDB(const std::string astrProductName);
+		std::string getProductInfo(const std::string astrProductName);
+
 		bool canFullfilRequest(std::string & astrBasketRequest);
 		float tryAddProduct2Basket(const ProductManagerServerParams & aProductManagerServerParams);
 		bool removeProduct(const ProductManagerServerParams & aProductManagerServerParams);

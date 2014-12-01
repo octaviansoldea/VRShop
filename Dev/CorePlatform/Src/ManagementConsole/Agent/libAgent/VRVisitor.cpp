@@ -1,7 +1,5 @@
 #include "VRProductShopClient.h"
 
-#include "VRCashierManagerClient.h"
-
 #include "VRBasketClient.h"
 
 #include "VRVisitor.h"
@@ -12,13 +10,11 @@ using namespace std;
 //==============================================================================
 
 Visitor::Visitor(Avatar * apAvatar) : AbstractUser((Avatar*)apAvatar) {
-	m_pCashierManagerClient = new CashierManagerClient;
 }
 
 //------------------------------------------------------------------------------
 
 Visitor::~Visitor()	{
-	delete m_pCashierManagerClient;
 }
 
 //------------------------------------------------------------------------------
@@ -77,12 +73,12 @@ bool Visitor::approachCashier()	{
 //------------------------------------------------------------------------------
 
 void Visitor::payRequest() {
-	CashierManagerClient::CashierManagerClientParams cmcp;
-	cmcp.m_strVisitorName = getUserIDName();
-	cmcp.m_strBasketProdQty = getBasket()->getBasketIDQuantity2String();
-	cmcp.m_strProductName = "";
+	//CashierManagerClient::CashierManagerClientParams cmcp;
+	//cmcp.m_strVisitorName = getUserIDName();
+	//cmcp.m_strBasketProdQty = getBasket()->getBasketIDQuantity2String();
+	//cmcp.m_strProductName = "";
 
-	m_pCashierManagerClient->requestToServer(ServerClientCommands::PURCHASE_REQUEST,&cmcp);
+	//m_pCashierManagerClient->requestToServer(ServerClientCommands::PURCHASE_REQUEST,&cmcp);
 }
 
 //------------------------------------------------------------------------------

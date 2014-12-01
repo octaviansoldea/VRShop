@@ -7,7 +7,7 @@ namespace VR	{
 	class Server;
 
 	class Server_GUI : public QWidget {
-		Q_OBJECT
+//		Q_OBJECT
 
 	public:
 		Server_GUI(Server * apServer, QWidget * parent =0);
@@ -17,7 +17,7 @@ namespace VR	{
 
 		Server * m_pServer;
 
-	public slots:
+//	public slots:
 		virtual void close();
 	};
 }

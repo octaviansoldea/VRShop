@@ -12,7 +12,6 @@
 
 namespace VR	{
 	class ProductShopClient;
-	class CashierManagerClient;
 
 
 	class Visitor : public AbstractUser {
@@ -41,7 +40,6 @@ namespace VR	{
 
 	private:
 		bool tryPay();
-		CashierManagerClient * m_pCashierManagerClient;
 	};
 }
 #endif //VR_VISITOR_H

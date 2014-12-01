@@ -7,11 +7,11 @@
 
 namespace VR	{
 	class SignUp_GUI : public QDialog, public Ui::SignUp {
-		Q_OBJECT
+//		Q_OBJECT
 	public:
 		SignUp_GUI();
 
-	public slots:
+//	public slots:
 		virtual void accept();
 
 	};

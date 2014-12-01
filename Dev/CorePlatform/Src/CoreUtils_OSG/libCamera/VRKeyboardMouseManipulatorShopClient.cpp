@@ -19,6 +19,8 @@
 #include <osgGA/GUIEventAdapter>
 #include <osg/ComputeBoundsVisitor>
 #include <osg/MatrixTransform>
+#include <osg/Node>
+#include <osgUtil/LineSegmentIntersector>
 
 #include "VRKeyboardMouseManipulatorShopClient.h"
 
@@ -28,8 +30,9 @@ using namespace osg;
 using namespace osgGA;
 
 
-KeyboardMouseManipulatorShopClient::KeyboardMouseManipulatorShopClient(int flags) :
+KeyboardMouseManipulatorShopClient::KeyboardMouseManipulatorShopClient(Node * apNode, int flags) :
 KeyboardMouseManipulator(flags) {
+	m_pNode = apNode;
 	m_bFirstPerson = false;
 }
 
@@ -37,81 +40,78 @@ KeyboardMouseManipulator(flags) {
 
 KeyboardMouseManipulatorShopClient::KeyboardMouseManipulatorShopClient
 	(const KeyboardMouseManipulatorShopClient& cm, const CopyOp& copyOp) :
-KeyboardMouseManipulator(cm, copyOp) {
-	m_bFirstPerson = false;
+KeyboardMouseManipulator(cm, copyOp),
+m_bFirstPerson(cm.m_bFirstPerson)	{
+	m_pNode = cm.m_pNode;
 }
 
 //-------------------------------------------------------------------------------
 
-bool KeyboardMouseManipulatorShopClient::keyDown(const osgGA::GUIEventAdapter &ea, osgGA::GUIActionAdapter &aa)	{
+bool KeyboardMouseManipulatorShopClient::keyDown(const GUIEventAdapter &ea, GUIActionAdapter &aa)	{
 	bool bRes = true;
 
 	int nResKey = ea.getKey();
-	if ((nResKey == osgGA::GUIEventAdapter::KEY_Control_L) ||
-		(nResKey == osgGA::GUIEventAdapter::KEY_Control_R))	{
+	if ((nResKey == GUIEventAdapter::KEY_Control_L) ||
+		(nResKey == GUIEventAdapter::KEY_Control_R))	{
 		m_bCtrl = true;
 	}
 
-	if ((nResKey == osgGA::GUIEventAdapter::KEY_Shift_L) ||
-		(nResKey == osgGA::GUIEventAdapter::KEY_Shift_R))	{
+	if ((nResKey == GUIEventAdapter::KEY_Shift_L) ||
+		(nResKey == GUIEventAdapter::KEY_Shift_R))	{
 		m_bShift = true;
 	}
 
-	if (nResKey == osgGA::GUIEventAdapter::KEY_Up)	{
-		if (m_bCtrl)	{ //Move forward
-			m_dbForwardFactor = 0.5 * (m_bShift ? (m_dbDefaultMoveSpeed *= 1.1) : m_dbDefaultMoveSpeed);
+	//Go UP/DOWN
+	if ((nResKey == GUIEventAdapter::KEY_F) || (nResKey == GUIEventAdapter::KEY_S))	{
+		int nDirection = 1;	//UP
+		if (nResKey == GUIEventAdapter::KEY_S)	{
+			Vec3d vec3dCenter, vec3dEye, vec3dUp;
+			getTransformation(vec3dCenter, vec3dEye, vec3dUp);
 
-			Vec3d prevCenter, prevEye, prevUp;
-			getTransformation(prevEye, prevCenter, prevUp);
-			Vec3d dbvecDirection = prevCenter - prevEye;
+			CoordinateFrame coordinateFrame = getCoordinateFrame(vec3dEye);
+			Vec3d localUp = getUpVector(coordinateFrame);
 
-			float flvecStep = fabs(dbvecDirection.x()) + fabs(dbvecDirection.y());
-			float deltaStepX = m_dbForwardFactor*(dbvecDirection.x() / flvecStep);
-			float deltaStepY = m_dbForwardFactor*(dbvecDirection.y() / flvecStep);
-
-			Vec3d newEye = prevEye + Vec3d(deltaStepX, deltaStepY, 0.0);
-			Vec3d newCenter = prevCenter + Vec3d(deltaStepX, deltaStepY, 0.0);
-
-			setTransformation(newEye, newCenter, prevUp);
-
+			double dbZ = vec3dEye.z();
+			if (dbZ < 1.35)
+				return false;
+			nDirection = -1;	//DOWN
 		}
-		else { //Rotate view (but not direction of travel) up.
-			m_dbTranslationFactorX = m_cdbRotationFactor *
-				(m_bShift ? (m_dbDefaultMoveSpeed *= 1.1) : m_dbDefaultMoveSpeed);
-			panModel(0.0, m_dbTranslationFactorX);
-		}
+
+		m_dbTranslationFactorX = nDirection * /*m_cdbRotationFactor **/
+			(m_bShift ? (m_dbDefaultMoveSpeed *= 1.01) : m_dbDefaultMoveSpeed);
+
+		panModel(0.0, m_dbTranslationFactorX);
 	}
 
-	if (nResKey == osgGA::GUIEventAdapter::KEY_Down)	{
-		if (m_bCtrl)	{ //Move backwards
-			m_dbForwardFactor = 0.5 * (m_bShift ? (m_dbDefaultMoveSpeed *= 1.1) : m_dbDefaultMoveSpeed);
+	//Move forward/backward
+	if ((nResKey == GUIEventAdapter::KEY_Up) || (nResKey == GUIEventAdapter::KEY_Down))	{		
+		m_dbForwardFactor = 0.5 * (m_bShift ? (m_dbDefaultMoveSpeed *= 1.1) : m_dbDefaultMoveSpeed);
 
-			Vec3d prevCenter, prevEye, prevUp;
-			getTransformation(prevEye, prevCenter, prevUp);
-			Vec3d dbvecDirection = prevCenter - prevEye;
+		Vec3d prevCenter, prevEye, prevUp;
+		getTransformation(prevEye, prevCenter, prevUp);
+		Vec3d dbvecDirection = prevCenter - prevEye;
+		dbvecDirection.z()=0;
+		dbvecDirection.normalize();
 
-			float flvecStep = fabs(dbvecDirection.x()) + fabs(dbvecDirection.y());
-			float deltaStepX = m_dbForwardFactor*(dbvecDirection.x() / flvecStep);
-			float deltaStepY = m_dbForwardFactor*(dbvecDirection.y() / flvecStep);
+		int nDirection = -1;	//Backward
+		if (nResKey == GUIEventAdapter::KEY_Up)
+			nDirection = 1;	//Forward
 
-			Vec3d newEye = prevEye - Vec3d(deltaStepX, deltaStepY, 0.0);
-			Vec3d newCenter = prevCenter - Vec3d(deltaStepX, deltaStepY, 0.0);
+		Vec3d newEye = prevEye + Vec3d(dbvecDirection.x(), dbvecDirection.y(), 0.0)*nDirection;
+		Vec3d newCenter = prevCenter + Vec3d(dbvecDirection.x(), dbvecDirection.y(), 0.0)*nDirection;
 
-			setTransformation(newEye, newCenter, prevUp);
-
+		if (checkObstructionInFront(prevEye,newEye))	{
+			return false;
 		}
-		else { //Rotate view (but not direction of travel) down.
-			m_dbTranslationFactorX = -m_cdbRotationFactor *
-				(m_bShift ? (m_dbDefaultMoveSpeed *= 1.1) : m_dbDefaultMoveSpeed);
-			panModel(0.0, m_dbTranslationFactorX);
-		}
+
+		setTransformation(newEye, newCenter, prevUp);
 	}
 
-	if ((nResKey == osgGA::GUIEventAdapter::KEY_Right) ||
-		((nResKey == osgGA::GUIEventAdapter::KEY_Left))) {
+	if ((nResKey == GUIEventAdapter::KEY_Right) ||
+		((nResKey == GUIEventAdapter::KEY_Left))) {
 
 		double dbDir = 1.0;
-		if (nResKey == osgGA::GUIEventAdapter::KEY_Left) {
+		if (nResKey == GUIEventAdapter::KEY_Left) {
 			dbDir = -1.0;
 		}
 
@@ -128,10 +128,13 @@ bool KeyboardMouseManipulatorShopClient::keyDown(const osgGA::GUIEventAdapter &e
 			getTransformation(prevEye, prevCenter, prevUp);
 			Vec3d vecdbDirection = prevCenter - prevEye;
 
+			CoordinateFrame coordinateFrame = getCoordinateFrame( prevCenter );
+			Vec3d localUp = getUpVector( coordinateFrame );
+
 			if (this->m_bFirstPerson) {
-				Vec3d normalized = vecdbDirection * Matrix::rotate(DegreesToRadians(m_dbDirectionRotationRate), prevUp);
+				Vec3d normalized = vecdbDirection * Matrix::rotate(DegreesToRadians(m_dbDirectionRotationRate), /*prevUp*/localUp);
 				Vec3d newCenter = prevEye + normalized;
-				setTransformation(prevEye, newCenter, prevUp);
+				setTransformation(prevEye, newCenter, /*prevUp*/localUp);
 			} else {
 				vecdbDirection.normalize();
 				vecdbDirection = vecdbDirection * m_flCameraCorrector * 2;
@@ -139,14 +142,13 @@ bool KeyboardMouseManipulatorShopClient::keyDown(const osgGA::GUIEventAdapter &e
 
 				Vec3d vecdbAntiDirection = -vecdbDirection;
 				vecdbAntiDirection.normalize();
-				Vec3d twisted = vecdbAntiDirection * Matrix::rotate(DegreesToRadians(m_dbDirectionRotationRate), prevUp);
+				Vec3d twisted = vecdbAntiDirection * Matrix::rotate(DegreesToRadians(m_dbDirectionRotationRate), /*prevUp*/localUp);
 				twisted.normalize();
 				twisted *= m_flCameraCorrector * 2;
 				Vec3d newEye = newCenter + twisted;
-				setTransformation(newEye, newCenter, prevUp);
+				setTransformation(newEye, newCenter, /*prevUp*/localUp);
 			}
 		}
-
 	}
 
 	if (nResKey == ' ')	{
@@ -182,28 +184,6 @@ bool KeyboardMouseManipulatorShopClient::handle(const GUIEventAdapter& ea, GUIAc
 	}
 
 	return(bRes);
-}
-
-//-------------------------------------------------------------------------------
-
-osg::Matrixd KeyboardMouseManipulatorShopClient::setMatrixTransform(Vec3d &avec3dEye,Vec3d &avec3dCenter,Vec3d &avec3dUp)	{
-    Vec3d lv(avec3dCenter - avec3dEye);
-
-    Vec3d f( lv );
-    f.normalize();
-    Vec3d s( f^avec3dUp );
-    s.normalize();
-    Vec3d u( s^f );
-    u.normalize();
-
-    osg::Matrixd rotation_matrix( s[0], u[0], -f[0], 0.0f,
-                            s[1], u[1], -f[1], 0.0f,
-                            s[2], u[2], -f[2], 0.0f,
-                            0.0f, 0.0f,  0.0f, 1.0f );
-
-	osg::Quat mtrxRot = rotation_matrix.getRotate().inverse();
-
-	return Matrixd::rotate(mtrxRot) * Matrixd::translate( avec3dEye );
 }
 
 //-------------------------------------------------------------------------------
@@ -277,7 +257,7 @@ osg::Matrixd KeyboardMouseManipulatorShopClient::getAvatar2CameraMatrix() {
 
 //-------------------------------------------------------------------------------
 
-void KeyboardMouseManipulatorShopClient::setCameraPosition2Object(osg::Node * apNode)	{
+void KeyboardMouseManipulatorShopClient::setCameraPosition2Object(Node * apNode)	{
 	//Get BB of the avatar and position camera accordingly
 	ComputeBoundsVisitor cbv;
 	apNode->accept(cbv);
@@ -353,8 +333,7 @@ void KeyboardMouseManipulatorShopClient::setViewPerspective(bool abFirstPerson) 
 	if (m_bFirstPerson)	{
 		//First person
 		m_flCameraCorrector = -m_BoundingBox.yMax();
-	}
-	else {
+	} else {
 		//Third person
 		m_flCameraCorrector = -(4 * m_BoundingBox.yMin() - 3 * m_BoundingBox.yMax());
 	}
@@ -379,8 +358,14 @@ bool KeyboardMouseManipulatorShopClient::getViewPerspective() const	{
 
 //-------------------------------------------------------------------------------
 
-bool KeyboardMouseManipulatorShopClient::checkObstructionInFront(float aflDistance)	{
-	bool bRes = true;
+bool KeyboardMouseManipulatorShopClient::checkObstructionInFront(const Vec3d& avec3dStart, const Vec3d& avec3dEnd)	{
+	ref_ptr<osgUtil::LineSegmentIntersector> pLSI = new osgUtil::LineSegmentIntersector(avec3dStart,avec3dEnd);
+	osgUtil::IntersectionVisitor iv(pLSI);
 
-	return bRes;
+	m_pNode->accept(iv);
+
+	if (pLSI->containsIntersections())	{
+		return true;
+	}
+	return false;
 }

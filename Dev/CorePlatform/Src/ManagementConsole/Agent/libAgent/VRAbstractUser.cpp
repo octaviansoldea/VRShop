@@ -12,7 +12,8 @@ using namespace std;
 //==============================================================================
 
 AbstractUser::AbstractUser(Avatar *apAvatar) :
-m_strUserIDName("")	{
+m_strUserIDName(""),
+m_bIsUserAuthorized(false)	{
 	m_pAvatar = apAvatar;
 	m_pBasket = new BasketClient;
 }
@@ -56,4 +57,11 @@ string AbstractUser::getUserIDName() const	{
 
 void AbstractUser::setUserIDName(string astrUserIDName)	{
 	m_strUserIDName = astrUserIDName;
+	m_bIsUserAuthorized=true;
+}
+
+//------------------------------------------------------------------------------
+
+bool AbstractUser::getIsUserAuthorized() const	{
+	return m_bIsUserAuthorized;
 }

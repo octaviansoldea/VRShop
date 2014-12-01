@@ -1,73 +1,82 @@
-#include "VRCashierWelcome_GUI.h"
-#include "VRCashierProceed_GUI.h"
+#include "VRCashier_GUI.h"
 
 #include "VRProductShopClient.h"
 #include "VRBasketClient.h"
 
+#include "VRCashierInterface.h"
+
 #include "BasicStringDefinitions.h"
 
 #include <QImageReader>
-
-#include "VRServerClientCommands.h"
 
 #include "VRCashierScreenManager.h"
 
 using namespace VR;
 using namespace std;
 
-CashierScreenManager::CashierScreenManager(QObject * apParent) : QObject(apParent)	{
-	m_pCashierWelcome_GUI = new CashierWelcome_GUI();
-	m_pCashierProceed_GUI = new CashierProceed_GUI();
+CashierScreenManager::CashierScreenManager(QObject * apParent) : m_pBasket(0), QObject(apParent)	{
+	m_pCashier_GUI = new Cashier_GUI;
+	m_pCashier_GUI->m_pFrameContinue->setVisible(false);
 
-	connect(m_pCashierProceed_GUI->m_pPushButtonProceed,SIGNAL(pressed()),this,SLOT(slotProceedAndPayClicked()));
-	connect(m_pCashierProceed_GUI->m_pPushButtonInfo,SIGNAL(pressed()),this,SLOT(slotMoreInfoClicked()));
+	m_pCashierInterface = new CashierInterface(
+		m_pCashier_GUI->m_pPushButtonRemove,
+		m_pCashier_GUI->m_pPushButtonInfo,
+		m_pCashier_GUI->m_pPushButtonProceed
+	);
+
+	slotConnections();
 }
 
 //------------------------------------------------------------------------------
 
 CashierScreenManager::CashierScreenManager(BasketClient * apBasket, QObject * apParent) : 
 m_pBasket(apBasket), QObject(apParent)	{
-	m_pCashierWelcome_GUI = new CashierWelcome_GUI;
-	m_pCashierProceed_GUI = new CashierProceed_GUI;
+	m_pCashier_GUI = new Cashier_GUI;
+	m_pCashier_GUI->m_pFrameContinue->setVisible(false);
 
-	connect(m_pCashierProceed_GUI->m_pPushButtonProceed,SIGNAL(pressed()),this,SLOT(slotProceedAndPayClicked()));
-	connect(m_pCashierProceed_GUI->m_pPushButtonInfo,SIGNAL(pressed()),this,SLOT(slotMoreInfoClicked()));
+	m_pCashierInterface = new CashierInterface(
+		m_pCashier_GUI->m_pPushButtonRemove,
+		m_pCashier_GUI->m_pPushButtonInfo,
+		m_pCashier_GUI->m_pPushButtonProceed
+	);
+
+	slotConnections();
+
+	m_pCashier_GUI->show();
 }
 
 //------------------------------------------------------------------------------
 
 CashierScreenManager::~CashierScreenManager()	{
-	delete m_pCashierWelcome_GUI;
-	delete m_pCashierProceed_GUI;
+	delete m_pCashierInterface;
+	delete m_pCashier_GUI;
 }
 
 //=============================================================================
 
-void CashierScreenManager::setCashierScreen(bool abIsWelcome)	{
-	if (abIsWelcome)	{
-		connect(m_pCashierWelcome_GUI->m_pPushButtonStart,SIGNAL(clicked()),this,SLOT(slotShowProceed()));
-		m_pCashierWelcome_GUI->show();
-	} else {
-		m_pCashierProceed_GUI->setGeometry(m_pCashierWelcome_GUI->geometry());
-		m_pCashierProceed_GUI->show();
-		m_pCashierWelcome_GUI->close();
-		connect(m_pCashierProceed_GUI->m_pTableWidgetProducts,
-			SIGNAL(currentCellChanged(int, int, int, int)), 
-			this,
-			SLOT(slotChangeImage(int, int, int, int))
-		);
-		connect(m_pCashierProceed_GUI->m_pPushButtonRemove,SIGNAL(pressed()),this,SLOT(slotRemoveFromBasket()));
-	}
+void CashierScreenManager::slotConnections()	{
+	connect(m_pCashier_GUI->m_pPushButtonProceed,SIGNAL(pressed()),this,SLOT(slotProceedAndPayClicked()));
+	connect(m_pCashier_GUI->m_pPushButtonInfo,SIGNAL(pressed()),this,SLOT(slotMoreInfoClicked()));
+
+	connect(m_pCashier_GUI->m_pTableWidgetProducts,
+		SIGNAL(currentCellChanged(int, int, int, int)), 
+		this,
+		SLOT(slotChangeImage(int, int, int, int))
+	);
+	connect(m_pCashier_GUI->m_pPushButtonRemove,SIGNAL(pressed()),this,SLOT(slotRemoveFromBasket()));
+
+	connect(m_pCashier_GUI->m_pPushButtonCancel,SIGNAL(pressed()),this,SLOT(close()));
+	connect(m_pCashier_GUI->m_pPushButtonStart,SIGNAL(pressed()),this,SLOT(slotStartButtonClicked()));
 }
 
-//--------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 void CashierScreenManager::slotChangeImage(int currentRow, int currentColumn, int previousRow, int previousColumn)	{
-	int nRows = m_pCashierProceed_GUI->m_pTableWidgetProducts->rowCount();
+	int nRows = m_pCashier_GUI->m_pTableWidgetProducts->rowCount();
 	if (currentRow < 0 || 
 		currentRow > m_pBasket->count()-1 || 
 		nRows < 1)	{
-			m_pCashierProceed_GUI->m_pLabelProductImage->clear();
+			m_pCashier_GUI->m_pLabelProductImage->clear();
 			return;
 	}
 
@@ -77,39 +86,104 @@ void CashierScreenManager::slotChangeImage(int currentRow, int currentColumn, in
 	QImageReader image(strTextureFile.c_str());
 	QPixmap imageBasic(QPixmap::fromImageReader(&image));
 	QPixmap imageScaled(imageBasic.scaled(
-		m_pCashierProceed_GUI->m_pLabelProductImage->width(),
-		m_pCashierProceed_GUI->m_pLabelProductImage->height(), 
+		m_pCashier_GUI->m_pLabelProductImage->width(),
+		m_pCashier_GUI->m_pLabelProductImage->height(), 
 		Qt::IgnoreAspectRatio, Qt::SmoothTransformation)
 	);
 
-	m_pCashierProceed_GUI->m_pLabelProductImage->setPixmap(imageScaled);
+	m_pCashier_GUI->m_pLabelProductImage->setPixmap(imageScaled);
 }
 
 //--------------------------------------------------------------------------------------------
 
-bool CashierScreenManager::close()	{
-	bool bRes = m_pCashierProceed_GUI->close();
-	bRes = m_pCashierWelcome_GUI->close();
+void CashierScreenManager::slotRemoveFromBasket()	{
+	int nCurrentRow = m_pCashier_GUI->m_pTableWidgetProducts->currentRow();
 
-	return bRes;
+	if (nCurrentRow<0)	{
+		return;
+	}
+
+	//Remove from the table
+	m_pCashier_GUI->m_pTableWidgetProducts->removeRow(nCurrentRow);
+
+	//Remove from the basket
+	m_pBasket->removeProduct(m_pBasket->getProduct(nCurrentRow));
+
+	float flBasketValue = m_pBasket->calculateBasketValue();
+	m_pCashier_GUI->m_pLabelPrice->setText((tostr(flBasketValue)+" EUR").c_str());
 }
 
 //--------------------------------------------------------------------------------------------
 
-void CashierScreenManager::slotShowProceed()	{
-	setCashierScreen(false);
+void CashierScreenManager::addRow()	{
+	int row = m_pCashier_GUI->m_pTableWidgetProducts->rowCount();
+	m_pCashier_GUI->m_pTableWidgetProducts->insertRow(row);
+
+	QTableWidgetItem *item0 = new QTableWidgetItem;
+	item0->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
+	m_pCashier_GUI->m_pTableWidgetProducts->setItem(row, 0, item0);
+	QTableWidgetItem *item1 = new QTableWidgetItem;
+	item1->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
+	m_pCashier_GUI->m_pTableWidgetProducts->setItem(row, 1, item1);
+	QTableWidgetItem *item2 = new QTableWidgetItem;
+	item2->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
+	m_pCashier_GUI->m_pTableWidgetProducts->setItem(row, 2, item2);
+	QTableWidgetItem *item3 = new QTableWidgetItem;
+	item3->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
+	m_pCashier_GUI->m_pTableWidgetProducts->setItem(row, 3, item3);
+	QTableWidgetItem *item4 = new QTableWidgetItem;
+	item4->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
+	m_pCashier_GUI->m_pTableWidgetProducts->setItem(row, 4, item4);
+}
+
+//--------------------------------------------------------------------------------------------
+
+void CashierScreenManager::slotMoreInfoClicked()	{
+}
+
+//--------------------------------------------------------------------------------------------
+
+void CashierScreenManager::slotProceedAndPayClicked()	{
+	int nSize = m_pBasket->count();
+
+	if (nSize==0)
+		return;
+
+}
+
+//--------------------------------------------------------------------------------------------
+
+void CashierScreenManager::init(BasketClient * apBasket)	{
+	m_pBasket = apBasket;
+
+	m_pCashier_GUI->show();
+}
+
+//--------------------------------------------------------------------------------------------
+
+int CashierScreenManager::getCurrentSelection()	{
+	int nItemNumber = m_pCashier_GUI->m_pTableWidgetProducts->currentRow();
+
+	return nItemNumber;
+}
+
+//----------------------------------------------------------------------
+
+void CashierScreenManager::slotStartButtonClicked()	{
+	m_pCashier_GUI->m_pFrameWelcome->setVisible(false);
+	m_pCashier_GUI->m_pFrameContinue->setVisible(false);
+
+	m_pCashier_GUI->m_pFrameContinue->setVisible(true);
 
 	int nBasketSize = m_pBasket->count();
 
 	if (nBasketSize==0)	{
-		m_pCashierProceed_GUI->m_pLabelPrice->setText("0 EUR");
-		m_pCashierProceed_GUI->m_pLabelProductImage->setText("");
+		m_pCashier_GUI->m_pLabelPrice->setText("0 EUR");
+		m_pCashier_GUI->m_pLabelProductImage->setText("");
 		return;
 	}
 
-	float flBasketValue=0;
 	int nRow;
-
 	for (nRow = 0; nRow < nBasketSize; ++nRow) {
 		addRow();
 
@@ -119,93 +193,32 @@ void CashierScreenManager::slotShowProceed()	{
 		float flPrice = pProduct->getPrice();
 		float flQuantity = pProduct->getQuantity();
 
-		m_pCashierProceed_GUI->m_pTableWidgetProducts->item(nRow, CashierProceed_GUI::PRODUCT)->setText(strProductName.c_str());
-		m_pCashierProceed_GUI->m_pTableWidgetProducts->item(nRow, CashierProceed_GUI::QUANTITY)->setText(tostr(flQuantity).c_str());
-		m_pCashierProceed_GUI->m_pTableWidgetProducts->item(nRow, CashierProceed_GUI::PRICE)->setText(tostr(flPrice).c_str());
-		m_pCashierProceed_GUI->m_pTableWidgetProducts->item(nRow, CashierProceed_GUI::DISCOUNT)->setText("0.0");
-		m_pCashierProceed_GUI->m_pTableWidgetProducts->item(nRow, CashierProceed_GUI::AMOUNT)->setText(tostr(flPrice*flQuantity).c_str());
-		flBasketValue+=(flPrice*flQuantity);
+		m_pCashier_GUI->m_pTableWidgetProducts->item(nRow, Cashier_GUI::PRODUCT)->setText(strProductName.c_str());
+		m_pCashier_GUI->m_pTableWidgetProducts->item(nRow, Cashier_GUI::QUANTITY)->setText(tostr(flQuantity).c_str());
+		m_pCashier_GUI->m_pTableWidgetProducts->item(nRow, Cashier_GUI::PRICE)->setText(tostr(flPrice).c_str());
+		m_pCashier_GUI->m_pTableWidgetProducts->item(nRow, Cashier_GUI::DISCOUNT)->setText("0.0");
+		m_pCashier_GUI->m_pTableWidgetProducts->item(nRow, Cashier_GUI::AMOUNT)->setText(tostr(flPrice*flQuantity).c_str());
 	}
-
-	flBasketValue = m_pBasket->calculateBasketValue();
-	m_pCashierProceed_GUI->m_pLabelPrice->setText((tostr(flBasketValue)+" EUR").c_str());
-}
-
-//--------------------------------------------------------------------------------------------
-
-void CashierScreenManager::slotRemoveFromBasket()	{
-	int nCurrentRow = m_pCashierProceed_GUI->m_pTableWidgetProducts->currentRow();
-
-	if (nCurrentRow<0)	{
-		return;
-	}
-
-	//Remove from the table
-	m_pCashierProceed_GUI->m_pTableWidgetProducts->removeRow(nCurrentRow);
-
-	//Remove from the basket
-	m_pBasket->removeProduct(m_pBasket->getProduct(nCurrentRow));
 
 	float flBasketValue = m_pBasket->calculateBasketValue();
-	m_pCashierProceed_GUI->m_pLabelPrice->setText((tostr(flBasketValue)+" EUR").c_str());
+	m_pCashier_GUI->m_pLabelPrice->setText((tostr(flBasketValue)+" EUR").c_str());
 }
 
-//--------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------
 
-void CashierScreenManager::addRow()	{
-	int row = m_pCashierProceed_GUI->m_pTableWidgetProducts->rowCount();
-	m_pCashierProceed_GUI->m_pTableWidgetProducts->insertRow(row);
+bool CashierScreenManager::close()	{
+	m_pCashier_GUI->m_pFrameWelcome->setVisible(true);
+	m_pCashier_GUI->m_pFrameContinue->setVisible(false);
 
-	QTableWidgetItem *item0 = new QTableWidgetItem;
-	item0->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
-	m_pCashierProceed_GUI->m_pTableWidgetProducts->setItem(row, 0, item0);
-	QTableWidgetItem *item1 = new QTableWidgetItem;
-	item1->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
-	m_pCashierProceed_GUI->m_pTableWidgetProducts->setItem(row, 1, item1);
-	QTableWidgetItem *item2 = new QTableWidgetItem;
-	item2->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
-	m_pCashierProceed_GUI->m_pTableWidgetProducts->setItem(row, 2, item2);
-	QTableWidgetItem *item3 = new QTableWidgetItem;
-	item3->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
-	m_pCashierProceed_GUI->m_pTableWidgetProducts->setItem(row, 3, item3);
-	QTableWidgetItem *item4 = new QTableWidgetItem;
-	item4->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
-	m_pCashierProceed_GUI->m_pTableWidgetProducts->setItem(row, 4, item4);
+	m_pCashier_GUI->hide();
+
+	bool bRes = m_pCashier_GUI->close();
+
+	return bRes;
 }
 
-//--------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------
 
-void CashierScreenManager::slotMoreInfoClicked()	{
-	emit signalCashierOperation(ServerClientCommands::PRODUCT_INFO_REQUEST);
-}
-
-//--------------------------------------------------------------------------------------------
-
-void CashierScreenManager::slotProceedAndPayClicked()	{
-	emit signalCashierOperation(ServerClientCommands::PURCHASE_REQUEST);
-}
-
-//--------------------------------------------------------------------------------------------
-
-void CashierScreenManager::init(BasketClient * apBasket, QObject * apParent)	{
-	m_pBasket = apBasket;
-
-	QWidget * widget = (QWidget *)apParent;
-	QPoint center = widget->geometry().center();
-
-	m_pCashierWelcome_GUI->move(center.x()-m_pCashierWelcome_GUI->width()*0.5, center.y()-m_pCashierWelcome_GUI->height()*0.5);
-	m_pCashierProceed_GUI->move(center.x()-m_pCashierProceed_GUI->width()*0.5, center.y()-m_pCashierProceed_GUI->height()*0.5);
-
-	m_pCashierWelcome_GUI->setParent(widget);
-	m_pCashierProceed_GUI->setParent(widget);
-
-	setCashierScreen(true);
-}
-
-//--------------------------------------------------------------------------------------------
-
-int CashierScreenManager::getCurrentSelection()	{
-	int nItemNumber = m_pCashierProceed_GUI->m_pTableWidgetProducts->currentRow();
-
-	return nItemNumber;
+void CashierScreenManager::moreProductInfoReceived(string & astrProductData)	{
+	//Transform data from the string and initialize appropriate GUI
 }

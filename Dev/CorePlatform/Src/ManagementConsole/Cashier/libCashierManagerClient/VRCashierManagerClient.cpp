@@ -1,7 +1,14 @@
 #include <iostream>
 #include "BasicStringDefinitions.h"
 
+#include "VRModelViewControllerClient.h"
+
 #include "VRClient.h"
+
+#include "VRBasketClient.h"
+
+#include "VRServerClientCommands.h"
+
 #include "VRCashierManagerClient.h"
 
 using namespace VR;
@@ -10,7 +17,8 @@ using namespace std;
 
 //==============================================================================
 
-CashierManagerClient::CashierManagerClient(QObject *parent) : AbstractManagerClient(parent)	{
+CashierManagerClient::CashierManagerClient(ModelViewControllerClient * apMVCClient, QObject *parent) : 
+m_pMVCClient(apMVCClient), AbstractManagerClient(parent)	{
 	connect(m_pClient,SIGNAL(done()),this,SLOT(slotReceiveDataFromServer()));
 }
 
@@ -28,7 +36,7 @@ const char* CashierManagerClient::className() const	{
 //------------------------------------------------------------------------------
 
 void CashierManagerClient::slotReceiveDataFromServer()	{
-	QByteArray & data = m_pClient->getTransmittedData();
+	QByteArray data = m_pClient->getTransmittedData();
 
 	QDataStream out(&data,QIODevice::ReadOnly);
 	out.setVersion(QDataStream::Qt_4_8);
@@ -37,6 +45,26 @@ void CashierManagerClient::slotReceiveDataFromServer()	{
 	out >> nType;
 
 	switch (nType)	{
+	case ServerClientCommands::REMOVE_PRODUCT_REQUEST:
+		{
+			bool bRes;
+			out >> bRes;
+
+			if (bRes == 0)	{
+				break;
+			}
+
+			emit m_pMVCClient->signalRemoveProduct();
+
+			break;
+		}
+	case ServerClientCommands::PRODUCT_INFO_REQUEST:
+		{
+			QString qstrProductDataFromServer;
+			out >> qstrProductDataFromServer;
+
+			break;
+		}
 	case ServerClientCommands::PURCHASE_REQUEST:
 		{
 			int nOperationResult;
@@ -83,6 +111,23 @@ AbstractManagerClientParams * apAbstractManagerClientParams)	{
 	out << quint64(0) << quint8(nType);
 
 	switch (nType)	{
+	case ServerClientCommands::REMOVE_PRODUCT_REQUEST:
+		{
+			QString qstrUserIDName = pParams->m_strVisitorName.c_str();
+			QString qstrProductName = pParams->m_strProductName.c_str();
+
+			out << qstrUserIDName << qstrProductName;
+
+			break;
+		}
+	case ServerClientCommands::PRODUCT_INFO_REQUEST:
+		{
+			QString qstrProductName = pParams->m_strProductName.c_str();
+
+			out << qstrProductName;
+
+			break;
+		}
 	case ServerClientCommands::PURCHASE_REQUEST:
 		{
 			QString qstrVisitorName = pParams->m_strVisitorName.c_str();
@@ -95,11 +140,6 @@ AbstractManagerClientParams * apAbstractManagerClientParams)	{
 		{
 			break;
 		}
-	case ServerClientCommands::PRODUCT_INFO_REQUEST:
-		{
-			break;
-		}
-
 	default:
 		return;
 	}
@@ -108,3 +148,30 @@ AbstractManagerClientParams * apAbstractManagerClientParams)	{
 }
 
 //------------------------------------------------------------------------------
+
+void CashierManagerClient::removeFromBasketClicked(const string & astrUserID, const string & astrProductName)	{
+	CashierManagerClient::CashierManagerClientParams cmcp;
+	cmcp.m_strVisitorName = astrUserID;
+	cmcp.m_strProductName = astrProductName;
+
+	requestToServer(ServerClientCommands::REMOVE_PRODUCT_REQUEST,&cmcp);
+}
+
+//------------------------------------------------------------------------------
+
+void CashierManagerClient::moreProductInfoClicked(const string & astrProductName)	{
+	CashierManagerClient::CashierManagerClientParams cmcp;
+	cmcp.m_strProductName = astrProductName;
+
+	requestToServer(ServerClientCommands::PRODUCT_INFO_REQUEST,&cmcp);
+}
+
+//------------------------------------------------------------------------------
+
+void CashierManagerClient::proceedAndPayCashier(const string & astrUserID, BasketClient * apBasket)	{
+	CashierManagerClient::CashierManagerClientParams cmcp;
+	cmcp.m_strVisitorName = astrUserID;
+	cmcp.m_strBasketProdQty = apBasket->getBasketIDQuantity2String();
+
+	requestToServer(ServerClientCommands::PURCHASE_REQUEST,&cmcp);
+}

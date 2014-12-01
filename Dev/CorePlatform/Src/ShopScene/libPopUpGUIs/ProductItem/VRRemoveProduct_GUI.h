@@ -7,7 +7,7 @@
 
 namespace VR	{
 	class RemoveProduct_GUI : public QDialog, public Ui::RemoveProduct {
-		Q_OBJECT
+//		Q_OBJECT
 	public:
 		RemoveProduct_GUI();
 	};

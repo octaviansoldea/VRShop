@@ -7,7 +7,7 @@
 
 namespace VR	{
 	class DuplicateItem_GUI : public QDialog, public Ui::DuplicateItem	{
-		Q_OBJECT
+//		Q_OBJECT
 	public:
 		DuplicateItem_GUI();
 	};

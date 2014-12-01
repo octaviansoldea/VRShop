@@ -4,9 +4,9 @@
 #include <QObject>
 
 namespace VR	{
-	class CashierWelcome_GUI;
-	class CashierProceed_GUI;
 	class BasketClient;
+	class Cashier_GUI;
+	class CashierInterface;
 
 	class CashierScreenManager : public QObject	{
 		Q_OBJECT
@@ -15,29 +15,28 @@ namespace VR	{
 		CashierScreenManager(BasketClient * apBasket, QObject * apParent=0);
 		virtual ~CashierScreenManager();
 
-		void setCashierScreen(bool abIsWelcome);
-
-		void init(BasketClient * apBasket, QObject * apParent);
+		void init(BasketClient * apBasket);
 		int getCurrentSelection();
 
 	private slots:
-		bool close();
-		void slotShowProceed();
 		void slotChangeImage(int currentRow, int currentColumn, int previousRow, int previousColumn);
 		void slotRemoveFromBasket();
 		void slotMoreInfoClicked();
 		void slotProceedAndPayClicked();
+		void slotStartButtonClicked();
+		bool close();
 
 	private:
+		void slotConnections();
 		void addRow();
 
-		CashierWelcome_GUI * m_pCashierWelcome_GUI;
-		CashierProceed_GUI * m_pCashierProceed_GUI;
-
+		Cashier_GUI * m_pCashier_GUI;
 		BasketClient * m_pBasket;
 
-	signals:
-		void signalCashierOperation(int anRequestOperation);
+		CashierInterface * m_pCashierInterface;
+
+	public:
+		void moreProductInfoReceived(std::string & astrProductData);
 	};
 }
 #endif //VR_CASHIER_SCREEN_MANAGER_H

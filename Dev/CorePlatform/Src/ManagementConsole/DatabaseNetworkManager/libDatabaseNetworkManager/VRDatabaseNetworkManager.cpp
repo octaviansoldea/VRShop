@@ -250,7 +250,17 @@ QByteArray DatabaseNetworkManager::databaseRequest(QByteArray & aData)	{
 
 			break;
 		}
-		
+	case ServerClientCommands::PRODUCT_INFO_REQUEST:
+		{
+			QString qstrRequest;
+			in >> qstrRequest;
+
+			ProductManagerServer pms;
+			QString qstrProductData = pms.getProductInfo(qstrRequest.toStdString()).c_str();
+
+			out << qstrProductData;
+			break;
+		}
 	}
 
 

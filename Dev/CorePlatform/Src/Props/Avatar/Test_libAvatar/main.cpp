@@ -2,6 +2,7 @@
 
 #include <osgDB/readFile>
 #include <osgViewer/Viewer>
+
 #include "VRKeyboardMouseManipulatorShopClient.h"
 
 #include "VRAvatar.h"
@@ -16,7 +17,7 @@ int main_Avatar(int argc, char * argv[])	{
 
 	string strAvatarFileName = "../../../../Resources/Models3D/avatar.osg";
 
-	ref_ptr<KeyboardMouseManipulatorShopClient> pCamera = new KeyboardMouseManipulatorShopClient;
+	ref_ptr<KeyboardMouseManipulatorShopClient> pCamera = new KeyboardMouseManipulatorShopClient(pScene);
 
 	ref_ptr<Avatar> pAvatar = new Avatar(strAvatarFileName, pCamera);
 	pCamera->setCameraPosition2Object(pAvatar);
@@ -30,6 +31,8 @@ int main_Avatar(int argc, char * argv[])	{
 	viewer.setCameraManipulator(pCamera);
 	
 	return viewer.run();
+
+//	return 0;
 }
 
 //===================================================================

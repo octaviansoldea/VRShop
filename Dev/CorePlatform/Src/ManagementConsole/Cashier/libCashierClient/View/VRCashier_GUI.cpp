@@ -1,26 +1,21 @@
-#include "VRCashierProceed_GUI.h"
+#include "VRCashier_GUI.h"
 
 using namespace Ui;
 using namespace VR;
 
-
 //----------------------------------------------------------------------
 
-CashierProceed_GUI::CashierProceed_GUI(QDialog * apParent) :
-QDialog(apParent) {
+Cashier_GUI::Cashier_GUI(QDialog * apParent) : QDialog(apParent) {
 	setupUi(this);
+	resize(559, 371);
 	setWindowFlags(Qt::FramelessWindowHint);
-
-	hide();
-
-	connect(m_pPushButtonCancel,SIGNAL(pressed()),this,SLOT(close()));
 
 	m_pTableWidgetProducts->setColumnCount(5);
 
 	int nTableWidth = m_pTableWidgetProducts->width();
-	QStringList items;
-	items << "Product" << "Quantity" << "Price" << "Discount" << "Amount";
-	m_pTableWidgetProducts->setHorizontalHeaderLabels(items);
+	QStringList qstrlstItems;
+	qstrlstItems << "Product" << "Quantity" << "Price" << "Discount" << "Amount";
+	m_pTableWidgetProducts->setHorizontalHeaderLabels(qstrlstItems);
 	m_pTableWidgetProducts->horizontalHeader()->setVisible(true);
     m_pTableWidgetProducts->setColumnWidth(0,  0.45*nTableWidth);
     m_pTableWidgetProducts->setColumnWidth(1,  0.1*nTableWidth);

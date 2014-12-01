@@ -66,12 +66,12 @@ IF(Qt5_FOUND)
 						${CMAKE_SOURCE_DIR}/ShopScene/libPopUpGUIs/ProductItem/VRAddProduct_GUI.ui
 						)
   QT5_WRAP_CPP(MOC_SRCS ${CMAKE_SOURCE_DIR}/ShopScene/libPopUpGUIs/VRInsertNewItem_GUI.h
-						${CMAKE_SOURCE_DIR}/ShopScene/libPopUpGUIs/VRDuplicateItem_GUI.h
+#						${CMAKE_SOURCE_DIR}/ShopScene/libPopUpGUIs/VRDuplicateItem_GUI.h
 						${CMAKE_SOURCE_DIR}/ShopScene/libPopUpGUIs/EditItem/VREditItem_GUIBase.h
 #						${CMAKE_SOURCE_DIR}/ShopScene/libPopUpGUIs/EditItem/VREditItem_GUI.h
 						${CMAKE_SOURCE_DIR}/ShopScene/libPopUpGUIs/EditItem/VREditItemPrism_GUI.h
 #						${CMAKE_SOURCE_DIR}/ShopScene/libPopUpGUIs/EditItem/VREditItemFurniture_GUI.h
-						${CMAKE_SOURCE_DIR}/ShopScene/libPopUpGUIs/ProductItem/VRRemoveProduct_GUI.h
+#						${CMAKE_SOURCE_DIR}/ShopScene/libPopUpGUIs/ProductItem/VRRemoveProduct_GUI.h
 #						${CMAKE_SOURCE_DIR}/ShopScene/libPopUpGUIs/VRRemoveSelection_GUI.h
 						${CMAKE_SOURCE_DIR}/ShopScene/libPopUpGUIs/VRNewProject_GUI.h
 						${CMAKE_SOURCE_DIR}/ShopScene/libPopUpGUIs/VRSaveAs_GUI.h
@@ -91,12 +91,12 @@ ELSE()
 						${CMAKE_SOURCE_DIR}/ShopScene/libPopUpGUIs/ProductItem/VRAddProduct_GUI.ui
 						)
   QT4_WRAP_CPP(MOC_SRCS ${CMAKE_SOURCE_DIR}/ShopScene/libPopUpGUIs/VRInsertNewItem_GUI.h
-						${CMAKE_SOURCE_DIR}/ShopScene/libPopUpGUIs/VRDuplicateItem_GUI.h
+#						${CMAKE_SOURCE_DIR}/ShopScene/libPopUpGUIs/VRDuplicateItem_GUI.h
 						${CMAKE_SOURCE_DIR}/ShopScene/libPopUpGUIs/EditItem/VREditItem_GUIBase.h
 #						${CMAKE_SOURCE_DIR}/ShopScene/libPopUpGUIs/EditItem/VREditItem_GUI.h
 						${CMAKE_SOURCE_DIR}/ShopScene/libPopUpGUIs/EditItem/VREditItemPrism_GUI.h
 #						${CMAKE_SOURCE_DIR}/ShopScene/libPopUpGUIs/EditItem/VREditItemFurniture_GUI.h
-						${CMAKE_SOURCE_DIR}/ShopScene/libPopUpGUIs/ProductItem/VRRemoveProduct_GUI.h
+#						${CMAKE_SOURCE_DIR}/ShopScene/libPopUpGUIs/ProductItem/VRRemoveProduct_GUI.h
 #						${CMAKE_SOURCE_DIR}/ShopScene/libPopUpGUIs/VRRemoveSelection_GUI.h
 						${CMAKE_SOURCE_DIR}/ShopScene/libPopUpGUIs/VRNewProject_GUI.h
 						${CMAKE_SOURCE_DIR}/ShopScene/libPopUpGUIs/VRSaveAs_GUI.h

@@ -14,6 +14,7 @@
 #include "VRVisitor.h"
 #include "VRBasketClient.h"
 #include "VRProductManagerClient.h"
+#include "VRCashierManagerClient.h"
 
 #include "VRModelViewControllerClient.h"
 
@@ -67,7 +68,7 @@ m_strAvatarName(astrAvatarName)	{
 	m_pPickAndDragHandlerShopClient = new PickAndDragHandlerShopClient;
 
 	ref_ptr<KeyboardMouseManipulatorShopClient> pKeyboardMouseManipulatorShopClient =
-		new KeyboardMouseManipulatorShopClient;
+		new KeyboardMouseManipulatorShopClient((Node*)m_pScene);
 
 	//Send scene to the Widget
 	m_pOSGQTWidget->setSceneData(m_pScene);
@@ -139,7 +140,9 @@ m_strAvatarName(astrAvatarName)	{
 
 	m_pMVCClient = new ModelViewControllerClient;
 
-	m_pProductMgr = new ProductManagerClient(m_pMVCClient, (BasketClient*)m_pVisitor->getBasket());
+	BasketClient * pBasket = m_pVisitor->getBasket();
+	m_pProductMgr = new ProductManagerClient(m_pMVCClient, pBasket);
+	m_pCashierMgr = new CashierManagerClient(m_pMVCClient, pBasket);
 }
 
 //----------------------------------------------------------------------
@@ -147,6 +150,7 @@ m_strAvatarName(astrAvatarName)	{
 ShoppingPlace::~ShoppingPlace() {
 	delete m_pAvatarMgr;
 	delete m_pProductMgr;
+	delete m_pCashierMgr;
 	delete m_pVisitor;
 	delete m_pMVCClient;
 }
@@ -160,8 +164,7 @@ ref_ptr<Scene> ShoppingPlace::getScene() const	{
 //----------------------------------------------------------------------
 
 ref_ptr<Node> ShoppingPlace::getProducts()	{
-	return m_ProductManager
-		.getProductsRepresentation();
+	return m_ProductManager.getProductsRepresentation();
 }
 
 //----------------------------------------------------------------------
@@ -230,6 +233,13 @@ AbstractUser * ShoppingPlace::getAbstractUser()	{
 
 //----------------------------------------------------------------------
 
+bool ShoppingPlace::isUserAuthorized() const	{
+	bool bIsUserAuthorized = m_pVisitor->getIsUserAuthorized();
+	return bIsUserAuthorized;
+}
+
+//----------------------------------------------------------------------
+
 void ShoppingPlace::insertProducts()	{
 }
 
@@ -279,4 +289,47 @@ void ShoppingPlace::purchaseRequest()	{
 
 ModelViewControllerClient * ShoppingPlace::getModelViewController() const	{
 	return m_pMVCClient;
+}
+
+//----------------------------------------------------------------------
+
+void ShoppingPlace::removeFromCashier(const int & anProductPosition)	{
+	if (anProductPosition < 0)
+		return;
+
+	BasketClient * pBasket = m_pVisitor->getBasket();
+	if (pBasket->count() == 0)
+		return;
+
+	string strUserID = m_pVisitor->getUserIDName();
+	string strProductName = pBasket->getProduct(anProductPosition)->getProductName();
+
+	m_pCashierMgr->removeFromBasketClicked(strUserID, strProductName);
+}
+
+//----------------------------------------------------------------------
+
+void ShoppingPlace::productInfoCashier(const int & anProductPosition)	{
+	if (anProductPosition < 0)
+		return;
+
+	BasketClient * pBasket = m_pVisitor->getBasket();
+	if (pBasket->count() == 0)
+		return;
+
+	string strProductName = pBasket->getProduct(anProductPosition)->getProductName();
+
+	m_pCashierMgr->moreProductInfoClicked(strProductName);
+}
+
+//----------------------------------------------------------------------
+
+void ShoppingPlace::proceedAndPayRequested()	{
+	BasketClient * pBasket = m_pVisitor->getBasket();
+	if (pBasket->count() == 0)
+		return;
+
+	string strUserID = m_pVisitor->getUserIDName();
+
+	m_pCashierMgr->proceedAndPayCashier(strUserID, pBasket);
 }

@@ -3,12 +3,11 @@
 
 #include <QObject>
 
+#include "VRProductShopClient.h"
+
 class QFrame;
 class QLabel;
 class QPushButton;
-
-#include <string>
-#include "VRProductShopClient.h"
 
 namespace VR	{
 	class ProductInterface : public QObject	{

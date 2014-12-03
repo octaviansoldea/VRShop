@@ -126,15 +126,10 @@ float ProductManagerServer::tryAddProduct2Basket(const ProductManagerServerParam
 	string strProductName = aProductManagerServerParams.m_strProductName;
 	float flProductQuantityRequest = aProductManagerServerParams.m_flProductQuantity;
 
-	/*if (flProductQuantityRequest < flQuantityAvailable) 
-		return flProductQuantityRequest
-	  else 
-		return flQuantityAvailable
-	*/
 	string strQuery = 
 		"SELECT ("
 			"CASE "
-				"WHEN ProductQuantity < " + tostr(flProductQuantityRequest) +  
+				"WHEN ProductQuantity > " + tostr(flProductQuantityRequest) +  
 					" THEN " + tostr(flProductQuantityRequest) + 
 				" ELSE ProductQuantity "
 			"END) "
@@ -146,6 +141,12 @@ float ProductManagerServer::tryAddProduct2Basket(const ProductManagerServerParam
 		return 0;
 	}
 	float flQuantity = stof(lststrResult.front());
+
+	//Remove from DB selected quantities
+	strQuery = "UPDATE Product SET ProductQuantity = (ProductQuantity - " + tostr(flQuantity) +
+		") WHERE ProductName = '" + strProductName + "'";
+
+	m_DIProduct.execute(strQuery);
 
 	return flQuantity;
 }
@@ -160,10 +161,10 @@ bool ProductManagerServer::removeProduct(const ProductManagerServerParams & aPro
 	float flQuantity = aProductManagerServerParams.m_flProductQuantity;
 
 	//Make these quantities available again
-	string strQuery = "UPDATE Product SET ProductQuantity = ProductQuantity + " + tostr(flQuantity) +
-		"WHERE ProductName = '" + strProductName + "'";
+	string strQuery = "UPDATE Product SET ProductQuantity = (ProductQuantity + " + tostr(flQuantity) +
+		") WHERE ProductName = '" + strProductName + "'";
 
-	list<string> lststrResult = m_DIProduct.executeAndGetResult(strQuery);	//RETURNS "0"
+	m_DIProduct.execute(strQuery);
 
 	//Remove product from temporary basket of user
 
@@ -187,10 +188,10 @@ float ProductManagerServer::modifyProductQuantity(const ProductManagerServerPara
 		return flNewValue;
 	} else {
 		//Make these quantities available again
-		string strQuery = "UPDATE Product SET ProductQuantity = ProductQuantity + " + tostr(fabs(flDiffQuantity)) +
-			"WHERE ProductName = '" + strProductName + "'";
+		string strQuery = "UPDATE Product SET ProductQuantity = (ProductQuantity + " + tostr(fabs(flDiffQuantity)) +
+			") WHERE ProductName = '" + strProductName + "'";
 
-		list<string> lststrResult = m_DIProduct.executeAndGetResult(strQuery);
+		m_DIProduct.execute(strQuery);
 
 		//Remove product from temporary basket of user
 

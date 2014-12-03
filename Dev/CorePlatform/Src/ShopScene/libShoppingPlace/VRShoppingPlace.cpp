@@ -260,7 +260,15 @@ void ShoppingPlace::productClicked(const string & astrProductName)	{
 void ShoppingPlace::product2BasketRequest(ProductShopClient * apProduct)	{
 	string strUserID = m_pVisitor->getUserIDName();
 
-	m_pProductMgr->addProduct2Basket(strUserID,apProduct);
+	ProductManagerClient::ProductManagerClientParams aPMCP;
+	aPMCP.m_strUserIDName = m_pVisitor->getUserIDName();
+	aPMCP.m_flProductQuantity = 1.0;
+	aPMCP.m_strProductName = apProduct->getProductName();
+	aPMCP.m_pProduct = apProduct;
+
+	m_pProductMgr->addProduct2Basket(aPMCP);
+
+//	m_pProductMgr->addProduct2Basket(strUserID,apProduct);
 }
 
 //----------------------------------------------------------------------

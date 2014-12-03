@@ -65,7 +65,6 @@ void ProductInterface::init(const ProductShopClient * apProductShopClient)	{
 	string & strManufacturer = productParams.m_strProductManufacturer;
 	m_pLabelProductInterfaceInfo->setText((strProductName + "\n" + strManufacturer).c_str());	//Product name and manufacturer
 
-
 	//Geometry
 	QPoint cursor(QCursor::pos());
 	int x = cursor.x();
@@ -75,10 +74,6 @@ void ProductInterface::init(const ProductShopClient * apProductShopClient)	{
 	m_pLabelProductInterfacePrice->setGeometry(x+(m_pFrameProductInterface->width()-m_pLabelProductInterfacePrice->width())/2,
 									(m_pFrameProductInterface->y()-8),
 									m_pLabelProductInterfacePrice->width(), m_pLabelProductInterfacePrice->height());
-
-
-	//m_pFrameProductInterface->setVisible(true);
-	//m_pLabelProductInterfacePrice->setVisible(true);
 
 	m_pFrameProductInterface->show();
 	m_pLabelProductInterfacePrice->show();
@@ -97,12 +92,12 @@ void ProductInterface::slotProductDetails()	{
 
 void ProductInterface::slotCloseInterface()	{
 	if (m_pFrameProductInterface->underMouse())	{
-		QTimer::singleShot(100,this,SLOT(slotCloseInterface()));
+		QTimer::singleShot(1000,this,SLOT(slotCloseInterface()));
 		return;
 	}
 
-	//m_pFrameProductInterface->setVisible(false);
-	//m_pLabelProductInterfacePrice->setVisible(false);
+	m_pFrameProductInterface->setVisible(false);
+	m_pLabelProductInterfacePrice->setVisible(false);
 
 	m_pFrameProductInterface->close();
 	m_pLabelProductInterfacePrice->close();
@@ -117,6 +112,9 @@ void ProductInterface::setGeometry()	{
 
 void ProductInterface::slotProductInitialized(const ProductShopClient * apProductShopClient)	{
 	init(apProductShopClient);
+
+	m_pFrameProductInterface->show();
+	m_pLabelProductInterfacePrice->show();
 }
 
 //----------------------------------------------------------------------------------------

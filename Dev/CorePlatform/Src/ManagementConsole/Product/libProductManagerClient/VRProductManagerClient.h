@@ -23,6 +23,7 @@ namespace VR	{
 		const char* className() const;
 
 		struct ProductManagerClientParams : public AbstractManagerClientParams	{
+			ProductShopClient * m_pProduct;
 			std::string m_strUserIDName;
 			std::string m_strProductName;
 			float m_flProductQuantity;
@@ -54,6 +55,8 @@ namespace VR	{
 		void addProduct2Basket(const std::string & astrUserID, ProductShopClient * apProductShopClient);
 		void removeProductRequest(const std::string & astrUserID, ProductShopClient * apProduct);
 		void modifyProductQuantityRequest(const std::string & astrUserID, ProductShopClient * apProduct, float aflNewQuantity);
+
+		void addProduct2Basket(ProductManagerClientParams & aProductManagerClientParams);
 	};
 }
 #endif //VR_PRODUCT_CLIENT_MANAGER_H

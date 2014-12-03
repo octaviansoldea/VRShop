@@ -875,7 +875,7 @@ padding: 2px;</string>
         <string notr="true">QFrame#m_pFrameProductInterface	{
 	border: 1px solid rgb(29,29,29);
 	background-color: rgb(67,67,67);
-	border-radius: 10px;
+/*	border-radius: 10px;*/
 	padding: 2px;
 }
 </string>
@@ -1085,7 +1085,7 @@ basket</string>
        <property name="styleSheet">
         <string notr="true">QLabel#m_pLabelProductInterfacePrice {
 	color: rgb(204,204,204);
-	border-radius: 5px;
+/*	border-radius: 5px;*/
 	border: 1px solid rgb(18,18,18);
 	background-color:rgb(70,70,70);
 }

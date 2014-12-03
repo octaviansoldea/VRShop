@@ -73,6 +73,7 @@ void ProductManagerClient::requestToServer(
 
 	case ServerClientCommands::PRODUCT_TO_BASKET_REQUEST:
 		{
+			m_pProduct = pPp->m_pProduct;
 			QString qstrUserIDName = pPp->m_strUserIDName.c_str();
 			QString qstrProductName = pPp->m_strProductName.c_str();
 			float flProductQuantity = pPp->m_flProductQuantity;
@@ -134,7 +135,7 @@ void ProductManagerClient::slotReceiveDataFromServer()	{
 			emit m_pMVCClient->signalProductInitialized(&product);
 			
 			break;
-		}		
+		}
 	case ServerClientCommands::PRODUCT_TO_BASKET_REQUEST:
 		{
 			float flProductQuantity;
@@ -231,4 +232,10 @@ void ProductManagerClient::modifyProductQuantityRequest(const string & astrUserI
 	pmcp.m_flProductNewQuantity = aflNewQuantity;
 
 	requestToServer(ServerClientCommands::MODIFY_PRODUCT_REQUEST,&pmcp);
+}
+
+//----------------------------------------------------------------------
+
+void ProductManagerClient::addProduct2Basket(ProductManagerClientParams & aPMCP)	{
+	requestToServer(ServerClientCommands::PRODUCT_TO_BASKET_REQUEST,&aPMCP);
 }

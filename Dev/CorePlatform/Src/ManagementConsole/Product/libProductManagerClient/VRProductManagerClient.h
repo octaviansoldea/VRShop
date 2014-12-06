@@ -10,14 +10,13 @@
 #include "VRAbstractManagerClient.h"
 
 namespace VR	{
-	class BasketClient;
 	class ProductShopClient;
-	class ModelViewControllerClient;
+	class Client;
 
 	class ProductManagerClient : public AbstractManagerClient	{
 		Q_OBJECT
 	public:
-		ProductManagerClient(ModelViewControllerClient * apMVCClient, BasketClient * apBasketClient=0, QObject * apParent=0);
+		ProductManagerClient(Client * apClient, QObject * apParent=0);
 		virtual ~ProductManagerClient();
 
 		const char* className() const;
@@ -30,26 +29,23 @@ namespace VR	{
 			float m_flProductNewQuantity;
 		};
 
+	protected:
 		virtual void requestToServer(
 			const ServerClientCommands::OPERATION_TYPE & aenumOperationType, 
 			AbstractManagerClientParams * apAbstractManagerClientParams=0
 		);
 
-		ProductShopClient * getProduct();
 		
 	private:
 		std::list<ProductShopClient*> m_lstProducts;
 		ProductShopClient * m_pProduct;
-		BasketClient * m_pBasket;
-		ModelViewControllerClient * m_pMVCClient;
-
 
 	signals:
 		void signalProductInitialized(const std::string & astrProductData);
 		void signalProductInitialized(const ProductShopClient * apProduct);
 
 	public:
-		virtual void slotReceiveDataFromServer();
+		ProductShopClient * getProduct();
 
 		void productClicked(std::string & astrProductName);
 		void addProduct2Basket(const std::string & astrUserID, ProductShopClient * apProductShopClient);
@@ -57,6 +53,11 @@ namespace VR	{
 		void modifyProductQuantityRequest(const std::string & astrUserID, ProductShopClient * apProduct, float aflNewQuantity);
 
 		void addProduct2Basket(ProductManagerClientParams & aProductManagerClientParams);
+
+		void initProductFromData(QDataStream & aDataStreamProduct, ProductShopClient * apProduct);
+		bool addProduct2Basket(QDataStream & aDataStreamProduct, ProductShopClient * apProduct);
+		ProductShopClient * removeProductFromBasket(QDataStream & aDataStreamProduct);
+		float modifyProductQuantityRequest(QDataStream & aDataStreamProduct);
 	};
 }
 #endif //VR_PRODUCT_CLIENT_MANAGER_H

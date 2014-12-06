@@ -17,6 +17,8 @@ namespace VR	{
 	class ProductShopClient;
 	class CashierClient;
 
+	class Client;
+
 	class ShoppingPlace_GUI : public QMainWindow, public Ui::MainWindow	{
 		Q_OBJECT
 	public:
@@ -29,6 +31,8 @@ namespace VR	{
 		AgentInterface * m_pAgentInterface;
 		ProductBasketInterface * m_pProductBasketInterface;
 		CameraController * m_pCameraController;
+
+		Client * m_pClient;
 
 		void updateGeometry();
 		void signalSlotConnections();
@@ -50,6 +54,8 @@ namespace VR	{
 		void slotRemoveProductConfirmed();
 		void slotProductInfoClicked();
 		void slotProceedAndPayClicked();
+
+		void slotClientReceiveData();
 
 	private:
 		//Cashier

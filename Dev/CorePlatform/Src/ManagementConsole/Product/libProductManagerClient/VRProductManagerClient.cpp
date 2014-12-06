@@ -8,8 +8,6 @@
 #include <QDataStream>
 
 #include "VRProductShopClient.h"
-#include "VRBasketClient.h"
-#include "VRModelViewControllerClient.h"
 
 #include "VRClient.h"
 
@@ -21,12 +19,8 @@ using namespace std;
 //-----------------------------------------------------------------------------
 
 ProductManagerClient::ProductManagerClient(
-ModelViewControllerClient * apMVCClient, 
-BasketClient * apBasketClient,
-QObject * apParent) : 
-m_pMVCClient(apMVCClient), m_pBasket(apBasketClient), AbstractManagerClient(apParent),
-m_pProduct(0)	{
-	connect(m_pClient,SIGNAL(done()),this,SLOT(slotReceiveDataFromServer()));
+Client * apClient,QObject * apParent) : 
+AbstractManagerClient(apClient, apParent),m_pProduct(0)	{
 }
 
 //-----------------------------------------------------------------------------
@@ -114,79 +108,6 @@ void ProductManagerClient::requestToServer(
 
 //-----------------------------------------------------------------------------
 
-void ProductManagerClient::slotReceiveDataFromServer()	{
-	QByteArray data = m_pClient->getTransmittedData();
-
-	QDataStream out(&data,QIODevice::ReadOnly);
-	out.setVersion(QDataStream::Qt_4_8);
-
-	quint8 nType;	//Type of the data received
-	out >> nType;
-
-	switch (nType)	{
-	case ServerClientCommands::PRODUCT_REQUEST:
-		{
-			QString qstrDataFromServer;
-			out >> qstrDataFromServer;
-
-			ProductShopClient product;
-			product.initFromSQLData(qstrDataFromServer.toStdString());
-
-			emit m_pMVCClient->signalProductInitialized(&product);
-			
-			break;
-		}
-	case ServerClientCommands::PRODUCT_TO_BASKET_REQUEST:
-		{
-			float flProductQuantity;
-			out >> flProductQuantity;
-
-			if (flProductQuantity == 0)	{
-				break;
-			}
-
-			ProductShopClientParams pP;
-			m_pProduct->getParams(pP);
-
-			ProductShopClient * pProduct = new ProductShopClient(pP);
-			pProduct->setQuantity(flProductQuantity);
-			m_pBasket->addProduct(pProduct);
-
-			break;
-		}
-	case ServerClientCommands::REMOVE_PRODUCT_REQUEST:
-		{
-			bool bRes;
-			out >> bRes;
-
-			if (bRes == 0)	{
-				break;
-			}
-
-			ProductShopClient * pProduct = getProduct();
-			m_pBasket->removeProduct(pProduct);
-
-			break;
-		}
-	case ServerClientCommands::MODIFY_PRODUCT_REQUEST:
-		{
-			float flNewValue;
-			out >> flNewValue;
-
-			ProductShopClient * pProduct = getProduct();
-			pProduct->setQuantity(flNewValue);
-
-			emit m_pMVCClient->signalNewProductQuantity(flNewValue);
-
-			break;
-		}
-	default:
-		break;
-	}
-}
-
-//-----------------------------------------------------------------------------
-
 void ProductManagerClient::addProduct2Basket(const string & astrUserID, ProductShopClient * apProductShopClient)	{
 	m_pProduct = apProductShopClient;
 
@@ -238,4 +159,59 @@ void ProductManagerClient::modifyProductQuantityRequest(const string & astrUserI
 
 void ProductManagerClient::addProduct2Basket(ProductManagerClientParams & aPMCP)	{
 	requestToServer(ServerClientCommands::PRODUCT_TO_BASKET_REQUEST,&aPMCP);
+}
+
+//----------------------------------------------------------------------
+
+void ProductManagerClient::initProductFromData(QDataStream & aDataStreamProduct, ProductShopClient * apProduct)	{
+	QString qstrDataFromServer;
+	aDataStreamProduct >> qstrDataFromServer;
+
+	apProduct->initFromSQLData(qstrDataFromServer.toStdString());
+
+	m_pProduct = apProduct;
+}
+
+//----------------------------------------------------------------------
+
+bool ProductManagerClient::addProduct2Basket(QDataStream & aDataStreamProduct, ProductShopClient * apProduct)	{
+	float flProductQuantity;
+	aDataStreamProduct >> flProductQuantity;
+
+	if (flProductQuantity == 0)	{
+		return false;
+	}
+
+	ProductShopClientParams pP;
+	getProduct()->getParams(pP);
+
+	apProduct->setParams(pP);
+	apProduct->setQuantity(flProductQuantity);
+
+	return true;
+}
+
+//----------------------------------------------------------------------
+
+ProductShopClient * ProductManagerClient::removeProductFromBasket(QDataStream & aDataStreamProduct)	{
+	bool bRes;
+	aDataStreamProduct >> bRes;
+
+	if (bRes == 0)	{
+		return 0;
+	}
+
+	return (getProduct());
+}
+
+//----------------------------------------------------------------------
+
+float ProductManagerClient::modifyProductQuantityRequest(QDataStream & aDataStreamProduct)	{
+	float flNewValue;
+	aDataStreamProduct >> flNewValue;
+
+	ProductShopClient * pProduct = getProduct();
+	pProduct->setQuantity(flNewValue);
+
+	return flNewValue;
 }

@@ -5,9 +5,11 @@
 #include <string>
 
 #include "VRProductManager.h"
+#include "VRProductShopClient.h"
 
 namespace VR	{
 	class OSGQT_Widget;
+	class Client;
 	class Scene;
 	class Avatar;
 	class AbstractUser;
@@ -21,9 +23,11 @@ namespace VR	{
 	class CashierManagerClient;
 
 	class ModelViewControllerClient;
+	class AgentManagerClient;
 
 	struct ShoppingPlace {
 		ShoppingPlace(
+			Client * apClient,
 			OSGQT_Widget * apOSGQTWidget,
 			OSGQT_Widget * apOSGQTWidgetMap,
 			std::string & astrShopScene,
@@ -40,22 +44,26 @@ namespace VR	{
 		void removeFromCashier(const int & anProductPosition);
 		void productInfoCashier(const int & anProductPosition);
 		void proceedAndPayRequested();
-
+		
+		void handleClientData();
 
 		void purchaseRequest();
 
 		osg::ref_ptr<Scene> getScene() const;
 		osg::ref_ptr<osg::Node> getProducts();
 		PickAndDragHandlerShopClient * getPicker() const;
-		BasketClient * getBasket();
 
 		AbstractUser * getAbstractUser();
 		bool isUserAuthorized() const;
 
 		ModelViewControllerClient * getModelViewController() const;
 
+		AgentManagerClient * getAgentManagerClient();
+
 	private:
 		bool createClientScene(const std::string & astrSceneFileName);
+
+		Client * m_pClient;
 
 		OSGQT_Widget * m_pOSGQTWidget;
 		OSGQT_Widget * m_pOSGQTWidgetMap;
@@ -75,10 +83,13 @@ namespace VR	{
 		AvatarManagerClient * m_pAvatarMgr;
 		ProductManagerClient * m_pProductMgr;
 		CashierManagerClient * m_pCashierMgr;
+		AgentManagerClient * m_pAgentMgr;
 
 		ModelViewControllerClient * m_pMVCClient;
 
 		void insertProducts();
+
+		ProductShopClient * m_pProduct;
 	};
 }
 #endif //VR_SHOPPING_PLACE_H

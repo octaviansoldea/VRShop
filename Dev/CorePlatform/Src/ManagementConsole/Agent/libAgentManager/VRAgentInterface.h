@@ -24,7 +24,8 @@ namespace VR	{
 			QPushButton * apPushButtonSignOut,
 			QPushButton * apPushButtonRemoveAccount,
 			QPushButton * apPushButtonChangeSettings,
-			AbstractUser * apAbstractUser
+			AbstractUser * apAbstractUser,
+			AgentManagerClient * apAgentMgr
 		);	//End of constructor
 
 		~AgentInterface();
@@ -50,7 +51,7 @@ namespace VR	{
 		QPushButton * m_pPushButtonChangeSettings;
 		AbstractUser * m_pAbstractUser;
 
-		AgentManagerClient * m_pAgentManagerClient;
+		AgentManagerClient * m_pAgentMgr;
 	};
 }
 #endif //VR_AGENT_INTERFACE_H

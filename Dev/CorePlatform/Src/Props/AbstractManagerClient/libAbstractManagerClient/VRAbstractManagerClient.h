@@ -3,6 +3,8 @@
 
 #include "VRServerClientCommands.h"
 
+#include <QDataStream>
+
 #include <QObject>
 
 namespace VR	{
@@ -11,7 +13,7 @@ namespace VR	{
 	class AbstractManagerClient	: public QObject	{
 		Q_OBJECT
 	public:
-		AbstractManagerClient(QObject * apParent=0);
+		AbstractManagerClient(Client * apClient, QObject * apParent=0);
 		virtual ~AbstractManagerClient() = 0;
 
         const char* className() const;
@@ -19,16 +21,14 @@ namespace VR	{
 		struct AbstractManagerClientParams	{
 		};
 
+	protected:
 		virtual void requestToServer(
 			const ServerClientCommands::OPERATION_TYPE & aenumOperationType, 
 			AbstractManagerClientParams * apAbstractManagerClientParams=0
 		) = 0;
 
-	protected:
 		Client * m_pClient;
-
-	public slots:
-		virtual void slotReceiveDataFromServer() = 0;
+		
 
 	signals:
 		void done();

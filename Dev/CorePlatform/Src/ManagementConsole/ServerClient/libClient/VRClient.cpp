@@ -35,7 +35,6 @@ void Client::slotTryToConnect()	{
 
 	m_TcpSocket.waitForConnected();
 	m_unPackageSize = 0;
-	m_ReceivedData = 0;
 }
 
 //---------------------------------------------------------------------

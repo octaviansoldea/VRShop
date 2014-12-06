@@ -10,11 +10,13 @@ using namespace std;
 //==============================================================================
 
 Visitor::Visitor(Avatar * apAvatar) : AbstractUser((Avatar*)apAvatar) {
+	m_pBasket = new BasketClient;
 }
 
 //------------------------------------------------------------------------------
 
 Visitor::~Visitor()	{
+	delete m_pBasket;
 }
 
 //------------------------------------------------------------------------------
@@ -26,10 +28,14 @@ const char* Visitor::className() const	{
 //------------------------------------------------------------------------------
 
 bool Visitor::addProduct2Basket(ProductShopClient * apProduct)	{
+	int nSize = m_pBasket->count();
+
 	ProductShopClient * pProduct = apProduct;
 	m_pBasket->addProduct(pProduct);
 
-	return true;
+	bool bRes = (m_pBasket->count() > nSize) ? true : false;
+	
+	return bRes;
 }
 
 //------------------------------------------------------------------------------
@@ -37,6 +43,12 @@ bool Visitor::addProduct2Basket(ProductShopClient * apProduct)	{
 bool Visitor::removeProductFromBasket(ProductShopClient * apProduct)	{
 	m_pBasket->removeProduct(apProduct);
 	return true;
+}
+
+//------------------------------------------------------------------------------
+
+BasketClient * Visitor::getBasket()	{
+	return m_pBasket;
 }
 
 //------------------------------------------------------------------------------

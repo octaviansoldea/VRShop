@@ -11,12 +11,16 @@
 #include "VRProductManager.h"
 #include "VRAbstractObject.h"
 
+#include "VRClient.h"
+
 #include "VRProductInterface.h"
 #include "VRAgentInterface.h"
 #include "VRProductBasketInterface.h"
 #include "VRCameraController.h"
 #include "VRCashierClient.h"
 
+#include "VRAbstractUser.h"
+#include "VRVisitor.h"
 #include "VRBasketClient.h"
 
 #include "VRModelViewControllerClient.h"
@@ -35,18 +39,25 @@ using namespace std;
 
 //----------------------------------------------------------------------
 
-ShoppingPlace_GUI::ShoppingPlace_GUI(string & astrFileName, std::string & astrAvatarName)	{	
+ShoppingPlace_GUI::ShoppingPlace_GUI(string & astrFileName, string & astrAvatarName)	{	
 	setupUi(this);
 	setWindowTitle("Shop Client");
 
+	m_pClient = new Client;
+	connect(m_pClient,SIGNAL(done()),this,SLOT(slotClientReceiveData()));
+
 	m_pShoppingPlace = new ShoppingPlace(
-		m_pOSGQTWidget,m_pOSGQTWidgetMap,astrFileName,astrAvatarName);
+		m_pClient,
+		m_pOSGQTWidget,
+		m_pOSGQTWidgetMap,
+		astrFileName,
+		astrAvatarName
+	);
 
 	KeyboardMouseManipulatorShopClient * pCameraManipulator = 
 		dynamic_cast<KeyboardMouseManipulatorShopClient *>(m_pOSGQTWidget->getCameraManipulator());
 
-	BasketClient * pBasket = m_pShoppingPlace->getBasket();
-	AbstractUser * pUser = m_pShoppingPlace->getAbstractUser();
+	Visitor * pUser = (Visitor*)m_pShoppingPlace->getAbstractUser();
 
 	//ProductInterface
 	m_pProductInterface = new ProductInterface(
@@ -57,6 +68,7 @@ ShoppingPlace_GUI::ShoppingPlace_GUI(string & astrFileName, std::string & astrAv
 		m_pPushButtonProductInterfaceDetails,
 		m_pLabelProductInterfacePrice);
 
+	AgentManagerClient * pAgentMgr = m_pShoppingPlace->getAgentManagerClient();
 	//Agent Interface
 	m_pAgentInterface = new AgentInterface(
 		m_pFrameSettings,
@@ -67,9 +79,11 @@ ShoppingPlace_GUI::ShoppingPlace_GUI(string & astrFileName, std::string & astrAv
 		m_pPushButtonSignOut,
 		m_pPushButtonRemoveAccount,
 		m_pPushButtonChangeSettings,
-		pUser);
+		pUser,
+		pAgentMgr);
 
 	//Basket Interface
+	BasketClient * pBasket = pUser->getBasket();
 	m_pProductBasketInterface = new ProductBasketInterface(
 		m_pToolButtonMyBasket,
 		m_pLabelBasketCase,
@@ -102,6 +116,8 @@ ShoppingPlace_GUI::~ShoppingPlace_GUI()	{
 	delete m_pCameraController;
 	delete m_pCashierClient;
 	delete m_pShoppingPlace;
+
+	delete m_pClient;
 }
 
 //=========================================================================================
@@ -245,7 +261,9 @@ void ShoppingPlace_GUI::slotCashierClicked()	{
 //----------------------------------------------------------------------------------------
 
 void ShoppingPlace_GUI::slotStartCashierClicked()	{
-	BasketClient * pBasket = m_pShoppingPlace->getBasket();
+	Visitor * pUser = (Visitor*)m_pShoppingPlace->getAbstractUser();
+	BasketClient * pBasket = pUser->getBasket();
+
 	m_pCashierClient->init(pBasket);
 }
 
@@ -280,3 +298,10 @@ void ShoppingPlace_GUI::slotRemoveProductConfirmed()	{
 void ShoppingPlace_GUI::slotAvatarClicked(const string & astrAvatarName)	{
 	m_pShoppingPlace->avatarClicked(astrAvatarName);
 }
+
+//----------------------------------------------------------------------------------------
+
+void ShoppingPlace_GUI::slotClientReceiveData()	{
+	m_pShoppingPlace->handleClientData();
+}
+

@@ -1,4 +1,3 @@
-#include "VRBasketClient.h"
 #include "VRAvatar.h"
 
 #include <string>
@@ -15,13 +14,11 @@ AbstractUser::AbstractUser(Avatar *apAvatar) :
 m_strUserIDName(""),
 m_bIsUserAuthorized(false)	{
 	m_pAvatar = apAvatar;
-	m_pBasket = new BasketClient;
 }
 
 //------------------------------------------------------------------------------
 
 AbstractUser::~AbstractUser()	{
-	delete m_pBasket;
 }
 
 //------------------------------------------------------------------------------
@@ -34,12 +31,6 @@ const char* AbstractUser::className() const	{
 
 Avatar * AbstractUser::getAvatar()	{
 	return m_pAvatar.get();
-}
-
-//------------------------------------------------------------------------------
-
-BasketClient * AbstractUser::getBasket()	{
-	return m_pBasket;
 }
 
 //------------------------------------------------------------------------------

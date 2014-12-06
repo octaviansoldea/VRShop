@@ -12,7 +12,7 @@
 
 namespace VR	{
 	class ProductShopClient;
-
+	class BasketClient;
 
 	class Visitor : public AbstractUser {
 	public:
@@ -22,7 +22,9 @@ namespace VR	{
 		virtual const char* className() const;
 
 		// Track client's activity: client_ID, access_date/time, exit_date/time, products_observed
-		
+
+		BasketClient * getBasket();
+
 		bool addProduct2Basket(ProductShopClient * apProduct); //check if the shop can satisfy the request.
 		bool removeProductFromBasket(ProductShopClient * apProduct);
 		void listProductsInBasket() const;
@@ -39,6 +41,8 @@ namespace VR	{
 
 
 	private:
+		BasketClient * m_pBasket;
+
 		bool tryPay();
 	};
 }

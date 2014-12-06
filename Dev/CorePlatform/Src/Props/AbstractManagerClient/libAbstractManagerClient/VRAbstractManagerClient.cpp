@@ -6,12 +6,13 @@ using namespace VR;
 
 //==============================================================
 
-AbstractManagerClient::AbstractManagerClient(QObject * apParent) : QObject(apParent)	{
-	m_pClient = new Client();
+AbstractManagerClient::AbstractManagerClient(Client * apClient, QObject * apParent) : 
+m_pClient(apClient), QObject(apParent)	{
 }
 
 //--------------------------------------------------------------
 
 AbstractManagerClient::~AbstractManagerClient()	{
-	delete m_pClient;
 }
+
+//==============================================================================

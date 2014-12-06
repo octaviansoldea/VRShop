@@ -15,10 +15,9 @@ using namespace std;
 
 //==============================================================================
 
-AgentManagerClient::AgentManagerClient(AbstractUser * apAbstractUser, QObject * apParent) : AbstractManagerClient(apParent)	{
+AgentManagerClient::AgentManagerClient(Client * apClient, AbstractUser * apAbstractUser, QObject * apParent) : 
+AbstractManagerClient(apClient, apParent)	{
 	m_pVisitor = (Visitor*)apAbstractUser;
-
-	connect(m_pClient,SIGNAL(done()),this,SLOT(slotReceiveDataFromServer()));
 }
 
 //------------------------------------------------------------------------------
@@ -30,61 +29,6 @@ AgentManagerClient::~AgentManagerClient()	{
 
 const char* AgentManagerClient::className() const	{
 	return "AgentManagerClient";
-}
-
-//------------------------------------------------------------------------------
-
-void AgentManagerClient::slotReceiveDataFromServer()	{
-	QByteArray data = m_pClient->getTransmittedData();
-
-	QDataStream out(&data,QIODevice::ReadOnly);
-	out.setVersion(QDataStream::Qt_4_8);
-
-	quint8 nType;	//Type of the data received
-	int nSuccess;
-
-	out >> nType >> nSuccess;
-
-	switch (nType)	{
-	case ServerClientCommands::SIGN_IN_REQUEST:
-		{
-			if (nSuccess == ServerClientCommands::PASSED)	{
-				userApproved(tostr(nSuccess));
-			} else {
-				requestToServer(ServerClientCommands::SIGN_UP_REQUEST);
-			}
-			break;
-		}
-
-	case ServerClientCommands::SIGN_UP_REQUEST:
-		{
-			if (nSuccess == ServerClientCommands::PASSED)	{
-				userApproved(tostr(nSuccess));
-			} else {
-				break;
-			}
-			break;
-		}
-
-	case ServerClientCommands::SIGN_OUT_REQUEST:
-		{
-			if (nSuccess == ServerClientCommands::PASSED)	{	//Successfully signed out
-				m_pVisitor->setUserIDName(tostr(0));
-			} else {
-				break;
-			}
-			break;
-		}
-
-	case ServerClientCommands::MODIFY_USER_ACCOUNT_REQUEST:
-		{
-			if (nSuccess == ServerClientCommands::PASSED)	{	//Successfully modified account settings
-			} else {
-				break;
-			}
-			break;
-		}
-	}
 }
 
 //------------------------------------------------------------------------------
@@ -159,7 +103,91 @@ void AgentManagerClient::requestToServer(
 
 //------------------------------------------------------------------------------
 
+void AgentManagerClient::signInRequest(const std::string & astrUserName, const std::string & astrPassword)	{
+	AgentManagerClient::AgentClientParams acp;
+	acp.strUserName = astrUserName;
+	acp.strPassword = astrPassword;
+	requestToServer(ServerClientCommands::SIGN_IN_REQUEST, &acp);
+}
+
+//------------------------------------------------------------------------------
+
+void AgentManagerClient::signUpRequest()	{
+	requestToServer(ServerClientCommands::SIGN_UP_REQUEST);
+}
+
+//------------------------------------------------------------------------------
+
+void AgentManagerClient::signOutRequest(const std::string & astrUserName)	{
+	requestToServer(ServerClientCommands::SIGN_OUT_REQUEST);
+}
+
+//------------------------------------------------------------------------------
+
+void AgentManagerClient::modifyAccountRequest()	{
+	requestToServer(ServerClientCommands::MODIFY_USER_ACCOUNT_REQUEST);
+}
+
+//------------------------------------------------------------------------------
+
 void AgentManagerClient::userApproved(const std::string & astrUserName)	{
 	m_pVisitor->setUserIDName(astrUserName);
 	emit done();
+}
+
+//------------------------------------------------------------------------------
+
+bool AgentManagerClient::signInRespond(QDataStream & aDataStreamProduct)	{
+	int nSuccess;
+	aDataStreamProduct >> nSuccess;
+
+	if (nSuccess == ServerClientCommands::PASSED)	{
+		userApproved(tostr(nSuccess));
+
+		return true;
+	} else {
+		requestToServer(ServerClientCommands::SIGN_UP_REQUEST);
+		return false;
+	}
+}
+
+//------------------------------------------------------------------------------
+
+bool AgentManagerClient::signUpRespond(QDataStream & aDataStreamProduct)	{
+	int nSuccess;
+	aDataStreamProduct >> nSuccess;
+
+	if (nSuccess == ServerClientCommands::PASSED)	{
+		userApproved(tostr(nSuccess));
+		return true;
+	} else {
+		return false;
+	}
+}
+
+//------------------------------------------------------------------------------
+
+bool AgentManagerClient::signOutRespond(QDataStream & aDataStreamProduct)	{
+	int nSuccess;
+	aDataStreamProduct >> nSuccess;
+
+	if (nSuccess == ServerClientCommands::PASSED)	{	//Successfully signed out
+		m_pVisitor->setUserIDName(tostr(0));
+		return true;
+	} else {
+		return false;
+	}
+}
+
+//------------------------------------------------------------------------------
+
+bool AgentManagerClient::modifyAccountRespond(QDataStream & aDataStreamProduct)	{
+	int nSuccess;
+	aDataStreamProduct >> nSuccess;
+
+	if (nSuccess == ServerClientCommands::PASSED)	{	//Successfully modified account settings
+		return true;
+	} else {
+		return false;
+	}
 }

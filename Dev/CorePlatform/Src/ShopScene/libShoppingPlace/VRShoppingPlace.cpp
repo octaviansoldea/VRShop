@@ -8,6 +8,8 @@
 
 #include "VRProductShopClient.h"
 
+#include "VRClient.h"
+
 #include "VRProductManager.h"
 #include "VRAvatar.h"
 #include "VRAvatarManagerClient.h"
@@ -15,6 +17,7 @@
 #include "VRBasketClient.h"
 #include "VRProductManagerClient.h"
 #include "VRCashierManagerClient.h"
+#include "VRAgentManagerClient.h"
 
 #include "VRModelViewControllerClient.h"
 
@@ -44,15 +47,16 @@ using namespace std;
 //----------------------------------------------------------------------
 
 ShoppingPlace::ShoppingPlace(
+Client * apClient,
 OSGQT_Widget * apOSGQTWidget,
 OSGQT_Widget * apOSGQTWidgetMap,
 string & astrShopScene,
 string & astrAvatarName) :
+m_pClient(apClient),
 m_pOSGQTWidget(apOSGQTWidget),
 m_pOSGQTWidgetMap(apOSGQTWidgetMap),
 m_strDBFileName(astrShopScene),
-m_strAvatarName(astrAvatarName)	{	
-
+m_strAvatarName(astrAvatarName)	{
 	//Define a scene as a group
 	m_pScene = new Scene();
 
@@ -126,7 +130,7 @@ m_strAvatarName(astrAvatarName)	{
 	m_pVisitor = new Visitor((Avatar*)m_pAvatar);
 
 	//Other avatars
-	m_pAvatarMgr = new AvatarManagerClient(m_pAvatar);
+	m_pAvatarMgr = new AvatarManagerClient(m_pClient, m_pAvatar);
 	m_pScene->addChild(m_pAvatarMgr->getAvatars());
 
 
@@ -141,8 +145,12 @@ m_strAvatarName(astrAvatarName)	{
 	m_pMVCClient = new ModelViewControllerClient;
 
 	BasketClient * pBasket = m_pVisitor->getBasket();
-	m_pProductMgr = new ProductManagerClient(m_pMVCClient, pBasket);
-	m_pCashierMgr = new CashierManagerClient(m_pMVCClient, pBasket);
+	m_pProductMgr = new ProductManagerClient(m_pClient);
+	m_pCashierMgr = new CashierManagerClient(m_pClient, m_pMVCClient, pBasket);
+	m_pAgentMgr = new AgentManagerClient(m_pClient,m_pVisitor);
+
+	//Product created for the ProductManager purposes
+	m_pProduct = new ProductShopClient;
 }
 
 //----------------------------------------------------------------------
@@ -153,6 +161,8 @@ ShoppingPlace::~ShoppingPlace() {
 	delete m_pCashierMgr;
 	delete m_pVisitor;
 	delete m_pMVCClient;
+
+	delete m_pProduct;
 }
 
 //----------------------------------------------------------------------
@@ -171,6 +181,12 @@ ref_ptr<Node> ShoppingPlace::getProducts()	{
 
 PickAndDragHandlerShopClient * ShoppingPlace::getPicker() const	{
 	return m_pPickAndDragHandlerShopClient;
+}
+
+//----------------------------------------------------------------------
+
+AgentManagerClient * ShoppingPlace::getAgentManagerClient()	{
+	return m_pAgentMgr;
 }
 
 //----------------------------------------------------------------------
@@ -217,12 +233,6 @@ bool ShoppingPlace::createClientScene(const string & astrSceneFileName)	{
 	}
 
 	return true;
-}
-
-//----------------------------------------------------------------------
-
-BasketClient * ShoppingPlace::getBasket()	{
-	return m_pVisitor->getBasket();
 }
 
 //----------------------------------------------------------------------
@@ -340,4 +350,123 @@ void ShoppingPlace::proceedAndPayRequested()	{
 	string strUserID = m_pVisitor->getUserIDName();
 
 	m_pCashierMgr->proceedAndPayCashier(strUserID, pBasket);
+}
+
+//----------------------------------------------------------------------
+
+void ShoppingPlace::handleClientData()	{
+	QByteArray data = m_pClient->getTransmittedData();
+
+	QDataStream out(&data,QIODevice::ReadOnly);
+	out.setVersion(QDataStream::Qt_4_8);
+
+	quint8 nType;	//Type of the data received
+	out >> nType;
+
+	switch (nType)	{
+	//RELATES TO THE PRODUCT MANAGER CLIENT
+	case ServerClientCommands::PRODUCT_REQUEST:
+		{
+			m_pProductMgr->initProductFromData(out,m_pProduct);
+
+			emit m_pMVCClient->signalProductInitialized(m_pProduct);
+			
+			break;
+		}
+	case ServerClientCommands::PRODUCT_TO_BASKET_REQUEST:
+		{
+			ProductShopClient * pProduct = new ProductShopClient;
+			bool bRes = m_pProductMgr->addProduct2Basket(out, pProduct);
+
+			if (bRes == false)	{
+				delete pProduct;
+			} else {
+				bRes = m_pVisitor->addProduct2Basket(pProduct);
+
+				if (bRes == false)
+					delete pProduct;
+			}
+			break;
+		}
+	case ServerClientCommands::REMOVE_PRODUCT_REQUEST:
+		{
+			ProductShopClient * pProduct = m_pProductMgr->removeProductFromBasket(out);
+			m_pVisitor->removeProductFromBasket(pProduct);
+
+			break;
+		}
+	case ServerClientCommands::MODIFY_PRODUCT_REQUEST:
+		{
+			float flNewValue = m_pProductMgr->modifyProductQuantityRequest(out);
+			emit m_pMVCClient->signalNewProductQuantity(flNewValue);
+
+			break;
+		}
+
+	//RELATES TO THE AVATAR MANAGER CLIENT
+	case ServerClientCommands::AVATAR_REGISTER:
+		{
+			m_pAvatarMgr->registerAvatarReceived(out);
+			break;
+		}
+	case ServerClientCommands::AVATAR_UPDATE:
+		{
+			break;
+		}
+	case ServerClientCommands::OTHER_AVATARS_REQUEST:
+		{
+			m_pAvatarMgr->otherAvatarsReceived(out);
+			break;
+		}
+
+	//RELATES TO THE CASHIER MANAGER CLIENT
+	case ServerClientCommands::REMOVE_FROM_CASHIER_REQUEST:
+		{
+			bool bRes = m_pCashierMgr->removeFromBasketData(out);
+			break;
+		}
+	case ServerClientCommands::PRODUCT_INFO_REQUEST:
+		{
+			m_pCashierMgr->productInfoData(out);
+			break;
+		}
+	case ServerClientCommands::PURCHASE_REQUEST:
+		{
+			m_pCashierMgr->basketPurchaseData(out);
+			break;
+		}
+	case ServerClientCommands::USER_CONFIRMS_PURCHASE:
+		{
+			break;
+		}
+
+	//RELATES TO THE AGENT MANAGER CLIENT
+	case ServerClientCommands::SIGN_IN_REQUEST:
+		{
+			bool bRes = m_pAgentMgr->signInRespond(out);
+			break;
+		}
+
+	case ServerClientCommands::SIGN_UP_REQUEST:
+		{
+			bool bRes = m_pAgentMgr->signUpRespond(out);
+			break;
+		}
+
+	case ServerClientCommands::SIGN_OUT_REQUEST:
+		{
+			bool bRes = m_pAgentMgr->signOutRespond(out);
+			break;
+		}
+
+	case ServerClientCommands::MODIFY_USER_ACCOUNT_REQUEST:
+		{
+			bool bRes = m_pAgentMgr->modifyAccountRespond(out);
+			break;
+		}
+	default:
+		{
+			break;
+		}
+	}
 }

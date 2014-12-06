@@ -3,7 +3,6 @@
 
 #include <QTcpSocket>
 #include <QObject>
-#include <QString>
 
 #include <QDataStream>
 
@@ -16,6 +15,7 @@ namespace VR	{
 
 		void sendRequest(QByteArray & aarrRequest);
 		QTcpSocket & getTcpSocket();
+
 		QByteArray getTransmittedData();
 
 	private:
@@ -24,7 +24,6 @@ namespace VR	{
 		bool m_bIsFirstPackage;
 		quint64 m_unPackageSize;
 
-		QByteArray m_ReceivedData;
 		QByteArray m_TransmitData;
 
 	signals:

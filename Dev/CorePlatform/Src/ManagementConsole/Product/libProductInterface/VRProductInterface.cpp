@@ -63,7 +63,12 @@ void ProductInterface::init(const ProductShopClient * apProductShopClient)	{
 
 	string & strProductName = productParams.m_strProductName;
 	string & strManufacturer = productParams.m_strProductManufacturer;
-	m_pLabelProductInterfaceInfo->setText((strProductName + "\n" + strManufacturer).c_str());	//Product name and manufacturer
+	QString qstrInterfaceText(tr(
+		"<html><head/><body><span style=' font-size:10px; font-style:bold;'> %1 </span>"
+		"<br><span style='font-size:8px; font-style:italic;color:white;'> %2 </span></br></body></html>")
+		.arg(strProductName.c_str()).arg(strManufacturer.c_str())
+	);
+	m_pLabelProductInterfaceInfo->setText(qstrInterfaceText);
 
 	//Geometry
 	QPoint cursor(QCursor::pos());

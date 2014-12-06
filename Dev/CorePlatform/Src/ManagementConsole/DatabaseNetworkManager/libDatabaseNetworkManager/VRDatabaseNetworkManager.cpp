@@ -66,6 +66,7 @@ QByteArray DatabaseNetworkManager::databaseRequest(QByteArray & aData)	{
 			break;
 		}
 	case ServerClientCommands::REMOVE_PRODUCT_REQUEST:
+	case ServerClientCommands::REMOVE_FROM_CASHIER_REQUEST:
 		{
 			QString qstrUserIDName;
 			QString qstrProductName;

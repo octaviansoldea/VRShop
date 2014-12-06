@@ -17,9 +17,8 @@ using namespace std;
 
 //==============================================================================
 
-CashierManagerClient::CashierManagerClient(ModelViewControllerClient * apMVCClient, QObject *parent) : 
-m_pMVCClient(apMVCClient), AbstractManagerClient(parent)	{
-	connect(m_pClient,SIGNAL(done()),this,SLOT(slotReceiveDataFromServer()));
+CashierManagerClient::CashierManagerClient(Client * apClient, ModelViewControllerClient * apMVCClient, QObject *parent) : 
+m_pMVCClient(apMVCClient), AbstractManagerClient(apClient, parent)	{
 }
 
 //------------------------------------------------------------------------------
@@ -31,65 +30,6 @@ CashierManagerClient::~CashierManagerClient()	{
 
 const char* CashierManagerClient::className() const	{
 	return "CashierManagerClient";
-}
-
-//------------------------------------------------------------------------------
-
-void CashierManagerClient::slotReceiveDataFromServer()	{
-	QByteArray data = m_pClient->getTransmittedData();
-
-	QDataStream out(&data,QIODevice::ReadOnly);
-	out.setVersion(QDataStream::Qt_4_8);
-
-	quint8 nType;	//Type of the data received
-	out >> nType;
-
-	switch (nType)	{
-	case ServerClientCommands::REMOVE_PRODUCT_REQUEST:
-		{
-			bool bRes;
-			out >> bRes;
-
-			if (bRes == 0)	{
-				break;
-			}
-
-			emit m_pMVCClient->signalRemoveProduct();
-
-			break;
-		}
-	case ServerClientCommands::PRODUCT_INFO_REQUEST:
-		{
-			QString qstrProductDataFromServer;
-			out >> qstrProductDataFromServer;
-
-			break;
-		}
-	case ServerClientCommands::PURCHASE_REQUEST:
-		{
-			int nOperationResult;
-			out >> nOperationResult;
-			switch (nOperationResult)	{
-			case ServerClientCommands::PASSED:
-				{
-					
-					break;
-				}
-			case ServerClientCommands::AUTHENTICATION_FAILED:
-				{
-					//Report to the user that his authentication failed
-					break;
-				}
-			}
-			break;
-		}	//END PURCHASE_REQUEST
-	case ServerClientCommands::USER_CONFIRMS_PURCHASE:
-		{
-			break;
-		}
-	default:
-		break;
-	}
 }
 
 //------------------------------------------------------------------------------
@@ -111,7 +51,7 @@ AbstractManagerClientParams * apAbstractManagerClientParams)	{
 	out << quint64(0) << quint8(nType);
 
 	switch (nType)	{
-	case ServerClientCommands::REMOVE_PRODUCT_REQUEST:
+	case ServerClientCommands::REMOVE_FROM_CASHIER_REQUEST:
 		{
 			QString qstrUserIDName = pParams->m_strVisitorName.c_str();
 			QString qstrProductName = pParams->m_strProductName.c_str();
@@ -154,7 +94,7 @@ void CashierManagerClient::removeFromBasketClicked(const string & astrUserID, co
 	cmcp.m_strVisitorName = astrUserID;
 	cmcp.m_strProductName = astrProductName;
 
-	requestToServer(ServerClientCommands::REMOVE_PRODUCT_REQUEST,&cmcp);
+	requestToServer(ServerClientCommands::REMOVE_FROM_CASHIER_REQUEST,&cmcp);
 }
 
 //------------------------------------------------------------------------------
@@ -174,4 +114,45 @@ void CashierManagerClient::proceedAndPayCashier(const string & astrUserID, Baske
 	cmcp.m_strBasketProdQty = apBasket->getBasketIDQuantity2String();
 
 	requestToServer(ServerClientCommands::PURCHASE_REQUEST,&cmcp);
+}
+
+
+//------------------------------------------------------------------------------
+
+void CashierManagerClient::productInfoData(QDataStream & aDataStreamCashier)	{
+}
+
+//------------------------------------------------------------------------------
+
+bool CashierManagerClient::removeFromBasketData(QDataStream & aDataStreamCashier)	{
+	bool bRes;
+	aDataStreamCashier >> bRes;
+
+	if (bRes == 0)	{
+		return false;
+	}
+
+	emit m_pMVCClient->signalRemoveProduct();
+
+	return true;
+}
+
+//------------------------------------------------------------------------------
+
+void CashierManagerClient::basketPurchaseData(QDataStream & aDataStreamCashier)	{
+	int nOperationResult;
+	aDataStreamCashier >> nOperationResult;
+	
+	switch (nOperationResult)	{
+	case ServerClientCommands::PASSED:
+		{
+
+			break;
+		}
+	case ServerClientCommands::AUTHENTICATION_FAILED:
+		{
+			//Report to the user that his authentication failed
+			break;
+		}
+	}
 }

@@ -25,11 +25,12 @@
 namespace VR {
 	class Avatar;
 	class AnimationPath;
+	class Client;
 
 	class AvatarManagerClient : public AbstractManagerClient	{
 		Q_OBJECT
 	public:
-		AvatarManagerClient(Avatar * apAvatar, QObject *parent=0);
+		AvatarManagerClient(Client * apClient, Avatar * apAvatar, QObject *parent=0);
 		virtual ~AvatarManagerClient();
 
 		const char* className() const;
@@ -44,8 +45,6 @@ namespace VR {
 			const ServerClientCommands::OPERATION_TYPE & aenumOperationType, 
 			AbstractManagerClientParams * apAbstractManagerClientParams=0
 		);
-
-		virtual void slotReceiveDataFromServer();
 
 
 		void addAvatar(Avatar * apAvatar);
@@ -71,6 +70,10 @@ namespace VR {
 	private:
 		std::vector<std::string> m_vecAvatarNames;
 		std::vector<std::pair<std::string, osg::ref_ptr<Avatar> >> m_pairAvatarNamesAndObjects;
+
+	public:
+		void registerAvatarReceived(QDataStream & aDataStreamAvatar);
+		void otherAvatarsReceived(QDataStream & aDataStreamAvatar);
 	};
 }
 #endif //VR_AVATAR_MANAGER_CLIENT_H

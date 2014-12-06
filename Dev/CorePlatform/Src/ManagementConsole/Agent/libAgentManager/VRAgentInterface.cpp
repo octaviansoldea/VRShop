@@ -28,7 +28,8 @@ QPushButton * apPushButtonSignIn,
 QPushButton * apPushButtonSignOut,
 QPushButton * apPushButtonRemoveAccount,
 QPushButton * apPushButtonChangeSettings,
-AbstractUser * apAbstractUser)	{
+AbstractUser * apAbstractUser,
+AgentManagerClient * apAgentMgr)	{
 	m_pFrameSettings = apFrameSettings;
 	m_pToolButtonUser = apToolButtonUser;
 	m_pLineEditPassword = apLineEditPassword;
@@ -39,6 +40,8 @@ AbstractUser * apAbstractUser)	{
 	m_pPushButtonChangeSettings = apPushButtonChangeSettings;
 	m_pAbstractUser = apAbstractUser;
 
+	m_pAgentMgr = apAgentMgr;
+
 	m_pToolButtonUser->setVisible(false);
 	m_pFrameSettings->setVisible(false);
 
@@ -47,15 +50,12 @@ AbstractUser * apAbstractUser)	{
 	connect(m_pLineEditPassword,SIGNAL(returnPressed()),this,SLOT(slotSignIn()));
 	connect(m_pLineEditUserName,SIGNAL(returnPressed()),this,SLOT(slotSignIn()));
 
-	m_pAgentManagerClient = new AgentManagerClient(m_pAbstractUser);
-
-	connect(m_pAgentManagerClient,SIGNAL(done()),this,SLOT(slotSignedIn()));
+	connect(m_pAgentMgr,SIGNAL(done()),this,SLOT(slotSignedIn()));
 }
 
 //----------------------------------------------------------------------
 
 AgentInterface::~AgentInterface()	{
-	delete m_pAgentManagerClient;
 }
 
 //=======================================================================
@@ -82,7 +82,7 @@ void AgentInterface::slotUserClicked(bool abIsProfileVisible)	{
 //----------------------------------------------------------------------
 
 void AgentInterface::slotSignUp()	{
-	m_pAgentManagerClient->requestToServer(ServerClientCommands::SIGN_UP_REQUEST);
+	m_pAgentMgr->signUpRequest();
 }
 
 //----------------------------------------------------------------------
@@ -97,17 +97,14 @@ void AgentInterface::slotSignIn()	{
 
 		slotSignUp();
 	} else {	//Check validity of user's data
-		AgentManagerClient::AgentClientParams acp;
-		acp.strUserName = strUserName;
-		acp.strPassword = strPsw;
-		m_pAgentManagerClient->requestToServer(ServerClientCommands::SIGN_IN_REQUEST, &acp);
+		m_pAgentMgr->signInRequest(strUserName,strPsw);
 	}
 }
 
 //----------------------------------------------------------------------
 
 void AgentInterface::slotSignOut()	{
-	m_pAgentManagerClient->requestToServer(ServerClientCommands::SIGN_OUT_REQUEST);
+	m_pAgentMgr->signOutRequest(m_pAbstractUser->getUserIDName());
 
 	m_pFrameSettings->close();
 	m_pToolButtonUser->setVisible(false);
@@ -130,7 +127,7 @@ void AgentInterface::slotRemoveAccount()	{
 void AgentInterface::slotChangeSettings()	{
 	m_pFrameSettings->close();
 
-	m_pAgentManagerClient->requestToServer(ServerClientCommands::MODIFY_USER_ACCOUNT_REQUEST);
+	m_pAgentMgr->modifyAccountRequest();
 }
 
 //----------------------------------------------------------------------

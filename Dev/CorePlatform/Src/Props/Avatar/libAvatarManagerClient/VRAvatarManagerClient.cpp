@@ -27,8 +27,8 @@ using namespace osg;
 
 //==============================================================================
 
-AvatarManagerClient::AvatarManagerClient(Avatar * apAvatar, QObject *parent) :
-m_pAvatar(apAvatar), AbstractManagerClient(parent)	{
+AvatarManagerClient::AvatarManagerClient(Client * apClient, Avatar * apAvatar, QObject *parent) :
+m_pAvatar(apAvatar), AbstractManagerClient(apClient, parent)	{
 	m_grpAvatars = new Group();
 	//m_pAP = new VR::AnimationPath();
 
@@ -41,8 +41,6 @@ m_pAvatar(apAvatar), AbstractManagerClient(parent)	{
 
 	connect(&m_QTimerAvatarsOthers, SIGNAL(timeout()), this, SLOT(slotRequestAvatarsData()));
 	m_QTimerAvatarsOthers.start(850);
-
-	connect(m_pClient,SIGNAL(done()),this,SLOT(slotReceiveDataFromServer()));
 }
 
 //------------------------------------------------------------------------------
@@ -119,125 +117,6 @@ void AvatarManagerClient::slotRequestAvatarsData()	{
 
 //------------------------------------------------------------------------------
 
-void AvatarManagerClient::slotReceiveDataFromServer()	{
-	QByteArray & data = m_pClient->getTransmittedData();
-
-	QDataStream out(&data,QIODevice::ReadOnly);
-	out.setVersion(QDataStream::Qt_4_8);
-
-	quint8 nType;	//Type of the data received
-	out >> nType;
-
-	switch (nType)	{
-	case ServerClientCommands::AVATAR_REGISTER:
-		{
-			QString qstrAvatarsData;
-			out >> qstrAvatarsData;
-			break;
-		}
-	case ServerClientCommands::AVATAR_UPDATE:
-		{
-			break;
-		}
-	case ServerClientCommands::OTHER_AVATARS_REQUEST:
-		{
-			QString qstrAvatarsData;
-			out >> qstrAvatarsData;
-
-			string strDataFromServer = qstrAvatarsData.toStdString();
-
-			if (strDataFromServer == "")	{
-				if (m_grpAvatars->getNumChildren() == 0)
-					return;
-				clearAll();
-				return;
-			}
-
-			vector<string> lststrAvatarNameData = splitString(strDataFromServer,";");
-			int nSize = lststrAvatarNameData.size() / 2;
-
-			//First: avatarName; Second: avatarMatrix
-			vector<pair<string,string>> vecpairAvatarData;
-
-			int nIndexAvatar;
-			for (nIndexAvatar=0; nIndexAvatar<nSize-1; nIndexAvatar++)	{
-				vecpairAvatarData.push_back(make_pair(lststrAvatarNameData[2*nIndexAvatar],lststrAvatarNameData[2*nIndexAvatar+1]));
-			}
-			vecpairAvatarData.push_back(make_pair(lststrAvatarNameData[2*(nSize-1)],lststrAvatarNameData[2*nSize-1]));
-
-			//=====================
-
-			bool bSize = (m_pairAvatarNamesAndObjects.size() > 0) ? true : false;
-			if (bSize == true)	{
-				//Avatars from the DB
-				vector<pair<string,string>>::iterator itAvatarData;
-				vector<pair<string, ref_ptr<Avatar>>>::iterator itAvatarNames;
-
-				for(itAvatarData= vecpairAvatarData.begin(); itAvatarData != vecpairAvatarData.end(); itAvatarData++)	{
-					string strDBItem = itAvatarData->first;
-
-					vector<pair<string, ref_ptr<Avatar>>> vecAvatarNamesTemp;
-
-					//Current avatars in the scene
-					for(itAvatarNames = m_pairAvatarNamesAndObjects.begin(); itAvatarNames != m_pairAvatarNamesAndObjects.end(); itAvatarNames++)	{
-						if (itAvatarNames->first == strDBItem)	{
-							vecAvatarNamesTemp.push_back(make_pair(itAvatarNames->first,itAvatarNames->second));
-						} else {
-							ref_ptr<Avatar> pAvatar = itAvatarNames->second;
-							removeAvatar(pAvatar);
-						}
-					}
-					m_pairAvatarNamesAndObjects = vecAvatarNamesTemp;
-				}
-			}
-			//=====================
-
-			vector<pair<string,string>>::iterator it = vecpairAvatarData.begin();
-			for (it; it != vecpairAvatarData.end(); it++, nIndexAvatar++)	{
-				string strAvatarName = (*it).first;
-				if (strAvatarName == m_pAvatar->getName())
-					continue;
-
-				//Reposition active avatars
-				vector<string> vecflAvatarData = splitString((*it).second, " ");
-				Matrixd mtrxNewMatrixAvatar = vecstr2Matrix(vecflAvatarData);		
-
-				nIndexAvatar = 0;
-				vector<string>::iterator itt;
-				itt = find(m_vecAvatarNames.begin(), m_vecAvatarNames.end(), strAvatarName);
-				if(itt != m_vecAvatarNames.end())	{
-					nIndexAvatar = itt - m_vecAvatarNames.begin();
-					ref_ptr<Avatar> pAvatar = dynamic_cast<Avatar*>(m_grpAvatars->getChild(nIndexAvatar));
-					Matrixd mtrxOldMatrixAvatar = pAvatar->getMatrix();
-
-					if(distanceL2Matrixd(mtrxOldMatrixAvatar, mtrxNewMatrixAvatar) > EPS) {
-						pAvatar->setAnimation(mtrxOldMatrixAvatar, mtrxNewMatrixAvatar);
-					}
-				} else {
-					//Avatar
-					AvatarParams avatarParams;
-					avatarParams.m_strAvatarFile = 
-						//"D:/Octavian/Companies/VirtualShop/GitHub/VRShop/Dev/CorePlatform/Resources/Models3D/avatarOut.osg";
-						"C:/Projekti/VRShop/Dev/CorePlatform/Resources/Models3D/avatarOut.osg";
-					//"../../../Resources/Models3D/avatarOut.osg";
-					avatarParams.m_strAvatarName = strAvatarName;
-
-					ref_ptr<Avatar> ppAvatar = new Avatar(&avatarParams);
-					ppAvatar->setMatrix(mtrxNewMatrixAvatar);
-					addAvatar(ppAvatar);
-				}
-			}
-			break;
-		}
-	default:
-		{
-			break;
-		}
-	}
-}
-
-//------------------------------------------------------------------------------
-
 void AvatarManagerClient::addAvatar(Avatar * apAvatar)	{
 	if (apAvatar == 0)	{
 		return;
@@ -290,3 +169,99 @@ ref_ptr<Group> AvatarManagerClient::getAvatars()	{
 }
 
 //------------------------------------------------------------------------------
+
+void AvatarManagerClient::registerAvatarReceived(QDataStream & aDataStreamAvatar)	{
+	QString qstrAvatarsData;
+	aDataStreamAvatar >> qstrAvatarsData;
+}
+
+//------------------------------------------------------------------------------
+
+void AvatarManagerClient::otherAvatarsReceived(QDataStream & aDataStreamAvatar)	{
+	QString qstrAvatarsData;
+	aDataStreamAvatar >> qstrAvatarsData;
+
+	string strDataFromServer = qstrAvatarsData.toStdString();
+
+	if (strDataFromServer == "")	{
+		if (m_grpAvatars->getNumChildren() == 0)
+			return;
+		clearAll();
+		return;
+	}
+
+	vector<string> lststrAvatarNameData = splitString(strDataFromServer,";");
+	int nSize = lststrAvatarNameData.size() / 2;
+
+	//First: avatarName; Second: avatarMatrix
+	vector<pair<string,string>> vecpairAvatarData;
+
+	int nIndexAvatar;
+	for (nIndexAvatar=0; nIndexAvatar<nSize-1; nIndexAvatar++)	{
+		vecpairAvatarData.push_back(make_pair(lststrAvatarNameData[2*nIndexAvatar],lststrAvatarNameData[2*nIndexAvatar+1]));
+	}
+	vecpairAvatarData.push_back(make_pair(lststrAvatarNameData[2*(nSize-1)],lststrAvatarNameData[2*nSize-1]));
+
+	//=====================
+
+	bool bSize = (m_pairAvatarNamesAndObjects.size() > 0) ? true : false;
+	if (bSize == true)	{
+		//Avatars from the DB
+		vector<pair<string,string>>::iterator itAvatarData;
+		vector<pair<string, ref_ptr<Avatar>>>::iterator itAvatarNames;
+
+		for(itAvatarData= vecpairAvatarData.begin(); itAvatarData != vecpairAvatarData.end(); itAvatarData++)	{
+			string strDBItem = itAvatarData->first;
+
+			vector<pair<string, ref_ptr<Avatar>>> vecAvatarNamesTemp;
+
+			//Current avatars in the scene
+			for(itAvatarNames = m_pairAvatarNamesAndObjects.begin(); itAvatarNames != m_pairAvatarNamesAndObjects.end(); itAvatarNames++)	{
+				if (itAvatarNames->first == strDBItem)	{
+					vecAvatarNamesTemp.push_back(make_pair(itAvatarNames->first,itAvatarNames->second));
+				} else {
+					ref_ptr<Avatar> pAvatar = itAvatarNames->second;
+					removeAvatar(pAvatar);
+				}
+			}
+			m_pairAvatarNamesAndObjects = vecAvatarNamesTemp;
+		}
+	}
+	//=====================
+
+	vector<pair<string,string>>::iterator it = vecpairAvatarData.begin();
+	for (it; it != vecpairAvatarData.end(); it++, nIndexAvatar++)	{
+		string strAvatarName = (*it).first;
+		if (strAvatarName == m_pAvatar->getName())
+			continue;
+
+		//Reposition active avatars
+		vector<string> vecflAvatarData = splitString((*it).second, " ");
+		Matrixd mtrxNewMatrixAvatar = vecstr2Matrix(vecflAvatarData);		
+
+		nIndexAvatar = 0;
+		vector<string>::iterator itt;
+		itt = find(m_vecAvatarNames.begin(), m_vecAvatarNames.end(), strAvatarName);
+		if(itt != m_vecAvatarNames.end())	{
+			nIndexAvatar = itt - m_vecAvatarNames.begin();
+			ref_ptr<Avatar> pAvatar = dynamic_cast<Avatar*>(m_grpAvatars->getChild(nIndexAvatar));
+			Matrixd mtrxOldMatrixAvatar = pAvatar->getMatrix();
+
+			if(distanceL2Matrixd(mtrxOldMatrixAvatar, mtrxNewMatrixAvatar) > EPS) {
+				pAvatar->setAnimation(mtrxOldMatrixAvatar, mtrxNewMatrixAvatar);
+			}
+		} else {
+			//Avatar
+			AvatarParams avatarParams;
+			avatarParams.m_strAvatarFile = 
+				//"D:/Octavian/Companies/VirtualShop/GitHub/VRShop/Dev/CorePlatform/Resources/Models3D/avatarOut.osg";
+				"C:/Projekti/VRShop/Dev/CorePlatform/Resources/Models3D/avatarOut.osg";
+			//"../../../Resources/Models3D/avatarOut.osg";
+			avatarParams.m_strAvatarName = strAvatarName;
+
+			ref_ptr<Avatar> ppAvatar = new Avatar(&avatarParams);
+			ppAvatar->setMatrix(mtrxNewMatrixAvatar);
+			addAvatar(ppAvatar);
+		}
+	}
+}

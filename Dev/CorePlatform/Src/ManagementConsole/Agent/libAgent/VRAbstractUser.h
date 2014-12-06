@@ -7,7 +7,6 @@
 namespace VR {
 	class Avatar;
 	class ProductShopClient;
-	class BasketClient;
 
 	class AbstractUser	{
 	public:
@@ -16,7 +15,6 @@ namespace VR {
 		virtual const char* className() const;
 
 		Avatar * getAvatar();
-		BasketClient * getBasket();	//This basket is read by the "VRTransaction.h" before the payment
 		std::string getUserIDName() const;
 		bool getIsUserAuthorized() const;
 	
@@ -32,7 +30,6 @@ namespace VR {
 		void receiveMessage(std::string & astrMessage);
 
 		osg::ref_ptr<Avatar> m_pAvatar;
-		BasketClient * m_pBasket;
 
 	private:
 		std::string m_strUserIDName;

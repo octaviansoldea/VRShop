@@ -1,6 +1,6 @@
 #include "BasicStringDefinitions.h"
 #include <string>
-#include "VRBasicQTOperations.h"
+#include "VRBasicQtOperations.h"
 
 #include <osgDB/ReadFile>
 #include <osgGA/GUIEventHandler>

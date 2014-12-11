@@ -1,6 +1,10 @@
 #include <iostream>
 
 #include "VRServerClientCommands.h"
+#include "VRBasicQtOperations.h"
+
+#include <QEventLoop>
+#include <QTimer>
 
 #include <QMessageBox>
 #include <QHostAddress>
@@ -18,30 +22,39 @@ using namespace std;
 
 //----------------------------------------------------------------------
 
-Client::Client(QObject *apParent) : QObject(apParent)	{
-	slotTryToConnect();
+Client::Client(QObject *apParent) : QObject(apParent), m_unUserID(-1),m_unPackageSize(0)	{	
+}
+
+//----------------------------------------------------------------------
+
+Client::~Client()	{
+	close();
 }
 
 //=====================================================================
 
-void Client::slotTryToConnect()	{
-	m_TcpSocket.connectToHost(QHostAddress::LocalHost, 20000);
-
-	connect(&m_TcpSocket, SIGNAL(readyRead()), this, SLOT(slotReadReceivedData()));
+void Client::tryToConnect()	{
+	connect(&m_TcpSocket,SIGNAL(hostFound()),this,SLOT(slotHostFound()));
+	connect(&m_TcpSocket, SIGNAL(readyRead()), this, SLOT(slotIsConnectionApproved()));
 	connect(&m_TcpSocket, SIGNAL(error(QAbstractSocket::SocketError)), 
-			this, SLOT(slotError(QAbstractSocket::SocketError)));
+		this, SLOT(slotError(QAbstractSocket::SocketError)));
 	connect(&m_TcpSocket,SIGNAL(connected()),this,SLOT(slotConnected()));
 	connect(&m_TcpSocket,SIGNAL(disconnected()),this,SLOT(slotDisconnected()));
 
-	m_TcpSocket.waitForConnected();
-	m_unPackageSize = 0;
+	m_TcpSocket.connectToHost(QHostAddress::LocalHost, 20000);
+//	m_TcpSocket.waitForConnected();
+
+	QEventLoop loop;
+	connect(this,SIGNAL(done()),&loop,SLOT(quit()));
+	QTimer::singleShot(10000,&loop,SLOT(quit()));
+	loop.exec();
 }
 
-//---------------------------------------------------------------------
+//---------------------------------------------------------------------------
 
 void Client::close()	{
-//	m_TcpSocket.close();
 	m_TcpSocket.disconnectFromHost();
+	m_TcpSocket.close();
 }
 
 //---------------------------------------------------------------------
@@ -58,7 +71,7 @@ void Client::sendRequest(QByteArray & aarrRequest)	{
 	out << (quint64)(unTotalToWrite - sizeof(quint64));
 
 	unWritten = m_TcpSocket.write(aarrRequest);
-	m_TcpSocket.waitForBytesWritten();
+//	m_TcpSocket.waitForBytesWritten();
 }
 
 //---------------------------------------------------------------------
@@ -70,23 +83,8 @@ QTcpSocket & Client::getTcpSocket() {
 //---------------------------------------------------------------------
 
 void Client::slotReadReceivedData()	{
-	QDataStream in(&m_TcpSocket);
-	in.setVersion(QDataStream::Qt_4_8);
-	
-	int nBytesAvailable = m_TcpSocket.bytesAvailable();
-
 	QByteArray qData;
-
-	if (m_unPackageSize == 0) {
-		if (nBytesAvailable < sizeof(quint64))
-			return;
-		in >> m_unPackageSize;
-	}
-
-	if (nBytesAvailable < m_unPackageSize)
-		return;
-
-	qData = in.device()->readAll();
+	readSocket(qData);
 
 	m_unPackageSize=0;
 
@@ -100,26 +98,33 @@ void Client::slotError(QAbstractSocket::SocketError socketError)	{
 	int nState = socketError;
 
 	QString qstrErrorMsg;
-	if (nState == QAbstractSocket::RemoteHostClosedError)	{
-		qstrErrorMsg = "Remote host closed.";
-	}
-	else if (nState == QAbstractSocket::HostNotFoundError) {
-		qstrErrorMsg = "The host was not found.\nCheck the \
-			host name and port settings.";
-	}
-	else if (nState == QAbstractSocket::ConnectionRefusedError)	{
-		qstrErrorMsg = "The connection was refused by the server.\n \
-			Make sure the server is running,\n \
-			and check the host name and port number.";
-	} else {
-		qstrErrorMsg = "The following error occurred: " + m_TcpSocket.errorString();
+	switch (nState)	{
+	case QAbstractSocket::RemoteHostClosedError:
+		{
+			qstrErrorMsg = "Remote host closed.";
+			break;
+		}
+	case QAbstractSocket::HostNotFoundError:
+		{
+			qstrErrorMsg = "The host was not found.\nCheck the \
+						   host name and port settings.";
+			break;
+		}
+	case QAbstractSocket::ConnectionRefusedError:
+		{
+			qstrErrorMsg = "The connection was refused by the server.\n \
+						   Make sure the server is running,\n \
+						   and check the host name and port number.";
+			break;
+		}
+	default:
+		{
+			qstrErrorMsg = "The following error occurred: " + m_TcpSocket.errorString();
+			break;
+		}
 	}
 
-	QMessageBox msg;
-	msg.setText(qstrErrorMsg);
-	msg.setStandardButtons(QMessageBox::Ok);
-	msg.setWindowTitle("Error: Client connection");
-	int nRes = msg.exec();
+	BasicQtOperations::printError(qstrErrorMsg);
 }
 
 //---------------------------------------------------------------------------
@@ -136,20 +141,58 @@ void Client::slotDisconnected()	{
 
 //---------------------------------------------------------------------------
 
-void Client::slotNewUserRequest()	{
-	QByteArray block;
-	QDataStream out(&block, QIODevice::WriteOnly);
-	out.setVersion(QDataStream::Qt_4_8);
-
-	char chType = ServerClientCommands::NEW_USER_REQUEST;
-
-	out << quint64(0) << quint8(chType);
-
-	sendRequest(block);
+QByteArray Client::getTransmittedData()	{
+	return m_TransmitData;
 }
 
 //---------------------------------------------------------------------------
 
-QByteArray Client::getTransmittedData()	{
-	return m_TransmitData;
+void Client::slotIsConnectionApproved()	{
+	QByteArray qData;
+	readSocket(qData);
+
+	disconnect(&m_TcpSocket, SIGNAL(readyRead()), this, SLOT(slotIsConnectionApproved()));
+	connect(&m_TcpSocket, SIGNAL(readyRead()), this, SLOT(slotReadReceivedData()));
+
+	QDataStream out(&qData,QIODevice::ReadOnly);
+	out.setVersion(QDataStream::Qt_4_8);
+
+	quint16 nRes;
+	out >> nRes;
+
+	m_unUserID = nRes;
+
+	emit done();
+}
+
+//---------------------------------------------------------------------------
+
+void Client::readSocket(QByteArray & aData)	{
+	QDataStream in(&m_TcpSocket);
+	in.setVersion(QDataStream::Qt_4_8);
+
+	int nBytesAvailable = m_TcpSocket.bytesAvailable();
+
+	if (m_unPackageSize == 0) {
+		if (nBytesAvailable < sizeof(quint64))
+			return;
+		in >> m_unPackageSize;
+	}
+
+	if (nBytesAvailable < m_unPackageSize)
+		return;
+
+	aData = in.device()->readAll();
+}
+
+//---------------------------------------------------------------------------
+
+void Client::slotHostFound()	{
+	std::cout << "Host found, waiting for reply." << std::endl;
+}
+
+//---------------------------------------------------------------------------
+
+int Client::getUserID() const	{
+	return m_unUserID;
 }

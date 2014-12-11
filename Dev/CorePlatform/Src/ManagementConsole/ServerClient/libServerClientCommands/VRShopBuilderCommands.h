@@ -7,13 +7,13 @@ namespace VR	{
 	class ShopBuilderCommands	{
 	public:
 
-		enum OBJECT_NAME	{
+		enum ObjectName	{
 			PRODUCT = 0,
 			PRODUCT_DISPLAY,
 			GRID
 		};
 
-		static std::string getOperationType(OBJECT_NAME aenumOBJECT_NAME);
+		static std::string getOperationType(const ObjectName & aObjectName);
 	};
 }
 #endif //VR_SHOP_BUILDER_COMMANDS_H

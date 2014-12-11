@@ -13,7 +13,7 @@
 #include <QString>
 
 #include "BasicStringDefinitions.h"
-#include "VRBasicQTOperations.h"
+#include "VRBasicQtOperations.h"
 
 #include "VRDatabaseInterface.h"
 

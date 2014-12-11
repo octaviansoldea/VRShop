@@ -15,6 +15,8 @@
 
 #include <QFile>
 
+#include "VRClient.h"
+
 #include "VREmbeddedWidget_GUI.h"
 
 using namespace VR;
@@ -24,7 +26,15 @@ using namespace VR;
 int main(int argc, char * argv[])	{
 	QApplication app(argc, argv);
 
-	EmbeddedWidget_GUI embeddedWidget;
+	Client client;
+	client.tryToConnect();
+	int nUserID = client.getUserID();
+
+	if (nUserID == -1)	{
+		return 0;
+	}
+	
+	EmbeddedWidget_GUI embeddedWidget(&client);
 
 	//nSelection=1: run as a web plugin; default: run as a windows APPi
 	int nSelection=0;

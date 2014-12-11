@@ -16,7 +16,7 @@ DatabaseInterface AvatarManagerServer::m_DIAvatar(AvatarManagerServer::getDBPara
 
 //==============================================================================
 
-AvatarManagerServer::AvatarManagerServer()	{
+AvatarManagerServer::AvatarManagerServer(QObject * apParent) : QObject(apParent)	{
 }
 
 //------------------------------------------------------------------------------
@@ -82,21 +82,6 @@ list<string> AvatarManagerServer::getAvatarsDataFromDB()	{
 	return lststrResult;
 }
 
-//------------------------------------------------------------------------------
-
-void AvatarManagerServer::checkAvatarActivity()	{
-	long lTime = time(NULL) - 10;
-
-	string strSqlQueryDelete = "DELETE FROM Avatar WHERE (AvatarDateTime > 0) AND (AvatarDateTime < '" + 
-						tostr(lTime)
-						//m_pTimer->getCurrTimeInMiliSeconds()
-						+ "')"
-						;
-
-	DatabaseInterface *pDI = AvatarManagerServer::getDatabaseInterface();
-	pDI->executeAndGetResult(strSqlQueryDelete);
-}
-
 //====================================================================================================
 
 string AvatarManagerServer::getTableName()	{
@@ -132,4 +117,20 @@ void AvatarManagerServer::createAvatarDB() {
 
 DatabaseInterface * AvatarManagerServer::getDatabaseInterface() {
 	return(&m_DIAvatar);
+}
+
+//------------------------------------------------------------------------------
+
+void AvatarManagerServer::checkAvatarActivity()	{
+	long lTime = time(NULL) - 10;
+
+	string strSqlQueryDelete = "DELETE FROM Avatar WHERE (AvatarDateTime > 0) AND (AvatarDateTime < '" + 
+						tostr(lTime)
+						//m_pTimer->getCurrTimeInMiliSeconds()
+						+ "')"
+						;
+
+	DatabaseInterface *pDI = AvatarManagerServer::getDatabaseInterface();
+	pDI->executeAndGetResult(strSqlQueryDelete);
+
 }

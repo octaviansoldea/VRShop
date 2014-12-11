@@ -5,9 +5,11 @@
 #include <QString>
 
 namespace VR	{
+	class Client;
+
 	class EmbeddedWidget {
 	public:
-		EmbeddedWidget(QWidget * apWidgetCentralContent);
+		EmbeddedWidget(QWidget * apWidgetCentralContent, Client * apClient);
 		~EmbeddedWidget();
 
 		void home();
@@ -20,6 +22,8 @@ namespace VR	{
 		QWidget * m_pWidgetCentralContent;
 
 		QMainWindow * m_pWidget;
+
+		Client * m_pClient;
 	};
 }
 #endif //VR_EMBEDDED_WIDGET_H

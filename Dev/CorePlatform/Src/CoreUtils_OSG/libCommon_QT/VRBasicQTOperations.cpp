@@ -1,8 +1,9 @@
 #include <QMessageBox>
 #include <QFile>
 #include <QFileDialog>
+#include <QByteArray>
 
-#include "VRBasicQTOperations.h"
+#include "VRBasicQtOperations.h"
 
 using namespace VR;
 using namespace std;
@@ -89,3 +90,48 @@ string BasicQtOperations::openSaveDialog(const char * apchDBName,QWidget * apPar
 }
 
 //-----------------------------------------------------------------------------
+
+bool BasicQtOperations::fileTransferRead(const std::string & astrFileName, QByteArray & aFileData)	{
+	QDataStream out(&aFileData, QIODevice::WriteOnly);
+	out.setVersion(QDataStream::Qt_4_8);
+	out.setFloatingPointPrecision(QDataStream::SinglePrecision);
+
+	QFile fileScene(astrFileName.c_str());
+	if(!fileScene.open(QIODevice::ReadOnly))	{
+		return 0;
+	}
+	QByteArray bytes = fileScene.readAll();
+	fileScene.close();
+
+	out << quint64(0) << bytes;	//Size of the package
+
+	bool bRes = out.device()->seek(0);
+	quint64 unTotalToWrite = (quint64)(aFileData.size());
+	out << (quint64)(unTotalToWrite - sizeof(quint64));
+
+	return true;
+}
+
+//-----------------------------------------------------------------------------
+
+bool BasicQtOperations::fileTransferWrite(const std::string & astrFileName, QByteArray & aFileData)	{
+	QDataStream out(&aFileData,QIODevice::ReadOnly);
+	out.setVersion(QDataStream::Qt_4_8);
+
+	quint32 nFileSize;
+	out >> nFileSize;	//QByteArray always starts with a "quint32" additional value
+
+	QFile fileScene(astrFileName.c_str());
+
+	if(!(fileScene.open(QIODevice::Append)))	{
+		return false;
+	} else {
+		QByteArray read = out.device()->readAll();
+
+		int nSize = read.size();
+
+		fileScene.write(read);
+		fileScene.close();
+	}
+	return true;
+}

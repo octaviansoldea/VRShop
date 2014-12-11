@@ -8,9 +8,6 @@ HIGHLY DESIRABLE TO BE SOLVED BUGS
 
 Initial position of camera / Synchronization of avatar moves
 
-Upper limit of users from server
-
-
 ============================================================	
 
 NON-CRITICAL BUGS
@@ -52,6 +49,7 @@ Orientation of "others" avatars ->?-> direction of lights to "others" avatars
 
 Data mining
 
+By users, differentiate between "prospective" and other users - prospectives have priority
 
 //======================================================================
 

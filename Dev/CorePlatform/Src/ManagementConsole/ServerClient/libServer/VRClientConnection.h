@@ -17,7 +17,6 @@ namespace VR	{
 		void slotReadClient();
 
 	private:
-		bool m_bIsFirstPackage;
 		quint64 m_unPackageSize;
 	};
 }

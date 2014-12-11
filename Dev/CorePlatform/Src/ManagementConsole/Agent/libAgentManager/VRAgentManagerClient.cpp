@@ -34,7 +34,7 @@ const char* AgentManagerClient::className() const	{
 //------------------------------------------------------------------------------
 
 void AgentManagerClient::requestToServer(
-	const ServerClientCommands::OPERATION_TYPE & aenumOperationType, 
+	const ServerClientCommands::OperationType & aenumOperationType, 
 	AbstractManagerClientParams * apAbstractManagerClientParams
 )	{
 

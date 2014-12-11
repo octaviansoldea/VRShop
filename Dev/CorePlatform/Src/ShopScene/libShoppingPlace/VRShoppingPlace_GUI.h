@@ -22,7 +22,7 @@ namespace VR	{
 	class ShoppingPlace_GUI : public QMainWindow, public Ui::MainWindow	{
 		Q_OBJECT
 	public:
-		ShoppingPlace_GUI(std::string & astrFileName, std::string & astrAvatarName);
+		ShoppingPlace_GUI(Client * apClient, std::string & astrFileName, std::string & astrAvatarName);
 		~ShoppingPlace_GUI();
 
 	private:

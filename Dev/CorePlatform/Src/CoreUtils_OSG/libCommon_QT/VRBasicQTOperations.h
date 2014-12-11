@@ -5,6 +5,8 @@
 #include <string>
 #include <QMessageBox>
 
+class QByteArray;
+
 namespace VR	{
 	class BasicQtOperations	{
 	public:
@@ -25,6 +27,9 @@ namespace VR	{
 
 		static bool QtFileOperation(std::string & astrFileName, FILE_OPERATION aenumFileOperation);
 		static std::string openSaveDialog(const char * apchDBName, QWidget * apParent=0, bool abOpen=true);
+
+		static bool fileTransferRead(const std::string & astrFileName, QByteArray & aFileData);
+		static bool fileTransferWrite(const std::string & astrFileName, QByteArray & aFileData);
 	};
 }
 

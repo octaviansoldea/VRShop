@@ -35,7 +35,7 @@ const char* CashierManagerClient::className() const	{
 //------------------------------------------------------------------------------
 
 void CashierManagerClient::requestToServer(
-const ServerClientCommands::OPERATION_TYPE & aenumOperationType, 
+const ServerClientCommands::OperationType & aenumOperationType, 
 AbstractManagerClientParams * apAbstractManagerClientParams)	{
 
 	CashierManagerClientParams * pParams = (CashierManagerClientParams*)apAbstractManagerClientParams;

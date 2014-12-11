@@ -39,11 +39,13 @@ using namespace std;
 
 //----------------------------------------------------------------------
 
-ShoppingPlace_GUI::ShoppingPlace_GUI(string & astrFileName, string & astrAvatarName)	{	
+ShoppingPlace_GUI::ShoppingPlace_GUI(Client * apClient, string & astrFileName, string & astrAvatarName)	{	
 	setupUi(this);
 	setWindowTitle("Shop Client");
 
-	m_pClient = new Client;
+	m_pClient = apClient;
+			//new Client;
+
 	connect(m_pClient,SIGNAL(done()),this,SLOT(slotClientReceiveData()));
 
 	m_pShoppingPlace = new ShoppingPlace(
@@ -117,7 +119,7 @@ ShoppingPlace_GUI::~ShoppingPlace_GUI()	{
 	delete m_pCashierClient;
 	delete m_pShoppingPlace;
 
-	delete m_pClient;
+//	delete m_pClient;
 }
 
 //=========================================================================================

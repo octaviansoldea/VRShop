@@ -1,17 +1,7 @@
-#include <iostream>
-
 #include <QDataStream>
 #include <QTcpSocket>
-#include <QHostAddress>
 
 #include "VRServerClientCommands.h"
-
-#include <QList>
-
-#include <sstream>
-#include <string>
-
-#include <QFile>
 
 #include "VRDatabaseNetworkManager.h"
 
@@ -22,7 +12,7 @@ using namespace std;
 
 //----------------------------------------------------------------------
 
-ClientConnection::ClientConnection(QObject *parent) : QTcpSocket(parent), m_bIsFirstPackage(true)	{
+ClientConnection::ClientConnection(QObject *parent) : QTcpSocket(parent)	{
 	connect(this, SIGNAL(readyRead()), this, SLOT(slotReadClient()));
 	connect(this, SIGNAL(disconnected()), this, SLOT(deleteLater()));
 
@@ -64,7 +54,7 @@ void ClientConnection::slotReadClient()	{
 	out << (quint64)(unTotalToWrite - sizeof(quint64));
 
 	unWritten = this->write(output);
-	this->waitForBytesWritten();
+//	this->waitForBytesWritten();
 }
 
 //----------------------------------------------------------------------

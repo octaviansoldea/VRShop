@@ -8,8 +8,7 @@ IF(Qt5_FOUND)
 #    ${Qt5Core_INCLUDE_DIRS}
 #    ${Qt5Gui_INCLUDE_DIRS}
     ${Qt5Widgets_INCLUDE_DIRS}
-#    ${Qt5Network_INCLUDE_DIRS}
-#	${Qt5Sql_INCLUDE_DIRS}
+    ${Qt5Network_INCLUDE_DIRS}
   )
 ELSE(Qt5_FOUND)
   IF(QT_USE_FILE)
@@ -29,7 +28,6 @@ ENDIF(Qt5_FOUND)
 
 INCLUDE_DIRECTORIES(
 	${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libServer
-#	${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libClient
 	${CMAKE_SOURCE_DIR}/ManagementConsole/DatabaseNetworkManager/libDatabaseNetworkManager
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgentManager
 	${CMAKE_SOURCE_DIR}/Props/Avatar/libAvatar
@@ -40,7 +38,6 @@ INCLUDE_DIRECTORIES(
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_QT
 
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgent
-#	${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgent/View
 	${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libServerClientCommands
 	${CMAKE_SOURCE_DIR}/Props/Avatar/libAvatarManagerServer
 	${CMAKE_BINARY_DIR}/Props/Avatar/libAvatarManagerServer
@@ -56,7 +53,6 @@ ADD_EXECUTABLE(Test_libServer
 SET(LIBS_COMMON
 	libAvatar
 	libServer
-	libClient
 	libDatabase
 	libDatabaseNetworkManager
 	libAgentManager

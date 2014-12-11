@@ -6,6 +6,8 @@
 #include "VRPicker.h"
 #include "VRGrid.h"
 
+#include <QString>
+
 #include <osgDB/ReadFile>
 
 #include "Model2D.h"
@@ -26,9 +28,13 @@ void main_Model2D(ref_ptr<Group> pScene)	{
 //----------------------------------------------------------------------
 
 void main_Model3D(ref_ptr<Group> pScene)	{
+	std::string file =
+		"http://cdn.rawgit.com/octaviansoldea/VRShop/master/Dev/CorePlatform/Resources/Textures/Banana.bmp";
+
 	ref_ptr<Model3D> pModel3D = new Model3D();
 	pModel3D->setColor(Vec4(0.0, 1.0, 0.0, 1.0));
 	pModel3D->setIsTargetPick(true);
+	pModel3D->setTexture(file.c_str());
 	pScene->addChild(pModel3D);
 }
 
@@ -49,7 +55,7 @@ OSGQT_GUI::OSGQT_GUI() {
 	m_pOSGQT_Widget->setSceneData(pScene);
 //	m_pOSGQT_Widget->setCameraManipulator(new VR::OSGCameraManipulator);
 	m_pOSGQT_Widget->addEventHandler(new VR::PickAndDragHandler);
-//	m_pOSGQT_Widget->setCameraManipulator(new osgGA::TrackballManipulator);
+	m_pOSGQT_Widget->setCameraManipulator(new osgGA::TrackballManipulator);
 
 	//Get geometry from the GUI for compatibility
 	m_pOSGQT_Widget->setGeometry(this->x(), this->y(), this->width(), this->height());

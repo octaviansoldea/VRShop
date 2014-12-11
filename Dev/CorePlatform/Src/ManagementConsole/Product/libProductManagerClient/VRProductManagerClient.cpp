@@ -43,7 +43,7 @@ ProductShopClient * ProductManagerClient::getProduct()	{
 //-----------------------------------------------------------------------------
 
 void ProductManagerClient::requestToServer(
-	const ServerClientCommands::OPERATION_TYPE & aenumOperationType, 
+	const ServerClientCommands::OperationType & aenumOperationType, 
 	AbstractManagerClientParams * apAbstractManagerClientParams
 )	{
 

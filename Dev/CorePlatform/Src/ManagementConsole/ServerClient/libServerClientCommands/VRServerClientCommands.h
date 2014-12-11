@@ -5,7 +5,7 @@ namespace VR	{
 	class ServerClientCommands	{
 	public:
 
-		enum OPERATION_TYPE	{
+		enum OperationType	{
 			NEW_USER_REQUEST = 0,
 			AVATAR_REGISTER,
 			AVATAR_UPDATE,
@@ -25,7 +25,7 @@ namespace VR	{
 			USER_CONFIRMS_PURCHASE
 		};
 
-		enum OPERATION_RESULT	{
+		enum OperationResult	{
 			FAILED = 0,
 			PASSED,
 			AUTHENTICATION_FAILED

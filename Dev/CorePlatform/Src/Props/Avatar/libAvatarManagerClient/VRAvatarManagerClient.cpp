@@ -57,7 +57,7 @@ const char* AvatarManagerClient::className() const	{
 //------------------------------------------------------------------------------
 
 void AvatarManagerClient::requestToServer(
-const ServerClientCommands::OPERATION_TYPE & aenumOperationType, 
+const ServerClientCommands::OperationType & aenumOperationType, 
 AbstractManagerClientParams * apAbstractManagerClientParams)	{
 
 	AvatarManagerClientParams * pParams = (AvatarManagerClientParams*)apAbstractManagerClientParams;

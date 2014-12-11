@@ -61,7 +61,8 @@ m_strAvatarName(astrAvatarName)	{
 	m_pScene = new Scene();
 
 	//Reuse of textures => memory optimization taken from "OSG Cookbook"
-	osgDB::Registry::instance()->setReadFileCallback(new VR::ReadAndSaveFileCallback);
+	osgDB::Registry::instance()->setReadFileCallback(new VR::ReadAndSaveFileCallback);	//To optimize texture loading
+	osgDB::Registry::instance()->setReadFileCallback(new VR::ReadAndSaveNodeCallback);	//To optimize avatar loading
 	osgDB::Registry::instance()->getOrCreateSharedStateManager();
 	osgDB::SharedStateManager* ssm = osgDB::Registry::instance()->getSharedStateManager();
 	if(ssm) {
@@ -106,9 +107,12 @@ m_strAvatarName(astrAvatarName)	{
 	//Avatar
 	AvatarParams avatarParams;
 	avatarParams.m_pKeyboardMouseManipulatorShopClient = pKeyboardMouseManipulatorShopClient;
-	avatarParams.m_strAvatarFile = //"../../../Resources/Models3D/avatarOut.osg";
-		"C:/Projekti/VRShop/Dev/CorePlatform/Resources/Models3D/avatarOut.osg";
-		//"D:/Octavian/Companies/VirtualShop/GitHub/VRShop/Dev/CorePlatform/Resources/Models3D/avatarOut.osg";
+	avatarParams.m_strAvatarFile = 
+//		"../../../Resources/Models3D/avatarOut.osg";
+//		"C:/Projekti/VRShop/Dev/CorePlatform/Resources/Models3D/avatarOut.osg";
+//		"D:/Octavian/Companies/VirtualShop/GitHub/VRShop/Dev/CorePlatform/Resources/Models3D/avatarOut.osg";
+		"http://cdn.rawgit.com/octaviansoldea/VRShop/master/Dev/CorePlatform/Resources/Models3D/avatarOut.osg";
+	
 	avatarParams.m_strAvatarName = m_strAvatarName;
 	avatarParams.m_mtrxAvatarMatrix = osg::Matrix(
 		1,0,0,0,

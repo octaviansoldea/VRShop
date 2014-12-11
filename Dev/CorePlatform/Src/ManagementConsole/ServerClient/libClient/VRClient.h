@@ -11,34 +11,44 @@ namespace VR	{
 		Q_OBJECT
 
 	public:
-		Client(QObject *apParent=0);		
+		Client(QObject *apParent=0);
+		~Client();
 
 		void sendRequest(QByteArray & aarrRequest);
 		QTcpSocket & getTcpSocket();
 
 		QByteArray getTransmittedData();
 
+		void tryToConnect();
+
+		int getUserID() const;
+
 	private:
+
 		QTcpSocket m_TcpSocket;
 
-		bool m_bIsFirstPackage;
 		quint64 m_unPackageSize;
 
 		QByteArray m_TransmitData;
+
+		unsigned int m_unUserID;
 
 	signals:
 		void done();
 
 	private slots:
+		void slotHostFound();
+		void slotIsConnectionApproved();
 		void slotReadReceivedData();
 		void slotError(QAbstractSocket::SocketError socketError);
 		void slotConnected();
 		void slotDisconnected();
 
 	public slots:
-		void slotNewUserRequest();
-		void slotTryToConnect();
 		void close();
+
+	private:
+		void readSocket(QByteArray & aData);
 	};
 }
 #endif //VR_CLIENT_H

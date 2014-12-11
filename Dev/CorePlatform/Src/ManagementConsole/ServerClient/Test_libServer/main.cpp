@@ -32,5 +32,11 @@ int main(int argc, char * argv[])	{
 	UserAccountManager::createUserAccountDB();
 	AvatarManagerServer::createAvatarDB();
 
-	return app.exec();
+	QTimer timer;
+	QObject::connect(&timer, &QTimer::timeout, &AvatarManagerServer::checkAvatarActivity);
+	timer.start(1000);
+
+	int nRes = app.exec();
+
+	return nRes;
 }

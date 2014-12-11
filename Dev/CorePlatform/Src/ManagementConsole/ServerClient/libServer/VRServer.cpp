@@ -1,9 +1,9 @@
-#include <QMessageBox>
+#include "VRServerClientCommands.h"
+
+#include "VRBasicQtOperations.h"
 
 #include <iostream>
 #include <string>
-
-#include "VRAvatarManagerServer.h"
 
 #include "VRClientConnection.h"
 #include "VRServer.h"
@@ -14,78 +14,134 @@ using namespace std;
 //----------------------------------------------------------------------
 
 Server::Server(QObject *parent,int anConnMax) : QTcpServer(parent), m_nMaxNoOfConnections(anConnMax)	{
-	m_nNoOfConnections = 0;
+	setMaxPendingConnections(1000);	//Default value is 30
 
-	connect(&m_Timer, SIGNAL(timeout()), this, SLOT(slotCleanAvatarDB()));
-	m_Timer.start(1000);
-}
-
-//=====================================================================
-
-void Server::incomingConnection(qintptr handle)	{
-	//Set an upper limit of users in the shop
-	if (m_nNoOfConnections >= m_nMaxNoOfConnections)	{
-		return;
-	}
-
-	ClientConnection *pSocket = new ClientConnection(this);
-	pSocket->setSocketDescriptor(handle);	//The object is deleted automatically when the connection is terminated.
-
-	connect(pSocket, SIGNAL(disconnected()), this, SLOT(slotDisconnected()));
-
-	if (pSocket->state() == QAbstractSocket::ConnectedState)
-		m_nNoOfConnections++;
-
-	cout << "Server: accepted incoming connection @ " << pSocket->localAddress().toString().toStdString() 
-		<< ": SocketNo: " << handle 
-		<< ": Connections: " << getNoOfConnections() << endl;
+	connect(this, SIGNAL(newConnection()), this, SLOT(slotNewConnection()));
 }
 
 //----------------------------------------------------------------------
 
-bool Server::init()	{
-	bool bRes=true;
+Server::~Server()	{
+	m_Clients.clear();
+	close();
+}
 
-	string strServerIP = QHostAddress(QHostAddress::LocalHost).toString().toStdString();
+//=====================================================================
+
+bool Server::init()	{
+	QHostAddress hostServerIP = QHostAddress(QHostAddress::LocalHost);
 	int nPort = 20000;
-	
-	if (!listen(QHostAddress(strServerIP.c_str()), nPort)) {	//server listens for incoming conenctions
-		QMessageBox msg;
-		msg.setText(QString("Unable to start server.\n\n%1").arg(errorString()));
-		msg.setStandardButtons(QMessageBox::Ok);
-		msg.setWindowTitle("Warning window");
-		int nRes = msg.exec();
+
+	bool bRes = listen(hostServerIP, nPort);
+		
+	if (bRes == false) {	//server listens for incoming conenctions
+		QString qstrMsg = QString("Unable to start server.\n\n%1").arg(errorString());
+		BasicQtOperations::printWarning(qstrMsg);
 
 		close();
-		return(false);
 	}
 	return bRes;
 }
 
 //----------------------------------------------------------------------
 
+void Server::incomingConnection(qintptr handle)	{
+	ClientConnection *pSocket = new ClientConnection(this);
+	pSocket->setSocketDescriptor(handle);	//The object is deleted automatically when the connection is terminated.
+
+	if (!pSocket)	{
+		return;
+	}
+
+	//Checks if the incomingConnection can be accepted
+	if (clientCount() >= m_nMaxNoOfConnections)	{
+		/*
+			FIRST CHECK A PREFERENCE STATUS OF THE CLIENT
+				- prospective clients are always granted an access
+				- first time users are also preferenced
+		*/
+
+		//If not approved, terminate pSocket
+		pSocket = NULL;
+		delete pSocket;
+		return;
+	}
+
+	if (pSocket->state() == QAbstractSocket::ConnectedState)	{
+		addConnection(pSocket, handle);
+		connect(pSocket, SIGNAL(disconnected()), this, SLOT(slotDisconnected()));
+	}
+}
+
+//----------------------------------------------------------------------
+
+void Server::addConnection(ClientConnection* apDevice, quint64 anClientID)	{
+	m_Clients[anClientID] = apDevice;
+
+	QTcpSocket * pSocket = (QTcpSocket *)apDevice;
+
+	QByteArray data;
+	QDataStream stream(&data, QIODevice::WriteOnly);
+	stream.setVersion(QDataStream::Qt_4_8);
+
+	string strSocket = pSocket->localAddress().toString().toStdString();
+
+	cout << "Server: accepted incoming connection @ " << strSocket
+		<< ": SocketNo: " << anClientID 
+		<< ": Connections: " << clientCount() << endl;
+
+	stream << quint64(0) << quint16(anClientID);
+	stream.device()->seek(0);
+	stream << (quint64)(data.size() - sizeof(quint64));
+	pSocket->write(data);
+}
+
+//----------------------------------------------------------------------
+
+void Server::removeConnection(ClientConnection* apDevice, quint64 anClientID)	{
+	if (apDevice)	{
+		QTcpSocket * pSocket = qobject_cast<QTcpSocket*>(apDevice);
+		if (pSocket)
+			pSocket->disconnectFromHost();
+
+		apDevice->close();
+		apDevice->deleteLater();
+	}
+	m_Clients.remove(anClientID);
+}
+
+//----------------------------------------------------------------------
+
 void Server::slotDisconnected()	{
 	std::cout << "server: disconnected." << std::endl;
-	m_nNoOfConnections--;
 
-	slotCleanAvatarDB();
+	ClientConnection *pClient = qobject_cast<ClientConnection *>(sender());
+	int nSocketID = pClient->socketDescriptor();
+
+	removeConnection(pClient,nSocketID);
 }
 
 //----------------------------------------------------------------------
 
-void Server::setMaxNoOfConnections(int anConnMax)	{
-	m_nMaxNoOfConnections = anConnMax;
+int Server::clientCount() const	{
+	return m_Clients.count();
 }
 
 //----------------------------------------------------------------------
 
-int Server::getNoOfConnections() const	{
-	return m_nNoOfConnections;
+QList<quint64> Server::clients() const	{
+	return m_Clients.keys();
 }
 
 //----------------------------------------------------------------------
 
-void Server::slotCleanAvatarDB()	{
-	AvatarManagerServer ams;
-	ams.checkAvatarActivity();
+ClientConnection * Server::getClient(quint64 clientID) const	{
+	ClientConnection * pSocket = m_Clients.value(clientID);
+
+	return pSocket;
+}
+
+//----------------------------------------------------------------------
+
+void Server::slotNewConnection()	{
 }

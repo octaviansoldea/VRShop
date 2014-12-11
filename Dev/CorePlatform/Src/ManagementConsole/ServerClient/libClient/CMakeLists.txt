@@ -9,7 +9,6 @@ IF(Qt5_FOUND)
     ${Qt5Core_INCLUDE_DIRS}
     ${Qt5Gui_INCLUDE_DIRS}
     ${Qt5Widgets_INCLUDE_DIRS}
-#    ${Qt5OpenGL_INCLUDE_DIRS}
     ${Qt5Network_INCLUDE_DIRS}	
   )
 ELSE(Qt5_FOUND)
@@ -33,6 +32,7 @@ ENDIF(Qt5_FOUND)
 INCLUDE_DIRECTORIES(
 	${OPENSCENEGRAPH_INCLUDE_DIRS}
 	${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libServerClientCommands
+	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_QT
 )
 
 #MOC according to the Qt version

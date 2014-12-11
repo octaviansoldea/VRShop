@@ -8,11 +8,12 @@
 
 namespace VR	{
 	class EmbeddedWidget;
+	class Client;
 
 	class EmbeddedWidget_GUI : public QMainWindow, public Ui::MainCentralWindow {
 		Q_OBJECT
 	public:
-		EmbeddedWidget_GUI();
+		EmbeddedWidget_GUI(QObject * apParent=0, Client * apClient=0);
 		~EmbeddedWidget_GUI();
 
 	private slots:
@@ -28,6 +29,7 @@ namespace VR	{
 
 	private:
 		EmbeddedWidget * m_pEmbeddedWidget;
+		Client * m_pClient;
 	};
 }
 #endif //VR_EMBEDDED_WIDGET_GUI_H

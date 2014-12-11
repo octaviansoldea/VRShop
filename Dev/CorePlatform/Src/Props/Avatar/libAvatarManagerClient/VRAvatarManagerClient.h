@@ -42,7 +42,7 @@ namespace VR {
 
 
 		virtual void requestToServer(
-			const ServerClientCommands::OPERATION_TYPE & aenumOperationType, 
+			const ServerClientCommands::OperationType & aenumOperationType, 
 			AbstractManagerClientParams * apAbstractManagerClientParams=0
 		);
 

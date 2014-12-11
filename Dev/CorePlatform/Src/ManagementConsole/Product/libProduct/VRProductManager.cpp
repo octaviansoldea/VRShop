@@ -3,7 +3,7 @@
 #include <QString>
 
 #include <QObject>
-#include "VRBasicQTOperations.h"
+#include "VRBasicQtOperations.h"
 
 #include <QImageReader>
 
@@ -413,7 +413,7 @@ DatabaseInterface * ProductManager::getDatabaseInterface() {
 
 //------------------------------------------------------------------------------
 
-void ProductManager::databaseRequest(ProductShopEditor * apProductShopEditor, OPERATION_TYPE aenumOperationType)	{
+void ProductManager::databaseRequest(ProductShopEditor * apProductShopEditor, ProductManager::OperationType aenumOperationType)	{
 	string strSqlQuery = "";
 
 	ProductShopEditorParams productParams;
@@ -562,7 +562,7 @@ void ProductManager::slotUpdateCombo()	{
 
 //----------------------------------------------------------------------------
 
-void ProductManager::setActiveWidget(const OPERATION_TYPE & aenumOperationType)	{
+void ProductManager::setActiveWidget(const OperationType & aenumOperationType)	{
 	switch (aenumOperationType)	{
 	case NEW_PRODUCT_INSERT:
 	case MODIFY_PRODUCT:
@@ -637,7 +637,7 @@ ProductShopEditorParams ProductManager::initProduct()	{
 
 //----------------------------------------------------------------------------
 
-list<string> ProductManager::requestData(const OPERATION_TYPE & aenumOperationType, vector<string> & avecstrProductMgrParams)	{
+list<string> ProductManager::requestData(const ProductManager::OperationType & aenumOperationType, vector<string> & avecstrProductMgrParams)	{
 	string strSqlQuery;
 	vector<string>::iterator it = avecstrProductMgrParams.begin();
 

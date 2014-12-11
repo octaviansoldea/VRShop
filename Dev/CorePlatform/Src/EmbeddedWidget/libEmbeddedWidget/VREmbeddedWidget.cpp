@@ -5,6 +5,8 @@
 
 #include "BasicStringDefinitions.h"
 
+#include "VRClient.h"
+
 #include "VRShoppingPlace_GUI.h"
 //#include "VRShopBuilder_GUI.h"
 
@@ -13,10 +15,11 @@
 using namespace std;
 using namespace VR;
 
-EmbeddedWidget::EmbeddedWidget(QWidget * apWidgetCentralContent)	{
+EmbeddedWidget::EmbeddedWidget(QWidget * apWidgetCentralContent, Client * apClient)	{
 	m_pWidgetCentralContent = apWidgetCentralContent;
 	m_pWidget = 0;
 
+	m_pClient = apClient;
 }
 
 //----------------------------------------------------------------------
@@ -45,7 +48,7 @@ void EmbeddedWidget::selectShop(const QString & aqstrShopName)	{
 		m_pWidget = 0;
 	}
 
-	string strClientName = tostr(time(NULL));
+	string strClientName = tostr(m_pClient->getUserID());
 	string strDBFileName = 
 		//"../../../Databases/" 
 //		"C:/Projekti/VRShop/SampleScenes/" + aqstrShopName.toStdString() + ".db";
@@ -54,7 +57,7 @@ void EmbeddedWidget::selectShop(const QString & aqstrShopName)	{
 
 	QRect qrectCentralContent = m_pWidgetCentralContent->geometry();
 
-	m_pWidget = new ShoppingPlace_GUI(strDBFileName,strClientName);
+	m_pWidget = new ShoppingPlace_GUI(m_pClient, strDBFileName,strClientName);
 	m_pWidget->setParent(m_pWidgetCentralContent);
 	m_pWidget->setStyleSheet("position: absolute; width: 100%; padding: 1px;");
 	m_pWidget->setGeometry(0,0,qrectCentralContent.width(),qrectCentralContent.height());

@@ -17,17 +17,16 @@ namespace VR {
 	class DatabaseInterface;
 	struct DatabaseInterfaceParams;
 
-	class AvatarManagerServer	{	//: public QObject	{
+	class AvatarManagerServer : public QObject	{
 //		Q_OBJECT
 	public:
-		AvatarManagerServer();
+		AvatarManagerServer(QObject * apParent=0);
 
 		const char* className() const;
 
 		void registerAvatar(std::string & astrAvatarName, std::string & astrAvatarMatrix);
 		std::list<std::string> getAvatarsDataFromDB();
 		void updateAvatarData(std::string & astrAvatarName, std::string & astrAvatarMatrix);
-		void checkAvatarActivity();
 
 	public:
 		static DatabaseInterfaceParams getDBParams();
@@ -43,6 +42,9 @@ namespace VR {
 		static DatabaseInterface m_DIAvatar;
 
 		QTimer m_QTimerCheckAvatars;
+
+	public:
+		static void checkAvatarActivity();
 	};
 }
 #endif //VR_AVATAR_MANAGER_SERVER_H

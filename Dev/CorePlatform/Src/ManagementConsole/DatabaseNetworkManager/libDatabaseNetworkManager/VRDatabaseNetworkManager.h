@@ -1,9 +1,6 @@
 #ifndef VR_DATABASE_NETWORK_MANAGER_H
 #define VR_DATABASE_NETWORK_MANAGER_H
 
-#include <list>
-#include <string>
-
 #include <QByteArray>
 
 namespace VR	{

@@ -3,6 +3,8 @@
 #include "VRQLabel.h"
 #include <string>
 
+#include "VRClient.h"
+
 #include "VRShoppingPlace_GUI.h"
 //#include "VRShopBuilder_GUI.h"
 
@@ -14,8 +16,10 @@ using namespace Ui;
 using namespace std;
 using namespace VR;
 
-EmbeddedWidget_GUI::EmbeddedWidget_GUI() {
+EmbeddedWidget_GUI::EmbeddedWidget_GUI(QObject * apParent, Client * apClient)	{
 	setupUi(this);
+
+	m_pClient = apClient;
 
 	connect(m_pLabelHome,SIGNAL(hovered(bool)),this,SLOT(slotLinkHovered(bool)));
 	connect(m_pLabelAbout,SIGNAL(hovered(bool)),this,SLOT(slotLinkHovered(bool)));
@@ -32,7 +36,7 @@ EmbeddedWidget_GUI::EmbeddedWidget_GUI() {
 
 	connect(m_pComboBoxShops,SIGNAL(currentIndexChanged(const QString &)),this,SLOT(slotCurrentIndexChanged(const QString &)));
 	
-	m_pEmbeddedWidget = new EmbeddedWidget(m_pWidgetCentralContent);
+	m_pEmbeddedWidget = new EmbeddedWidget(m_pWidgetCentralContent, m_pClient);
 }
 
 //----------------------------------------------------------------------

@@ -34,7 +34,7 @@ ENDIF()
 
 
 SET(SRCS
-	VRBasicQTOperations.h VRBasicQTOperations.cpp
+	VRBasicQtOperations.h VRBasicQtOperations.cpp
 	VRQFrame.h VRQFrame.cpp
 	VRQLabel.h VRQLabel.cpp
 )

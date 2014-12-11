@@ -5,7 +5,7 @@
 #include "BasicStringDefinitions.h"
 #include "FileOperations.h"
 #include "VRShopBuilderCommands.h"
-#include "VRBasicQTOperations.h"
+#include "VRBasicQtOperations.h"
 
 #include <QString>
 #include <QVariant>

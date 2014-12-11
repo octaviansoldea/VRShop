@@ -43,7 +43,7 @@ namespace VR	{
 		void preparedObjectData(std::vector<std::string> &avecItems, std::string & astrParent);
 		void initFromSQLData(std::vector<std::string> & avecstrSQLData);
 
-		enum OPERATION_TYPE	{
+		enum OperationType	{
 			INSERT_PRODUCT = 0,
 			MODIFY_PRODUCT,
 			PRODUCT_FROM_DB,
@@ -55,7 +55,7 @@ namespace VR	{
 			FILL_PRODUCT_CATEGORY
 		};
 
-		void setActiveWidget(const OPERATION_TYPE & aenumSetActiveWidget);
+		void setActiveWidget(const OperationType & aenumSetActiveWidget);
 
 	private:
 		osg::ref_ptr<osg::Group> m_pgrpProductsRepresentation;
@@ -67,7 +67,7 @@ namespace VR	{
 		std::vector<std::pair<std::string,std::string>> getDBElements();
 		void createProductDB();
 
-		void databaseRequest(ProductShopEditor * apProductShopEditor, OPERATION_TYPE aenumOperationType);
+		void databaseRequest(ProductShopEditor * apProductShopEditor, ProductManager::OperationType aenumOperationType);
 		ProductShopEditorParams initProduct();
 
 	private:
@@ -87,7 +87,7 @@ namespace VR	{
 
 	public:
 		std::list<std::string> requestData(
-			const OPERATION_TYPE & aenumOperationType, 
+			const ProductManager::OperationType & aenumOperationType, 
 			std::vector<std::string> & avecstrProductMgrParams
 		);
 

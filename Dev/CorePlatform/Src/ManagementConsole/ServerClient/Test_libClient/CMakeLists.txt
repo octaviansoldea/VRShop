@@ -31,6 +31,7 @@ SET(src
 )
 
 INCLUDE_DIRECTORIES(
+	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_QT
 	${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libClient
 	${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libServerClientCommands
 )
@@ -39,6 +40,7 @@ ADD_EXECUTABLE(Test_libClient
 	main.cpp)
 
 SET(LIBS_COMMON
+	libCommon_QT
 	libClient
 	libServerClientCommands
 )

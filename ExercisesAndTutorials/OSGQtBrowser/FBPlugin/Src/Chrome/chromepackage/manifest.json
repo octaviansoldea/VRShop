@@ -1,0 +1,9 @@
+{
+  "name": "RedBall",
+  "version": "${FBSTRING_PLUGIN_VERSION}",
+  "description": "RedBall plugin",
+
+	"plugins": [
+    { "path": "npRedBall.dll", "public": true }
+  ]
+}

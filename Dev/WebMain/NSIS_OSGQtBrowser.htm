@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
+<head>
+    <title>ShopBuilder</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="ShopBuilder :: cross-platform 3D toolkit for designing a shop." />
+    <link rel="icon" type="image/bmp" href="../WebResources/Banana.bmp" />
+    <link href="C:/Projekti/VRShop/Website/Resources/CSS/OSGQtBrowser.css" rel="stylesheet"
+        type="text/css" />
+
+	<script type="text/javascript">
+        function osgqtbrowser() {
+            return document.getElementById('osgqtbrowser');
+        }
+        function nsis() {
+            return document.getElementById('nsis');
+        }
+
+        function addEvent(obj, name, func) {
+            if (obj.attachEvent) {
+                obj.attachEvent("on" + name, func);
+            } else {
+                obj.addEventListener(name, func, false);
+            }
+        }
+
+        function load() {
+            addEvent(osgqtbrowser(), 'test', function () {
+                alert("Received a test event from the osgqtbrowser.")
+            });
+            addEvent(nsis(), 'test', function () {
+                alert("Received a test event from the nsis.")
+            });
+        }
+        function pluginLoaded() {
+            alert("Plugin loaded!");
+        }
+    </script>
+</head>
+<body onload="load();">
+    <iframe id="instFile" src="http://127.0.0.1/Website/VRShop.exe" style="display: none;"></iframe>
+    <object id="nsis" type="application/x-nsis" width="0" height="0"></object>
+    <object id="osgqtbrowser" type="application/x-osgqtbrowser" width="800" height="800"></object>
+</body>
+</html>

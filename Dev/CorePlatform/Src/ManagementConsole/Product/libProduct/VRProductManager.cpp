@@ -26,11 +26,11 @@ using namespace VR;
 using namespace std;
 using namespace osg;
 
-DatabaseInterface ProductManager::m_DIProductEditor(ProductManager::getDBParams());
+//DatabaseInterface ProductManager::m_DIProductEditor(ProductManager::getDBParams());
 
 //-----------------------------------------------------------------------------
 
-ProductManager::ProductManager(QObject * apParent) : QObject(apParent) {
+ProductManager::ProductManager(QObject * apParent) : QObject(apParent), m_DIProductEditor(ProductManager::getDBParams()) {
 	m_pAddProduct_GUI = new AddProduct_GUI;
 	m_pAddProduct_GUI->setWindowFlags(Qt::FramelessWindowHint | Qt::Dialog);
 	m_pAddProduct_GUI->setParent(0);

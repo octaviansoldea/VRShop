@@ -7,6 +7,8 @@
 
 #include <osg/Group>
 
+#include "VRDatabaseInterface.h"
+
 #include <QObject>
 
 namespace VR	{
@@ -71,13 +73,13 @@ namespace VR	{
 		ProductShopEditorParams initProduct();
 
 	private:
-		static DatabaseInterface m_DIProductEditor;
+		DatabaseInterface m_DIProductEditor;
 
-		static DatabaseInterfaceParams getDBParams();
-		static std::string getTableName();
-		static std::string getDatabaseName();
+		DatabaseInterfaceParams getDBParams();
+		std::string getTableName();
+		std::string getDatabaseName();
 
-		static DatabaseInterface * getDatabaseInterface();
+		DatabaseInterface * getDatabaseInterface();
 
 	private slots:
 		void slotUpdateCombo();

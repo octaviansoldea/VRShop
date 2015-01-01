@@ -1,0 +1,9 @@
+{
+  "name": "NSIS",
+  "version": "${FBSTRING_PLUGIN_VERSION}",
+  "description": "NSIS Installer plugin",
+
+	"plugins": [
+    { "path": "npNSIS.dll", "public": true }
+  ]
+}

@@ -22,7 +22,7 @@ using namespace std;
 
 //----------------------------------------------------------------------
 
-Client::Client(QObject *apParent) : QObject(apParent), m_unUserID(-1),m_unPackageSize(0)	{	
+Client::Client(QObject *apParent) : QObject(apParent), m_nUserID(-1),m_unPackageSize(0)	{	
 }
 
 //----------------------------------------------------------------------
@@ -160,7 +160,7 @@ void Client::slotIsConnectionApproved()	{
 	quint16 nRes;
 	out >> nRes;
 
-	m_unUserID = nRes;
+	m_nUserID = nRes;
 
 	emit done();
 }
@@ -194,5 +194,5 @@ void Client::slotHostFound()	{
 //---------------------------------------------------------------------------
 
 int Client::getUserID() const	{
-	return m_unUserID;
+	return m_nUserID;
 }

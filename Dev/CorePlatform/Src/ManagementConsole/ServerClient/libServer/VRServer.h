@@ -10,7 +10,7 @@ namespace VR	{
 		Q_OBJECT
 
 	public:
-		Server(QObject *parent=0, const int anConnMax=1);
+		Server(QObject *parent=0, const int anConnMax=5);
 		~Server();
 
 		bool init();

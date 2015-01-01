@@ -31,7 +31,7 @@ namespace VR	{
 
 		QByteArray m_TransmitData;
 
-		unsigned int m_unUserID;
+		int m_nUserID;
 
 	signals:
 		void done();

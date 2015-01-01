@@ -3,7 +3,7 @@
 	<Description about="urn:mozilla:install-manifest">
 
 		<em:id>EMAIL_ADDRESS_HERE</em:id>
-		<em:name>OSGQtBrowser</em:name>
+		<em:name>NSIS</em:name>
 		<em:version>${FBSTRING_PLUGIN_VERSION}</em:version>
 		<!--<em:iconURL></em:iconURL>-->
 		<!--em:updateURL>http://MatejTavi.com/update.rdf</em:updateURL>
@@ -13,8 +13,8 @@
 		<em:localized>
 			<Description>
 				<em:locale>en-US</em:locale>
-				<em:name>OSGQtBrowser</em:name>
-				<em:description>OSGQtBrowser plugin</em:description>
+				<em:name>NSIS</em:name>
+				<em:description>NSIS Installer plugin</em:description>
 				<em:creator>VRShop</em:creator>
 				<em:homepageURL>http://MatejTavi.com</em:homepageURL>
 			</Description>

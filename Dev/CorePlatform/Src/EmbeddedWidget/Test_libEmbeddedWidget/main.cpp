@@ -37,7 +37,7 @@ int main(int argc, char * argv[])	{
 	EmbeddedWidget_GUI embeddedWidget(&client);
 
 	//nSelection=1: run as a web plugin; default: run as a windows APPi
-	int nSelection=0;
+	int nSelection=1;
 	switch(nSelection)	{
 	case 1:	{
 		embeddedWidget.setAttribute(Qt::WA_NativeWindow);
@@ -56,5 +56,6 @@ int main(int argc, char * argv[])	{
 	embeddedWidget.show();
 
 	int nRes = app.exec();
+
 	return nRes;
 }

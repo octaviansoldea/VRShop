@@ -17,34 +17,7 @@
 class OSGQtBrowserAPI : public FB::JSAPIAuto
 {
 public:
-    ////////////////////////////////////////////////////////////////////////////
-    /// @fn OSGQtBrowserAPI::OSGQtBrowserAPI(const OSGQtBrowserPtr& plugin, const FB::BrowserHostPtr host)
-    ///
-    /// @brief  Constructor for your JSAPI object.
-    ///         You should register your methods, properties, and events
-    ///         that should be accessible to Javascript from here.
-    ///
-    /// @see FB::JSAPIAuto::registerMethod
-    /// @see FB::JSAPIAuto::registerProperty
-    /// @see FB::JSAPIAuto::registerEvent
-    ////////////////////////////////////////////////////////////////////////////
-    OSGQtBrowserAPI(const OSGQtBrowserPtr& plugin, const FB::BrowserHostPtr& host) :
-        m_plugin(plugin), m_host(host)
-    {
-        registerMethod("echo",      make_method(this, &OSGQtBrowserAPI::echo));
-        registerMethod("testEvent", make_method(this, &OSGQtBrowserAPI::testEvent));
-        
-        // Read-write property
-        registerProperty("testString",
-                         make_property(this,
-                                       &OSGQtBrowserAPI::get_testString,
-                                       &OSGQtBrowserAPI::set_testString));
-        
-        // Read-only property
-        registerProperty("version",
-                         make_property(this,
-                                       &OSGQtBrowserAPI::get_version));
-    }
+    OSGQtBrowserAPI(const OSGQtBrowserPtr& plugin, const FB::BrowserHostPtr& host);
 
     ///////////////////////////////////////////////////////////////////////////////
     /// @fn OSGQtBrowserAPI::~OSGQtBrowserAPI()

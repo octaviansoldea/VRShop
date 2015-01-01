@@ -43,7 +43,8 @@ ShoppingPlace_GUI::ShoppingPlace_GUI(Client * apClient, string & astrFileName, s
 	setupUi(this);
 	setWindowTitle("Shop Client");
 
-	m_pClient = apClient;
+	m_pClient = 
+			apClient;
 			//new Client;
 
 	connect(m_pClient,SIGNAL(done()),this,SLOT(slotClientReceiveData()));
@@ -118,8 +119,6 @@ ShoppingPlace_GUI::~ShoppingPlace_GUI()	{
 	delete m_pCameraController;
 	delete m_pCashierClient;
 	delete m_pShoppingPlace;
-
-//	delete m_pClient;
 }
 
 //=========================================================================================

@@ -1,14 +1,6 @@
 #include <windows.h>
-
-#include <fstream>
-#include <iostream>
-
 #include <QApplication>
-#include <QMessageBox>
-#include <QHostAddress>
-
 #include <QString>
-
 #include "BasicStringDefinitions.h"
 
 #include "VRClient.h"
@@ -28,29 +20,33 @@ int main(int argc, char *argv[])	{
 
 	if (nUserID == -1)	{
 		return 0;
-
-	} else {
-		string strClientName = tostr(nUserID);
-
-		string strDBFileName = 
-			"../../../Databases/ShopDemo.db"
-			;
-
-		ShoppingPlace_GUI widget(&client, strDBFileName,string(strClientName));
-
-
-		//if (argc > 1)	{
-		//	widget.setAttribute(Qt::WA_NativeWindow);
-
-		//	QString qstrArg = app.arguments().at(1);
-
-		//	bool bOk;
-
-		//	SetParent((HWND)widget.winId(), (HWND)qstrArg.toULong(&bOk));
-		//}
-
-		widget.show();
-
-		return app.exec();
 	}
+	
+	string strClientName = tostr(nUserID);
+	string strDBFileName = 
+//		"../../../Databases/ShopDemo.db"
+		"C:/Projekti/VRShop/Dev/CorePlatform/Databases/ShopDemo.db"
+		;
+
+	ShoppingPlace_GUI widget(&client, strDBFileName,string(strClientName));
+
+	int nSelection=1;
+	switch(nSelection)	{
+	case 1:
+		{
+			widget.setAttribute(Qt::WA_NativeWindow);
+			QString qstrArg = app.arguments().at(1);
+			bool bOk;
+			SetParent((HWND)widget.winId(), (HWND)qstrArg.toULong(&bOk));
+		}
+	default:
+		break;
+	}
+
+
+	widget.show();
+
+	int nRes = app.exec();
+
+	return nRes;
 }

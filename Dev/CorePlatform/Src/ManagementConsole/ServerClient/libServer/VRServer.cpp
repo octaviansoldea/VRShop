@@ -76,7 +76,7 @@ void Server::incomingConnection(qintptr handle)	{
 //----------------------------------------------------------------------
 
 void Server::addConnection(ClientConnection* apDevice, quint64 anClientID)	{
-	m_Clients[anClientID] = apDevice;
+	m_Clients.insert(anClientID, apDevice);
 
 	QTcpSocket * pSocket = (QTcpSocket *)apDevice;
 
@@ -105,9 +105,9 @@ void Server::removeConnection(ClientConnection* apDevice, quint64 anClientID)	{
 			pSocket->disconnectFromHost();
 
 		apDevice->close();
-		apDevice->deleteLater();
+		delete m_Clients.take(anClientID);
+		m_Clients.remove(anClientID);
 	}
-	m_Clients.remove(anClientID);
 }
 
 //----------------------------------------------------------------------
@@ -124,7 +124,8 @@ void Server::slotDisconnected()	{
 //----------------------------------------------------------------------
 
 int Server::clientCount() const	{
-	return m_Clients.count();
+	int nSize = m_Clients.count();
+	return nSize;
 }
 
 //----------------------------------------------------------------------

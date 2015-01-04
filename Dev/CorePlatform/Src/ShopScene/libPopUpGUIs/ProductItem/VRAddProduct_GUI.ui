@@ -22,7 +22,7 @@ QToolButton#m_pToolButtonClose {
 	max-width: 20px;
 	max-height: 20px;
 	border: 0px solid gray;
-	image: url(../../../Resources/Icons/close-icon.png);
+	image: url(:/close-icon.png);
 }
 
 QWidget {
@@ -61,7 +61,7 @@ QComboBox:editable {
 }
 
 QComboBox::down-arrow {
-	image: url(../../../Resources/Icons/arrow_down.png);
+	image: url(:/arrow_down.png);
     width: 10px;
     height: 10px;
 }
@@ -290,9 +290,9 @@ QToolButton {
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>0</y>
-        <width>431</width>
-        <height>663</height>
+        <y>-136</y>
+        <width>428</width>
+        <height>659</height>
        </rect>
       </property>
       <layout class="QFormLayout" name="formLayout_5">
@@ -888,7 +888,7 @@ QComboBox:editable {
 }
 
 QComboBox::down-arrow {
-	image: url(C:/Projekti/arrow_down.png);
+	image: url(:/arrow_down.png);
     width: 10px;
     height: 10px;
 }
@@ -1094,6 +1094,8 @@ QComboBox QAbstractItemView {
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../../../../Resources/Icons/icons.qrc"/>
+ </resources>
  <connections/>
 </ui>

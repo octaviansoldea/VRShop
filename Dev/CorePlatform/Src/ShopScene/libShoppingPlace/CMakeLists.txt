@@ -33,6 +33,7 @@ ENDIF(Qt5_FOUND)
 INCLUDE_DIRECTORIES(
   ${OPENSCENEGRAPH_INCLUDE_DIRS}
   ${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
+  ${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libAppData
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_OSG
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_QT
   ${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabase
@@ -74,21 +75,19 @@ INCLUDE_DIRECTORIES(
 
 #MOC according to the Qt version
 IF(Qt5_FOUND)
-  QT5_WRAP_UI(UI_SRCS	VRShoppingPlace_GUI.ui 
-						)
-  QT5_WRAP_CPP(MOC_SRCS VRShoppingPlace_GUI.h
-						)
+  QT5_WRAP_UI(UI_SRCS	VRShoppingPlace_GUI.ui)
+  QT5_WRAP_CPP(MOC_SRCS VRShoppingPlace_GUI.h)
+  QT5_ADD_RESOURCES(QRC_SRCS ${CMAKE_SOURCE_DIR}/../Resources/Icons/icons.qrc)
 
 ELSE()
-  QT4_WRAP_UI(UI_SRCS	VRShoppingPlace_GUI.ui
-						)
-  QT4_WRAP_CPP(MOC_SRCS VRShoppingPlace_GUI.h
-						)
+  QT4_WRAP_UI(UI_SRCS	VRShoppingPlace_GUI.ui)
+  QT4_WRAP_CPP(MOC_SRCS VRShoppingPlace_GUI.h)
+  QT4_ADD_RESOURCES(QRC_SRCS ${CMAKE_SOURCE_DIR}/../Resources/Icons/icons.qrc)
 ENDIF()
 
 
 #Define sources to be later added into the library
-SET(SRCS ${SRCS} ${MOC_SRCS} ${UI_SRCS}
+SET(SRCS ${SRCS} ${MOC_SRCS} ${UI_SRCS} ${QRC_SRCS}
 	VRShoppingPlace.h VRShoppingPlace.cpp
 	VRShoppingPlace_GUI.h VRShoppingPlace_GUI.cpp
 )

@@ -71,8 +71,8 @@
          <string>...</string>
         </property>
         <property name="icon">
-         <iconset>
-          <normaloff>../../../Projekti/close-icon.png</normaloff>../../../Projekti/close-icon.png</iconset>
+         <iconset resource="../../../../Resources/Icons/icons.qrc">
+          <normaloff>:/close-icon.png</normaloff>:/close-icon.png</iconset>
         </property>
        </widget>
       </item>
@@ -112,7 +112,7 @@
             <x>0</x>
             <y>0</y>
             <width>449</width>
-            <height>394</height>
+            <height>390</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -899,6 +899,8 @@
   <tabstop>m_pPushButtonApply</tabstop>
   <tabstop>m_pPushButtonCancel</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="../../../../Resources/Icons/icons.qrc"/>
+ </resources>
  <connections/>
 </ui>

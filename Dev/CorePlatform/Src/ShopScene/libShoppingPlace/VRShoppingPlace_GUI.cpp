@@ -40,12 +40,12 @@ using namespace std;
 //----------------------------------------------------------------------
 
 ShoppingPlace_GUI::ShoppingPlace_GUI(Client * apClient, string & astrFileName, string & astrAvatarName)	{	
+	 Q_INIT_RESOURCE(icons);
+
 	setupUi(this);
 	setWindowTitle("Shop Client");
 
-	m_pClient = 
-			apClient;
-			//new Client;
+	m_pClient = apClient;
 
 	connect(m_pClient,SIGNAL(done()),this,SLOT(slotClientReceiveData()));
 

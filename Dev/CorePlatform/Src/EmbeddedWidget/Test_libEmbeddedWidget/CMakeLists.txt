@@ -98,6 +98,7 @@ SET(LIBS_COMMON
 	libShopEditor
 	libShoppingPlace
 	libCommon
+	libAppData
 	libCommon_OSG
 	libCommon_QT
 	libCamera

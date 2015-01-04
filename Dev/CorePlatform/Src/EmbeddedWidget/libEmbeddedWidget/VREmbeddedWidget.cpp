@@ -5,10 +5,11 @@
 
 #include "BasicStringDefinitions.h"
 
+#include "VRAppData.h"
+
 #include "VRClient.h"
 
 #include "VRShoppingPlace_GUI.h"
-//#include "VRShopBuilder_GUI.h"
 
 #include "VREmbeddedWidget.h"
 
@@ -49,11 +50,7 @@ void EmbeddedWidget::selectShop(const QString & aqstrShopName)	{
 	}
 
 	string strClientName = tostr(m_pClient->getUserID());
-	string strDBFileName = 
-		//"../../../Databases/" 
-//		"C:/Projekti/VRShop/SampleScenes/" + aqstrShopName.toStdString() + ".db";
-		"C:/Projekti/VRShop/Dev/CorePlatform/Databases/ShopDemo.db";
-
+	string strDBFileName = AppData::get_FPath_Databases() + "ShopDemo.db";
 
 	QRect qrectCentralContent = m_pWidgetCentralContent->geometry();
 

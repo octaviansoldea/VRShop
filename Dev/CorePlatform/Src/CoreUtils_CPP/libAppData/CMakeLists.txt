@@ -1,0 +1,16 @@
+PROJECT(libAppData)
+
+SET(CMAKE_DEBUG_POSTFIX "D")
+
+SET(SRCS
+	VRAppData.h VRAppData.cpp
+)
+
+ADD_LIBRARY(libAppData ${SRCS})
+
+FILE(GLOB files "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
+INSTALL(FILES ${files} DESTINATION libAppData/include)
+INSTALL(TARGETS libAppData DESTINATION libAppData/lib
+		LIBRARY DESTINATION libAppData/lib)
+
+SET_PROPERTY(TARGET libAppData PROPERTY FOLDER Basics)

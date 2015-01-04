@@ -158,8 +158,8 @@ QLineEdit {
          <string>...</string>
         </property>
         <property name="icon">
-         <iconset>
-          <normaloff>../../../../Resources/Icons/close-icon.png</normaloff>../../../../Resources/Icons/close-icon.png</iconset>
+         <iconset resource="../../../Resources/Icons/icons.qrc">
+          <normaloff>:/close-icon.png</normaloff>:/close-icon.png</iconset>
         </property>
        </widget>
       </item>
@@ -659,6 +659,8 @@ QPushButton:hover {
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../../Resources/Icons/icons.qrc"/>
+ </resources>
  <connections/>
 </ui>

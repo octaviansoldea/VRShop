@@ -16,6 +16,8 @@ Texturing of cylinder
 
 Camera positioning - bounding box undermines orientation of the object
 
+Add QT to CoreUtils_OSG => CoreUtils_OSGQT
+
 ============================================================
 
 CRITICAL ITEMS

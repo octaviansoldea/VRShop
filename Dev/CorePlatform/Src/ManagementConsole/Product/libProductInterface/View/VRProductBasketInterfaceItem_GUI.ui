@@ -343,7 +343,7 @@ QDoubleSpinBox::up-button {
 }
 
 QDoubleSpinBox::up-arrow {
-	image: url(C:/Projekti/arrow_right.png);
+	image: url(:/arrow_right.png);
 	width: 10px;
 	height: 10px;
 }
@@ -355,7 +355,7 @@ QDoubleSpinBox::down-button {
 }
 
 QDoubleSpinBox::down-arrow {
-	image: url(C:/Projekti/arrow_left.png);
+	image: url(:/arrow_left.png);
 	width: 10px;
 	height: 10px;
 }</string>

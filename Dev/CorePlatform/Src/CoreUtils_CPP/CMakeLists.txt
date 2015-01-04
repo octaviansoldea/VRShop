@@ -9,8 +9,10 @@ SUBDIRS(
 	libCommon
 	libReadWritePPM
 	libTimer
+	libAppData
 	Test_libColor
 	Test_libCommon
 	Test_libReadWritePPM
 	Test_libTimer
+	Test_libAppData
 )

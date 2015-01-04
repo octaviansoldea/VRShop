@@ -35,88 +35,89 @@
    <string>Dialog</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QWidget {
-	background-color: rgb(191,193,194);
-	border-color: black;
-}
+   <string notr="true">
+     QWidget {
+     background-color: rgb(191,193,194);
+     border-color: black;
+     }
 
-/*	Push button*/
-QPushButton {
-	min-height: 20px;
-	border: 1px solid gray;
-	border-radius: 3px;
-	background-color: lightgray;
-	selection-background-color: gray;
-}
+     /*	Push button*/
+     QPushButton {
+     min-height: 20px;
+     border: 1px solid gray;
+     border-radius: 3px;
+     background-color: lightgray;
+     selection-background-color: gray;
+     }
 
-QPushButton:hover {
-	background-color: gray;
-	border-radius: 3px;
-}
+     QPushButton:hover {
+     background-color: gray;
+     border-radius: 3px;
+     }
 
-/*Menu bar*/
-QMenuBar {
-	background-color:rgb(105,105,105);
-	spacing: 0px;
-}
+     /*Menu bar*/
+     QMenuBar {
+     background-color:rgb(105,105,105);
+     spacing: 0px;
+     }
 
-QMenuBar::item {
-	background-color: transparent;
-}
+     QMenuBar::item {
+     background-color: transparent;
+     }
 
-QMenu {
-	background-color:rgb(105,105,105);
-	border: 1px solid black;
-}
+     QMenu {
+     background-color:rgb(105,105,105);
+     border: 1px solid black;
+     }
 
-/*Combo box*/
-QComboBox {
-	min-height: 19px;
-	background-color: lightgray;
-	selection-background-color: gray;
-	padding-left: 4px;
-	border: 1px solid gray;
-}
+     /*Combo box*/
+     QComboBox {
+     min-height: 19px;
+     background-color: lightgray;
+     selection-background-color: gray;
+     padding-left: 4px;
+     border: 1px solid gray;
+     }
 
-QComboBox::down-arrow {
-	image: url(C:/Projekti/VRShop/Dev/OSG/Resources/Icons/arrow_down.png);
-    width: 10px;
-    height: 10px;
-}
+     QComboBox::down-arrow {
+     image: url(../../../Resources/Icons/arrow_down.png);
+     width: 10px;
+     height: 10px;
+     }
 
-QComboBox::drop-down {
-	border: 0px;
-    subcontrol-position: top right;
-    width: 15px;
-}
+     QComboBox::drop-down {
+     border: 0px;
+     subcontrol-position: top right;
+     width: 15px;
+     }
 
-QComboBox QAbstractItemView {
-	border: 1px solid black;
-	background-color: lightgray;
-	selection-background-color: gray;
-}
-
-
-QMenuBar::item:selected, QMenu::item:selected,QListWidget::item:selected, QComboBox:hover
-{
-	background-color: gray;
-}
+     QComboBox QAbstractItemView {
+     border: 1px solid black;
+     background-color: lightgray;
+     selection-background-color: gray;
+     }
 
 
-/*Tool button*/
-QToolButton {
-	max-width: 20px;
-	max-height: 20px;
-	border: 0px solid gray;
-}
+     QMenuBar::item:selected, QMenu::item:selected,QListWidget::item:selected, QComboBox:hover
+     {
+     background-color: gray;
+     }
 
-/*Line edit*/
-QLineEdit {
-    border: 1px solid gray;
-	border-radius: 3px;
-    background-color: lightgray;
-    selection-background-color: darkgray;
-}</string>
+
+     /*Tool button*/
+     QToolButton {
+     max-width: 20px;
+     max-height: 20px;
+     border: 0px solid gray;
+     }
+
+     /*Line edit*/
+     QLineEdit {
+     border: 1px solid gray;
+     border-radius: 3px;
+     background-color: lightgray;
+     selection-background-color: darkgray;
+     }</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
@@ -207,7 +208,7 @@ QLineEdit {
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>../../../../Resources/Icons/close-icon.png</normaloff>../../../../Resources/Icons/close-icon.png</iconset>
+          <normaloff>../../../Resources/Icons/close-icon.png</normaloff>../../../Resources/Icons/close-icon.png</iconset>
         </property>
        </widget>
       </item>
@@ -417,6 +418,8 @@ QPushButton:hover {
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../../Resources/Icons/icons.qrc"/>
+ </resources>
  <connections/>
 </ui>

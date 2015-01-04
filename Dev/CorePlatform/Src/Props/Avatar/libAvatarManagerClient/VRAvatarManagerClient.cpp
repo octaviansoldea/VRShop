@@ -1,5 +1,8 @@
 #include "BasicDefinitions.h"
 #include "BasicStringDefinitions.h"
+
+#include "VRAppData.h"
+
 #include "VRBasicOSGOperations.h"
 
 #include "VRServerClientCommands.h"
@@ -253,10 +256,9 @@ void AvatarManagerClient::otherAvatarsReceived(QDataStream & aDataStreamAvatar)	
 		} else {
 			//Avatar
 			AvatarParams avatarParams;
-			avatarParams.m_strAvatarFile = 
-				//"D:/Octavian/Companies/VirtualShop/GitHub/VRShop/Dev/CorePlatform/Resources/Models3D/avatarOut.osg";
-				"C:/Projekti/VRShop/Dev/CorePlatform/Resources/Models3D/avatarOut.osg";
-			//"../../../Resources/Models3D/avatarOut.osg";
+			avatarParams.m_strAvatarFile =
+				AppData::get_FPath_Resources() + "/Models3D/avatarOut.osg";
+
 			avatarParams.m_strAvatarName = strAvatarName;
 
 			ref_ptr<Avatar> ppAvatar = new Avatar(&avatarParams);

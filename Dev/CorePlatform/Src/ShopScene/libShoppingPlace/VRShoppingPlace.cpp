@@ -4,6 +4,10 @@
 #include <QVariant>
 #include <QVBoxLayout>
 
+#include <osgDB/ReadFile>
+
+#include "VRAppData.h"
+
 #include "VRScene.h"
 
 #include "VRProductShopClient.h"
@@ -33,7 +37,6 @@
 #include "VRPickAndDragHandlerShopClient.h"
 #include "VRKeyboardMouseManipulatorShopClient.h"
 
-#include <osgDB/ReadFile>
 #include "VRReadAndSaveFileCallback.h"
 
 #include "VROSGQT_Widget.h"
@@ -107,11 +110,8 @@ m_strAvatarName(astrAvatarName)	{
 	//Avatar
 	AvatarParams avatarParams;
 	avatarParams.m_pKeyboardMouseManipulatorShopClient = pKeyboardMouseManipulatorShopClient;
-	avatarParams.m_strAvatarFile = 
-//		"../../../Resources/Models3D/avatarOut.osg";
-//		"C:/Projekti/VRShop/Dev/CorePlatform/Resources/Models3D/avatarOut.osg";
-//		"D:/Octavian/Companies/VirtualShop/GitHub/VRShop/Dev/CorePlatform/Resources/Models3D/avatarOut.osg";
-		"http://cdn.rawgit.com/octaviansoldea/VRShop/master/Dev/CorePlatform/Resources/Models3D/avatarOut.osg";
+	avatarParams.m_strAvatarFile = AppData::get_FPath_Resources() + "/Models3D/avatarOut.osg";
+	//"http://cdn.rawgit.com/octaviansoldea/VRShop/master/Dev/CorePlatform/Resources/Models3D/avatarOut.osg";
 	
 	avatarParams.m_strAvatarName = m_strAvatarName;
 	avatarParams.m_mtrxAvatarMatrix = osg::Matrix(

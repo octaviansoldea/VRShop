@@ -1,7 +1,10 @@
 #include <windows.h>
 #include <QApplication>
 #include <QString>
+
 #include "BasicStringDefinitions.h"
+
+#include "VRAppData.h"
 
 #include "VRClient.h"
 
@@ -23,14 +26,13 @@ int main(int argc, char *argv[])	{
 	}
 	
 	string strClientName = tostr(nUserID);
-	string strDBFileName = 
-//		"../../../Databases/ShopDemo.db"
-		"C:/Projekti/VRShop/Dev/CorePlatform/Databases/ShopDemo.db"
-		;
+	string strDBFileName = AppData::get_FPath_Databases() + "ShopDemo.db";
+
+		
 
 	ShoppingPlace_GUI widget(&client, strDBFileName,string(strClientName));
 
-	int nSelection=1;
+	int nSelection=0;
 	switch(nSelection)	{
 	case 1:
 		{

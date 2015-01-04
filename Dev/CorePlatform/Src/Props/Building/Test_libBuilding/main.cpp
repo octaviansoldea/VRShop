@@ -5,6 +5,8 @@
 
 #include <osg/MatrixTransform>
 
+#include "VRAppData.h"
+
 #include "VRFloor.h"
 #include "VRWall.h"
 #include "VRRoom.h"
@@ -20,9 +22,9 @@ int main_Floor(int argc, char * argv[])	{
 	pScene->addChild(pAxes);
 
 	FloorParams fP;
-	fP.m_strTextureName = 
-	//	"C:/Projekti/Textures/CeramicTile2.bmp";
-		"C:/Projekti/Textures/CeramicTileFloor1.bmp";
+	fP.m_strTextureName = AppData::get_FPath_Resources() + 
+		"/Textures/CeramicTileFloor1.bmp";
+		//"/Textures/CeramicTile2.bmp";
 	fP.m_vec3dBottomLeft = Vec3d(0,-10,0);
 	fP.m_vec3dUpRight = Vec3d(50,10,0);
 	Floor floor(fP);

@@ -32,6 +32,7 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgent
   ${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgentManager
   ${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
+  ${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libAppData
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_OSG
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_QT
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCamera
@@ -80,6 +81,7 @@ SET(LIBS_COMMON
 	libShopEditor
 	libShoppingPlace
 	libCommon
+	libAppData
 	libCommon_OSG
 	libCommon_QT
 	libCamera

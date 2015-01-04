@@ -66,7 +66,7 @@ QComboBox {
 }
 
 QComboBox::down-arrow {
-	image: url(C:/Projekti/arrow_down.png);
+	image: url(:/arrow_down.png);
     width: 10px;
     height: 10px;
 }
@@ -331,7 +331,7 @@ QSpinBox::down-arrow:off {border-left: 17px solid none; border-right: 17px solid
              </property>
              <property name="icon">
               <iconset>
-               <normaloff>../../../Resources/Icons/close-icon.png</normaloff>../../../Resources/Icons/close-icon.png</iconset>
+               <normaloff>:/close-icon.png</normaloff>:/close-icon.png</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -371,9 +371,9 @@ QSpinBox::down-arrow:off {border-left: 17px solid none; border-right: 17px solid
            <property name="geometry">
             <rect>
              <x>0</x>
-             <y>0</y>
+             <y>-137</y>
              <width>239</width>
-             <height>611</height>
+             <height>563</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_8">
@@ -1415,7 +1415,7 @@ QSpinBox::down-arrow:off {border-left: 17px solid none; border-right: 17px solid
              </property>
              <property name="icon">
               <iconset>
-               <normaloff>../../../Resources/Icons/close-icon.png</normaloff>../../../Resources/Icons/close-icon.png</iconset>
+               <normaloff>:/close-icon.png</normaloff>:/close-icon.png</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -2382,7 +2382,7 @@ QToolButton:!checked {
             </property>
             <property name="icon">
              <iconset>
-              <normaloff>../../../Resources/Icons/Zoom.png</normaloff>../../../Resources/Icons/Zoom.png</iconset>
+               <normaloff>:/Zoom.png</normaloff>:/Zoom.png</iconset>
             </property>
             <property name="checkable">
              <bool>true</bool>
@@ -2510,7 +2510,7 @@ QToolButton:!checked {
             </property>
             <property name="icon">
              <iconset>
-              <normaloff>../../../Resources/Icons/cursor_hand.png</normaloff>../../../Resources/Icons/cursor_hand.png</iconset>
+              <normaloff>:/cursor_hand.png</normaloff>:/cursor_hand.png</iconset>
             </property>
             <property name="iconSize">
              <size>
@@ -2560,7 +2560,7 @@ QToolButton:!checked {
             </property>
             <property name="icon">
              <iconset>
-              <normaloff>../../../Resources/Icons/grid.png</normaloff>../../../Resources/Icons/grid.png</iconset>
+              <normaloff>:/grid.png</normaloff>:/grid.png</iconset>
             </property>
             <property name="checkable">
              <bool>true</bool>
@@ -2728,7 +2728,7 @@ QToolButton:!checked {
              </property>
              <property name="icon">
               <iconset>
-               <normaloff>../../../Resources/Icons/close-icon.png</normaloff>../../../Resources/Icons/close-icon.png</iconset>
+               <normaloff>:/close-icon.png</normaloff>:/close-icon.png</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -2846,7 +2846,7 @@ border: 0px;</string>
              </property>
              <property name="icon">
               <iconset>
-               <normaloff>../../../2013/Resources/Icons/toolbar_find.png</normaloff>../../../2013/Resources/Icons/toolbar_find.png</iconset>
+               <normaloff>:/toolbar_find.png</normaloff>:/toolbar_find.png</iconset>
              </property>
              <property name="autoRaise">
               <bool>true</bool>
@@ -2860,7 +2860,7 @@ border: 0px;</string>
              </property>
              <property name="icon">
               <iconset>
-               <normaloff>../../../Resources/Icons/close-icon.png</normaloff>../../../Resources/Icons/close-icon.png</iconset>
+               <normaloff>:/close-icon.png</normaloff>:/close-icon.png</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -3098,7 +3098,7 @@ QListView::item:hover,QListView::item:selected {
              </property>
              <property name="icon">
               <iconset>
-               <normaloff>../../../Resources/Icons/close-icon.png</normaloff>../../../Resources/Icons/close-icon.png</iconset>
+               <normaloff>:/close-icon.png</normaloff>:/close-icon.png</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -3318,7 +3318,7 @@ QTreeView::item:hover,QTreeView::item:selected {
              </property>
              <property name="icon">
               <iconset>
-               <normaloff>../../../Resources/Icons/close-icon.png</normaloff>../../../Resources/Icons/close-icon.png</iconset>
+                <normaloff>:/close-icon.png</normaloff>:/close-icon.png</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -3618,7 +3618,7 @@ QTreeView::item:hover,QTreeView::item:selected {
              </property>
              <property name="icon">
               <iconset>
-               <normaloff>../../../Resources/Icons/close-icon.png</normaloff>../../../Resources/Icons/close-icon.png</iconset>
+               <normaloff>:/close-icon.png</normaloff>:/close-icon.png</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -4177,10 +4177,10 @@ QToolButton:hover {
    <widget class="QMenu" name="menuFile">
     <property name="geometry">
      <rect>
-      <x>187</x>
-      <y>171</y>
-      <width>138</width>
-      <height>190</height>
+      <x>330</x>
+      <y>127</y>
+      <width>130</width>
+      <height>196</height>
      </rect>
     </property>
     <property name="styleSheet">

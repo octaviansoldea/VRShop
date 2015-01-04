@@ -754,8 +754,8 @@ padding: 2px;</string>
          <string/>
         </property>
         <property name="icon">
-         <iconset>
-          <normaloff>../../../../../../arrow_left.png</normaloff>../../../../../../arrow_left.png</iconset>
+         <iconset resource="../../../Resources/Icons/icons.qrc">
+          <normaloff>:/arrow_left.png</normaloff>:/arrow_left.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -789,8 +789,8 @@ padding: 2px;</string>
          <string/>
         </property>
         <property name="icon">
-         <iconset>
-          <normaloff>../../../../../../arrow_right.png</normaloff>../../../../../../arrow_right.png</iconset>
+         <iconset resource="../../../Resources/Icons/icons.qrc">
+          <normaloff>:/arrow_right.png</normaloff>:/arrow_right.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -1111,6 +1111,8 @@ basket</string>
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../../../Resources/Icons/icons.qrc"/>
+ </resources>
  <connections/>
 </ui>

@@ -16,7 +16,7 @@ using namespace Ui;
 using namespace std;
 using namespace VR;
 
-EmbeddedWidget_GUI::EmbeddedWidget_GUI(QObject * apParent, Client * apClient)	{
+EmbeddedWidget_GUI::EmbeddedWidget_GUI(Client * apClient, QObject * apParent)	{
 	setupUi(this);
 
 	m_pClient = apClient;

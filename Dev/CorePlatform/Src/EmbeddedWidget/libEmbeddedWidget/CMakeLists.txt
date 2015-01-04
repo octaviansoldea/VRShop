@@ -32,6 +32,8 @@ INCLUDE_DIRECTORIES(
 	${OPENSCENEGRAPH_INCLUDE_DIRS}
 
 	${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
+	${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libAppData
+
 	${CMAKE_SOURCE_DIR}/EmbeddedWidget/libEmbeddedWidget
 	${CMAKE_BINARY_DIR}/EmbeddedWidget/libEmbeddedWidget
 

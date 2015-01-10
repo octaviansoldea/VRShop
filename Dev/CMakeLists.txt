@@ -30,4 +30,5 @@ SUBDIRS(
 	CorePlatform
 	Dependencies
 	WebPlugin
+	WebMain
 )

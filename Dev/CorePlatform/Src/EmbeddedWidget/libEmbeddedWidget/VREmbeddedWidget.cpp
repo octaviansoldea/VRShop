@@ -50,7 +50,7 @@ void EmbeddedWidget::selectShop(const QString & aqstrShopName)	{
 	}
 
 	string strClientName = tostr(m_pClient->getUserID());
-	string strDBFileName = AppData::get_FPath_Databases() + "ShopDemo.db";
+	string strDBFileName = AppData::getFPathDatabases() + "ShopDemo.db";
 
 	QRect qrectCentralContent = m_pWidgetCentralContent->geometry();
 

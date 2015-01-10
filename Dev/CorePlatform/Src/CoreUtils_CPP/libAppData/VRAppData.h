@@ -2,19 +2,23 @@
 #define APP_DATA_H
 
 #include <string>
+#include <vector>
 
 namespace VR {
 	struct AppData {
 		static std::string init();
 
-		static std::string get_FPath_VRShop();
+		static std::string getFPathVRShop();
 
-		static std::string get_FPath_Databases();
-		static std::string get_FPath_Log();
-		static std::string get_FPath_Resources();
+		static std::string getFPathDatabases();
+		static std::string getFPathLog();
+		static std::string getFPathResources();
+		static std::string getFPathServer();
+
+		static bool checkIfExists(const std::string & astrApplicationFolder);
 
 	private:
-		static std::string m_str_FPath_VRShop;
+		static std::string m_strFPathVRShop;
 	};
 }
 #endif //APP_DATA_H

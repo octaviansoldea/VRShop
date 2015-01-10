@@ -6,12 +6,11 @@ using namespace VR;
 
 int main() {
 
-	//AppData appData;
+//	AppData appData;
 
-	string str_FPath_VRShop    = AppData::get_FPath_VRShop();
-	string str_FPath_Databases = AppData::get_FPath_Databases();
-	string str_FPath_Log       = AppData::get_FPath_Log();
-	string str_FPath_Resources = AppData::get_FPath_Resources();
+	string str_FPath_Databases = AppData::getFPathDatabases();
+	string str_FPath_Log       = AppData::getFPathLog();
+	string str_FPath_Resources = AppData::getFPathResources();
 
 	return(0);
 }

@@ -256,8 +256,7 @@ void AvatarManagerClient::otherAvatarsReceived(QDataStream & aDataStreamAvatar)	
 		} else {
 			//Avatar
 			AvatarParams avatarParams;
-			avatarParams.m_strAvatarFile =
-				AppData::get_FPath_Resources() + "/Models3D/avatarOut.osg";
+			avatarParams.m_strAvatarFile = AppData::getFPathResources() + "/Models3D/avatarOut.osg";
 
 			avatarParams.m_strAvatarName = strAvatarName;
 

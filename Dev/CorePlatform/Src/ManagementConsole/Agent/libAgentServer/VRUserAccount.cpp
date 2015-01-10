@@ -74,7 +74,6 @@ bool UserAccount::tryModifyUserAccount(UserAccountParams & aUserAccountParams)	{
 	bool bRes = UserAccount::checkUserAccountValidity(aUserAccountParams.m_strEMail);
 
 	if (bRes) {
-		int nI;
 		string strSqlQuery="UPDATE UserAccount SET "
 			"UserFirstName = '" + aUserAccountParams.m_strFirstName + "', "
 			"UserSecondName = '" + aUserAccountParams.m_strLastName + "', "

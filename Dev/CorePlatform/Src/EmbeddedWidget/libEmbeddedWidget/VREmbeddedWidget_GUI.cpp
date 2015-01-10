@@ -1,7 +1,9 @@
 #include <iostream>
+#include <fstream>
 
 #include "VRQLabel.h"
 #include <string>
+#include "VRAppData.h"
 
 #include "VRClient.h"
 

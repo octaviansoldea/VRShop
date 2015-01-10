@@ -75,3 +75,21 @@ std::string replaceAll(std::string astrText, const std::string& astrFrom, const 
     }
     return astrText;
 }
+
+//-------------------------------------------------------------------------------------------------
+
+wstring string2WString(const string& astrString)	{
+	std::wstring wstringString(astrString.begin(), astrString.end());
+	return(wstringString);
+}
+
+//-------------------------------------------------------------------------------------------------
+
+wchar_t * string2WChar(const std::string & astrString)	{
+	//WARNING: RELEASE ALLOCATED MEMORY AT THE DECLARATION
+
+	wchar_t * pWString = new wchar_t[4096];
+	MultiByteToWideChar(CP_ACP, 0, astrString.c_str(), -1, pWString, 4096);
+
+	return pWString;
+}

@@ -18,4 +18,8 @@ std::string tostr(T aVal)	{
 	return ss.str();//return a string with the contents of the stream
 };
 
+std::wstring string2WString(const std::string& astrString);
+wchar_t * string2WChar(const std::string & astrString);
+
+
 #endif //BASIC_STRING_DEFINITIONS_H

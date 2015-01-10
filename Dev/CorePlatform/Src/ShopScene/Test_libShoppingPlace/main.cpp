@@ -1,6 +1,8 @@
 #include <windows.h>
 #include <QApplication>
 #include <QString>
+#include <string>
+#include <iostream>
 
 #include "BasicStringDefinitions.h"
 
@@ -15,6 +17,11 @@ using namespace std;
 
 
 int main(int argc, char *argv[])	{
+	if (argc != 3)	{
+		cerr << argv[0] << "Too few arguments set. Set nSelection to 0 or 1" << endl;
+		exit(-1);
+	}
+
 	QApplication app(argc, argv);
 
 	Client client;
@@ -26,18 +33,17 @@ int main(int argc, char *argv[])	{
 	}
 	
 	string strClientName = tostr(nUserID);
-	string strDBFileName = AppData::get_FPath_Databases() + "ShopDemo.db";
-
-		
+	string strDBFileName = AppData::getFPathDatabases() + "ShopDemo.db";
 
 	ShoppingPlace_GUI widget(&client, strDBFileName,string(strClientName));
 
-	int nSelection=0;
+	int nSelection=stoi(argv[2]);
 	switch(nSelection)	{
 	case 1:
 		{
 			widget.setAttribute(Qt::WA_NativeWindow);
-			QString qstrArg = app.arguments().at(1);
+			QString qstrArg = argv[1];
+
 			bool bOk;
 			SetParent((HWND)widget.winId(), (HWND)qstrArg.toULong(&bOk));
 		}

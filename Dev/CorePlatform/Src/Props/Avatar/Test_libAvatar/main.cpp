@@ -24,7 +24,7 @@ int main_Avatar(int argc, char * argv[])	{
 	ref_ptr<Avatar> pAvatar = new Avatar(strAvatarFileName, pCamera);
 	pCamera->setCameraPosition2Object(pAvatar);
 
-	ref_ptr<Node> pAxes = dynamic_cast<Group*>(osgDB::readNodeFile(AppData::get_FPath_Resources() + "/Models3D/axes.osgt"));
+	ref_ptr<Node> pAxes = dynamic_cast<Group*>(osgDB::readNodeFile(AppData::getFPathResources() + "/Models3D/axes.osgt"));
 
 	pScene->addChild(pAxes);
 	pScene->addChild(pAvatar);

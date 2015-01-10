@@ -1,10 +1,15 @@
 #include <string>
+#include <sys/stat.h>
+#include <fstream>
+
 #include "VRAppData.h"
 
 using namespace std;
 using namespace VR;
 
-string AppData::m_str_FPath_VRShop = AppData::init();
+string AppData::m_strFPathVRShop = AppData::init();
+
+//-----------------------------------------------------------------------------
 
 string AppData::init() {
 	char * pchPathVRShop = getenv("VRSHOP_CLIENT_PATH");
@@ -12,18 +17,49 @@ string AppData::init() {
 	return(strRes);
 }
 
-string AppData::get_FPath_VRShop() {
-	return(m_str_FPath_VRShop);
+//-----------------------------------------------------------------------------
+
+string AppData::getFPathVRShop() {
+	return(m_strFPathVRShop);
 }
 
-std::string AppData::get_FPath_Databases() {
-	return(get_FPath_VRShop() + "/Databases/");
+//-----------------------------------------------------------------------------
+
+std::string AppData::getFPathDatabases() {
+	return(getFPathVRShop() + "/Databases/");
 }
 
-std::string AppData::get_FPath_Log() {
-	return(get_FPath_VRShop() + "/Log/");
+//-----------------------------------------------------------------------------
+
+std::string AppData::getFPathLog() {
+	return(getFPathVRShop() + "/Log/");
 }
 
-std::string AppData::get_FPath_Resources() {
-	return(get_FPath_VRShop() + "/Resources/");
+//-----------------------------------------------------------------------------
+
+std::string AppData::getFPathResources() {
+	return(getFPathVRShop() + "/Resources/");
 }
+
+//-----------------------------------------------------------------------------
+
+std::string AppData::getFPathServer()	{
+	string strResult = "http://127.0.0.1/Website";
+	return strResult;
+}
+
+//-----------------------------------------------------------------------------
+
+bool AppData::checkIfExists(const std::string & astrApplicationFolder)	{
+	bool bRes = false;
+
+	string strFileName = astrApplicationFolder;
+
+	struct stat buffer;
+	if (stat(strFileName.c_str(), &buffer) == 0)	//Return: 0 or -1
+		bRes = true;
+
+	return bRes;
+}
+
+//-----------------------------------------------------------------------------

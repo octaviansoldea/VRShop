@@ -1,17 +1,28 @@
-#General
+/*
+	This file creates a VRShop installer with a name "VRShop.exe". Once the .exe is created,
+	make sure to place it inside the web server where the client can download it.
+*/
+
+!include "FileFunc.nsh"
+
 !define APP_VERSION "1_0"
 !define APP_NAME "VRShop"
-
 Name ${APP_NAME}
 OutFile "${APP_NAME}.exe" #where to write the installer to
-InstallDir "$LOCALAPPDATA\${APP_NAME}" #App's installation directory
+Var /GLOBAL WEB_SERVER
 
-!define WEB_SERVER "127.0.0.1/Website"
-
-#--------------------------------------------------------------
+#---------------------------------------------------------------
+#	PARAMS: 
+#		- WEBSERVER
+#		- INSTALLATION FOLDER
+#---------------------------------------------------------------
 
 Function .onInit
     SetSilent silent
+    ${GetParameters} $R0
+    ${GetOptions} $R0 "-Server=" $WEB_SERVER
+	${GetOptions} $R0 "-InstallDir=" $R2
+	StrCpy $INSTDIR "$R2\${APP_NAME}"
 FunctionEnd
 
 #--------------------------------------------------------------
@@ -42,6 +53,10 @@ Section "${APP_NAME}"
 	Push "osg"
 	Push ""
 	Call downloadAndUnzip
+	IfFileExists "$INSTDIR\VRShop.exe" +4
+	Push "VRShop"
+	Push ""
+	Call downloadAndUnzip
 	end:
 		Call runApplication
 SectionEnd
@@ -63,7 +78,7 @@ Function downloadAndUnzip
 	Pop $2	#a package
 	Pop $1	#a folder
 	
-	NSISdl::download "${WEB_SERVER}/$2.zip" "$INSTDIR\$2.zip"	
+	NSISdl::download "$WEB_SERVER/$2.zip" "$INSTDIR\$2.zip"	
 	Pop $R0 #Get the return value NOTE: NSISdl::download pushes result ("success") to the stack
 	StrCmp $R0 "success" proceed error
 	

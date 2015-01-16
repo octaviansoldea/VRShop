@@ -1,15 +1,17 @@
 /**********************************************************\
 
-  Auto-generated VRShopPlugin.cpp
+Auto-generated VRShopPlugin.cpp
 
-  This file contains the auto-generated main plugin object
-  implementation for the VRShopPlugin project
+This file contains the auto-generated main plugin object
+implementation for the VRShopPlugin project
 
 \**********************************************************/
 
 #include "BasicStringDefinitions.h"
 #include "VRDownloadFile.h"
 #include "VRAppData.h"
+
+#include "VRPipeServer.h"
 
 #include "DOM/Window.h"
 #include "DOM/Document.h"
@@ -22,87 +24,104 @@
 using namespace std;
 using namespace VR;
 
-void VRShopPlugin::StaticInitialize()	{
-    // Place one-time initialization stuff here; As of FireBreath 1.4 this should only
-    // be called once per process
+PROCESS_INFORMATION pi;
+HANDLE ghJob = 0;
 
-	ofstream out;
-	string strLog = AppData::getFPathLog() + "errors.txt";
-	out.open(strLog,ios::app);
-	out << "StaticInitialize: " << endl;
-	out.close();
+Process::Process()	{
+}
+
+Process::~Process()	{
+	//Close process and thread handles.
+	CloseHandle(pi.hProcess);
+	CloseHandle(pi.hThread);
+
+	CloseHandle(ghJob);
+}
+
+
+void Process::newProcess(string & astrApplicationName, string & astrArguments)	{
+	STARTUPINFO si = { sizeof(STARTUPINFO) };
+	si.cb = sizeof(si);
+	si.dwFlags = STARTF_USESHOWWINDOW;
+	si.wShowWindow = SW_HIDE;
+
+	//Check the name of the pipe
+	wchar_t * pWString = string2WChar(astrApplicationName + " " + astrArguments);
+	LPWSTR lName = pWString;
+
+	if (!CreateProcess(NULL,	// No module name (use command line).
+		lName,				// Command line.
+		NULL,					// Process handle not inheritable.
+		NULL,					// Thread handle not inheritable.
+		FALSE,					// Set handle inheritance to FALSE.
+		NORMAL_PRIORITY_CLASS,	// No creation flags.
+		NULL,					// Use parent's environment block.
+		NULL,					// Use parent's starting directory.
+		&si,					// Pointer to STARTUPINFO structure.
+		&pi)					// Pointer to PROCESS_INFORMATION structure.
+	)	{
+
+		delete [] pWString;
+		return;
+	}
+
+	delete [] pWString;
+}
+
+
+//=======================================================================================
+
+void VRShopPlugin::StaticInitialize()	{
+	// Place one-time initialization stuff here; As of FireBreath 1.4 this should only
+	// be called once per process
 }
 
 //--------------------------------------------------------------------------------------
 
 void VRShopPlugin::StaticDeinitialize()	{
-    // Place one-time deinitialization stuff here. As of FireBreath 1.4 this should
-    // always be called just before the plugin library is unloaded
-
-	ofstream out;
-	string strLog = AppData::getFPathLog() + "errors.txt";
-	out.open(strLog,ios::app);
-	out << "StaticDEInitialize: " << endl;
-	out.close();
+	// Place one-time deinitialization stuff here. As of FireBreath 1.4 this should
+	// always be called just before the plugin library is unloaded
 }
 
 //--------------------------------------------------------------------------------------
 
 VRShopPlugin::VRShopPlugin()	{
-	ofstream out;
-	string strLog = AppData::getFPathLog() + "errors.txt";
-	out.open(strLog,ios::app);
-	out << "VRShop plugin constructor: " << endl;
-	out.close();
-
 }
 
 //--------------------------------------------------------------------------------------
 
 VRShopPlugin::~VRShopPlugin()	{
-    // This is optional, but if you reset m_api (the shared_ptr to your JSAPI
-    // root object) and tell the host to free the retained JSAPI objects then
-    // unless you are holding another shared_ptr reference to your JSAPI object
-    // they will be released here.
+	// This is optional, but if you reset m_api (the shared_ptr to your JSAPI
+	// root object) and tell the host to free the retained JSAPI objects then
+	// unless you are holding another shared_ptr reference to your JSAPI object
+	// they will be released here.
 	releaseRootJSAPI();
-    m_host->freeRetainedObjects();
-
-	ofstream out;
-	string strLog = AppData::getFPathLog() + "errors.txt";
-	out.open(strLog,ios::app);
-	out << "VRShop plugin destructor: " << endl;
-	out.close();
+	m_host->freeRetainedObjects();
 }
 
 //--------------------------------------------------------------------------------------
 
 void VRShopPlugin::onPluginReady()	{
-    // When this is called, the BrowserHost is attached, the JSAPI object is
-    // created, and we are ready to interact with the page and such.  The
-    // PluginWindow may or may not have already fire the AttachedEvent at
-    // this point.
+	// When this is called, the BrowserHost is attached, the JSAPI object is
+	// created, and we are ready to interact with the page and such.  The
+	// PluginWindow may or may not have already fire the AttachedEvent at
+	// this point.
 
-	ofstream out;
-	string strLog = AppData::getFPathLog() + "errors.txt";
-	out.open(strLog,ios::app);
-	out << "On plugin ready: " << endl;
-	out.close();
+	m_pProcess = new Process;
+	m_pPipe = new PipeServer;
 }
 
 //--------------------------------------------------------------------------------------
 
 void VRShopPlugin::shutdown()	{
-    // This will be called when it is time for the plugin to shut down;
-    // any threads or anything else that may hold a shared_ptr to this
-    // object should be released here so that this object can be safely
-    // destroyed. This is the last point that shared_from_this and weak_ptr
-    // references to this object will be valid
+	// This will be called when it is time for the plugin to shut down;
+	// any threads or anything else that may hold a shared_ptr to this
+	// object should be released here so that this object can be safely
+	// destroyed. This is the last point that shared_from_this and weak_ptr
+	// references to this object will be valid
 
-	ofstream out;
-	string strLog = AppData::getFPathLog() + "errors.txt";
-	out.open(strLog,ios::app);
-	out << "Plugin shutdown: " << endl;
-	out.close();
+	delete m_pPipe;
+	delete m_pProcess;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -117,29 +136,29 @@ void VRShopPlugin::shutdown()	{
 /// as it could prevent your plugin class from getting destroyed properly.
 ///////////////////////////////////////////////////////////////////////////////
 FB::JSAPIPtr VRShopPlugin::createJSAPI()	{
-    // m_host is the BrowserHost
-    return boost::make_shared<VRShopPluginAPI>(FB::ptr_cast<VRShopPlugin>(shared_from_this()), m_host);
+	// m_host is the BrowserHost
+	return boost::make_shared<VRShopPluginAPI>(FB::ptr_cast<VRShopPlugin>(shared_from_this()), m_host);
 }
 
 //--------------------------------------------------------------------------------------
 
 bool VRShopPlugin::onMouseDown(FB::MouseDownEvent *evt, FB::PluginWindow *)	{
-    //printf("Mouse down at: %d, %d\n", evt->m_x, evt->m_y);
-    return false;
+	//printf("Mouse down at: %d, %d\n", evt->m_x, evt->m_y);
+	return false;
 }
 
 //--------------------------------------------------------------------------------------
 
 bool VRShopPlugin::onMouseUp(FB::MouseUpEvent *evt, FB::PluginWindow *)	{
-    //printf("Mouse up at: %d, %d\n", evt->m_x, evt->m_y);
-    return false;
+	//printf("Mouse up at: %d, %d\n", evt->m_x, evt->m_y);
+	return false;
 }
 
 //--------------------------------------------------------------------------------------
 
 bool VRShopPlugin::onMouseMove(FB::MouseMoveEvent *evt, FB::PluginWindow *)	{
-    //printf("Mouse move at: %d, %d\n", evt->m_x, evt->m_y);
-    return false;
+	//printf("Mouse move at: %d, %d\n", evt->m_x, evt->m_y);
+	return false;
 }
 
 //--------------------------------------------------------------------------------------
@@ -155,42 +174,12 @@ bool VRShopPlugin::onWindowAttached(FB::AttachedEvent *evt, FB::PluginWindow * w
 //--------------------------------------------------------------------------------------
 
 bool VRShopPlugin::onWindowDetached(FB::DetachedEvent *evt, FB::PluginWindow *)	{
-    // The window is about to be detached; act appropriately
+	// The window is about to be detached; act appropriately
 
 	return false;
 }
 
-//--------------------------------------------------------------------------------------
-
-void VRShopPlugin::newProcess(string & astrApplicationName, string & astrArguments)	{
-	PROCESS_INFORMATION pi;
-	STARTUPINFO si = { sizeof(STARTUPINFO) };
-	si.cb = sizeof(si);
-	si.dwFlags = STARTF_USESHOWWINDOW;
-	si.wShowWindow = SW_HIDE;
-	
-	//IMPORTANT: RELEASE THE MEMORY OF THE wString
-	wchar_t * pWString = string2WChar(astrApplicationName + " " + astrArguments);
-
-	if( !CreateProcess( NULL,	// No module name (use command line).
-		pWString,				// Command line.
-		NULL,					// Process handle not inheritable.
-		NULL,					// Thread handle not inheritable.
-		FALSE,					// Set handle inheritance to FALSE.
-		NORMAL_PRIORITY_CLASS,	// No creation flags.
-		NULL,					// Use parent's environment block.
-		NULL,					// Use parent's starting directory.
-		&si,					// Pointer to STARTUPINFO structure.
-		&pi )					// Pointer to PROCESS_INFORMATION structure.
-		)	{
-	}
-
-	delete [] pWString;
-
-	// Close process and thread handles.
-	CloseHandle( pi.hProcess );
-	CloseHandle( pi.hThread );
-}
+//---------------------------------------------------------------------------
 
 void VRShopPlugin::runApplicationThread()	{
 	string strLocation = m_host->getDOMWindow()->getLocation();
@@ -207,8 +196,6 @@ void VRShopPlugin::runApplicationThread()	{
 
 	bool bClientPlatformExist = AppData::checkIfExists(strInstallDir + "\\VRShop\\VRShop.exe");
 
-	out << "bClientPlatformExist: " << bClientPlatformExist<< "; INSTDIR: " << strInstallDir << endl;
-
 	if (bClientPlatformExist == false)	{
 		//Struct for setting Installer download param values
 		Download::DownloadParams dP;
@@ -221,8 +208,6 @@ void VRShopPlugin::runApplicationThread()	{
 		//Installer download location
 		dP.m_strDestinationFolder = AppData::getFPathVRShop();
 		dP.m_bReload = false;
-
-		out << "URL: " << dP.m_strURL << "DestinationFolder: " << dP.m_strDestinationFolder << endl;
 
 		try	{
 			Download::download(dP);
@@ -252,11 +237,29 @@ void VRShopPlugin::runApplicationThread()	{
 	FB::PluginWindow * pWin = GetWindow();
 	FB::PluginWindowWin * pWindow = reinterpret_cast<FB::PluginWindowWin*>(pWin);
 	if (pWindow)	{
-
 		HWND hWnd = pWindow->getHWND();
 
-		string strArguments = to_string((_ULonglong)hWnd) + " 1";
-		newProcess(replaceAll(strInstallDir,"/","\\") + "\\VRShop\\VRShop.exe", strArguments);
+		//Create pipe server
+		string strPipeName = "\\\\.\\pipe\\VRShopPluginPipe";
+		m_pPipe->initializeAndRunServer(strPipeName);
+
+		string strArguments = tostr(hWnd) + " 1 " + strPipeName;
+
+		//Create process
+		ghJob = CreateJobObject( NULL, NULL);
+		if( ghJob == NULL)	{
+			out << "Could not create job object" << endl;
+		} else {
+			JOBOBJECT_EXTENDED_LIMIT_INFORMATION jeli = { 0 };
+
+			// Configure all child processes associated with the job to terminate when the
+			jeli.BasicLimitInformation.LimitFlags = JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE;
+			if( 0 == SetInformationJobObject( ghJob, JobObjectExtendedLimitInformation, &jeli, sizeof(jeli)))	{
+				out << "Could not SetInformationJobObject" << endl;
+			}
+		}
+
+		m_pProcess->newProcess(replaceAll(strInstallDir,"/","\\") + "\\VRShop\\VRShop.exe", strArguments);
 	}
 	out.close();
 }

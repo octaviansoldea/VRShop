@@ -6,17 +6,15 @@ using namespace std;
 using namespace VR;
 
 DLExc::DLExc(const std::string & astrException) : m_strError(astrException)	{
-	ofstream out;
-	out.open("errors.txt",ios::app);
-	out << m_strError << endl;
-	out.close();
 }
 
-//-------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------
 
 string DLExc::getError() const {
 	return m_strError;
 }
+
+//================================================================================================
 
 Download::DownloadParams::DownloadParams()	{
 	m_bReload=false;

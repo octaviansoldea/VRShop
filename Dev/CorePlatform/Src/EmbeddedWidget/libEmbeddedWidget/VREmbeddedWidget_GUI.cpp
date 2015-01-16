@@ -18,10 +18,12 @@ using namespace Ui;
 using namespace std;
 using namespace VR;
 
-EmbeddedWidget_GUI::EmbeddedWidget_GUI(Client * apClient, QObject * apParent)	{
+EmbeddedWidget_GUI::EmbeddedWidget_GUI(Client * apClient, string & astrPipeName, QObject * apParent)	{
 	setupUi(this);
 
 	m_pClient = apClient;
+	string strPipeName = "\\\\.\\pipe\\VRShopPluginPipe";
+	m_pPipe = new PipeClient(strPipeName);
 
 	connect(m_pLabelHome,SIGNAL(hovered(bool)),this,SLOT(slotLinkHovered(bool)));
 	connect(m_pLabelAbout,SIGNAL(hovered(bool)),this,SLOT(slotLinkHovered(bool)));
@@ -44,10 +46,28 @@ EmbeddedWidget_GUI::EmbeddedWidget_GUI(Client * apClient, QObject * apParent)	{
 //----------------------------------------------------------------------
 
 EmbeddedWidget_GUI::~EmbeddedWidget_GUI()	{
+	ofstream out;
+	string strLog = AppData::getFPathLog() + "errors.txt";
+	out.open(strLog,ios::app);
+	out << "Destructor EmbeddedWidget" << endl;
+	out.close();
+
+	delete m_pPipe;
 	delete m_pEmbeddedWidget;
 }
 
 //=========================================================================================
+
+void EmbeddedWidget_GUI::checkIfParentExists()	{
+	bool bRes = m_pPipe->isPipeAccessible();
+
+	//If true, parent alive, else terminated
+	if (bRes == false)	{
+		qApp->quit();
+	}
+}
+
+//----------------------------------------------------------------------
 
 void EmbeddedWidget_GUI::slotLinkHovered(bool abHovered)	{
 	VRQLabel * pEmitter = static_cast<VRQLabel *>(sender());
@@ -104,3 +124,5 @@ void EmbeddedWidget_GUI::slotContactClicked()	{
 void EmbeddedWidget_GUI::slotCurrentIndexChanged(const QString & aqstrShopName)	{
 	m_pEmbeddedWidget->selectShop(aqstrShopName);
 }
+
+//----------------------------------------------------------------------

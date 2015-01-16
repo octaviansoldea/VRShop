@@ -5,18 +5,12 @@
 #include "VRAppData.h"
 
 #include <QApplication>
-#include <QMessageBox>
-#include <QHostAddress>
 
-#include <QString>
-#include <QStringList>
+#include <QSize>
+#include <QPoint>
 #include <QProcess>
 
 #include <QTimer>
-
-#include "BasicStringDefinitions.h"
-
-#include <QFile>
 
 #include "VRClient.h"
 
@@ -27,12 +21,27 @@ using namespace VR;
 
 //===========================================================
 
+/*
+	ARGUMENTS:
+		- .EXE
+		- PARENT HWND
+		- nSELECTION
+		- PIPE NAME
+*/
+
 int main(int argc, char * argv[])	{
 	ofstream out;
 	string strLog = AppData::getFPathLog() + "errors.txt";
 	out.open(strLog,ios::app);
 
-	if(argc != 3) {
+	out << "VRSHOP" << endl;
+	for (int nI=0;nI<argc;nI++)	{
+		out << "Arg " << nI << ": " << argv[nI] << "; ";
+	}
+	out << endl;
+	out.close();
+
+	if(argc < 2) {
 		cerr << argv[0] << " selectArgument(0 or 1)"  << endl;
 		exit(-1);
 	}
@@ -47,26 +56,45 @@ int main(int argc, char * argv[])	{
 		return 0;
 	}
 	
-	EmbeddedWidget_GUI embeddedWidget(&client);
+	string strPipeName = argv[3];
+
+	EmbeddedWidget_GUI embeddedWidget(&client,strPipeName);
+	QTimer timer;
 
 	//nSelection=1: run as a web plugin; default: run as a windows APPi
 	int nSelection=stoi(argv[2]);
 	switch(nSelection)	{
-	case 1:	{
-		embeddedWidget.setAttribute(Qt::WA_NativeWindow);
+	case 1:
+		{
+			embeddedWidget.setAttribute(Qt::WA_NativeWindow);
+//			embeddedWidget.setWindowFlags(Qt::FramelessWindowHint);
 
-		QString qstrArg = argv[1];
-		bool bOk;
+			//STRING TO HWND
+			long lNum;
+			char* pE;
+			lNum = strtol(argv[1], &pE, 16);
+			HWND hW = (HWND)lNum;
+			//END
 
-		SetParent((HWND)embeddedWidget.winId(), (HWND)qstrArg.toULong(&bOk));
+			SetParent((HWND)embeddedWidget.winId(), hW);
 
-		break;
-			}
+			QSize  size = embeddedWidget.size();
+			SetWindowPos((HWND)embeddedWidget.winId(),HWND_TOP,0,0,size.width(),size.height(),SWP_FRAMECHANGED);  // WINDOWS CALL
+
+			embeddedWidget.show();
+
+			//Create pipe
+			QObject::connect(&timer, &QTimer::timeout, &embeddedWidget, &EmbeddedWidget_GUI::checkIfParentExists);
+			timer.start(1000);
+
+			break;
+		}
 	default:
-		break;
+		{
+			embeddedWidget.show();
+			break;
+		}
 	}
-
-	embeddedWidget.show();
 
 	int nRes = app.exec();
 

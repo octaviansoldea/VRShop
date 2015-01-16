@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QWidget>
+#include "VRPipeClient.h"
 
 #include "ui_VREmbeddedWidget_GUI.h"
 
@@ -13,7 +14,7 @@ namespace VR	{
 	class EmbeddedWidget_GUI : public QMainWindow, public Ui::MainCentralWindow {
 		Q_OBJECT
 	public:
-		EmbeddedWidget_GUI(Client * apClient, QObject * apParent=0);
+		EmbeddedWidget_GUI(Client * apClient, std::string & astrPipeName, QObject * apParent=0);
 		~EmbeddedWidget_GUI();
 
 	private slots:
@@ -30,6 +31,10 @@ namespace VR	{
 	private:
 		EmbeddedWidget * m_pEmbeddedWidget;
 		Client * m_pClient;
+		PipeClient * m_pPipe;
+
+	public:
+		void checkIfParentExists();
 	};
 }
 #endif //VR_EMBEDDED_WIDGET_GUI_H

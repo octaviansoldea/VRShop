@@ -18,6 +18,7 @@ file (GLOB GENERAL RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
 	
 include_directories(
 	${PLUGIN_INCLUDE_DIRS}
+#	${CMAKE_CURRENT_SOURCE_DIR}/libPipePrimitives
 )
 
 
@@ -42,6 +43,8 @@ SET( SOURCES
 	${CMAKE_CURRENT_SOURCE_DIR}/../../../../CorePlatform/Src/CoreUtils_CPP/libURL/VRDownloadFile.h
 	${CMAKE_CURRENT_SOURCE_DIR}/../../../../CorePlatform/Src/CoreUtils_CPP/libCommon/BasicStringDefinitions.h
 	${CMAKE_CURRENT_SOURCE_DIR}/../../../../CorePlatform/Src/CoreUtils_CPP/libCommon/BasicStringDefinitions.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/../../../../CorePlatform/Src/CoreUtils_CPP/libPipePrimitives/VRPipeServer.h
+	${CMAKE_CURRENT_SOURCE_DIR}/../../../../CorePlatform/Src/CoreUtils_CPP/libPipePrimitives/VRPipeServer.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/../../../../WebMain/VRShopPlugin.htm
     ${CMAKE_CURRENT_SOURCE_DIR}/../../../../WebMain/main.js
 )
@@ -50,7 +53,12 @@ INCLUDE_DIRECTORIES(
 	${CMAKE_CURRENT_SOURCE_DIR}/../../../../CorePlatform/Src/CoreUtils_CPP/libAppData
 	${CMAKE_CURRENT_SOURCE_DIR}/../../../../CorePlatform/Src/CoreUtils_CPP/libURL
 	${CMAKE_CURRENT_SOURCE_DIR}/../../../../CorePlatform/Src/CoreUtils_CPP/libCommon
+	${CMAKE_CURRENT_SOURCE_DIR}/../../../../CorePlatform/Src/CoreUtils_CPP/libPipePrimitives
 )
+
+#SUBDIRS	(
+#	libPipePrimitives
+#)
 
 # This will include Win/projectDef.cmake, X11/projectDef.cmake, Mac/projectDef 
 # depending on the platform

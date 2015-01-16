@@ -1,3 +1,5 @@
+#include "VRAppData.h"
+
 #include "VRFloor.h"
 #include "VRWall.h"
 
@@ -20,7 +22,7 @@ const char* Room::className() const	{
 ref_ptr<Node> Room::createRoom()	{
 	FloorParams fP;
 	fP.m_strTextureName = 
-		"../../../Resources/Textures/CeramicTileFloor.bmp";
+		AppData::getFPathResources()+"Textures/CeramicTileFloor.bmp";
 	fP.m_vec3dBottomLeft = Vec3d(-25.5,-25.5,0);
 	fP.m_vec3dUpRight = Vec3d(25.5,25.5,0);
 	Floor floor(fP);

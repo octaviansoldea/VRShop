@@ -18,7 +18,7 @@ int main(int argc, char * argv[])	{
 
 	bool bRes=true;
 
-	Server server;
+	Server server((QObject*)(0),10);
 	bRes = server.init();
 
 	if (!bRes)	{

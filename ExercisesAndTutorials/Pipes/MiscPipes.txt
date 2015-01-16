@@ -1,0 +1,481 @@
+/*******************************************************
+*     MYCPLUS Sample Code - http://www.mycplus.com     *
+*                                                     *
+*   This code is made available as a service to our   *
+*      visitors and is provided strictly for the      *
+*               purpose of illustration.              *
+*                                                     *
+* Please direct all inquiries to saqib at mycplus.com *
+*******************************************************/
+
+//     This program is a simple named pipe client that demonstrates
+//     the API calls needed to successfully develop a basic named
+//     pipe client application. When this application successfully
+//     connects to a named pipe, the message "This is a test" is
+//     written to the server.
+//
+//     There are four basic steps needed to implement a client:
+//
+//     1. Wait for a Named Pipe instance to become available using
+//        the WaitNamedPipe() API function.
+//     2. Connect to the Named Pipe using the CreateFile() API
+//        function.
+//     3. Send data to or receive data from the server using
+//        the WriteFile() and ReadFile() API functions.
+//     4. Close the Named Pipe session using the CloseHandle() API
+//        functions.
+//
+//
+// Compile:
+//     cl -o Client Client.cpp
+//
+// Command Line Options:
+//     None
+//
+
+#include 
+#include 
+
+#define PIPE_NAME "\\\\.\\Pipe\\Jim"
+
+void main(void) {
+
+	HANDLE PipeHandle;
+	DWORD BytesWritten;
+
+	if (WaitNamedPipe(PIPE_NAME, NMPWAIT_WAIT_FOREVER) == 0)
+	{
+		printf("WaitNamedPipe failed with error %d\n",
+			GetLastError());
+		return;
+	}
+
+	// Create the named pipe file handle
+	if ((PipeHandle = CreateFile(PIPE_NAME,
+		GENERIC_READ | GENERIC_WRITE, 0,
+		(LPSECURITY_ATTRIBUTES) NULL, OPEN_EXISTING,
+		FILE_ATTRIBUTE_NORMAL,
+		(HANDLE) NULL)) == INVALID_HANDLE_VALUE)
+	{
+		printf("CreateFile failed with error %d\n", GetLastError());
+		return;
+	}
+
+	if (WriteFile(PipeHandle, "This is a test", 14, &BytesWritten,
+		NULL) == 0)
+	{
+		printf("WriteFile failed with error %d\n", GetLastError());
+		CloseHandle(PipeHandle);
+		return;
+	}
+
+	printf("Wrote %d bytes", BytesWritten);
+
+	CloseHandle(PipeHandle);
+}
+//
+// End of client
+//
+/*****************************************/
+
+//-----------------------------------------------------------//
+
+
+
+//OverlappedServer
+
+// Module Name: Overlap.cpp
+//
+// Purpose:
+//     This sample demonstrates how to develop an advanced named
+//     pipe server that is capable of servicing 5 named pipe
+//     instances. The application is an echo server where data is
+//     received from a client and echoed back to the client. All
+//     the pipe instances are serviced in the main application
+//     thread using Win32 overlapped I/O.
+//
+// Compile:
+//     cl -o overlap overlap.cpp
+//
+// Command Line Options:
+//     None
+//
+
+#include 
+#include 
+
+#define NUM_PIPES 5
+#define BUFFER_SIZE 256
+
+void main(void)
+{
+	HANDLE PipeHandles[NUM_PIPES];
+	DWORD BytesTransferred;
+	CHAR Buffer[NUM_PIPES][BUFFER_SIZE];
+	INT i;
+	OVERLAPPED Ovlap[NUM_PIPES];
+	HANDLE Event[NUM_PIPES];
+
+	// For each pipe handle instance, the code must maintain the
+	// pipes' current state, which determines if a ReadFile or
+	// WriteFile is posted on the named pipe. This is done using
+	// the DataRead variable array. By knowing each pipe's
+	// current state, the code can determine what the next I/O
+	// operation should be.
+	BOOL DataRead[NUM_PIPES];
+
+	DWORD Ret;
+	DWORD Pipe;
+
+	for(i = 0; i < NUM_PIPES; i++)
+	{
+		// Create a named pipe instance
+		if ((PipeHandles[i] = CreateNamedPipe("\\\\.\\PIPE\\jim",
+			PIPE_ACCESS_DUPLEX | FILE_FLAG_OVERLAPPED,
+			PIPE_TYPE_BYTE | PIPE_READMODE_BYTE, NUM_PIPES,
+			0, 0, 1000, NULL)) == INVALID_HANDLE_VALUE)
+		{
+			printf("CreateNamedPipe for pipe %d failed "
+				"with error %d\n", i, GetLastError());
+			return;
+		}
+
+		// Create an event handle for each pipe instance. This
+		// will be used to monitor overlapped I/O activity on
+		// each pipe.
+		if ((Event[i] = CreateEvent(NULL, TRUE, FALSE, NULL))
+			== NULL)
+		{
+			printf("CreateEvent for pipe %d failed with error %d\n",
+				i, GetLastError());
+			continue;
+		}
+
+		// Maintain a state flag for each pipe to determine when data
+		// is to be read from or written to the pipe
+		DataRead[i] = FALSE;
+
+		ZeroMemory(&Ovlap[i], sizeof(OVERLAPPED));
+		Ovlap[i].hEvent = Event[i];
+
+		// Listen for client connections using ConnectNamedPipe()
+		if (ConnectNamedPipe(PipeHandles[i], &Ovlap[i]) == 0)
+		{
+			if (GetLastError() != ERROR_IO_PENDING)
+			{
+				printf("ConnectNamedPipe for pipe %d failed with",
+				    " error %d\n", i, GetLastError());
+				CloseHandle(PipeHandles[i]);
+				return;
+			}
+		}
+	}
+
+	printf("Server is now running\n");
+
+
+	// Read and echo data back to Named Pipe clients forever
+	while(1)
+	{
+		if ((Ret = WaitForMultipleObjects(NUM_PIPES, Event,
+			FALSE, INFINITE)) == WAIT_FAILED)
+		{
+			printf("WaitForMultipleObjects failed with error %d\n",
+				GetLastError());
+			return;
+		}
+
+		Pipe = Ret - WAIT_OBJECT_0;
+
+		ResetEvent(Event[Pipe]);
+
+		// Check overlapped results, and if they fail, reestablish
+		// communication for a new client; otherwise, process read
+		// and write operations with the client
+
+		if (GetOverlappedResult(PipeHandles[Pipe], &Ovlap[Pipe],
+			&BytesTransferred, TRUE) == 0)
+		{
+			printf("GetOverlapped result failed %d start over\n",
+				GetLastError());
+
+			if (DisconnectNamedPipe(PipeHandles[Pipe]) == 0)
+			{
+				printf("DisconnectNamedPipe failed with error %d\n",
+					GetLastError());
+				return;
+			}
+
+			if (ConnectNamedPipe(PipeHandles[Pipe],
+				&Ovlap[Pipe]) == 0)
+			{
+				if (GetLastError() != ERROR_IO_PENDING)
+				{
+					// Severe error on pipe. Close this
+					// handle forever.
+					printf("ConnectNamedPipe for pipe %d failed with"
+						"error %d\n", i, GetLastError());
+					CloseHandle(PipeHandles[Pipe]);
+				}
+			}
+
+			DataRead[Pipe] = FALSE;
+		}
+		else
+		{
+			// Check the state of the pipe. If DataRead equals
+			// FALSE, post a read on the pipe for incoming data.
+			// If DataRead equals TRUE, then prepare to echo data
+			// back to the client.
+
+			if (DataRead[Pipe] == FALSE)
+			{
+				// Prepare to read data from a client by posting a
+				// ReadFile operation
+
+				ZeroMemory(&Ovlap[Pipe], sizeof(OVERLAPPED));
+				Ovlap[Pipe].hEvent = Event[Pipe];
+
+				if (ReadFile(PipeHandles[Pipe], Buffer[Pipe],
+					BUFFER_SIZE, NULL, &Ovlap[Pipe]) == 0)
+				{
+					if (GetLastError() != ERROR_IO_PENDING)
+					{
+						printf("ReadFile failed with error %d\n",
+						GetLastError());
+					}
+				}
+
+				DataRead[Pipe] = TRUE;
+			}
+			else
+			{
+				// Write received data back to the client by
+				// posting a WriteFile operation.
+				printf("Received %d bytes, echo bytes back\n",
+					BytesTransferred);
+
+				ZeroMemory(&Ovlap[Pipe], sizeof(OVERLAPPED));
+				Ovlap[Pipe].hEvent = Event[Pipe];
+
+				if (WriteFile(PipeHandles[Pipe], Buffer[Pipe],
+					BytesTransferred, NULL, &Ovlap[Pipe]) == 0)
+				{
+					if (GetLastError() != ERROR_IO_PENDING)
+					{
+						printf("WriteFile failed with error %d\n",
+						GetLastError());
+					}
+				}
+
+				DataRead[Pipe] = FALSE;
+			}
+		}
+	}
+}
+
+
+//
+// End of OverlappedServer
+//
+/*************************/
+
+//--------------------------------------------------------------------------//
+
+
+// Module Name: Server.cpp
+//
+// Purpose:
+//
+//     This program is a simple named pipe server that demonstrates
+//     the API calls needed to successfully develop a basic named
+//     pipe server application. When this application receives a
+//     client connection, it reads the data from the pipe and
+//     reports the received message.
+//
+//     You need five basic steps to write a named pipe server:
+//
+//     1. Create a named pipe instance handle using the
+//        CreateNamedPipe() API function.
+//     2. Listen for a client connection on a pipe instance using
+//        the ConnectNamedPipe() API function.
+//     3. Receive from and send data to the client using the
+//        ReadFile() and WriteFile() API functions.
+//     4. Close down the named pipe connection using the
+//        DisconnectNamedPipe() API function.
+//     5. Close the named pipe instance handle using the
+//        CloseHandle() API function.
+//
+// Compile:
+//     cl -o Server Server.cpp
+//
+// Command Line Options:
+//     None
+//
+
+#include 
+#include 
+
+void main(void)
+{
+	HANDLE PipeHandle;
+	DWORD BytesRead;
+	CHAR buffer[256];
+
+	if ((PipeHandle = CreateNamedPipe("\\\\.\\Pipe\\Jim",
+		PIPE_ACCESS_DUPLEX, PIPE_TYPE_BYTE | PIPE_READMODE_BYTE, 1,
+		0, 0, 1000, NULL)) == INVALID_HANDLE_VALUE)
+	{
+		printf("CreateNamedPipe failed with error %d\n",
+			GetLastError());
+		return;
+	}
+
+	printf("Server is now running\n");
+
+	if (ConnectNamedPipe(PipeHandle, NULL) == 0)
+	{
+		printf("ConnectNamedPipe failed with error %d\n",
+			GetLastError());
+		CloseHandle(PipeHandle);
+		return;
+	}
+
+	if (ReadFile(PipeHandle, buffer, sizeof(buffer),
+		&BytesRead,  NULL) <= 0)
+	{
+		printf("ReadFile failed with error %d\n", GetLastError());
+		CloseHandle(PipeHandle);
+		return;
+	}
+
+	printf("%.*s\n", BytesRead, buffer);
+
+	if (DisconnectNamedPipe(PipeHandle) == 0)
+	{
+		printf("DisconnectNamedPipe failed with error %d\n",
+			GetLastError());
+		return;
+	}
+
+	CloseHandle(PipeHandle);
+}
+
+
+//
+// End of Server
+//
+/*********************/
+
+//------------------------------------------------------------------------------//
+
+//
+// Thread Server
+//
+
+// Module Name: Threads.cpp
+//
+// Purpose:
+//     This sample demonstrates how to develop an advanced named
+//     pipe server that is capable of servicing 5 named pipe
+//     instances. The application is an echo server where data is
+//     received from a client and echoed back to the client. All
+//     the pipe instances are serviced using threads.
+//
+// Compile:
+//     cl -o Threads Threads.cpp
+//
+// Command Line Options:
+//     None
+//
+#include 
+#include 
+#include 
+
+#define NUM_PIPES 5
+
+DWORD WINAPI PipeInstanceProc(LPVOID lpParameter);
+
+void main(void)
+{
+	HANDLE ThreadHandle;
+	INT i;
+	DWORD ThreadId;
+
+	for(i = 0; i < NUM_PIPES; i++)
+	{
+		// Create a thread to serve each pipe instance
+		if ((ThreadHandle = CreateThread(NULL, 0, PipeInstanceProc,
+			NULL, 0, &ThreadId)) == NULL)
+		{
+			printf("CreateThread failed with error %\n",
+				GetLastError());
+			return;
+		}
+		CloseHandle(ThreadHandle);
+	}
+
+	printf("Press a key to stop the server\n");
+	_getch();
+}
+
+//
+// Function: PipeInstanceProc
+//
+// Description:
+//     This function handles the communication details of a single
+//     named pipe instance.
+//
+DWORD WINAPI PipeInstanceProc(LPVOID lpParameter)
+{
+	HANDLE PipeHandle;
+	DWORD BytesRead;
+	DWORD BytesWritten;
+	CHAR Buffer[256];
+
+	if ((PipeHandle = CreateNamedPipe("\\\\.\\PIPE\\jim",
+		PIPE_ACCESS_DUPLEX, PIPE_TYPE_BYTE | PIPE_READMODE_BYTE,
+		NUM_PIPES, 0, 0, 1000, NULL)) == INVALID_HANDLE_VALUE)
+	{
+		printf("CreateNamedPipe failed with error %d\n",
+			GetLastError());
+		return 0;
+	}
+
+	// Serve client connections forever
+	while(1)
+	{
+		if (ConnectNamedPipe(PipeHandle, NULL) == 0)
+		{
+			printf("ConnectNamedPipe failed with error %d\n",
+				GetLastError());
+			break;
+		}
+
+		// Read data from and echo data to the client until
+		// the client is ready to stop
+		while(ReadFile(PipeHandle, Buffer, sizeof(Buffer),
+			&BytesRead,  NULL) > 0)
+		{
+			printf("Echo %d bytes to client\n", BytesRead);
+
+			if (WriteFile(PipeHandle, Buffer, BytesRead,
+				&BytesWritten, NULL) == 0)
+			{
+				printf("WriteFile failed with error %d\n",
+					GetLastError());
+				break;
+			}
+		}
+
+		if (DisconnectNamedPipe(PipeHandle) == 0)
+		{
+			printf("DisconnectNamedPipe failed with error %d\n",
+				GetLastError());
+			break;
+		}
+	}
+
+	CloseHandle(PipeHandle);
+	return 0;
+}

@@ -30,22 +30,11 @@ m_plugin(plugin), m_host(host)	{
 	registerMethod("runApplication",make_method(this, &VRShopPluginAPI::runApplication));
 
 	registerProperty("version",make_property(this,&VRShopPluginAPI::get_version));
-
-	ofstream out;
-	string strLog = AppData::getFPathLog() + "errors.txt";
-	out.open(strLog,ios::app);
-	out << "Constructor of the FB." << endl;
-	out.close();
 }
 
 //--------------------------------------------------------------------------------------
 
 VRShopPluginAPI::~VRShopPluginAPI()	{
-	ofstream out;
-	string strLog = AppData::getFPathLog() + "errors.txt";
-	out.open(strLog,ios::app);
-	out << "Destructor of the FB." << endl;
-	out.close();
 }
 
 //==========================================================================

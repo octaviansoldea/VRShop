@@ -5,6 +5,7 @@
 #include <osg/Texture2D>
 
 #include "VRPlate3D.h"
+#include "VRAppData.h"
 
 #include "VRWall.h"
 
@@ -38,14 +39,16 @@ void Wall::createWall()	{
 	p3DP.m_flLenY = 51.0;
 	p3DP.m_flLenZ = 5.0;
 	p3DP.m_flPosX = -25.5;
-	p3DP.m_strFileNameTexture = "../../../Resources/Textures/WallYellow.bmp";
+	p3DP.m_strFileNameTexture = 
+		AppData::getFPathResources()+"Textures/WallYellow.bmp";
 
 	ref_ptr<Plate3D> pPlateLeft = new Plate3D(p3DP);
 	addChild(pPlateLeft);
 
 	//Right side
 	p3DP.m_flPosX = 25.5;
-	p3DP.m_strFileNameTexture = "../../../Resources/Textures/WallBlue.bmp";
+	p3DP.m_strFileNameTexture = 
+		AppData::getFPathResources()+"Textures/WallBlue.bmp";
 
 	ref_ptr<Plate3D> pPlateRight = new Plate3D(p3DP);
 	addChild(pPlateRight);
@@ -71,7 +74,7 @@ void Wall::createWall()	{
 	p3DP.m_flLenX = 51.0;
 	p3DP.m_flPosX = 0.0;
 	p3DP.m_flPosY = 25.5;
-	p3DP.m_strFileNameTexture = "../../../Resources/Textures/WallLightGreen.bmp";
+	p3DP.m_strFileNameTexture = AppData::getFPathResources()+"Textures/WallLightGreen.bmp";
 	ref_ptr<Plate3D> pPlateBack = new Plate3D(p3DP);
 	addChild(pPlateBack);
 }

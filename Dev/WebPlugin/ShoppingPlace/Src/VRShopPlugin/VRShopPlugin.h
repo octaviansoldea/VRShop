@@ -19,6 +19,17 @@
 
 #include "PluginCore.h"
 
+namespace VR {class PipeServer;};
+
+namespace VR	{
+	class Process	{
+	public:
+		Process();
+		~Process();
+
+		void newProcess(std::string & astrApplicationName, std::string & astrArguments);
+	};
+}
 
 FB_FORWARD_PTR(VRShopPlugin)
 class VRShopPlugin : public FB::PluginCore	{
@@ -57,8 +68,11 @@ public:
     virtual bool onWindowDetached(FB::DetachedEvent *evt, FB::PluginWindow *);
     /** END EVENTDEF -- DON'T CHANGE THIS LINE **/
 
-	void newProcess(std::string & astrApplicationName, std::string & astrArguments);
 	void runApplicationThread();
+
+private:
+	VR::PipeServer * m_pPipe;
+	VR::Process * m_pProcess;
 };
 
 

@@ -278,7 +278,7 @@ int main(int argc, char *argv[])	{
 
 	string strDBName;
 	
-	strDBName = "../../Databases/Equipment.db";
+	strDBName = AppData::getFPathDatabases() + "/Equipment.db";
 	createTable(strDBName);
 	populateTable(strDBName);
 	insertIntoDatabase_Sphere(strDBName);

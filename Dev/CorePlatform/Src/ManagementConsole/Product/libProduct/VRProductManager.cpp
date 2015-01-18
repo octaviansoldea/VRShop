@@ -3,9 +3,11 @@
 #include <QString>
 
 #include <QObject>
+#include <QImageReader>
+
 #include "VRBasicQtOperations.h"
 
-#include <QImageReader>
+#include "VRAppData.h"
 
 #include "VRRemoveProduct_GUI.h"
 #include "VRAddProduct_GUI.h"
@@ -402,7 +404,7 @@ string ProductManager::getTableName()	{
 //------------------------------------------------------------------------------
 
 string ProductManager::getDatabaseName()	{
-	return "../../../Databases/Products.db";
+	return AppData::getFPathDatabases() + "/Products.db";
 }
 
 //------------------------------------------------------------------------------

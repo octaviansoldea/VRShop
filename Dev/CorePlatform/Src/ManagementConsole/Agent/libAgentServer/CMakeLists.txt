@@ -39,6 +39,7 @@ ENDIF(Qt5_FOUND)
 INCLUDE_DIRECTORIES(
 	${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
 	${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabase
+	${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libAppData
 )
 
 #Define sources to be later added into the library

@@ -1,4 +1,5 @@
-#include "BasicStringDefinitions.h"
+#include <iostream>
+#include <string>
 
 #include <QApplication>
 #include <QMessageBox>
@@ -10,13 +11,12 @@
 
 #include <osg/DisplaySettings>
 
-#include <iostream>
-#include <string>
+#include "BasicStringDefinitions.h"
+
+#include "VRAppData.h"
 
 #include "VRAbstractObject.h"
 #include "VRAbstractGeomShape.h"
-
-
 
 #include "VRUntransformedPlate2D.h"
 #include "VRUntransformedPlate3D.h"
@@ -76,12 +76,12 @@ int main1(int argc, char *argv[])	{
 	QApplication app(argc,argv);
 
 	ref_ptr<Group> pScene = new Group;
-	ref_ptr<Node> pAxes = osgDB::readNodeFile("../../../../Resources/Models3D/axes.osgt");
+	ref_ptr<Node> pAxes = osgDB::readNodeFile(AppData::getFPathResources() +"/Models3D/axes.osgt");
 	pScene->addChild(pAxes);
 
 	string strDBName;
 	
-	strDBName = "../../../../Databases/Equipment.db";
+	strDBName = AppData::getFPathDatabases() +"/Equipment.db";
 	createTable(strDBName);
 	populateTable(strDBName);
 

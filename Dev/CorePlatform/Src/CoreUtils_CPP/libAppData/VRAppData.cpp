@@ -20,30 +20,38 @@ string AppData::init() {
 //-----------------------------------------------------------------------------
 
 string AppData::getFPathVRShop() {
+	if(m_strFPathVRShop == "")
+		m_strFPathVRShop = AppData::init();
 	return(m_strFPathVRShop);
 }
 
 //-----------------------------------------------------------------------------
 
 std::string AppData::getFPathDatabases() {
+	if(m_strFPathVRShop == "")
+		m_strFPathVRShop = AppData::init();
 	return(getFPathVRShop() + "/Databases/");
 }
 
 //-----------------------------------------------------------------------------
 
 std::string AppData::getFPathLog() {
+	if(m_strFPathVRShop == "")
+		m_strFPathVRShop = AppData::init();
 	return(getFPathVRShop() + "/Log/");
 }
 
 //-----------------------------------------------------------------------------
 
 std::string AppData::getFPathResources() {
+	if(m_strFPathVRShop == "")
+		m_strFPathVRShop = AppData::init();
 	return(getFPathVRShop() + "/Resources/");
 }
 
 //-----------------------------------------------------------------------------
 
-std::string AppData::getFPathServer()	{
+std::string AppData::getFPathServer() {
 	string strResult = "http://127.0.0.1/Website";
 	return strResult;
 }

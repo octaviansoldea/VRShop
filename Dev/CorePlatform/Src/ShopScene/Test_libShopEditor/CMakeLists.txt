@@ -65,6 +65,7 @@ SET(LIBS_COMMON
 	libCommon
 	libCommon_OSG
 	libCommon_QT
+	libAppData
 	libItemModel
 	libSearch
 	libCamera

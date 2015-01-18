@@ -1,6 +1,8 @@
 #include <QString>
 #include <iostream>
 
+#include "VRAppData.h"
+
 #include "VRDatabaseInterface.h"
 
 #include "VRCashierManagerServer.h"
@@ -39,7 +41,7 @@ string CashierManagerServer::getTableName()	{
 //------------------------------------------------------------------------------
 
 string CashierManagerServer::getDatabaseName()	{
-	return "../../../../Databases/Cashier.db";
+	return AppData::getFPathDatabases() + "/Cashier.db";
 }
 
 //------------------------------------------------------------------------------

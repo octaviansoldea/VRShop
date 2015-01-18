@@ -38,6 +38,7 @@ INCLUDE_DIRECTORIES(
 
 SET(LIBS_COMMON 
 	libCommon
+	libAppData
 	libDatabase
 	libAgentServer
 	libCommon_QT

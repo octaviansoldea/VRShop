@@ -1,6 +1,8 @@
+#include <time.h>
+
 #include "BasicStringDefinitions.h"
 
-#include <time.h>
+#include "VRAppData.h"
 
 #include "VRDatabaseInterface.h"
 
@@ -91,7 +93,8 @@ string AvatarManagerServer::getTableName()	{
 //------------------------------------------------------------------------------
 
 string AvatarManagerServer::getDatabaseName()	{
-	return "../../../../Databases/Avatars.db";
+	string strDBName =  AppData::getFPathDatabases() + "/Avatars.db";
+	return(strDBName);
 }
 
 //------------------------------------------------------------------------------

@@ -60,6 +60,7 @@ SET(LIBS_COMMON
 	libTimer
 	libCommon
 	libCommon_QT
+	libAppData
 	Winmm
 	libAgent
 	libServerClientCommands

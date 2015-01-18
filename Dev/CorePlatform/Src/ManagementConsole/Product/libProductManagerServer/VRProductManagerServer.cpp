@@ -3,7 +3,7 @@
 #include <list>
 
 #include "BasicStringDefinitions.h"
-
+#include "VRAppData.h"
 #include "VRBasketServer.h"
 #include "VRDatabaseInterface.h"
 
@@ -39,7 +39,7 @@ string ProductManagerServer::getTableName()	{
 //------------------------------------------------------------------------------
 
 string ProductManagerServer::getDatabaseName()	{
-	return "../../../../Databases/Products.db";
+	return AppData::getFPathDatabases() + "/Products.db";
 }
 
 //------------------------------------------------------------------------------

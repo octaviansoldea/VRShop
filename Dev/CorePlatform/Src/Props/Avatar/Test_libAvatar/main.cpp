@@ -17,7 +17,7 @@ int main_Avatar(int argc, char * argv[])	{
 	osgViewer::Viewer viewer;
 	ref_ptr<Group> pScene = new Group;
 
-	string strAvatarFileName = "../../../../Resources/Models3D/avatar.osg";
+	string strAvatarFileName = AppData::getFPathResources() + "/Models3D/avatar.osg";
 
 	ref_ptr<KeyboardMouseManipulatorShopClient> pCamera = new KeyboardMouseManipulatorShopClient(pScene);
 

@@ -7,7 +7,7 @@
 #include <osg/TextureRectangle>
 #include <osg/TexMat>
 
-
+#include "VRAppData.h"
 #include "VRUntransformedPlate2D.h"
 #include "VRUntransformedPlate3D.h"
 #include "VRUntransformedPolygon2D.h"
@@ -85,7 +85,7 @@ void main_UntransformedPlate2D_Texture(ref_ptr<Group> pScene)
 {
 	ref_ptr<UntransformedPlate2D> pUntransformedPlate2D = new UntransformedPlate2D();
 	
-	pUntransformedPlate2D->setTexture("../../../../Resources/Textures/lz.rgb");
+	pUntransformedPlate2D->setTexture(AppData::getFPathResources() + "/Textures/lz.rgb");
 
 	pScene->addChild(pUntransformedPlate2D);
 }
@@ -111,7 +111,7 @@ void main_UntransformedPlate3D_Texture(ref_ptr<Group> pScene)
 {
 	ref_ptr<UntransformedPlate3D> pUntransformedPlate3D = new UntransformedPlate3D();
 	
-	pUntransformedPlate3D->setTexture("../../../../Resources/Textures/lz.rgb");
+	pUntransformedPlate3D->setTexture(AppData::getFPathResources() + "/Textures/lz.rgb");
 
 	pScene->addChild(pUntransformedPlate3D);
 }
@@ -150,7 +150,7 @@ void main_UntransformedPolyhedron_Color(ref_ptr<Group> pScene)	{
 void main_UntransformedPolyhedron_Texture(ref_ptr<Group> pScene)	{
 	UntransformedPolyhedronParams uPP;
 	ref_ptr<UntransformedPolyhedron> pUntransformedPolyhedron = new UntransformedPolyhedron(uPP);
-	pUntransformedPolyhedron->setTexture("../../../../Resources/Textures/lz.rgb");
+	pUntransformedPolyhedron->setTexture(AppData::getFPathResources() + "/Textures/lz.rgb");
 
 	pScene->addChild(pUntransformedPolyhedron);
 }
@@ -172,7 +172,7 @@ void main_Cylinder(ref_ptr<Group> pScene)	{
 	cP.m_arrflRGBA[1] = 0.25;
 	cP.m_arrflRGBA[2] = 0.15;
 	cP.m_arrflRGBA[3] = 1.0;
-	cP.m_strFileNameTexture = "../../../../Resources/Textures/lz.rgb";
+	cP.m_strFileNameTexture = AppData::getFPathResources() + "/Textures/lz.rgb";
 
 	ref_ptr<VR::Cylinder> pCylinder = new VR::Cylinder(cP);
 	pScene->addChild(pCylinder);
@@ -221,7 +221,7 @@ void main_Sphere_Color(ref_ptr<Group> pScene)	{
 
 void main_UntransformedSphere_Texture(ref_ptr<Group> pScene)	{
 	ref_ptr<UntransformedSphere> pUntransformedSphere = new UntransformedSphere();
-	pUntransformedSphere->setTexture("../../../../Resources/Textures/lz.rgb");
+	pUntransformedSphere->setTexture(AppData::getFPathResources() + "/Textures/lz.rgb");
 	pScene->addChild(pUntransformedSphere);
 }
 
@@ -253,7 +253,7 @@ int main(int argc, char * argv[])	{
 	QApplication app(argc,argv);
 
 	ref_ptr<Group> pScene = new Group;
-	ref_ptr<Node> pAxes = osgDB::readNodeFile("../../../../Resources/Models3D/axes.osgt");
+	ref_ptr<Node> pAxes = osgDB::readNodeFile(AppData::getFPathResources() + "/Models3D/axes.osgt");
 	pScene->addChild(pAxes);
 
 	int nSelection = 11;

@@ -106,7 +106,7 @@ int main2(int argc, char * argv[])	{
 	QApplication app(argc,argv);
 
 	ref_ptr<Group> pScene = new Group;
-	ref_ptr<Node> pAxes = osgDB::readNodeFile("../../../../Resources/Models3D/axes.osgt");
+	ref_ptr<Node> pAxes = osgDB::readNodeFile(AppData::getFPathResources() + "/Models3D/axes.osgt");
 	pScene->addChild(pAxes);
 
 	ContainerParams cParams;
@@ -136,7 +136,7 @@ int main3(int argc, char * argv[])	{
 	QApplication app(argc,argv);
 
 	ref_ptr<Group> pScene = new Group;
-	ref_ptr<Node> pAxes = osgDB::readNodeFile("../../../../Resources/Models3D/axes.osgt");
+	ref_ptr<Node> pAxes = osgDB::readNodeFile(AppData::getFPathResources() + "/Models3D/axes.osgt");
 	pScene->addChild(pAxes);
 
 	ContainerParams cParams;

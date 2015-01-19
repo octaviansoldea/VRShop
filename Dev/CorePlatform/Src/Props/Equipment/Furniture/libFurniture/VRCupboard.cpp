@@ -1,11 +1,10 @@
+#include "VRAppData.h"
 #include "VRAbstractGeomShape.h"
 #include "VRPlate3D.h"
 #include "VRCylinder.h"
 #include "VRPrism.h"
 #include "VRSphere.h"
-
 #include "BasicStringDefinitions.h"
-
 #include "VRCupboard.h"
 
 using namespace std;
@@ -199,7 +198,7 @@ void Cupboard::predefinedObject()	{
 	aPlate3DParams.m_flPosX = 0;
 	aPlate3DParams.m_flPosY = 0.475;
 	aPlate3DParams.m_flPosZ = 1.0;
-	aPlate3DParams.m_strFileNameTexture = "../../Resources/Textures/lz.rgb";
+	aPlate3DParams.m_strFileNameTexture = AppData::getFPathResources() + "/Textures/lz.rgb";
 
 	pPlate3D = new Plate3D(aPlate3DParams);
 	addPart(pPlate3D);

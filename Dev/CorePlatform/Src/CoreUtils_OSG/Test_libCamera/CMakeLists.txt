@@ -36,7 +36,9 @@ SET(src
 
 INCLUDE_DIRECTORIES(
 	${OPENSCENEGRAPH_INCLUDE_DIRS}
+	${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libAppData
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCamera
+	${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libAppData
 	${CMAKE_SOURCE_DIR}/Props/GeometricShape/libGeometricShape
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_OSG
 )
@@ -60,6 +62,7 @@ IF(Qt5_FOUND)
 	libCamera
 	libGeometricShape
 	libCommon_OSG
+	libAppData
   )
 ELSEIF(NOT Qt5_FOUND AND Qt4_FOUND)
   TARGET_LINK_LIBRARIES(Test_libCamera
@@ -74,6 +77,7 @@ ELSEIF(NOT Qt5_FOUND AND Qt4_FOUND)
 	${OPENTHREADS_LIBRARIES}
 	libCamera
 	libGeometricShape
+	libAppData
   )
 ENDIF()
 

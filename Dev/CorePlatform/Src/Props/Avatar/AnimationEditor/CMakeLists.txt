@@ -41,6 +41,7 @@ INCLUDE_DIRECTORIES(
 	${CMAKE_SOURCE_DIR}/Props/Avatar/libAnimationEditor
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_OSG
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_QT
+	${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libAppData
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCamera
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libOSGQTViewer
 )
@@ -65,6 +66,7 @@ SET(LIBS_COMMON
 	libCommon_QT
 	libCamera
 	libOSGQTViewer
+	libAppData
 )
 
 IF(Qt5_FOUND)

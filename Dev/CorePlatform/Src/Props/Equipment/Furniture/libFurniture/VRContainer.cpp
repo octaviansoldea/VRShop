@@ -1,9 +1,8 @@
 #include <fstream>
 
-#include "VRPlate3D.h"
-
 #include "BasicStringDefinitions.h"
-
+#include "VRAppData.h"
+#include "VRPlate3D.h"
 #include "VRContainer.h"
 
 using namespace std;
@@ -198,7 +197,7 @@ void Container::predefinedObject()	{
 	aPlate3DParams.m_flPosY = (containerParams.m_flDepth-containerParams.m_flThickness)/2;
 	aPlate3DParams.m_flPosZ = containerParams.m_flHeight/2;
 
-	aPlate3DParams.m_strFileNameTexture = "../../Resources/Textures/lz.rgb";
+	aPlate3DParams.m_strFileNameTexture = AppData::getFPathResources() + "/Textures/lz.rgb";
 	pPlate3D = new Plate3D(aPlate3DParams);
 	addPart(pPlate3D);
 

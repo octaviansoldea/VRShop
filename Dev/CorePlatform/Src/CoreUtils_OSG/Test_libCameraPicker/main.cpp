@@ -1,16 +1,15 @@
+#include <osgDB/readFile>
+#include <osgViewer/Viewer>
+
+#include "VRAppData.h"
 #include "VRPlate3D.h"
 #include "VRCylinder.h"
 #include "VRSphere.h"
-
 #include "VRContainer.h"
-
 #include "VRPickAndDragHandlerShopEditor.h"
 #include "VRKeyboardMouseManipulator.h"
-
-#include <osgViewer/Viewer>
-
 #include "VRGrid.h"
-#include <osgDB/readFile>
+
 
 using namespace VR;
 using namespace std;
@@ -70,7 +69,7 @@ void main_VRSphere(osg::ref_ptr<osg::Group> pScene)	{
 int main(int argc, char * argv[])	{
 	osg::ref_ptr<osg::Group> root = new osg::Group;
 
-	osg::ref_ptr<osg::Node> axes = osgDB::readNodeFile( "../../../Resources/Models3D/axes.osgt");
+	osg::ref_ptr<osg::Node> axes = osgDB::readNodeFile(AppData::getFPathResources() + "/Models3D/axes.osgt");
 	root->addChild(axes);
 	root->addChild(new VR::Grid);
 

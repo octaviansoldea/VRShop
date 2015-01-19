@@ -51,6 +51,7 @@ SET(LIBS_COMMON
 	libGeometricShape
 	libAbstractObject
 	libCommon
+	libAppData
 )
 
 IF(Qt5_FOUND)

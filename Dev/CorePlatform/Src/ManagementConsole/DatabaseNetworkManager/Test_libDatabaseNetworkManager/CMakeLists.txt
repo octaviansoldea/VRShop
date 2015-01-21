@@ -42,6 +42,7 @@ ADD_EXECUTABLE(Test_libDatabaseNetworkManager
 SET(LIBS_COMMON
 	libDatabaseNetworkManager
 	libCommon
+	libAppData
 )
 
 IF(Qt5_FOUND)

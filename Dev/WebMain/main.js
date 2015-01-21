@@ -32,7 +32,7 @@
     plugin.id = 'vrshopplugin';
     plugin.type = 'application/x-vrshopplugin';
     plugin.width = oSize.width;
-    plugin.height = oSize.height() - (m/2);
+    plugin.height = oSize.height();
     plugin.margin = '0px';
     plugin.padding = '0px';
     plugin.border = '0px';

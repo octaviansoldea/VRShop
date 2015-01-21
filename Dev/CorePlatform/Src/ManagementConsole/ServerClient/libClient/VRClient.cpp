@@ -3,6 +3,8 @@
 #include "VRServerClientCommands.h"
 #include "VRBasicQtOperations.h"
 
+#include "VRAppData.h"
+
 #include <QEventLoop>
 #include <QTimer>
 
@@ -33,7 +35,7 @@ Client::~Client()	{
 
 //=====================================================================
 
-void Client::tryToConnect()	{
+void Client::tryToConnect(const std::string & astrIP, const unsigned int anPort)	{
 	connect(&m_TcpSocket,SIGNAL(hostFound()),this,SLOT(slotHostFound()));
 	connect(&m_TcpSocket, SIGNAL(readyRead()), this, SLOT(slotIsConnectionApproved()));
 	connect(&m_TcpSocket, SIGNAL(error(QAbstractSocket::SocketError)), 
@@ -41,13 +43,14 @@ void Client::tryToConnect()	{
 	connect(&m_TcpSocket,SIGNAL(connected()),this,SLOT(slotConnected()));
 	connect(&m_TcpSocket,SIGNAL(disconnected()),this,SLOT(slotDisconnected()));
 
-	m_TcpSocket.connectToHost(QHostAddress::LocalHost, 20000);
+	m_TcpSocket.connectToHost(astrIP.c_str(), anPort);
 //	m_TcpSocket.waitForConnected();
 
 	QEventLoop loop;
-	connect(this,SIGNAL(done()),&loop,SLOT(quit()));
+	connect(this,SIGNAL(signalEnd()),&loop,SLOT(quit()));
 	QTimer::singleShot(10000,&loop,SLOT(quit()));
 	loop.exec();
+	disconnect(this,SIGNAL(signalEnd()),&loop,SLOT(quit()));
 }
 
 //---------------------------------------------------------------------------
@@ -70,8 +73,13 @@ void Client::sendRequest(QByteArray & aarrRequest)	{
 	quint64 unTotalToWrite = (quint64)(aarrRequest.size());
 	out << (quint64)(unTotalToWrite - sizeof(quint64));
 
-	unWritten = m_TcpSocket.write(aarrRequest);
+//	unWritten = m_TcpSocket.write(aarrRequest);
 //	m_TcpSocket.waitForBytesWritten();
+
+	//Check that everything is written
+	while (unTotalToWrite - unWritten > 0)	{
+		unWritten += m_TcpSocket.write(aarrRequest.data() + unWritten,unTotalToWrite-unWritten);
+	}
 }
 
 //---------------------------------------------------------------------

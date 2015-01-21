@@ -1,12 +1,19 @@
 #include "BasicStringDefinitions.h"
 #include <QDataStream>
 
+#include "VRAppData.h"
+
+#include <iostream>
+#include <fstream>
+
 #include "VRServerClientCommands.h"
 
 #include "VRAvatarManagerServer.h"
 #include "VRUserAccount.h"
 #include "VRProductManagerServer.h"
+#include "VRCashierManagerServer.h"
 #include "VRCashierServer.h"
+#include "VRVisitorManagerServer.h"
 
 #include "VRBasketServer.h"
 
@@ -18,6 +25,10 @@ using namespace std;
 //=====================================================================
 
 QByteArray DatabaseNetworkManager::databaseRequest(QByteArray & aData)	{
+	string strPFileError = AppData::getFPathLog() + "errors.txt";
+	ofstream outFileError;
+	outFileError.open(strPFileError,ios::app);
+
 	//Request
 	QDataStream in(&aData,QIODevice::ReadOnly);
 	in.setVersion(QDataStream::Qt_4_8);
@@ -35,6 +46,18 @@ QByteArray DatabaseNetworkManager::databaseRequest(QByteArray & aData)	{
 	out << quint64(0) << nType;	//Size of the package
 
 	switch (nType)	{
+	case ServerClientCommands::NEW_USER_REGISTER:
+		{
+			QString qstrIP;
+			int nUserID;
+
+			in >> qstrIP >> nUserID;
+
+			VisitorManagerServer vms;
+			vms.registerVisitor(qstrIP.toStdString(), nUserID);
+
+			break;
+		}
 	case ServerClientCommands::PRODUCT_REQUEST:
 		{
 			QString qstrRequest;
@@ -60,9 +83,19 @@ QByteArray DatabaseNetworkManager::databaseRequest(QByteArray & aData)	{
 			pmsp.m_strProductName = qstrProductName.toStdString();
 			pmsp.m_flProductQuantity = flProductQuantity;
 
-			float flQuantity = pms.tryAddProduct2Basket(pmsp);
+			float flQuantity = pms.tryAddProduct2Basket(pmsp);	//Returns approved quantities
 
 			out << flQuantity;
+
+			//Give allocated products to the "OrdersReserved" table in the Cashier DB
+			CashierManagerServer cms;
+			CashierManagerServer::CashierManagerServerParams cmsp;
+			cmsp.m_strUserIDName = qstrUserIDName.toStdString();
+			cmsp.m_strProductName = qstrProductName.toStdString();
+			cmsp.m_flProductQuantity = flQuantity;
+
+			bool bRes = cms.addProduct2OrdersReserved(cmsp);
+
 			break;
 		}
 	case ServerClientCommands::REMOVE_PRODUCT_REQUEST:
@@ -83,6 +116,15 @@ QByteArray DatabaseNetworkManager::databaseRequest(QByteArray & aData)	{
 			bool bRes = pms.removeProduct(pmsp);
 
 			out << bRes;
+
+			//Remove from "Reserved" list
+			CashierManagerServer cms;
+			CashierManagerServer::CashierManagerServerParams cmsp;
+			cmsp.m_strUserIDName = qstrUserIDName.toStdString();
+			cmsp.m_strProductName = qstrProductName.toStdString();
+
+			bRes = cms.removeProductFromOrdersReserved(cmsp);
+
 			break;
 		}
 	case ServerClientCommands::MODIFY_PRODUCT_REQUEST:
@@ -104,6 +146,16 @@ QByteArray DatabaseNetworkManager::databaseRequest(QByteArray & aData)	{
 			float flNewQuantity = pms.modifyProductQuantity(pmsp);
 
 			out << flNewQuantity;
+
+			//Update the quantity from the "Reserved" list
+			CashierManagerServer cms;
+			CashierManagerServer::CashierManagerServerParams cmsp;
+			cmsp.m_strUserIDName = qstrUserIDName.toStdString();
+			cmsp.m_strProductName = qstrProductName.toStdString();
+			cmsp.m_flProductQuantity = flNewQuantity;
+
+			bool bRes = cms.removeProductFromOrdersReserved(cmsp);
+
 			break;
 		}
 	case ServerClientCommands::AVATAR_REGISTER:
@@ -222,6 +274,11 @@ QByteArray DatabaseNetworkManager::databaseRequest(QByteArray & aData)	{
 
 			//User checked
 			bool bAccountValid = UserAccount::checkUserAccountValidity(qstrVisitorName.toStdString());
+
+			outFileError << "qstrVisitorName: " << qstrVisitorName.toStdString() << " ";
+			outFileError << "qstrBasketProdQty: " << qstrBasketProdQty.toStdString() << " ";
+			outFileError << "ServerClientCommands::PURCHASE_REQUEST: " << bAccountValid << endl;
+
 			if (bAccountValid==false)	{
 				int nRes = ServerClientCommands::AUTHENTICATION_FAILED;
 				out << nRes;
@@ -264,6 +321,7 @@ QByteArray DatabaseNetworkManager::databaseRequest(QByteArray & aData)	{
 		}
 	}
 
+	outFileError.close();
 
 	return output;
 }

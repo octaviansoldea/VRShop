@@ -11,7 +11,7 @@ using namespace std;
 //==============================================================================
 
 AbstractUser::AbstractUser(Avatar *apAvatar) :
-m_strUserIDName(""),
+m_strUserIDName(apAvatar->getName()),
 m_bIsUserAuthorized(false)	{
 	m_pAvatar = apAvatar;
 }

@@ -31,6 +31,7 @@ SET(src
 
 INCLUDE_DIRECTORIES(
 	${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
+	${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libAppData
 	${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabase
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgentServer
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_QT

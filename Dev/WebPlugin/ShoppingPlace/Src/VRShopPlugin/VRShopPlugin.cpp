@@ -202,8 +202,12 @@ void VRShopPlugin::runApplicationThread()	{
 
 		string strWebServer = AppData::getFPathServer();
 		string strInstaller = "VRShop.exe";
-
 		dP.m_strURL = strWebServer+"/"+strInstaller;
+
+//GOOGLE AS WEB SERVER
+//		string strWebServer = "https://0c446f69db3816158c2da15fa6f0faceb2a6fff1-www.googledrive.com/host/0B2PTBoEUslueYzRHT3ZyZUxMUG8/";
+//		dP.m_strURL = strWebServer;
+//GOOGLE AS WEB SERVER
 
 		//Installer download location
 		dP.m_strDestinationFolder = AppData::getFPathVRShop();

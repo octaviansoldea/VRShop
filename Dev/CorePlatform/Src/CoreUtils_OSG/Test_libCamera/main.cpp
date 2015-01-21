@@ -2,6 +2,7 @@
 #include <osgDB/readFile>
 
 #include "VRAppData.h"
+
 #include "VRAxes.h"
 
 #include "VRKeyboardMouseManipulatorShopEditor.h"

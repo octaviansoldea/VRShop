@@ -19,7 +19,7 @@ namespace VR	{
 
 		QByteArray getTransmittedData();
 
-		void tryToConnect();
+		void tryToConnect(const std::string & astrIP, const unsigned int anPort);
 
 		int getUserID() const;
 
@@ -35,6 +35,7 @@ namespace VR	{
 
 	signals:
 		void done();
+		void signalEnd();
 
 	private slots:
 		void slotHostFound();

@@ -64,9 +64,9 @@ SET(LIBS_COMMON
 	libAnimationEditor
 	libCommon_OSG
 	libCommon_QT
+	libAppData
 	libCamera
 	libOSGQTViewer
-	libAppData
 )
 
 IF(Qt5_FOUND)

@@ -28,11 +28,11 @@ Server::~Server()	{
 
 //=====================================================================
 
-bool Server::init()	{
-	QHostAddress hostServerIP = QHostAddress(QHostAddress::LocalHost);
-	int nPort = 20000;
+bool Server::init(const std::string & astrIP, const unsigned int anPort)	{
+	QHostAddress hostServerIP;
+	hostServerIP.setAddress(astrIP.c_str());
 
-	bool bRes = listen(hostServerIP, nPort);
+	bool bRes = listen(hostServerIP, anPort);
 		
 	if (bRes == false) {	//server listens for incoming conenctions
 		QString qstrMsg = QString("Unable to start server.\n\n%1").arg(errorString());
@@ -70,6 +70,9 @@ void Server::incomingConnection(qintptr handle)	{
 	if (pSocket->state() == QAbstractSocket::ConnectedState)	{
 		addConnection(pSocket, handle);
 		connect(pSocket, SIGNAL(disconnected()), this, SLOT(slotDisconnected()));
+
+		string strIP = pSocket->localAddress().toString().toStdString();
+		pSocket->registerClientVisitor(strIP, handle);
 	}
 }
 

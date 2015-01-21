@@ -12,6 +12,7 @@ namespace VR	{
 
 	public:
 		ClientConnection(QObject *parent=0);
+		void registerClientVisitor(const std::string & astrIP, const int & anUserID);
 
 	private slots:
 		void slotReadClient();

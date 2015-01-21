@@ -10,7 +10,6 @@
 using namespace VR;
 using namespace std;
 
-//----------------------------------------------------------------------
 
 ClientConnection::ClientConnection(QObject *parent) : QTcpSocket(parent)	{
 	connect(this, SIGNAL(readyRead()), this, SLOT(slotReadClient()));
@@ -20,6 +19,23 @@ ClientConnection::ClientConnection(QObject *parent) : QTcpSocket(parent)	{
 }
 
 //=====================================================================
+
+void ClientConnection::registerClientVisitor(const std::string & astrIP, const int & anUserID)	{
+	QByteArray qData;
+	QDataStream out(&qData, QIODevice::WriteOnly);
+	out.setVersion(QDataStream::Qt_4_8);
+
+	QString qstrInputData;
+
+	int nType = ServerClientCommands::NEW_USER_REGISTER;
+	QString qstrIP = astrIP.c_str();
+
+	out << quint8(nType) << qstrIP << anUserID;
+
+	DatabaseNetworkManager::databaseRequest(qData);
+}
+
+//----------------------------------------------------------------------
 
 void ClientConnection::slotReadClient()	{
 	//First block has to be "quint64 blockSize"
@@ -53,8 +69,13 @@ void ClientConnection::slotReadClient()	{
 	quint64 unTotalToWrite = (quint64)(output.size());
 	out << (quint64)(unTotalToWrite - sizeof(quint64));
 
-	unWritten = this->write(output);
-//	this->waitForBytesWritten();
+	//unWritten = this->write(output);
+	//this->waitForBytesWritten();
+
+	//Check that everything is written
+	while (unTotalToWrite - unWritten > 0)	{
+		unWritten += write(output.data() + unWritten,unTotalToWrite-unWritten);
+	}
 }
 
 //----------------------------------------------------------------------

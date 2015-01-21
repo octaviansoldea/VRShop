@@ -13,9 +13,11 @@
 #include "VRAppData.h"
 #include "VRFileManager.h"
 #include "VRAxes.h"
+
 #include "AnimtkViewer.h"
 #include "AnimtkViewerGUI.h"
 #include "AnimtkViewerKeyHandler.h"
+
 #include "VRKeyboardMouseManipulator.h"
 #include "VRAnimationEditorGUI.h"
 
@@ -59,7 +61,6 @@ QString AnimationEditorGUI::openOrSaveDialog(const char * apchSuffix, bool bOpen
 
 	//QString qstrCurrentPath = QDir::currentPath();
 	std::string strDir = AppData::getFPathResources() +  "/Models3D/";
-
 
 	if(bOpen == true) 
 		qstrFileName = QFileDialog::getOpenFileName(this, 

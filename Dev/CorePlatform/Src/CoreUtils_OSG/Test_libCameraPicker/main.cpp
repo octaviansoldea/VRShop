@@ -5,11 +5,13 @@
 #include "VRPlate3D.h"
 #include "VRCylinder.h"
 #include "VRSphere.h"
+
 #include "VRContainer.h"
+
 #include "VRPickAndDragHandlerShopEditor.h"
 #include "VRKeyboardMouseManipulator.h"
-#include "VRGrid.h"
 
+#include "VRGrid.h"
 
 using namespace VR;
 using namespace std;
@@ -70,6 +72,7 @@ int main(int argc, char * argv[])	{
 	osg::ref_ptr<osg::Group> root = new osg::Group;
 
 	osg::ref_ptr<osg::Node> axes = osgDB::readNodeFile(AppData::getFPathResources() + "/Models3D/axes.osgt");
+
 	root->addChild(axes);
 	root->addChild(new VR::Grid);
 

@@ -50,8 +50,8 @@ void AgentManagerClient::requestToServer(
 	switch (nType)	{
 	case ServerClientCommands::SIGN_IN_REQUEST:
 		{
-			QString qstrUser = pAcp->strUserName.c_str();
-			QString qstrPsw = pAcp->strPassword.c_str();
+			QString qstrUser = pAcp->m_strUserName.c_str();
+			QString qstrPsw = pAcp->m_strPassword.c_str();
 			out << qstrUser << qstrPsw;
 
 			break;
@@ -105,8 +105,8 @@ void AgentManagerClient::requestToServer(
 
 void AgentManagerClient::signInRequest(const std::string & astrUserName, const std::string & astrPassword)	{
 	AgentManagerClient::AgentClientParams acp;
-	acp.strUserName = astrUserName;
-	acp.strPassword = astrPassword;
+	acp.m_strUserName = astrUserName;
+	acp.m_strPassword = astrPassword;
 	requestToServer(ServerClientCommands::SIGN_IN_REQUEST, &acp);
 }
 

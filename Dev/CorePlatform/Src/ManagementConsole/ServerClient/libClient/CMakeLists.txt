@@ -33,6 +33,7 @@ INCLUDE_DIRECTORIES(
 	${OPENSCENEGRAPH_INCLUDE_DIRS}
 	${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libServerClientCommands
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_QT
+	${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libAppData
 )
 
 #MOC according to the Qt version

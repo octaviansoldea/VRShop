@@ -3,6 +3,7 @@
 #include <list>
 
 #include "BasicStringDefinitions.h"
+
 #include "VRAppData.h"
 #include "VRBasketServer.h"
 #include "VRDatabaseInterface.h"
@@ -99,7 +100,7 @@ bool ProductManagerServer::canFullfilRequest(std::string & astrBasketRequest)	{
 	//Available quantities
 	map < long, float > mapIDQuantityAvailable;
 	list<string> lststrResult = m_DIProduct.executeAndGetResult(strQuery);
-	
+
 	nSize = lststrResult.size();
 	list<string>::iterator it = lststrResult.begin();
 	for (nI=0;nI<nSize;nI++)	{
@@ -112,7 +113,7 @@ bool ProductManagerServer::canFullfilRequest(std::string & astrBasketRequest)	{
 	//Compare both containers
 
 	map < long, float > mapApprovedQuantities;
-//	translation to string encodsing: P1;Q1;P2;Q2...
+	//	translation to string encodsing: P1;Q1;P2;Q2...
 
 
 
@@ -130,7 +131,7 @@ float ProductManagerServer::tryAddProduct2Basket(const ProductManagerServerParam
 		"SELECT ("
 			"CASE "
 				"WHEN ProductQuantity > " + tostr(flProductQuantityRequest) +  
-					" THEN " + tostr(flProductQuantityRequest) + 
+				" THEN " + tostr(flProductQuantityRequest) + 
 				" ELSE ProductQuantity "
 			"END) "
 		"FROM Product WHERE ProductName = '" + strProductName + "'";
@@ -198,3 +199,4 @@ float ProductManagerServer::modifyProductQuantity(const ProductManagerServerPara
 		return aProductManagerServerParams.m_flProductNewQuantity;
 	}
 }
+

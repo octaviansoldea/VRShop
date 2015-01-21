@@ -7,6 +7,7 @@
 #include <osg/TextureRectangle>
 #include <osg/TexMat>
 
+
 #include "VRAppData.h"
 #include "VRUntransformedPlate2D.h"
 #include "VRUntransformedPlate3D.h"

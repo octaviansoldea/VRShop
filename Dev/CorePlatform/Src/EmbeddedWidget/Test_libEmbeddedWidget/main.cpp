@@ -2,6 +2,8 @@
 
 #include <fstream>
 #include <iostream>
+
+#include "BasicStringDefinitions.h"
 #include "VRAppData.h"
 
 #include <QApplication>
@@ -49,13 +51,18 @@ int main(int argc, char * argv[])	{
 	QApplication app(argc, argv);
 
 	Client client;
-	client.tryToConnect();
+
+	const string strIP = "127.0.0.1";
+	const unsigned int nPort = 10000;
+
+	client.tryToConnect(strIP, nPort);
 	int nUserID = client.getUserID();
 
 	if (nUserID == -1)	{
 		return 0;
 	}
-	
+
+	client.setObjectName(tostr(nUserID).c_str());
 	string strPipeName = argv[3];
 
 	EmbeddedWidget_GUI embeddedWidget(&client,strPipeName);
@@ -95,6 +102,9 @@ int main(int argc, char * argv[])	{
 			break;
 		}
 	}
+
+	//This signal is emitted when the Application is about to quit; last chance to make the cleaning
+	QObject::connect(&app, &QApplication::aboutToQuit, &embeddedWidget, &EmbeddedWidget_GUI::slotAboutToQuit);
 
 	int nRes = app.exec();
 

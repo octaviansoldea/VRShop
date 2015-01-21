@@ -25,7 +25,11 @@ int main(int argc, char *argv[])	{
 	QApplication app(argc, argv);
 
 	Client client;
-	client.tryToConnect();
+	const string strIP = "127.0.0.1";
+	const int nPort = 10000;
+
+	client.tryToConnect(strIP, nPort);
+
 	int nUserID = client.getUserID();
 
 	if (nUserID == -1)	{

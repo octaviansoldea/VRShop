@@ -36,11 +36,10 @@ SET(src
 
 INCLUDE_DIRECTORIES(
 	${OPENSCENEGRAPH_INCLUDE_DIRS}
-	${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libAppData
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCamera
-	${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libAppData
 	${CMAKE_SOURCE_DIR}/Props/GeometricShape/libGeometricShape
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_OSG
+	${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libAppData
 )
 
 ADD_EXECUTABLE(Test_libCamera

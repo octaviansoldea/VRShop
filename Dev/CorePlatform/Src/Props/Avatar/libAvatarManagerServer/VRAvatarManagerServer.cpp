@@ -4,6 +4,8 @@
 
 #include "VRAppData.h"
 
+#include <time.h>
+
 #include "VRDatabaseInterface.h"
 
 #include "VRAvatarManagerServer.h"

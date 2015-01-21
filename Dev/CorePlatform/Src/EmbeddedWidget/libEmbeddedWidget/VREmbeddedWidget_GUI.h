@@ -35,6 +35,7 @@ namespace VR	{
 
 	public:
 		void checkIfParentExists();
+		void slotAboutToQuit();
 	};
 }
 #endif //VR_EMBEDDED_WIDGET_GUI_H

@@ -6,7 +6,6 @@ SET(CMAKE_DEBUG_POSTFIX "D")
 IF(Qt5_FOUND)
   INCLUDE_DIRECTORIES(
     ${Qt5Core_INCLUDE_DIRS}
-    ${Qt5Gui_INCLUDE_DIRS}
     ${Qt5Widgets_INCLUDE_DIRS}
     ${Qt5Network_INCLUDE_DIRS}	
   )
@@ -31,8 +30,8 @@ SET(src
 )
 
 INCLUDE_DIRECTORIES(
-	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_QT
 	${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libClient
+	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_QT
 	${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libServerClientCommands
 )
 
@@ -40,8 +39,9 @@ ADD_EXECUTABLE(Test_libClient
 	main.cpp)
 
 SET(LIBS_COMMON
-	libCommon_QT
+	libAppData
 	libClient
+	libCommon_QT
 	libServerClientCommands
 )
 

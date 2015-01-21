@@ -18,10 +18,10 @@ namespace VR {
 		const char* className() const;
 
 		struct AgentClientParams : public AbstractManagerClientParams	{
-			std::string strUserName;
-			std::string strPassword;
-			std::string strFirstName;
-			std::string strLastName;
+			std::string m_strUserName;
+			std::string m_strPassword;
+			std::string m_strFirstName;
+			std::string m_strLastName;
 		};
 
 	protected:

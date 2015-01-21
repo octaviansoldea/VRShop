@@ -2,6 +2,8 @@
 
 #include "VRAvatarManagerServer.h"
 #include "VRUserAccountManager.h"
+#include "VRVisitorManagerServer.h"
+#include "VRCashierManagerServer.h"
 
 #include <iostream>
 
@@ -12,14 +14,30 @@
 using namespace std;
 using namespace VR;
 
+/*
+	ARGUMENTS:
+		- IP
+		- port
+*/
 
 int main(int argc, char * argv[])	{
+
+	if (argc != 3)	{
+		cerr << "Args: " << argc << ". IP address and Port number requested." << endl;
+		exit (-1);
+	}
+
 	QApplication app(argc,argv);
 
 	bool bRes=true;
 
-	Server server((QObject*)(0),10);
-	bRes = server.init();
+	const int nConnectionsMax = 100;
+
+	Server server((QObject*)(0),nConnectionsMax);
+
+	const string strIP = argv[1];
+	const unsigned int nPort = stoi(argv[2]);
+	bRes = server.init(strIP, nPort);
 
 	if (!bRes)	{
 		return (0);
@@ -31,6 +49,9 @@ int main(int argc, char * argv[])	{
 	//Creates necessary databases if missing
 	UserAccountManager::createUserAccountDB();
 	AvatarManagerServer::createAvatarDB();
+	CashierManagerServer::createDB();
+	VisitorManagerServer::createDB();
+
 
 	QTimer timer;
 	QObject::connect(&timer, &QTimer::timeout, &AvatarManagerServer::checkAvatarActivity);

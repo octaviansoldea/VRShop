@@ -31,6 +31,7 @@ ENDIF(Qt5_FOUND)
 
 #General includes, irrespective of the Qt version
 INCLUDE_DIRECTORIES(
+	${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_QT
 	${CMAKE_SOURCE_DIR}/ManagementConsole/DatabaseNetworkManager/libDatabaseNetworkManager
 	${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabase

@@ -15,13 +15,32 @@ DatabaseManager::DatabaseManager(const QString &astrDBName, const QString &astrD
 	qDebug() << "Installed database drivers include: " << QSqlDatabase::drivers();
 	
 	//Connects to a given database
-	connect2SQLDatabase();
+	createConnection();
+	//connect2SQLDatabase();
 }
 
 //-----------------------------------------------------------------------------------------
 
 DatabaseManager::~DatabaseManager()	{
 	db.close();
+}
+
+//-----------------------------------------------------------------------------------------
+
+bool DatabaseManager::createConnection()	{
+    QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
+//    db.setHostName("mysql17.000webhost.com");
+	db.setHostName("localhost");
+    db.setDatabaseName("a7252794_main");
+    db.setUserName("a7252794_user");
+    db.setPassword("jetam1");
+    if (!db.open()) {
+        qDebug() << "Database error occurred" << db.databaseName() << db.lastError();
+        return false;
+    } else {
+		std::cout << "DB successfully opened." << std::endl;
+	}
+    return true;
 }
 
 //-----------------------------------------------------------------------------------------

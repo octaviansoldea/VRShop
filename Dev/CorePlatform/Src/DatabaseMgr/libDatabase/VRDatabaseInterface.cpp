@@ -156,7 +156,7 @@ bool DatabaseInterface::removeTable(const QString& aqstrTableName)	{
 		q.exec( "DROP TABLE " + *pqstrTableName);
 	} else {
 		QString * pqstrError = &QSqlDatabase::database().lastError().text();
-		BasicQtOperations::printWarning("Unable to drop table " + *pqstrTableName + " - " + *pqstrError);
+//		VR::printWarning("Unable to drop table " + *pqstrTableName + " - " + *pqstrError);
 
 		return bRes;
 	}

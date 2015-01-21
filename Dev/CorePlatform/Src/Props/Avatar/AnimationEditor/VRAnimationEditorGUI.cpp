@@ -1,22 +1,23 @@
 #include <fstream>
 #include <string>
 
+#include <QString>
+#include <QFileDialog>
+#include <QMessageBox>
+
 #include <osgDB/ReadFile>
 #include <osgDB/writeFile>
 #include <osg/Matrix>
 
+#include <osg/AnimationPath>
+
+#include "VRAppData.h"
 #include "VRFileManager.h"
 #include "VRAxes.h"
-
-#include <osg/AnimationPath>
 
 #include "AnimtkViewer.h"
 #include "AnimtkViewerGUI.h"
 #include "AnimtkViewerKeyHandler.h"
-
-#include <QString>
-#include <QFileDialog>
-#include <QMessageBox>
 
 #include "VRKeyboardMouseManipulator.h"
 #include "VRAnimationEditorGUI.h"
@@ -59,20 +60,18 @@ AnimationEditorGUI::AnimationEditorGUI()	{
 QString AnimationEditorGUI::openOrSaveDialog(const char * apchSuffix, bool bOpen) {
 	QString qstrFileName;
 
-	QString qstrCurrentPath = QDir::currentPath();
-	QString qstrDir = qstrCurrentPath + "/../../../../Resources/Models3D/";
-
-	std::string strDir = qstrDir.toStdString();
+	//QString qstrCurrentPath = QDir::currentPath();
+	std::string strDir = AppData::getFPathResources() +  "/Models3D/";
 
 	if(bOpen == true) 
 		qstrFileName = QFileDialog::getOpenFileName(this, 
 			tr("Open File"),
-			tr(qstrDir.toStdString().c_str()),
+			tr(strDir.c_str()),
 			apchSuffix);
 	else
 		qstrFileName = QFileDialog::getSaveFileName(this, 
 			tr("Save File"),
-			tr(qstrDir.toStdString().c_str()),
+			tr(strDir.c_str()),
 			apchSuffix);
 	return(qstrFileName);
 }

@@ -36,6 +36,7 @@ INCLUDE_DIRECTORIES(
 	${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
 	${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libTimer
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_QT
+	${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libAppData
 
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgent
 	${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libServerClientCommands
@@ -60,7 +61,7 @@ SET(LIBS_COMMON
 	libTimer
 	libCommon
 	libCommon_QT
-	Winmm
+	libAppData
 	libAgent
 	libServerClientCommands
 	libAvatarManagerServer

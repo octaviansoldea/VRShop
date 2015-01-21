@@ -1,6 +1,8 @@
 #include <QString>
 #include <iostream>
 
+#include "VRAppData.h"
+
 #include "VRDatabaseInterface.h"
 
 #include "VRUserAccountManager.h"
@@ -39,7 +41,7 @@ string UserAccountManager::getTableName()	{
 //------------------------------------------------------------------------------
 
 string UserAccountManager::getDatabaseName()	{
-	return "../../../../Databases/UserAccounts.db";
+	return AppData::getFPathDatabases() + "/UserAccounts.db";
 }
 
 //------------------------------------------------------------------------------

@@ -13,7 +13,7 @@ namespace VR	{
 		Server(QObject *parent=0, const int anConnMax=5);
 		~Server();
 
-		bool init();
+		bool init(const std::string & astrIP, const unsigned int anPort);
 
 	private:
 		virtual void incomingConnection(qintptr handle);

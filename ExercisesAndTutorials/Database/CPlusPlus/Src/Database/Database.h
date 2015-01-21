@@ -28,6 +28,7 @@ public:
 
 	//This function establishes a connection
 	//called automatically via a constructor
+	bool createConnection();
 	bool connect2SQLDatabase();
 
 	//Creates table within the database

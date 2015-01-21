@@ -7,6 +7,7 @@ namespace VR	{
 
 		enum OperationType	{
 			NEW_USER_REQUEST = 0,
+			NEW_USER_REGISTER,
 			AVATAR_REGISTER,
 			AVATAR_UPDATE,
 			OTHER_AVATARS_REQUEST,

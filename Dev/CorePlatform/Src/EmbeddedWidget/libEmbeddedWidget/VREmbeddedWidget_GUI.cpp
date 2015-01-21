@@ -47,7 +47,7 @@ EmbeddedWidget_GUI::EmbeddedWidget_GUI(Client * apClient, string & astrPipeName,
 
 EmbeddedWidget_GUI::~EmbeddedWidget_GUI()	{
 	ofstream out;
-	string strLog = AppData::getFPathLog() + "errors.txt";
+	string strLog = AppData::getFPathLog() + "/errors.txt";
 	out.open(strLog,ios::app);
 	out << "Destructor EmbeddedWidget" << endl;
 	out.close();
@@ -126,3 +126,11 @@ void EmbeddedWidget_GUI::slotCurrentIndexChanged(const QString & aqstrShopName)	
 }
 
 //----------------------------------------------------------------------
+
+void EmbeddedWidget_GUI::slotAboutToQuit()	{
+	ofstream out;
+	string strLog = AppData::getFPathLog() + "/errors.txt";
+	out.open(strLog,ios::app);
+	out << "slotAboutToQuit EmbeddedWidget" << endl;
+	out.close();
+}

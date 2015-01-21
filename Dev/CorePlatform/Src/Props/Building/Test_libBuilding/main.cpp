@@ -18,7 +18,7 @@ int main_Floor(int argc, char * argv[])	{
 	QApplication app(argc,argv);
 
 	ref_ptr<Group> pScene = new Group;
-	ref_ptr<Node> pAxes = osgDB::readNodeFile("../../../../Resources/Models3D/axes.osgt");
+	ref_ptr<Node> pAxes = osgDB::readNodeFile(AppData::getFPathResources() + "/Models3D/axes.osgt");
 	pScene->addChild(pAxes);
 
 	FloorParams fP;
@@ -41,7 +41,7 @@ int main_Wall(int argc, char * argv[])	{
 	QApplication app(argc,argv);
 
 	ref_ptr<Group> pScene = new Group;
-	ref_ptr<Node> pAxes = osgDB::readNodeFile("../../../../Resources/Models3D/axes.osgt");
+	ref_ptr<Node> pAxes = osgDB::readNodeFile(AppData::getFPathResources() + "/Models3D/axes.osgt");
 	pScene->addChild(pAxes);
 
 	ref_ptr<Wall> pWall = new Wall;
@@ -60,7 +60,7 @@ int main_Room(int argc, char * argv[])	{
 	QApplication app(argc,argv);
 
 	ref_ptr<Group> pScene = new Group;
-	ref_ptr<Node> pAxes = osgDB::readNodeFile("../../../../Resources/Models3D/axes.osgt");
+	ref_ptr<Node> pAxes = osgDB::readNodeFile(AppData::getFPathResources() + "/Models3D/axes.osgt");
 	pScene->addChild(pAxes);
 
 	ref_ptr<Room> pRoom = new Room;

@@ -15,7 +15,7 @@ namespace VR	{
 	class ProductBasketInterface;
 	struct CameraController;
 	class ProductShopClient;
-	class CashierClient;
+	class Cashier_GUI;
 
 	class Client;
 
@@ -49,17 +49,13 @@ namespace VR	{
 		void slotModifyProductQuantity(ProductShopClient * apProduct, float aflNewQuantity);
 
 		void slotCashierClicked();
-		void slotStartCashierClicked();
-		void slotRemoveFromCashierClicked();
 		void slotRemoveProductConfirmed();
-		void slotProductInfoClicked();
-		void slotProceedAndPayClicked();
 
 		void slotClientReceiveData();
 
 	private:
 		//Cashier
-		CashierClient * m_pCashierClient;
+		Cashier_GUI * m_pCashier_GUI;
 	};
 }
 #endif //VR_SHOPPING_PLACE_GUI_H

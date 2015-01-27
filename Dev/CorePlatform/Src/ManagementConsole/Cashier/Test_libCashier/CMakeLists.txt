@@ -8,7 +8,7 @@ IF(Qt5_FOUND)
   INCLUDE_DIRECTORIES(
     ${Qt5Core_INCLUDE_DIRS}
     ${Qt5Gui_INCLUDE_DIRS}
-    ${Qt5Widgets_INCLUDE_DIRS}
+	${Qt5Widgets_INCLUDE_DIRS}
     ${Qt5OpenGL_INCLUDE_DIRS}
   )
 ELSE(Qt5_FOUND)
@@ -39,6 +39,7 @@ INCLUDE_DIRECTORIES(
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Cashier/libCashierClient/View
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProduct
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgent
+	${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgentManager
 	${CMAKE_SOURCE_DIR}/Props/AbstractManagerClient/libAbstractManagerClient
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Cashier/libCashierManagerClient
 )
@@ -54,14 +55,17 @@ SET(LIBS_COMMON
 	libProduct
 	libAgent
 	libAbstractManagerClient
+	libAgentManager
 	libCashierManagerClient
+	libClient
+	libServerClientCommands
 )
 
 IF(Qt5_FOUND)
   TARGET_LINK_LIBRARIES(Test_libCashierClient
 	${Qt5Core_LIBRARIES}
     ${Qt5Gui_LIBRARIES}
-    ${Qt5Widgets_LIBRARIES}
+	${Qt5Widgets_LIBRARIES}
     ${Qt5Sql_LIBRARIES}
 	${LIBS_COMMON}
   )

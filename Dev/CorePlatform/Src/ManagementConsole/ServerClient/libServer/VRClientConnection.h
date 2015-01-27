@@ -19,6 +19,9 @@ namespace VR	{
 
 	private:
 		quint64 m_unPackageSize;
+		void clientDisconnected();
+
+		int m_nUserID;
 	};
 }
 #endif //VR_CLIENT_CONNECTION_H

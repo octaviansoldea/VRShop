@@ -7,6 +7,8 @@
 #include "VRProductManager.h"
 #include "VRProductShopClient.h"
 
+#include "VRVisitor.h"
+
 namespace VR	{
 	class OSGQT_Widget;
 	class Client;
@@ -14,6 +16,7 @@ namespace VR	{
 	class Avatar;
 	class AbstractUser;
 	class Visitor;
+	struct VisitorParams;
 	class Lighting;
 	class AvatarManagerClient;
 	class ProductManagerClient;
@@ -41,9 +44,6 @@ namespace VR	{
 		void removeProductRequest(ProductShopClient * apProduct);
 		void modifyProductQuantityRequest(ProductShopClient * apProduct, float aflNewQuantity);
 
-		void removeFromCashier(const int & anProductPosition);
-		void productInfoCashier(const int & anProductPosition);
-		void proceedAndPayRequested();
 		
 		void handleClientData();
 

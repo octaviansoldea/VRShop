@@ -6,12 +6,15 @@
 #include "VRServerClientCommands.h"
 #include "VRAbstractManagerClient.h"
 
+#include "VRVisitor.h"
+
 namespace VR {
 	class Visitor;
 	class Client;
 
 	class AgentManagerClient : public AbstractManagerClient	{
 	public:
+		AgentManagerClient(Client * apClient, QObject * apParent=0);
 		AgentManagerClient(Client * apClient, AbstractUser * apAbstractUser, QObject * apParent=0);
 		~AgentManagerClient();
 
@@ -22,6 +25,14 @@ namespace VR {
 			std::string m_strPassword;
 			std::string m_strFirstName;
 			std::string m_strLastName;
+			std::string m_strUserID;
+
+			std::string m_strMiddleName;
+			std::string m_strAddress;
+			std::string m_strCity;
+			std::string m_strPostalCode;
+			std::string m_strState;
+			std::string m_strCountry;
 		};
 
 	protected:
@@ -34,13 +45,12 @@ namespace VR {
 	private:
 		Visitor * m_pVisitor;
 
-		void userApproved(const std::string & astrUserName);
-
 	public:
 		void signInRequest(const std::string & astrUserName, const std::string & astrPassword);
 		void signUpRequest();
 		void signOutRequest(const std::string & astrUserName);
 		void modifyAccountRequest();
+		void fillUserDetailsRequest(AgentManagerClient::AgentClientParams & aAgentClientParams, const std::string &astrUserID);
 
 
 		bool signInRespond(QDataStream & aDataStreamProduct);

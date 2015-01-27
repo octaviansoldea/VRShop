@@ -40,8 +40,6 @@ ENDIF()
 
 #General includes, irrespective of the Qt version
 INCLUDE_DIRECTORIES(
-	${OPENSCENEGRAPH_INCLUDE_DIRS}
-	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_OSG
     ${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
 )
 

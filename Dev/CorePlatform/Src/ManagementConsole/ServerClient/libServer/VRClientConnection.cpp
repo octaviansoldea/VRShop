@@ -13,8 +13,9 @@ using namespace std;
 
 ClientConnection::ClientConnection(QObject *parent) : QTcpSocket(parent)	{
 	connect(this, SIGNAL(readyRead()), this, SLOT(slotReadClient()));
-	connect(this, SIGNAL(disconnected()), this, SLOT(deleteLater()));
-
+//	connect(this, SIGNAL(disconnected()), this, SLOT(deleteLater()));
+	connect(this, &ClientConnection::disconnected, this, &ClientConnection::clientDisconnected);
+	
 	m_unPackageSize = 0;
 }
 
@@ -24,6 +25,8 @@ void ClientConnection::registerClientVisitor(const std::string & astrIP, const i
 	QByteArray qData;
 	QDataStream out(&qData, QIODevice::WriteOnly);
 	out.setVersion(QDataStream::Qt_4_8);
+
+	m_nUserID = anUserID;
 
 	QString qstrInputData;
 
@@ -79,3 +82,9 @@ void ClientConnection::slotReadClient()	{
 }
 
 //----------------------------------------------------------------------
+
+void ClientConnection::clientDisconnected()	{
+	DatabaseNetworkManager::clientQuitApplication(m_nUserID);
+
+	deleteLater();
+}

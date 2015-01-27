@@ -19,6 +19,12 @@ namespace VR	{
 			float m_flProductQuantity;
 		};
 
+		enum ORDER_STATUS	{
+			RESERVED = 1,
+			CONFIRMED,
+			DELIVERED
+		};
+
 		static DatabaseInterfaceParams getDBParams();
 		static std::vector<std::pair<std::string,std::string>> getDBElements();
 		static std::string getTableName();
@@ -35,6 +41,12 @@ namespace VR	{
 		bool addProduct2OrdersReserved(const CashierManagerServerParams & aCMSP);
 		bool removeProductFromOrdersReserved(const CashierManagerServerParams & aCMSP);
 		bool modifyProductOrdersReserved(const CashierManagerServerParams & aCMSP);
+		
+		static void clearProductsReserved(const std::string & astrUserName);
+
+		static std::list<std::string> getActiveOrdersList();
+
+		static void orderConfirmed(const std::string & astrUserName);
 	};
 }
 #endif //VR_CASHIER_MANAGER_SERVER_H

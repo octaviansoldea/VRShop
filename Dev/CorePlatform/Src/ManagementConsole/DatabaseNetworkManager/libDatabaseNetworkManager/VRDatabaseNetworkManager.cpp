@@ -10,12 +10,15 @@
 
 #include "VRAvatarManagerServer.h"
 #include "VRUserAccount.h"
+#include "VRUserAccountManager.h"
 #include "VRProductManagerServer.h"
 #include "VRCashierManagerServer.h"
 #include "VRCashierServer.h"
 #include "VRVisitorManagerServer.h"
 
 #include "VRBasketServer.h"
+
+#include "VRCashierServerReport.h"
 
 #include "VRDatabaseNetworkManager.h"
 
@@ -205,11 +208,14 @@ QByteArray DatabaseNetworkManager::databaseRequest(QByteArray & aData)	{
 		{
 			QString qstrUser;
 			QString qstrPsw;
-			in >> qstrUser >> qstrPsw;
+			QString qstrUserID;
+			in >> qstrUser >> qstrPsw >> qstrUserID;
 
 			UserAccount ua;
-			int nRes = ua.trySignIn(qstrUser.toStdString(), qstrPsw.toStdString()) 
+			int nRes = ua.trySignIn(qstrUser.toStdString(), qstrPsw.toStdString(), qstrUserID.toStdString()) 
 				? ServerClientCommands::PASSED : ServerClientCommands::FAILED;
+
+			//Update AddressBook's temporary UserID value
 
 			out << nRes;
 			break;
@@ -220,14 +226,16 @@ QByteArray DatabaseNetworkManager::databaseRequest(QByteArray & aData)	{
 			QString qstrPsw;
 			QString qstrFirstName;
 			QString qstrLastName;
+			QString qstrUserID;
 
-			in >> qstrFirstName >> qstrLastName >> qstrEMail >> qstrPsw;
+			in >> qstrFirstName >> qstrLastName >> qstrEMail >> qstrPsw >> qstrUserID;
 
 			UserAccount::UserAccountParams uap;
 			uap.m_strEMail = qstrEMail.toStdString();
 			uap.m_strFirstName = qstrFirstName.toStdString();
 			uap.m_strLastName = qstrLastName.toStdString();
 			uap.m_strPsw = qstrPsw.toStdString();
+			uap.m_strUserIDName = qstrUserID.toStdString();
 
 			UserAccount ua;
 			int nRes = ua.trySignUp(uap) ? ServerClientCommands::PASSED : ServerClientCommands::FAILED;
@@ -241,18 +249,19 @@ QByteArray DatabaseNetworkManager::databaseRequest(QByteArray & aData)	{
 			in >> qstrUser;
 
 			UserAccount ua;
-			int nRes = ua.trySignOut(qstrUser.toStdString()) ? ServerClientCommands::PASSED : ServerClientCommands::FAILED;
+			ua.trySignOut(qstrUser.toStdString());
+			int nRes = 1;
 			out << nRes;
 			break;
 		}
 	case ServerClientCommands::MODIFY_USER_ACCOUNT_REQUEST: 
 		{
-			QString qstrUserIDName;
 			QString qstrEMail;
 			QString qstrPsw;
 			QString qstrFirstName;
 			QString qstrLastName;
-			in >> qstrUserIDName >> qstrFirstName >> qstrLastName >> qstrEMail >> qstrPsw;
+			QString qstrUserIDName;
+			in >> qstrFirstName >> qstrLastName >> qstrEMail >> qstrPsw >> qstrUserIDName;
 
 			UserAccount::UserAccountParams uap;
 			uap.m_strEMail = qstrEMail.toStdString();
@@ -275,10 +284,6 @@ QByteArray DatabaseNetworkManager::databaseRequest(QByteArray & aData)	{
 			//User checked
 			bool bAccountValid = UserAccount::checkUserAccountValidity(qstrVisitorName.toStdString());
 
-			outFileError << "qstrVisitorName: " << qstrVisitorName.toStdString() << " ";
-			outFileError << "qstrBasketProdQty: " << qstrBasketProdQty.toStdString() << " ";
-			outFileError << "ServerClientCommands::PURCHASE_REQUEST: " << bAccountValid << endl;
-
 			if (bAccountValid==false)	{
 				int nRes = ServerClientCommands::AUTHENTICATION_FAILED;
 				out << nRes;
@@ -296,13 +301,14 @@ QByteArray DatabaseNetworkManager::databaseRequest(QByteArray & aData)	{
 			//PREPARE INFORMATIONAL RECEIPT; SEND IT INTO CONFIRMATION
 			//REAL RECEIPT IS SENT ALONG WITH THE GOODS
 			CashierServer cashier;
-//			cashier.prepareReceipt(basket);
+//			cashier.prepareReceipt(qstrVisitorName);
 
 			break;
 		}
 	case ServerClientCommands::USER_CONFIRMS_PURCHASE:
 		{
 			CashierServer cashier;
+
 
 			//NOT YET IMPLEMENTED
 
@@ -319,9 +325,126 @@ QByteArray DatabaseNetworkManager::databaseRequest(QByteArray & aData)	{
 			out << qstrProductData;
 			break;
 		}
+	case ServerClientCommands::USER_PERSONAL_DATA:
+		{
+			QString qstrFirstName;
+			QString qstrMiddleName;
+			QString qstrLastName;
+			QString qstrAddress;
+			QString qstrCity;
+			QString qstrCountry;
+			QString qstrPostalCode;
+			QString qstrState;
+			QString qstrUserID;
+
+			in >> qstrFirstName >> qstrMiddleName >> qstrLastName >> qstrAddress >> qstrCity >> qstrPostalCode 
+				>> qstrState >> qstrCountry >> qstrUserID;
+
+			UserAccount::UserPersonalData upd;
+			upd.m_strAddress = qstrAddress.toStdString();
+			upd.m_strCity = qstrCity.toStdString();
+			upd.m_strCountry = qstrCountry.toStdString();
+			upd.m_strFirstName = qstrFirstName.toStdString();
+			upd.m_strLastName = qstrLastName.toStdString();
+			upd.m_strMiddleName = qstrMiddleName.toStdString();
+			upd.m_strPostalCode = qstrPostalCode.toStdString();
+			upd.m_strState = qstrState.toStdString();
+			upd.m_strUserID = UserAccountManager::getUserAccountID(qstrUserID.toStdString());
+			upd.m_strUserID.pop_back();
+
+			UserAccount ua;
+			int nRes = ua.insertUserPersonalData(upd);
+
+			CashierManagerServer cms;
+			cms.orderConfirmed(qstrUserID.toStdString());
+
+			out << nRes;
+
+			break;
+		}
 	}
 
 	outFileError.close();
 
 	return output;
+}
+
+//==================================================================================
+
+void DatabaseNetworkManager::checkDatabaseTables()	{
+	UserAccountManager::createDB();
+	AvatarManagerServer::createAvatarDB();
+	CashierManagerServer::createDB();
+	VisitorManagerServer::createDB();
+}
+
+//----------------------------------------------------------------------------------
+
+void DatabaseNetworkManager::checkAvatarActivity()	{
+	AvatarManagerServer::checkAvatarActivity();
+}
+
+//----------------------------------------------------------------------------------
+
+void DatabaseNetworkManager::printOrderList()	{
+	list<string> strlstOrderList = CashierManagerServer::getActiveOrdersList();
+
+	if (strlstOrderList.empty())	{
+		cout << "Order list is empty" << endl;
+		return;
+	}
+
+	ofstream outputFile;
+	string strFileName = AppData::getFPathVRShop() + "OrderList.txt";
+	outputFile.open(strFileName);
+
+	CashierServerReport::createOrdersReportHeader(strlstOrderList, outputFile);
+
+	int nOrderID;
+	int nUserID;
+	string strProduct;
+	float flQuantity;
+
+	int nCurrentTop=0;
+
+	list<string>::iterator it;
+	for (it = strlstOrderList.begin(); it != strlstOrderList.end(); it++)	{
+		vector<string> vecstrData = splitString(*it,";");
+
+		vector<string>::iterator itt = vecstrData.begin();
+		nOrderID = stoi(itt[0]);
+		nUserID = stoi(itt[1]);
+		
+		if (nUserID>nCurrentTop)	{
+			nCurrentTop = nUserID;
+
+			//NEW CUSTOMER - BROWSE USERACCOUNT DB FOR DATA
+			string strUserData = UserAccountManager::getUserAddress(nUserID);
+			CashierServerReport::createOrdersReportCustomer(strUserData, outputFile);
+		}
+
+		strProduct = (itt[2]);
+		flQuantity = stof(itt[3]);
+
+		outputFile << "\t" << nOrderID << " " << strProduct << " " << flQuantity << endl;
+	}
+
+	outputFile.close();
+}
+
+//----------------------------------------------------------------------------------
+
+void DatabaseNetworkManager::clientQuitApplication(const int & anUserID)	{
+	string strUserID = tostr(anUserID);
+
+	//Unregister visitor from the visitor DB
+	VisitorManagerServer::unregisterVisitor(strUserID);
+
+	UserAccount ua;
+	ua.trySignOut(strUserID);
+
+	//cashier.db: Orders reserved
+	CashierManagerServer::clearProductsReserved(strUserID);
+
+	//HERE ADD FUNCTIONS THAT NEEDS TO BE EXECUTED ON THE SERVER SIDE
 }

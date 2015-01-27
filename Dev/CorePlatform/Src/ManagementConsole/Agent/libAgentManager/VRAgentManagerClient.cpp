@@ -7,6 +7,8 @@
 
 #include "VRSignUp_GUI.h"
 
+#include <fstream>
+
 #include "VRAgentManagerClient.h"
 
 using namespace VR;
@@ -14,6 +16,12 @@ using namespace std;
 
 
 //==============================================================================
+
+AgentManagerClient::AgentManagerClient(Client * apClient, QObject * apParent) :
+m_pVisitor(0), AbstractManagerClient(apClient, apParent)	{
+}
+
+//------------------------------------------------------------------------------
 
 AgentManagerClient::AgentManagerClient(Client * apClient, AbstractUser * apAbstractUser, QObject * apParent) : 
 AbstractManagerClient(apClient, apParent)	{
@@ -29,6 +37,14 @@ AgentManagerClient::~AgentManagerClient()	{
 
 const char* AgentManagerClient::className() const	{
 	return "AgentManagerClient";
+}
+
+//------------------------------------------------------------------------------
+
+void AgentManagerClient::fillUserDetailsRequest(AgentManagerClient::AgentClientParams & aAgentClientParams, const std::string &astrUserID)	{
+	aAgentClientParams.m_strUserID = astrUserID;
+
+	requestToServer(ServerClientCommands::USER_PERSONAL_DATA, &aAgentClientParams);
 }
 
 //------------------------------------------------------------------------------
@@ -52,7 +68,8 @@ void AgentManagerClient::requestToServer(
 		{
 			QString qstrUser = pAcp->m_strUserName.c_str();
 			QString qstrPsw = pAcp->m_strPassword.c_str();
-			out << qstrUser << qstrPsw;
+			QString qstrUserID = m_pVisitor->getUserIDName().c_str();
+			out << qstrUser << qstrPsw << qstrUserID;
 
 			break;
 		}
@@ -84,16 +101,28 @@ void AgentManagerClient::requestToServer(
 			QString qstrPsw = signUp.m_pLineEditPassword->text();
 			QString qstrFirstName = signUp.m_pLineEditFirstName->text();
 			QString qstrLastName = signUp.m_pLineEditLastName->text();
+			QString qstrUser = m_pVisitor->getUserIDName().c_str();
 
-			if (nType == ServerClientCommands::MODIFY_USER_ACCOUNT_REQUEST)	{
-				QString qstrUserIDName = m_pVisitor->getUserIDName().c_str();
-				out << qstrUserIDName;
-			}
-
-			out << qstrFirstName << qstrLastName << qstrEMail << qstrPsw;
+			out << qstrFirstName << qstrLastName << qstrEMail << qstrPsw << qstrUser;
 			break;
 		}
+	case ServerClientCommands::USER_PERSONAL_DATA:
+		{
+			QString qstrFirstName = pAcp->m_strFirstName.c_str();
+			QString qstrMiddleName = pAcp->m_strMiddleName.c_str();
+			QString qstrLastName = pAcp->m_strLastName.c_str();
+			QString qstrAddress = pAcp->m_strAddress.c_str();
+			QString qstrCity = pAcp->m_strCity.c_str();
+			QString qstrPostalCode = pAcp->m_strPostalCode.c_str();
+			QString qstrState = pAcp->m_strState.c_str();
+			QString qstrCountry = pAcp->m_strCountry.c_str();
+			QString qstrUserID = pAcp->m_strUserID.c_str();
 
+			out << qstrFirstName << qstrMiddleName << qstrLastName << qstrAddress << qstrCity << qstrPostalCode 
+				<< qstrState << qstrCountry << qstrUserID;
+
+			break;
+		}
 	default:
 		return;
 	}
@@ -107,6 +136,7 @@ void AgentManagerClient::signInRequest(const std::string & astrUserName, const s
 	AgentManagerClient::AgentClientParams acp;
 	acp.m_strUserName = astrUserName;
 	acp.m_strPassword = astrPassword;
+	acp.m_strUserID = m_pVisitor->getUserIDName();
 	requestToServer(ServerClientCommands::SIGN_IN_REQUEST, &acp);
 }
 
@@ -130,19 +160,13 @@ void AgentManagerClient::modifyAccountRequest()	{
 
 //------------------------------------------------------------------------------
 
-void AgentManagerClient::userApproved(const std::string & astrUserName)	{
-	m_pVisitor->setUserIDName(astrUserName);
-	emit done();
-}
-
-//------------------------------------------------------------------------------
-
 bool AgentManagerClient::signInRespond(QDataStream & aDataStreamProduct)	{
 	int nSuccess;
 	aDataStreamProduct >> nSuccess;
 
 	if (nSuccess == ServerClientCommands::PASSED)	{
-		userApproved(tostr(nSuccess));
+		m_pVisitor->userSignedIn();
+		emit done();
 
 		return true;
 	} else {
@@ -158,7 +182,9 @@ bool AgentManagerClient::signUpRespond(QDataStream & aDataStreamProduct)	{
 	aDataStreamProduct >> nSuccess;
 
 	if (nSuccess == ServerClientCommands::PASSED)	{
-		userApproved(tostr(nSuccess));
+		m_pVisitor->userSignedIn();
+		emit done();
+
 		return true;
 	} else {
 		return false;
@@ -172,7 +198,8 @@ bool AgentManagerClient::signOutRespond(QDataStream & aDataStreamProduct)	{
 	aDataStreamProduct >> nSuccess;
 
 	if (nSuccess == ServerClientCommands::PASSED)	{	//Successfully signed out
-		m_pVisitor->setUserIDName(tostr(0));
+		m_pVisitor->userSignedOut();
+
 		return true;
 	} else {
 		return false;
@@ -191,3 +218,5 @@ bool AgentManagerClient::modifyAccountRespond(QDataStream & aDataStreamProduct)	
 		return false;
 	}
 }
+
+//------------------------------------------------------------------------------

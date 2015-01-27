@@ -3,21 +3,22 @@
 
 #include <QWidget>
 
+class QPushButton;
+
 namespace VR	{
 	class Server;
 
 	class Server_GUI : public QWidget {
-//		Q_OBJECT
-
 	public:
 		Server_GUI(Server * apServer, QWidget * parent =0);
+
+		QPushButton * m_pPushButtonPrint;
 
 	private:
 		void init(const std::string & astrIPAddress, const int & anPort);
 
 		Server * m_pServer;
 
-//	public slots:
 		virtual void close();
 	};
 }

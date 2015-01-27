@@ -51,6 +51,17 @@ DatabaseInterface * ProductManagerServer::getDatabaseInterface() {
 
 //------------------------------------------------------------------------------
 
+void ProductManagerServer::createDB()	{
+	vector<pair<string,string>> vecpairDBElements;
+	{
+		vecpairDBElements.push_back(make_pair("ProductID", "INTEGER"));
+		vecpairDBElements.push_back(make_pair("ProductViewed", "INTEGER"));
+	}
+	m_DIProduct.createTable("ProductStats", vecpairDBElements);
+}
+
+//------------------------------------------------------------------------------
+
 string ProductManagerServer::getProductDataFromDB(const std::string astrProductName)	{
 	string strQuery = "SELECT * FROM Product WHERE ProductName = '" + astrProductName + "'";
 
@@ -61,6 +72,9 @@ string ProductManagerServer::getProductDataFromDB(const std::string astrProductN
 
 	list<string>::iterator it = lstResult.begin();
 	string strProductData = *it;
+
+	//Modify productStats table
+	productViewedCounter(astrProductName);
 
 	return strProductData;
 }
@@ -200,3 +214,11 @@ float ProductManagerServer::modifyProductQuantity(const ProductManagerServerPara
 	}
 }
 
+//------------------------------------------------------------------------------
+
+void ProductManagerServer::productViewedCounter(const string astrProductName)	{
+	string strQuery = "UPDATE ProductStats SET ProductViewed = (ProductViewed+1) WHERE ProductCode IN (SELECT ProductCode FROM Product "
+		" WHERE ProductName = '" + astrProductName + "')";
+
+	m_DIProduct.executeAndGetResult(strQuery);
+}

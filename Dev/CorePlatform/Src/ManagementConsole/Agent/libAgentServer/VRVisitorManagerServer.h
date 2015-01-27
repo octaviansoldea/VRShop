@@ -14,6 +14,7 @@ namespace VR	{
 		~VisitorManagerServer();
 
 		void registerVisitor(const std::string & astrVisitorIP, const int anUserID);
+		static void unregisterVisitor(const std::string & astrUserID);
 
 		static DatabaseInterfaceParams getDBParams();
 		static std::vector<std::pair<std::string,std::string>> getDBElements();

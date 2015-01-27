@@ -4,42 +4,53 @@
 #include <QObject>
 
 class QPushButton;
+class QFrame;
+class QTableWidget;
+class QLabel;
+class QPixmap;
+class QDialog;
+class QLineEdit;
 
 namespace VR	{
 	class BasketClient;
-	class Cashier_GUI;
+	class Client;
+	struct AgentClientParams;
 
-	class CashierClient : public QObject	{
-		Q_OBJECT
+	class CashierClient	{
 	public:
-		CashierClient(QObject * apParent=0);
-		CashierClient(BasketClient * apBasket, QObject * apParent=0);
+		CashierClient(Client * apClient);
 		virtual ~CashierClient();
 
-		void launchCashier();
-		void init(BasketClient * apBasket);
-		int getCurrentSelection();
+		enum ITEM_NAME	{
+			PRODUCT = 0,
+			QUANTITY,
+			PRICE,
+			DISCOUNT,
+			AMOUNT
+		};
 
-		void removeFromBasket();
+		struct InitCashier	{
+			QFrame * m_pFrameWelcome;
+			QFrame * m_pFrameContinue;
+			BasketClient * m_pBasket;
+			QLabel * m_pLabelPrice;
+			QLabel * m_pLabelProductImage;
+			QTableWidget * m_pTableWidgetProducts;
+		};
 
-	private slots:
-		void slotChangeImage(int currentRow, int currentColumn, int previousRow, int previousColumn);
-		bool close();
+		AgentManagerClient::AgentClientParams m_Acm;
+
+		void initializeCashier(InitCashier & aInitCashier);
+		void removeFromCashier(QTableWidget * apTableWidgetProducts, BasketClient * apBasket, QLabel * apLabelPrice);
+		void changeImage(BasketClient * apBasket, QTableWidget * apTableWidgetProducts, QLabel * apLabelProductImage);
+		void close(QFrame * apFrameWelcome, QFrame * apFrameContinue, QDialog * apDialog);
+		void continueClicked(AgentManagerClient::AgentClientParams * apAcm, QFrame * apFrameRightSidePDetails);
+		void moeProductClicked(BasketClient * apBasket, int anProductPosition);
 
 	private:
-		void slotConnections();
-		void addRow();
+		void addRow(QTableWidget * apTableWidgetProducts);
 
-		Cashier_GUI * m_pCashier_GUI;
-		BasketClient * m_pBasket;
-
-	public:
-		void moreProductInfoReceived(std::string & astrProductData);
-
-		QPushButton * m_pPushButtonStart;
-		QPushButton * m_pPushButtonRemove;
-		QPushButton * m_pPushButtonInfo;
-		QPushButton * m_pPushButtonProceed;
+		Client * m_pClient;
 	};
 }
 #endif //VR_CASHIER_CLIENT_H

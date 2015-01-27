@@ -80,6 +80,14 @@ void VisitorManagerServer::registerVisitor(const string & astrVisitorIP, const i
 	string strSqlQuery = "INSERT INTO Visitor(VisitorID, VisitorIP, VisitorStartDateTime, VisitorEndDateTime) VALUES ('" + 
 		tostr(anUserID) + "','" + astrVisitorIP + "','" + tostr(time(NULL)) + "',0)";
 
-	DatabaseInterface *pDI = VisitorManagerServer::getDatabaseInterface();
-	pDI->executeAndGetResult(strSqlQuery);
+	m_DIVisitor.executeAndGetResult(strSqlQuery);
+}
+
+//------------------------------------------------------------------------------
+
+void VisitorManagerServer::unregisterVisitor(const std::string & astrUserID)	{
+	string strSqlQuery = "UPDATE Visitor SET VisitorEndDateTime = '" + tostr(time(NULL)) +
+		"' WHERE VisitorID = '" + astrUserID + "' AND VisitorEndDateTime = '0'";
+
+	m_DIVisitor.executeAndGetResult(strSqlQuery);
 }

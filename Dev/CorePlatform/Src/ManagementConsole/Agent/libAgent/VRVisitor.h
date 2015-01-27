@@ -21,6 +21,17 @@ namespace VR	{
 
 		virtual const char* className() const;
 
+		typedef struct VisitorParams	{
+			std::string m_strFirstName;
+			std::string m_strLastName;
+			std::string m_strMiddleName;
+			std::string m_strAddress;
+			std::string m_strCity;
+			std::string m_strPostalCode;
+			std::string m_strState;
+			std::string m_strCountry;
+		} VisitorParams;
+
 		// Track client's activity: client_ID, access_date/time, exit_date/time, products_observed
 
 		BasketClient * getBasket();

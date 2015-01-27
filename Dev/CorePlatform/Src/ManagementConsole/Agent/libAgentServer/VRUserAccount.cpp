@@ -26,15 +26,24 @@ UserAccount::~UserAccount()	{
 
 //------------------------------------------------------------------------------
 
-bool UserAccount::trySignIn(std::string & astrUser, std::string & astrPsw)	{
+bool UserAccount::trySignIn(string & astrUser, string & astrPsw, string & astrUserID)	{
 	string strSqlQuery = "SELECT UserAccountID FROM UserAccount WHERE UserEMail = '" 
 		+ astrUser + "' AND UserPassword = '" + astrPsw + "'";
 
-	bool bRes;
 	DatabaseInterface *pDI = UserAccountManager::getDatabaseInterface();
-	bRes = (pDI->executeAndGetResult(strSqlQuery).empty()) ? false : true;
+	string strResult = pDI->executeAndGetResult(strSqlQuery).front();
+	if (strResult.empty())	{
+		return false;
+	}
 
-	return bRes;
+	strResult.pop_back();
+
+	strSqlQuery = "UPDATE UserAccount SET VisitorID = '" + astrUserID + "' WHERE UserAccountID = " + strResult;
+	pDI->execute(strSqlQuery);
+	return true;
+
+//	bool bRes;
+//	bRes = (pDI->executeAndGetResult(strSqlQuery).empty()) ? false : true;
 }
 
 //------------------------------------------------------------------------------
@@ -46,12 +55,13 @@ bool UserAccount::trySignUp(UserAccountParams & aUserAccountParams)	{
 	bool bRes = UserAccount::checkUserAccountValidity(aUserAccountParams.m_strEMail);
 	
 	if (bRes) {
-		strSqlQuery =	"INSERT INTO UserAccount(UserFirstName, UserSecondName, UserEMail, UserPassword, UserCreatedDateTime)"
+		strSqlQuery =	"INSERT INTO UserAccount(UserFirstName, UserSecondName, UserEMail, UserPassword, UserCreatedDateTime, VisitorID) "
 			"VALUES ('" + 
 			aUserAccountParams.m_strFirstName + "','" + 
 			aUserAccountParams.m_strLastName + "','" +
 			aUserAccountParams.m_strEMail + "','" + 
-			aUserAccountParams.m_strPsw + "','" + tostr(time(NULL)) + "')";
+			aUserAccountParams.m_strPsw + "','" + tostr(time(NULL)) + "','" +
+			aUserAccountParams.m_strUserIDName + "')";
 
 		DatabaseInterface * pDIUA = UserAccountManager::getDatabaseInterface();
 		list<string> lststrResult = pDIUA->executeAndGetResult(strSqlQuery);
@@ -64,8 +74,12 @@ bool UserAccount::trySignUp(UserAccountParams & aUserAccountParams)	{
 
 //------------------------------------------------------------------------------
 
-bool UserAccount::trySignOut(std::string & astrUser)	{
-	return true;
+void UserAccount::trySignOut(std::string & astrUser)	{
+	string strSqlQuery="UPDATE UserAccount SET "
+		"UserAccountID = '0' WHERE UserAccountID = '" + astrUser + "'";
+
+	DatabaseInterface * pDIUA = UserAccountManager::getDatabaseInterface();
+	pDIUA->execute(strSqlQuery);
 }
 
 //------------------------------------------------------------------------------
@@ -108,5 +122,21 @@ bool UserAccount::checkUserAccountValidity(const string & astrUserName)	{
 
 //------------------------------------------------------------------------------
 
-void UserAccount::resetUserAccount()	{
+bool UserAccount::insertUserPersonalData(UserPersonalData & aUserPersonalData)	{
+	string strSqlQuery = "INSERT INTO AddressBook ("
+		"FirstName, MiddleName, LastName, Address, City, PostalCode, State, Country, UserAccountID) VALUES('" +
+		aUserPersonalData.m_strFirstName + "','" +
+		aUserPersonalData.m_strMiddleName + "','" +
+		aUserPersonalData.m_strLastName + "','" +
+		aUserPersonalData.m_strAddress + "','" +
+		aUserPersonalData.m_strCity + "','" +
+		aUserPersonalData.m_strPostalCode + "','" +
+		aUserPersonalData.m_strState + "','" +
+		aUserPersonalData.m_strCountry + "','" +
+		aUserPersonalData.m_strUserID + "')";
+
+	DatabaseInterface * pDIUA = UserAccountManager::getDatabaseInterface();
+	bool bRes = pDIUA->executeAndGetResult(strSqlQuery).empty() ? false : true;
+
+	return bRes;
 }

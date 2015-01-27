@@ -7,6 +7,7 @@ IF(Qt5_FOUND)
   INCLUDE_DIRECTORIES(
     ${Qt5Core_INCLUDE_DIRS}
     ${Qt5Gui_INCLUDE_DIRS}
+	${Qt5Network_INCLUDE_DIRS}
     ${Qt5Widgets_INCLUDE_DIRS}
   )
 ELSE(Qt5_FOUND)
@@ -31,11 +32,15 @@ INCLUDE_DIRECTORIES(
 	${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProduct
     ${CMAKE_SOURCE_DIR}/Props/Avatar/libAvatar
+	${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libClient
+	${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libServerClientCommands
+
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgent
-#	${CMAKE_SOURCE_DIR}/ManagementConsole/Cashier/libCashierClient
+	${CMAKE_SOURCE_DIR}/ManagementConsole/Cashier/libCashierClient
 	${CMAKE_BINARY_DIR}/ManagementConsole/Cashier/libCashierClient
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Cashier/libCashierClient/View
 	${CMAKE_SOURCE_DIR}/Props/AbstractManagerClient/libAbstractManagerClient
+	${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgentManager
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Cashier/libCashierManagerClient
 	${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libServerClientCommands
 )
@@ -43,11 +48,11 @@ INCLUDE_DIRECTORIES(
 #MOC according to the Qt version
 IF(Qt5_FOUND)
   QT5_WRAP_UI(UI_SRCS	${CMAKE_CURRENT_SOURCE_DIR}/View/VRCashier_GUI.ui)
-  QT5_WRAP_CPP(MOC_SRCS VRCashierClient.h)
+  QT5_WRAP_CPP(MOC_SRCS )#VRCashierClient.h)
 
 ELSE()
   QT4_WRAP_UI(UI_SRCS	${CMAKE_CURRENT_SOURCE_DIR}/View/VRCashier_GUI.ui)
-  QT4_WRAP_CPP(MOC_SRCS VRCashierClient.h)
+  QT4_WRAP_CPP(MOC_SRCS )#VRCashierClient.h)
 ENDIF()
 
 

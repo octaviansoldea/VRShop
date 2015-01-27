@@ -149,3 +149,5 @@ ClientConnection * Server::getClient(quint64 clientID) const	{
 
 void Server::slotNewConnection()	{
 }
+
+//----------------------------------------------------------------------

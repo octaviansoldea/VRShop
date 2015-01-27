@@ -49,6 +49,7 @@ ENDIF()
 SET(SRCS
 	VRCashierServer.h VRCashierServer.cpp
 	VRCashierManagerServer.h VRCashierManagerServer.cpp
+	VRCashierServerReport.h VRCashierServerReport.cpp
 )
 
 #Library to be later used in the main

@@ -29,6 +29,9 @@ namespace VR	{
 		bool removeProduct(const ProductManagerServerParams & aProductManagerServerParams);
 		float modifyProductQuantity(const ProductManagerServerParams & aProductManagerServerParams);
 
+		void productViewedCounter(const std::string astrProductName);
+
+
 	private:
 		static DatabaseInterface m_DIProduct;
 
@@ -38,6 +41,8 @@ namespace VR	{
 		static std::string getDatabaseName();
 
 		static DatabaseInterface * getDatabaseInterface();
+
+		static void createDB();
 	};
 }
 #endif //VR_PRODUCT_MANAGER_SERVER_H

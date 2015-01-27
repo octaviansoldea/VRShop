@@ -1,9 +1,9 @@
 #include <QApplication>
 
-#include "VRAvatarManagerServer.h"
-#include "VRUserAccountManager.h"
-#include "VRVisitorManagerServer.h"
-#include "VRCashierManagerServer.h"
+#include <QPushButton>
+#include <QTimer>
+
+#include "VRDatabaseNetworkManager.h"
 
 #include <iostream>
 
@@ -46,16 +46,14 @@ int main(int argc, char * argv[])	{
 	Server_GUI server_GUI(&server);
 	server_GUI.show();
 
-	//Creates necessary databases if missing
-	UserAccountManager::createUserAccountDB();
-	AvatarManagerServer::createAvatarDB();
-	CashierManagerServer::createDB();
-	VisitorManagerServer::createDB();
-
+	//Create necessary databases if missing
+	DatabaseNetworkManager::checkDatabaseTables();
 
 	QTimer timer;
-	QObject::connect(&timer, &QTimer::timeout, &AvatarManagerServer::checkAvatarActivity);
+	QObject::connect(&timer, &QTimer::timeout, &DatabaseNetworkManager::checkAvatarActivity);
 	timer.start(1000);
+
+	QObject::connect(server_GUI.m_pPushButtonPrint, &QPushButton::clicked, &DatabaseNetworkManager::printOrderList);
 
 	int nRes = app.exec();
 

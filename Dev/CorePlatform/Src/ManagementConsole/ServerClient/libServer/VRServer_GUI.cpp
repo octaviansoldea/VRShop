@@ -34,10 +34,13 @@ void Server_GUI::init(const std::string & astrIPAddress, const int & anPort)	{
 		.arg(astrIPAddress.c_str()).arg(anPort));
 
 	connect(m_pPushButtonQuit, SIGNAL(clicked()), this, SLOT(close()));
-	
+
+	m_pPushButtonPrint = new QPushButton("Print orders");
+
 	QHBoxLayout *buttonLayout = new QHBoxLayout;
 	buttonLayout->addStretch(1);
 	buttonLayout->addWidget(m_pPushButtonQuit);
+	buttonLayout->addWidget(m_pPushButtonPrint);
 	buttonLayout->addStretch(1);
 
 	QVBoxLayout *mainLayout = new QVBoxLayout;

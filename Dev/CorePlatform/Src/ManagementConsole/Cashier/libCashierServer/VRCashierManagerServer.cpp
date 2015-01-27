@@ -1,5 +1,6 @@
 #include <QString>
 #include <iostream>
+#include <fstream>
 
 #include "BasicStringDefinitions.h"
 
@@ -55,7 +56,7 @@ vector<pair<string,string>> CashierManagerServer::getDBElements()	{
 
 	vecpairDBElements.push_back(make_pair("ReceiptID", "INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE"));
 	vecpairDBElements.push_back(make_pair("ReceiptValue", "TEXT"));
-	vecpairDBElements.push_back(make_pair("ReceiptProducts", "TEXT"));
+	vecpairDBElements.push_back(make_pair("ReceiptBasketID", "INTEGER"));
 	vecpairDBElements.push_back(make_pair("PaymentType", "TEXT"));
 	vecpairDBElements.push_back(make_pair("DeliveryType", "TEXT"));
 	vecpairDBElements.push_back(make_pair("UserAccount", "TEXT"));
@@ -87,6 +88,7 @@ void CashierManagerServer::createDB()	{
 		vecpairDBOrderConfirmed.push_back(make_pair("ProductID", "TEXT"));
 		vecpairDBOrderConfirmed.push_back(make_pair("ProductQuantity", "TEXT"));
 		vecpairDBOrderConfirmed.push_back(make_pair("TimeConfirmed", "TEXT"));
+		vecpairDBOrderConfirmed.push_back(make_pair("BasketID", "INTEGER"));
 	}
 	m_DICashier.createTable("OrdersConfirmed", vecpairDBOrderConfirmed);
 
@@ -94,8 +96,8 @@ void CashierManagerServer::createDB()	{
 	{
 		vecpairDBOrderDelivered.push_back(make_pair("OrderDeliveredID", "INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE"));
 		vecpairDBOrderDelivered.push_back(make_pair("UserID", "TEXT"));
-		vecpairDBOrderDelivered.push_back(make_pair("Basket", "TEXT"));
-		vecpairDBOrderDelivered.push_back(make_pair("TimeConfirmed", "TEXT"));
+		vecpairDBOrderDelivered.push_back(make_pair("BasketID", "INTEGER"));
+		vecpairDBOrderDelivered.push_back(make_pair("TimeDelivered", "TEXT"));
 	}
 	m_DICashier.createTable("OrdersDelivered", vecpairDBOrderDelivered);
 }
@@ -120,7 +122,7 @@ bool CashierManagerServer::addProduct2OrdersReserved(const CashierManagerServerP
 	//Product not yet in the list => add it
 	if (lststrResult.empty())	{
 		strQuery = "INSERT INTO OrdersReserved (UserID, ProductID, ProductQuantity, TimeOrdered, OrderStatus) "
-			"VALUES('" + strUserID + "','" + strProductName + "','" + tostr(flProductQuantity) + "','" + tostr(time(NULL)) + "','1')";
+			"VALUES('" + strUserID + "','" + strProductName + "','" + tostr(flProductQuantity) + "','" + tostr(time(NULL)) + "','"+ tostr(RESERVED)+"')";
 	} 
 	//Product already in the list => modify quantities
 	else {
@@ -149,6 +151,14 @@ bool CashierManagerServer::removeProductFromOrdersReserved(const CashierManagerS
 
 //------------------------------------------------------------------------------
 
+void CashierManagerServer::clearProductsReserved(const std::string & astrUserName)	{
+	string strQuery = "DELETE FROM OrdersReserved WHERE UserID = '" + astrUserName + "' AND OrderStatus = '" + tostr(RESERVED) + "'";
+
+	m_DICashier.execute(strQuery);
+}
+
+//------------------------------------------------------------------------------
+
 bool CashierManagerServer::modifyProductOrdersReserved(const CashierManagerServerParams & aCMSP)	{
 	string strUserID = aCMSP.m_strUserIDName;
 	string strProductName = aCMSP.m_strProductName;
@@ -162,3 +172,33 @@ bool CashierManagerServer::modifyProductOrdersReserved(const CashierManagerServe
 
 	return true;
 }
+
+//------------------------------------------------------------------------------
+
+void CashierManagerServer::orderConfirmed(const std::string & astrUserName)	{
+	//Change status of the printed items
+	string strQuery = "UPDATE OrdersReserved SET OrderStatus = '" + tostr(CONFIRMED) + "' WHERE UserID = '" + astrUserName + "'";
+	m_DICashier.execute(strQuery);
+}
+
+//------------------------------------------------------------------------------
+
+list<string> CashierManagerServer::getActiveOrdersList()	{
+	list<string> lststrActiveOrders;
+
+	//Get all active (non-delivered) orders
+	string strQuery = "SELECT * FROM OrdersReserved WHERE OrderStatus = " + tostr(CONFIRMED) + " ORDER BY UserID";
+	lststrActiveOrders = m_DICashier.executeAndGetResult(strQuery);
+
+	if (lststrActiveOrders.empty())	{
+		return list<string>(0);
+	}
+
+	//Change status of the printed items
+	strQuery = "UPDATE OrdersReserved SET OrderStatus = '" + tostr(DELIVERED) + "' WHERE OrderStatus = '"+tostr(CONFIRMED)+"'";
+	m_DICashier.execute(strQuery);
+
+	return lststrActiveOrders;
+}
+
+//------------------------------------------------------------------------------

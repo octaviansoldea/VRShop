@@ -17,7 +17,7 @@
 #include "VRAgentInterface.h"
 #include "VRProductBasketInterface.h"
 #include "VRCameraController.h"
-#include "VRCashierClient.h"
+#include "VRCashier_GUI.h"
 
 #include "VRAbstractUser.h"
 #include "VRVisitor.h"
@@ -103,7 +103,10 @@ ShoppingPlace_GUI::ShoppingPlace_GUI(Client * apClient, string & astrFileName, s
 
 
 	//Cashier
-	m_pCashierClient = new CashierClient(this);
+	m_pCashier_GUI = new Cashier_GUI(
+		m_pClient, 
+		pBasket,
+		(QDialog*)parent());
 
 	updateGeometry();
 
@@ -117,7 +120,7 @@ ShoppingPlace_GUI::~ShoppingPlace_GUI()	{
 	delete m_pAgentInterface;
 	delete m_pProductBasketInterface;
 	delete m_pCameraController;
-	delete m_pCashierClient;
+	delete m_pCashier_GUI;
 	delete m_pShoppingPlace;
 }
 
@@ -206,12 +209,8 @@ void ShoppingPlace_GUI::signalSlotConnections()	{
 
 	//cashier related signals and slots
 	connect(pPickAndDragHandlerShopClient,SIGNAL(signalCashierPicked()),this,SLOT(slotCashierClicked()));
-	connect(m_pCashierClient->m_pPushButtonStart,SIGNAL(pressed()),this,SLOT(slotStartCashierClicked()));
-	connect(m_pCashierClient->m_pPushButtonRemove,SIGNAL(pressed()),this,SLOT(slotRemoveFromCashierClicked()));
-	connect(m_pCashierClient->m_pPushButtonInfo,SIGNAL(pressed()),this,SLOT(slotProductInfoClicked()));
-	connect(m_pCashierClient->m_pPushButtonProceed,SIGNAL(pressed()),this,SLOT(slotProceedAndPayClicked()));
 
-	connect(pMVCClient, SIGNAL(signalRemoveProduct()),this,SLOT(slotRemoveProductConfirmed()));	
+	connect(pMVCClient, SIGNAL(signalRemoveProduct()),this,SLOT(slotRemoveProductConfirmed()));
 }
 
 //----------------------------------------------------------------------------------------
@@ -252,46 +251,13 @@ void ShoppingPlace_GUI::slotModifyProductQuantity(ProductShopClient * apProduct,
 //----------------------------------------------------------------------------------------
 
 void ShoppingPlace_GUI::slotCashierClicked()	{
-	bool bIsUserAuthorized = m_pShoppingPlace->isUserAuthorized();
-
-	//BEFORE OPENING THE CASHIER CHECK IF USER SIGNED IN
-
-	m_pCashierClient->launchCashier();
-}
-
-//----------------------------------------------------------------------------------------
-
-void ShoppingPlace_GUI::slotStartCashierClicked()	{
-	Visitor * pUser = (Visitor*)m_pShoppingPlace->getAbstractUser();
-	BasketClient * pBasket = pUser->getBasket();
-
-	m_pCashierClient->init(pBasket);
-}
-
-//----------------------------------------------------------------------------------------
-
-void ShoppingPlace_GUI::slotRemoveFromCashierClicked()	{
-	int nProductNo = m_pCashierClient->getCurrentSelection();
-	m_pShoppingPlace->removeFromCashier(nProductNo);
-}
-
-//----------------------------------------------------------------------------------------
-
-void ShoppingPlace_GUI::slotProductInfoClicked()	{
-	int nProductNo = m_pCashierClient->getCurrentSelection();
-	m_pShoppingPlace->productInfoCashier(nProductNo);
-}
-
-//----------------------------------------------------------------------------------------
-
-void ShoppingPlace_GUI::slotProceedAndPayClicked()	{
-	m_pShoppingPlace->proceedAndPayRequested();
+	m_pCashier_GUI->cashierClicked();
 }
 
 //----------------------------------------------------------------------------------------
 
 void ShoppingPlace_GUI::slotRemoveProductConfirmed()	{
-	m_pCashierClient->removeFromBasket();
+	//m_pCashierClient->removeFromBasket();
 }
 
 //----------------------------------------------------------------------------------------
@@ -306,3 +272,4 @@ void ShoppingPlace_GUI::slotClientReceiveData()	{
 	m_pShoppingPlace->handleClientData();
 }
 
+//----------------------------------------------------------------------------------------

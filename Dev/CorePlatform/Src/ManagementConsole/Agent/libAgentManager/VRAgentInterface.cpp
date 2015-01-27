@@ -142,3 +142,5 @@ void AgentInterface::slotSignedIn()	{
 	m_pLineEditPassword->clear();
 	m_pLineEditUserName->clear();
 }
+
+//----------------------------------------------------------------------

@@ -135,7 +135,6 @@ void AvatarManagerServer::checkAvatarActivity()	{
 						+ "')"
 						;
 
-	DatabaseInterface *pDI = AvatarManagerServer::getDatabaseInterface();
-	pDI->executeAndGetResult(strSqlQueryDelete);
+	m_DIAvatar.executeAndGetResult(strSqlQueryDelete);
 
 }

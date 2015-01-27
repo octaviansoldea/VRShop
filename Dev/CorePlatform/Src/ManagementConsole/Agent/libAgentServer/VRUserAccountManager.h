@@ -19,6 +19,10 @@ namespace VR	{
 		static std::string getDatabaseName();
 
 		static void createUserAccountDB();
+		static void createDB();
+
+		static std::string getUserAddress(const int & anUserID);
+		static std::string getUserAccountID(const std::string & astrUserID);
 
 		static DatabaseInterface * getDatabaseInterface();
 

@@ -40,19 +40,35 @@ void AbstractUser::userActivity()	{
 
 //------------------------------------------------------------------------------
 
+void AbstractUser::findProductInShop(const ProductShopClient & aProduct) const	{
+}
+
+//------------------------------------------------------------------------------
+
 string AbstractUser::getUserIDName() const	{
 	return m_strUserIDName;
 }
 
 //------------------------------------------------------------------------------
 
+void AbstractUser::userSignedIn()	{
+	m_bIsUserAuthorized=true;
+}
+
+//------------------------------------------------------------------------------
+
 void AbstractUser::setUserIDName(string astrUserIDName)	{
 	m_strUserIDName = astrUserIDName;
-	m_bIsUserAuthorized=true;
 }
 
 //------------------------------------------------------------------------------
 
 bool AbstractUser::getIsUserAuthorized() const	{
 	return m_bIsUserAuthorized;
+}
+
+//------------------------------------------------------------------------------
+
+void AbstractUser::userSignedOut()	{
+	m_bIsUserAuthorized = false;
 }

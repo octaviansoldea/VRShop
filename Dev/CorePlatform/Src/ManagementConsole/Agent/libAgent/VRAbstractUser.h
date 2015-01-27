@@ -17,13 +17,17 @@ namespace VR {
 		Avatar * getAvatar();
 		std::string getUserIDName() const;
 		bool getIsUserAuthorized() const;
+
+		void userSignedIn();
+		void userSignedOut();
+
 	
 	protected:
 
 		//not 2 be implemented in the 1. version
 		virtual void userActivity();
 
-		void findProductInShop(const ProductShopClient & aProduct) const {};
+		void findProductInShop(const ProductShopClient & aProduct) const;
 
 		//Communication between agents - not 2 be implemented in the 1. version
 		void sendMessage(std::string & astrMessage);

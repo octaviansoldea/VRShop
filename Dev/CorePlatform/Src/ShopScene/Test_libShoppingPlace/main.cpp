@@ -55,7 +55,6 @@ int main(int argc, char *argv[])	{
 		break;
 	}
 
-
 	widget.show();
 
 	int nRes = app.exec();

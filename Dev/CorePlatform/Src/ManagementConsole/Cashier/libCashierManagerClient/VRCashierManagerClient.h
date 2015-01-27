@@ -14,6 +14,7 @@ namespace VR {
 
 	class CashierManagerClient : public AbstractManagerClient	{
 	public:
+		CashierManagerClient(Client * apClient, QObject *parent=0);
 		CashierManagerClient(Client * apClient, ModelViewControllerClient * apMVCClient, QObject *parent=0);
 		virtual ~CashierManagerClient();
 

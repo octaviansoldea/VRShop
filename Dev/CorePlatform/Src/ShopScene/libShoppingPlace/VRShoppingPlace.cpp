@@ -312,46 +312,19 @@ ModelViewControllerClient * ShoppingPlace::getModelViewController() const	{
 
 //----------------------------------------------------------------------
 
-void ShoppingPlace::removeFromCashier(const int & anProductPosition)	{
-	if (anProductPosition < 0)
-		return;
-
-	BasketClient * pBasket = m_pVisitor->getBasket();
-	if (pBasket->count() == 0)
-		return;
-
-	string strUserID = m_pVisitor->getUserIDName();
-	string strProductName = pBasket->getProduct(anProductPosition)->getProductName();
-
-	m_pCashierMgr->removeFromBasketClicked(strUserID, strProductName);
-}
-
-//----------------------------------------------------------------------
-
-void ShoppingPlace::productInfoCashier(const int & anProductPosition)	{
-	if (anProductPosition < 0)
-		return;
-
-	BasketClient * pBasket = m_pVisitor->getBasket();
-	if (pBasket->count() == 0)
-		return;
-
-	string strProductName = pBasket->getProduct(anProductPosition)->getProductName();
-
-	m_pCashierMgr->moreProductInfoClicked(strProductName);
-}
-
-//----------------------------------------------------------------------
-
-void ShoppingPlace::proceedAndPayRequested()	{
-	BasketClient * pBasket = m_pVisitor->getBasket();
-	if (pBasket->count() == 0)
-		return;
-
-	string strUserID = m_pVisitor->getUserIDName();
-
-	m_pCashierMgr->proceedAndPayCashier(strUserID, pBasket);
-}
+//void ShoppingPlace::removeFromCashier(const int & anProductPosition)	{
+//	if (anProductPosition < 0)
+//		return;
+//
+//	BasketClient * pBasket = m_pVisitor->getBasket();
+//	if (pBasket->count() == 0)
+//		return;
+//
+//	string strUserID = m_pVisitor->getUserIDName();
+//	string strProductName = pBasket->getProduct(anProductPosition)->getProductName();
+//
+//	m_pCashierMgr->removeFromBasketClicked(strUserID, strProductName);
+//}
 
 //----------------------------------------------------------------------
 

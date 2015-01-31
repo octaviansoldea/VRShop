@@ -9,6 +9,7 @@
 
 #include <QVariantList>
 #include <QDir>
+#include <QCoreApplication>
 
 #include <QString>
 
@@ -63,8 +64,9 @@ bool DatabaseInterface::createConnection(const DatabaseInterfaceParams & aDBInte
 	if (!bOk) {
 		QString qstrError = QSqlDatabase::database().lastError().text();
 		BasicQtOperations::printError(qstrError);
-		QSqlDatabase::removeDatabase(*pqstrConnName);
+		QSqlDatabase::removeDatabase(*pqstrConnName);		
 	}
+
 	return bOk;
 }
 
@@ -156,7 +158,7 @@ bool DatabaseInterface::removeTable(const QString& aqstrTableName)	{
 		q.exec( "DROP TABLE " + *pqstrTableName);
 	} else {
 		QString * pqstrError = &QSqlDatabase::database().lastError().text();
-//		VR::printWarning("Unable to drop table " + *pqstrTableName + " - " + *pqstrError);
+		VR::BasicQtOperations::printWarning("Unable to drop table " + *pqstrTableName + " - " + *pqstrError);
 
 		return bRes;
 	}
@@ -305,12 +307,7 @@ void DatabaseInterface::deleteRow(const string & astrTableName, const string & a
 	model.submitAll();
 }
 
-//-----------------------------------------------------------------------------------------
-
-void DatabaseInterface::updateDB() {
-}
-
-//-----------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------
 
 void DatabaseInterface::systemOfTables(std::vector<std::pair<std::string,std::string>> & avecStmtPairs)	{
 }

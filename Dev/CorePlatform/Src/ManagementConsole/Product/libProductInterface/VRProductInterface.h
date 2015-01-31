@@ -10,6 +10,8 @@ class QLabel;
 class QPushButton;
 
 namespace VR	{
+	class Client;
+
 	class ProductInterface : public QObject	{
 		Q_OBJECT
 	public:
@@ -19,7 +21,8 @@ namespace VR	{
 			QLabel * apLabelProductInterfaceInfo,
 			QPushButton * apPushButtonProductInterface2Basket,
 			QPushButton * apPushButtonProductInterfaceDetails,
-			QLabel * apLabelProductInterfacePrice
+			QLabel * apLabelProductInterfacePrice,
+			Client * apClient
 		);	//End of constructor
 
 	private:
@@ -29,6 +32,8 @@ namespace VR	{
 		QPushButton * m_pPushButtonProductInterface2Basket;
 		QPushButton * m_pPushButtonProductInterfaceDetails;
 		QLabel * m_pLabelProductInterfacePrice;
+
+		Client * m_pClient;
 
 		ProductShopClient m_ProductShopClient;
 
@@ -44,6 +49,11 @@ namespace VR	{
 
 	public:
 		ProductShopClient * getProduct();
+
+		void productClicked(const std::string & astrProductName);
+		void removeProductRequest(ProductShopClient * apProduct);
+
+		void initFromDB(QByteArray data);
 	};
 }
 #endif //VR_PRODUCT_INTERFACE_H

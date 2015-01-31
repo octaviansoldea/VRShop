@@ -265,13 +265,6 @@ void ShoppingPlace::avatarClicked(const string & astrAvatarName)	{
 
 //----------------------------------------------------------------------
 
-void ShoppingPlace::productClicked(const string & astrProductName)	{
-	string strProductName = astrProductName;
-	m_pProductMgr->productClicked(strProductName);
-}
-
-//----------------------------------------------------------------------
-
 void ShoppingPlace::product2BasketRequest(ProductShopClient * apProduct)	{
 	ProductManagerClient::ProductManagerClientParams aPMCP;
 	aPMCP.m_strUserIDName = m_pVisitor->getUserIDName();
@@ -309,22 +302,6 @@ void ShoppingPlace::purchaseRequest()	{
 ModelViewControllerClient * ShoppingPlace::getModelViewController() const	{
 	return m_pMVCClient;
 }
-
-//----------------------------------------------------------------------
-
-//void ShoppingPlace::removeFromCashier(const int & anProductPosition)	{
-//	if (anProductPosition < 0)
-//		return;
-//
-//	BasketClient * pBasket = m_pVisitor->getBasket();
-//	if (pBasket->count() == 0)
-//		return;
-//
-//	string strUserID = m_pVisitor->getUserIDName();
-//	string strProductName = pBasket->getProduct(anProductPosition)->getProductName();
-//
-//	m_pCashierMgr->removeFromBasketClicked(strUserID, strProductName);
-//}
 
 //----------------------------------------------------------------------
 

@@ -9,18 +9,14 @@
 #include <string>
 #include <list>
 
-#include <QObject>
-#include <QTimer>
-
 namespace VR {
 	class Avatar;
 	class DatabaseInterface;
 	struct DatabaseInterfaceParams;
 
-	class AvatarManagerServer : public QObject	{
-//		Q_OBJECT
+	class AvatarManagerServer	{
 	public:
-		AvatarManagerServer(QObject * apParent=0);
+		AvatarManagerServer();
 
 		const char* className() const;
 
@@ -39,12 +35,13 @@ namespace VR {
 		static DatabaseInterface * getDatabaseInterface();
 
 	private:
-		static DatabaseInterface m_DIAvatar;
-
-		QTimer m_QTimerCheckAvatars;
+		static DatabaseInterface * m_pDIAvatar;
 
 	public:
 		static void checkAvatarActivity();
+
+		static void constructStatics();
+		static void deleteStatics();
 	};
 }
 #endif //VR_AVATAR_MANAGER_SERVER_H

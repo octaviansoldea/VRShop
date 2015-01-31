@@ -4,5 +4,6 @@ SET(CMAKE_DEBUG_POSTFIX "D")
 
 SUBDIRS(
 	libEmbeddedWidget
+	libEmbeddedWidgetStatics
 	Test_libEmbeddedWidget
 )

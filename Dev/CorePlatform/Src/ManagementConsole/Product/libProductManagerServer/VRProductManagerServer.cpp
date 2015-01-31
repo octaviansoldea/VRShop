@@ -4,7 +4,7 @@
 
 #include "BasicStringDefinitions.h"
 
-#include "VRAppData.h"
+#include "VRAppDataServer.h"
 #include "VRBasketServer.h"
 #include "VRDatabaseInterface.h"
 
@@ -13,7 +13,7 @@
 using namespace VR;
 using namespace std;
 
-DatabaseInterface ProductManagerServer::m_DIProduct(ProductManagerServer::getDBParams());
+DatabaseInterface * ProductManagerServer::m_pDIProduct = 0;
 
 //==============================================================================
 
@@ -40,13 +40,13 @@ string ProductManagerServer::getTableName()	{
 //------------------------------------------------------------------------------
 
 string ProductManagerServer::getDatabaseName()	{
-	return AppData::getFPathDatabases() + "/Products.db";
+	return AppDataServer::getFPathDatabases() + "/Products.db";
 }
 
 //------------------------------------------------------------------------------
 
 DatabaseInterface * ProductManagerServer::getDatabaseInterface() {
-	return(&m_DIProduct);
+	return(m_pDIProduct);
 }
 
 //------------------------------------------------------------------------------
@@ -57,7 +57,7 @@ void ProductManagerServer::createDB()	{
 		vecpairDBElements.push_back(make_pair("ProductID", "INTEGER"));
 		vecpairDBElements.push_back(make_pair("ProductViewed", "INTEGER"));
 	}
-	m_DIProduct.createTable("ProductStats", vecpairDBElements);
+	m_pDIProduct->createTable("ProductStats", vecpairDBElements);
 }
 
 //------------------------------------------------------------------------------
@@ -65,7 +65,7 @@ void ProductManagerServer::createDB()	{
 string ProductManagerServer::getProductDataFromDB(const std::string astrProductName)	{
 	string strQuery = "SELECT * FROM Product WHERE ProductName = '" + astrProductName + "'";
 
-	list<string> lstResult = m_DIProduct.executeAndGetResult(strQuery);
+	list<string> lstResult = m_pDIProduct->executeAndGetResult(strQuery);
 	if (lstResult.empty())	{
 		return "";
 	}
@@ -113,7 +113,7 @@ bool ProductManagerServer::canFullfilRequest(std::string & astrBasketRequest)	{
 
 	//Available quantities
 	map < long, float > mapIDQuantityAvailable;
-	list<string> lststrResult = m_DIProduct.executeAndGetResult(strQuery);
+	list<string> lststrResult = m_pDIProduct->executeAndGetResult(strQuery);
 
 	nSize = lststrResult.size();
 	list<string>::iterator it = lststrResult.begin();
@@ -150,7 +150,7 @@ float ProductManagerServer::tryAddProduct2Basket(const ProductManagerServerParam
 			"END) "
 		"FROM Product WHERE ProductName = '" + strProductName + "'";
 
-	list<string> lststrResult = m_DIProduct.executeAndGetResult(strQuery);
+	list<string> lststrResult = m_pDIProduct->executeAndGetResult(strQuery);
 
 	if (lststrResult.empty())	{
 		return 0;
@@ -161,7 +161,7 @@ float ProductManagerServer::tryAddProduct2Basket(const ProductManagerServerParam
 	strQuery = "UPDATE Product SET ProductQuantity = (ProductQuantity - " + tostr(flQuantity) +
 		") WHERE ProductName = '" + strProductName + "'";
 
-	m_DIProduct.execute(strQuery);
+	m_pDIProduct->execute(strQuery);
 
 	return flQuantity;
 }
@@ -179,7 +179,7 @@ bool ProductManagerServer::removeProduct(const ProductManagerServerParams & aPro
 	string strQuery = "UPDATE Product SET ProductQuantity = (ProductQuantity + " + tostr(flQuantity) +
 		") WHERE ProductName = '" + strProductName + "'";
 
-	m_DIProduct.execute(strQuery);
+	m_pDIProduct->execute(strQuery);
 
 	//Remove product from temporary basket of user
 
@@ -206,7 +206,7 @@ float ProductManagerServer::modifyProductQuantity(const ProductManagerServerPara
 		string strQuery = "UPDATE Product SET ProductQuantity = (ProductQuantity + " + tostr(fabs(flDiffQuantity)) +
 			") WHERE ProductName = '" + strProductName + "'";
 
-		m_DIProduct.execute(strQuery);
+		m_pDIProduct->execute(strQuery);
 
 		//Remove product from temporary basket of user
 
@@ -220,5 +220,17 @@ void ProductManagerServer::productViewedCounter(const string astrProductName)	{
 	string strQuery = "UPDATE ProductStats SET ProductViewed = (ProductViewed+1) WHERE ProductCode IN (SELECT ProductCode FROM Product "
 		" WHERE ProductName = '" + astrProductName + "')";
 
-	m_DIProduct.executeAndGetResult(strQuery);
+	m_pDIProduct->executeAndGetResult(strQuery);
+}
+
+//------------------------------------------------------------------------------
+
+void ProductManagerServer::constructStatics() {
+	m_pDIProduct = new DatabaseInterface(static_cast<DatabaseInterfaceParams&>(ProductManagerServer::getDBParams()));
+}
+
+//------------------------------------------------------------------------------
+
+void ProductManagerServer::deleteStatics() {
+	delete m_pDIProduct;
 }

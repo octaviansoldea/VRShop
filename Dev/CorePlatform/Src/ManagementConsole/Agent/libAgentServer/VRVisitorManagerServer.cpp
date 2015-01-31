@@ -2,7 +2,7 @@
 #include <iostream>
 
 #include "BasicStringDefinitions.h"
-#include "VRAppData.h"
+#include "VRAppDataServer.h"
 
 #include <ctime>
 
@@ -13,7 +13,7 @@
 using namespace VR;
 using namespace std;
 
-DatabaseInterface VisitorManagerServer::m_DIVisitor(VisitorManagerServer::getDBParams());
+DatabaseInterface * VisitorManagerServer::m_pDIVisitor = 0;
 
 //==============================================================================
 
@@ -44,7 +44,7 @@ string VisitorManagerServer::getTableName()	{
 //------------------------------------------------------------------------------
 
 string VisitorManagerServer::getDatabaseName()	{
-	string strFFullPath = AppData::getFPathDatabases() + "Visitors.db";
+	string strFFullPath = AppDataServer::getFPathDatabases() + "Visitors.db";
 	
 	return strFFullPath;
 }
@@ -65,13 +65,13 @@ vector<pair<string,string>> VisitorManagerServer::getDBElements()	{
 //------------------------------------------------------------------------------
 
 void VisitorManagerServer::createDB()	{
-	m_DIVisitor.createTable(getTableName(), getDBElements());
+	m_pDIVisitor->createTable(getTableName(), getDBElements());
 }
 
 //------------------------------------------------------------------------------
 
 DatabaseInterface * VisitorManagerServer::getDatabaseInterface() {
-	return(&m_DIVisitor);
+	return(m_pDIVisitor);
 }
 
 //------------------------------------------------------------------------------
@@ -80,7 +80,7 @@ void VisitorManagerServer::registerVisitor(const string & astrVisitorIP, const i
 	string strSqlQuery = "INSERT INTO Visitor(VisitorID, VisitorIP, VisitorStartDateTime, VisitorEndDateTime) VALUES ('" + 
 		tostr(anUserID) + "','" + astrVisitorIP + "','" + tostr(time(NULL)) + "',0)";
 
-	m_DIVisitor.executeAndGetResult(strSqlQuery);
+	m_pDIVisitor->executeAndGetResult(strSqlQuery);
 }
 
 //------------------------------------------------------------------------------
@@ -89,5 +89,17 @@ void VisitorManagerServer::unregisterVisitor(const std::string & astrUserID)	{
 	string strSqlQuery = "UPDATE Visitor SET VisitorEndDateTime = '" + tostr(time(NULL)) +
 		"' WHERE VisitorID = '" + astrUserID + "' AND VisitorEndDateTime = '0'";
 
-	m_DIVisitor.executeAndGetResult(strSqlQuery);
+	m_pDIVisitor->executeAndGetResult(strSqlQuery);
+}
+
+//------------------------------------------------------------------------------
+
+void VisitorManagerServer::constructStatics() {
+	m_pDIVisitor = new DatabaseInterface(static_cast<DatabaseInterfaceParams&>(VisitorManagerServer::getDBParams()));
+}
+
+//------------------------------------------------------------------------------
+
+void VisitorManagerServer::deleteStatics() {
+	delete m_pDIVisitor;
 }

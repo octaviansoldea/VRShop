@@ -20,7 +20,6 @@ namespace VR	{
 	};
 
 	class DatabaseInterface {
-
 	public:
 
 		DatabaseInterface();
@@ -34,14 +33,13 @@ namespace VR	{
 
 		bool createTable(const std::string & astrTableName, std::vector<std::pair<std::string,std::string>> & avecTableElements);
 
-//	protected:
+	protected:
 		bool createTable(const std::string & astrTableName, const std::string & astrTableStmt);
 		bool removeTable(const QString& aqstrTableName);
 
 		int insertRow(const std::string & astrTableName, std::string &astrTblFieldValues);
 
 		void deleteRow(const std::string & astrTableName, const std::string & astrObjectName);
-		void updateDB();
 
 		bool createConnection(const DatabaseInterfaceParams & aDBInterfaceParams);
 		bool removeConnection();
@@ -50,10 +48,11 @@ namespace VR	{
 
 		DatabaseInterfaceParams m_DBInterfaceParams;
 
-		virtual void systemOfTables(std::vector<std::pair<std::string,std::string>> & avecStmtPairs);
-
 	private:
 		bool containsTable(const QString & aqstrTableName);
+
+	public:
+		virtual void systemOfTables(std::vector<std::pair<std::string,std::string>> & avecStmtPairs);
 	};
 }
 #endif //VR_DATABASE_INTERFACE_H

@@ -3,7 +3,7 @@
 
 #include "BasicStringDefinitions.h"
 
-#include "VRAppData.h"
+#include "VRAppDataServer.h"
 
 #include "VRDatabaseInterface.h"
 
@@ -12,7 +12,7 @@
 using namespace VR;
 using namespace std;
 
-DatabaseInterface UserAccountManager::m_DIUA(UserAccountManager::getDBParams());
+DatabaseInterface * UserAccountManager::m_pDIUA = 0;
 
 //==============================================================================
 
@@ -43,7 +43,7 @@ string UserAccountManager::getTableName()	{
 //------------------------------------------------------------------------------
 
 string UserAccountManager::getDatabaseName()	{
-	return AppData::getFPathDatabases() + "/UserAccounts.db";
+	return AppDataServer::getFPathDatabases() + "/UserAccounts.db";
 }
 
 //------------------------------------------------------------------------------
@@ -65,7 +65,7 @@ vector<pair<string,string>> UserAccountManager::getAccountElements()	{
 //------------------------------------------------------------------------------
 
 void UserAccountManager::createUserAccountDB()	{
-	m_DIUA.createTable(getTableName(), getAccountElements());
+	m_pDIUA->createTable(getTableName(), getAccountElements());
 }
 
 //------------------------------------------------------------------------------
@@ -86,7 +86,7 @@ void UserAccountManager::createDB()	{
 		vecpairDBElements.push_back(make_pair("Country", "TEXT"));
 		vecpairDBElements.push_back(make_pair("UserAccountID", "TEXT"));
 	}
-	m_DIUA.createTable("AddressBook", vecpairDBElements);
+	m_pDIUA->createTable("AddressBook", vecpairDBElements);
 }
 
 //------------------------------------------------------------------------------
@@ -98,7 +98,7 @@ string UserAccountManager::getUserAddress(const int & anUserID)	{
 	string strQuery = "SELECT FirstName, MiddleName, LastName, Address, City, PostalCode, State, Country "
 		" FROM AddressBook WHERE UserAccountID = " + strUserID;
 
-	string strUserAddress = m_DIUA.executeAndGetResult(strQuery).front();
+	string strUserAddress = m_pDIUA->executeAndGetResult(strQuery).front();
 
 	return strUserAddress;
 }
@@ -108,7 +108,7 @@ string UserAccountManager::getUserAddress(const int & anUserID)	{
 string UserAccountManager::getUserAccountID(const std::string & astrUserID)	{
 	string strQuery = "SELECT UserAccountID FROM UserAccount WHERE VisitorID = '" + tostr(astrUserID) + "'";
 
-	string strUserAddress = m_DIUA.executeAndGetResult(strQuery).front();
+	string strUserAddress = m_pDIUA->executeAndGetResult(strQuery).front();
 
 	return strUserAddress;
 }
@@ -116,7 +116,18 @@ string UserAccountManager::getUserAccountID(const std::string & astrUserID)	{
 //------------------------------------------------------------------------------
 
 DatabaseInterface * UserAccountManager::getDatabaseInterface() {
-	return(&m_DIUA);
+	return(m_pDIUA);
 }
 
 //------------------------------------------------------------------------------
+
+void UserAccountManager::constructStatics() {
+	m_pDIUA = new DatabaseInterface(static_cast<DatabaseInterfaceParams&>(UserAccountManager::getDBParams()));
+}
+
+//------------------------------------------------------------------------------
+
+void UserAccountManager::deleteStatics() {
+	delete m_pDIUA;
+}
+

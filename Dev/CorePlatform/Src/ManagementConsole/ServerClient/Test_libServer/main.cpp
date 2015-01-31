@@ -4,12 +4,13 @@
 #include <QTimer>
 
 #include "VRDatabaseNetworkManager.h"
+#include "VRStaticInitOrderServer.h"
 
 #include <iostream>
+#include "VRAppDataServer.h"
 
 #include "VRServer.h"
 #include "VRServer_GUI.h"
-
 
 using namespace std;
 using namespace VR;
@@ -20,8 +21,9 @@ using namespace VR;
 		- port
 */
 
-int main(int argc, char * argv[])	{
+static StaticInitOrderServer staticInitOrderServer;
 
+int main(int argc, char * argv[])	{
 	if (argc != 3)	{
 		cerr << "Args: " << argc << ". IP address and Port number requested." << endl;
 		exit (-1);
@@ -56,6 +58,5 @@ int main(int argc, char * argv[])	{
 	QObject::connect(server_GUI.m_pPushButtonPrint, &QPushButton::clicked, &DatabaseNetworkManager::printOrderList);
 
 	int nRes = app.exec();
-
 	return nRes;
 }

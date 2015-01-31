@@ -33,8 +33,7 @@ namespace VR	{
 
 
 	private:
-		static DatabaseInterface m_DIProduct;
-
+		static DatabaseInterface * m_pDIProduct;
 
 		static DatabaseInterfaceParams getDBParams();
 		static std::string getTableName();
@@ -43,6 +42,10 @@ namespace VR	{
 		static DatabaseInterface * getDatabaseInterface();
 
 		static void createDB();
+
+	public:
+		static void constructStatics();
+		static void deleteStatics();
 	};
 }
 #endif //VR_PRODUCT_MANAGER_SERVER_H

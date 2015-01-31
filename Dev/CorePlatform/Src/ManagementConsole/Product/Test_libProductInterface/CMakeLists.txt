@@ -59,7 +59,7 @@ SET(LIBS_COMMON
 	libPicker
 	libAbstractManagerClient
 	libServerClientCommands
-
+	libClient
 )
 
 IF(Qt5_FOUND)

@@ -1,8 +1,6 @@
-#include <time.h>
-
 #include "BasicStringDefinitions.h"
 
-#include "VRAppData.h"
+#include "VRAppDataServer.h"
 
 #include <time.h>
 
@@ -16,11 +14,11 @@ using namespace std;
 
 #define DEBUG_AVATARS 0
 
-DatabaseInterface AvatarManagerServer::m_DIAvatar(AvatarManagerServer::getDBParams());
+DatabaseInterface * AvatarManagerServer::m_pDIAvatar = 0;
 
 //==============================================================================
 
-AvatarManagerServer::AvatarManagerServer(QObject * apParent) : QObject(apParent)	{
+AvatarManagerServer::AvatarManagerServer()	{
 }
 
 //------------------------------------------------------------------------------
@@ -95,7 +93,7 @@ string AvatarManagerServer::getTableName()	{
 //------------------------------------------------------------------------------
 
 string AvatarManagerServer::getDatabaseName()	{
-	string strDBName =  AppData::getFPathDatabases() + "/Avatars.db";
+	string strDBName = AppDataServer::getFPathDatabases() + "Avatars.db";
 	return(strDBName);
 }
 
@@ -115,13 +113,13 @@ vector<pair<string,string>> AvatarManagerServer::getDBElements()	{
 //------------------------------------------------------------------------------
 
 void AvatarManagerServer::createAvatarDB() {
-	m_DIAvatar.createTable(getTableName(), getDBElements());
+	m_pDIAvatar->createTable(getTableName(), getDBElements());
 }
 
 //------------------------------------------------------------------------------
 
 DatabaseInterface * AvatarManagerServer::getDatabaseInterface() {
-	return(&m_DIAvatar);
+	return(m_pDIAvatar);
 }
 
 //------------------------------------------------------------------------------
@@ -135,6 +133,18 @@ void AvatarManagerServer::checkAvatarActivity()	{
 						+ "')"
 						;
 
-	m_DIAvatar.executeAndGetResult(strSqlQueryDelete);
+	m_pDIAvatar->executeAndGetResult(strSqlQueryDelete);
 
+}
+
+//------------------------------------------------------------------------------
+
+void AvatarManagerServer::constructStatics() {
+	m_pDIAvatar = new DatabaseInterface(static_cast<DatabaseInterfaceParams&>(AvatarManagerServer::getDBParams()));
+}
+
+//------------------------------------------------------------------------------
+
+void AvatarManagerServer::deleteStatics() {
+	delete m_pDIAvatar;
 }

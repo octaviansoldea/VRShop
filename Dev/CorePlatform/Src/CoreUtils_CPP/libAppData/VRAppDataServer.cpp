@@ -2,72 +2,72 @@
 #include <sys/stat.h>
 #include <fstream>
 
-#include "VRAppData.h"
+#include "VRAppDataServer.h"
 
 using namespace std;
 using namespace VR;
 
-string AppData::m_strFPathVRShop = AppData::init();
+string AppDataServer::m_strFPathVRShop = AppDataServer::init();
 
 //-----------------------------------------------------------------------------
 
-string AppData::init() {
-	char * pchPathVRShop = getenv("VRSHOP_CLIENT_PATH");
+string AppDataServer::init() {
+	char * pchPathVRShop = getenv("VRSHOP_SERVER_PATH");
 	string strRes = string(pchPathVRShop);
 	return(strRes);
 }
 
 //-----------------------------------------------------------------------------
 
-string AppData::getFPathVRShop() {
+string AppDataServer::getFPathVRShop() {
 	if(m_strFPathVRShop == "")
-		m_strFPathVRShop = AppData::init();
+		m_strFPathVRShop = AppDataServer::init();
 	return(m_strFPathVRShop);
 }
 
 //-----------------------------------------------------------------------------
 
-std::string AppData::getFPathDatabases() {
+std::string AppDataServer::getFPathDatabases() {
 	if(m_strFPathVRShop == "")
-		m_strFPathVRShop = AppData::init();
+		m_strFPathVRShop = AppDataServer::init();
 
 	return(getFPathVRShop() + "/Databases/");
 }
 
 //-----------------------------------------------------------------------------
 
-std::string AppData::getFPathLog() {
+std::string AppDataServer::getFPathLog() {
 	if(m_strFPathVRShop == "")
-		m_strFPathVRShop = AppData::init();
+		m_strFPathVRShop = AppDataServer::init();
 	return(getFPathVRShop() + "/Log/");
 }
 
 //-----------------------------------------------------------------------------
 
-std::string AppData::getFPathResources() {
+std::string AppDataServer::getFPathResources() {
 	if(m_strFPathVRShop == "")
-		m_strFPathVRShop = AppData::init();
+		m_strFPathVRShop = AppDataServer::init();
 	return(getFPathVRShop() + "/Resources/");
 }
 
 //-----------------------------------------------------------------------------
 
-std::string AppData::getFPathDependencies()	{
+std::string AppDataServer::getFPathDependencies()	{
 	if(m_strFPathVRShop == "")
-		m_strFPathVRShop = AppData::init();
+		m_strFPathVRShop = AppDataServer::init();
 	return(getFPathVRShop() + "/plugins/");
 }
 
 //-----------------------------------------------------------------------------
 
-std::string AppData::getFPathServer()	{
+std::string AppDataServer::getFPathServer()	{
 	string strResult = "http://127.0.0.1/Website";
 	return strResult;
 }
 
 //-----------------------------------------------------------------------------
 
-bool AppData::checkIfExists(const std::string & astrApplicationFolder)	{
+bool AppDataServer::checkIfExists(const std::string & astrApplicationFolder)	{
 	bool bRes = false;
 
 	string strFileName = astrApplicationFolder;

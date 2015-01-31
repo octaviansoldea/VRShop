@@ -18,6 +18,8 @@ namespace VR	{
 		void forDevelopers();
 		void contact();
 
+		void resize();
+
 	private:
 		QWidget * m_pWidgetCentralContent;
 

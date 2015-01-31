@@ -5,8 +5,6 @@ SET(CMAKE_DEBUG_POSTFIX "D")
 
 IF(Qt5_FOUND)
   INCLUDE_DIRECTORIES(
-#    ${Qt5Core_INCLUDE_DIRS}
-#    ${Qt5Gui_INCLUDE_DIRS}
     ${Qt5Widgets_INCLUDE_DIRS}
     ${Qt5Network_INCLUDE_DIRS}
   )
@@ -40,11 +38,11 @@ INCLUDE_DIRECTORIES(
 
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgent
 	${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libServerClientCommands
-	${CMAKE_SOURCE_DIR}/Props/Avatar/libAvatarManagerServer
-	${CMAKE_BINARY_DIR}/Props/Avatar/libAvatarManagerServer
-	${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgentServer
-	${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProductManagerServer
-	${CMAKE_SOURCE_DIR}/ManagementConsole/Cashier/libCashierServer
+#	${CMAKE_SOURCE_DIR}/Props/Avatar/libAvatarManagerServer
+#	${CMAKE_BINARY_DIR}/Props/Avatar/libAvatarManagerServer
+#	${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgentServer
+#	${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProductManagerServer
+#	${CMAKE_SOURCE_DIR}/ManagementConsole/Cashier/libCashierServer
 )
 
 ADD_EXECUTABLE(Test_libServer

@@ -58,6 +58,13 @@ EmbeddedWidget_GUI::~EmbeddedWidget_GUI()	{
 
 //=========================================================================================
 
+void EmbeddedWidget_GUI::resizeEvent(QResizeEvent *event)	{
+	m_pEmbeddedWidget->resize();
+	QWidget::resizeEvent(event);
+}
+
+//----------------------------------------------------------------------
+
 void EmbeddedWidget_GUI::checkIfParentExists()	{
 	bool bRes = m_pPipe->isPipeAccessible();
 

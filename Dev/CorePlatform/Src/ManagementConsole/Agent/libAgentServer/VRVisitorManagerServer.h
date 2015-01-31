@@ -26,7 +26,11 @@ namespace VR	{
 		static DatabaseInterface * getDatabaseInterface();
 
 	private:
-		static DatabaseInterface m_DIVisitor;
+		static DatabaseInterface * m_pDIVisitor;
+
+	public:
+		static void constructStatics();
+		static void deleteStatics();
 	};
 }
 #endif //VR_VISITOR_MANAGER_SERVER_H

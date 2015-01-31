@@ -27,7 +27,11 @@ namespace VR	{
 		static DatabaseInterface * getDatabaseInterface();
 
 	private:
-		static DatabaseInterface m_DIUA;
+		static DatabaseInterface * m_pDIUA;
+
+	public:
+		static void constructStatics();
+		static void deleteStatics();
 	};
 }
 #endif //VR_USER_ACCOUNT_MANAGER_H

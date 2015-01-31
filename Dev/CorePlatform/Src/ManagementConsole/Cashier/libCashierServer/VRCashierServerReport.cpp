@@ -5,7 +5,7 @@
 
 #include "BasicStringDefinitions.h"
 
-#include "VRAppData.h"
+#include "VRAppDataServer.h"
 
 #include "VRCashierServerReport.h"
 

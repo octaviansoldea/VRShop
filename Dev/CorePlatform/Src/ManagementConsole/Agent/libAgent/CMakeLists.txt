@@ -27,9 +27,9 @@ ENDIF(Qt5_FOUND)
 #MOC according to the Qt version
 IF(Qt5_FOUND)
   QT5_WRAP_UI(UI_SRCS		${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgent/View/VRSignUp_GUI.ui)
-  QT5_WRAP_CPP(MOC_SRCS 	)#${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgent/View/VRSignUp_GUI.h)
+  QT5_WRAP_CPP(MOC_SRCS 	)
 ELSE(Qt5_FOUND)
-  QT4_WRAP_CPP(MOC_SRCS		)#${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgent/View/VRSignUp_GUI.h)  
+  QT4_WRAP_CPP(MOC_SRCS		)
   QT4_WRAP_UI(UI_SRCS		${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgent/View/VRSignUp_GUI.ui)
 ENDIF(Qt5_FOUND)
 

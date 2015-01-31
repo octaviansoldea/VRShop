@@ -8,6 +8,7 @@ namespace VR	{
 	class DatabaseInterface;
 	struct DatabaseInterfaceParams;
 
+
 	class CashierManagerServer {
 	public:
 		CashierManagerServer();
@@ -35,7 +36,7 @@ namespace VR	{
 		static DatabaseInterface * getDatabaseInterface();
 
 	private:
-		static DatabaseInterface m_DICashier;
+		static DatabaseInterface * m_pDICashier;
 
 	public:
 		bool addProduct2OrdersReserved(const CashierManagerServerParams & aCMSP);
@@ -47,6 +48,9 @@ namespace VR	{
 		static std::list<std::string> getActiveOrdersList();
 
 		static void orderConfirmed(const std::string & astrUserName);
+
+		static void constructStatics();
+		static void deleteStatics();
 	};
 }
 #endif //VR_CASHIER_MANAGER_SERVER_H

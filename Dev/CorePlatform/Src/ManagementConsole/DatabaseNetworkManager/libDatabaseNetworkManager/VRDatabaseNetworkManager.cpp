@@ -1,7 +1,7 @@
 #include "BasicStringDefinitions.h"
 #include <QDataStream>
 
-#include "VRAppData.h"
+#include "VRAppDataServer.h"
 
 #include <iostream>
 #include <fstream>
@@ -28,7 +28,7 @@ using namespace std;
 //=====================================================================
 
 QByteArray DatabaseNetworkManager::databaseRequest(QByteArray & aData)	{
-	string strPFileError = AppData::getFPathLog() + "errors.txt";
+	string strPFileError = AppDataServer::getFPathLog() + "errors.txt";
 	ofstream outFileError;
 	outFileError.open(strPFileError,ios::app);
 
@@ -126,7 +126,7 @@ QByteArray DatabaseNetworkManager::databaseRequest(QByteArray & aData)	{
 			cmsp.m_strUserIDName = qstrUserIDName.toStdString();
 			cmsp.m_strProductName = qstrProductName.toStdString();
 
-			bRes = cms.removeProductFromOrdersReserved(cmsp);
+			cms.removeProductFromOrdersReserved(cmsp);
 
 			break;
 		}
@@ -395,7 +395,7 @@ void DatabaseNetworkManager::printOrderList()	{
 	}
 
 	ofstream outputFile;
-	string strFileName = AppData::getFPathVRShop() + "OrderList.txt";
+	string strFileName = AppDataServer::getFPathVRShop() + "OrderList.txt";
 	outputFile.open(strFileName);
 
 	CashierServerReport::createOrdersReportHeader(strlstOrderList, outputFile);

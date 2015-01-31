@@ -1,3 +1,11 @@
+#include <QApplication>
+
+#include <QSize>
+#include <QPoint>
+#include <QProcess>
+
+#include <QTimer>
+
 #include <windows.h>
 
 #include <fstream>
@@ -6,13 +14,7 @@
 #include "BasicStringDefinitions.h"
 #include "VRAppData.h"
 
-#include <QApplication>
-
-#include <QSize>
-#include <QPoint>
-#include <QProcess>
-
-#include <QTimer>
+#include "VREmbeddedWidgetStatics.h"
 
 #include "VRClient.h"
 
@@ -30,6 +32,9 @@ using namespace VR;
 		- nSELECTION
 		- PIPE NAME
 */
+
+static EmbeddedWidgetStatics staticInitializerOrderer;
+
 
 int main(int argc, char * argv[])	{
 	ofstream out;
@@ -52,8 +57,12 @@ int main(int argc, char * argv[])	{
 
 	Client client;
 
-	const string strIP = "127.0.0.1";
-	const unsigned int nPort = 10000;
+	const string strIP = 
+		//"62.219.47.47";
+		"127.0.0.1";
+	const unsigned int nPort = 
+		//5900;
+		10000;
 
 	client.tryToConnect(strIP, nPort);
 	int nUserID = client.getUserID();
@@ -103,7 +112,8 @@ int main(int argc, char * argv[])	{
 		}
 	}
 
-	//This signal is emitted when the Application is about to quit; last chance to make the cleaning
+	//This signal is emitted when the Application is about to quit; last chance to make the cleaning 
+	//(network operations inhibited)
 	QObject::connect(&app, &QApplication::aboutToQuit, &embeddedWidget, &EmbeddedWidget_GUI::slotAboutToQuit);
 
 	int nRes = app.exec();

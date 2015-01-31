@@ -33,6 +33,9 @@ namespace VR	{
 		Client * m_pClient;
 		PipeClient * m_pPipe;
 
+	protected:
+		virtual void resizeEvent(QResizeEvent *event);
+
 	public:
 		void checkIfParentExists();
 		void slotAboutToQuit();

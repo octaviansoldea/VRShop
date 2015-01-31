@@ -9,7 +9,7 @@ IF(Qt5_FOUND)
     ${Qt5Core_INCLUDE_DIRS}
     ${Qt5Gui_INCLUDE_DIRS}
     ${Qt5Widgets_INCLUDE_DIRS}
-#    ${Qt5OpenGL_INCLUDE_DIRS}
+    ${Qt5Network_INCLUDE_DIRS}
   )
 ELSE(Qt5_FOUND)
   #Assume Qt4_FOUND, if we are here
@@ -41,6 +41,8 @@ INCLUDE_DIRECTORIES(
 	${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgent
 	${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libServerClientCommands
 	${CMAKE_SOURCE_DIR}/Props/AbstractManagerClient/libAbstractManagerClient
+	${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProductManagerClient
+	${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libClient
 )
 
 #MOC according to the Qt version

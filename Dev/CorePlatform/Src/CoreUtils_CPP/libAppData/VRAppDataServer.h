@@ -1,11 +1,11 @@
-#ifndef APP_DATA_H
-#define APP_DATA_H
+#ifndef APP_DATA_SERVER_H
+#define APP_DATA_SERVER_H
 
 #include <string>
 #include <vector>
 
 namespace VR {
-	struct AppData {
+	struct AppDataServer {
 		static std::string init();
 
 		static std::string getFPathVRShop();
@@ -22,4 +22,4 @@ namespace VR {
 		static std::string m_strFPathVRShop;
 	};
 }
-#endif //APP_DATA_H
+#endif //APP_DATA_SERVER_H

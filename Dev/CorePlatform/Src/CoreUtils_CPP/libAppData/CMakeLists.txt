@@ -4,6 +4,7 @@ SET(CMAKE_DEBUG_POSTFIX "D")
 
 SET(SRCS
 	VRAppData.h VRAppData.cpp
+	VRAppDataServer.h VRAppDataServer.cpp
 )
 
 ADD_LIBRARY(libAppData ${SRCS})

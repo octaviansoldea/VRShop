@@ -32,20 +32,24 @@ ENDIF(Qt5_FOUND)
 #General includes, irrespective of the Qt version
 INCLUDE_DIRECTORIES(
 	${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
+	${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libAppData
 	${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_QT
 	${CMAKE_SOURCE_DIR}/ManagementConsole/DatabaseNetworkManager/libDatabaseNetworkManager
 	${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabase
 	${CMAKE_SOURCE_DIR}/ManagementConsole/ServerClient/libServerClientCommands
+
+	${CMAKE_SOURCE_DIR}/Props/Avatar/libAvatarManagerServer
+	${CMAKE_SOURCE_DIR}/ManagementConsole/Agent/libAgentServer
+	${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProductManagerServer
+	${CMAKE_SOURCE_DIR}/ManagementConsole/Cashier/libCashierServer
 )
 
 #MOC according to the Qt version
 IF(Qt5_FOUND)
   QT5_WRAP_UI(UI_SRCS		)
-  QT5_WRAP_CPP(MOC_SRCS 	# VRServer_GUI.h 
-							VRServer.h VRClientConnection.h)
+  QT5_WRAP_CPP(MOC_SRCS 	VRServer.h VRClientConnection.h)
 ELSE(Qt5_FOUND)
-  QT4_WRAP_CPP(MOC_SRCS		#VRServer_GUI.h 
-							VRServer.h VRClientConnection.h)
+  QT4_WRAP_CPP(MOC_SRCS		VRServer.h VRClientConnection.h)
   QT4_WRAP_UI(UI_SRCS		)
 ENDIF(Qt5_FOUND)
 
@@ -55,6 +59,7 @@ SET(SRCS ${MOC_SRCS} ${UI_SRCS}
 	VRServer.h VRServer.cpp
 	VRClientConnection.h VRClientConnection.cpp
 	VRServer_GUI.h VRServer_GUI.cpp
+	VRStaticInitOrderServer.h VRStaticInitOrderServer.cpp
 )
 
 

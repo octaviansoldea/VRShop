@@ -52,12 +52,14 @@ void EmbeddedWidget::selectShop(const QString & aqstrShopName)	{
 	string strClientName = tostr(m_pClient->getUserID());
 	string strDBFileName = AppData::getFPathDatabases() + "ShopDemo.db";
 
-	QRect qrectCentralContent = m_pWidgetCentralContent->geometry();
-
 	m_pWidget = new ShoppingPlace_GUI(m_pClient, strDBFileName,strClientName);
 	m_pWidget->setParent(m_pWidgetCentralContent);
-	m_pWidget->setStyleSheet("position: absolute; width: 100%; padding: 1px;");
-	m_pWidget->setGeometry(0,0,qrectCentralContent.width(),qrectCentralContent.height());
+
+	m_pWidget->setStyleSheet("m_pWidget#QWidget {content: 2px; border-width: 1px; \
+							 border-style: solid; border-radius: 5px;}");
+
+	QRect qrectCentralContent = m_pWidgetCentralContent->geometry();
+	m_pWidget->setGeometry(2,2,qrectCentralContent.width()-4,qrectCentralContent.height()-4);
 	
 	m_pWidget->show();
 }
@@ -75,4 +77,16 @@ void EmbeddedWidget::forDevelopers()	{
 //----------------------------------------------------------------------
 
 void EmbeddedWidget::contact()	{
+}
+
+//----------------------------------------------------------------------
+
+void EmbeddedWidget::resize()	{
+	if (m_pWidget == 0)	{
+		return;
+	}
+	m_pWidget->setStyleSheet("m_pWidget#QWidget {content: 2px; border-width: 1px; \
+							 border-style: solid; border-radius: 5px;}");
+	QRect qrectCentralContent = m_pWidgetCentralContent->geometry();
+	m_pWidget->setGeometry(2,2,qrectCentralContent.width()-4,qrectCentralContent.height()-4);
 }

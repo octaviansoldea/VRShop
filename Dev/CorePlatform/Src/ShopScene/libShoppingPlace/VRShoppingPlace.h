@@ -39,12 +39,10 @@ namespace VR	{
 		~ShoppingPlace();
 
 		void avatarClicked(const std::string & astrAvatarName);
-		void productClicked(const std::string & astrProductName);
 		void product2BasketRequest(ProductShopClient * apProduct);
 		void removeProductRequest(ProductShopClient * apProduct);
 		void modifyProductQuantityRequest(ProductShopClient * apProduct, float aflNewQuantity);
 
-		
 		void handleClientData();
 
 		void purchaseRequest();

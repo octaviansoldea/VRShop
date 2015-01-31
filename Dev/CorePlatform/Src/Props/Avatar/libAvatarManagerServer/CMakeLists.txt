@@ -9,6 +9,7 @@ IF(Qt5_FOUND)
     ${Qt5Gui_INCLUDE_DIRS}
 	${Qt5Sql_INCLUDE_DIRS}
 	${Qt5Network_INCLUDE_DIRS}
+	${Qt5Widgets_INCLUDE_DIRS}
   )
 ELSE(Qt5_FOUND)
   IF(QT_USE_FILE)
@@ -28,9 +29,9 @@ ENDIF(Qt5_FOUND)
 #MOC according to the Qt version
 IF(Qt5_FOUND)
   QT5_WRAP_UI(UI_SRCS		)
-  QT5_WRAP_CPP(MOC_SRCS 	)#VRAvatarManagerServer.h)
+  QT5_WRAP_CPP(MOC_SRCS 	)
 ELSE(Qt5_FOUND)
-  QT4_WRAP_CPP(MOC_SRCS		)#VRAvatarManagerServer.h)
+  QT4_WRAP_CPP(MOC_SRCS		)
   QT4_WRAP_UI(UI_SRCS		)
 ENDIF(Qt5_FOUND)
 

@@ -25,7 +25,7 @@ namespace VR {
 		std::vector<std::string> getObjectData(std::string & strSceneObject);
 
 	private:
-		virtual void systemOfTables(std::vector<std::pair<std::string,std::string>> & avecStmtPairs);
+		void systemOfTables(std::vector<std::pair<std::string,std::string>> & avecStmtPairs);
 	};
 }
 #endif //VR_DATABASE_MANAGER_SHOP_EDITOR_H

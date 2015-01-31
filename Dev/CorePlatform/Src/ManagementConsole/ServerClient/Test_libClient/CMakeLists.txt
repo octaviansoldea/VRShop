@@ -43,6 +43,7 @@ SET(LIBS_COMMON
 	libClient
 	libCommon_QT
 	libServerClientCommands
+	libCommon
 )
 
 IF(Qt5_FOUND)

@@ -1,5 +1,6 @@
 #include <string>
 #include <iostream>
+#include <fstream>
 
 #include <QPoint>
 #include <QMouseEvent>
@@ -69,7 +70,8 @@ ShoppingPlace_GUI::ShoppingPlace_GUI(Client * apClient, string & astrFileName, s
 		m_pLabelProductInterfaceInfo,
 		m_pPushButtonProductInterface2Basket,
 		m_pPushButtonProductInterfaceDetails,
-		m_pLabelProductInterfacePrice);
+		m_pLabelProductInterfacePrice,
+		m_pClient);
 
 	AgentManagerClient * pAgentMgr = m_pShoppingPlace->getAgentManagerClient();
 	//Agent Interface
@@ -216,7 +218,7 @@ void ShoppingPlace_GUI::signalSlotConnections()	{
 //----------------------------------------------------------------------------------------
 
 void ShoppingPlace_GUI::resizeEvent(QResizeEvent *event)	{
-	QWidget::resizeEvent(event);
+	QMainWindow::resizeEvent(event);
 
 	updateGeometry();
 }
@@ -225,8 +227,7 @@ void ShoppingPlace_GUI::resizeEvent(QResizeEvent *event)	{
 
 void ShoppingPlace_GUI::slotProductClicked(const AbstractObject * apAbstractObject)	{
 	string strProductName = apAbstractObject->getName();
-
-	m_pShoppingPlace->productClicked(strProductName);
+	m_pProductInterface->productClicked(strProductName);
 }
 
 //----------------------------------------------------------------------------------------
@@ -273,3 +274,4 @@ void ShoppingPlace_GUI::slotClientReceiveData()	{
 }
 
 //----------------------------------------------------------------------------------------
+

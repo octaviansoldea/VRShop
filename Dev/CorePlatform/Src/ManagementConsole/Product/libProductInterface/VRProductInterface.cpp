@@ -12,6 +12,9 @@
 
 #include "BasicStringDefinitions.h"
 
+#include "VRClient.h"
+#include "VRProductManagerClient.h"
+
 #include "VRProductInterface.h"
 
 using namespace VR;
@@ -25,7 +28,8 @@ ProductInterface::ProductInterface(
 	QLabel * apLabelProductInterfaceInfo,
 	QPushButton * apPushButtonProductInterface2Basket,
 	QPushButton * apPushButtonProductInterfaceDetails,
-	QLabel * apLabelProductInterfacePrice)	{
+	QLabel * apLabelProductInterfacePrice,
+	Client * apClient)	{
 
 	m_pFrameProductInterface = apFrameProductInterface;
 	m_pLabelProductInterfaceImage = apLabelProductInterfaceImage;
@@ -33,6 +37,8 @@ ProductInterface::ProductInterface(
 	m_pPushButtonProductInterface2Basket = apPushButtonProductInterface2Basket;
 	m_pPushButtonProductInterfaceDetails = apPushButtonProductInterfaceDetails;
 	m_pLabelProductInterfacePrice = apLabelProductInterfacePrice;
+
+	m_pClient = apClient;
 
 	m_pFrameProductInterface->setVisible(false);
 	m_pLabelProductInterfacePrice->setVisible(false);
@@ -126,4 +132,22 @@ void ProductInterface::slotProductInitialized(const ProductShopClient * apProduc
 
 ProductShopClient * ProductInterface::getProduct()	{
 	return &m_ProductShopClient;
+}
+
+//----------------------------------------------------------------------------------------
+
+void ProductInterface::productClicked(const std::string & astrProductName)	{
+	string strProductName = astrProductName;
+
+	ProductManagerClient pmc(m_pClient);
+	pmc.productClicked(strProductName);
+}
+
+//----------------------------------------------------------------------------------------
+
+void ProductInterface::removeProductRequest(ProductShopClient * apProduct)	{
+	string strUserID = tostr(m_pClient->getUserID());
+
+	ProductManagerClient pmc(m_pClient);
+	pmc.removeProductRequest(strUserID,apProduct);
 }

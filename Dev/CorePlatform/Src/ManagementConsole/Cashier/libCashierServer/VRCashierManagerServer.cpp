@@ -4,7 +4,7 @@
 
 #include "BasicStringDefinitions.h"
 
-#include "VRAppData.h"
+#include "VRAppDataServer.h"
 
 #include <ctime>
 
@@ -15,7 +15,7 @@
 using namespace VR;
 using namespace std;
 
-DatabaseInterface CashierManagerServer::m_DICashier(CashierManagerServer::getDBParams());
+DatabaseInterface * CashierManagerServer::m_pDICashier = 0;
 
 //==============================================================================
 
@@ -46,7 +46,7 @@ string CashierManagerServer::getTableName()	{
 //------------------------------------------------------------------------------
 
 string CashierManagerServer::getDatabaseName()	{
-	return AppData::getFPathDatabases() + "/Cashier.db";
+	return AppDataServer::getFPathDatabases() + "/Cashier.db";
 }
 
 //------------------------------------------------------------------------------
@@ -68,7 +68,7 @@ vector<pair<string,string>> CashierManagerServer::getDBElements()	{
 //------------------------------------------------------------------------------
 
 void CashierManagerServer::createDB()	{
-	m_DICashier.createTable(getTableName(), getDBElements());
+	m_pDICashier->createTable(getTableName(), getDBElements());
 
 	vector<pair<string,string>> vecpairDBElements;
 	{
@@ -79,7 +79,7 @@ void CashierManagerServer::createDB()	{
 		vecpairDBElements.push_back(make_pair("TimeOrdered", "TEXT"));
 		vecpairDBElements.push_back(make_pair("OrderStatus", "TEXT"));		//Reserved=1; confirmed=2; delivered=3; canceled=0
 	}
-	m_DICashier.createTable("OrdersReserved", vecpairDBElements);
+	m_pDICashier->createTable("OrdersReserved", vecpairDBElements);
 
 	vector<pair<string,string>> vecpairDBOrderConfirmed;
 	{
@@ -90,7 +90,7 @@ void CashierManagerServer::createDB()	{
 		vecpairDBOrderConfirmed.push_back(make_pair("TimeConfirmed", "TEXT"));
 		vecpairDBOrderConfirmed.push_back(make_pair("BasketID", "INTEGER"));
 	}
-	m_DICashier.createTable("OrdersConfirmed", vecpairDBOrderConfirmed);
+	m_pDICashier->createTable("OrdersConfirmed", vecpairDBOrderConfirmed);
 
 	vector<pair<string,string>> vecpairDBOrderDelivered;
 	{
@@ -99,13 +99,13 @@ void CashierManagerServer::createDB()	{
 		vecpairDBOrderDelivered.push_back(make_pair("BasketID", "INTEGER"));
 		vecpairDBOrderDelivered.push_back(make_pair("TimeDelivered", "TEXT"));
 	}
-	m_DICashier.createTable("OrdersDelivered", vecpairDBOrderDelivered);
+	m_pDICashier->createTable("OrdersDelivered", vecpairDBOrderDelivered);
 }
 
 //------------------------------------------------------------------------------
 
 DatabaseInterface * CashierManagerServer::getDatabaseInterface() {
-	return(&m_DICashier);
+	return(m_pDICashier);
 }
 
 //------------------------------------------------------------------------------
@@ -117,7 +117,7 @@ bool CashierManagerServer::addProduct2OrdersReserved(const CashierManagerServerP
 
 	//Check if already in the DB
 	string strQuery = "SELECT OrderReservedID FROM OrdersReserved WHERE ProductID = '" + strProductName + "' AND UserID = '" + strUserID + "'";
-	list<string> lststrResult = m_DICashier.executeAndGetResult(strQuery);
+	list<string> lststrResult = m_pDICashier->executeAndGetResult(strQuery);
 
 	//Product not yet in the list => add it
 	if (lststrResult.empty())	{
@@ -130,7 +130,7 @@ bool CashierManagerServer::addProduct2OrdersReserved(const CashierManagerServerP
 			" WHERE ProductID = '" + strProductName + "' AND UserID = '" + strUserID + "'";
 	}
 
-	lststrResult = m_DICashier.executeAndGetResult(strQuery);
+	lststrResult = m_pDICashier->executeAndGetResult(strQuery);
 
 	return (lststrResult.empty() ? false : true);
 }
@@ -144,7 +144,7 @@ bool CashierManagerServer::removeProductFromOrdersReserved(const CashierManagerS
 	//Remove from DB selected quantities
 	string strQuery = "DELETE FROM OrdersReserved WHERE ProductID = '" + strProductName + "' AND UserID = '" + strUserID + "'";
 
-	m_DICashier.execute(strQuery);
+	m_pDICashier->execute(strQuery);
 
 	return true;
 }
@@ -154,7 +154,7 @@ bool CashierManagerServer::removeProductFromOrdersReserved(const CashierManagerS
 void CashierManagerServer::clearProductsReserved(const std::string & astrUserName)	{
 	string strQuery = "DELETE FROM OrdersReserved WHERE UserID = '" + astrUserName + "' AND OrderStatus = '" + tostr(RESERVED) + "'";
 
-	m_DICashier.execute(strQuery);
+	m_pDICashier->execute(strQuery);
 }
 
 //------------------------------------------------------------------------------
@@ -168,7 +168,7 @@ bool CashierManagerServer::modifyProductOrdersReserved(const CashierManagerServe
 	string strQuery = "UPDATE Product SET ProductQuantity = '" + tostr(flProductQuantity) +
 		"') WHERE ProductID = '" + strProductName + "' AND UserID = '" + strUserID + "'";
 
-	m_DICashier.execute(strQuery);
+	m_pDICashier->execute(strQuery);
 
 	return true;
 }
@@ -178,7 +178,7 @@ bool CashierManagerServer::modifyProductOrdersReserved(const CashierManagerServe
 void CashierManagerServer::orderConfirmed(const std::string & astrUserName)	{
 	//Change status of the printed items
 	string strQuery = "UPDATE OrdersReserved SET OrderStatus = '" + tostr(CONFIRMED) + "' WHERE UserID = '" + astrUserName + "'";
-	m_DICashier.execute(strQuery);
+	m_pDICashier->execute(strQuery);
 }
 
 //------------------------------------------------------------------------------
@@ -188,7 +188,7 @@ list<string> CashierManagerServer::getActiveOrdersList()	{
 
 	//Get all active (non-delivered) orders
 	string strQuery = "SELECT * FROM OrdersReserved WHERE OrderStatus = " + tostr(CONFIRMED) + " ORDER BY UserID";
-	lststrActiveOrders = m_DICashier.executeAndGetResult(strQuery);
+	lststrActiveOrders = m_pDICashier->executeAndGetResult(strQuery);
 
 	if (lststrActiveOrders.empty())	{
 		return list<string>(0);
@@ -196,9 +196,19 @@ list<string> CashierManagerServer::getActiveOrdersList()	{
 
 	//Change status of the printed items
 	strQuery = "UPDATE OrdersReserved SET OrderStatus = '" + tostr(DELIVERED) + "' WHERE OrderStatus = '"+tostr(CONFIRMED)+"'";
-	m_DICashier.execute(strQuery);
+	m_pDICashier->execute(strQuery);
 
 	return lststrActiveOrders;
 }
 
 //------------------------------------------------------------------------------
+
+void CashierManagerServer::constructStatics() {
+	m_pDICashier = new DatabaseInterface(static_cast<DatabaseInterfaceParams&>(CashierManagerServer::getDBParams()));
+}
+
+//------------------------------------------------------------------------------
+
+void CashierManagerServer::deleteStatics() {
+	delete m_pDICashier;
+}

@@ -34,11 +34,10 @@ ShopBuilder_GUI::ShopBuilder_GUI()	{
 	setWindowTitle("ShopBuilder");
 
 	m_pShopBuilder = new ShopBuilder(m_pOSGQTWidget);
-	ref_ptr<Scene> pScene = m_pShopBuilder->getScene();
 	string strFileName = m_pShopBuilder->getCurrentFileName();
 
 	ref_ptr<KeyboardMouseManipulatorShopEditor> pKeyboardMouseManipulatorShopEditor = 
-		(KeyboardMouseManipulatorShopEditor *)(m_pOSGQTWidget->getCameraManipulator());
+		static_cast<KeyboardMouseManipulatorShopEditor *>(m_pOSGQTWidget->getCameraManipulator());
 
 	try{
 		typeid(*pKeyboardMouseManipulatorShopEditor);
@@ -167,7 +166,7 @@ void ShopBuilder_GUI::slotSaveAsDB()	{
 //---------------------------------------------------------------------------------------
 
 void ShopBuilder_GUI::slotCloseDB()	{
-	slotSaveDB();
+//	slotSaveDB();
 	
 	const string strCurrentFile = m_pShopBuilder->getCurrentFileName();
 	m_pShopBuilder->closeDB(strCurrentFile);

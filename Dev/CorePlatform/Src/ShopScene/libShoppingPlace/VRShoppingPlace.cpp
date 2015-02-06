@@ -20,8 +20,6 @@
 #include "VRVisitor.h"
 #include "VRBasketClient.h"
 #include "VRProductManagerClient.h"
-#include "VRCashierManagerClient.h"
-#include "VRAgentManagerClient.h"
 
 #include "VRModelViewControllerClient.h"
 
@@ -38,6 +36,7 @@
 #include "VRKeyboardMouseManipulatorShopClient.h"
 
 #include "VRReadAndSaveFileCallback.h"
+#include "BasicStringDefinitions.h"
 
 #include "VROSGQT_Widget.h"
 
@@ -151,8 +150,6 @@ m_strAvatarName(astrAvatarName)	{
 
 	BasketClient * pBasket = m_pVisitor->getBasket();
 	m_pProductMgr = new ProductManagerClient(m_pClient);
-	m_pCashierMgr = new CashierManagerClient(m_pClient, m_pMVCClient, pBasket);
-	m_pAgentMgr = new AgentManagerClient(m_pClient,m_pVisitor);
 
 	//Product created for the ProductManager purposes
 	m_pProduct = new ProductShopClient;
@@ -163,7 +160,6 @@ m_strAvatarName(astrAvatarName)	{
 ShoppingPlace::~ShoppingPlace() {
 	delete m_pAvatarMgr;
 	delete m_pProductMgr;
-	delete m_pCashierMgr;
 	delete m_pVisitor;
 	delete m_pMVCClient;
 
@@ -190,12 +186,6 @@ PickAndDragHandlerShopClient * ShoppingPlace::getPicker() const	{
 
 //----------------------------------------------------------------------
 
-AgentManagerClient * ShoppingPlace::getAgentManagerClient()	{
-	return m_pAgentMgr;
-}
-
-//----------------------------------------------------------------------
-
 bool ShoppingPlace::createClientScene(const string & astrSceneFileName)	{
 	m_strDBFileName = astrSceneFileName.c_str();
 
@@ -207,35 +197,44 @@ bool ShoppingPlace::createClientScene(const string & astrSceneFileName)	{
 	//Get list of objects in the scene
 	list<string> lststrSceneObjects = db.getListOfObjects("Untitled");
 
-	list<string>::iterator it = lststrSceneObjects.begin();
+	std::list<std::string>::iterator it = lststrSceneObjects.begin();
 	for (it; it != lststrSceneObjects.end(); it++)	{
+		vector<string> vecstrData = splitString(*it,";");
+
 		//Find class and object names
-		const int nFindPos1 = it->find_first_of(";");
-		const int nFindPos2 = it->find_first_of(";", nFindPos1+1);
-		string strClassName = it->substr(nFindPos1+1,nFindPos2-nFindPos1-1);
+		int nObjectID = stoi(vecstrData[0]);
+		string strClassName = vecstrData[1];
+		string strObjectName = vecstrData[2];
 
 		if (strClassName == "ProductDisplay")	{
-			vector<string> vecstrObjectData = db.getObjectData(*it);
-			m_ProductManager.initFromSQLData(vecstrObjectData);
-
+			list<std::string> vecstrObjectData = db.getProductsData();
+			m_ProductManager.initProductsFromSQLData(vecstrObjectData);
+		} else if ((strClassName == "CustomFurniture") ||
+			(strClassName == "Cupboard") ||
+			(strClassName == "Container")
+		)	{
+			vector<std::string> vecstrObjectData = db.getObjectData(nObjectID, strClassName, strObjectName);
+			ref_ptr<AbstractObject> pAO = AbstractObjectFactory::createAbstractObject(strClassName);
+			pAO->initFromSQLData(vecstrObjectData);
+			bool bIsPicked = (strObjectName == "Cashier") ? true : false;
+			pAO->setIsTargetPick(bIsPicked);
+			m_pScene->addChild(pAO);
+		} else if (strClassName == "Plate3D")	{
+			string strObjectData = db.getPrimitiveObjectData(nObjectID, strClassName, strObjectName);
+			int nPos = strObjectData.find_first_of(";");
+			strObjectData.erase(0,nPos+1);
+			ref_ptr<AbstractObject> pAO = AbstractObjectFactory::createAbstractObject("Plate3D");
+			pAO->initFromSQLData(strObjectData);
+			pAO->setIsTargetPick(false);
+			m_pScene->addChild(pAO);
+		} else {
+			//IF SOMETHING UNDEFINED
 			continue;
 		}
-
-		ref_ptr<AbstractObject> pAO = AbstractObjectFactory::createAbstractObject(strClassName);
-		pAO->setDataVariance(Object::STATIC);
-		vector<string> vecstrObjectData = db.getObjectData(*it);
-
-		pAO->initFromSQLData(vecstrObjectData);
-
-		//Cashier should be pickable
-		if (pAO->getName() == "Cashier")	{
-			pAO->setIsTargetPick(true);
-		} else {
-			pAO->setIsTargetPick(false);
-		}
-
-		m_pScene->addChild(pAO);
 	}
+
+	ref_ptr<osg::Node> pProductsRepresentation = m_ProductManager.getProductsRepresentation();
+	m_pScene->addChild(pProductsRepresentation);
 
 	return true;
 }
@@ -303,31 +302,15 @@ ModelViewControllerClient * ShoppingPlace::getModelViewController() const	{
 	return m_pMVCClient;
 }
 
-//----------------------------------------------------------------------
+//==================================================================================
 
-void ShoppingPlace::handleClientData()	{
-	QByteArray data = m_pClient->getTransmittedData();
-
-	QDataStream out(&data,QIODevice::ReadOnly);
-	out.setVersion(QDataStream::Qt_4_8);
-
-	quint8 nType;	//Type of the data received
-	out >> nType;
-
-	switch (nType)	{
+void ShoppingPlace::handleClientData(int anType, QDataStream & aDataStream)	{
+	switch (anType)	{
 	//RELATES TO THE PRODUCT MANAGER CLIENT
-	case ServerClientCommands::PRODUCT_REQUEST:
-		{
-			m_pProductMgr->initProductFromData(out,m_pProduct);
-
-			emit m_pMVCClient->signalProductInitialized(m_pProduct);
-			
-			break;
-		}
 	case ServerClientCommands::PRODUCT_TO_BASKET_REQUEST:
 		{
 			ProductShopClient * pProduct = new ProductShopClient;
-			bool bRes = m_pProductMgr->addProduct2Basket(out, pProduct);
+			bool bRes = m_pProductMgr->addProduct2Basket(aDataStream, pProduct);
 
 			if (bRes == false)	{
 				delete pProduct;
@@ -341,14 +324,14 @@ void ShoppingPlace::handleClientData()	{
 		}
 	case ServerClientCommands::REMOVE_PRODUCT_REQUEST:
 		{
-			ProductShopClient * pProduct = m_pProductMgr->removeProductFromBasket(out);
+			ProductShopClient * pProduct = m_pProductMgr->removeProductFromBasket(aDataStream);
 			m_pVisitor->removeProductFromBasket(pProduct);
 
 			break;
 		}
 	case ServerClientCommands::MODIFY_PRODUCT_REQUEST:
 		{
-			float flNewValue = m_pProductMgr->modifyProductQuantityRequest(out);
+			float flNewValue = m_pProductMgr->modifyProductQuantityRequest(aDataStream);
 			emit m_pMVCClient->signalNewProductQuantity(flNewValue);
 
 			break;
@@ -357,7 +340,7 @@ void ShoppingPlace::handleClientData()	{
 	//RELATES TO THE AVATAR MANAGER CLIENT
 	case ServerClientCommands::AVATAR_REGISTER:
 		{
-			m_pAvatarMgr->registerAvatarReceived(out);
+			m_pAvatarMgr->registerAvatarReceived(aDataStream);
 			break;
 		}
 	case ServerClientCommands::AVATAR_UPDATE:
@@ -366,53 +349,7 @@ void ShoppingPlace::handleClientData()	{
 		}
 	case ServerClientCommands::OTHER_AVATARS_REQUEST:
 		{
-			m_pAvatarMgr->otherAvatarsReceived(out);
-			break;
-		}
-
-	//RELATES TO THE CASHIER MANAGER CLIENT
-	case ServerClientCommands::REMOVE_FROM_CASHIER_REQUEST:
-		{
-			bool bRes = m_pCashierMgr->removeFromBasketData(out);
-			break;
-		}
-	case ServerClientCommands::PRODUCT_INFO_REQUEST:
-		{
-			m_pCashierMgr->productInfoData(out);
-			break;
-		}
-	case ServerClientCommands::PURCHASE_REQUEST:
-		{
-			m_pCashierMgr->basketPurchaseData(out);
-			break;
-		}
-	case ServerClientCommands::USER_CONFIRMS_PURCHASE:
-		{
-			break;
-		}
-
-	//RELATES TO THE AGENT MANAGER CLIENT
-	case ServerClientCommands::SIGN_IN_REQUEST:
-		{
-			bool bRes = m_pAgentMgr->signInRespond(out);
-			break;
-		}
-
-	case ServerClientCommands::SIGN_UP_REQUEST:
-		{
-			bool bRes = m_pAgentMgr->signUpRespond(out);
-			break;
-		}
-
-	case ServerClientCommands::SIGN_OUT_REQUEST:
-		{
-			bool bRes = m_pAgentMgr->signOutRespond(out);
-			break;
-		}
-
-	case ServerClientCommands::MODIFY_USER_ACCOUNT_REQUEST:
-		{
-			bool bRes = m_pAgentMgr->modifyAccountRespond(out);
+			m_pAvatarMgr->otherAvatarsReceived(aDataStream);
 			break;
 		}
 	default:

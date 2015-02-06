@@ -23,6 +23,12 @@ namespace VR {
 
 		std::list<std::string> getListOfObjects(const std::string & astrScene);
 		std::vector<std::string> getObjectData(std::string & strSceneObject);
+		std::vector<std::string> getObjectData(int anObjectID,std::string & astrClassName,std::string & astrObjectName);
+
+		std::string getPrimitiveObjectData(int anObjectID,std::string & astrClassName,std::string & astrObjectName);
+
+		std::list<std::string> getProductsData();
+
 
 	private:
 		void systemOfTables(std::vector<std::pair<std::string,std::string>> & avecStmtPairs);

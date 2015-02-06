@@ -7,7 +7,6 @@
 
 namespace VR {
 	class ServerClientCommands;
-	class ModelViewControllerClient;
 	class Client;
 
 	class BasketClient;
@@ -15,7 +14,6 @@ namespace VR {
 	class CashierManagerClient : public AbstractManagerClient	{
 	public:
 		CashierManagerClient(Client * apClient, QObject *parent=0);
-		CashierManagerClient(Client * apClient, ModelViewControllerClient * apMVCClient, QObject *parent=0);
 		virtual ~CashierManagerClient();
 
 		const char* className() const;
@@ -37,12 +35,7 @@ namespace VR {
 		void moreProductInfoClicked(const std::string & astrProductName);
 		void proceedAndPayCashier(const std::string & astrUserID, BasketClient * apBasket);
 
-	private:
-		ModelViewControllerClient * m_pMVCClient;
-
-	public:
 		void productInfoData(QDataStream & aDataStreamCashier);
-		bool removeFromBasketData(QDataStream & aDataStreamCashier);
 		void basketPurchaseData(QDataStream & aDataStreamCashier);
 	};
 }

@@ -247,7 +247,8 @@ void VRShopPlugin::runApplicationThread()	{
 		string strPipeName = "\\\\.\\pipe\\VRShopPluginPipe";
 		m_pPipe->initializeAndRunServer(strPipeName);
 
-		string strArguments = tostr(hWnd) + " 1 " + strPipeName;
+//		string strArguments = tostr(hWnd) + " 1 " + strPipeName;
+		string strArguments = "127.0.0.1 10000 " + tostr(hWnd) + " " + strPipeName;
 
 		//Create process
 		ghJob = CreateJobObject( NULL, NULL);

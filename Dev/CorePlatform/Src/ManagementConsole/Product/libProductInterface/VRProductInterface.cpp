@@ -1,5 +1,6 @@
 #include <string>
 #include <iostream>
+#include <fstream>
 
 #include "VRProductShopClient.h"
 
@@ -50,11 +51,6 @@ ProductInterface::ProductInterface(
 //=======================================================================
 
 void ProductInterface::init(const ProductShopClient * apProductShopClient)	{
-	if (apProductShopClient == 0)	{
-		return;
-	}
-
-	m_ProductShopClient = *apProductShopClient;
 	ProductShopClientParams productParams;
 	m_ProductShopClient.getParams(productParams);
 
@@ -64,7 +60,11 @@ void ProductInterface::init(const ProductShopClient * apProductShopClient)	{
 	string strTextureFile = productParams.m_strTextureFile;
 	QImageReader image(strTextureFile.c_str());
 	QPixmap imageBasic(QPixmap::fromImageReader(&image));
-	QPixmap imageScaled(imageBasic.scaled ( m_pLabelProductInterfaceImage->width(),m_pLabelProductInterfaceImage->height(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation ));
+	QPixmap imageScaled(imageBasic.scaled(
+		m_pLabelProductInterfaceImage->width(),m_pLabelProductInterfaceImage->height(),
+//		Qt::IgnoreAspectRatio, Qt::SmoothTransformation)
+		Qt::AspectRatioMode::KeepAspectRatio, Qt::SmoothTransformation)
+	);
 	m_pLabelProductInterfaceImage->setPixmap(imageScaled);
 
 	string & strProductName = productParams.m_strProductName;
@@ -78,8 +78,8 @@ void ProductInterface::init(const ProductShopClient * apProductShopClient)	{
 
 	//Geometry
 	QPoint cursor(QCursor::pos());
-	int x = cursor.x();
-	int y = cursor.y();
+	int x = cursor.rx();
+	int y = cursor.ry();
 
 	m_pFrameProductInterface->setGeometry(x,y,m_pFrameProductInterface->width(),m_pFrameProductInterface->height());
 	m_pLabelProductInterfacePrice->setGeometry(x+(m_pFrameProductInterface->width()-m_pLabelProductInterfacePrice->width())/2,
@@ -116,20 +116,6 @@ void ProductInterface::slotCloseInterface()	{
 
 //----------------------------------------------------------------------------------------
 
-void ProductInterface::setGeometry()	{
-}
-
-//----------------------------------------------------------------------------------------
-
-void ProductInterface::slotProductInitialized(const ProductShopClient * apProductShopClient)	{
-	init(apProductShopClient);
-
-	m_pFrameProductInterface->show();
-	m_pLabelProductInterfacePrice->show();
-}
-
-//----------------------------------------------------------------------------------------
-
 ProductShopClient * ProductInterface::getProduct()	{
 	return &m_ProductShopClient;
 }
@@ -150,4 +136,15 @@ void ProductInterface::removeProductRequest(ProductShopClient * apProduct)	{
 
 	ProductManagerClient pmc(m_pClient);
 	pmc.removeProductRequest(strUserID,apProduct);
+}
+
+//----------------------------------------------------------------------------------------
+
+void ProductInterface::productClickedRespond(QDataStream & aDataStream)	{
+	QString qstrDataFromServer;
+	aDataStream >> qstrDataFromServer;
+
+	m_ProductShopClient.initFromSQLData(qstrDataFromServer.toStdString());
+
+	init(&m_ProductShopClient);
 }

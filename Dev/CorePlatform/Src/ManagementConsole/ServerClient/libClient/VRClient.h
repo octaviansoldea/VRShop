@@ -49,7 +49,7 @@ namespace VR	{
 		void close();
 
 	private:
-		void readSocket(QByteArray & aData);
+		bool readSocket(QByteArray & aData);
 	};
 }
 #endif //VR_CLIENT_H

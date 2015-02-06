@@ -46,7 +46,7 @@ namespace VR {
 		Visitor * m_pVisitor;
 
 	public:
-		void signInRequest(const std::string & astrUserName, const std::string & astrPassword);
+		void signInRequest(const std::string & astrUserName, const std::string & astrPassword, const std::string & astrUserID);
 		void signUpRequest();
 		void signOutRequest(const std::string & astrUserName);
 		void modifyAccountRequest();

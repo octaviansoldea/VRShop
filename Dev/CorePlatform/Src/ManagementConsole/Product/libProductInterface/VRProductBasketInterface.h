@@ -13,6 +13,7 @@ namespace VR	{
 	class ProductShopClient;
 	class BasketClient;
 	class ProductBasketInterfaceItem_GUI;
+	class Client;
 
 	class ProductBasketInterface : public QObject	{
 		Q_OBJECT
@@ -23,7 +24,8 @@ namespace VR	{
 			QFrame * apFrameItemsBasket,
 			QPushButton * apPushButtonBasketBack,
 			QPushButton * apPushButtonBasketForward,
-			BasketClient * apBasket
+			BasketClient * apBasket,
+			Client * m_pClient
 		);	//End of constructor
 
 		~ProductBasketInterface();
@@ -35,6 +37,7 @@ namespace VR	{
 		QPushButton * m_pPushButtonBasketBack;
 		QPushButton * m_pPushButtonBasketForward;
 		BasketClient * m_pBasket;
+		Client * m_pClient;
 
 	private slots:
 		void slotMyBasket(bool abIndicator);
@@ -59,6 +62,15 @@ namespace VR	{
 		void signalProductBasketChangeRequest(ProductShopClient * apProduct);
 		void signalProductBasketModifyRequest(ProductShopClient * apProduct, float aflNewQuantity);
 		void signalSetSpinBoxProduct(float aflNewSpinBoxValue);
+
+	private slots:
+		void slotRemoveFromBasketClicked(ProductShopClient * apProduct);
+
+	public:
+		void removeProductRespond(QDataStream & aDataStream);
+
+	private:
+		ProductShopClient * m_pProduct;
 	};
 }
 #endif //VR_PRODUCT_BASKET_INTERFACE_H

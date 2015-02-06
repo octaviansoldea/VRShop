@@ -18,7 +18,7 @@ using namespace std;
 UntransformedPolyhedronParams::UntransformedPolyhedronParams() :
 m_flRadius(1.0),
 m_flHeight(1.0),
-m_nResolution(5)	{
+m_nResolution(6)	{
 }
 
 //==========================================================================

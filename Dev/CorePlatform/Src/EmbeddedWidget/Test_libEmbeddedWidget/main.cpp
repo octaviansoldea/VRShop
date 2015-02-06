@@ -31,6 +31,11 @@ using namespace VR;
 		- PARENT HWND
 		- nSELECTION
 		- PIPE NAME
+
+		- IP
+		- PORT
+		- PARENT HWND
+		- PIPE NAME
 */
 
 static EmbeddedWidgetStatics staticInitializerOrderer;
@@ -48,8 +53,10 @@ int main(int argc, char * argv[])	{
 	out << endl;
 	out.close();
 
-	if(argc < 2) {
-		cerr << argv[0] << " selectArgument(0 or 1)"  << endl;
+	if((argc != 3) && (argc != 5)) {
+		cerr << "Error: incorrect number of arguments: they were" << argc<< endl;
+		cerr << "Usage: ";
+		cerr << " IP port [parentHWD pipeName]"  << endl;
 		exit(-1);
 	}
 
@@ -57,30 +64,30 @@ int main(int argc, char * argv[])	{
 
 	Client client;
 
-	const string strIP = 
-		//"62.219.47.47";
-		"127.0.0.1";
-	const unsigned int nPort = 
-		//5900;
-		10000;
+	const string strIP = string(argv[1]);
+	cerr << "Understood ip = " << strIP << endl;
+	const unsigned int nPort = atoi(argv[2]);
+	cerr << "Understood nPort = " << nPort << endl;
 
 	client.tryToConnect(strIP, nPort);
 	int nUserID = client.getUserID();
 
-	if (nUserID == -1)	{
+	if (nUserID < 1)	{
 		return 0;
 	}
 
 	client.setObjectName(tostr(nUserID).c_str());
-	string strPipeName = argv[3];
+	string strPipeName;
+	if(argc == 5) {
+		strPipeName = argv[4];
+	}
 
 	EmbeddedWidget_GUI embeddedWidget(&client,strPipeName);
 	QTimer timer;
 
 	//nSelection=1: run as a web plugin; default: run as a windows APPi
-	int nSelection=stoi(argv[2]);
-	switch(nSelection)	{
-	case 1:
+	switch(argc)	{
+	case 5:
 		{
 			embeddedWidget.setAttribute(Qt::WA_NativeWindow);
 //			embeddedWidget.setWindowFlags(Qt::FramelessWindowHint);
@@ -88,7 +95,7 @@ int main(int argc, char * argv[])	{
 			//STRING TO HWND
 			long lNum;
 			char* pE;
-			lNum = strtol(argv[1], &pE, 16);
+			lNum = strtol(argv[3], &pE, 16);
 			HWND hW = (HWND)lNum;
 			//END
 

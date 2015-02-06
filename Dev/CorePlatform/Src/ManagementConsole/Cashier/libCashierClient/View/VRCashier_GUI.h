@@ -8,6 +8,7 @@ namespace VR	{
 	class BasketClient;
 	class CashierClient;
 	class Client;
+	class CashierManagerClient;
 
 	class Cashier_GUI : public QDialog, public Ui::Cashier	{
 	public:
@@ -17,7 +18,10 @@ namespace VR	{
 		void proceedAndPayClicked();
 		void removeFromCashierClicked();
 		void productInfoClicked();
-		int getCurrentSelection();
+
+		void removeFromBasketRespond(QDataStream & aDataStream);
+		void productInfoRespond(QDataStream & aDataStream);
+		void purchaseRespond(QDataStream & aDataStream);
 
 		void cashierClicked();
 

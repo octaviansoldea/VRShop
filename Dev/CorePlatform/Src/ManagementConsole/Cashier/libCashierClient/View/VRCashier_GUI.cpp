@@ -96,12 +96,14 @@ void Cashier_GUI::continueClicked()	{
 	acm.m_strState = m_pLineEditState->text().toStdString();
 
 	m_pCashierClient->continueClicked(&acm, m_pFrameRightSidePDetails);
+
+	m_pFrameContinue->hide();
 }
 
 //----------------------------------------------------------------------
 
 void Cashier_GUI::removeFromCashierClicked()	{
-	m_pCashierClient->removeFromCashier(m_pTableWidgetProducts, m_pBasket, m_pLabelPrice);
+	m_pCashierClient->removeFromCashierClicked(m_pTableWidgetProducts, m_pBasket);
 }
 
 //----------------------------------------------------------------------
@@ -117,14 +119,27 @@ void Cashier_GUI::close()	{
 
 //----------------------------------------------------------------------
 
-int Cashier_GUI::getCurrentSelection()	{
-	int nItemNumber = m_pTableWidgetProducts->currentRow();
-
-	return nItemNumber;
+void Cashier_GUI::cashierClicked()	{
+	show();
 }
 
 //----------------------------------------------------------------------
 
-void Cashier_GUI::cashierClicked()	{
-	show();
+void Cashier_GUI::removeFromBasketRespond(QDataStream & aDataStream)	{
+	bool bRes;
+
+	aDataStream >> bRes;
+	if (bRes==true)	{
+		m_pCashierClient->removeFromCashier(m_pTableWidgetProducts, m_pBasket, m_pLabelPrice);
+	}
+}
+
+//----------------------------------------------------------------------
+
+void Cashier_GUI::productInfoRespond(QDataStream & aDataStream)	{
+}
+
+//----------------------------------------------------------------------
+
+void Cashier_GUI::purchaseRespond(QDataStream & aDataStream)	{
 }

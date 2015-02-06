@@ -342,6 +342,31 @@ void ProductManager::preparedObjectData(vector<string> &avecItems, string & astr
 
 //-----------------------------------------------------------------------------
 
+void ProductManager::initProductsFromSQLData(list<string> & avecstrObjectData)	{
+	int nNoOfElements = avecstrObjectData.size();
+
+	list<string>::iterator it = avecstrObjectData.begin();
+	for (it; it != avecstrObjectData.end(); it++)	{
+		int nFindPos = it->find_first_of(";");	//This one deletes ID number
+		it->erase(0,nFindPos+1);
+
+		vector<string> vecstrData = splitString(*it, ";");
+
+		string strClass = vecstrData[0];
+		string strObject = vecstrData[1];
+
+		ref_ptr<AbstractObject> pAOChild = AbstractObjectFactory::createAbstractObject(strClass);
+		pAOChild->initFromSQLData(vecstrData);
+
+		pAOChild->setName(strObject);
+		pAOChild->setIsTargetPick(true);
+
+		m_pgrpProductsRepresentation->addChild(pAOChild);
+	}
+}
+
+//-----------------------------------------------------------------------------
+
 void ProductManager::initFromSQLData(vector<string> & avecstrSQLData)	{
 	//**********************************************
 	//	HIERARCHY (how you get data inside)

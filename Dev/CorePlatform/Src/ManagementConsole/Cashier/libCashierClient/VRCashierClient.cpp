@@ -60,6 +60,22 @@ void CashierClient::changeImage(BasketClient * apBasket, QTableWidget * apTableW
 
 //------------------------------------------------------------------------------
 
+void CashierClient::removeFromCashierClicked(QTableWidget * apTableWidgetProducts, BasketClient * apBasket)	{
+	int nCurrentRow = apTableWidgetProducts->currentRow();
+
+	if (nCurrentRow<0)	{
+		return;
+	}
+
+	const string & strProductName = apBasket->getProduct(nCurrentRow)->getProductName();
+
+	VR::CashierManagerClient cmc(m_pClient);
+	string strUserID = tostr(m_pClient->getUserID());
+	cmc.removeFromBasketClicked(strUserID, strProductName);
+}
+
+//------------------------------------------------------------------------------
+
 void CashierClient::removeFromCashier(QTableWidget * apTableWidgetProducts, BasketClient * apBasket, QLabel * apLabelPrice)	{
 	int nCurrentRow = apTableWidgetProducts->currentRow();
 
@@ -163,7 +179,7 @@ void CashierClient::continueClicked(AgentManagerClient::AgentClientParams * apAc
 
 //------------------------------------------------------------------------
 
-void CashierClient::moeProductClicked(BasketClient * apBasket, int anProductPosition)	{
+void CashierClient::moreProductClicked(BasketClient * apBasket, int anProductPosition)	{
 	if (anProductPosition < 0 || apBasket->count() == 0)
 		return;
 
@@ -172,3 +188,5 @@ void CashierClient::moeProductClicked(BasketClient * apBasket, int anProductPosi
 	CashierManagerClient cmc(m_pClient);
 	cmc.moreProductInfoClicked(strProductName);
 }
+
+//------------------------------------------------------------------------

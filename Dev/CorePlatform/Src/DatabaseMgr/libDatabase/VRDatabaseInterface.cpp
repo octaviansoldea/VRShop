@@ -229,7 +229,7 @@ list<string> DatabaseInterface::executeAndGetResult(const string & astrQuery)	{
 			strResult += (record.field(nI).value().toString().toStdString() + ";");
 		}
 		//Delete last semi-colon & put it into the list
-//		strResult.pop_back();
+		strResult.pop_back();
 		lststrResult.push_back(strResult);
 	}
 	return lststrResult;

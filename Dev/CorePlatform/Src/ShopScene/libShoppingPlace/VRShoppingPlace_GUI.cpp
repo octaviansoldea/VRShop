@@ -41,10 +41,12 @@ using namespace std;
 //----------------------------------------------------------------------
 
 ShoppingPlace_GUI::ShoppingPlace_GUI(Client * apClient, string & astrFileName, string & astrAvatarName)	{	
-	 Q_INIT_RESOURCE(icons);
+	Q_INIT_RESOURCE(icons);
 
 	setupUi(this);
-	setWindowTitle("Shop Client");
+	setWindowTitle("VRShop");
+
+	m_pLabelLogoRetailer->hide();         // Hidden
 
 	m_pClient = apClient;
 
@@ -61,7 +63,7 @@ ShoppingPlace_GUI::ShoppingPlace_GUI(Client * apClient, string & astrFileName, s
 	KeyboardMouseManipulatorShopClient * pCameraManipulator = 
 		dynamic_cast<KeyboardMouseManipulatorShopClient *>(m_pOSGQTWidget->getCameraManipulator());
 
-	Visitor * pUser = (Visitor*)m_pShoppingPlace->getAbstractUser();
+	Visitor * pUser = static_cast<Visitor*>(m_pShoppingPlace->getAbstractUser());
 
 	//ProductInterface
 	m_pProductInterface = new ProductInterface(
@@ -73,7 +75,6 @@ ShoppingPlace_GUI::ShoppingPlace_GUI(Client * apClient, string & astrFileName, s
 		m_pLabelProductInterfacePrice,
 		m_pClient);
 
-	AgentManagerClient * pAgentMgr = m_pShoppingPlace->getAgentManagerClient();
 	//Agent Interface
 	m_pAgentInterface = new AgentInterface(
 		m_pFrameSettings,
@@ -85,7 +86,7 @@ ShoppingPlace_GUI::ShoppingPlace_GUI(Client * apClient, string & astrFileName, s
 		m_pPushButtonRemoveAccount,
 		m_pPushButtonChangeSettings,
 		pUser,
-		pAgentMgr);
+		m_pClient);
 
 	//Basket Interface
 	BasketClient * pBasket = pUser->getBasket();
@@ -95,7 +96,8 @@ ShoppingPlace_GUI::ShoppingPlace_GUI(Client * apClient, string & astrFileName, s
 		m_pFrameItemsBasket,
 		m_pPushButtonBasketBack,
 		m_pPushButtonBasketForward,
-		pBasket);
+		pBasket,
+		m_pClient);
 
 	//Client Camera
 	m_pCameraController = new CameraController(
@@ -185,8 +187,8 @@ void ShoppingPlace_GUI::signalSlotConnections()	{
 	connect(m_pPushButtonProductInterface2Basket,SIGNAL(clicked(bool)),this,SLOT(slotAdd2Basket()));
 
 	//Remove product
-	connect(m_pProductBasketInterface,SIGNAL(signalProductBasketChangeRequest(ProductShopClient * )),
-		this,SLOT(slotRemoveProduct(ProductShopClient *)));
+//	connect(m_pProductBasketInterface,SIGNAL(signalProductBasketChangeRequest(ProductShopClient * )),
+//		this,SLOT(slotRemoveProduct(ProductShopClient *)));
 
 	//Modify product
 	connect(m_pProductBasketInterface,SIGNAL(signalProductBasketModifyRequest(ProductShopClient *, float)),
@@ -196,9 +198,6 @@ void ShoppingPlace_GUI::signalSlotConnections()	{
 	ModelViewControllerClient * pMVCClient = m_pShoppingPlace->getModelViewController();
 	connect(pMVCClient, SIGNAL(signalNewProductQuantity(float)),
 		m_pProductBasketInterface,SIGNAL(signalSetSpinBoxProduct(float)));
-
-	connect(pMVCClient, SIGNAL(signalProductInitialized(const ProductShopClient * )),
-		m_pProductInterface,SLOT(slotProductInitialized(const ProductShopClient * )));
 
 
 	PickAndDragHandlerShopClient * pPickAndDragHandlerShopClient = m_pShoppingPlace->getPicker();
@@ -211,8 +210,6 @@ void ShoppingPlace_GUI::signalSlotConnections()	{
 
 	//cashier related signals and slots
 	connect(pPickAndDragHandlerShopClient,SIGNAL(signalCashierPicked()),this,SLOT(slotCashierClicked()));
-
-	connect(pMVCClient, SIGNAL(signalRemoveProduct()),this,SLOT(slotRemoveProductConfirmed()));
 }
 
 //----------------------------------------------------------------------------------------
@@ -257,12 +254,6 @@ void ShoppingPlace_GUI::slotCashierClicked()	{
 
 //----------------------------------------------------------------------------------------
 
-void ShoppingPlace_GUI::slotRemoveProductConfirmed()	{
-	//m_pCashierClient->removeFromBasket();
-}
-
-//----------------------------------------------------------------------------------------
-
 void ShoppingPlace_GUI::slotAvatarClicked(const string & astrAvatarName)	{
 	m_pShoppingPlace->avatarClicked(astrAvatarName);
 }
@@ -270,7 +261,73 @@ void ShoppingPlace_GUI::slotAvatarClicked(const string & astrAvatarName)	{
 //----------------------------------------------------------------------------------------
 
 void ShoppingPlace_GUI::slotClientReceiveData()	{
-	m_pShoppingPlace->handleClientData();
+	QByteArray data = m_pClient->getTransmittedData();
+
+	QDataStream out(&data,QIODevice::ReadOnly);
+	out.setVersion(QDataStream::Qt_4_8);
+
+	quint8 nType;	//Type of the data received
+	out >> nType;
+
+	switch(nType)	{
+	case ServerClientCommands::SIGN_IN_REQUEST:
+		{
+			m_pAgentInterface->signInRespond(out);
+			break;
+		}
+
+	case ServerClientCommands::SIGN_UP_REQUEST:
+		{
+			m_pAgentInterface->signUpRespond(out);
+			break;
+		}
+
+	case ServerClientCommands::SIGN_OUT_REQUEST:
+		{
+			m_pAgentInterface->signOutRespond(out);
+			break;
+		}
+
+	case ServerClientCommands::MODIFY_USER_ACCOUNT_REQUEST:
+		{
+			m_pAgentInterface->modifyAccountRespond(out);
+			break;
+		}
+
+	//RELATES TO THE CASHIER MANAGER CLIENT
+	case ServerClientCommands::REMOVE_FROM_CASHIER_REQUEST:
+		{
+			m_pCashier_GUI->removeFromBasketRespond(out);
+			break;
+		}
+	case ServerClientCommands::PRODUCT_INFO_REQUEST:
+		{
+			m_pCashier_GUI->productInfoRespond(out);
+			break;
+		}
+	case ServerClientCommands::PURCHASE_REQUEST:
+		{
+			m_pCashier_GUI->purchaseRespond(out);
+			break;
+		}
+	case ServerClientCommands::USER_CONFIRMS_PURCHASE:
+		{
+			break;
+		}
+
+		//PRODUCT
+	case ServerClientCommands::PRODUCT_REQUEST:
+		{
+			m_pProductInterface->productClickedRespond(out);			
+			break;
+		}
+	default:
+		{
+			m_pShoppingPlace->handleClientData(nType,out);
+		}
+	}
+
+//	m_pShoppingPlace->handleClientData();
 }
 
 //----------------------------------------------------------------------------------------

@@ -109,7 +109,7 @@ ShopBuilder::~ShopBuilder() {
 
 void ShopBuilder::gridOnOff(bool abIndicator) {
 	//ToolButton checked && Grid not already a child
-	ref_ptr<Grid> pGrid = (Grid *)m_pScene->getChild("Grid");
+	ref_ptr<Grid> pGrid = static_cast<Grid *>(m_pScene->getChild("Grid"));
 
 	if (pGrid == 0)	{
 		return;
@@ -125,15 +125,7 @@ void ShopBuilder::gridOnOff(bool abIndicator) {
 //----------------------------------------------------------------------
 
 void ShopBuilder::newDB()	{
-	//Before creating new file, check if any still opened.
-	if (getCurrentFileName().c_str())	{
-		QMessageBox msgBox;
-		int nRes = BasicQtOperations::getMsgBox(VR::BasicQtOperations::OPEN_NEW_FILE, msgBox);
-
-		if (nRes == QMessageBox::Ok)	{
-			saveDB(m_strDBFileName.c_str());
-		}
-	}
+	closeDB(m_strDBFileName);
 
 	NewProject_GUI newProject;
 	//To get a widget without a "TitleBar"
@@ -183,10 +175,8 @@ void ShopBuilder::newDB()	{
 //----------------------------------------------------------------------
 
 void ShopBuilder::readDB(const std::string & astrDBFileName)	{
-	m_strDBFileName = astrDBFileName;
-
 	//Before creating new file, check if any still opened.
-	if (getCurrentFileName().c_str() == "" || m_pScene->getNumChildren() > 3)	{
+	if (m_strDBFileName != "")	{
 		QMessageBox msgBox;
 		int nRes = BasicQtOperations::getMsgBox(BasicQtOperations::OPEN_NEW_FILE,msgBox);
 
@@ -196,7 +186,6 @@ void ShopBuilder::readDB(const std::string & astrDBFileName)	{
 	}
 
 	m_pScene->clearScene();
-
 
 	m_strDBFileName = astrDBFileName;
 
@@ -209,31 +198,54 @@ void ShopBuilder::readDB(const std::string & astrDBFileName)	{
 
 	std::list<std::string>::iterator it = lststrSceneObjects.begin();
 	for (it; it != lststrSceneObjects.end(); it++)	{
+		vector<string> vecstrData = splitString(*it,";");
+
 		//Find class and object names
-		const int nFindPos1 = it->find_first_of(";");
-		const int nFindPos2 = it->find_first_of(";", nFindPos1+1);
-		std::string strClassName = it->substr(nFindPos1+1,nFindPos2-nFindPos1-1);
+		int nObjectID = stoi(vecstrData[0]);
+		string strClassName = vecstrData[1];
+		string strObjectName = vecstrData[2];
 
 		if (strClassName == ShopBuilderCommands::getOperationType(VR::ShopBuilderCommands::PRODUCT_DISPLAY))	{
-			std::vector<std::string> vecstrObjectData = dbMgr.getObjectData(*it);
-			m_pProductMgr->initFromSQLData(vecstrObjectData);
-			
+			list<std::string> vecstrObjectData = dbMgr.getProductsData();
+			m_pProductMgr->initProductsFromSQLData(vecstrObjectData);
+		} else if ((strClassName == "CustomFurniture") ||
+			(strClassName == "Cupboard") ||
+			(strClassName == "Container")
+		)	{
+			vector<std::string> vecstrObjectData = dbMgr.getObjectData(nObjectID, strClassName, strObjectName);
+			ref_ptr<AbstractObject> pAO = AbstractObjectFactory::createAbstractObject(strClassName);
+			pAO->initFromSQLData(vecstrObjectData);
+			pAO->setIsTargetPick(true);
+			m_pScene->addChild(pAO);
+		} else if (strClassName == "Plate3D")	{
+			string strObjectData = dbMgr.getPrimitiveObjectData(nObjectID, strClassName, strObjectName);
+			int nPos = strObjectData.find_first_of(";");
+			strObjectData.erase(0,nPos+1);
+			ref_ptr<AbstractObject> pAO = AbstractObjectFactory::createAbstractObject("Plate3D");
+			pAO->initFromSQLData(strObjectData);
+			pAO->setIsTargetPick(true);
+			m_pScene->addChild(pAO);
+		} else if (strClassName == "Cylinder")	{
+			string strObjectData = dbMgr.getPrimitiveObjectData(nObjectID, strClassName, strObjectName);
+			int nPos = strObjectData.find_first_of(";");
+			strObjectData.erase(0,nPos+1);
+			ref_ptr<AbstractObject> pAO = AbstractObjectFactory::createAbstractObject("Cylinder");
+			pAO->initFromSQLData(strObjectData);
+			pAO->setIsTargetPick(true);
+			m_pScene->addChild(pAO);
+		} else {
+			//IF SOMETHING UNDEFINED
 			continue;
 		}
-
-		osg::ref_ptr<AbstractObject> pAO = AbstractObjectFactory::createAbstractObject(strClassName);
-		std::vector<std::string> vecstrObjectData = dbMgr.getObjectData(*it);
-
-		pAO->initFromSQLData(vecstrObjectData);
-
-		m_pScene->addChild(pAO);
 	}
 
 	
 	osg::ref_ptr<osg::Node> pAxes = osgDB::readNodeFile("../../../Resources/Models3D/axes.osgt");
-	osg::ref_ptr<Grid> pGrid = new Grid;
-	if(!m_pProductMgr)
-		m_pProductMgr = new ProductManager;
+
+	GridParams gP;
+	gP.m_nResLat=101;
+	gP.m_nResLong=101;
+	osg::ref_ptr<Grid> pGrid = new Grid(gP);
 
 	m_pScene->addChild(pAxes);
 	m_pScene->addChild(pGrid);
@@ -245,28 +257,23 @@ void ShopBuilder::readDB(const std::string & astrDBFileName)	{
 //----------------------------------------------------------------------
 
 void ShopBuilder::closeDB(const std::string & astrDBFileName)	{
-	//Before creating new file, check if any still opened.
-	if (getCurrentFileName().c_str())	{
-		QMessageBox msgBox;
-		int nRes = BasicQtOperations::getMsgBox(BasicQtOperations::OPEN_NEW_FILE,msgBox);
+	QMessageBox msgBox;
+	int nRes = BasicQtOperations::getMsgBox(BasicQtOperations::OPEN_NEW_FILE,msgBox);
 
-		if (nRes == QMessageBox::Ok)	{
-			saveDB(m_strDBFileName.c_str());
-		}
-		m_pScene->clearScene();
-		m_strDBFileName = "";
+	if (nRes == QMessageBox::Ok)	{
+		saveDB(m_strDBFileName.c_str());
 	}
+	m_pScene->clearScene();
+	m_strDBFileName = "";
 }
 
 //----------------------------------------------------------------------
 
 void ShopBuilder::saveDB()	{
-	const std::string strCurrentFile = getCurrentFileName();
-
-	if (strCurrentFile == "")	{
+	if (m_strDBFileName == "")	{
 		saveAsDB();
 	} else {
-		saveDB(strCurrentFile);
+		saveDB(m_strDBFileName);
 	}
 }
 
@@ -275,8 +282,8 @@ void ShopBuilder::saveDB()	{
 void ShopBuilder::saveDB(const std::string & astrDBFileName)	{
 	m_strDBFileName = astrDBFileName;
 
-	//This will open, clear and close the file
-	bool bRes = BasicQtOperations::QtFileOperation(m_strDBFileName, BasicQtOperations::FILE_OPEN_TRUNCATE);
+	//This will truncate the file
+	bool bRes = QFile::resize(m_strDBFileName.c_str(),0);
 
 	std::string strSceneName = m_pScene->getName();
 	int nSize = m_pScene->getNumChildren();
@@ -290,25 +297,31 @@ void ShopBuilder::saveDB(const std::string & astrDBFileName)	{
 
 	int nI;
 	for (nI=0; nI<nSize; nI++)	{
-		ref_ptr<AbstractObject> pAO = dynamic_cast<AbstractObject*>(m_pScene->getChild(nI));
+		ref_ptr<Object> pNode = dynamic_cast<Object*>(m_pScene->getChild(nI));
 
-		if (pAO == 0 || pAO->className() == ShopBuilderCommands::getOperationType(ShopBuilderCommands::GRID))
-			continue;
+		string strClassName = pNode->className();
+		string strObjectName = pNode->getName();
 
-		//Call DB here
-		std::vector<std::string> vecstrData;
-		vecstrData.push_back(strSceneName);
-		pAO->preparedObjectData(vecstrData,strSceneName);
+		if (strObjectName == "Products")	{
+			//Here add products into the scene DB
+			std::vector<std::string> vecstrData;
+			vecstrData.push_back(strSceneName);
+			m_pProductMgr->preparedObjectData(vecstrData,strSceneName);	
+			dbInterface.insertObject(strSceneName,vecstrData);
+		} else {
+			ref_ptr<AbstractObject> pAO = dynamic_cast<AbstractObject*>(pNode.get());
+			if ((pAO == 0) || (pAO->className() == ShopBuilderCommands::getOperationType(ShopBuilderCommands::GRID)))	{
+				continue;
+			} else {
+				//Call DB here
+				std::vector<std::string> vecstrData;
+				vecstrData.push_back(strSceneName);
+				pAO->preparedObjectData(vecstrData,strSceneName);
 
-		dbInterface.insertObject(strSceneName,vecstrData);
+				dbInterface.insertObject(strSceneName,vecstrData);
+			}
+		}
 	}
-
-
-	//Here add products into the scene DB
-	std::vector<std::string> vecstrData;
-	vecstrData.push_back(strSceneName);
-	m_pProductMgr->preparedObjectData(vecstrData,strSceneName);	
-	dbInterface.insertObject(strSceneName,vecstrData);
 }
 
 //----------------------------------------------------------------------
@@ -324,14 +337,8 @@ void ShopBuilder::saveAsDB()	{
 				saveAs.m_pLineEditFileName->text().toStdString()
 			);
 
-
 		//Create file
 		bool bRes = BasicQtOperations::QtFileOperation(strFileName, VR::BasicQtOperations::FILE_OPEN);
-
-		//Create necessary DB tables
-		DatabaseInterfaceShopEditorParams dbParams;
-		dbParams.m_qstrDBName = strFileName.c_str();
-		DatabaseInterfaceShopEditor dbMgr(dbParams);
 
 		saveDB(strFileName);
 	}
@@ -540,7 +547,7 @@ void ShopBuilder::modifyProductClicked(ProductClickedItems & aProductClickedItem
 //-----------------------------------------------------------------------
 
 void ShopBuilder::groupItems()	{
-	vector<ref_ptr<AbstractObject>> & pickedObjects = m_pPickAndDragHandlerShopEditor->getPickedObjects();
+	vector<ref_ptr<AbstractObject>> pickedObjects = m_pPickAndDragHandlerShopEditor->getPickedObjects();
 
 	if(pickedObjects.size() < 2)	{
 		cout << "Too few items selected for grouping" << endl;
@@ -656,7 +663,7 @@ void ShopBuilder::duplicateSelection()	{
 //-----------------------------------------------------------------------
 
 void ShopBuilder::removeSelection()	{
-	vector<ref_ptr<AbstractObject>> & pickedObjects = m_pPickAndDragHandlerShopEditor->getPickedObjects();
+	vector<ref_ptr<AbstractObject>> pickedObjects = m_pPickAndDragHandlerShopEditor->getPickedObjects();
 
 	if(pickedObjects.size() < 1)	{
 		cout << "No items selected for removal" << endl;

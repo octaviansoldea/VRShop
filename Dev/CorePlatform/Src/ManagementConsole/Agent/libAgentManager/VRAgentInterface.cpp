@@ -1,5 +1,6 @@
 #include <string>
 #include <iostream>
+#include <fstream>
 
 #include <QFrame>
 #include <QToolButton>
@@ -11,6 +12,7 @@
 #include "VRServerClientCommands.h"
 
 #include "VRAgentManagerClient.h"
+#include "VRClient.h"
 
 #include "VRAgentInterface.h"
 
@@ -29,7 +31,7 @@ QPushButton * apPushButtonSignOut,
 QPushButton * apPushButtonRemoveAccount,
 QPushButton * apPushButtonChangeSettings,
 AbstractUser * apAbstractUser,
-AgentManagerClient * apAgentMgr)	{
+Client * apClient)	{
 	m_pFrameSettings = apFrameSettings;
 	m_pToolButtonUser = apToolButtonUser;
 	m_pLineEditPassword = apLineEditPassword;
@@ -40,7 +42,7 @@ AgentManagerClient * apAgentMgr)	{
 	m_pPushButtonChangeSettings = apPushButtonChangeSettings;
 	m_pAbstractUser = apAbstractUser;
 
-	m_pAgentMgr = apAgentMgr;
+	m_pClient = apClient;
 
 	m_pToolButtonUser->setVisible(false);
 	m_pFrameSettings->setVisible(false);
@@ -49,8 +51,6 @@ AgentManagerClient * apAgentMgr)	{
 	connect(m_pPushButtonSignIn,SIGNAL(clicked()),this,SLOT(slotSignUp()));
 	connect(m_pLineEditPassword,SIGNAL(returnPressed()),this,SLOT(slotSignIn()));
 	connect(m_pLineEditUserName,SIGNAL(returnPressed()),this,SLOT(slotSignIn()));
-
-	connect(m_pAgentMgr,SIGNAL(done()),this,SLOT(slotSignedIn()));
 }
 
 //----------------------------------------------------------------------
@@ -69,9 +69,11 @@ void AgentInterface::slotUserClicked(bool abIsProfileVisible)	{
 	m_pFrameSettings->setVisible(abIsProfileVisible);
 
 	if (abIsProfileVisible)	{
+		connect(m_pToolButtonUser,SIGNAL(toggled(bool)),this,SLOT(slotUserClicked(bool)));
 		connect(m_pPushButtonSignOut,SIGNAL(clicked()),this,SLOT(slotSignOut()));
 		connect(m_pPushButtonRemoveAccount,SIGNAL(clicked()),this,SLOT(slotRemoveAccount()));
 		connect(m_pPushButtonChangeSettings,SIGNAL(clicked()),this,SLOT(slotChangeSettings()));
+
 	} else {
 		disconnect(m_pPushButtonSignOut,SIGNAL(clicked()),this,SLOT(slotSignOut()));
 		disconnect(m_pPushButtonRemoveAccount,SIGNAL(clicked()),this,SLOT(slotRemoveAccount()));
@@ -82,7 +84,8 @@ void AgentInterface::slotUserClicked(bool abIsProfileVisible)	{
 //----------------------------------------------------------------------
 
 void AgentInterface::slotSignUp()	{
-	m_pAgentMgr->signUpRequest();
+	AgentManagerClient amc(m_pClient, m_pAbstractUser);
+	amc.signUpRequest();
 }
 
 //----------------------------------------------------------------------
@@ -97,14 +100,17 @@ void AgentInterface::slotSignIn()	{
 
 		slotSignUp();
 	} else {	//Check validity of user's data
-		m_pAgentMgr->signInRequest(strUserName,strPsw);
+		AgentManagerClient amc(m_pClient, m_pAbstractUser);
+		string strUserIDName = m_pAbstractUser->getUserIDName();
+		amc.signInRequest(strUserName,strPsw, strUserIDName);
 	}
 }
 
 //----------------------------------------------------------------------
 
 void AgentInterface::slotSignOut()	{
-	m_pAgentMgr->signOutRequest(m_pAbstractUser->getUserIDName());
+	AgentManagerClient amc(m_pClient, m_pAbstractUser);
+	amc.signOutRequest(m_pAbstractUser->getUserIDName());
 
 	m_pFrameSettings->close();
 	m_pToolButtonUser->setVisible(false);
@@ -127,7 +133,8 @@ void AgentInterface::slotRemoveAccount()	{
 void AgentInterface::slotChangeSettings()	{
 	m_pFrameSettings->close();
 
-	m_pAgentMgr->modifyAccountRequest();
+	AgentManagerClient amc(m_pClient, m_pAbstractUser);
+	amc.modifyAccountRequest();
 }
 
 //----------------------------------------------------------------------
@@ -144,3 +151,50 @@ void AgentInterface::slotSignedIn()	{
 }
 
 //----------------------------------------------------------------------
+
+void AgentInterface::signInRespond(QDataStream & aDataStream)	{
+	int nSuccess;
+	aDataStream >> nSuccess;
+
+	if (nSuccess == ServerClientCommands::PASSED)	{
+		m_pAbstractUser->userSignedIn();
+		slotSignedIn();
+	} else {
+		AgentManagerClient amc(m_pClient, m_pAbstractUser);
+		amc.signUpRequest();
+	}
+}
+
+//----------------------------------------------------------------------
+
+void AgentInterface::signUpRespond(QDataStream & aDataStream)	{
+	int nSuccess;
+	aDataStream >> nSuccess;
+
+	if (nSuccess == ServerClientCommands::PASSED)	{
+		m_pAbstractUser->userSignedIn();
+		slotSignedIn();
+	}
+}
+
+//----------------------------------------------------------------------
+
+void AgentInterface::signOutRespond(QDataStream & aDataStream)	{
+	int nSuccess;
+	aDataStream >> nSuccess;
+
+	if (nSuccess == ServerClientCommands::PASSED)	{	//Successfully signed out
+		m_pAbstractUser->userSignedOut();
+	}
+}
+
+//----------------------------------------------------------------------
+
+void AgentInterface::modifyAccountRespond(QDataStream & aDataStream)	{
+	int nSuccess;
+	aDataStream >> nSuccess;
+
+	if (nSuccess == ServerClientCommands::PASSED)	{	//Successfully modified account settings
+	} else {
+	}
+}

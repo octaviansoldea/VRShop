@@ -6,6 +6,8 @@
 #include <QMessageBox>
 #include <QTimer>
 
+#include "VRProductBasketInterfaceItem.h"
+
 #include "BasicStringDefinitions.h"
 
 #include "VRProductBasketInterfaceItem_GUI.h"
@@ -46,6 +48,11 @@ QFrame *apParent) : QFrame(apParent)	{
 	connect(m_pVRQFrameProductItem,SIGNAL(hovered(bool)),this,SLOT(slotProductItemHovered(bool)));
 
 	init(m_pProductShopClient);
+}
+
+//----------------------------------------------------------------------
+
+ProductBasketInterfaceItem_GUI::~ProductBasketInterfaceItem_GUI()	{
 }
 
 //=====================================================================

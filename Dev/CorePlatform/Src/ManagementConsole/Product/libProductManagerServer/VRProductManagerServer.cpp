@@ -63,7 +63,7 @@ void ProductManagerServer::createDB()	{
 //------------------------------------------------------------------------------
 
 string ProductManagerServer::getProductDataFromDB(const std::string astrProductName)	{
-	string strQuery = "SELECT * FROM Product WHERE ProductName = '" + astrProductName + "'";
+	string strQuery = "SELECT * FROM Product WHERE ProductName = '" + astrProductName + "' OR ProductCode = '" +astrProductName + "'";
 
 	list<string> lstResult = m_pDIProduct->executeAndGetResult(strQuery);
 	if (lstResult.empty())	{

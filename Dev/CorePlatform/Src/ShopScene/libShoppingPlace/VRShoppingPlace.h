@@ -23,10 +23,8 @@ namespace VR	{
 	class PickAndDragHandlerShopClient;
 	class BasketClient;
 	class ProductShopClient;
-	class CashierManagerClient;
 
 	class ModelViewControllerClient;
-	class AgentManagerClient;
 
 	struct ShoppingPlace {
 		ShoppingPlace(
@@ -43,7 +41,7 @@ namespace VR	{
 		void removeProductRequest(ProductShopClient * apProduct);
 		void modifyProductQuantityRequest(ProductShopClient * apProduct, float aflNewQuantity);
 
-		void handleClientData();
+		void handleClientData(int anType, QDataStream & aDataStream);
 
 		void purchaseRequest();
 
@@ -55,8 +53,6 @@ namespace VR	{
 		bool isUserAuthorized() const;
 
 		ModelViewControllerClient * getModelViewController() const;
-
-		AgentManagerClient * getAgentManagerClient();
 
 	private:
 		bool createClientScene(const std::string & astrSceneFileName);
@@ -80,8 +76,6 @@ namespace VR	{
 
 		AvatarManagerClient * m_pAvatarMgr;
 		ProductManagerClient * m_pProductMgr;
-		CashierManagerClient * m_pCashierMgr;
-		AgentManagerClient * m_pAgentMgr;
 
 		ModelViewControllerClient * m_pMVCClient;
 

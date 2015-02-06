@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <fstream>
 
 #include "BasicStringDefinitions.h"
 #include "VRServerClientCommands.h"
@@ -47,7 +48,7 @@ void ProductManagerClient::requestToServer(
 	AbstractManagerClientParams * apAbstractManagerClientParams
 )	{
 
-	ProductManagerClientParams * pPp = (ProductManagerClientParams*)apAbstractManagerClientParams;
+	ProductManagerClientParams * pPp = static_cast<ProductManagerClientParams*>(apAbstractManagerClientParams);
 
 	QByteArray block;
 	QDataStream out(&block, QIODevice::WriteOnly);

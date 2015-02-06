@@ -10,7 +10,7 @@ class QPushButton;
 
 namespace VR	{
 	class AbstractUser;
-	class AgentManagerClient;
+	class Client;
 
 	class AgentInterface : public QObject	{
 		Q_OBJECT
@@ -25,7 +25,7 @@ namespace VR	{
 			QPushButton * apPushButtonRemoveAccount,
 			QPushButton * apPushButtonChangeSettings,
 			AbstractUser * apAbstractUser,
-			AgentManagerClient * apAgentMgr
+			Client * apClient
 		);	//End of constructor
 
 		~AgentInterface();
@@ -50,8 +50,14 @@ namespace VR	{
 		QPushButton * m_pPushButtonRemoveAccount;
 		QPushButton * m_pPushButtonChangeSettings;
 		AbstractUser * m_pAbstractUser;
+		Client * m_pClient;
 
-		AgentManagerClient * m_pAgentMgr;
+
+	public:
+		void signInRespond(QDataStream & aDataStream);
+		void signUpRespond(QDataStream & aDataStream);
+		void signOutRespond(QDataStream & aDataStream);
+		void modifyAccountRespond(QDataStream & aDataStream);
 	};
 }
 #endif //VR_AGENT_INTERFACE_H

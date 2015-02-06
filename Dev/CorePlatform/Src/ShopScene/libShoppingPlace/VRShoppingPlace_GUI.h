@@ -49,7 +49,6 @@ namespace VR	{
 		void slotModifyProductQuantity(ProductShopClient * apProduct, float aflNewQuantity);
 
 		void slotCashierClicked();
-		void slotRemoveProductConfirmed();
 
 		void slotClientReceiveData();
 

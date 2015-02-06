@@ -45,6 +45,8 @@ namespace VR	{
 		void preparedObjectData(std::vector<std::string> &avecItems, std::string & astrParent);
 		void initFromSQLData(std::vector<std::string> & avecstrSQLData);
 
+		void initProductsFromSQLData(std::list<std::string> & avecstrObjectData);
+
 		enum OperationType	{
 			INSERT_PRODUCT = 0,
 			MODIFY_PRODUCT,

@@ -18,6 +18,8 @@ namespace VR	{
 			ProductShopClient * apProductShopClient, 
 			QFrame *apParent=0);
 
+		~ProductBasketInterfaceItem_GUI();
+
 		void init(ProductShopClient * apProductShopClient);
 		ProductShopClient * getProduct();
 

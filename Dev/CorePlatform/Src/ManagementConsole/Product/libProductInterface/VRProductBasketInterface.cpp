@@ -8,7 +8,12 @@
 #include "VRProductShopClient.h"
 #include "VRBasketClient.h"
 
+#include "VRClient.h"
+#include "VRProductManagerClient.h"
+
 #include "VRProductBasketInterfaceItem_GUI.h"
+
+#include "BasicStringDefinitions.h"
 
 #include "VRProductBasketInterface.h"
 
@@ -23,7 +28,8 @@ QLabel * apLabelBasketCase,
 QFrame * apFrameItemsBasket,
 QPushButton * apPushButtonBasketBack,
 QPushButton * apPushButtonBasketForward,
-BasketClient * apBasket) : 
+BasketClient * apBasket,
+Client * apClient) : 
 m_nHandlePosition(0),m_nItemsVisible(5)	{
 
 	m_pToolButtonMyBasket = apToolButtonMyBasket;
@@ -32,6 +38,7 @@ m_nHandlePosition(0),m_nItemsVisible(5)	{
 	m_pPushButtonBasketBack = apPushButtonBasketBack;
 	m_pPushButtonBasketForward = apPushButtonBasketForward;
 	m_pBasket = apBasket;
+	m_pClient = apClient;
 
 	connect(m_pToolButtonMyBasket,SIGNAL(toggled(bool)),this,SLOT(slotMyBasket(bool)));
 
@@ -194,6 +201,7 @@ void ProductBasketInterface::setData(ProductShopClient * apProduct, bool abAppen
 	//Remove product
 	connect(pProductGUIItem,SIGNAL(signalRemoveProduct(ProductShopClient * )), 
 		this, SIGNAL(signalProductBasketChangeRequest(ProductShopClient * )));
+
 	//Modify quantity
 	connect(pProductGUIItem,SIGNAL(signalModifyProductQuantity(ProductShopClient * , float)), 
 		this, SIGNAL(signalProductBasketModifyRequest(ProductShopClient * , float )));
@@ -201,6 +209,10 @@ void ProductBasketInterface::setData(ProductShopClient * apProduct, bool abAppen
 	connect(this,SIGNAL(signalSetSpinBoxProduct(float)), 
 		pProductGUIItem, SLOT(slotSetProductSpinBox(float )));
 
+
+	//New remove
+	connect(pProductGUIItem,SIGNAL(signalRemoveProduct(ProductShopClient * )), 
+		this, SLOT(slotRemoveFromBasketClicked(ProductShopClient * )));
 
 	//Put it into the list of GUIs
 	if (m_lstProductItemGUI.size() < m_nItemsVisible)	{
@@ -243,3 +255,23 @@ void ProductBasketInterface::setupBasketInterface()	{
 }
 
 //-----------------------------------------------------------------------------------------
+
+void ProductBasketInterface::slotRemoveFromBasketClicked(ProductShopClient * apProduct)	{
+	m_pProduct = static_cast<ProductShopClient*>(apProduct);
+
+	ProductManagerClient pmc(m_pClient);
+	string strUserID = tostr(m_pClient->getUserID());
+	pmc.removeProductRequest(strUserID, apProduct);
+}
+
+//-----------------------------------------------------------------------------------------
+
+void ProductBasketInterface::removeProductRespond(QDataStream & aDataStream)	{
+	bool bRes;
+
+	aDataStream >> bRes;
+
+	if (bRes==true)	{
+		m_pBasket->removeProduct(m_pProduct);
+	}
+}

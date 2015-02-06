@@ -350,7 +350,7 @@ QByteArray DatabaseNetworkManager::databaseRequest(QByteArray & aData)	{
 			upd.m_strPostalCode = qstrPostalCode.toStdString();
 			upd.m_strState = qstrState.toStdString();
 			upd.m_strUserID = UserAccountManager::getUserAccountID(qstrUserID.toStdString());
-			upd.m_strUserID.pop_back();
+//			upd.m_strUserID.pop_back();
 
 			UserAccount ua;
 			int nRes = ua.insertUserPersonalData(upd);

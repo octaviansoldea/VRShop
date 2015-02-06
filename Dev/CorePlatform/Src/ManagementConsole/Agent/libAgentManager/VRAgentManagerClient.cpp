@@ -54,7 +54,7 @@ void AgentManagerClient::requestToServer(
 	AbstractManagerClientParams * apAbstractManagerClientParams
 )	{
 
-	AgentClientParams * pAcp = (AgentClientParams*)apAbstractManagerClientParams;
+	AgentClientParams * pAcp = static_cast<AgentClientParams*>(apAbstractManagerClientParams);
 
 	QByteArray block;
 	QDataStream out(&block, QIODevice::WriteOnly);
@@ -68,14 +68,14 @@ void AgentManagerClient::requestToServer(
 		{
 			QString qstrUser = pAcp->m_strUserName.c_str();
 			QString qstrPsw = pAcp->m_strPassword.c_str();
-			QString qstrUserID = m_pVisitor->getUserIDName().c_str();
+			QString qstrUserID = pAcp->m_strUserID.c_str();
 			out << qstrUser << qstrPsw << qstrUserID;
 
 			break;
 		}
 	case ServerClientCommands::SIGN_OUT_REQUEST:
 		{
-			QString qstrUser = m_pVisitor->getUserIDName().c_str();
+			QString qstrUser = pAcp->m_strUserID.c_str();
 			out << qstrUser;
 
 			break;
@@ -132,11 +132,11 @@ void AgentManagerClient::requestToServer(
 
 //------------------------------------------------------------------------------
 
-void AgentManagerClient::signInRequest(const std::string & astrUserName, const std::string & astrPassword)	{
+void AgentManagerClient::signInRequest(const string & astrUserName, const string & astrPassword, const string & astrUserID)	{
 	AgentManagerClient::AgentClientParams acp;
 	acp.m_strUserName = astrUserName;
 	acp.m_strPassword = astrPassword;
-	acp.m_strUserID = m_pVisitor->getUserIDName();
+	acp.m_strUserID = astrUserID;
 	requestToServer(ServerClientCommands::SIGN_IN_REQUEST, &acp);
 }
 
@@ -149,7 +149,9 @@ void AgentManagerClient::signUpRequest()	{
 //------------------------------------------------------------------------------
 
 void AgentManagerClient::signOutRequest(const std::string & astrUserName)	{
-	requestToServer(ServerClientCommands::SIGN_OUT_REQUEST);
+	AgentManagerClient::AgentClientParams acp;
+	acp.m_strUserID = astrUserName;
+	requestToServer(ServerClientCommands::SIGN_OUT_REQUEST, &acp);
 }
 
 //------------------------------------------------------------------------------
@@ -166,7 +168,7 @@ bool AgentManagerClient::signInRespond(QDataStream & aDataStreamProduct)	{
 
 	if (nSuccess == ServerClientCommands::PASSED)	{
 		m_pVisitor->userSignedIn();
-		emit done();
+//		emit done();
 
 		return true;
 	} else {

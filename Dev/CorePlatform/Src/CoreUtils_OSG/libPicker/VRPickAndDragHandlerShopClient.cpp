@@ -20,6 +20,7 @@
 #include <osgViewer/Viewer>
 
 #include "BasicDefinitions.h"
+#include "BasicStringDefinitions.h"
 #include "VRAbstractObject.h"
 
 #include "VRPickAndDragHandlerShopClient.h"
@@ -52,8 +53,9 @@ bool PickAndDragHandlerShopClient::handle(const GUIEventAdapter& ea, GUIActionAd
 		string strParentName = m_pPickedObject->getParents()[0]->getName();
 		if (strParentName == "Products")	{
 			emit signalProductPicked(m_pPickedObject);
-		} else if (m_pPickedObject->getName() == "Cashier")	{
-			emit signalCashierPicked();
+		} else {
+			if (isInString(m_pPickedObject->getName(), "Cashier"))
+				emit signalCashierPicked();
 		}
 	}
 

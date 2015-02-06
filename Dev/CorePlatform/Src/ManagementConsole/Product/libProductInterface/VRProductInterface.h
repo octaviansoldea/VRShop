@@ -38,14 +38,10 @@ namespace VR	{
 		ProductShopClient m_ProductShopClient;
 
 		void init(const ProductShopClient * apProductShopClient);
-		void setGeometry();
 
 	private slots:
 		void slotProductDetails();
 		void slotCloseInterface();
-
-	public slots:
-		void slotProductInitialized(const ProductShopClient * apProductShopClient);
 
 	public:
 		ProductShopClient * getProduct();
@@ -53,7 +49,7 @@ namespace VR	{
 		void productClicked(const std::string & astrProductName);
 		void removeProductRequest(ProductShopClient * apProduct);
 
-		void initFromDB(QByteArray data);
+		void productClickedRespond(QDataStream & aDataStream);
 	};
 }
 #endif //VR_PRODUCT_INTERFACE_H

@@ -1,6 +1,5 @@
 CRITICAL BUGS
 
-Paths for system in browser and classic mode
 
 ============================================================	
 HIGHLY DESIRABLE TO BE SOLVED BUGS
@@ -25,10 +24,10 @@ CRITICAL ITEMS
 Test the far/fix IP
 
 Cashier
-	- carry-out payment	
-	- track transactions and operations
-	- add to history database
+	- carry-out payment	online
 
+Client installer	
+	
 * Android
 * iPhone
 * WindowsPhone - WinCE
@@ -53,8 +52,11 @@ Data mining
 
 By users, differentiate between "prospective" and other users - prospectives have priority
 
+Real 3D objects
+	- insert polyhedral objects into scene
+	- achieving 3D models 
+		> from producers
+		> capture 3D and texture device
+
 //======================================================================
 
-TEMPORARY (AD HOC) SOLUTIONS
-
-Polish keyDown in KeyboardMouseManipulatorShopClient and KeyboardMouseManipulator: no fly with Fwd/Bckwd buttons

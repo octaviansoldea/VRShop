@@ -31,19 +31,19 @@ bool UserAccount::trySignIn(string & astrUser, string & astrPsw, string & astrUs
 		+ astrUser + "' AND UserPassword = '" + astrPsw + "'";
 
 	DatabaseInterface *pDI = UserAccountManager::getDatabaseInterface();
-	string strResult = pDI->executeAndGetResult(strSqlQuery).front();
-	if (strResult.empty())	{
+
+	list<string> lststrResult = pDI->executeAndGetResult(strSqlQuery);
+
+	if (lststrResult.size() == 0)	{
 		return false;
 	}
 
-	strResult.pop_back();
+	string strResult = lststrResult.front();
+//	strResult.pop_back();
 
 	strSqlQuery = "UPDATE UserAccount SET VisitorID = '" + astrUserID + "' WHERE UserAccountID = " + strResult;
 	pDI->execute(strSqlQuery);
 	return true;
-
-//	bool bRes;
-//	bRes = (pDI->executeAndGetResult(strSqlQuery).empty()) ? false : true;
 }
 
 //------------------------------------------------------------------------------

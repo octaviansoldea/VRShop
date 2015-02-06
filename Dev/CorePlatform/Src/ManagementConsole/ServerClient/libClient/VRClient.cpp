@@ -92,12 +92,14 @@ QTcpSocket & Client::getTcpSocket() {
 
 void Client::slotReadReceivedData()	{
 	QByteArray qData;
-	readSocket(qData);
+	bool bRes = readSocket(qData);
 
-	m_unPackageSize=0;
-
-	m_TransmitData = qData;
-	emit done();
+	if (bRes == true)	{
+		m_unPackageSize=0;
+		m_TransmitData.clear();
+		m_TransmitData = qData;
+		emit done();
+	}
 }
 
 //---------------------------------------------------------------------
@@ -157,7 +159,11 @@ QByteArray Client::getTransmittedData()	{
 
 void Client::slotIsConnectionApproved()	{
 	QByteArray qData;
-	readSocket(qData);
+	bool bRes = readSocket(qData);
+
+	if (bRes == false)	{
+		return;
+	}
 
 	disconnect(&m_TcpSocket, SIGNAL(readyRead()), this, SLOT(slotIsConnectionApproved()));
 	connect(&m_TcpSocket, SIGNAL(readyRead()), this, SLOT(slotReadReceivedData()));
@@ -175,7 +181,7 @@ void Client::slotIsConnectionApproved()	{
 
 //---------------------------------------------------------------------------
 
-void Client::readSocket(QByteArray & aData)	{
+bool Client::readSocket(QByteArray & aData)	{
 	QDataStream in(&m_TcpSocket);
 	in.setVersion(QDataStream::Qt_4_8);
 
@@ -183,14 +189,18 @@ void Client::readSocket(QByteArray & aData)	{
 
 	if (m_unPackageSize == 0) {
 		if (nBytesAvailable < sizeof(quint64))
-			return;
+			return false;
 		in >> m_unPackageSize;
 	}
 
 	if (nBytesAvailable < m_unPackageSize)
-		return;
+		return false;
 
 	aData = in.device()->readAll();
+
+//	aData = m_TcpSocket.read((qint64)(m_unPackageSize));
+
+	return true;
 }
 
 //---------------------------------------------------------------------------

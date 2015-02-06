@@ -45,7 +45,9 @@ namespace VR	{
 		void changeImage(BasketClient * apBasket, QTableWidget * apTableWidgetProducts, QLabel * apLabelProductImage);
 		void close(QFrame * apFrameWelcome, QFrame * apFrameContinue, QDialog * apDialog);
 		void continueClicked(AgentManagerClient::AgentClientParams * apAcm, QFrame * apFrameRightSidePDetails);
-		void moeProductClicked(BasketClient * apBasket, int anProductPosition);
+		void moreProductClicked(BasketClient * apBasket, int anProductPosition);
+
+		void removeFromCashierClicked(QTableWidget * apTableWidgetProducts, BasketClient * apBasket);
 
 	private:
 		void addRow(QTableWidget * apTableWidgetProducts);

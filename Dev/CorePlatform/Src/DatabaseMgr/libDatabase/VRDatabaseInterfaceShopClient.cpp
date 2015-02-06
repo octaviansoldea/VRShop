@@ -56,23 +56,18 @@ list<string> DatabaseInterfaceShopClient::getListOfObjects(const string & astrSc
 
 //-------------------------------------------------------------------------------
 
-vector<string> DatabaseInterfaceShopClient::getObjectData(string & strSceneObject)	{
+vector<string> DatabaseInterfaceShopClient::getObjectData(int anObjectID,std::string & astrClassName,std::string & astrObjectName)	{
 	vector<string> vecstrResult;
-	vector<string> vecstrSceneObject = splitString(strSceneObject,";");
-		
-	const int nObjectID = stoi(vecstrSceneObject[0]);
-	string strClassName = vecstrSceneObject[1];
-	string strObjectName = vecstrSceneObject[2];
 
 	//Get data of the parent and add it to the result vector
 	string strSqlQuery = 
-		"SELECT * FROM " + strClassName + " WHERE ObjectName = '" + strObjectName + "'";
+		"SELECT * FROM " + astrClassName + " WHERE ObjectName = '" + astrObjectName + "'";
 	list<string> lststrElements = executeAndGetResult(strSqlQuery);
 	vecstrResult.push_back(lststrElements.front());
 
 	//Get types of the parent's children
 	strSqlQuery = 
-		"SELECT DrawableClassName, DrawableName FROM SceneObjectDrawable WHERE SceneObjectID = '" + vecstrSceneObject[0] + "'";
+		"SELECT DrawableClassName, DrawableName FROM SceneObjectDrawable WHERE SceneObjectID = '" + tostr(anObjectID) + "'";
 	list<string> lststrSceneObjectElements = executeAndGetResult(strSqlQuery);
 
 
@@ -88,4 +83,39 @@ vector<string> DatabaseInterfaceShopClient::getObjectData(string & strSceneObjec
 	}
 
 	return vecstrResult;
+}
+
+//-------------------------------------------------------------------------------
+
+vector<string> DatabaseInterfaceShopClient::getObjectData(string & strSceneObject)	{
+	vector<string> vecstrSceneObject = splitString(strSceneObject,";");
+		
+	const int nObjectID = stoi(vecstrSceneObject[0]);
+	string strClassName = vecstrSceneObject[1];
+	string strObjectName = vecstrSceneObject[2];
+
+	vector<string> vecstrResult = getObjectData(nObjectID, strClassName, strObjectName);
+
+	return vecstrResult;
+}
+
+//-------------------------------------------------------------------------------
+
+string DatabaseInterfaceShopClient::getPrimitiveObjectData(int anObjectID,string & astrClassName,string & astrObjectName)	{
+	string strSqlQuery = "SELECT * FROM " + astrClassName + " WHERE ObjectName = '" + astrObjectName + "'";
+	list<string> lststrSceneObjectElements = executeAndGetResult(strSqlQuery);
+
+	return lststrSceneObjectElements.front();
+}
+
+//-------------------------------------------------------------------------------
+
+list<string> DatabaseInterfaceShopClient::getProductsData()	{
+	list<string> vecstrResult;
+	
+	string strSqlQuery = 
+		"SELECT * FROM Plate3D WHERE SceneObjectNameObject = 'ProductDisplay'";
+	list<string> lststrSceneObjectElements = executeAndGetResult(strSqlQuery);
+	
+	return lststrSceneObjectElements;
 }

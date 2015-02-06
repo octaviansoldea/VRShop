@@ -31,7 +31,3 @@ int main(int argc, char * argv[])	{
 	int nRes = app.exec();
 	return nRes;
 }
-
-
-//Examples of running
-//C:/Matej/avatar.osg C:/Matej/avatarEdited.osg 0 110

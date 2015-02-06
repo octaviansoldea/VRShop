@@ -176,7 +176,7 @@ void Prism::initFromSQLData(const std::string & astrSQLData)	{
 	vector <string> arrstrMatrix = splitString(arrstrPrismParams[2],"_");
 	vector <string> arrstrColor = splitString(arrstrPrismParams[3],"_");
 
-	prismParams.m_nResolution = stof(arrstrPrismParams[1]);
+//	prismParams.m_nResolution = stof(arrstrPrismParams[1]);
 	prismParams.m_flRadius = stof(arrstrMatrix[0]);
 	prismParams.m_flHeight = stof(arrstrMatrix[1]);
 

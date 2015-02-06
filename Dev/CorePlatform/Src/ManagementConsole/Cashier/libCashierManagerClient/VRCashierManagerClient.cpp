@@ -1,8 +1,6 @@
 #include <iostream>
 #include "BasicStringDefinitions.h"
 
-#include "VRModelViewControllerClient.h"
-
 #include "VRClient.h"
 
 #include "VRBasketClient.h"
@@ -18,13 +16,7 @@ using namespace std;
 //==============================================================================
 
 CashierManagerClient::CashierManagerClient(Client * apClient, QObject *parent) : 
-m_pMVCClient(0),AbstractManagerClient(apClient, parent)	{
-}
-
-//------------------------------------------------------------------------------
-
-CashierManagerClient::CashierManagerClient(Client * apClient, ModelViewControllerClient * apMVCClient, QObject *parent) : 
-m_pMVCClient(apMVCClient), AbstractManagerClient(apClient, parent)	{
+AbstractManagerClient(apClient, parent)	{
 }
 
 //------------------------------------------------------------------------------
@@ -126,21 +118,6 @@ void CashierManagerClient::proceedAndPayCashier(const string & astrUserID, Baske
 //------------------------------------------------------------------------------
 
 void CashierManagerClient::productInfoData(QDataStream & aDataStreamCashier)	{
-}
-
-//------------------------------------------------------------------------------
-
-bool CashierManagerClient::removeFromBasketData(QDataStream & aDataStreamCashier)	{
-	bool bRes;
-	aDataStreamCashier >> bRes;
-
-	if (bRes == 0)	{
-		return false;
-	}
-
-	emit m_pMVCClient->signalRemoveProduct();
-
-	return true;
 }
 
 //------------------------------------------------------------------------------

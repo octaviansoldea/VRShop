@@ -93,7 +93,7 @@ void UserAccountManager::createDB()	{
 
 string UserAccountManager::getUserAddress(const int & anUserID)	{
 	string strUserID = getUserAccountID(tostr(anUserID));
-	strUserID.pop_back();
+//	strUserID.pop_back();
 
 	string strQuery = "SELECT FirstName, MiddleName, LastName, Address, City, PostalCode, State, Country "
 		" FROM AddressBook WHERE UserAccountID = " + strUserID;

@@ -10,9 +10,7 @@ namespace VR	{
 		Q_OBJECT
 
 	signals:
-		void signalProductInitialized(const ProductShopClient * apProductShopClient);
 		void signalNewProductQuantity(float flNewProductQuantity);
-		void signalRemoveProduct();
 	};
 }
 #endif //VR_PRODUCT_CLIENT_CONTROLLER_H

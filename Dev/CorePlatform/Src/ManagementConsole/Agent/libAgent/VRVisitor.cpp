@@ -33,7 +33,7 @@ bool Visitor::addProduct2Basket(ProductShopClient * apProduct)	{
 	ProductShopClient * pProduct = apProduct;
 	m_pBasket->addProduct(pProduct);
 
-	bool bRes = (m_pBasket->count() > nSize) ? true : false;
+	bool bRes = (m_pBasket->count() == nSize+1) ? true : false;
 	
 	return bRes;
 }

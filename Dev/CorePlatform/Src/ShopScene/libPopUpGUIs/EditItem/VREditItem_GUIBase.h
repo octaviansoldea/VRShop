@@ -22,6 +22,10 @@ namespace VR	{
 	protected:
 		virtual void previewTexture(QString & aqstrFileName) = 0;
 		osg::ref_ptr<AbstractObject> m_pAbstractObject;
+
+	public:
+		virtual std::vector<float> getColor() const;
+		virtual std::string getTexture();
 	};
 }
 #endif //VR_EDIT_ITEM_GUI_BASE_H

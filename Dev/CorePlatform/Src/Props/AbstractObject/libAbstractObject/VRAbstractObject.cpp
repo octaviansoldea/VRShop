@@ -130,6 +130,12 @@ Vec3d AbstractObject::getRotation() const	{
 
 //--------------------------------------------------------------------------
 
+string AbstractObject::getTexture() const	{
+	return "";
+}
+
+//--------------------------------------------------------------------------
+
 Matrix AbstractObject::calculateMatrix() const	{
 	Vec3d vec3dPos = getPosition();
 	Vec3d vec3dRot = getRotation();

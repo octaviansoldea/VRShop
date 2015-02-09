@@ -34,10 +34,10 @@ EditItem_GUIBase(apAbstractObject)	{
 
 	connect(m_pToolButtonTexture, SIGNAL(pressed()), this, SLOT(slotBrowseDirectory()));
 
-	connect(m_pLineEditColorR, SIGNAL(returnPressed()), this, SLOT(slotSetColor()));
-	connect(m_pLineEditColorG, SIGNAL(returnPressed()), this, SLOT(slotSetColor()));
-	connect(m_pLineEditColorB, SIGNAL(returnPressed()), this, SLOT(slotSetColor()));
-	connect(m_pLineEditColorA, SIGNAL(returnPressed()), this, SLOT(slotSetColor()));
+	connect(m_pLineEditColorR, SIGNAL(textEdited(const QString &)), this, SLOT(slotSetColor()));
+	connect(m_pLineEditColorG, SIGNAL(textEdited(const QString &)), this, SLOT(slotSetColor()));
+	connect(m_pLineEditColorB, SIGNAL(textEdited(const QString &)), this, SLOT(slotSetColor()));
+	connect(m_pLineEditColorA, SIGNAL(textEdited(const QString &)), this, SLOT(slotSetColor()));
 
 	connect(m_pSpinBoxResolution, SIGNAL(editingFinished()), this, SLOT(slotSetResolution()));
 
@@ -55,7 +55,8 @@ EditItem_GUIBase(apAbstractObject)	{
 void EditItemPrism_GUI::previewTexture(QString & aqstrFileName)	{
 	QImageReader image(aqstrFileName);
 	QPixmap p(QPixmap::fromImageReader(&image));
-	QPixmap p1(p.scaled ( m_pLabelTexture->width(),m_pLabelTexture->height(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation ));
+//	QPixmap p1(p.scaled ( m_pLabelTexture->width(),m_pLabelTexture->height(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation ));
+	QPixmap p1(p.scaled ( m_pLabelTexture->width(),m_pLabelTexture->height(),Qt::AspectRatioMode::KeepAspectRatio, Qt::SmoothTransformation ));
 	m_pLabelTexture->setPixmap(p1);
 	m_pAbstractObject->setTexture(aqstrFileName.toStdString());
 }
@@ -63,16 +64,50 @@ void EditItemPrism_GUI::previewTexture(QString & aqstrFileName)	{
 //----------------------------------------------------------------------
 
 void EditItemPrism_GUI::slotSetColor()	{
-	m_pAbstractObject->setTexture("");
+	string strTexture = m_pAbstractObject->getTexture();
+
+	if ((strTexture != "") && (strTexture != " "))	{
+		m_pAbstractObject->setTexture("");
+	}
 	vector<float> vecflColor;
-	vecflColor.push_back(m_pLineEditColorR->text().toFloat());
-	vecflColor.push_back(m_pLineEditColorG->text().toFloat());
-	vecflColor.push_back(m_pLineEditColorB->text().toFloat());
-	vecflColor.push_back(m_pLineEditColorA->text().toFloat());
+
+	float flR = m_pLineEditColorR->text().toFloat();
+	vecflColor.push_back((flR < 1) ? flR : flR/255);
+	float flG = m_pLineEditColorG->text().toFloat();
+	vecflColor.push_back((flG < 1) ? flG : flG/255);
+	float flB = m_pLineEditColorB->text().toFloat();
+	vecflColor.push_back((flB < 1) ? flB : flB/255);
+	float flA = m_pLineEditColorA->text().toFloat();
+	vecflColor.push_back((flA < 1) ? flA : flA/255);
+
 	m_pAbstractObject->setColor(vecflColor);
 }
 
 //----------------------------------------------------------------------
 
 void EditItemPrism_GUI::slotSetResolution()	{
+}
+
+//----------------------------------------------------------------------
+
+vector<float> EditItemPrism_GUI::getColor() const	{
+	vector<float> vecflColor;
+
+	if (stof(m_pLineEditColorA->text().toStdString()) < 0)	{
+		return vector<float>(0);
+	}
+
+	vecflColor.push_back(stof(m_pLineEditColorR->text().toStdString()));
+	vecflColor.push_back(stof(m_pLineEditColorG->text().toStdString()));
+	vecflColor.push_back(stof(m_pLineEditColorB->text().toStdString()));
+	vecflColor.push_back(stof(m_pLineEditColorA->text().toStdString()));
+
+	return vecflColor;
+}
+
+//----------------------------------------------------------------------
+
+string EditItemPrism_GUI::getTexture()	{
+	string strTexture = m_pAbstractObject->getTexture();
+	return strTexture;
 }

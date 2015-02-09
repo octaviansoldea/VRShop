@@ -121,7 +121,7 @@ ProductShopEditor * ProductManager::getProduct(const AbstractObject * apAbstract
 
 //-----------------------------------------------------------------------------
 
-void ProductManager::addNewProduct()	{
+osg::ref_ptr<AbstractObject> ProductManager::addNewProduct()	{
 	//Fill product category ComboBox
 	list<string> lststrQuery = requestData(FILL_PRODUCT_CATEGORY,vector<string>(0));
 
@@ -134,12 +134,13 @@ void ProductManager::addNewProduct()	{
 	bool bRes = m_pAddProduct_GUI->exec();
 
 	if (bRes == false)	{
-		return;
+		return 0;
 	}
 
 	//Check what type of operation is managed
 	bool bOperation = m_pAddProduct_GUI->m_pToolButtonFromDB->isChecked();
 
+	ref_ptr<AbstractGeomShape> pProductGraphics = 0;
 	if (bOperation == true)	{	//Read product from DB
 		string strProductCode = m_pAddProduct_GUI->m_pComboBoxProductCodeFromDB->currentText().toStdString();
 
@@ -150,11 +151,11 @@ void ProductManager::addNewProduct()	{
 		ProductShopEditor * pProductShopEditor = new ProductShopEditor(lststrQueryProduct.front());			
 		pProductShopEditor->createRepresentation("Plate3D");
 
-		ref_ptr<AbstractGeomShape> pProductGraphics = (AbstractGeomShape*)(pProductShopEditor->getRepresentation().get());
+		pProductGraphics = (AbstractGeomShape*)(pProductShopEditor->getRepresentation().get());
 
 		if (pProductGraphics==0)	{
 			delete pProductShopEditor;
-			return;
+			return 0;
 		}
 
 		pProductGraphics->setName(tostr(pProductShopEditor->getProductCode()));
@@ -172,11 +173,11 @@ void ProductManager::addNewProduct()	{
 		databaseRequest(pProductShopEditor,ProductManager::INSERT_PRODUCT);
 
 		pProductShopEditor->createRepresentation("Plate3D");
-		ref_ptr<AbstractGeomShape> pProductGraphics = (AbstractGeomShape*)(pProductShopEditor->getRepresentation().get());
+		pProductGraphics = (AbstractGeomShape*)(pProductShopEditor->getRepresentation().get());
 
 		if (pProductGraphics==0)	{
 			delete pProductShopEditor;
-			return;
+			return 0;
 		}
 
 		pProductGraphics->setName(tostr(pProductShopEditor->getProductCode()));
@@ -185,6 +186,8 @@ void ProductManager::addNewProduct()	{
 
 		addNewProduct(pProductShopEditor);
 	}
+
+	return pProductGraphics;
 }
 
 //-----------------------------------------------------------------------------
@@ -307,6 +310,19 @@ void ProductManager::removeProduct(ProductShopEditor * apProductShopEditor)	{
 	//Remove from the vector of products
 	m_lstProducts.erase(remove(m_lstProducts.begin(), m_lstProducts.end(), apProductShopEditor),
 		m_lstProducts.end());
+}
+
+//-----------------------------------------------------------------------------
+
+void ProductManager::removeProducts()	{
+	//remove 3D
+	int nSize = m_pgrpProductsRepresentation->getNumChildren();
+
+	if (nSize == 0)
+		return;
+
+	m_pgrpProductsRepresentation->removeChildren(0,nSize);
+	m_lstProducts.clear();
 }
 
 //-----------------------------------------------------------------------------

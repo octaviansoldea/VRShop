@@ -68,3 +68,13 @@ void EditItem_GUIBase::accept()	{
 }
 
 //----------------------------------------------------------------------
+
+vector<float> EditItem_GUIBase::getColor() const	{
+	return vector<float>(0);
+}
+
+//----------------------------------------------------------------------
+
+string EditItem_GUIBase::getTexture()	{
+	return "";
+}

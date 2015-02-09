@@ -35,9 +35,10 @@ namespace VR	{
 
 		ProductShopEditor * getProduct(const AbstractObject * apAbstractObject);
 
-		void addNewProduct();
+		osg::ref_ptr<AbstractObject> addNewProduct();
 		void productMoreSettings(const std::string & astrProductCode);
 		bool removeProduct(const std::string & astrProductCode);
+		void removeProducts();
 
 		void addNewProduct(ProductShopEditor * apProductShopEditor);
 		void removeProduct(ProductShopEditor * apProductShopEditor);

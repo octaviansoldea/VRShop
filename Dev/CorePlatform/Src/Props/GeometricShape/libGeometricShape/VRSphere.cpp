@@ -208,9 +208,6 @@ void VR::Sphere::initFromSQLData(const string & astrSQLData)	{
 //----------------------------------------------------------------------
 
 void VR::Sphere::predefinedObject()	{
-	SphereParams sphereParams;
-	getParams(sphereParams);
-	init(sphereParams);
 	setIsTargetPick(true);
 }
 

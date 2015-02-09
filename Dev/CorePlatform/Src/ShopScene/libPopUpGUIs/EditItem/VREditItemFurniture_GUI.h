@@ -16,6 +16,9 @@ namespace VR	{
 	protected:
 		virtual void previewTexture(QString & aqstrFileName);
 
+	public:
+		virtual std::vector<float> getColor() const;
+		virtual std::string getTexture();
 	};
 }
 #endif //VR_EDIT_ITEM_FURNITURE_GUI_H

@@ -82,6 +82,8 @@ namespace VR	{
 		void removeScene(Scene * apScene);
 		std::vector<osg::ref_ptr<Scene>> m_pvecScenes;
 
+		void init();
+
 		SceneObjectsSearchShopEditor * m_pSceneObjectsSearch;
 
 	public:

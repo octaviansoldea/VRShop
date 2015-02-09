@@ -34,7 +34,6 @@ ShopBuilder_GUI::ShopBuilder_GUI()	{
 	setWindowTitle("ShopBuilder");
 
 	m_pShopBuilder = new ShopBuilder(m_pOSGQTWidget);
-	string strFileName = m_pShopBuilder->getCurrentFileName();
 
 	ref_ptr<KeyboardMouseManipulatorShopEditor> pKeyboardMouseManipulatorShopEditor = 
 		static_cast<KeyboardMouseManipulatorShopEditor *>(m_pOSGQTWidget->getCameraManipulator());
@@ -166,8 +165,6 @@ void ShopBuilder_GUI::slotSaveAsDB()	{
 //---------------------------------------------------------------------------------------
 
 void ShopBuilder_GUI::slotCloseDB()	{
-//	slotSaveDB();
-	
 	const string strCurrentFile = m_pShopBuilder->getCurrentFileName();
 	m_pShopBuilder->closeDB(strCurrentFile);
 }
@@ -194,9 +191,7 @@ void ShopBuilder_GUI::slotItemClicked(const QModelIndex & aItemIndex)	{
 	QString strClickedItem = aItemIndex.data().toString();
 
 	m_pShopBuilder->updateSearchList(strClickedItem.toStdString());
-
-	ref_ptr<PickAndDragHandlerShopEditor> pPickAndDragHandlerShopEditor = m_pShopBuilder->getPicker();
-	emit pPickAndDragHandlerShopEditor->signalPropertiesSettingsChanged();
+	m_pPickAndDragController->slotUpdatePickAndDragGUI();
 }
 
 //---------------------------------------------------------------------------------------

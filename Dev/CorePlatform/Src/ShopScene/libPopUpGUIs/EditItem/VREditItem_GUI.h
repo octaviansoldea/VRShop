@@ -3,6 +3,9 @@
 
 #include "VREditItem_GUIBase.h"
 
+#include <vector>
+
+
 #include "ui_VREditItem_GUI.h"
 
 namespace VR	{
@@ -16,6 +19,9 @@ namespace VR	{
 	protected:
 		virtual void previewTexture(QString & aqstrFileName);
 
+	public:
+		virtual std::vector<float> getColor() const;
+		virtual std::string getTexture();
 	};
 }
 #endif //VR_EDIT_ITEM_GUI_H

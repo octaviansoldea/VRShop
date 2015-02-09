@@ -122,8 +122,6 @@ string VR::Cylinder::getSQLCommand() const {
 //----------------------------------------------------------------------
 
 void VR::Cylinder::predefinedObject()	{
-	CylinderParams cylinderParams;
-	init(cylinderParams);
 	setIsTargetPick(true);
 }
 

@@ -9,6 +9,10 @@
 #include <osg/MatrixTransform>
 #include <osg/Geometry>
 
+#include <osg/Material>
+#include <osg/BlendFunc>
+#include <osg/Depth>
+
 #include "VRUntransformedPolyhedron.h"
 
 using namespace osg;
@@ -71,6 +75,7 @@ void UntransformedPolyhedron::setTexture(const std::string & astrFileName) {
 	for(nI = 0; nI < nSidesNr; nI++) {
 		ref_ptr<Drawable> pDrawable = pGeode->getDrawable(nI);
 		ref_ptr<Geometry> pGeometry = dynamic_cast<Geometry *>(pDrawable.get());
+//		Geometry * pGeometry = dynamic_cast<Geometry *>(pDrawable.get());
 
 		ref_ptr<Vec2Array> pTexCoords = new Vec2Array(4);
 		(*pTexCoords)[0].set(dbStep * nI, 1.0);
@@ -86,6 +91,7 @@ void UntransformedPolyhedron::setTexture(const std::string & astrFileName) {
 		pGeometry->setUseDisplayList(false);
 		
 		ref_ptr<StateSet> pState = pGeometry->getOrCreateStateSet();
+//		StateSet * pState = pGeometry->getOrCreateStateSet();
 		pState->setTextureAttributeAndModes(0, pTexture, StateAttribute::ON);
 		pState->setTextureAttributeAndModes(0, pTexMat, StateAttribute::ON);
 
@@ -98,6 +104,7 @@ void UntransformedPolyhedron::setTexture(const std::string & astrFileName) {
 
 		ref_ptr<Drawable> pDrawable = pGeode->getDrawable(0);
 		ref_ptr<Geometry> pGeometry = dynamic_cast<Geometry *>(pDrawable.get());
+//		Geometry * pGeometry = dynamic_cast<Geometry *>(pDrawable.get());
 
 		ref_ptr<Vec2Array> pTexCoords = new Vec2Array(nSidesNr);
 		int nJ;
@@ -112,6 +119,7 @@ void UntransformedPolyhedron::setTexture(const std::string & astrFileName) {
 		pGeometry->setColorBinding(Geometry::BIND_OVERALL);
 		pGeometry->setUseDisplayList(false);
 		ref_ptr<StateSet> pState = pGeometry->getOrCreateStateSet();
+//		StateSet * pState = pGeometry->getOrCreateStateSet();
 		pState->setTextureAttributeAndModes(0, pTexture, StateAttribute::ON);
 		pState->setTextureAttributeAndModes(0, pTexMat, StateAttribute::ON);
 		pState->setMode(GL_LIGHTING, StateAttribute::OFF);
@@ -206,5 +214,4 @@ void UntransformedPolyhedron::init(const UntransformedPolyhedronParams & aUntran
 		pGeode->addDrawable(pGeometry);
 	}
 	addChild(pGeode);
-
 }

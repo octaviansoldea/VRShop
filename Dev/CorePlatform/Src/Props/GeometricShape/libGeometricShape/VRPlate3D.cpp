@@ -195,8 +195,6 @@ void Plate3D::initFromSQLData(vector<string> & avecstrSQLData)	{
 //----------------------------------------------------------------------
 
 void Plate3D::predefinedObject()	{
-	Plate3DParams plate3DParams;
-	init(plate3DParams);
 	setIsTargetPick(true);
 }
 

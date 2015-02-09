@@ -207,8 +207,6 @@ void Prism::initFromSQLData(const std::string & astrSQLData)	{
 //----------------------------------------------------------------------
 
 void Prism::predefinedObject()	{
-	PrismParams prismParams;
-	init(prismParams);
 	setIsTargetPick(true);
 }
 

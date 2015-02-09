@@ -60,3 +60,7 @@ void AbstractGeomShape::getParams(AbstractGeomShapeParams & aAbstractGeomShapePa
 }
 
 //--------------------------------------------------------------------------
+
+string AbstractGeomShape::getTexture() const	{
+	return m_strFileNameTexture;
+}

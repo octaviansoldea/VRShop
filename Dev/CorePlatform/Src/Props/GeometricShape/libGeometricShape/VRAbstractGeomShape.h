@@ -23,6 +23,8 @@ namespace VR {
 		void setParams(const AbstractGeomShapeParams & aAbstractGeomShapeParams);
 		void getParams(AbstractGeomShapeParams & aAbstractGeomShapeParams) const;
 
+		virtual std::string getTexture() const;
+
 	protected:
 		std::vector < float > m_arrflRGBA;
 		std::string m_strFileNameTexture;

@@ -35,6 +35,8 @@
 #include "VRProductManager.h"
 #include "VRProductShopEditor.h"
 
+#include "VRPrism.h"
+
 #include "VRAbstractObjectFactory.h"
 
 #include "VRSaveAs_GUI.h"
@@ -76,16 +78,10 @@ m_pSceneObjectsSearch(0)	{
 		ssm->share(m_pScene);
 	}
 
-	//These are necessary parts of any file
-	osg::ref_ptr<osg::Node> pAxes = osgDB::readNodeFile("../../../Resources/Models3D/axes.osgt");
-	osg::ref_ptr<Grid> pGrid = new Grid;
-	m_pScene->addChild(pAxes);
-	m_pScene->addChild(pGrid);
-
 	//A pointer to products sent to the scene
 	m_pProductMgr = new ProductManager;
-	ref_ptr<osg::Node> pProductsRepresentation = m_pProductMgr->getProductsRepresentation();
-	m_pScene->addChild(pProductsRepresentation);
+
+	init();
 
 	m_pPickAndDragHandlerShopEditor = new PickAndDragHandlerShopEditor;
 	m_pKeyboardMouseManipulatorShopEditor = new KeyboardMouseManipulatorShopEditor();
@@ -103,6 +99,23 @@ ShopBuilder::~ShopBuilder() {
 		delete m_pSceneObjectsSearch;
 		m_pSceneObjectsSearch = 0;
 	}
+}
+
+//----------------------------------------------------------------------
+
+void ShopBuilder::init()	{
+	m_pScene->clearScene();
+
+	//These are necessary parts of any file
+	osg::ref_ptr<osg::Node> pAxes = osgDB::readNodeFile("../../../Resources/Models3D/axes.osgt");
+	osg::ref_ptr<Grid> pGrid = new Grid;
+	m_pScene->addChild(pAxes);
+	m_pScene->addChild(pGrid);
+
+	m_pProductMgr->removeProducts();
+
+	ref_ptr<osg::Node> pProductsRepresentation = m_pProductMgr->getProductsRepresentation();
+	m_pScene->addChild(pProductsRepresentation);
 }
 
 //----------------------------------------------------------------------
@@ -154,22 +167,12 @@ void ShopBuilder::newDB()	{
 		bool bRes = BasicQtOperations::QtFileOperation(strFileName, BasicQtOperations::FILE_OPEN);
 	}	//End "if (newProject.result())"
 
-	m_pScene->clearScene();
 
 	DatabaseInterfaceShopEditorParams dbInterfaceParams;
 	dbInterfaceParams.m_qstrDBName = m_strDBFileName.c_str();
 	DatabaseInterfaceShopEditor dbMgr(dbInterfaceParams);
 
-	//These are necessary parts of any file
-	osg::ref_ptr<osg::Node> pAxes = osgDB::readNodeFile("../../../Resources/Models3D/axes.osgt");
-	osg::ref_ptr<Grid> pGrid = new Grid;
-	m_pScene->addChild(pAxes);
-	m_pScene->addChild(pGrid);
-
-	
-	//A pointer to products sent to the scene
-	ref_ptr<osg::Node> pProductsRepresentation = m_pProductMgr->getProductsRepresentation();
-	m_pScene->addChild(pProductsRepresentation);
+	init();
 }
 
 //----------------------------------------------------------------------
@@ -177,16 +180,10 @@ void ShopBuilder::newDB()	{
 void ShopBuilder::readDB(const std::string & astrDBFileName)	{
 	//Before creating new file, check if any still opened.
 	if (m_strDBFileName != "")	{
-		QMessageBox msgBox;
-		int nRes = BasicQtOperations::getMsgBox(BasicQtOperations::OPEN_NEW_FILE,msgBox);
-
-		if (nRes == QMessageBox::Ok)	{
-			saveDB();
-		}
+		closeDB(m_strDBFileName);
 	}
 
-	m_pScene->clearScene();
-
+	init();
 	m_strDBFileName = astrDBFileName;
 
 	DatabaseInterfaceShopEditorParams dbParams;
@@ -194,64 +191,42 @@ void ShopBuilder::readDB(const std::string & astrDBFileName)	{
 	DatabaseInterfaceShopEditor dbMgr(dbParams);
 
 	//Get list of objects in the scene
-	std::list<std::string> lststrSceneObjects = dbMgr.getListOfObjects("Untitled");
+	list<string> lststrSceneObjects = dbMgr.getListOfObjects("Untitled");
 
-	std::list<std::string>::iterator it = lststrSceneObjects.begin();
+	list<string>::iterator it = lststrSceneObjects.begin();
 	for (it; it != lststrSceneObjects.end(); it++)	{
 		vector<string> vecstrData = splitString(*it,";");
 
-		//Find class and object names
-		int nObjectID = stoi(vecstrData[0]);
-		string strClassName = vecstrData[1];
-		string strObjectName = vecstrData[2];
-
+		string & strClassName = vecstrData[1];
 		if (strClassName == ShopBuilderCommands::getOperationType(VR::ShopBuilderCommands::PRODUCT_DISPLAY))	{
 			list<std::string> vecstrObjectData = dbMgr.getProductsData();
 			m_pProductMgr->initProductsFromSQLData(vecstrObjectData);
-		} else if ((strClassName == "CustomFurniture") ||
-			(strClassName == "Cupboard") ||
-			(strClassName == "Container")
-		)	{
-			vector<std::string> vecstrObjectData = dbMgr.getObjectData(nObjectID, strClassName, strObjectName);
-			ref_ptr<AbstractObject> pAO = AbstractObjectFactory::createAbstractObject(strClassName);
-			pAO->initFromSQLData(vecstrObjectData);
-			pAO->setIsTargetPick(true);
-			m_pScene->addChild(pAO);
-		} else if (strClassName == "Plate3D")	{
-			string strObjectData = dbMgr.getPrimitiveObjectData(nObjectID, strClassName, strObjectName);
-			int nPos = strObjectData.find_first_of(";");
-			strObjectData.erase(0,nPos+1);
-			ref_ptr<AbstractObject> pAO = AbstractObjectFactory::createAbstractObject("Plate3D");
-			pAO->initFromSQLData(strObjectData);
-			pAO->setIsTargetPick(true);
-			m_pScene->addChild(pAO);
-		} else if (strClassName == "Cylinder")	{
-			string strObjectData = dbMgr.getPrimitiveObjectData(nObjectID, strClassName, strObjectName);
-			int nPos = strObjectData.find_first_of(";");
-			strObjectData.erase(0,nPos+1);
-			ref_ptr<AbstractObject> pAO = AbstractObjectFactory::createAbstractObject("Cylinder");
-			pAO->initFromSQLData(strObjectData);
-			pAO->setIsTargetPick(true);
-			m_pScene->addChild(pAO);
 		} else {
-			//IF SOMETHING UNDEFINED
-			continue;
-		}
+			bool bType=false;
+			if ((strClassName == "CustomFurniture") || (strClassName == "Cupboard") || (strClassName == "Container"))
+				bType = true;
+			else if ((strClassName == "Plate3D") || (strClassName == "Cylinder") || (strClassName == "Prism"))
+				bType = false;
+			else
+				continue;
+
+			int nObjectID = stoi(vecstrData[0]);
+			string & strObjectName = vecstrData[2];
+			ref_ptr<AbstractObject> pAO = AbstractObjectFactory::createAbstractObject(strClassName);
+
+			if (bType)	{
+				vector<string> vecstrObjectData = dbMgr.getObjectData(nObjectID, strClassName, strObjectName);
+				pAO->initFromSQLData(vecstrObjectData);
+			} else {
+				string strObjectData = dbMgr.getPrimitiveObjectData(nObjectID, strClassName, strObjectName);
+				int nPos = strObjectData.find_first_of(";");
+				strObjectData.erase(0,nPos+1);
+				pAO->initFromSQLData(strObjectData);
+			}
+			pAO->setIsTargetPick(true);
+			m_pScene->addChild(pAO);
+		} 
 	}
-
-	
-	osg::ref_ptr<osg::Node> pAxes = osgDB::readNodeFile("../../../Resources/Models3D/axes.osgt");
-
-	GridParams gP;
-	gP.m_nResLat=101;
-	gP.m_nResLong=101;
-	osg::ref_ptr<Grid> pGrid = new Grid(gP);
-
-	m_pScene->addChild(pAxes);
-	m_pScene->addChild(pGrid);
-
-	ref_ptr<osg::Node> pProductsRepresentation = m_pProductMgr->getProductsRepresentation();
-	m_pScene->addChild(pProductsRepresentation);
 }
 
 //----------------------------------------------------------------------
@@ -264,6 +239,7 @@ void ShopBuilder::closeDB(const std::string & astrDBFileName)	{
 		saveDB(m_strDBFileName.c_str());
 	}
 	m_pScene->clearScene();
+	m_pProductMgr->removeProducts();
 	m_strDBFileName = "";
 }
 
@@ -471,7 +447,17 @@ void ShopBuilder::removeScene(Scene * apScene)	{
 //-----------------------------------------------------------------------
 
 void ShopBuilder::addNewProduct()	{
-	m_pProductMgr->addNewProduct();
+	AbstractObject * pAbstractObject = m_pProductMgr->addNewProduct();
+
+	if (pAbstractObject == 0)
+		return;
+
+	//Put new item in the center of the viewport and not to (0,0,0)
+	const Vec3d vec3dCenter = m_pKeyboardMouseManipulatorShopEditor->getCenter();
+	pAbstractObject->setPosition(vec3dCenter.x(),vec3dCenter.y(),vec3dCenter.z());
+
+	Matrix mtrxMatrix = pAbstractObject->calculateMatrix();
+	pAbstractObject->setMatrix(mtrxMatrix);
 }
 
 //-----------------------------------------------------------------------
@@ -703,9 +689,7 @@ void ShopBuilder::editItem()	{
 		return;
 	}
 
-	ref_ptr<AbstractObject> pAbstractObject = pickedObjects[0];	//Only first item is edited
-
-	ref_ptr<AbstractObject> pAbstractObjectClone = dynamic_cast<AbstractObject*>(pAbstractObject->clone(CopyOp::DEEP_COPY_ALL));
+	ref_ptr<AbstractObject> pAbstractObject = dynamic_cast<AbstractObject*>(pickedObjects[0].get());
 
 	Matrixd mtrxOriginalMatrix = pAbstractObject->getMatrix();
 
@@ -717,6 +701,18 @@ void ShopBuilder::editItem()	{
 	case QDialog::Accepted:
 		{
 			pAbstractObject->setMatrix(mtrxOriginalMatrix);
+			string strTexture = pEditItem_GUIBase->getTexture();
+
+			if ((strTexture != "") && (strTexture != " "))	{
+				pAbstractObject->setTexture(strTexture);
+			} else {
+				vector<float> vecflColor = pEditItem_GUIBase->getColor();
+				vector<float>::iterator it = vecflColor.begin();
+				for (it; it != vecflColor.end(); it++)	{
+					(*it) = ((*it) < 1) ? *it : (*it)/255;
+				}
+				pAbstractObject->setColor(vecflColor);
+			}
 			break;
 		}
 	case QDialog::Rejected:
@@ -727,6 +723,7 @@ void ShopBuilder::editItem()	{
 	}
 
 	delete pEditItem_GUIBase;
+
 	m_pPickAndDragHandlerShopEditor->clearList();
 }
 

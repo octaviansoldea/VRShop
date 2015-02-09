@@ -67,6 +67,8 @@ namespace VR	{
 		virtual void setColor(const std::vector < float > & aarrflColor) = 0;
 		virtual void setTexture(const std::string & astrFileName) = 0;
 
+		virtual std::string getTexture() const;
+
 		unsigned long getAbstractObjectNo() const;
 
 	private:

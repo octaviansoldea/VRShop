@@ -1,5 +1,6 @@
 #include "BasicStringDefinitions.h"
 #include <string>
+#include <vector>
 #include "VRBasicQtOperations.h"
 
 #include <osgDB/ReadFile>
@@ -16,6 +17,8 @@
 #include "VRKeyboardMouseManipulatorShopEditor.h"
 #include "VRPickAndDragHandlerShopEditor.h"
 #include "VRSceneObjectsSearchShopEditor.h"
+
+#include "VRAbstractObject.h"
 
 #include "VRDataStructureModel.h"
 
@@ -85,6 +88,8 @@ ShopBuilder_GUI::ShopBuilder_GUI()	{
 	connect(pPickAndDragHandlerShopEditor,SIGNAL(signalProductPicked(const std::string &)),
 		this,SLOT(slotProductClicked(const std::string &))
 	);
+
+	connect(pPickAndDragHandlerShopEditor,SIGNAL(signalItemPicked()),this,SLOT(slotItemPicked()));
 }
 
 //=========================================================================================
@@ -134,6 +139,9 @@ void ShopBuilder_GUI::buildConnections() {
 	connect(m_p_PushButton_ModifyScene_GroupItems,SIGNAL(clicked()),this,SLOT(slotGroupItems()));
 	connect(m_p_PushButton_ModifyScene_DuplicateSelection,SIGNAL(clicked()),this,SLOT(slotDuplicateSelection()));
 	connect(m_p_PushButton_ModifyScene_EditItem,SIGNAL(clicked()),this,SLOT(slotEditItem()));
+
+	connect(m_pSpinBoxTransparency,SIGNAL(valueChanged(const QString &)),this,SLOT(slotTransparencyChanged()));
+	connect(m_pCheckBoxLock,SIGNAL(toggled(bool)),this,SLOT(slotTargetLockedChanged(bool)));
 }
 
 //=========================================================================================
@@ -342,4 +350,23 @@ void ShopBuilder_GUI::slotRemoveSelection()	{
 
 void ShopBuilder_GUI::slotEditItem()	{
 	m_pShopBuilder->editItem();
+}
+
+//--------------------------------------------------------------------------------------
+
+void ShopBuilder_GUI::slotItemPicked()	{
+	m_pShopBuilder->itemPicked(m_pSpinBoxTransparency, m_pCheckBoxLock);
+}
+
+//--------------------------------------------------------------------------------------
+
+void ShopBuilder_GUI::slotTransparencyChanged()	{
+	float flTransparencyFactor = m_pSpinBoxTransparency->value();
+	m_pShopBuilder->changeTransparency(flTransparencyFactor);
+}
+
+//--------------------------------------------------------------------------------------
+
+void ShopBuilder_GUI::slotTargetLockedChanged(bool abIsLocked)	{
+	m_pShopBuilder->changeIsTargetLocked(abIsLocked);
 }

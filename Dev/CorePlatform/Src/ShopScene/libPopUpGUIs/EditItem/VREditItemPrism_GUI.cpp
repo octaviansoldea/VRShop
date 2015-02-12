@@ -1,12 +1,14 @@
 #include <osgDB/ReadFile>
 
+#include "BasicStringDefinitions.h"
+
 #include <QPixmap>
 #include <QImageReader>
 #include <QFileDialog>
 
 #include "VRKeyboardMouseManipulatorShopEditor.h"
 
-//#include "VRPrism.h"
+#include "VRPrism.h"
 
 #include "VREditItemPrism_GUI.h"
 
@@ -39,15 +41,20 @@ EditItem_GUIBase(apAbstractObject)	{
 	connect(m_pLineEditColorB, SIGNAL(textEdited(const QString &)), this, SLOT(slotSetColor()));
 	connect(m_pLineEditColorA, SIGNAL(textEdited(const QString &)), this, SLOT(slotSetColor()));
 
-	connect(m_pSpinBoxResolution, SIGNAL(editingFinished()), this, SLOT(slotSetResolution()));
+	Prism * pPrism = static_cast<Prism*>(m_pAbstractObject.get());
+	int nRes = pPrism->getResolution();
+	m_pSpinBoxResolution->setValue(nRes);
+	connect(m_pSpinBoxResolution, SIGNAL(valueChanged(int)), this, SLOT(slotSetResolution()));
 
 
 	m_pOSGQT_Widget->show();
 
-	m_pLineEditColorR->setText("0");
-	m_pLineEditColorG->setText("0");
-	m_pLineEditColorB->setText("0");
-	m_pLineEditColorA->setText("0");
+	vector<float> vecColor = pPrism->getColor();
+
+	m_pLineEditColorR->setText(tostr(vecColor[0]*255).c_str());
+	m_pLineEditColorG->setText(tostr(vecColor[1]*255).c_str());
+	m_pLineEditColorB->setText(tostr(vecColor[2]*255).c_str());
+	m_pLineEditColorA->setText(tostr(vecColor[3]*255).c_str());
 }
 
 //----------------------------------------------------------------------
@@ -86,6 +93,9 @@ void EditItemPrism_GUI::slotSetColor()	{
 //----------------------------------------------------------------------
 
 void EditItemPrism_GUI::slotSetResolution()	{
+	Prism * pPrism = dynamic_cast<Prism*>(m_pAbstractObject.get());
+	int nResolution = this->m_pSpinBoxResolution->value();
+	pPrism->setResolution(nResolution);
 }
 
 //----------------------------------------------------------------------

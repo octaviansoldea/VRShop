@@ -55,6 +55,7 @@ bool PickAndDragHandlerShopEditor::handle(const GUIEventAdapter& ea, GUIActionAd
 	if (nEventType == GUIEventAdapter::LEFT_MOUSE_BUTTON) {
 		ref_ptr<AbstractObject> pPickedObject = dynamic_cast<AbstractObject*>(m_pPickedObject.get());
 		emit signalPropertiesSettingsChanged();
+		emit signalItemPicked();
 
 		if(ea.getModKeyMask() && osgGA::GUIEventAdapter::MODKEY_CTRL)	{
 			bool bRes = addPart(pPickedObject);

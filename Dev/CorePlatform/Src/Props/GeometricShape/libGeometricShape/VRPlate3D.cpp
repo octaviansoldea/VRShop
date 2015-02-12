@@ -11,6 +11,8 @@ using namespace std;
 using namespace osg;
 using namespace VR;
 
+//===================================================================
+
 string Plate3D::m_strSQLFormat =
 	"CREATE TABLE IF NOT EXISTS Plate3D \
 	(Plate3DID INTEGER PRIMARY KEY AUTOINCREMENT,\
@@ -65,9 +67,6 @@ Object* Plate3D::cloneType() const	{
 //-----------------------------------------------------------------------
 
 Object* Plate3D::clone(const CopyOp& copyop) const	{
-//	return new Plate3D(*this,copyop);
-
-
 	Plate3DParams pPlate3DParams;
 	this->getParams(pPlate3DParams);
 
@@ -93,14 +92,24 @@ void Plate3D::init(const Plate3DParams & aPlate3DParams)	{
 
 void Plate3D::setColor(const std::vector < float > & aarrflColor)	{
 	m_arrflRGBA = aarrflColor;	
-	m_pUntransformedPlate3D->setColor(m_arrflRGBA);
+
+	UntransformedPlate3D::Surface surface;
+	surface.m_bIsColor=true;
+	surface.m_PlateSide = UntransformedPlate3D::PlateSide::ALL;
+	surface.m_vecColor=m_arrflRGBA;
+	m_pUntransformedPlate3D->setTextureOrColor(surface);
 }
 
 //----------------------------------------------------------------------
 
 void Plate3D::setTexture(const std::string & astrFileName) {
 	m_strFileNameTexture = astrFileName;
-	m_pUntransformedPlate3D->setTexture(m_strFileNameTexture);
+	
+	UntransformedPlate3D::Surface surface;
+	surface.m_bIsColor=false;
+	surface.m_PlateSide = UntransformedPlate3D::PlateSide::ALL;
+	surface.m_strFileName=m_strFileNameTexture;
+	m_pUntransformedPlate3D->setTextureOrColor(surface);
 }
 
 //----------------------------------------------------------

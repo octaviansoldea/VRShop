@@ -64,3 +64,9 @@ void AbstractGeomShape::getParams(AbstractGeomShapeParams & aAbstractGeomShapePa
 string AbstractGeomShape::getTexture() const	{
 	return m_strFileNameTexture;
 }
+
+//--------------------------------------------------------------------------
+
+vector<float> AbstractGeomShape::getColor() const	{
+	return m_arrflRGBA;
+}

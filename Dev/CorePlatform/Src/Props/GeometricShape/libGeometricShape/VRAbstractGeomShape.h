@@ -24,6 +24,7 @@ namespace VR {
 		void getParams(AbstractGeomShapeParams & aAbstractGeomShapeParams) const;
 
 		virtual std::string getTexture() const;
+		std::vector<float> getColor() const;
 
 	protected:
 		std::vector < float > m_arrflRGBA;

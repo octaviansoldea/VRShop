@@ -48,6 +48,7 @@ SET(LIBS_COMMON
 	${OSGVIEWER_LIBRARIES}
 	${OPENTHREADS_LIBRARIES}
 	libCommon
+	libCommon_OSG
 	libAppData
 	libAbstractObject
 	libFurniture

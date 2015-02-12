@@ -45,6 +45,7 @@ namespace VR {
 	signals:
 		void signalPropertiesSettingsChanged();
 		void signalProductPicked(const std::string & astrAbstractObjectName);
+		void signalItemPicked();
 
 	private:
 		bool addPart(osg::ref_ptr < AbstractObject > apAbstractObject);

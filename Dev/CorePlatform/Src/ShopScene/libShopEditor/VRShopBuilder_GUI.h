@@ -60,6 +60,10 @@ namespace VR	{
 		void slotDuplicateSelection();
 		void slotRemoveSelection();
 		void slotEditItem();
+
+		void slotTransparencyChanged();
+		void slotTargetLockedChanged(bool abIsLocked);
+		void slotItemPicked();
 	};
 }
 #endif //VR_SHOP_BUILDER_GUI_H

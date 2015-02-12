@@ -5,6 +5,8 @@
 #include <osg/TexMat>
 #include <osgDB/ReadFile>
 
+#include <osg/Geometry>
+
 #include "VRUntransformedPolygon2D.h"
 
 using namespace osg;

@@ -2,7 +2,8 @@
 #define VR_UNTRANSFORMED_POLYGON_2D_H
 
 #include <osg/Geode>
-#include <osg/Geometry>
+
+namespace osg {class Geometry;}
 
 namespace VR {
 	class UntransformedPolygon2D : public osg::Geode {

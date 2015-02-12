@@ -39,7 +39,7 @@ void SceneHierarchyController::slotItemClicked(const QModelIndex & anItemIndex)	
 	if (pAbstractObject==0)
 		return;
 
-	mpPickAndDragHandlerShopEditor->m_pPickedObject = pAbstractObject;
+	mpPickAndDragHandlerShopEditor->getPickedObject() = pAbstractObject;
 	emit mpPickAndDragHandlerShopEditor->signalPropertiesSettingsChanged();
 }
 
@@ -53,6 +53,6 @@ void SceneHierarchyController::slotItemDeleted(const QModelIndex & anItemIndex)	
 	if (pAbstractObject==0)
 		return;
 
-	mpPickAndDragHandlerShopEditor->m_pPickedObject = pAbstractObject;
+	mpPickAndDragHandlerShopEditor->getPickedObject() = pAbstractObject;
 
 }

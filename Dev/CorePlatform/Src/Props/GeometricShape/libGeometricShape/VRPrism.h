@@ -24,6 +24,9 @@ namespace VR {
 		virtual void setColor(const std::vector < float > & aarrflColor);
 		virtual void setTexture(const std::string & astrFileName);
 
+		void setResolution(int anRes);
+		int getResolution() const;
+
 		virtual std::string getSQLFormat() const;
 		virtual std::string getSQLCommand() const;
 

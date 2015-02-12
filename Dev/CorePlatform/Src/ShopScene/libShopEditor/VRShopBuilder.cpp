@@ -18,6 +18,9 @@
 #include <QComboBox>
 #include <QLineEdit>
 
+#include <QDoubleSpinBox>
+#include <QCheckBox>
+
 #include <QFileDialog>
 #include "VRReadAndSaveFileCallback.h"
 
@@ -224,8 +227,9 @@ void ShopBuilder::readDB(const std::string & astrDBFileName)	{
 				pAO->initFromSQLData(strObjectData);
 			}
 			pAO->setIsTargetPick(true);
+			pAO->setIsTargetLocked(true);
 			m_pScene->addChild(pAO);
-		} 
+		}
 	}
 }
 
@@ -466,7 +470,7 @@ void ShopBuilder::removeProductClicked(const string & astrProductCode)	{
 	bool bRes = m_pProductMgr->removeProduct(astrProductCode);
 
 	if (bRes == true)	{
-		ref_ptr<AbstractObject> pAO = m_pPickAndDragHandlerShopEditor->m_pPickedObject;
+		ref_ptr<AbstractObject> pAO = m_pPickAndDragHandlerShopEditor->getPickedObject();
 		ProductShopEditor * pProductShopEditor = m_pProductMgr->getProduct(pAO);
 		m_pProductMgr->removeProduct(pProductShopEditor);
 	}
@@ -736,10 +740,47 @@ void ShopBuilder::updateSearchList(string & astrSelectedItemName)	{
 	if (pAbstractObject==0)
 		return;
 
-	m_pPickAndDragHandlerShopEditor->m_pPickedObject = pAbstractObject;
+	m_pPickAndDragHandlerShopEditor->getPickedObject() = pAbstractObject;
 }
 
 //-----------------------------------------------------------------------
 
 void ShopBuilder::updateProductSettings(ProductClickedItems & aProductClickedItems)	{
+}
+
+//-----------------------------------------------------------------------
+
+void ShopBuilder::changeTransparency(float aflTransparencyFactor)	{
+	AbstractObject * pAO = m_pPickAndDragHandlerShopEditor->getPickedObject();
+
+	if (pAO==0)
+		return;
+
+	//CHECK: coloring (Material) + order of renderring objects
+//	pAO->setTransparency(aflTransparencyFactor);
+}
+
+//-----------------------------------------------------------------------
+
+void ShopBuilder::changeIsTargetLocked(bool abIsLocked)	{
+	AbstractObject * pAO = m_pPickAndDragHandlerShopEditor->getPickedObject();
+
+	if (pAO==0)
+		return;
+
+	pAO->setIsTargetLocked(abIsLocked);
+}
+
+//-----------------------------------------------------------------------
+
+void ShopBuilder::itemPicked(QDoubleSpinBox * apTransparency, QCheckBox * apIsLocked)	{
+	AbstractObject * pAO = m_pPickAndDragHandlerShopEditor->getPickedObject();
+	if (pAO==0)
+		return;
+
+	float flTransparencyFactor = pAO->getTransparency();
+	apTransparency->setValue(flTransparencyFactor);
+
+	bool bIsLocked = pAO->getIsTargetLocked();
+	apIsLocked->setChecked(bIsLocked);
 }

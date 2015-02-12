@@ -5,6 +5,9 @@
 
 class QComboBox;
 class QLineEdit;
+class QDoubleSpinBox;
+class QCheckBox;
+
 
 #include "VRSceneObjectsSearchShopEditor.h"
 
@@ -94,6 +97,10 @@ namespace VR	{
 		void editItem();
 
 		void updateSearchList(std::string & astrSelectedItemName);
+		void changeTransparency(float aflTransparencyFactor);
+		void changeIsTargetLocked(bool abIsLocked);
+
+		void itemPicked(QDoubleSpinBox * apTransparency, QCheckBox * apIsLocked);
 
 		DataStructureModel * getSceneObjectsSearchModel();
 	};

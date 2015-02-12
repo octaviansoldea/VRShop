@@ -57,6 +57,12 @@ namespace VR	{
 		void setIsTargetPick(bool abIsTargetPick);
 		bool getIsTargetPick() const;
 
+		void setIsTargetLocked(bool abIsTargetLocked);
+		bool getIsTargetLocked() const;
+
+		virtual void setTransparency(float aflTransparenceFactor);
+		float getTransparency() const;
+
 		virtual void writeObjectHierarchy(std::vector<std::string> &avecstrHierarchy);
 		virtual void print(std::ostream & os) const;
 
@@ -73,6 +79,9 @@ namespace VR	{
 
 	private:
 		bool m_bIsTargetPick;
+		bool m_bIsTargetLocked;
+		float m_flTransparencyFactor;
+
 		static std::string m_strSQLFormat;
 
 		static unsigned long s_nAbstractObjectNo;

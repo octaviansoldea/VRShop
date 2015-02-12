@@ -2,7 +2,8 @@
 #define UNTRANSFORMED_PLATE_2D_H
 
 #include <osg/Geode>
-#include <osg/Geometry>
+
+namespace osg {class Geometry;}
 
 namespace VR {
 	class UntransformedPlate2D : public osg::Geode {

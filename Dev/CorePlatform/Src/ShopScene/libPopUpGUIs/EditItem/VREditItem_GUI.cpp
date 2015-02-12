@@ -1,10 +1,13 @@
 #include <osgDB/ReadFile>
+#include "BasicStringDefinitions.h"
 
 #include <QPixmap>
 #include <QImageReader>
 #include <QFileDialog>
 
 #include "VRKeyboardMouseManipulatorShopEditor.h"
+
+#include "VRAbstractGeomShape.h"
 
 #include "VREditItem_GUI.h"
 
@@ -38,10 +41,13 @@ EditItem_GUIBase(apAbstractObject)	{
 
 	m_pOSGQT_Widget->show();
 
-	m_pLineEditColorR->setText("0");
-	m_pLineEditColorG->setText("0");
-	m_pLineEditColorB->setText("0");
-	m_pLineEditColorA->setText("0");
+	AbstractGeomShape * pAGS = static_cast<AbstractGeomShape*>(m_pAbstractObject.get());
+	vector<float> vecColor = pAGS->getColor();
+
+	m_pLineEditColorR->setText(tostr(vecColor[0]*255).c_str());
+	m_pLineEditColorG->setText(tostr(vecColor[1]*255).c_str());
+	m_pLineEditColorB->setText(tostr(vecColor[2]*255).c_str());
+	m_pLineEditColorA->setText(tostr(vecColor[3]*255).c_str());
 }
 
 //----------------------------------------------------------------------

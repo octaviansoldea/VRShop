@@ -2,9 +2,6 @@
 #define VR_UNTRANSFORMED_POLYHEDRON_H
 
 #include <osg/Group>
-#include <osg/Geode>
-
-#include "VRAbstractGeomShape.h"
 
 namespace VR {
 	struct UntransformedPolyhedronParams	{
@@ -23,11 +20,12 @@ namespace VR {
 		UntransformedPolyhedron();
 		UntransformedPolyhedron(const UntransformedPolyhedronParams & aUntransformedPolyhedronParams);
 
-		virtual void setColor(const std::vector < float > & aarrflColor);
-		virtual void setTexture(const std::string & astrFileName);
+		void setColor(const std::vector < float > & aarrflColor);
+		void setTexture(const std::string & astrFileName);
 
 		void setResolution(int anResolution);
-		virtual void init(const UntransformedPolyhedronParams & aUntransformedPolyhedronParams);
+		int getResolution() const;
+		void init(const UntransformedPolyhedronParams & aUntransformedPolyhedronParams);
 	};
 }
 #endif //VR_UNTRANSFORMED_POLYHEDRON_H

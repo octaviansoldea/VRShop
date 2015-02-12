@@ -6,8 +6,6 @@
 #include <QMessageBox>
 #include <QTimer>
 
-#include "VRProductBasketInterfaceItem.h"
-
 #include "BasicStringDefinitions.h"
 
 #include "VRProductBasketInterfaceItem_GUI.h"

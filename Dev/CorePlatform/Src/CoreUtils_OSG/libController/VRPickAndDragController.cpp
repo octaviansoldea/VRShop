@@ -11,34 +11,34 @@ using namespace VR;
 using namespace osg;
 
 PickAndDragController::PickAndDragController(
-QDoubleSpinBox * a_p_DoubleSpinBox_TranslationX,
-QDoubleSpinBox * a_p_DoubleSpinBox_TranslationY,
-QDoubleSpinBox * a_p_DoubleSpinBox_TranslationZ,
-QDoubleSpinBox * a_p_DoubleSpinBox_ScalingX,
-QDoubleSpinBox * a_p_DoubleSpinBox_ScalingY,
-QDoubleSpinBox * a_p_DoubleSpinBox_ScalingZ,
-QDoubleSpinBox * a_p_DoubleSpinBox_RotationX,
-QDoubleSpinBox * a_p_DoubleSpinBox_RotationY,
-QDoubleSpinBox * a_p_DoubleSpinBox_RotationZ,
-QComboBox * a_p_ComboBox_DirectionOfTranslation,
-QComboBox * a_p_ComboBox_TranslateRelativeTo,
-PickAndDragHandlerShopEditor * a_pPickAndDragHandlerShopEditor)	{
+QDoubleSpinBox * apDoubleSpinBoxTranslationX,
+QDoubleSpinBox * apDoubleSpinBoxTranslationY,
+QDoubleSpinBox * apDoubleSpinBoxTranslationZ,
+QDoubleSpinBox * apDoubleSpinBoxScalingX,
+QDoubleSpinBox * apDoubleSpinBoxScalingY,
+QDoubleSpinBox * apDoubleSpinBoxScalingZ,
+QDoubleSpinBox * apDoubleSpinBoxRotationX,
+QDoubleSpinBox * apDoubleSpinBoxRotationY,
+QDoubleSpinBox * apDoubleSpinBoxRotationZ,
+QComboBox * apComboBoxDirectionOfTranslation,
+QComboBox * apComboBoxTranslateRelativeTo,
+PickAndDragHandlerShopEditor * apPickAndDragHandlerShopEditor)	{
 
-	m_pDoubleSpinBoxTranslationX = a_p_DoubleSpinBox_TranslationX;
-	m_pDoubleSpinBoxTranslationY = a_p_DoubleSpinBox_TranslationY;
-	m_pDoubleSpinBoxTranslationZ = a_p_DoubleSpinBox_TranslationZ;
+	m_pDoubleSpinBoxTranslationX = apDoubleSpinBoxTranslationX;
+	m_pDoubleSpinBoxTranslationY = apDoubleSpinBoxTranslationY;
+	m_pDoubleSpinBoxTranslationZ = apDoubleSpinBoxTranslationZ;
 
-	m_pDoubleSpinBoxScalingX = a_p_DoubleSpinBox_ScalingX,
-	m_pDoubleSpinBoxScalingY = a_p_DoubleSpinBox_ScalingY,
-	m_pDoubleSpinBoxScalingZ = a_p_DoubleSpinBox_ScalingZ,
-	m_pDoubleSpinBoxRotationX = a_p_DoubleSpinBox_RotationX,
-	m_pDoubleSpinBoxRotationY = a_p_DoubleSpinBox_RotationY,
-	m_pDoubleSpinBoxRotationZ = a_p_DoubleSpinBox_RotationZ,
+	m_pDoubleSpinBoxScalingX = apDoubleSpinBoxScalingX,
+	m_pDoubleSpinBoxScalingY = apDoubleSpinBoxScalingY,
+	m_pDoubleSpinBoxScalingZ = apDoubleSpinBoxScalingZ,
+	m_pDoubleSpinBoxRotationX = apDoubleSpinBoxRotationX,
+	m_pDoubleSpinBoxRotationY = apDoubleSpinBoxRotationY,
+	m_pDoubleSpinBoxRotationZ = apDoubleSpinBoxRotationZ,
 
-	m_pComboBoxDirectionOfTranslation = a_p_ComboBox_DirectionOfTranslation;
-	m_pComboBoxTranslateRelativeTo = a_p_ComboBox_TranslateRelativeTo;
+	m_pComboBoxDirectionOfTranslation = apComboBoxDirectionOfTranslation;
+	m_pComboBoxTranslateRelativeTo = apComboBoxTranslateRelativeTo;
 
-	m_pPickAndDragHandlerShopEditor = a_pPickAndDragHandlerShopEditor;
+	m_pPickAndDragHandlerShopEditor = apPickAndDragHandlerShopEditor;
 
 	connect(m_pDoubleSpinBoxTranslationX,SIGNAL(valueChanged(double)),
 		this,SLOT(slotSetPropertiesPosition()));
@@ -96,7 +96,7 @@ void PickAndDragController::slotUpdatePickAndDragGUI() {
 	disconnect(m_pDoubleSpinBoxScalingZ,SIGNAL(valueChanged(double)),
 		this,SLOT(slotSetPropertiesScaling()));
 
-	ref_ptr<AbstractObject> pPickedObject = m_pPickAndDragHandlerShopEditor->m_pPickedObject;
+	ref_ptr<AbstractObject> pPickedObject = m_pPickAndDragHandlerShopEditor->getPickedObject();
 
 	//Updates dialogs that reflect transformation changes done with the mouse
 	Vec3d vec3dPos = pPickedObject->getPosition();

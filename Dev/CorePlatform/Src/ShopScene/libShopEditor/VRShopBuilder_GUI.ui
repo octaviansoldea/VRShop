@@ -371,9 +371,9 @@ QSpinBox::down-arrow:off {border-left: 17px solid none; border-right: 17px solid
            <property name="geometry">
             <rect>
              <x>0</x>
-             <y>-137</y>
+             <y>0</y>
              <width>239</width>
-             <height>563</height>
+             <height>704</height>
             </rect>
            </property>
            <layout class="QVBoxLayout" name="verticalLayout_8">
@@ -393,7 +393,7 @@ QSpinBox::down-arrow:off {border-left: 17px solid none; border-right: 17px solid
              <number>0</number>
             </property>
             <item>
-             <widget class="QFrame" name="verticalFrameTranslation">
+             <widget class="QFrame" name="verticalFrameGeneral">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                 <horstretch>0</horstretch>
@@ -420,7 +420,7 @@ QSpinBox::down-arrow:off {border-left: 17px solid none; border-right: 17px solid
                 <number>0</number>
                </property>
                <item>
-                <widget class="QPushButton" name="m_pPushButtonTranslation_Header">
+                <widget class="QPushButton" name="m_pPushButtonGeneral_Header">
                  <property name="enabled">
                   <bool>true</bool>
                  </property>
@@ -465,7 +465,7 @@ QSpinBox::down-arrow:off {border-left: 17px solid none; border-right: 17px solid
 </string>
                  </property>
                  <property name="text">
-                  <string>Translation</string>
+                  <string>General </string>
                  </property>
                  <property name="iconSize">
                   <size>
@@ -480,6 +480,110 @@ QSpinBox::down-arrow:off {border-left: 17px solid none; border-right: 17px solid
                   <bool>true</bool>
                  </property>
                  <property name="flat">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <widget class="QWidget" name="m_pGeneralWidget" native="true">
+              <layout class="QFormLayout" name="m_pGeneralLayout">
+               <property name="horizontalSpacing">
+                <number>5</number>
+               </property>
+               <property name="verticalSpacing">
+                <number>10</number>
+               </property>
+               <property name="leftMargin">
+                <number>10</number>
+               </property>
+               <property name="topMargin">
+                <number>10</number>
+               </property>
+               <property name="rightMargin">
+                <number>10</number>
+               </property>
+               <property name="bottomMargin">
+                <number>10</number>
+               </property>
+               <item row="0" column="0">
+                <widget class="QCheckBox" name="m_pCheckBoxLock">
+                 <property name="text">
+                  <string>Lock</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0">
+                <widget class="QLabel" name="label_3">
+                 <property name="text">
+                  <string>Transparency factor:</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="1">
+                <widget class="QDoubleSpinBox" name="m_pSpinBoxTransparency">
+                 <property name="maximum">
+                  <double>1.000000000000000</double>
+                 </property>
+                 <property name="singleStep">
+                  <double>0.010000000000000</double>
+                 </property>
+                 <property name="value">
+                  <double>1.000000000000000</double>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <widget class="QFrame" name="verticalFrameTranslation">
+              <property name="styleSheet">
+               <string notr="true">background-color:rgb(191,193,194)</string>
+              </property>
+              <property name="frameShape">
+               <enum>QFrame::StyledPanel</enum>
+              </property>
+              <property name="frameShadow">
+               <enum>QFrame::Plain</enum>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout">
+               <property name="spacing">
+                <number>0</number>
+               </property>
+               <property name="leftMargin">
+                <number>0</number>
+               </property>
+               <property name="topMargin">
+                <number>0</number>
+               </property>
+               <property name="rightMargin">
+                <number>0</number>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item>
+                <widget class="QPushButton" name="m_pPushButtonTranslation_Header">
+                 <property name="styleSheet">
+                  <string notr="true">QPushButton {
+    background-color:gray;
+	border: 0px;
+	border-radius: 0px;
+	text-align: left;
+	padding-left: 5px;
+}
+</string>
+                 </property>
+                 <property name="text">
+                  <string>Translation</string>
+                 </property>
+                 <property name="checkable">
+                  <bool>true</bool>
+                 </property>
+                 <property name="checked">
                   <bool>true</bool>
                  </property>
                 </widget>
@@ -518,6 +622,19 @@ QSpinBox::down-arrow:off {border-left: 17px solid none; border-right: 17px solid
                  </property>
                 </widget>
                </item>
+               <item row="0" column="1">
+                <widget class="QDoubleSpinBox" name="m_p_DoubleSpinBox_TranslationX">
+                 <property name="decimals">
+                  <number>4</number>
+                 </property>
+                 <property name="minimum">
+                  <double>-99.989999999999995</double>
+                 </property>
+                 <property name="singleStep">
+                  <double>0.010000000000000</double>
+                 </property>
+                </widget>
+               </item>
                <item row="1" column="0">
                 <widget class="QLabel" name="label_28">
                  <property name="text">
@@ -525,10 +642,36 @@ QSpinBox::down-arrow:off {border-left: 17px solid none; border-right: 17px solid
                  </property>
                 </widget>
                </item>
+               <item row="1" column="1">
+                <widget class="QDoubleSpinBox" name="m_p_DoubleSpinBox_TranslationY">
+                 <property name="decimals">
+                  <number>4</number>
+                 </property>
+                 <property name="minimum">
+                  <double>-99.989999999999995</double>
+                 </property>
+                 <property name="singleStep">
+                  <double>0.010000000000000</double>
+                 </property>
+                </widget>
+               </item>
                <item row="2" column="0">
                 <widget class="QLabel" name="label_29">
                  <property name="text">
                   <string>Z:</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="1">
+                <widget class="QDoubleSpinBox" name="m_p_DoubleSpinBox_TranslationZ">
+                 <property name="decimals">
+                  <number>4</number>
+                 </property>
+                 <property name="minimum">
+                  <double>-99.989999999999995</double>
+                 </property>
+                 <property name="singleStep">
+                  <double>0.010000000000000</double>
                  </property>
                 </widget>
                </item>
@@ -651,45 +794,6 @@ QSpinBox::down-arrow:off {border-left: 17px solid none; border-right: 17px solid
                   </widget>
                  </item>
                 </layout>
-               </item>
-               <item row="0" column="1">
-                <widget class="QDoubleSpinBox" name="m_p_DoubleSpinBox_TranslationX">
-                 <property name="decimals">
-                  <number>4</number>
-                 </property>
-                 <property name="minimum">
-                  <double>-99.989999999999995</double>
-                 </property>
-                 <property name="singleStep">
-                  <double>0.010000000000000</double>
-                 </property>
-                </widget>
-               </item>
-               <item row="1" column="1">
-                <widget class="QDoubleSpinBox" name="m_p_DoubleSpinBox_TranslationY">
-                 <property name="decimals">
-                  <number>4</number>
-                 </property>
-                 <property name="minimum">
-                  <double>-99.989999999999995</double>
-                 </property>
-                 <property name="singleStep">
-                  <double>0.010000000000000</double>
-                 </property>
-                </widget>
-               </item>
-               <item row="2" column="1">
-                <widget class="QDoubleSpinBox" name="m_p_DoubleSpinBox_TranslationZ">
-                 <property name="decimals">
-                  <number>4</number>
-                 </property>
-                 <property name="minimum">
-                  <double>-99.989999999999995</double>
-                 </property>
-                 <property name="singleStep">
-                  <double>0.010000000000000</double>
-                 </property>
-                </widget>
                </item>
               </layout>
              </widget>
@@ -2382,7 +2486,7 @@ QToolButton:!checked {
             </property>
             <property name="icon">
              <iconset>
-               <normaloff>:/Zoom.png</normaloff>:/Zoom.png</iconset>
+              <normaloff>:/Zoom.png</normaloff>:/Zoom.png</iconset>
             </property>
             <property name="checkable">
              <bool>true</bool>
@@ -3318,7 +3422,7 @@ QTreeView::item:hover,QTreeView::item:selected {
              </property>
              <property name="icon">
               <iconset>
-                <normaloff>:/close-icon.png</normaloff>:/close-icon.png</iconset>
+               <normaloff>:/close-icon.png</normaloff>:/close-icon.png</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -4179,8 +4283,8 @@ QToolButton:hover {
      <rect>
       <x>330</x>
       <y>127</y>
-      <width>130</width>
-      <height>196</height>
+      <width>138</width>
+      <height>190</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -4515,9 +4619,9 @@ QToolButton:hover {
    </hints>
   </connection>
   <connection>
-   <sender>m_pPushButtonTranslation_Header</sender>
+   <sender>m_pPushButtonGeneral_Header</sender>
    <signal>clicked(bool)</signal>
-   <receiver>m_pTranslationWidget</receiver>
+   <receiver>m_pGeneralWidget</receiver>
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -4525,8 +4629,8 @@ QToolButton:hover {
      <y>49</y>
     </hint>
     <hint type="destinationlabel">
-     <x>118</x>
-     <y>137</y>
+     <x>119</x>
+     <y>83</y>
     </hint>
    </hints>
   </connection>
@@ -4735,6 +4839,22 @@ QToolButton:hover {
     <hint type="destinationlabel">
      <x>-1</x>
      <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m_pPushButtonTranslation_Header</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>m_pTranslationWidget</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>119</x>
+     <y>113</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>119</x>
+     <y>210</y>
     </hint>
    </hints>
   </connection>

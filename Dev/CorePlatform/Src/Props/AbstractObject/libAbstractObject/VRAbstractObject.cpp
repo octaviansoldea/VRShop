@@ -4,6 +4,8 @@
 #include "BasicDefinitions.h"
 #include "BasicStringDefinitions.h"
 
+#include "VRSurfaceOperations.h"
+
 #include "VRAbstractObject.h"
 
 using namespace VR;
@@ -32,7 +34,7 @@ AbstractObjectParams::~AbstractObjectParams()	{
 //==============================================================
 
 AbstractObject::AbstractObject(const AbstractObjectParams & aAbstractObjectParams) :
-	MatrixTransform(), m_bIsTargetPick(false) {
+	MatrixTransform(), m_bIsTargetPick(false), m_bIsTargetLocked(false), m_flTransparencyFactor(1.f) {
 	setParams(aAbstractObjectParams);
 
 	s_nAbstractObjectNo += 1;
@@ -164,6 +166,31 @@ void AbstractObject::setIsTargetPick(bool abIsTargetPick)	{
 
 bool AbstractObject::getIsTargetPick() const	{
 	return m_bIsTargetPick;
+}
+
+//--------------------------------------------------------------------------
+
+void AbstractObject::setIsTargetLocked(bool abIsTargetLocked)	{
+	m_bIsTargetLocked = abIsTargetLocked;
+}
+
+//--------------------------------------------------------------------------
+
+bool AbstractObject::getIsTargetLocked() const	{
+	return m_bIsTargetLocked;
+}
+
+//--------------------------------------------------------------------------
+
+void AbstractObject::setTransparency(float aflTransparenceFactor)	{
+	SurfaceOperations::setTransparency(this, aflTransparenceFactor);
+	m_flTransparencyFactor = aflTransparenceFactor;
+}
+
+//--------------------------------------------------------------------------
+
+float AbstractObject::getTransparency() const	{
+	return m_flTransparencyFactor;
 }
 
 //--------------------------------------------------------------------------

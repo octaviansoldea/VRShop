@@ -13,8 +13,12 @@ namespace VR {
 	public:
 		PickAndDragHandler();
 
+	protected:
 		virtual bool handle( const osgGA::GUIEventAdapter& ea, osgGA::GUIActionAdapter& aa );
 		osg::ref_ptr<AbstractObject> m_pPickedObject;
+
+	public:
+		osg::ref_ptr<AbstractObject> getPickedObject();
 
 	private:
 		typedef struct {

@@ -130,35 +130,32 @@ void VR::Cylinder::predefinedObject()	{
 string VR::Cylinder::prepareRowData(const string & astrParentName)	{
 	CylinderParams cylinderParams;
 	getParams(cylinderParams);
-	string strCylinderParams;
 
-	strCylinderParams= to_string((long double)cylinderParams.m_flRadius) + "_";
-	strCylinderParams+= to_string((long double)cylinderParams.m_flHeight) + "_";
+	string strCylinderParams =
+	tostr(cylinderParams.m_nResolution) + "_" +
+	tostr(cylinderParams.m_flRadius) + "_" +
+	tostr(cylinderParams.m_flHeight) + "_" +
 
-	strCylinderParams+= to_string((long double)cylinderParams.m_flPosX) + "_";
-	strCylinderParams+= to_string((long double)cylinderParams.m_flPosY) + "_";
-	strCylinderParams+= to_string((long double)cylinderParams.m_flPosZ) + "_";
+	tostr(cylinderParams.m_flPosX) + "_" +
+	tostr(cylinderParams.m_flPosY) + "_" +
+	tostr(cylinderParams.m_flPosZ) + "_" +
 
-	strCylinderParams += to_string((long double)cylinderParams.m_flLenX) + "_";
-	strCylinderParams += to_string((long double)cylinderParams.m_flLenY) + "_";
-	strCylinderParams += to_string((long double)cylinderParams.m_flLenZ) + "_";
+	tostr(cylinderParams.m_flLenX) + "_" +
+	tostr(cylinderParams.m_flLenY) + "_" +
+	tostr(cylinderParams.m_flLenZ) + "_" +
 
-	strCylinderParams+= to_string((long double)cylinderParams.m_flAngleXY) + "_";
-	strCylinderParams+= to_string((long double)cylinderParams.m_flAngleXZ) + "_";
-	strCylinderParams+= to_string((long double)cylinderParams.m_flAngleYZ) + ";";	
+	tostr(cylinderParams.m_flAngleXY) + "_" +
+	tostr(cylinderParams.m_flAngleXZ) + "_" +
+	tostr(cylinderParams.m_flAngleYZ) + ";";	
 
 	int nI;
 	string strColor;
 	for (nI=0;nI<3;nI++)	{
-		strColor += to_string((long double)cylinderParams.m_arrflRGBA[nI]) + "_";
+		strColor += tostr(cylinderParams.m_arrflRGBA[nI]) + "_";
 	}
-	strColor += to_string((long double)cylinderParams.m_arrflRGBA[3]) + ";";
+	strColor += tostr(cylinderParams.m_arrflRGBA[3]) + ";";
 
-	strCylinderParams += strColor;
-
-	strCylinderParams += cylinderParams.m_strFileNameTexture + ";";
-
-	strCylinderParams += astrParentName + ";";
+	strCylinderParams += strColor + cylinderParams.m_strFileNameTexture + ";" + astrParentName + ";";
 
 	return strCylinderParams;
 }

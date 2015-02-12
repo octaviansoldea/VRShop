@@ -8,6 +8,7 @@
 #include <osgDB/ReadFile>
 #include <osg/MatrixTransform>
 #include <osg/Geometry>
+#include <osg/Geode>
 
 #include <osg/Material>
 #include <osg/BlendFunc>
@@ -45,13 +46,12 @@ void UntransformedPolyhedron::setColor(const vector < float > & aarrflColor)	{
 	int nGeodesNr = this->getNumChildren();
 
 	for(nI = 0; nI < nGeodesNr; nI++) {
-		osg::Geode * pGeode = dynamic_cast< osg::Geode * >(getChild(nI));
+		ref_ptr<osg::Geode> pGeode = dynamic_cast< osg::Geode * >(getChild(nI));
 
 		int nJ;
 		int nChildrenNr = pGeode->getNumDrawables();
 		for(nJ =0; nJ < nChildrenNr; nJ++) {
-			ref_ptr<Drawable> pDrawable = pGeode->getDrawable(nJ);
-			ref_ptr<Geometry> pGeometry = dynamic_cast<Geometry *>(pDrawable.get());
+			ref_ptr<Geometry> pGeometry = dynamic_cast<Geometry *>(pGeode->getDrawable(nJ));
 			ref_ptr<Vec4Array> pColors = new Vec4Array;
 			pGeometry->setColorArray(pColors.get());
 			pGeometry->setColorBinding(Geometry::BIND_OVERALL);
@@ -68,14 +68,13 @@ void UntransformedPolyhedron::setTexture(const std::string & astrFileName) {
 	ref_ptr<TexMat> pTexMat = new TexMat;
 	pTexMat->setScaleByTextureRectangleSize(true);
 
-	osg::Geode * pGeode = dynamic_cast< osg::Geode * >(getChild(2));
+	ref_ptr<osg::Geode> pGeode = static_cast< osg::Geode * >(getChild(2));
 	int nSidesNr = pGeode->getNumDrawables();
 	int nI;
 	double dbStep = 1.0 / nSidesNr;
 	for(nI = 0; nI < nSidesNr; nI++) {
 		ref_ptr<Drawable> pDrawable = pGeode->getDrawable(nI);
-		ref_ptr<Geometry> pGeometry = dynamic_cast<Geometry *>(pDrawable.get());
-//		Geometry * pGeometry = dynamic_cast<Geometry *>(pDrawable.get());
+		ref_ptr<Geometry> pGeometry = static_cast<Geometry *>(pDrawable.get());
 
 		ref_ptr<Vec2Array> pTexCoords = new Vec2Array(4);
 		(*pTexCoords)[0].set(dbStep * nI, 1.0);
@@ -91,7 +90,6 @@ void UntransformedPolyhedron::setTexture(const std::string & astrFileName) {
 		pGeometry->setUseDisplayList(false);
 		
 		ref_ptr<StateSet> pState = pGeometry->getOrCreateStateSet();
-//		StateSet * pState = pGeometry->getOrCreateStateSet();
 		pState->setTextureAttributeAndModes(0, pTexture, StateAttribute::ON);
 		pState->setTextureAttributeAndModes(0, pTexMat, StateAttribute::ON);
 
@@ -100,11 +98,10 @@ void UntransformedPolyhedron::setTexture(const std::string & astrFileName) {
 
 	dbStep *= 2 * PI;
 	for(nI = 0; nI < 2; nI++) {
-		osg::Geode * pGeode = dynamic_cast< osg::Geode * >(getChild(nI));
+		ref_ptr<osg::Geode> pGeode = dynamic_cast< osg::Geode * >(getChild(nI));
 
 		ref_ptr<Drawable> pDrawable = pGeode->getDrawable(0);
 		ref_ptr<Geometry> pGeometry = dynamic_cast<Geometry *>(pDrawable.get());
-//		Geometry * pGeometry = dynamic_cast<Geometry *>(pDrawable.get());
 
 		ref_ptr<Vec2Array> pTexCoords = new Vec2Array(nSidesNr);
 		int nJ;
@@ -119,7 +116,6 @@ void UntransformedPolyhedron::setTexture(const std::string & astrFileName) {
 		pGeometry->setColorBinding(Geometry::BIND_OVERALL);
 		pGeometry->setUseDisplayList(false);
 		ref_ptr<StateSet> pState = pGeometry->getOrCreateStateSet();
-//		StateSet * pState = pGeometry->getOrCreateStateSet();
 		pState->setTextureAttributeAndModes(0, pTexture, StateAttribute::ON);
 		pState->setTextureAttributeAndModes(0, pTexMat, StateAttribute::ON);
 		pState->setMode(GL_LIGHTING, StateAttribute::OFF);
@@ -130,11 +126,21 @@ void UntransformedPolyhedron::setTexture(const std::string & astrFileName) {
 
 void UntransformedPolyhedron::setResolution(int anResolution) {
 	m_UntransformedPolyhedronParams.m_nResolution = anResolution;
+	init(m_UntransformedPolyhedronParams);
+}
+
+//-----------------------------------------------------------------------------
+
+int UntransformedPolyhedron::getResolution() const	{
+	return m_UntransformedPolyhedronParams.m_nResolution;
 }
 
 //-----------------------------------------------------------------------------
 
 void UntransformedPolyhedron::init(const UntransformedPolyhedronParams & aUntransformedPolyhedronParams)	{
+	int nChildren = getNumChildren();
+	if (nChildren>0)
+		removeChildren(0,nChildren);
 	m_UntransformedPolyhedronParams = aUntransformedPolyhedronParams;
 
 	int anSidesNr = m_UntransformedPolyhedronParams.m_nResolution;
@@ -166,27 +172,24 @@ void UntransformedPolyhedron::init(const UntransformedPolyhedronParams & aUntran
 		(*m_pPointsTop)[nI] = Vec3(m_pPoints[0].at(2*nI+1));		
 	}
 
-	ref_ptr < osg::Geometry > pGeometry = new Geometry;
-	pGeometry->setVertexArray(m_pPointsBottom.get());
-	pGeometry->addPrimitiveSet(new DrawArrays(PrimitiveSet::TRIANGLE_FAN, 0, anSidesNr));
-	ref_ptr < osg::Geode > pGeode = new osg::Geode;
-	pGeode->addDrawable(pGeometry);
-	ref_ptr<Vec3Array> pN = new Vec3Array;
-	pGeometry->setNormalArray(pN.get());
-	pGeometry->setNormalBinding(Geometry::BIND_PER_PRIMITIVE_SET);
-	pN->push_back(Vec3(0.0, -1.0, 0.0));
-	addChild(pGeode);
+	ref_ptr<Geometry> pGeometry = 0;
+	ref_ptr<Geode> pGeode = 0;
+	ref_ptr<Vec3Array> pN = 0;
+	for (nI=0;nI<2;nI++)	{
+		pGeometry = new Geometry;
+		ref_ptr<Vec3Array> pPoints = (nI==0) ? m_pPointsBottom : m_pPointsTop;
+		pGeometry->setVertexArray(pPoints);
 
-	pGeometry = new Geometry;
-	pGeometry->setVertexArray(m_pPointsTop.get());
-	pGeometry->addPrimitiveSet(new DrawArrays(PrimitiveSet::TRIANGLE_FAN, 0, anSidesNr));
-	pGeode = new osg::Geode;
-	pGeode->addDrawable(pGeometry);
-	pN = new Vec3Array;
-	pGeometry->setNormalArray(pN.get());
-	pGeometry->setNormalBinding(Geometry::BIND_PER_PRIMITIVE_SET);
-	pN->push_back(Vec3(0.0, 1.0, 0.0));
-	addChild(pGeode);
+		pGeometry->addPrimitiveSet(new DrawArrays(PrimitiveSet::TRIANGLE_FAN, 0, anSidesNr));
+		pGeode = new osg::Geode;
+		pGeode->addDrawable(pGeometry);
+		pN = new Vec3Array;
+		Vec3 vec3Normal = (nI==0) ? Vec3(0.0, -1.0, 0.0) : Vec3(0.0, 1.0, 0.0);
+		pN->push_back(vec3Normal);
+		pGeometry->setNormalArray(pN);
+		pGeometry->setNormalBinding(Geometry::BIND_PER_PRIMITIVE_SET);
+		addChild(pGeode);
+	}
 
 	pGeode = new osg::Geode;
 	for (nI=0;nI<anSidesNr;nI++) {
@@ -197,7 +200,6 @@ void UntransformedPolyhedron::init(const UntransformedPolyhedronParams & aUntran
 		(*pPoints)[3] = (*m_pPoints)[2*nI + 2];
 
 		pGeometry = new Geometry;
-		ref_ptr < osg::Geometry > pGeometry = new Geometry;
 		pGeometry->setVertexArray(pPoints.get());
 		pGeometry->addPrimitiveSet(new DrawArrays(PrimitiveSet::QUADS,0,4));
 

@@ -25,21 +25,21 @@ namespace VR {
 	
 	struct PickAndDragController : public QObject {
 		PickAndDragController(
-			QDoubleSpinBox * a_p_DoubleSpinBox_TranslationX,
-			QDoubleSpinBox * a_p_DoubleSpinBox_TranslationY,
-			QDoubleSpinBox * a_p_DoubleSpinBox_TranslationZ,
+			QDoubleSpinBox * apDoubleSpinBoxTranslationX,
+			QDoubleSpinBox * apDoubleSpinBoxTranslationY,
+			QDoubleSpinBox * apDoubleSpinBoxTranslationZ,
 							  
-			QDoubleSpinBox * a_p_DoubleSpinBox_ScalingX,
-			QDoubleSpinBox * a_p_DoubleSpinBox_ScalingY,
-			QDoubleSpinBox * a_p_DoubleSpinBox_ScalingZ,
-			QDoubleSpinBox * a_p_DoubleSpinBox_RotationX,
-			QDoubleSpinBox * a_p_DoubleSpinBox_RotationY,
-			QDoubleSpinBox * a_p_DoubleSpinBox_RotationZ,
+			QDoubleSpinBox * apDoubleSpinBoxScalingX,
+			QDoubleSpinBox * apDoubleSpinBoxScalingY,
+			QDoubleSpinBox * apDoubleSpinBoxScalingZ,
+			QDoubleSpinBox * apDoubleSpinBoxRotationX,
+			QDoubleSpinBox * apDoubleSpinBoxRotationY,
+			QDoubleSpinBox * apDoubleSpinBoxRotationZ,
 
-			QComboBox * a_p_ComboBox_DirectionOfTranslation,
-			QComboBox * a_p_ComboBox_TranslateRelativeTo,
+			QComboBox * apComboBoxDirectionOfTranslation,
+			QComboBox * apComboBoxTranslateRelativeTo,
 
-			PickAndDragHandlerShopEditor * a_pPickAndDragHandlerShopEditor);	//End of constructor
+			PickAndDragHandlerShopEditor * apPickAndDragHandlerShopEditor);	//End of constructor
 
 
 	public slots:

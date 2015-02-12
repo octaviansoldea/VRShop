@@ -70,6 +70,9 @@ bool PickAndDragHandler::handle( const GUIEventAdapter& ea, GUIActionAdapter& aa
 		if(m_pPickedObject==NULL) {
 			return(false);
 		}
+		if (m_pPickedObject->getIsTargetLocked() == true)	{
+			return false;
+		}
 		MouseSignals mouseSignals;
 		getMouseSignals(&mouseSignals, ea);
 		bRes = handleDrag(mouseSignals, pViewer);			
@@ -315,3 +318,7 @@ bool PickAndDragHandler::handleDrag(const MouseSignals & aMouseSignals, osgViewe
 }
 
 //---------------------------------------------------------------------------------------
+
+ref_ptr<AbstractObject> PickAndDragHandler::getPickedObject()	{
+	return m_pPickedObject;
+}

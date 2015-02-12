@@ -47,8 +47,17 @@ void main_UntransformedPlate3D(ref_ptr<Group> pScene)	{
 	arrflColor.push_back(0.80);
 	arrflColor.push_back(0.10);
 	arrflColor.push_back(1.0);
-
 	pUntransformedPlate3D->setColor(arrflColor);
+
+	arrflColor[0] = 0.10;
+	arrflColor[1] = 0.20;
+	arrflColor[2] = 0.40;
+	arrflColor[3] = 1.0;
+	pUntransformedPlate3D->setColor(arrflColor,UntransformedPlate3D::PlateSide::FRONT);
+
+	string strTexture = AppData::getFPathResources() + "/Textures/lz.rgb";
+	pUntransformedPlate3D->setTexture(strTexture,UntransformedPlate3D::PlateSide::RIGHT);
+
 	pScene->addChild(pUntransformedPlate3D);
 }
 
@@ -136,13 +145,13 @@ void main_UntransformedPolygon2D_Color(ref_ptr<Group> pScene)
 
 void main_UntransformedPolyhedron_Color(ref_ptr<Group> pScene)	{
 	UntransformedPolyhedronParams uPp;
-	uPp.m_nResolution = 20;
 	ref_ptr<UntransformedPolyhedron> pUntransformedPolyhedron = new UntransformedPolyhedron(uPp);
 	vector < float > arrflColor;
 	arrflColor.push_back(0.8);
-	arrflColor.push_back(0.8);
+	arrflColor.push_back(0.18);
 	arrflColor.push_back(0.8);
 	arrflColor.push_back(1.0);
+	pUntransformedPolyhedron->setResolution(10);
 	pUntransformedPolyhedron->setColor(arrflColor);
 	pScene->addChild(pUntransformedPolyhedron);
 }
@@ -199,6 +208,8 @@ void main_Prism(ref_ptr<Group> pScene)	{
 	ref_ptr<VR::Prism> pPrism = new VR::Prism(pP);
 	string strFileNameTexture = AppData::getFPathResources() + "/Textures/lz.rgb";
 	pPrism->setTexture(strFileNameTexture);
+
+	pPrism->setResolution(10);
 
 	pScene->addChild(pPrism);
 }
@@ -262,7 +273,7 @@ int main(int argc, char * argv[])	{
 	ref_ptr<Node> pAxes = osgDB::readNodeFile(AppData::getFPathResources() + "/Models3D/axes.osgt");
 	pScene->addChild(pAxes);
 
-	int nSelection = 12;
+	int nSelection = 3;
 	switch (nSelection)	{
 	case 1: main_UntransformedPlate2D_Color(pScene); break;
 	case 2: main_UntransformedPlate2D_Texture(pScene); break;

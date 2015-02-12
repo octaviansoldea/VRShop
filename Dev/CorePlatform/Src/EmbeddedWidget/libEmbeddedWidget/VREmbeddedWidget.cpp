@@ -50,7 +50,9 @@ void EmbeddedWidget::selectShop(const QString & aqstrShopName)	{
 	}
 
 	string strClientName = tostr(m_pClient->getUserID());
-	string strDBFileName = AppData::getFPathDatabases() + "ShopDemo.db";
+	string strDBFileName = 
+		//AppData::getFPathDatabases() + "ShopDemo.db";
+		"C:/Projekti/Customers/Leila/Scenes/LeilaFinal.db";
 
 	m_pWidget = new ShoppingPlace_GUI(m_pClient, strDBFileName,strClientName);
 	m_pWidget->setParent(m_pWidgetCentralContent);

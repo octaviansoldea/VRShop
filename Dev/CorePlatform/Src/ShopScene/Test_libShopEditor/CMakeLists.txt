@@ -47,6 +47,7 @@
       ${CMAKE_SOURCE_DIR}/Props/GeometricShape/libGeometricShape
       ${CMAKE_SOURCE_DIR}/Props/Equipment/Furniture/libFurniture
       ${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProduct
+	  ${CMAKE_SOURCE_DIR}/EmbeddedWidget/libEmbeddedWidgetStatics
     )
     
     SET(LIBS_COMMON 
@@ -65,7 +66,7 @@
     	libCommon
     	libCommon_OSG
     	libCommon_QT
-  	libAppData
+  		libAppData
     	libItemModel
     	libSearch
     	libCamera
@@ -76,6 +77,7 @@
     	libScene
     	libProduct
     	libOSGQTViewer
+		libEmbeddedWidgetStatics
     )
     
     SET(SRCS

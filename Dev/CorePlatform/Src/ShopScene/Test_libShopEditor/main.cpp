@@ -1,19 +1,21 @@
 #include <windows.h>
-
 #include <string>
 
-#include "Log.h"
 
 #include <QApplication>
 #include <QMessageBox>
 #include <QObject>
 #include <QString>
 
+#include "Log.h"
+#include "VREmbeddedWidgetStatics.h"
+
 #include "VRShopBuilder_GUI.h"
 
 using namespace std;
 using namespace VR;
 
+static EmbeddedWidgetStatics staticInitializerOrderer;
 
 int main(int argc, char *argv[])	{
 	QApplication app(argc, argv);

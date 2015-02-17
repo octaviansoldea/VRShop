@@ -30,7 +30,6 @@ Cupboard::Cupboard(const CupboardParams & aCupboardParams) : Furniture(aCupboard
 Cupboard::Cupboard(const Cupboard& cup,const CopyOp& copyop) : Furniture(cup, copyop)	{
 	CupboardParams aCup;
 	cup.getParams(aCup);
-//	setParams(aCup);
 	init(aCup);
 
 	setName("Cupboard_"+tostr(getAbstractObjectNo()));
@@ -99,9 +98,9 @@ string Cupboard::getSQLCommand() const {
 void Cupboard::initFromSQLData(const string & astrSQLData)	{
 	CupboardParams cupboardParams;
 	string strSQLData = astrSQLData;
-	string strDelimiter = "?";
+	char * pchDelim = "?";
 	
-	vector < string > arrstrSQLData = splitString(strSQLData,strDelimiter);
+	vector < string > arrstrSQLData = splitString(strSQLData,pchDelim);
 	vector <string> arrstrCupboardParams = splitString(arrstrSQLData[0],"_");
 
 	int nI;

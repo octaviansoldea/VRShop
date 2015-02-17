@@ -64,11 +64,15 @@ void UntransformedPlate2D::setTexture(const string & astrFileName) {
 	m_pGeometry->setUseDisplayList(false);
 
 	ref_ptr<Image> pImage = osgDB::readImageFile(astrFileName);
-	ref_ptr<Texture2D> pTexture = new Texture2D(pImage);
+
+	ref_ptr<TextureRectangle> pTexture = new TextureRectangle(pImage);
 	pTexture->setWrap(osg::Texture::WRAP_S, osg::Texture::REPEAT);
+	ref_ptr<TexMat> pTexMat = new TexMat;
+	pTexMat->setScaleByTextureRectangleSize(true);
 
 	ref_ptr<StateSet> pState = m_pGeometry->getOrCreateStateSet();
 	pState->setTextureAttributeAndModes(0, pTexture, StateAttribute::ON);
+	pState->setTextureAttributeAndModes(0, pTexMat, StateAttribute::ON);
 
 	pState->setMode(GL_LIGHTING, StateAttribute::OFF);
 }

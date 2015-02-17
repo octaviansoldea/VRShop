@@ -5,6 +5,8 @@
 #include <sstream>
 //
 //#include "BasicDefinitions.h"
+
+#include <bitset>
 #include "BasicStringDefinitions.h"
 
 using namespace std;
@@ -34,6 +36,8 @@ std::string GetLastErrorString() {
 }
 #endif //_WIN32
 
+//-------------------------------------------------------------------------------------------------
+
 bool isInString(const std::string & astrName, const std::string & astrField) {
 	bool bRes = false;
 	int indexCh = astrName.find ( astrField , 0 );
@@ -42,30 +46,37 @@ bool isInString(const std::string & astrName, const std::string & astrField) {
 	return(bRes);
 }
 
+//-------------------------------------------------------------------------------------------------
 
 bool isAtEndOfString(const std::string & astrName, const std::string & astrField)	{
-	bool bRes = false;
-	int indexCh = astrName.find ( astrField ,  astrName.size() - astrField.size());
-	if (indexCh != std::string::npos )
-		bRes = true;
+	int nDataSize = astrField.size();
+	int nNameSize = astrName.size();
+	char * pchStr = new char[nDataSize+1];
+	memcpy(pchStr, &astrName[0] + sizeof(char)*(nNameSize-nDataSize), sizeof(char)*(nDataSize+1));
+
+	bool bRes = (strcmp(pchStr, astrField.c_str()) == 0);
+	delete [] pchStr;
+
 	return bRes;
 }
 
+//-------------------------------------------------------------------------------------------------
 
-vector<string> splitString(string & astrName, const string & astrDelimiters)	{
+vector<string> splitString(string & astrName, char * astrDelimiters)	{
+	char * pchData = &astrName[0];
+	char * pch;
 	vector<string> vecSplitString;
-	int indexCh = 0;
 
-	while (indexCh != string::npos) {
-		indexCh = astrName.find_first_of(astrDelimiters);
-		vecSplitString.push_back(astrName.substr(0,indexCh));
-		astrName.erase(0, indexCh+1);
+	pch = strtok(pchData, astrDelimiters);
+	while (pch != NULL)	{
+		vecSplitString.push_back(pch);
+		pch = strtok(NULL, astrDelimiters);
 	}
-	if (vecSplitString.back().empty())
-		vecSplitString.pop_back();
 
 	return vecSplitString;
 }
+
+//-------------------------------------------------------------------------------------------------
 
 std::string replaceAll(std::string astrText, const std::string& astrFrom, const std::string& astrTo) {
     size_t start_pos = 0;
@@ -74,6 +85,17 @@ std::string replaceAll(std::string astrText, const std::string& astrFrom, const 
         start_pos += astrTo.length(); // Handles case where 'to' is a substring of 'from'
     }
     return astrText;
+}
+
+//-------------------------------------------------------------------------------------------------
+
+void trimString(std::string * apstrSource, char * apchDelim, std::string & astrTarget)	{
+	int nDataSize = apstrSource->size();
+	char * pchStr = new char[nDataSize+1];
+	memcpy(pchStr, &*apstrSource->begin(), nDataSize+1);
+	char * pch = strtok(pchStr, apchDelim);
+	astrTarget = apstrSource->substr(strlen(pch)+1,nDataSize);
+	delete [] pchStr;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -92,4 +114,30 @@ wchar_t * string2WChar(const std::string & astrString)	{
 	MultiByteToWideChar(CP_ACP, 0, astrString.c_str(), -1, pWString, 4096);
 
 	return pWString;
+}
+
+
+//===================================================================
+
+void splitString(string const& s, char const* d, vector<string> & avecstrResult)	{
+	bitset<255> delims;
+	while(*d)	{
+		unsigned char code = *d++;
+		delims[code] = true;
+	}
+	string::const_iterator iter;
+	bool in_token = false;
+	for(string::const_iterator it = s.begin(), end = s.end(); it != end; ++it)	{
+		if(delims[*it])	{
+			if(in_token)	{
+				avecstrResult.push_back(string(iter,it));
+				in_token = false;
+			}
+		} else if(!in_token) {
+			iter = it;
+			in_token = true;
+		}
+	}
+	if(in_token)
+		avecstrResult.push_back(string(iter,s.end()));
 }

@@ -23,6 +23,7 @@ namespace VR {
 		void setColor(std::vector<float> & avecColor, PlateSide aPlateSide=ALL);
 		void setTexture(std::string & astrFileName, PlateSide aPlateSide=ALL);
 
+	private:
 		UntransformedPlate2D * getPlate2D(const PlateSide & anSide);
 	};
 }

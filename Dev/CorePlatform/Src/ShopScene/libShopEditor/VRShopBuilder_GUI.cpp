@@ -6,8 +6,6 @@
 #include <osgDB/ReadFile>
 #include <osgGA/GUIEventHandler>
 
-#include <QMessageBox>
-
 #include "VRShopBuilder.h"
 #include "VRScene.h"
 
@@ -154,7 +152,6 @@ void ShopBuilder_GUI::slotNewProject()	{
 
 void ShopBuilder_GUI::slotOpenDB() {
 	QString qstrFileName = BasicQtOperations::openSaveDialog("*.db", this).c_str();
-
 	m_pShopBuilder->readDB(qstrFileName.toStdString());
 }
 

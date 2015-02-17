@@ -9,14 +9,22 @@
 #include <QObject>
 #include <QString>
 
+#include "VRAppData.h"
+#include "VREmbeddedWidgetStatics.h"
+
 #include "VRShopBuilder_GUI.h"
 
 using namespace std;
 using namespace VR;
 
+static EmbeddedWidgetStatics staticInitializerOrderer;
 
 int main(int argc, char *argv[])	{
 	QApplication app(argc, argv);
+
+	string strPluginsPath = AppData::getFPathDependencies();
+	QApplication::addLibraryPath(strPluginsPath.c_str());
+
 
 	CreateLogFile();
 	

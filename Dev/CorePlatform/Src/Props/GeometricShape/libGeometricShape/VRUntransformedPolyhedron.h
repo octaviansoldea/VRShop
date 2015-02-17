@@ -20,8 +20,10 @@ namespace VR {
 		UntransformedPolyhedron();
 		UntransformedPolyhedron(const UntransformedPolyhedronParams & aUntransformedPolyhedronParams);
 
-		void setColor(const std::vector < float > & aarrflColor);
-		void setTexture(const std::string & astrFileName);
+		enum PolyhedronSide {BOTTOM=0,UP,BELT,ALL};
+
+		void setColor(const std::vector<float> & aarrflColor, const PolyhedronSide & aPolyhedronSide=PolyhedronSide::ALL);
+		void setTexture(const std::string & astrFileName, const PolyhedronSide & aPolyhedronSide=PolyhedronSide::ALL);
 
 		void setResolution(int anResolution);
 		int getResolution() const;

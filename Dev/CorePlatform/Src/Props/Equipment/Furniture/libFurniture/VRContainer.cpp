@@ -101,9 +101,9 @@ void Container::initFromSQLData(const string & astrSQLData)	{
 	ContainerParams containerParams;
 
 	string strSQLData = astrSQLData;
-	string strDelimiter = "?";
+	char * chDelim = "?";
 	
-	vector < string > arrstrSQLData = splitString(strSQLData,strDelimiter);
+	vector < string > arrstrSQLData = splitString(strSQLData,chDelim);
 	vector <string> arrstrContainerParams = splitString(arrstrSQLData[0],"_");
 
 	int nI;

@@ -103,8 +103,7 @@ void AbstractObject::setScaling(float aflLenX, float aflLenY, float aflLenZ)	{
 //--------------------------------------------------------------------------
 
 Vec3d AbstractObject::getPosition() const	{
-	Vec3d pos;
-	pos.set(m_flPosX, m_flPosY, m_flPosZ);
+	Vec3d pos(m_flPosX, m_flPosY, m_flPosZ);
 
 	return pos;
 }
@@ -112,8 +111,7 @@ Vec3d AbstractObject::getPosition() const	{
 //--------------------------------------------------------------------------
 
 Vec3d AbstractObject::getScaling() const	{
-	Vec3d scale;
-	scale.set(m_flLenX, m_flLenY, m_flLenZ);
+	Vec3d scale(m_flLenX, m_flLenY, m_flLenZ);
 
 	return scale;
 }

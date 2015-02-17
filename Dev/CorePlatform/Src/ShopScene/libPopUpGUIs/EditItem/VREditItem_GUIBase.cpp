@@ -40,7 +40,7 @@ EditItem_GUIBase * EditItem_GUIBase::createInstance(AbstractObject * apAbstractO
 	} else if ((strGUIName == "Container") || (strGUIName == "Cupboard")) {
 		return new EditItemFurniture_GUI(apAbstractObject);
 	} else {
-		return new EditItem_GUI(apAbstractObject);
+		return new EditItemFurniture_GUI(apAbstractObject);
 	}
 }
 

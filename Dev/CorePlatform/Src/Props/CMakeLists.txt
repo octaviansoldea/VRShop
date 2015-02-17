@@ -5,6 +5,7 @@ SET(CMAKE_DEBUG_POSTFIX "D")
 SUBDIRS(
 	AbstractManagerClient
 	AbstractObject
+	ExternalObject
 	Avatar
 	Building
 	Equipment

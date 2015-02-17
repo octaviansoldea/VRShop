@@ -29,6 +29,7 @@
     INCLUDE_DIRECTORIES(
       ${OPENSCENEGRAPH_INCLUDE_DIRS}
       ${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
+	  ${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libAppData
       ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_OSG
       ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_QT
       ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCamera
@@ -47,6 +48,7 @@
       ${CMAKE_SOURCE_DIR}/Props/GeometricShape/libGeometricShape
       ${CMAKE_SOURCE_DIR}/Props/Equipment/Furniture/libFurniture
       ${CMAKE_SOURCE_DIR}/ManagementConsole/Product/libProduct
+	  ${CMAKE_SOURCE_DIR}/EmbeddedWidget/libEmbeddedWidgetStatics
     )
     
     SET(LIBS_COMMON 
@@ -60,12 +62,13 @@
     	libDatabase
     	libAbstractObject
     	libGeometricShape
+		libExternalObject
     	libPopUpGUIs
     	libShopEditor
     	libCommon
     	libCommon_OSG
     	libCommon_QT
-  	libAppData
+	  	libAppData
     	libItemModel
     	libSearch
     	libCamera
@@ -76,6 +79,7 @@
     	libScene
     	libProduct
     	libOSGQTViewer
+		libEmbeddedWidgetStatics
     )
     
     SET(SRCS

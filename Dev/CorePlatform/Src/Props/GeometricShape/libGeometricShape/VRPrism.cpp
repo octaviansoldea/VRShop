@@ -106,7 +106,7 @@ void Prism::init(const PrismParams & aPrismParams)	{
 
 void Prism::setColor(const vector < float > & aarrflColor) {
 	m_arrflRGBA = aarrflColor;
-	m_pUntransformedPolyhedron->setColor(m_arrflRGBA);
+	m_pUntransformedPolyhedron->setColor(m_arrflRGBA,UntransformedPolyhedron::ALL);
 }
 
 //----------------------------------------------------------------------

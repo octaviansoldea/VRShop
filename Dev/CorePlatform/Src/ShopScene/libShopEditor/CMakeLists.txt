@@ -32,6 +32,7 @@ ENDIF(Qt5_FOUND)
 INCLUDE_DIRECTORIES(
   ${OPENSCENEGRAPH_INCLUDE_DIRS}
   ${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
+  ${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libAppData
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_OSG
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCommon_QT
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libOSGQTViewer
@@ -40,6 +41,7 @@ INCLUDE_DIRECTORIES(
   ${CMAKE_SOURCE_DIR}/Props/AbstractObject/libAbstractObject
   ${CMAKE_SOURCE_DIR}/Props/GeometricShape/libGeometricShape
   ${CMAKE_SOURCE_DIR}/Props/Equipment/Furniture/libFurniture
+  ${CMAKE_SOURCE_DIR}/Props/ExternalObject/libExternalObject
   ${CMAKE_SOURCE_DIR}/Props/Scene/libScene
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libSearch
   ${CMAKE_SOURCE_DIR}/CoreUtils_OSG/libCamera

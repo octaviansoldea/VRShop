@@ -151,6 +151,17 @@ void DatabaseInterfaceShopEditor::systemOfTables(vector<pair<string,string>> & a
 			PrismTexture TEXT, \
 			SceneObjectNameObject TEXT);";
 		avecStmtPairs.push_back(make_pair("Prism", strSQLFormat));
+
+		strSQLFormat =
+			"CREATE TABLE IF NOT EXISTS ExternalObject ( \
+			ExternalObjectID INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, \
+			ClassName TEXT, \
+			ObjectName TEXT, \
+			SourceFile TEXT, \
+			ExternalObjectParams TEXT, \
+			SceneObjectNameObject TEXT);";
+		avecStmtPairs.push_back(make_pair("ExternalObject", strSQLFormat));
+
 	}
 }
 

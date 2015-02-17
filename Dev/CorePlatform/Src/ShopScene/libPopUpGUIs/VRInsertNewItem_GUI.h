@@ -3,17 +3,15 @@
 
 #include <QDialog>
 
-#include <osg/Node>
-
 #include "ui_VRInsertNewItem_GUI.h"
 
 namespace VR	{
 	class InsertNewItem_GUI : public QDialog, public Ui::InsertNewItem {
-		Q_OBJECT
 	public:
 		InsertNewItem_GUI();
 
-	public slots:
+		QString m_qstrFileName;
+
 		void slotDisplayWidgetItems(QListWidgetItem * item);
 		void slotInsertfromFile();
 	};

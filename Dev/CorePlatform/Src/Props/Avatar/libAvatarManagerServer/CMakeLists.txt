@@ -26,16 +26,6 @@ ELSE(Qt5_FOUND)
   )
 ENDIF(Qt5_FOUND)
 
-#MOC according to the Qt version
-IF(Qt5_FOUND)
-  QT5_WRAP_UI(UI_SRCS		)
-  QT5_WRAP_CPP(MOC_SRCS 	)
-ELSE(Qt5_FOUND)
-  QT4_WRAP_CPP(MOC_SRCS		)
-  QT4_WRAP_UI(UI_SRCS		)
-ENDIF(Qt5_FOUND)
-
-
 INCLUDE_DIRECTORIES(
 	${CMAKE_SOURCE_DIR}/CoreUtils_CPP/libCommon
 	${CMAKE_SOURCE_DIR}/DatabaseMgr/libDatabase
@@ -51,7 +41,7 @@ SET(SRCS
 )
 
 ADD_LIBRARY(libAvatarManagerServer
-  ${SRCS} ${MOC_SRCS}
+  ${SRCS}
 )
 
 SET_PROPERTY(TARGET libAvatarManagerServer PROPERTY FOLDER AvatarManagerServer)

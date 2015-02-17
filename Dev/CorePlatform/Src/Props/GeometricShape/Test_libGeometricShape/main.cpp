@@ -146,13 +146,30 @@ void main_UntransformedPolygon2D_Color(ref_ptr<Group> pScene)
 void main_UntransformedPolyhedron_Color(ref_ptr<Group> pScene)	{
 	UntransformedPolyhedronParams uPp;
 	ref_ptr<UntransformedPolyhedron> pUntransformedPolyhedron = new UntransformedPolyhedron(uPp);
-	vector < float > arrflColor;
-	arrflColor.push_back(0.8);
+
+	vector<float> arrflColor;
 	arrflColor.push_back(0.18);
-	arrflColor.push_back(0.8);
+	arrflColor.push_back(0.18);
+	arrflColor.push_back(0.18);
 	arrflColor.push_back(1.0);
 	pUntransformedPolyhedron->setResolution(10);
-	pUntransformedPolyhedron->setColor(arrflColor);
+	pUntransformedPolyhedron->setTexture(AppData::getFPathResources() + "Textures/lz.rgb",UntransformedPolyhedron::BOTTOM);
+	pUntransformedPolyhedron->setTexture(AppData::getFPathResources() + "Textures/Banana.bmp",UntransformedPolyhedron::UP);
+	pUntransformedPolyhedron->setTexture(AppData::getFPathResources() + "Textures/blueFlowers.bmp",UntransformedPolyhedron::BELT);
+	//pUntransformedPolyhedron->setColor(arrflColor,UntransformedPolyhedron::BOTTOM);
+
+	arrflColor[0] = 0.28;
+	arrflColor[1] = 0.38;
+	arrflColor[2] = 0.28;
+	arrflColor[3] = 1.0;
+//	pUntransformedPolyhedron->setColor(arrflColor,UntransformedPolyhedron::UP);
+
+	arrflColor[0] = 0.58;
+	arrflColor[1] = 0.18;
+	arrflColor[2] = 0.38;
+	arrflColor[3] = 1.0;
+//	pUntransformedPolyhedron->setColor(arrflColor,UntransformedPolyhedron::BELT);
+
 	pScene->addChild(pUntransformedPolyhedron);
 }
 
@@ -273,7 +290,7 @@ int main(int argc, char * argv[])	{
 	ref_ptr<Node> pAxes = osgDB::readNodeFile(AppData::getFPathResources() + "/Models3D/axes.osgt");
 	pScene->addChild(pAxes);
 
-	int nSelection = 3;
+	int nSelection = 9;
 	switch (nSelection)	{
 	case 1: main_UntransformedPlate2D_Color(pScene); break;
 	case 2: main_UntransformedPlate2D_Texture(pScene); break;

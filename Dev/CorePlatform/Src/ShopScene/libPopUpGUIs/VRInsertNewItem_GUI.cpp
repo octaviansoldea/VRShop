@@ -1,3 +1,5 @@
+#include "VRBasicQTOperations.h"
+
 #include "VRInsertNewItem_GUI.h"
 
 using namespace Ui;
@@ -8,12 +10,12 @@ using namespace VR;
 InsertNewItem_GUI::InsertNewItem_GUI() {
 	setupUi(this);
 
-	connect(m_pToolButtonClose, SIGNAL(clicked()), this, SLOT(close()));
-	connect(m_pPushButtonCancel, SIGNAL(clicked()), this, SLOT(close()));
-	connect(m_pPushButtonInsert, SIGNAL(clicked()), this, SLOT(accept()));
-	connect(m_pPushButtonReadFile, SIGNAL(clicked()), this, SLOT(slotInsertfromFile()));
-	connect(m_pListWidgetGroup, SIGNAL(itemClicked(QListWidgetItem *)), this, SLOT(slotDisplayWidgetItems(QListWidgetItem *)));
-	connect(m_pListWidgetItem, SIGNAL(itemDoubleClicked(QListWidgetItem *)), this, SLOT(accept()));
+	connect(m_pToolButtonClose, &QToolButton::clicked, this, &InsertNewItem_GUI::close);
+	connect(m_pPushButtonCancel, &QPushButton::clicked, this, &InsertNewItem_GUI::close);
+	connect(m_pPushButtonInsert, &QPushButton::clicked, this, &InsertNewItem_GUI::accept);
+	connect(m_pPushButtonReadFile, &QPushButton::clicked, this, &InsertNewItem_GUI::slotInsertfromFile);
+	connect(m_pListWidgetGroup, &QListWidget::itemClicked, this, &InsertNewItem_GUI::slotDisplayWidgetItems);
+	connect(m_pListWidgetItem, &QListWidget::itemDoubleClicked, this, &InsertNewItem_GUI::accept);
 }
 
 //----------------------------------------------------------------------
@@ -44,4 +46,11 @@ void InsertNewItem_GUI::slotDisplayWidgetItems(QListWidgetItem * item)	{
 //----------------------------------------------------------------------
 
 void InsertNewItem_GUI::slotInsertfromFile()	{
+	m_qstrFileName = BasicQtOperations::openSaveDialog("*.db \n *.obj\n*.osg *.osgt", this).c_str();
+
+	if (m_qstrFileName=="")	{
+		InsertNewItem_GUI::reject();
+	} else {
+		InsertNewItem_GUI::accept();
+	}
 }

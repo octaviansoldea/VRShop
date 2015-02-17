@@ -8,8 +8,12 @@
 std::string GetLastErrorString();
 bool isInString(const std::string & astrName, const std::string & astrField);
 bool isAtEndOfString(const std::string & astrName, const std::string & astrField);
-std::vector<std::string> splitString(std::string & astrName, const std::string & astrDelimiters);
+//std::vector<std::string> splitString(std::string & astrName, const std::string & astrDelimiters);
+std::vector<std::string> splitString(std::string & astrName, char * astrDelimiters);
+void splitString(std::string const& s, char const* d, std::vector<std::string> & avecstrResult);
 std::string replaceAll(std::string astrText, const std::string& astrFrom, const std::string& astrTo);
+
+void trimString(std::string * apstrSource, char * apchDelim, std::string & astrTarget);
 
 template <class T>
 std::string tostr(T aVal)	{

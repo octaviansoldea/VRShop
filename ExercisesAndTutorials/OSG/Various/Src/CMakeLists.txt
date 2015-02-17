@@ -5,7 +5,7 @@ SET_PROPERTY(GLOBAL PROPERTY USE_FOLDERS ON)
 SET(CMAKE_PREFIX_PATH "C:/Program Files (x86)/Windows Kits/8.0/Lib/win8/um/x64")
 
 FIND_PACKAGE(OpenSceneGraph 
-	REQUIRED osg osgDB osgGA osgQt osgUtil osgViewer OpenThreads
+	REQUIRED osg osgAnimation osgDB osgGA osgQt osgUtil osgText osgViewer OpenThreads
 )
 
 FIND_PACKAGE(Qt5Core)
@@ -33,6 +33,7 @@ SUBDIRS(
   Test_libCommon_OSG
   Test_libPicker
   Test_libCamera
-  Test_libOSGQTExample  
+  Test_libOSGQTExample
+  OSGPlethora
   Test_libGUIExample
 )

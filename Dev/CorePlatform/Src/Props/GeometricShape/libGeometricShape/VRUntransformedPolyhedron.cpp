@@ -40,85 +40,103 @@ UntransformedPolyhedron::UntransformedPolyhedron(const UntransformedPolyhedronPa
 
 //--------------------------------------------------------------------------
 
-void UntransformedPolyhedron::setColor(const vector < float > & aarrflColor)	{
+void UntransformedPolyhedron::setColor(const vector<float> & aarrflColor, const PolyhedronSide & aPolyhedronSide)	{
 	Vec4 vec4(aarrflColor[0], aarrflColor[1], aarrflColor[2], aarrflColor[3]);
-	int nI;
-	int nGeodesNr = this->getNumChildren();
+	int nPlate = aPolyhedronSide;
 
-	for(nI = 0; nI < nGeodesNr; nI++) {
-		ref_ptr<osg::Geode> pGeode = dynamic_cast< osg::Geode * >(getChild(nI));
-
-		int nJ;
-		int nChildrenNr = pGeode->getNumDrawables();
-		for(nJ =0; nJ < nChildrenNr; nJ++) {
-			ref_ptr<Geometry> pGeometry = dynamic_cast<Geometry *>(pGeode->getDrawable(nJ));
-			ref_ptr<Vec4Array> pColors = new Vec4Array;
-			pGeometry->setColorArray(pColors.get());
-			pGeometry->setColorBinding(Geometry::BIND_OVERALL);
-			pColors->push_back(vec4);
+	struct	{
+		void operator() (ref_ptr<Geode> apGeode, const Vec4 & vec4) const	{
+			int nJ;
+			int nChildrenNr = apGeode->getNumDrawables();
+			for(nJ =0; nJ < nChildrenNr; nJ++) {
+				ref_ptr<Geometry> pGeometry = dynamic_cast<Geometry *>(apGeode->getDrawable(nJ));
+				ref_ptr<Vec4Array> pColors = new Vec4Array;
+				pGeometry->setColorArray(pColors.get());
+				pGeometry->setColorBinding(Geometry::BIND_OVERALL);
+				pColors->push_back(vec4);
+			}
 		}
+	} PolyColor;
+
+	if (nPlate==PolyhedronSide::ALL)	{
+		int nGeodesNr = this->getNumChildren();
+		int nI;
+
+		for(nI = 0; nI < nGeodesNr; nI++) {
+			ref_ptr<Geode> pGeode = dynamic_cast<Geode*>(getChild(nI));
+			PolyColor(pGeode,vec4);
+		}	
+	} else {
+		ref_ptr<Geode> pGeode = dynamic_cast<Geode*>(getChild(nPlate));
+		PolyColor(pGeode,vec4);
 	}
 }
 
 //-----------------------------------------------------------------------------
 
-void UntransformedPolyhedron::setTexture(const std::string & astrFileName) {
+void UntransformedPolyhedron::setTexture(const string & astrFileName, const PolyhedronSide & aPolyhedronSide) {
 	ref_ptr<Image> pImage = osgDB::readImageFile(astrFileName);
 	ref_ptr<TextureRectangle> pTexture = new TextureRectangle(pImage);
-	ref_ptr<TexMat> pTexMat = new TexMat;
-	pTexMat->setScaleByTextureRectangleSize(true);
 
-	ref_ptr<osg::Geode> pGeode = static_cast< osg::Geode * >(getChild(2));
+	ref_ptr<Geode> pGeode = static_cast<Geode *>(getChild(2));
 	int nSidesNr = pGeode->getNumDrawables();
-	int nI;
-	double dbStep = 1.0 / nSidesNr;
-	for(nI = 0; nI < nSidesNr; nI++) {
-		ref_ptr<Drawable> pDrawable = pGeode->getDrawable(nI);
-		ref_ptr<Geometry> pGeometry = static_cast<Geometry *>(pDrawable.get());
 
-		ref_ptr<Vec2Array> pTexCoords = new Vec2Array(4);
-		(*pTexCoords)[0].set(dbStep * nI, 1.0);
-		(*pTexCoords)[1].set(dbStep * nI, 0.0);
-		(*pTexCoords)[2].set(dbStep * (nI + 1), 0.0);
-		(*pTexCoords)[3].set(dbStep * (nI + 1), 1.0);
-		pGeometry->setTexCoordArray(0,pTexCoords);
+	struct {
+		void operator()(ref_ptr<Drawable> apDrawable, const ref_ptr<TextureRectangle> apTexture, ref_ptr<Vec2Array> apTexCoords) const	{
+			ref_ptr<Geometry> pGeometry = static_cast<Geometry *>(apDrawable.get());
+			pGeometry->setTexCoordArray(0,apTexCoords);
 
-		ref_ptr<Vec4Array> pColors = new Vec4Array(1);
-		(*pColors)[0].set(1.0,1.0,1.0,1.0);
-		pGeometry->setColorArray(pColors.get());
-		pGeometry->setColorBinding(Geometry::BIND_OVERALL);
-		pGeometry->setUseDisplayList(false);
-		
-		ref_ptr<StateSet> pState = pGeometry->getOrCreateStateSet();
-		pState->setTextureAttributeAndModes(0, pTexture, StateAttribute::ON);
-		pState->setTextureAttributeAndModes(0, pTexMat, StateAttribute::ON);
+			ref_ptr<Vec4Array> pColors = new Vec4Array(1);
+			(*pColors)[0].set(1.0,1.0,1.0,1.0);
+			pGeometry->setColorArray(pColors.get());
+			pGeometry->setColorBinding(Geometry::BIND_OVERALL);
+			pGeometry->setUseDisplayList(false);
+			ref_ptr<StateSet> pState = pGeometry->getOrCreateStateSet();
 
-		pState->setMode(GL_LIGHTING, StateAttribute::ON);
+			ref_ptr<TexMat> pTexMat = new TexMat;
+			pTexMat->setScaleByTextureRectangleSize(true);
+
+			pState->setTextureAttributeAndModes(0, apTexture, StateAttribute::ON);
+			pState->setTextureAttributeAndModes(0, pTexMat, StateAttribute::ON);
+			pState->setMode(GL_LIGHTING, StateAttribute::OFF);
+		}
+	} PolyTexture;
+
+	int nType = aPolyhedronSide;
+
+	if ((nType==PolyhedronSide::UP) || (nType==PolyhedronSide::BOTTOM) || (nType==PolyhedronSide::ALL))	{
+		int nSize = (nType==PolyhedronSide::ALL) ? 2 : 1;
+		int nI;
+		bool bBottom = (nType==PolyhedronSide::BOTTOM) ? true : false;
+		for (nI=0;nI<nSize;nI++)	{
+			float flStep = 1.0 / nSidesNr;
+			flStep *= 2 * PI;
+			ref_ptr<Vec2Array> pTexCoords = new Vec2Array(nSidesNr);
+			int nJ;
+			for(nJ = 0; nJ < nSidesNr; nJ++) {
+				(*pTexCoords)[nJ].set(0.5 * (1.0 + cos(flStep * nJ)), 0.5 * (1.0 + sin(flStep * nJ)));
+			}
+			ref_ptr<Geode> pGeode = (bBottom==true) ? dynamic_cast<Geode *>(getChild(0)) : dynamic_cast<Geode *>(getChild(1));
+			ref_ptr<Drawable> pDrawable = pGeode->getDrawable(0);
+
+			PolyTexture(pDrawable,pTexture,pTexCoords);
+			bBottom = (bBottom==true) ? false : true;
+		}
 	}
 
-	dbStep *= 2 * PI;
-	for(nI = 0; nI < 2; nI++) {
-		ref_ptr<osg::Geode> pGeode = dynamic_cast< osg::Geode * >(getChild(nI));
+	if ((nType==PolyhedronSide::BELT) || (nType==PolyhedronSide::ALL))	{
+		float flStep = 1.0 / nSidesNr;
+		int nI;
+		for(nI = 0; nI < nSidesNr; nI++) {
+			ref_ptr<Drawable> pDrawable = pGeode->getDrawable(nI);
+			ref_ptr<Vec2Array> pTexCoords = new Vec2Array(4);
+			(*pTexCoords)[0].set(flStep * nI, 1.0);
+			(*pTexCoords)[1].set(flStep * nI, 0.0);
+			(*pTexCoords)[2].set(flStep * (nI + 1), 0.0);
+			(*pTexCoords)[3].set(flStep * (nI + 1), 1.0);
 
-		ref_ptr<Drawable> pDrawable = pGeode->getDrawable(0);
-		ref_ptr<Geometry> pGeometry = dynamic_cast<Geometry *>(pDrawable.get());
-
-		ref_ptr<Vec2Array> pTexCoords = new Vec2Array(nSidesNr);
-		int nJ;
-		for(nJ = 0; nJ < nSidesNr; nJ++) {
-			(*pTexCoords)[nJ].set(0.5 * (1.0 + cos(dbStep * nJ)), 0.5 * (1.0 + sin(dbStep * nJ)));
+			PolyTexture(pDrawable,pTexture,pTexCoords);
 		}
-		pGeometry->setTexCoordArray(0,pTexCoords);
-
-		ref_ptr<Vec4Array> pColors = new Vec4Array(1);
-		(*pColors)[0].set(1.0,1.0,1.0,1.0);
-		pGeometry->setColorArray(pColors.get());
-		pGeometry->setColorBinding(Geometry::BIND_OVERALL);
-		pGeometry->setUseDisplayList(false);
-		ref_ptr<StateSet> pState = pGeometry->getOrCreateStateSet();
-		pState->setTextureAttributeAndModes(0, pTexture, StateAttribute::ON);
-		pState->setTextureAttributeAndModes(0, pTexMat, StateAttribute::ON);
-		pState->setMode(GL_LIGHTING, StateAttribute::OFF);
 	}
 }
 

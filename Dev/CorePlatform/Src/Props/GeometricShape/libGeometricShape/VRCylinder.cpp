@@ -25,18 +25,13 @@ CylinderParams::CylinderParams() : PrismParams() {
 //-----------------------------------------------------------------------
 
 VR::Cylinder::Cylinder(const CylinderParams & aCylinderParams) : Prism(aCylinderParams)	{
-	m_pUntransformedPolyhedron = new UntransformedPolyhedron();
-
 	init(aCylinderParams);
-	
 	setName("Cylinder_"+tostr(getAbstractObjectNo()));
 }
 
 //----------------------------------------------------------
 
 VR::Cylinder::Cylinder(const VR::Cylinder& cyl,const CopyOp& copyop) : Prism(cyl,copyop)	{
-	m_pUntransformedPolyhedron = new UntransformedPolyhedron();
-
 	CylinderParams acp;
 	cyl.getParams(acp);
 	init(acp);
@@ -58,9 +53,6 @@ Object* VR::Cylinder::cloneType() const	{
 //----------------------------------------------------------
 
 Object* VR::Cylinder::clone(const CopyOp& copyop) const	{
-//	return new VR::Cylinder(*this,copyop);
-
-
 	CylinderParams pCylinderParams;
 	this->getParams(pCylinderParams);
 
@@ -88,29 +80,29 @@ string VR::Cylinder::getSQLCommand() const {
 	getParams(cylinderParams);
 	string strCylinderParams;
 
-	strCylinderParams= to_string((long double)cylinderParams.m_flRadius) + "_";
-	strCylinderParams+= to_string((long double)cylinderParams.m_flHeight) + "_";
+	strCylinderParams= tostr(cylinderParams.m_flRadius) + "_";
+	strCylinderParams+= tostr(cylinderParams.m_flHeight) + "_";
 
-	strCylinderParams+= to_string((long double)cylinderParams.m_flPosX) + "_";
-	strCylinderParams+= to_string((long double)cylinderParams.m_flPosY) + "_";
-	strCylinderParams+= to_string((long double)cylinderParams.m_flPosZ) + "_";
+	strCylinderParams+= tostr(cylinderParams.m_flPosX) + "_";
+	strCylinderParams+= tostr(cylinderParams.m_flPosY) + "_";
+	strCylinderParams+= tostr(cylinderParams.m_flPosZ) + "_";
 
-	strCylinderParams += to_string((long double)cylinderParams.m_flLenX) + "_";
-	strCylinderParams += to_string((long double)cylinderParams.m_flLenY) + "_";
-	strCylinderParams += to_string((long double)cylinderParams.m_flLenZ) + "_";
+	strCylinderParams += tostr(cylinderParams.m_flLenX) + "_";
+	strCylinderParams += tostr(cylinderParams.m_flLenY) + "_";
+	strCylinderParams += tostr(cylinderParams.m_flLenZ) + "_";
 
-	strCylinderParams+= to_string((long double)cylinderParams.m_flAngleXY) + "_";
-	strCylinderParams+= to_string((long double)cylinderParams.m_flAngleXZ) + "_";
-	strCylinderParams+= to_string((long double)cylinderParams.m_flAngleYZ);	
+	strCylinderParams+= tostr(cylinderParams.m_flAngleXY) + "_";
+	strCylinderParams+= tostr(cylinderParams.m_flAngleXZ) + "_";
+	strCylinderParams+= tostr(cylinderParams.m_flAngleYZ);	
 
 	int nI;
 	string strColor;
 	for (nI=0;nI<4;nI++)	{
-		strColor += to_string((long double)cylinderParams.m_arrflRGBA[nI]) + "_";
+		strColor += tostr(cylinderParams.m_arrflRGBA[nI]) + "_";
 	}
 
 	string strSQLCommand = "INSERT INTO Cylinder (CylinderRes, CylinderMatrix, CylinderColor, CylinderTexture, PrimitiveID) VALUES("
-		+ to_string((_Longlong)cylinderParams.m_nResolution) + ",'"
+		+ tostr(cylinderParams.m_nResolution) + ",'"
 		+ strCylinderParams + "','"
 		+ strColor + "','"
 		+ cylinderParams.m_strFileNameTexture + "',"

@@ -34,7 +34,7 @@ bool Download::download(DownloadParams & aDownloadParams)	{
 			chLCase[nI]=tolower(strURL[nI]);
 		}
 
-		bool bRes = strcmp("http", chLCase);		
+		bool bRes = (strcmp("http", chLCase) == 0);
 		if(bRes==false)
 			throw DLExc("Must be HTTP url");
 

@@ -80,19 +80,21 @@ ref_ptr<Geometry> Floor::setGeometry()	{
 	}
 	pGeometry->addPrimitiveSet(new osg::DrawArrays(osg::PrimitiveSet::QUADS,0,4));
 
-	ref_ptr<StateSet> stateset = new osg::StateSet();
-	osg::Image* image = osgDB::readImageFile(m_FloorParams.m_strTextureName);
-	if (image)	{
-		ref_ptr<Texture2D> texture = new osg::Texture2D;
-		texture->setImage(image);
-		texture->setWrap(osg::Texture2D::WRAP_S, osg::Texture2D::REPEAT);
-		texture->setWrap(osg::Texture2D::WRAP_T, osg::Texture2D::REPEAT);
-		stateset->setTextureAttributeAndModes(0,texture,osg::StateAttribute::ON);
+	ref_ptr<osg::Image> pImage = osgDB::readImageFile(m_FloorParams.m_strTextureName);
+	if (pImage)	{
+		ref_ptr<TextureRectangle> pTexture = new TextureRectangle(pImage);
+		pTexture->setWrap(osg::Texture::WRAP_S, osg::Texture::REPEAT);
+		ref_ptr<TexMat> pTexMat = new TexMat;
+		pTexMat->setScaleByTextureRectangleSize(true);
+
+		ref_ptr<StateSet> pState = pGeometry->getOrCreateStateSet();
+		pState->setTextureAttributeAndModes(0, pTexture, StateAttribute::ON);
+		pState->setTextureAttributeAndModes(0, pTexMat, StateAttribute::ON);
+
 
 		// turn off lighting
-		stateset->setMode(GL_LIGHTING, StateAttribute::OFF);
+		pState->setMode(GL_LIGHTING, StateAttribute::OFF);
 	}
-	pGeometry->setStateSet(stateset);
 
 	return pGeometry;
 }

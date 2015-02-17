@@ -2,7 +2,8 @@
 #include <osg/Geode>
 #include <osgDB/readFile>
 
-#include <osg/Texture2D>
+#include <osg/TextureRectangle>
+#include <osg/TexMat>
 
 #include "VRPlate3D.h"
 #include "VRAppData.h"
@@ -107,11 +108,10 @@ ref_ptr<Geometry> Wall::createWallGeometry(Vec3Array * apCoords, string & astrTe
 	ref_ptr<StateSet> stateset = new osg::StateSet();
 	osg::Image* image = osgDB::readImageFile(astrTextureName);
 	if (image)	{
-		ref_ptr<Texture2D> texture = new osg::Texture2D;
-		texture->setImage(image);
-		texture->setWrap(osg::Texture2D::WRAP_S, osg::Texture2D::REPEAT);
-		texture->setWrap(osg::Texture2D::WRAP_T, osg::Texture2D::REPEAT);
-		stateset->setTextureAttributeAndModes(0,texture,osg::StateAttribute::ON);
+		ref_ptr<TextureRectangle> pTexture = new osg::TextureRectangle(image);
+		pTexture->setWrap(osg::TextureRectangle::WRAP_S, osg::TextureRectangle::REPEAT);
+		pTexture->setWrap(osg::TextureRectangle::WRAP_T, osg::TextureRectangle::REPEAT);
+		stateset->setTextureAttributeAndModes(0,pTexture,osg::StateAttribute::ON);
 
 		// turn off lighting
 		stateset->setMode(GL_LIGHTING, StateAttribute::OFF);

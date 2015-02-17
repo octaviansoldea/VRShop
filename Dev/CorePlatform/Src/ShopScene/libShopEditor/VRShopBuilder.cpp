@@ -1,4 +1,5 @@
 #include <osgDB/ReadFile>
+#include <osgDB/fstream>
 
 #include <string>
 #include <list>
@@ -6,6 +7,8 @@
 #include "FileOperations.h"
 #include "VRShopBuilderCommands.h"
 #include "VRBasicQtOperations.h"
+
+#include "VRAppData.h"
 
 #include <QString>
 #include <QVariant>
@@ -38,9 +41,11 @@
 #include "VRProductManager.h"
 #include "VRProductShopEditor.h"
 
+
 #include "VRPrism.h"
 
 #include "VRAbstractObjectFactory.h"
+#include "VRExternalObject.h"
 
 #include "VRSaveAs_GUI.h"
 
@@ -110,7 +115,7 @@ void ShopBuilder::init()	{
 	m_pScene->clearScene();
 
 	//These are necessary parts of any file
-	osg::ref_ptr<osg::Node> pAxes = osgDB::readNodeFile("../../../Resources/Models3D/axes.osgt");
+	osg::ref_ptr<osg::Node> pAxes = osgDB::readNodeFile(AppData::getFPathResources() + "Models3D/axes.osgt");
 	osg::ref_ptr<Grid> pGrid = new Grid;
 	m_pScene->addChild(pAxes);
 	m_pScene->addChild(pGrid);
@@ -198,34 +203,55 @@ void ShopBuilder::readDB(const std::string & astrDBFileName)	{
 
 	list<string>::iterator it = lststrSceneObjects.begin();
 	for (it; it != lststrSceneObjects.end(); it++)	{
-		vector<string> vecstrData = splitString(*it,";");
+		vector<string> vecstrData;
+		splitString(*it, ";", vecstrData);
 
-		string & strClassName = vecstrData[1];
-		if (strClassName == ShopBuilderCommands::getOperationType(VR::ShopBuilderCommands::PRODUCT_DISPLAY))	{
+		string * pstrClassName = &vecstrData[1];
+		if (*pstrClassName == ShopBuilderCommands::getOperationType(VR::ShopBuilderCommands::PRODUCT_DISPLAY))	{
 			list<std::string> vecstrObjectData = dbMgr.getProductsData();
 			m_pProductMgr->initProductsFromSQLData(vecstrObjectData);
 		} else {
-			bool bType=false;
-			if ((strClassName == "CustomFurniture") || (strClassName == "Cupboard") || (strClassName == "Container"))
-				bType = true;
-			else if ((strClassName == "Plate3D") || (strClassName == "Cylinder") || (strClassName == "Prism"))
-				bType = false;
+			int nType;
+			if (*pstrClassName == "ExternalObject")
+				nType = 0;
+			else if ((*pstrClassName == "CustomFurniture") || (*pstrClassName == "Cupboard") || (*pstrClassName == "Container"))
+				nType = 1;
+			else if ((*pstrClassName == "Plate3D") || (*pstrClassName == "Cylinder") || (*pstrClassName == "Prism"))
+				nType = 2;
 			else
 				continue;
 
 			int nObjectID = stoi(vecstrData[0]);
 			string & strObjectName = vecstrData[2];
-			ref_ptr<AbstractObject> pAO = AbstractObjectFactory::createAbstractObject(strClassName);
+			ref_ptr<AbstractObject> pAO = 0;
 
-			if (bType)	{
-				vector<string> vecstrObjectData = dbMgr.getObjectData(nObjectID, strClassName, strObjectName);
-				pAO->initFromSQLData(vecstrObjectData);
-			} else {
-				string strObjectData = dbMgr.getPrimitiveObjectData(nObjectID, strClassName, strObjectName);
-				int nPos = strObjectData.find_first_of(";");
-				strObjectData.erase(0,nPos+1);
-				pAO->initFromSQLData(strObjectData);
+			switch (nType)	{
+			case 0:
+				{
+					vector<string> vecstrObjectData = dbMgr.getObjectData(nObjectID, *pstrClassName, strObjectName);
+					pAO = ExternalObject::createObject(vecstrObjectData[0]);
+					break;
+				}
+			case 1:
+				{
+					vector<string> vecstrObjectData = dbMgr.getObjectData(nObjectID, *pstrClassName, strObjectName);
+					pAO = AbstractObjectFactory::createAbstractObject(*pstrClassName);
+					pAO->initFromSQLData(vecstrObjectData);
+					break;
+				}
+			case 2:
+				{
+					string strObjectData = dbMgr.getPrimitiveObjectData(nObjectID, *pstrClassName, strObjectName);
+					pAO = AbstractObjectFactory::createAbstractObject(*pstrClassName);
+
+					string strTrim;
+					trimString(&strObjectData, ";", strTrim);
+
+					pAO->initFromSQLData(strTrim);
+					break;
+				}
 			}
+
 			pAO->setIsTargetPick(true);
 			pAO->setIsTargetLocked(true);
 			m_pScene->addChild(pAO);
@@ -385,6 +411,13 @@ void ShopBuilder::addNewItem()	{
 	int nRes = insertNewItem_GUI.exec();
 
 	if (nRes == QDialog::Accepted)	{
+		if (insertNewItem_GUI.m_qstrFileName!="")	{
+			ref_ptr<AbstractObject> pAbstractObject = ExternalObject::readFromFile(insertNewItem_GUI.m_qstrFileName.toStdString());
+			pAbstractObject->setIsTargetPick(true);
+			m_pScene->addChild(pAbstractObject);
+			return;
+		}
+
 		if(!insertNewItem_GUI.m_pListWidgetItem->currentItem())
 			return;
 

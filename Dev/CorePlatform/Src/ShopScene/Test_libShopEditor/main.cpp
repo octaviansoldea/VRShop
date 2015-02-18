@@ -1,8 +1,6 @@
 #include <windows.h>
-
 #include <string>
 
-#include "Log.h"
 
 #include <QApplication>
 #include <QMessageBox>
@@ -10,6 +8,7 @@
 #include <QString>
 
 #include "VRAppData.h"
+#include "Log.h"
 #include "VREmbeddedWidgetStatics.h"
 
 #include "VRShopBuilder_GUI.h"

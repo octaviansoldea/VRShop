@@ -68,7 +68,7 @@
     	libCommon
     	libCommon_OSG
     	libCommon_QT
-	  	libAppData
+  		libAppData
     	libItemModel
     	libSearch
     	libCamera
